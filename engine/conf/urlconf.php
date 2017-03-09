@@ -11,13 +11,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р°',
+            'russian' => 'Страница',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'Р“Р»Р°РІРЅР°СЏ РЅРѕРІРѕСЃС‚РЅР°СЏ СЃС‚СЂР°РЅРёС†Р°',
+        'russian' => 'Главная новостная страница',
       ),
     ),
     'by.category' => 
@@ -29,7 +29,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'Альт. имя категории',
           ),
         ),
         'catid' => 
@@ -37,7 +37,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}(?:\\-[0-9\\-]+)?',
           'descr' => 
           array (
-            'russian' => 'ID РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'ID категории',
           ),
         ),
         'page' => 
@@ -45,13 +45,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р°',
+            'russian' => 'Страница',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РќРѕРІРѕСЃС‚Рё РёР· Р·Р°РґР°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё',
+        'russian' => 'Новости из заданной категории',
       ),
     ),
     'news' => 
@@ -63,7 +63,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'Альт. имя категории',
           ),
         ),
         'catid' => 
@@ -71,7 +71,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}(?:\\-[0-9\\-]+)?',
           'descr' => 
           array (
-            'russian' => 'ID РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'ID категории',
           ),
         ),
         'year' => 
@@ -79,7 +79,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4}',
           'descr' => 
           array (
-            'russian' => 'Р“РѕРґ',
+            'russian' => 'Год',
           ),
         ),
         'month' => 
@@ -87,7 +87,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'РњРµСЃСЏС†',
+            'russian' => 'Месяц',
           ),
         ),
         'day' => 
@@ -95,7 +95,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'Р”РµРЅСЊ',
+            'russian' => 'День',
           ),
         ),
         'page' => 
@@ -103,7 +103,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р° РІРЅСѓС‚СЂРё РЅРѕРІРѕСЃС‚Рё',
+            'russian' => 'Страница внутри новости',
           ),
         ),
         'altname' => 
@@ -111,7 +111,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ РЅРѕРІРѕСЃС‚Рё',
+            'russian' => 'Альт. имя новости',
           ),
         ),
         'id' => 
@@ -119,7 +119,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,7}',
           'descr' => 
           array (
-            'russian' => 'ID РЅРѕРІРѕСЃС‚Рё',
+            'russian' => 'ID новости',
           ),
         ),
         'zid' => 
@@ -127,13 +127,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4,7}',
           'descr' => 
           array (
-            'russian' => 'ID РЅРѕРІРѕСЃС‚Рё СЃ РІРµРґСѓС‰РёРјРё РЅСѓР»СЏРјРё (4 С†РёС„СЂС‹)',
+            'russian' => 'ID новости с ведущими нулями (4 цифры)',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РћС‚РѕР±СЂР°Р¶РµРЅРёРµ РїРѕР»РЅРѕР№ РЅРѕРІРѕСЃС‚Рё',
+        'russian' => 'Отображение полной новости',
       ),
     ),
     'by.year' => 
@@ -145,7 +145,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4}',
           'descr' => 
           array (
-            'russian' => 'Р“РѕРґ',
+            'russian' => 'Год',
           ),
         ),
         'page' => 
@@ -153,13 +153,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р°',
+            'russian' => 'Страница',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РќРѕРІРѕСЃС‚Рё Р·Р° РіРѕРґ',
+        'russian' => 'Новости за год',
       ),
     ),
     'by.month' => 
@@ -171,7 +171,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4}',
           'descr' => 
           array (
-            'russian' => 'Р“РѕРґ',
+            'russian' => 'Год',
           ),
         ),
         'month' => 
@@ -179,7 +179,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'РњРµСЃСЏС†',
+            'russian' => 'Месяц',
           ),
         ),
         'page' => 
@@ -187,13 +187,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р°',
+            'russian' => 'Страница',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РќРѕРІРѕСЃС‚Рё Р·Р° РјРµСЃСЏС†',
+        'russian' => 'Новости за месяц',
       ),
     ),
     'by.day' => 
@@ -205,7 +205,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4}',
           'descr' => 
           array (
-            'russian' => 'Р“РѕРґ',
+            'russian' => 'Год',
           ),
         ),
         'month' => 
@@ -213,7 +213,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'РњРµСЃСЏС†',
+            'russian' => 'Месяц',
           ),
         ),
         'day' => 
@@ -221,7 +221,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'Р”РµРЅСЊ',
+            'russian' => 'День',
           ),
         ),
         'page' => 
@@ -229,13 +229,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р°',
+            'russian' => 'Страница',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РќРѕРІРѕСЃС‚Рё Р·Р° РґРµРЅСЊ',
+        'russian' => 'Новости за день',
       ),
     ),
     'print' => 
@@ -247,7 +247,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'Альт. имя категории',
           ),
         ),
         'catid' => 
@@ -255,7 +255,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}(?:\\-[0-9\\-]+)?',
           'descr' => 
           array (
-            'russian' => 'ID РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'ID категории',
           ),
         ),
         'year' => 
@@ -263,7 +263,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4}',
           'descr' => 
           array (
-            'russian' => 'Р“РѕРґ',
+            'russian' => 'Год',
           ),
         ),
         'month' => 
@@ -271,7 +271,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'РњРµСЃСЏС†',
+            'russian' => 'Месяц',
           ),
         ),
         'day' => 
@@ -279,7 +279,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{2}',
           'descr' => 
           array (
-            'russian' => 'Р”РµРЅСЊ',
+            'russian' => 'День',
           ),
         ),
         'page' => 
@@ -287,7 +287,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р° РІРЅСѓС‚СЂРё РЅРѕРІРѕСЃС‚Рё',
+            'russian' => 'Страница внутри новости',
           ),
         ),
         'altname' => 
@@ -295,7 +295,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ РЅРѕРІРѕСЃС‚Рё',
+            'russian' => 'Альт. имя новости',
           ),
         ),
         'id' => 
@@ -303,7 +303,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'ID РЅРѕРІРѕСЃС‚Рё',
+            'russian' => 'ID новости',
           ),
         ),
         'zid' => 
@@ -311,13 +311,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{4,7}',
           'descr' => 
           array (
-            'russian' => 'ID РЅРѕРІРѕСЃС‚Рё СЃ РІРµРґСѓС‰РёРјРё РЅСѓР»СЏРјРё (4 С†РёС„СЂС‹)',
+            'russian' => 'ID новости с ведущими нулями (4 цифры)',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РЎС‚СЂР°РЅРёС†Р° РґР»СЏ РїРµС‡Р°С‚Рё РїРѕР»РЅРѕР№ РЅРѕРІРѕСЃС‚Рё',
+        'russian' => 'Страница для печати полной новости',
       ),
     ),
     'all' => 
@@ -329,13 +329,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'РЎС‚СЂР°РЅРёС†Р°',
+            'russian' => 'Страница',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'Р›РµРЅС‚Р° РЅРѕРІРѕСЃС‚РµР№',
+        'russian' => 'Лента новостей',
       ),
     ),
   ),
@@ -348,7 +348,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'РћСЃРЅРѕРІРЅРѕР№ RSS РїРѕС‚РѕРє',
+        'russian' => 'Основной RSS поток',
       ),
     ),
     'category' => 
@@ -360,7 +360,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'Альт. имя категории',
           ),
         ),
         'catid' => 
@@ -368,13 +368,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}(?:\\-[0-9\\-]+)?',
           'descr' => 
           array (
-            'russian' => 'ID РєР°С‚РµРіРѕСЂРёРё',
+            'russian' => 'ID категории',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'RSS РїРѕС‚РѕРє СѓРєР°Р·Р°РЅРЅРѕР№ РєР°С‚РµРіРѕСЂРёРё',
+        'russian' => 'RSS поток указанной категории',
       ),
     ),
     'main' => 
@@ -384,7 +384,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'РћСЃРЅРѕРІРЅРѕР№ RSS РїРѕС‚РѕРє',
+        'russian' => 'Основной RSS поток',
       ),
     ),
   ),
@@ -399,7 +399,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'ID РїР»Р°РіРёРЅР°',
+            'russian' => 'ID плагина',
           ),
         ),
         'handler' => 
@@ -407,13 +407,13 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РџРµСЂРµРґР°РІР°РµРјР°СЏ РєРѕРјР°РЅРґР°',
+            'russian' => 'Передаваемая команда',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РЎС‚СЂР°РЅРёС†Р° РїР»Р°РіРёРЅР°',
+        'russian' => 'Страница плагина',
       ),
     ),
     'registration' => 
@@ -423,7 +423,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'Р РµРіРёСЃС‚СЂР°С†РёСЏ РЅРѕРІРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+        'russian' => 'Регистрация нового пользователя',
       ),
     ),
     'activation' => 
@@ -435,7 +435,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d+',
           'descr' => 
           array (
-            'russian' => 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+            'russian' => 'ID пользователя',
           ),
         ),
         'code' => 
@@ -443,13 +443,13 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РљРѕРґ Р°РєС‚РёРІР°С†РёРё',
+            'russian' => 'Код активации',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РђРєС‚РёРІР°С†РёСЏ РЅРѕРІРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+        'russian' => 'Активация нового пользователя',
       ),
     ),
     'lostpassword' => 
@@ -461,7 +461,7 @@ $urlLibrary = array (
           'matchRegex' => '\\d+',
           'descr' => 
           array (
-            'russian' => 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+            'russian' => 'ID пользователя',
           ),
         ),
         'code' => 
@@ -469,13 +469,13 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РљРѕРґ Р°РєС‚РёРІР°С†РёРё',
+            'russian' => 'Код активации',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'Р’РѕСЃСЃС‚Р°РЅРѕРІР»РµРЅРёРµ РїРѕС‚РµСЂСЏРЅРЅРѕРіРѕ РїР°СЂРѕР»СЏ',
+        'russian' => 'Восстановление потерянного пароля',
       ),
     ),
     'login' => 
@@ -485,7 +485,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'Р’С…РѕРґ РЅР° СЃР°Р№С‚ (Р°РІС‚РѕСЂРёР·Р°С†РёСЏ)',
+        'russian' => 'Вход на сайт (авторизация)',
       ),
     ),
     'logout' => 
@@ -495,7 +495,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'Р’С‹С…РѕРґ СЃ СЃР°Р№С‚Р°',
+        'russian' => 'Выход с сайта',
       ),
     ),
   ),
@@ -508,7 +508,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ СЃРѕР±СЃС‚РІРµРЅРЅРѕРіРѕ РїСЂРѕС„РёР»СЏ',
+        'russian' => 'Редактирование собственного профиля',
       ),
     ),
     'show' => 
@@ -520,7 +520,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'Р›РѕРіРёРЅ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+            'russian' => 'Логин пользователя',
           ),
         ),
         'id' => 
@@ -528,13 +528,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d+',
           'descr' => 
           array (
-            'russian' => 'ID РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+            'russian' => 'ID пользователя',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РџРѕРєР°Р·Р°С‚СЊ РїСЂРѕС„РёР»СЊ РєРѕРЅРєСЂРµС‚РЅРѕРіРѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ',
+        'russian' => 'Показать профиль конкретного пользователя',
       ),
     ),
   ),
@@ -550,7 +550,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†С‹',
+            'russian' => 'Альт. имя статической страницы',
           ),
         ),
         'id' => 
@@ -558,13 +558,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'ID СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†С‹',
+            'russian' => 'ID статической страницы',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РћС‚РѕР±СЂР°Р¶РµРЅРёРµ СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†С‹',
+        'russian' => 'Отображение статической страницы',
       ),
     ),
     'print' => 
@@ -576,7 +576,7 @@ $urlLibrary = array (
           'matchRegex' => '.+?',
           'descr' => 
           array (
-            'russian' => 'РђР»СЊС‚. РёРјСЏ СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†С‹',
+            'russian' => 'Альт. имя статической страницы',
           ),
         ),
         'id' => 
@@ -584,13 +584,13 @@ $urlLibrary = array (
           'matchRegex' => '\\d{1,4}',
           'descr' => 
           array (
-            'russian' => 'ID СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†С‹',
+            'russian' => 'ID статической страницы',
           ),
         ),
       ),
       'descr' => 
       array (
-        'russian' => 'РџРµС‡Р°С‚СЊ СЃС‚Р°С‚РёС‡РµСЃРєРѕР№ СЃС‚СЂР°РЅРёС†С‹',
+        'russian' => 'Печать статической страницы',
       ),
     ),
   ),
@@ -603,7 +603,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'РЎС‚СЂР°РЅРёС†Р° РїРѕРёСЃРєР°',
+        'russian' => 'Страница поиска',
       ),
     ),
   ),
