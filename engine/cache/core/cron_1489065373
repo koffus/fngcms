@@ -1,4 +1,0 @@
-Execute cron job [core] action [db_backup]
-Execute cron job [core] action [news_views]
-Execute cron job [core] action [load_truncate]
-OK
