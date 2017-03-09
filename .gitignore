@@ -1,6 +1,6 @@
-# remove folder
-engine/cache/
-uploads/
+# remove files
+engine/cache/*.*
+uploads/*.*
 
 #################
 ## Eclipse
