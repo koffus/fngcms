@@ -1,6 +1,10 @@
 # remove files
 engine/cache/*.*
+engine/cache/**/*.*
+engine/cache/**/**/*.*
 uploads/*.*
+uploads/**/*.*
+uploads/**/**/*.*
 
 #################
 ## Eclipse
