@@ -1,4 +1,5 @@
 # remove files
+engine/cache/core/*
 engine/cache/*.*
 engine/cache/**/*.*
 engine/cache/**/**/*.*
