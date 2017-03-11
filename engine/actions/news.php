@@ -59,7 +59,7 @@ function editNewsForm() {
 	));
 
 	// Get news id
-	$id			= intval($_REQUEST['id']);
+	$id = intval($_REQUEST['id']);
 
 	// Try to find news that we're trying to edit
 	if (!is_array($row = $mysql->record("select * from ".prefix."_news where id = ".db_squote($id),1))) {
@@ -519,7 +519,7 @@ function listNewsForm() {
 
 	$tVars['category_select'] = makeCategoryList(array('doall' => 1, 'dowithout' => 1, 'selected' => $fCategoryId, 'style' => 'width: 200px;'));
 
- $maxNavigations = !(empty($config['newsNavigationsAdminCount']) || $config['newsNavigationsAdminCount'] < 1)?$config['newsNavigationsAdminCount']:8;
+	$maxNavigations = !(empty($config['newsNavigationsAdminCount']) || $config['newsNavigationsAdminCount'] < 1)?$config['newsNavigationsAdminCount']:8;
 
 	if (count($newsEntries) > 0) {
 		$pagesss = new Paginator;

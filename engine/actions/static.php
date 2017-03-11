@@ -276,7 +276,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 			'description'		=>	getIsSet($row['description']),
 			'keywords'			=>	getIsSet($row['keywords']),
 			'cdate'				=> !empty($row['postdate'])?date('d.m.Y H:i', $row['postdate']):"",
-			'flag_published'		=> getIsSet($row['approve']),
+			'flag_published'		=> getIsSet($row['approve']) ? $row['approve'] : 1,
 			'flag_raw'				=> (getIsSet($row['flags']) % 2)?1:0,
 			'flag_html'				=> ((getIsSet($row['flags'])/2) % 2)?1:0,
 			'flag_template_main'	=> ((getIsSet($row['flags'])/4) % 2)?1:0,

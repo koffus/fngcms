@@ -1,4 +1,5 @@
 # remove files
+engine/errorPHP.txt
 engine/backups/*.gz
 engine/conf/config.php
 engine/conf/plugdata.php
@@ -8,6 +9,7 @@ engine/cache/core/*
 engine/cache/*.*
 engine/cache/**/*.*
 engine/cache/**/**/*.*
+engine/trash/*note.inc.txt
 uploads/*.*
 uploads/**/*.*
 uploads/**/**/*.*
