@@ -9,7 +9,7 @@ engine/cache/core/*
 engine/cache/*.*
 engine/cache/**/*.*
 engine/cache/**/**/*.*
-engine/trash/*note.inc.txt
+engine/trash/*.inc.txt
 uploads/*.*
 uploads/**/*.*
 uploads/**/**/*.*
