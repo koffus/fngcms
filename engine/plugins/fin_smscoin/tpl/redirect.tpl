@@ -14,7 +14,7 @@
 </form>
 </div>
 
-<script language="javascript">
+<script>
 //document.getElementById('payform').submit();
 </script>
 </body>

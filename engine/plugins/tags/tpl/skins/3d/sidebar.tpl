@@ -28,8 +28,8 @@
 	</table>
 </td></tr>
 </table>
-<script type="text/javascript" src="/engine/plugins/tags/tpl/skins/3d/swfobject.js"></script>
-<script language="javascript">
+<script src="/engine/plugins/tags/tpl/skins/3d/swfobject.js"></script>
+<script>
 var insertCloudElementID = 'insertTagCloud';
 var insertCloudClientWidth = document.getElementById(insertCloudElementID).clientWidth;
 var insertCloudClientHeight = insertCloudClientWidth; //140;

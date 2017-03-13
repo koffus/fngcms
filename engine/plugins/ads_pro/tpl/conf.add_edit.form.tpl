@@ -1,4 +1,4 @@
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function AddBlok() {
 	var tbl = document.getElementById('blokup');
 	var lastRow = tbl.rows.length;

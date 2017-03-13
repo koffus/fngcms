@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="{{ admin_url }}/plugins/nsm/uploader/uploadifive/uploadifive.css">
 <script src="{{ admin_url }}/plugins/nsm/uploader/uploadifive/jquery.uploadifive.min.js" type="text/javascript"></script>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 
 //
 // Global variable: ID of current active input area
@@ -207,7 +207,7 @@ $(document).ready(function() {
 </div>
 </form>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 // Restore variables if needed
 var jev = {{ JEV }};
 var form = document.getElementById('postForm');

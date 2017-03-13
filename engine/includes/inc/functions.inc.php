@@ -2090,7 +2090,7 @@ function ngShutdownHandler() {
 	print "</div>";
 ?>
  <div id="hdrSpanItem"></div>
- <script language="Javascript">
+ <script>
  {
 	var xc = document.getElementById('ngErrorInformer').innerHTML;
 	var i = 0;
@@ -2150,7 +2150,7 @@ function ngFatalError($title, $description = '') {
  </head>
  <body>
  <div id="hdrSpanItem"></div>
- <script language="Javascript">
+ <script>
  {
 	var i = 0;
 	var cnt = 0;

@@ -40,8 +40,8 @@
 	<!-- List of categories: END -->
 </div>
 
-<script type="text/javascript" src="{{ scriptLibrary }}/ajax.js"></script>
-<script type="text/javascript" src="{{ scriptLibrary }}/admin.js"></script>
+<script src="{{ scriptLibrary }}/ajax.js"></script>
+<script src="{{ scriptLibrary }}/admin.js"></script>
 <script type="text/javascript">
 // Process RPC requests for categories
 var categoryUToken = '{{ token }}';

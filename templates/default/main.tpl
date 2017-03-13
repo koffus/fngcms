@@ -23,8 +23,8 @@
 	<![endif]-->
 	{% if pluginIsActive('rss_export') %}<link href="{{ home }}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />{% endif %}
 	<script src="{{ scriptLibrary }}/jq/jquery.js"></script>
-	<script type="text/javascript" src="{{ scriptLibrary }}/functions.js"></script>
-	<script type="text/javascript" src="{{ scriptLibrary }}/ajax.js"></script>
+	<script src="{{ scriptLibrary }}/functions.js"></script>
+	<script src="{{ scriptLibrary }}/ajax.js"></script>
 	<title>{{ titles }}</title>
 </head>
 	<body>

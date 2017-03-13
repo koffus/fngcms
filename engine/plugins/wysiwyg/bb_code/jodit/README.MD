@@ -50,7 +50,7 @@ Include just two files
 
 ```xml
 <link type="text/css" rel="stylesheet" href="jodit.min.css">
-<script type="text/javascript" src="jodit.min.js"></script>
+<script src="jodit.min.js"></script>
 ```
 ### CDN
 ```xml

@@ -1,5 +1,5 @@
 {% if (not flags.ajax) %}
-<script type="text/javascript" language="javascript">
+<script>
 function ng_calendar_walk(month, year, offset, category) {
 	$.post('/engine/rpc.php', { json : 1, methodName : 'plugin.calendar.show', rndval: new Date().getTime(), params : json_encode({ 'year' : year, 'offset' : offset, 'month' : month, 'category' : category }) }, function(data) {
 		// Try to decode incoming data

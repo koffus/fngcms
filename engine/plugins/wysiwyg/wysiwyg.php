@@ -10,7 +10,7 @@ function bb(&$tvars){
 		case 'wysibb':
 			$js_array = array();
 			foreach ( array(admin_url.'/plugins/wysiwyg/bb_code/'.$name_bb.'/jquery.wysibb.js', admin_url.'/plugins/wysiwyg/bb_code/'.$name_bb.'/wysibb.js') as $value) {
-				$js_array[] = '<script type="text/javascript" src="'.$value.'"></script>';
+				$js_array[] = '<script src="'.$value.'"></script>';
 				
 			}
 			$css_array = array();
@@ -21,7 +21,7 @@ function bb(&$tvars){
 		case 'jodit';
 			$js_array = array();
 			foreach ( array(admin_url.'/plugins/wysiwyg/bb_code/'.$name_bb.'/jodit.min.js', admin_url.'/plugins/wysiwyg/bb_code/'.$name_bb.'/jodit.js') as $value) {
-				$js_array[] = '<script type="text/javascript" src="'.$value.'"></script>';
+				$js_array[] = '<script src="'.$value.'"></script>';
 				
 			}
 			$css_array = array();
@@ -32,7 +32,7 @@ function bb(&$tvars){
 		case 'tinymce':
 			$js_array = array();
 			foreach ( array(admin_url.'/plugins/wysiwyg/bb_code/'.$name_bb.'/tinymce.min.js', admin_url.'/plugins/wysiwyg/bb_code/'.$name_bb.'/tinymce.js') as $value) {
-				$js_array[] = '<script type="text/javascript" src="'.$value.'"></script>';
+				$js_array[] = '<script src="'.$value.'"></script>';
 				
 			}
 			$css_array = array();

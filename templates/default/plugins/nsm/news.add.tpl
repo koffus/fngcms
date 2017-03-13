@@ -133,7 +133,7 @@ function approveMode(mode) {
 </div>
 </form>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 // Restore variables if needed
 var jev = {{ JEV }};
 var form = document.getElementById('postForm');

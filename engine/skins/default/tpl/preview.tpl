@@ -5,8 +5,8 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={l_encoding}">
 	<link href="{tpl_url}/style.css" rel="stylesheet" />
 	
-	<script type="text/javascript" src="{scriptLibrary}/functions.js"></script>
-	<script type="text/javascript" src="{scriptLibrary}/ajax.js"></script>
+	<script src="{scriptLibrary}/functions.js"></script>
+	<script src="{scriptLibrary}/ajax.js"></script>
 	{htmlvars}
 </head>
 <body>

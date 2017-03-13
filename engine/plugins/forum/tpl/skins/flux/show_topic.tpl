@@ -124,7 +124,7 @@
 		</div> 
 	</div> 
 </div>
-<div style="float:right"><script src="http://pip.qip.ru/js/pip_button.js?type=3" type="text/javascript" charset="UTF-8"></script></div>
+<div style="float:right"><script src="http://pip.qip.ru/js/pip_button.js?type=3" charset="UTF-8"></script></div>
 <div class="clearer"></div><br />
 {% if (post_send and state == 'open') %}
 

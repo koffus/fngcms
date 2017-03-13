@@ -17,7 +17,7 @@
 	</div>
 </div>
 {% else %}
-<script language="javascript">
+<script>
 var set_login = 0;
 var set_pass = 0;
 </script>

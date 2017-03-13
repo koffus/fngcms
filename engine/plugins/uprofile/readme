@@ -49,7 +49,7 @@ HINT: Переменные из плагина xfields (доп. поля) дос
 * всё содержимое шаблона users.tpl помещено в div с ID "uprofileReplaceForm"
 
 {% if (user.flags.isOwnProfile) %}
-<script type="text/javascript" language="javascript">
+<script>
 function ng_uprofile_editCall() {
 	$.post('/engine/rpc.php', { json : 1, methodName : 'plugin.uprofile.editForm', rndval: new Date().getTime(), params : json_encode({ 'token' : '{{ token }}' }) }, function(data) {
 		// Try to decode incoming data

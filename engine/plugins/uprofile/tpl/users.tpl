@@ -87,7 +87,7 @@
 </table>
 </div>
 {% if (user.flags.isOwnProfile) %}
-<script type="text/javascript" language="javascript">
+<script>
 function ng_uprofile_editCall() {
 	ngShowLoading();
 	$.post('/engine/rpc.php', { json : 1, methodName : 'plugin.uprofile.editForm', rndval: new Date().getTime(), params : json_encode({ 'token' : '{{ token }}' }) }, function(data) {

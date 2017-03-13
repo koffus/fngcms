@@ -1,4 +1,4 @@
-<script language="javascript">
+<script>
 				function forum_change(){
 					if (document.getElementById('forum_captcha').className == "yellow"){
 						document.getElementById('forum_captcha').className = "red";

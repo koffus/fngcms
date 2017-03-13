@@ -8,7 +8,7 @@
 <tr><td colspan="2"><div id="autokeysArea" style="border: #EEEEEE 1px solid; height: 30px; text-align: center;" onclick="autokeysAjaxUpdate();">.. сгенерировать сейчас..</div><input type="button" id="autokeysButton" value="Перенести.." onclick="autokeysSetKeywords();"/></tr>
 </table>
 </td></tr>
-<script language="javascript">
+<script>
 var autokeysAjaxUpdate = function() {
 	ngShowLoading();
 	$.post('/engine/rpc.php', { json : 1, methodName : 'plugin.autokeys.generate', rndval: new Date().getTime(), params : json_encode({ 'title' : $('#newsTitle').val(), 'content' : $('#ng_news_content_short').val()+' '+$('#ng_news_content_full').val() }) }, function(data) {

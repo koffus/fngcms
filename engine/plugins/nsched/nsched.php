@@ -25,7 +25,7 @@ class NSchedNewsFilter extends NewsFilter {
 			if ($perm['personal.unpublish']) {
 				$tvars['plugin']['nsched'] .= '<tr><td>Дата отключения:</td><td><input id="nsched_deactivate" name="nsched_deactivate"/> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
 			}
-			$tvars['plugin']['nsched'] .= '</table></td></tr><script language="javascript" type="text/javascript">'."$('#nsched_activate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm'});$('#nsched_deactivate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm'});</script>";
+			$tvars['plugin']['nsched'] .= '</table></td></tr><script type="text/javascript">'."$('#nsched_activate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm'});$('#nsched_deactivate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm'});</script>";
 
 		}
 
@@ -63,7 +63,7 @@ class NSchedNewsFilter extends NewsFilter {
 			if ($perm[$permGroupMode.'.unpublish']) {
 				$tvars['plugin']['nsched'] .= '<tr><td>Дата отключения:</td><td><input name="nsched_deactivate" id="nsched_deactivate" value="'.$ndeactivate.'" /> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
 			}
-			$tvars['plugin']['nsched'] .= '</table></td></tr><script language="javascript" type="text/javascript">'."$('#nsched_activate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm', currentText: '".$nactivate."'});$('#nsched_deactivate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm', currentText: '".$ndeactivate."'});</script>";
+			$tvars['plugin']['nsched'] .= '</table></td></tr><script type="text/javascript">'."$('#nsched_activate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm', currentText: '".$nactivate."'});$('#nsched_deactivate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm', currentText: '".$ndeactivate."'});</script>";
 		}
 		return 1;
 	}

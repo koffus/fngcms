@@ -1,5 +1,5 @@
 <div>
-<script language="javascript">
+<script>
 function sw_update() {
  var x = document.getElementById('switcher_selector');
  document.cookie='sw_template='+x.value+'; expires=Mon,31-Jan-2017';

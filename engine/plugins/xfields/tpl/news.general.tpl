@@ -1,6 +1,6 @@
 <input type="hidden" id="xftable" name="xftable" value=""/>
 
-<script type="text/javascript" language="javascript">
+<script>
 <!--
 // XFields configuration profile mapping
 var xfGroupConfig	= {{ xfGC }};

@@ -304,7 +304,7 @@ function forum_code_tag($code, $text){
 	
 	$tVars = array(
 		'tpl' => $tpath['url::'],
-		'js' => '<script type="text/javascript" src="'.$tpath['url::'].'/bb.js"></script>',
+		'js' => '<script src="'.$tpath['url::'].'/bb.js"></script>',
 	);
 	
 	return $xt->render($tVars);;

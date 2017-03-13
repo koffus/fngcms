@@ -1,5 +1,5 @@
 
-<script language="javascript">
+<script>
 
 var newLineIndex = 1;
 

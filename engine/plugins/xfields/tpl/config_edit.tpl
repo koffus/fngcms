@@ -6,7 +6,7 @@
 </tbody>
 </table>
 
-<script language="javascript">
+<script>
 function clx(mode) {
  document.getElementById('type_text').style.display		= (mode == 'text')?		'block':'none';
  document.getElementById('type_textarea').style.display = (mode == 'textarea')?	'block':'none';

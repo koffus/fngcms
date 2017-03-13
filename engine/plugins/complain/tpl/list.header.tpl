@@ -27,7 +27,7 @@ input { font-size: 10px; }
 </style>
 </head>
 <body>
-<script language="javascript">
+<script>
 var ETEXT={ETEXT};
 
 function toggleList() {

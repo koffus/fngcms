@@ -7,8 +7,8 @@
 <meta name="document-state" content="dynamic" />
 <link href="{tpl_url}/style.css" rel="stylesheet" type="text/css" media="screen" />
 <link href="{home}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />
-<script type="text/javascript" src="{ scriptLibrary }/functions.js"></script>
-<script type="text/javascript" src="{ scriptLibrary }/ajax.js"></script>
+<script src="{ scriptLibrary }/functions.js"></script>
+<script src="{ scriptLibrary }/ajax.js"></script>
 <title>Next Generation CMS &copy; jChat plugin</title>
 </head>
 

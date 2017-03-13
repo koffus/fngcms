@@ -7,7 +7,7 @@
 {{ description }}
 <br/><br/>
 {% if (flags.jcheck) %}
-<script language="JavaScript">
+<script>
 var FBF_INIT = {{ FBF_DATA }};
 function FBF_CHECK() {
  var frm = document.getElementById('feedback_form');

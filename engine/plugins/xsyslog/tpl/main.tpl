@@ -1,8 +1,8 @@
-<script type="text/javascript" src="{{ scriptLibrary }}/ajax.js"></script>
-<script type="text/javascript" src="{{ scriptLibrary }}/admin.js"></script>
-<script type="text/javascript" src="{{ scriptLibrary }}/libsuggest.js"></script>
+<script src="{{ scriptLibrary }}/ajax.js"></script>
+<script src="{{ scriptLibrary }}/admin.js"></script>
+<script src="{{ scriptLibrary }}/libsuggest.js"></script>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 <!--
 
 function addEvent(elem, type, handler){
@@ -181,7 +181,7 @@ function filter_attach_DateEdit(id) {
 </div>
 
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 // Init jQueryUI datepicker
 $("#dr1").datepicker( { currentText: "", dateFormat: "dd.mm.yy" });
 $("#dr2").datepicker( { currentText: "", dateFormat: "dd.mm.yy" });

@@ -1,5 +1,5 @@
 
-<script language="javascript">
+<script>
 countryData = {areas};
 </script>
 
@@ -21,7 +21,7 @@ countryData = {areas};
 Вам необходимо отправить на один из указанных коротких SMS номеров следующий текст:<br/>
 <b>+AMP</b><br/><br/>
 </div>
-<script language="javascript">
+<script>
 // Загрузка данных по странам
 {
  var c = document.getElementById('countrySelect');

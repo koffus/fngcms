@@ -1,4 +1,4 @@
-<script language="javascript">
+<script>
 var CHATTER = new jChat({history}, {refresh}, 'jChatTable', {msgOrder});
 CHATTER.loadData({data});
 CHATTER.timerStart();

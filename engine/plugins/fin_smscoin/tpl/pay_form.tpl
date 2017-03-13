@@ -9,7 +9,7 @@
 <tr><td colspan=2><input type=submit value="Перейти на страницу пополнения"></td></tr>
 </table>
 </form>
-<script language="javascript">
+<script>
 function updateOplist(country, manual) {
  if (!initComplete && !manual) { return; }
 

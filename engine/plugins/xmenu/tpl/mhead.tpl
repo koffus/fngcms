@@ -26,7 +26,7 @@ padding-right: 20px;
 }
 {activity}
 </style>
-<script language="javascript">
+<script>
 function xmenu_click(id) {
  var i;
  for (i=0; i<=9; i++) {

@@ -1,6 +1,6 @@
 {% include localPath(0) ~ "conf.navi.tpl" %}
 
-<script language="javascript">
+<script>
 function clx(mode) {
  document.getElementById('type_text').style.display = (mode == 'text')?'block':'none';
  document.getElementById('type_email').style.display = (mode == 'email')?'block':'none';

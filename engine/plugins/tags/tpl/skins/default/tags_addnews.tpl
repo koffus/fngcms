@@ -11,7 +11,7 @@
  </table>
  </td>
 </tr>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 // INIT NEW SUGGEST LIBRARY [ call only after full document load ]
 var aSuggest = new ngSuggest('pTags',
 								{

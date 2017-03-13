@@ -22,7 +22,7 @@
 <!-- <input type="submit" value="Commit changes"/> --> &nbsp; <input type="button" value="Load data" onclick="loadData(); return false;"/> &nbsp; <input type="button" value="Show content" onclick="showContent(); return false;"/>
 </form>
 
-<script type="text/javascript" language="javascript">
+<script>
 function loadData() {
 	ngShowLoading();
 	$.post('{{ admin_url }}/rpc.php', { json : 1, methodName : 'admin.extras.getPluginConfig', rndval: new Date().getTime(), params : json_encode({ token : '{{ token }}' }) }, function(data) {

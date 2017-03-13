@@ -1,4 +1,4 @@
-<script type="text/javascript" src="{{ scriptLibrary }}/libsuggest.js"></script>
+<script src="{{ scriptLibrary }}/libsuggest.js"></script>
 <style>
 .suggestWindow {
 	background: #f9f9f9;
@@ -82,7 +82,7 @@
 	<input class="button" type="submit" value="{{ lang['pm:send'] }}" accesskey="s" />
 </div>
 </form>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 	function systemInit() {
 		new ngSuggest('to_username',
 			{
