@@ -81,7 +81,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
 				$uc->photoURL = @$contact->profile_picture;
 				$uc->displayName = @$contact->full_name;
 				$uc->description	= @$contactInfo->data->bio;
-				//$uc->email = ;
+				//$uc->email = '';
 				//
 				$contacts[] = $uc;
 			}

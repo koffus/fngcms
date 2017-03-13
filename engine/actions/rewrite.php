@@ -1,5 +1,6 @@
 <?php
 
+
 //
 // Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
 // Name: rewrite.php
@@ -12,10 +13,12 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Check for permissions
 if (!checkPermission(array('plugin' => '#admin', 'item' => 'rewrite'), null, 'details')) {
-	msg(array('type' => 'danger', 'message' => __('perm.denied')));
+	msg(array("type" => "error", "text" => $lang['perm.denied']), 1, 1);
 	ngSYSLOG(array('plugin' => '#admin', 'item' => 'rewrite'), array('action' => 'details'), null, array(0, 'SECURITY.PERM'));
 	return false;
 }
+
+
 
 @include_once 'includes/classes/uhandler.class.php';
 $ULIB = new urlLibrary();
@@ -24,11 +27,13 @@ $ULIB->loadConfig();
 $UH = new urlHandler();
 $UH->loadConfig();
 
-Lang::load('rewrite', 'admin');
+
+$lang = Lang::load('rewrite', 'admin');
 
 // ================================================================
 // Handlers for new REWRITE format
 // ================================================================
+
 
 //
 // Generate list of supported commands [ config ]
@@ -36,9 +41,9 @@ Lang::load('rewrite', 'admin');
 $jconfig = array();
 foreach ($ULIB->CMD as $plugin => $crow) {
 	foreach ($crow as $cmd => $param) {
-		$jconfig[$plugin][$cmd] = array('vars' => array(), 'descr' => $ULIB->extractLangRec($param['descr']));
+		$jconfig[$plugin][$cmd] = array('vars' => array(), 'descr' => iconv('Windows-1251', 'UTF-8', $ULIB->extractLangRec($param['descr'])));
 		foreach($param['vars'] as $vname => $vdata) {
-			$jconfig[$plugin][$cmd]['vars'][$vname] = $ULIB->extractLangRec($vdata['descr']);
+			$jconfig[$plugin][$cmd]['vars'][$vname] = iconv('Windows-1251', 'UTF-8', $ULIB->extractLangRec($vdata['descr']));
 		}
 	}
 }
@@ -62,7 +67,7 @@ foreach ($UH->hList as $hId) {
 
 	// Fetch associated command
 	if ($cmd = $ULIB->fetchCommand($hId['pluginName'], $hId['handlerName'])) {
-		$jrow['description']	= $ULIB->extractLangRec($cmd['descr']);
+		$jrow['description']	= iconv('Windows-1251', 'UTF-8', $ULIB->extractLangRec($cmd['descr']));
 	}
 	$jdata[] = $jrow;
 	$recno++;
@@ -81,5 +86,6 @@ $tVars = array(
 
 $xt = $twig->loadTemplate('skins/default/tpl/rewrite.tpl');
 echo $xt->render($tVars);
+
 
 //$UH->populateHandler($ULIB, array('pluginName' => 'news', 'handlerName' => 'by.day', 'regex' => '/{year}-{month}-{day}[-page{page}].html'));
