@@ -111,9 +111,10 @@ if (file_exists($note_path)) {
 	$note = '';
 }
 
-$df_size = @disk_free_space(root);
+$df_size = disk_free_space(root);
 $df = ($df_size > 1) ? Formatsize($df_size) : 'n/a';
 
+echo disk_free_space(root);
 // Calculate number of news
 $nCount = array();
 foreach ($mysql->select("select approve, count(*) as cnt from ".prefix."_news group by approve") as $rec) {

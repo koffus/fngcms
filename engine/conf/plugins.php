@@ -2,11 +2,13 @@
   'installed' => 
   array (
     'auth_basic' => 1,
+    'ads_pro' => 1,
   ),
   'active' => 
   array (
     'auth_basic' => 'auth_basic',
     'uprofile' => 'uprofile',
+    'ads_pro' => 'ads_pro',
   ),
   'actions' => 
   array (
@@ -24,6 +26,7 @@
     ),
     'core' => 
     array (
+      'ads_pro' => 'ads_pro/ads_pro.php',
     ),
   ),
   'libs' => 

@@ -39,21 +39,23 @@ function secure_html($string) {
 	return trim($string);
 }
 
-function Formatsize($file_size) {
+function Formatsize($bytes) {
 
-	$file_size = intval($file_size);
+	if ($bytes >= 1073741824) {
+			$bytes = number_format($bytes / 1073741824, 2) . ' GB';
+		} elseif ($bytes >= 1048576) {
+			$bytes = number_format($bytes / 1048576, 2) . ' MB';
+		} elseif ($bytes >= 1024) {
+			$bytes = number_format($bytes / 1024, 2) . ' kB';
+		} elseif ($bytes > 1) {
+			$bytes = $bytes . ' B';
+		} elseif ($bytes == 1) {
+			$bytes = $bytes . ' B';
+		} else {
+			$bytes = '0 B';
+		}
 
-	if ($file_size >= 1073741824) {
-		$file_size = round($file_size / 1073741824 * 100) / 100 . " Gb";
-	} elseif ($file_size >= 1048576) {
-		$file_size = round($file_size / 1048576 * 100) / 100 . " Mb";
-	} elseif ($file_size >= 1024) {
-		$file_size = round($file_size / 1024 * 100) / 100 . " Kb";
-	} else {
-		$file_size = $file_size . " b";
-	}
-	
-	return $file_size;
+		return $bytes;
 }
 
 function checkIP() {
