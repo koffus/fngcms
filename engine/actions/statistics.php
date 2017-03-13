@@ -43,13 +43,13 @@ foreach (array(
 	} else {
 		// Get permissions
 		$perms = @fileperms($dir);
-		$perms = ($perms === false)?'n/a':(decoct($perms) % 1000);
+		$perms = ($perms === false) ? 'n/a' : (decoct($perms) % 1000);
 
 		// Error - engine can't write into directory
-		if (!is_writable($dir)) {
+		if (is_writable($dir)) {
 			$STATS[$id.'_perm'] = '<font color="green"><b>'.$perms.'</b></font>';
 		} else {
-			$STATS[$id.'_perm'] = '<font color="red"><b>'.$perms.'</b></font> [<a href="#" onclick="showModal(\'Неверные правила\'); return false;">Ошибка</a>]';
+			$STATS[$id.'_perm'] = '<font color="red"><b>'.$perms.'</b></font> [<a href="#" onclick="showModal(\''. __('perm.error') . '\'); return false;">Ошибка</a>]';
 		}
 
 		// Load list of files, ExecTimeLimit = 5 sec (don't allow to work for > 5 sec)

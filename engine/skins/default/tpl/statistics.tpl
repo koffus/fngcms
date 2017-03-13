@@ -172,20 +172,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>{{ lang['group_images'] }}</td>
-							<td>{{ image_amount }}</td>
-							<td>{{ image_size }}</td>
-							<td>{{ image_perm }}</td>
-						</tr>
-						<tr>
-							<td>{{ lang['group_files'] }}</td><td>{{ file_amount }}</td><td>{{ file_size }}</td><td> &nbsp; {{ file_perm }}</td>
-						</tr>
-						<tr>
-							<td>{{ lang['group_photos'] }}</td><td>{{ photo_amount }}</td><td>{{ photo_size }}</td><td>&nbsp; {{ photo_perm }}</td>
-						</tr>
-						<tr><td>{{ lang['group_avatars'] }}</td><td>{{ avatar_amount }}</td><td>{{ avatar_size }}</td><td> &nbsp; {{ avatar_perm }}</td></tr>
-						<tr><td>{{ lang['group_backup'] }}</td><td>{{ backup_amount }}</td><td>{{ backup_size }}</td><td> &nbsp; {{ backup_perm }}</td></tr>
+						<tr><td>{{ lang['group_images'] }}</td><td>{{ image_amount }}</td><td>{{ image_size }}</td><td>{{ image_perm }}</td></tr>
+						<tr><td>{{ lang['group_files'] }}</td><td>{{ file_amount }}</td><td>{{ file_size }}</td><td> {{ file_perm }}</td></tr>
+						<tr><td>{{ lang['group_photos'] }}</td><td>{{ photo_amount }}</td><td>{{ photo_size }}</td><td> {{ photo_perm }}</td></tr>
+						<tr><td>{{ lang['group_avatars'] }}</td><td>{{ avatar_amount }}</td><td>{{ avatar_size }}</td><td> {{ avatar_perm }}</td></tr>
+						<tr><td>{{ lang['group_backup'] }}</td><td>{{ backup_amount }}</td><td>{{ backup_size }}</td><td> {{ backup_perm }}</td></tr>
 						<tr>
 						<td colspan="2">{{ lang['allowed_size'] }}</td>
 						<td>{{ allowed_size }}</td>
