@@ -279,7 +279,6 @@ function systemDboModify() {
 		msg( array('type' => 'info', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $slist)) );
 		if ( is_array($msg_error) )
 			msg( array('type' => 'danger', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $msg_error)) );
-		
 
 		mysql_free_result($rs);
 	}
