@@ -10,6 +10,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
+// Load language
 Lang::load('configuration', 'admin');
 
 function twigmkSelect($params) {
