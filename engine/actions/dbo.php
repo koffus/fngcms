@@ -14,14 +14,14 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::load('dbo', 'admin', 'dbo');
 
 function ParseQueries($sql) {
-	$matches		=	array();
-	$output			=	array();
-	$queries		=	explode(";", $sql);
-	$query_count	=	sizeof($queries);
-	$sql			=	'';
+	$matches		= array();
+	$output			= array();
+	$queries		= explode(';', $sql);
+	$query_count	= sizeof($queries);
+	$sql			= '';
 
 	for ($i = 0; $i < $query_count; $i++) {
-		if (($i != ($query_count - 1)) || (strlen($queries[$i]) > 0)) {
+		if (($i != ($query_count - 1)) or (strlen($queries[$i]) > 0)) {
 			$total_quotes = preg_match_all("/'/", $queries[$i], $matches);
 			$escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $queries[$i], $matches);
 			$unescaped_quotes = $total_quotes - $escaped_quotes;
@@ -153,10 +153,12 @@ function systemDboModify() {
 	}
 
 	// MASS: Check/Repair/Optimize tables
-	if ($_REQUEST['masscheck'] || $_REQUEST['massrepair'] || $_REQUEST['massoptimize']) {
+	if ($_REQUEST['masscheck'] or $_REQUEST['massrepair'] or $_REQUEST['massoptimize']) {
 		$mode = 'check';
-		if ($_REQUEST['massrepair']) { $mode = 'repair'; }
-		if ($_REQUEST['massoptimize']) { $mode = 'optimize'; }
+		if ($_REQUEST['massrepair'])
+			$mode = 'repair';
+		if ($_REQUEST['massoptimize'])
+			$mode = 'optimize';
 
 		$tables = getIsSet($_REQUEST['tables']);
 		if (!is_array($tables)) {
@@ -180,13 +182,114 @@ function systemDboModify() {
 		}
 	}
 
+	// MASS: Convert cp1251 to utf8
+	if ($_REQUEST['massconvert']) {
+		$time = microtime(true);
+
+		$db = $config['dbname'];
+		$login = $config['dbuser'];
+		$passw = $config['dbpasswd'];
+		$host = $config['dbhost'];
+
+		$res = mysql_connect($host, $login, $passw);
+		mysql_select_db($db);
+		mysql_query('SET NAMES utf8;');
+		$rs = mysql_query('SHOW TABLES;');
+		$error = mysql_error();
+		if ( strlen($error) > 0 ) {
+			$msg_error [] = secure_html($error.' - LINE '.__LINE__); //the notorious 'command out of synch' message :(
+		}
+		while ( ($row=mysql_fetch_assoc($rs))!==false ) {
+
+			$time1 = microtime(true);
+			$table_name = $row['Tables_in_'.$db];
+			$query = 'SHOW CREATE TABLE '.$table_name;
+
+			$row_create = mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			}
+			$row1 = mysql_fetch_assoc($row_create);
+
+			if ( strpos($row1['Create Table'], 'DEFAULT CHARSET=utf8' ) !== false) {
+				$slist [] = 'Table '.$table_name.' - skipped';
+				continue;
+			}
+
+			$create_table_scheme = str_ireplace('cp1251', 'utf8', $row1['Create Table']); // CREATE TABLE SCHEME
+			$create_table_scheme = str_ireplace('ENGINE=MyISAM', 'ENGINE=InnoDB', $create_table_scheme);
+			$create_table_scheme .= ' COLLATE utf8_general_ci';
+
+			$query = 'RENAME TABLE '.$table_name.' TO '.$table_name.'_tmp_export'; // RENAME TABLE;
+			mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+				break;
+			}
+
+			$query = $create_table_scheme;
+			mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+				break;
+			}
+
+			$query = 'ALTER TABLE '.$table_name.' DISABLE KEYS';
+			mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+				break;
+			}
+
+			$query = 'INSERT INTO '.$table_name.' SELECT * FROM '.$table_name.'_tmp_export';
+			mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+				break;
+			}
+
+			$query = 'DROP TABLE '.$table_name.'_tmp_export';
+			mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+				break;
+			}
+
+			$time3 = microtime(true);
+			$query = 'ALTER TABLE '.$table_name.' ENABLE KEYS';
+			mysql_query($query);
+			$error = mysql_error();
+			if ( strlen($error) > 0 ) {
+				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+				break;
+			}
+
+			$slist [] = 'Enable keys to <b>'.$table_name.'</b>: '.sprintf("%.4f", (microtime(true) - $time3)). ' sec. '.
+				'Converted: '.sprintf("%.4f", (microtime(true) - $time1)). ' sec.';
+
+		}
+
+		$slist [] = 'Total time: '.sprintf("%.4f", (microtime(true) - $time));
+		msg( array('type' => 'info', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $slist)) );
+		if ( is_array($msg_error) )
+			msg( array('type' => 'danger', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $msg_error)) );
+		
+
+		mysql_free_result($rs);
+	}
+	
 	// MASS: Delete tables
 	if (getIsSet($_REQUEST['massdelete'])) {
 	 $tables = getIsSet($_REQUEST['tables']);
 		if (!$tables) {
 			msg(array('type' => 'danger', 'title' => __('dbo')['msge_tables'], 'message' => __('dbo')['msgi_tables']));
-		}
-		else {
+		} else {
 			for($i = 0, $sizeof = sizeof($tables); $i < $sizeof; $i++) {
 				if ($mysql->table_exists($tables[$i])) {
 					$mysql->query("drop table `".$tables[$i]."`");
@@ -214,8 +317,7 @@ function systemDboModify() {
 				sendEmailMessage($config['admin_mail'], __('dbo')['title'], sprintf(__('dbo')['message'], $date2), $filename);
 				@unlink($filename);
 				msg(array('message' => __('dbo')['msgo_backup_m']));
-			}
-			else {
+			} else {
 				msg(array('message' => __('dbo')['msgo_backup']));
 			}
 		}
@@ -238,8 +340,7 @@ function systemDboModify() {
 	 $filename = str_replace('/','', $_REQUEST['filename']);
 		if (!$filename) {
 			msg(array('type' => 'danger', 'title' => __('dbo')['msge_restore'], 'message' => __('dbo')['msgi_restore']));
-		}
-		else {
+		} else {
 			$fp = gzopen(root . 'backups/' . $filename.'.gz', "r");
 
 			while (!gzeof($fp)) {
@@ -274,7 +375,7 @@ function systemDboForm() {
 
 	$tableList = array();
 	foreach($mysql->select("SHOW TABLES FROM `".$config['dbname']."` LIKE '".prefix."_%'", 0) as $table) {
-		$info		=	$mysql->record("SHOW TABLE STATUS LIKE '".$table[0]."'");
+		$info		= $mysql->record("SHOW TABLE STATUS LIKE '".$table[0]."'");
 
 		$tableInfo = array(
 			'table'		=> $info['Name'],
@@ -298,8 +399,11 @@ function systemDboForm() {
 	echo $xt->render($tVars);
 }
 
-if (isset($_REQUEST['subaction']) && ($_REQUEST['subaction'] == 'modify')) {
-	systemDboModify();
-}
+//
+// Main loop
+if(isset($_REQUEST['subaction']) && $_REQUEST['subaction'])
+	switch ($_REQUEST['subaction']) {
+		case 'modify': systemDboModify(); break;
+	}
 
 systemDboForm();
