@@ -262,7 +262,7 @@
 				<div class="well panel-fixed-bottom">
 					<div class="row">
 						<div class="col col-xs-6">
-							<select name="approve">
+							<select name="approve" class="form-control">
 								{% if flags['can_publish'] %}
 									<option value="1">{{ lang.addnews['publish'] }}</option>
 								{% endif %}
