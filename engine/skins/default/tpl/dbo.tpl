@@ -1,7 +1,7 @@
 <!-- Navigation bar -->
 <ul class="breadcrumb">
-	<li><a href="admin.php">{{ lang['home'] }}</a></li>
-	<li><a href="admin.php?mod=options">{{ lang['options'] }}</a></li>
+	<li><a href="admin.php">{{ lang.home }}</a></li>
+	<li><a href="admin.php?mod=options">{{ lang.options }}</a></li>
 	<li class="active">{{ lang.dbo.title }}</li>
 </ul>
 

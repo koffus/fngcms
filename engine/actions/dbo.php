@@ -183,7 +183,8 @@ function systemDboModify() {
 	}
 
 	// MASS: Convert cp1251 to utf8
-	if ($_REQUEST['massconvert']) {
+	if ( getIsSet($_REQUEST['massconvert']) ) {
+		$mode = 'convert';
 		$time = microtime(true);
 
 		$db = $config['dbname'];
@@ -191,96 +192,93 @@ function systemDboModify() {
 		$passw = $config['dbpasswd'];
 		$host = $config['dbhost'];
 
-		$res = mysql_connect($host, $login, $passw);
-		mysql_select_db($db);
-		mysql_query('SET NAMES utf8;');
-		$rs = mysql_query('SHOW TABLES;');
-		$error = mysql_error();
-		if ( strlen($error) > 0 ) {
-			$msg_error [] = secure_html($error.' - LINE '.__LINE__); //the notorious 'command out of synch' message :(
+		$mysqli = new mysqli($host, $login, $passw, $db);
+		if ($mysqli->connect_error) {
+			$msg_error [] = secure_html('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error . ' - LINE '.__LINE__);
 		}
-		while ( ($row=mysql_fetch_assoc($rs))!==false ) {
+
+		$mysqli->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
+		$rs = $mysqli->query("SHOW TABLES;");
+		if ($mysqli->errno) {
+			$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+		}
+
+		while ( $row = mysqli_fetch_array($rs, MYSQLI_ASSOC) ) {
 
 			$time1 = microtime(true);
 			$table_name = $row['Tables_in_'.$db];
-			$query = 'SHOW CREATE TABLE '.$table_name;
-
-			$row_create = mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			$row_create = $mysqli->query('SHOW CREATE TABLE '.$table_name);
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
 			}
-			$row1 = mysql_fetch_assoc($row_create);
 
+			$row1 = mysqli_fetch_array($row_create, MYSQLI_ASSOC);
 			if ( strpos($row1['Create Table'], 'DEFAULT CHARSET=utf8' ) !== false) {
-				$slist [] = 'Table '.$table_name.' - skipped';
+				$slist [] = __('dbo')['table'] . ' ' . $table_name.__('dbo')['skipped'];
 				continue;
 			}
 
-			$create_table_scheme = str_ireplace('cp1251', 'utf8', $row1['Create Table']); // CREATE TABLE SCHEME
+			// RENAME TABLE;
+			$mysqli->query('RENAME TABLE '.$table_name.' TO '.$table_name.'_tmp_export');
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+				break;
+			}
+
+			// CREATE TABLE SCHEME
+			$create_table_scheme = str_ireplace('cp1251', 'utf8', $row1['Create Table']);
 			$create_table_scheme = str_ireplace('ENGINE=MyISAM', 'ENGINE=InnoDB', $create_table_scheme);
 			$create_table_scheme .= ' COLLATE utf8_general_ci';
-
-			$query = 'RENAME TABLE '.$table_name.' TO '.$table_name.'_tmp_export'; // RENAME TABLE;
-			mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			$mysqli->query($create_table_scheme);
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
-			$query = $create_table_scheme;
-			mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			$mysqli->query('ALTER TABLE '.$table_name.' DISABLE KEYS');
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
-			$query = 'ALTER TABLE '.$table_name.' DISABLE KEYS';
-			mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			$mysqli->query('INSERT INTO '.$table_name.' SELECT * FROM '.$table_name.'_tmp_export');
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
-			$query = 'INSERT INTO '.$table_name.' SELECT * FROM '.$table_name.'_tmp_export';
-			mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			$mysqli->query('DROP TABLE '.$table_name.'_tmp_export');
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
-			$query = 'DROP TABLE '.$table_name.'_tmp_export';
-			mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
+			$time2 = microtime(true);
+			$mysqli->query('ALTER TABLE '.$table_name.' ENABLE KEYS');
+			if ($mysqli->errno) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
-			$time3 = microtime(true);
-			$query = 'ALTER TABLE '.$table_name.' ENABLE KEYS';
-			mysql_query($query);
-			$error = mysql_error();
-			if ( strlen($error) > 0 ) {
-				$msg_error [] = secure_html($error.' - LINE '.__LINE__);
-				break;
-			}
-
-			$slist [] = 'Enable keys to <b>'.$table_name.'</b>: '.sprintf("%.4f", (microtime(true) - $time3)). ' sec. '.
-				'Converted: '.sprintf("%.4f", (microtime(true) - $time1)). ' sec.';
+			$slist [] = 'Enable keys to <b>'.$table_name.'</b>: '.sprintf("%.4f", (microtime(true) - $time2)). ' sec. '.
+						'Converted: '.sprintf("%.4f", (microtime(true) - $time1)). ' sec.';
 
 		}
 
-		$slist [] = 'Total time: '.sprintf("%.4f", (microtime(true) - $time));
-		msg( array('type' => 'info', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $slist)) );
-		if ( is_array($msg_error) )
-			msg( array('type' => 'danger', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $msg_error)) );
+		$time3 = microtime(true);
+		$mysqli->query("ALTER DATABASE $db DEFAULT CHARACTER SET 'utf8';");
+		if ($mysqli->errno) {
+			$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			break;
+		} else {
+			$slist [] = "<br>Converted database <b>$db</b> to <b>utf8</b>: " . sprintf("%.4f", (microtime(true) - $time3)). ' sec.';
+		}
 
-		mysql_free_result($rs);
+		msg( array('type' => 'success', 'title' => __('dbo')['msgo_'.$mode], 'message' => join("<br>", $slist) . '<hr>Total time: '.sprintf("%.4f", (microtime(true) - $time))) );
+		if ( is_array($msg_error) )
+			msg( array('type' => 'danger', 'title' => __('dbo')['msge_'.$mode], 'message' => join("<br>", $msg_error)) );
+
+		mysqli_free_result($rs);
 	}
 	
 	// MASS: Delete tables
