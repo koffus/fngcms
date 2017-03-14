@@ -135,7 +135,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 							// If we created thumb - check if we need to transform it
 							$stampThumb = ($data['thumbStamp'] && ($stampFileName != ''))?1:0;
 							$shadowThumb = $data['thumbShadow'];
-							if ($shadowThumb || $stampThumb) {
+							if ($shadowThumb or $stampThumb) {
 								$stamp = $imanager->image_transform(
 									array(
 										'image' => $config['attach_dir'].$up[2].'/thumb/'.$up[1],
@@ -151,7 +151,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 						}
 					}
 
-					if ($mkStamp || $mkShadow) {
+					if ($mkStamp or $mkShadow) {
 						$stamp = $imanager->image_transform(
 						array(
 							'image' => $config['attach_dir'].$up[2].'/'.$up[1],
@@ -543,7 +543,7 @@ class XFieldsNewsFilter extends NewsFilter {
 					if (is_array($SQLold['#images'])) {
 						foreach ($SQLold['#images'] as $irow) {
 							// Skip images, that are not related to current field
-							if (($irow['plugin'] != 'xfields') || ($irow['pidentity'] != $id)) continue;
+							if (($irow['plugin'] != 'xfields') or ($irow['pidentity'] != $id)) continue;
 
 							// Show attached image
 							$iCount++;
@@ -1125,7 +1125,7 @@ if (getPluginStatusActive('uprofile')) {
 						if (is_array($SQLrow['#images'])) {
 							foreach ($SQLrow['#images'] as $irow) {
 								// Skip images, that are not related to current field
-								if (($irow['plugin'] != 'xfields') || ($irow['pidentity'] != $id)) continue;
+								if (($irow['plugin'] != 'xfields') or ($irow['pidentity'] != $id)) continue;
 
 								// Show attached image
 								$iCount++;
@@ -1468,7 +1468,7 @@ class XFieldsCoreFilter extends CoreFilter {
 	function registerUserForm(&$tvars) {
 		// Load config
 		$xf = xf_configLoad();
-		if (!is_array($xf) || !isset($xf['users']) || !is_array($xf['users']))
+		if (!is_array($xf) or !isset($xf['users']) or !is_array($xf['users']))
 			return 1;
 
 		foreach ($xf['users'] as $k => $v) {
@@ -1510,7 +1510,7 @@ class XFieldsCoreFilter extends CoreFilter {
 
 		// Load config
 		$xf = xf_configLoad();
-		if (!is_array($xf) || !isset($xf['users']) || !is_array($xf['users']))
+		if (!is_array($xf) or !isset($xf['users']) or !is_array($xf['users']))
 			return 1;
 
 		$xdata = array();

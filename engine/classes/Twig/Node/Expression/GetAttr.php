@@ -32,14 +32,14 @@ class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
 
  $compiler->raw(', ')->subcompile($this->getNode('attribute'));
 
- if (count($this->getNode('arguments')) || Twig_TemplateInterface::ANY_CALL !== $this->getAttribute('type') || $this->getAttribute('is_defined_test') || $this->getAttribute('ignore_strict_check')) {
+ if (count($this->getNode('arguments')) or Twig_TemplateInterface::ANY_CALL !== $this->getAttribute('type') or $this->getAttribute('is_defined_test') or $this->getAttribute('ignore_strict_check')) {
  $compiler->raw(', ')->subcompile($this->getNode('arguments'));
 
- if (Twig_TemplateInterface::ANY_CALL !== $this->getAttribute('type') || $this->getAttribute('is_defined_test') || $this->getAttribute('ignore_strict_check')) {
+ if (Twig_TemplateInterface::ANY_CALL !== $this->getAttribute('type') or $this->getAttribute('is_defined_test') or $this->getAttribute('ignore_strict_check')) {
  $compiler->raw(', ')->repr($this->getAttribute('type'));
  }
 
- if ($this->getAttribute('is_defined_test') || $this->getAttribute('ignore_strict_check')) {
+ if ($this->getAttribute('is_defined_test') or $this->getAttribute('ignore_strict_check')) {
  $compiler->raw(', '.($this->getAttribute('is_defined_test') ? 'true' : 'false'));
  }
 

@@ -160,8 +160,8 @@ function userAdd(){
 		return;
 	}
 
-	$add_time		=	time() + ($config['date_adjust']*60);
-	$regpassword	=	EncodePassword($regpassword);
+	$add_time		= time() + ($config['date_adjust']*60);
+	$regpassword	= EncodePassword($regpassword);
 
 	$mysql->query("insert into ".uprefix."_users (name, pass, mail, status, reg) values (".db_squote($regusername).", ".db_squote($regpassword).", ".db_squote($regemail).", ".db_squote($reglevel).", ".db_squote($add_time).")");
 	msg(array('message' => __('msgo_adduser')));
@@ -439,8 +439,8 @@ function userList(){
 		$tEntries []= $tEntry;
 	}
 
-	$userCount	=	$mysql->result("SELECT count(*) FROM ".uprefix."_users ".$queryFilter);
-	$pageCount	=	ceil($userCount / $fRPP);
+	$userCount	= $mysql->result("SELECT count(*) FROM ".uprefix."_users ".$queryFilter);
+	$pageCount	= ceil($userCount / $fRPP);
 
 	// Sorting flags
 	//$linkSortOrders

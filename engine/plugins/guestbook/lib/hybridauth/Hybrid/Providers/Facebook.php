@@ -31,7 +31,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 	 * {@inheritdoc}
 	 */
 	function initialize() {
-		if (!$this->config["keys"]["id"] || !$this->config["keys"]["secret"]) {
+		if (!$this->config["keys"]["id"] or !$this->config["keys"]["secret"]) {
 			throw new Exception("Your application id and secret are required in order to connect to {$this->providerId}.", 4);
 		}
 
@@ -338,7 +338,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 	 * {@inheridoc}
 	 */
 	function getUserPages($writableonly = false) {
-		if (( isset($this->config['scope']) && strpos($this->config['scope'], 'manage_pages') === false ) || (!isset($this->config['scope']) && strpos($this->scope, 'manage_pages') === false ))
+		if (( isset($this->config['scope']) && strpos($this->config['scope'], 'manage_pages') === false ) or (!isset($this->config['scope']) && strpos($this->scope, 'manage_pages') === false ))
 			throw new Exception("User status requires manage_page permission!");
 
 		try {
@@ -382,7 +382,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 			throw new Exception("User activity stream request failed! {$this->providerId} returned an error: $e");
 		}
 
-		if (!$response || !count($response['data'])) {
+		if (!$response or !count($response['data'])) {
 			return array();
 		}
 

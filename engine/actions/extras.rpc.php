@@ -30,7 +30,7 @@ function admExtrasGetConfig($params) {
 	}
 
 	// Check for permissions
-	if (!is_array($userROW) || ($userROW['status'] != 1)) {
+	if (!is_array($userROW) or ($userROW['status'] != 1)) {
 		// ACCESS DENIED
 		return array('status' => 0, 'errorCode' => 3, 'errorText' => 'Access denied');
 	}
@@ -62,7 +62,7 @@ function admExtrasOnOff($params) {
 	}
 
 	// Check for permissions
-	if (!is_array($userROW) || ($userROW['status'] != 1)) {
+	if (!is_array($userROW) or ($userROW['status'] != 1)) {
 		// ACCESS DENIED
 		return array('status' => 0, 'errorCode' => 3, 'errorText' => 'Access denied');
 	}
@@ -73,11 +73,11 @@ function admExtrasOnOff($params) {
 	}
 
 	// Check if plugin name is specified
-	if (!$params['plugin'] || !$params['state']) {
+	if (!$params['plugin'] or !$params['state']) {
 		return array('status' => 0, 'errorCode' => 6, 'errorText' => 'Plugin name or state is not specified');
 	}
 
-	$extras	=	pluginsGetList();
+	$extras	= pluginsGetList();
 	if (!isset($extras[$params['plugin']])) {
 		return array('status' => 0, 'errorCode' => 7, 'errorText' => 'Plugin ['.$params['plugin'].' is not found');
 	}

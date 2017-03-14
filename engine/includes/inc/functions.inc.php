@@ -84,8 +84,8 @@ function AutoBackup($delayed = false, $force = false) {
 	$backupMarkerFile	= root."cache/last_backup_marker.tmp";
 
 	// Load `Last Backup Date` from $backupFlagFile
-	$last_backup	=	intval(@file_get_contents($backupFlagFile));
-	$time_now		=	time();
+	$last_backup	= intval(@file_get_contents($backupFlagFile));
+	$time_now		= time();
 
 	// Force backup if requested
 	if ($force) {
@@ -107,7 +107,7 @@ function AutoBackup($delayed = false, $force = false) {
 			$flagDoProcess = true;
 		} else {
 			// Marker already exists, check creation time
-			$markerTime	=	intval(@file_get_contents($backupMarkerFile));
+			$markerTime	= intval(@file_get_contents($backupMarkerFile));
 
 			// TTL for marker is 5 min
 			if ($time_now > ($markerTime + 180)) {
@@ -130,7 +130,7 @@ function AutoBackup($delayed = false, $force = false) {
 		// Try to open temp file for writing
 		$fx = is_file($backupFlagFile)?@fopen($backupFlagFile,"r+"):@fopen($backupFlagFile,"w+");
 		if ($fx) {
-			$filename	=	root."backups/backup_".date("Y_m_d_H_i", $time_now).".gz";
+			$filename	= root."backups/backup_".date("Y_m_d_H_i", $time_now).".gz";
 
  	// Load library
 	 require_once(root.'/includes/inc/lib_admin.php');
@@ -184,10 +184,10 @@ function InsertSmilies($insert_location, $break_location = false, $area = false)
 
 function phphighlight($content = '') {
 
-	$f	=	array('<br>', '<br />', '<p>', '&lt;', '&gt;', '&amp;', '&#124;', '&quot;', '&#036;', '&#092;', '&#039;','&nbsp;', '\"');
-	$r	=	array("\n", "\n", "\n", '<', '>', '&', '\|', '"', '$', '', '\'', '', '"');
-	$content	=	str_replace($f, $r, $content);
-	$content	=	highlight_string($content, true);
+	$f	= array('<br>', '<br />', '<p>', '&lt;', '&gt;', '&amp;', '&#124;', '&quot;', '&#036;', '&#092;', '&#039;','&nbsp;', '\"');
+	$r	= array("\n", "\n", "\n", '<', '>', '&', '\|', '"', '$', '', '\'', '', '"');
+	$content	= str_replace($f, $r, $content);
+	$content	= highlight_string($content, true);
 
 	return $content;
 }
@@ -227,10 +227,10 @@ function BBCodes($area = false) {
 }
 
 function Padeg($n, $s) {
-	$n	=	abs($n);
-	$a	=	explode(',', $s);
-	$l1	=	$n - ((int)($n / 10)) * 10;
-	$l2	=	$n - ((int)($n / 100)) * 100;
+	$n	= abs($n);
+	$a	= explode(',', $s);
+	$l1	= $n - ((int)($n / 10)) * 10;
+	$l2	= $n - ((int)($n / 100)) * 100;
 
 	if ("11" <= $l2 && $l2 <= "14") {
 		$e = $a[2];
@@ -243,7 +243,7 @@ function Padeg($n, $s) {
 			$e = $a[1];
 		}
 
-		if (("5" <= $l1 && $l1 <= "9") || $l1 == "0") {
+		if (("5" <= $l1 && $l1 <= "9") or $l1 == "0") {
 			$e=$a[2];
 		}
 	}
@@ -351,11 +351,11 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
 	// Select delivery transport
 	switch ($config['mail_mode']) {
 		default:
-		case 'mail':		$mail->isMail();
+		case 'mail': $mail->isMail();
 							break;
 		case 'sendmail':	$mail->isSendmail();
 							break;
-		case 'smtp':		if (!$config['mail']['smtp']['host'] || !$config['mail']['smtp']['port']) {
+		case 'smtp': if (!$config['mail']['smtp']['host'] or !$config['mail']['smtp']['port']) {
 								$mail->isMail();
 								break;
 							}
@@ -462,7 +462,7 @@ function DirSize($directory) {
 
 	if ($dir = opendir($directory)) {
 		while (($dirfile = readdir($dir)) !== false) {
-			if (is_link($directory . '/' . $dirfile) || $dirfile == '.' || $dirfile == '..') {
+			if (is_link($directory . '/' . $dirfile) or $dirfile == '.' or $dirfile == '..') {
 				continue;
 			}
 			if (is_file($directory . '/' . $dirfile)) {
@@ -510,7 +510,7 @@ function directoryWalk($dir, $blackmask = null, $whitemask = null, $returnFiles 
 		$sd = join("/", $path );
 		$wsd = join("/", $wpath);
 		while (($dfile[$level] = readdir($od[$level])) !== false) {
-			if (is_link($sd . '/' . $dfile[$level]) || $dfile[$level] == '.' || $dfile[$level] == '..')
+			if (is_link($sd . '/' . $dfile[$level]) or $dfile[$level] == '.' or $dfile[$level] == '..')
 				continue;
 
 			if (is_file($sd . '/' . $dfile[$level])) {
@@ -567,7 +567,7 @@ function makeCategoryList($params = array()){
 	$name = array_key_exists('name', $params)?$params['name']:'category';
 
 	$out = '';
-	if (!isset($params['checkarea']) || !$params['checkarea']) {
+	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (empty($params['noHeader'])) {
 			$out = "<select name=\"$name\" id=\"catmenu\"".
 				((isset($params['style']) && ($params['style'] != ''))?' style="'.$params['style'].'"':'').
@@ -606,7 +606,7 @@ function makeCategoryList($params = array()){
 			$optList []= array('k' => ((isset($params['nameval']) && $params['nameval'])?$v['name']:$v['id']), 'v' => str_repeat('&#8212; ', $v['poslevel']).$v['name']);
 		}
 	}
-	if (!isset($params['checkarea']) || !$params['checkarea']) {
+	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (empty($params['noHeader'])) {
 			$out.="</select>";
 		}
@@ -655,7 +655,7 @@ function ListFiles($path, $ext, $showExt = 0, $silentError = 0, $returnNullOnErr
 
 	while (($file = readdir($handle)) !== false) {
 		// Skip reserved words
-		if (($file == '.') || ($file == '..')) continue;
+		if (($file == '.') or ($file == '..')) continue;
 
 		// Check file against all extensions
 		foreach ($ext as $e) {
@@ -871,7 +871,7 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 
 	// Determine working mode - old or new
 	// If template 'news.categories' exists - use `new way`, else - old
-	if (file_exists(tpl_site.'news.categories.tpl') || (isset($flags['returnData']) && $flags['returnData'])) {
+	if (file_exists(tpl_site.'news.categories.tpl') or (isset($flags['returnData']) && $flags['returnData'])) {
 
 		$tVars = array();
 		$tEntries = array();
@@ -935,7 +935,7 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 		// Update `hasChildren` and `closeLevel_X` flags for items
 		for ($i = 0; $i < count($tEntries); $i++) {
 			$tEntries[$i]['flags']['hasChildren'] = true;
-			if (($i == (count($tEntries)-1)) || ($tEntries[$i]['level'] >= $tEntries[$i+1]['level'])) {
+			if (($i == (count($tEntries)-1)) or ($tEntries[$i]['level'] >= $tEntries[$i+1]['level'])) {
 				// Mark that this is last item in this level
 				$tEntries[$i]['flags']['hasChildren'] = false;
 
@@ -1244,7 +1244,7 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 	if (isset($regenShortNews['mode']) && ($regenShortNews['mode'] != '')) {
 		if ((($regenShortNews['mode'] == 'force')||(trim($short) == ''))&&(trim($full) != '')) {
 			// REGEN
-			if (!isset($regenShortNews['len']) || (intval($regenShortNews['len']) < 0)) { $regenShortNews['len'] = 50; }
+			if (!isset($regenShortNews['len']) or (intval($regenShortNews['len']) < 0)) { $regenShortNews['len'] = 50; }
 			if (!isset($regenShortNews['finisher'])) { $regenShortNews['finisher'] = '&nbsp;...'; }
 			$short = $parse -> truncateHTML($full, $regenShortNews['len'], $regenShortNews['finisher']);
 		}
@@ -1261,11 +1261,11 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 	// Activities for short mode
 	if (!$fullMode) {
 		// Make link for full news
-		$tvars['vars']['[full-link]']	=	"<a href=\"".$nlink."\">";
-		$tvars['vars']['[/full-link]']	=	"</a>";
+		$tvars['vars']['[full-link]']	= "<a href=\"".$nlink."\">";
+		$tvars['vars']['[/full-link]']	= "</a>";
 
-		$tvars['vars']['[link]']	=	"<a href=\"".$nlink."\">";
-		$tvars['vars']['[/link]']	=	"</a>";
+		$tvars['vars']['[link]']	= "<a href=\"".$nlink."\">";
+		$tvars['vars']['[/link]']	= "</a>";
 
 		$tvars['vars']['full-link']	= $nlink;
 
@@ -1291,10 +1291,10 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 		$tvars['regx']["#\[link\](.*?)\[/link\]#si"] = '$1';
 	}
 
-	$tvars['vars']['pinned']					=	($row['pinned']) ? "news_pinned" : "";
+	$tvars['vars']['pinned']					= ($row['pinned']) ? "news_pinned" : "";
 
-	$tvars['vars']['category']			=	@GetCategories($row['catid']);
-	$tvars['vars']['masterCategory']	=	@GetCategories($row['catid'], false, true);
+	$tvars['vars']['category']			= @GetCategories($row['catid']);
+	$tvars['vars']['masterCategory']	= @GetCategories($row['catid'], false, true);
 
 	// [TWIG] news.categories.*
 	$tCList		= makeCategoryInfo($row['catid']);
@@ -1309,11 +1309,11 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 	$tvars['vars']['news']['categories']['text']	= join(", ", $tCTextList);
 
 
-	$tvars['vars']['[print-link]']		=	"<a href=\"".newsGenerateLink($row, true, $page)."\">";
-	$tvars['vars']['print-link']		=	newsGenerateLink($row, true, $page);
-	$tvars['vars']['print_link']		=	newsGenerateLink($row, true, $page);
-	$tvars['vars']['[/print-link]']		=	"</a>";
-	$tvars['vars']['news_link']			=	$nlink;
+	$tvars['vars']['[print-link]']		= "<a href=\"".newsGenerateLink($row, true, $page)."\">";
+	$tvars['vars']['print-link']		= newsGenerateLink($row, true, $page);
+	$tvars['vars']['print_link']		= newsGenerateLink($row, true, $page);
+	$tvars['vars']['[/print-link]']		= "</a>";
+	$tvars['vars']['news_link']			= $nlink;
 
 	// [TWIG] news.url
 	$tvars['vars']['news']['url'] = array(
@@ -1324,9 +1324,9 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 	// [TWIG] news.flags.isPinned
 	$tvars['vars']['news']['flags']['isPinned']	= ($row['pinned'])?true:false;
 
-	$tvars['vars']['news-id']	=	$row['id'];
-	$tvars['vars']['news_id']	=	$row['id'];
-	$tvars['vars']['php-self']	=	$PHP_SELF;
+	$tvars['vars']['news-id']	= $row['id'];
+	$tvars['vars']['news_id']	= $row['id'];
+	$tvars['vars']['php-self']	= $PHP_SELF;
 
 	$tvars['vars']['date'] = Lang::retDate(timestamp, $row['postdate']);
 	$tvars['vars']['views'] = $row['views'];
@@ -1378,8 +1378,8 @@ function GetMetatags() {
 	if (!$config['meta'])
 		return;
 
-	$meta['description']	=	$config['description'];
-	$meta['keywords']		=	$config['keywords'];
+	$meta['description']	= $config['description'];
+	$meta['keywords']		= $config['keywords'];
 
 	if (isset($SYSTEM_FLAGS['meta']['description']) && ($SYSTEM_FLAGS['meta']['description'] != ''))
 		$meta['description'] = $SYSTEM_FLAGS['meta']['description'];
@@ -2233,7 +2233,7 @@ function twigIsCategory($list) {
 
 	// Return if user is not reading any news
 	if ($CurrentHandler['pluginName'] != 'news')													return false;
-	if (($CurrentHandler['handlerName'] == 'news') || ($CurrentHandler['handlerName'] == 'print'))	return false;
+	if (($CurrentHandler['handlerName'] == 'news') or ($CurrentHandler['handlerName'] == 'print'))	return false;
 
 	// Return false if we're not in category now
 	if (!isset($currentCategory)) {
@@ -2314,7 +2314,7 @@ function twigIsNews($rules) {
 			// -- CATEGORY (master or any)
 			case 'mastercat':
 			case 'cat':
-				if ((!isset($SYSTEM_FLAGS['news']['db.categories'])) || ($SYSTEM_FLAGS['news']['db.categories'] == ''))
+				if ((!isset($SYSTEM_FLAGS['news']['db.categories'])) or ($SYSTEM_FLAGS['news']['db.categories'] == ''))
 					continue;
 
 				// List of categories from news
@@ -2345,7 +2345,7 @@ function twigIsPerm($rules) {
 }
 
 function twigIsSet($context, $val) {
-	//print "call TWIG::isSet(".var_export($context, true)." || ".var_export($val, true).");<br/>";
+	//print "call TWIG::isSet(".var_export($context, true)." or ".var_export($val, true).");<br/>";
 	//print "call TWIG::isSet(".var_export($val, true).");<br/>";
 	if ((!isset($val))||(is_array($val) && (count($val) == 0)))
 		return false;
@@ -2614,7 +2614,7 @@ function jsonFormatter($json) {
 
 			// If this character is the end of an element,
 			// output a new line and indent the next line.
-		} else if (($char == '}' || $char == ']') && $outOfQuotes) {
+		} else if (($char == '}' or $char == ']') && $outOfQuotes) {
 			$result .= $newLine;
 			$pos--;
 			for ($j = 0; $j < $pos; $j++) {
@@ -2627,9 +2627,9 @@ function jsonFormatter($json) {
 
 		// If the last character was the beginning of an element,
 		// output a new line and indent the next line.
-		if (($char == ',' || $char == '{' || $char == '[') && $outOfQuotes) {
+		if (($char == ',' or $char == '{' or $char == '[') && $outOfQuotes) {
 			$result .= $newLine;
-			if ($char == '{' || $char == '[') {
+			if ($char == '{' or $char == '[') {
 				$pos++;
 			}
 
@@ -2703,7 +2703,7 @@ function ngCollectTrace($style = 0) {
  * @return string
  */
 function dd($obj) {
- if (is_array($obj) || is_object($obj)) {
+ if (is_array($obj) or is_object($obj)) {
  $obj = print_r($obj, true);
  }
 

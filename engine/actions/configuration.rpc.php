@@ -25,7 +25,7 @@ function admConfigurationTestDB($params) {
 		return array('status' => 0, 'errorCode' => 1, 'errorText' => 'Permission denied');
 	}
 
-	if (!is_array($params) || !isset($params['dbhost']) || !isset($params['dbname']) || !isset($params['dbpasswd']) || !isset($params['dbname'])) {
+	if (!is_array($params) or !isset($params['dbhost']) or !isset($params['dbname']) or !isset($params['dbpasswd']) or !isset($params['dbname'])) {
 		return array('status' => 0, 'errorCode' => 2, 'errorText' => 'Wrong params type');
 	}
 
@@ -56,7 +56,7 @@ function admConfigurationTestMemcached($params) {
 		return array('status' => 0, 'errorCode' => 1, 'errorText' => 'Permission denied');
 	}
 
-	if (!is_array($params) || !isset($params['ip']) || !isset($params['port']) || !isset($params['prefix'])) {
+	if (!is_array($params) or !isset($params['ip']) or !isset($params['port']) or !isset($params['prefix'])) {
 		return array('status' => 0, 'errorCode' => 2, 'errorText' => 'Wrong params type');
 	}
 
@@ -65,7 +65,7 @@ function admConfigurationTestMemcached($params) {
 	}
 
 	// Check if DB connection params are correct
-	if (!extension_loaded('memcached') || !class_exists('Memcached')) {
+	if (!extension_loaded('memcached') or !class_exists('Memcached')) {
 		return array('status' => 0, 'errorCode' => 4, 'errorText' => __('memcached_noextension'));
 	}
 
@@ -104,7 +104,7 @@ function admConfigurationTestEMail($params) {
 	}
 
 	// Check if requred params are sent
-	if (!is_array($params['from']) || !is_array($params['to']) || !$params['from']['email'] || !$params['to']['email']) {
+	if (!is_array($params['from']) or !is_array($params['to']) or !$params['from']['email'] or !$params['to']['email']) {
 		return array('status' => 0, 'errorCode' => 1, 'errorText' => 'FROM/TO e-mail address is not specified');
 	}
 
@@ -136,7 +136,7 @@ function admConfigurationTestEMail($params) {
 						$sendResult = $mail->send();
 						break;
 		case 'smtp':
-						if (!$params['smtp']['host'] || !$params['smtp']['port']) {
+						if (!$params['smtp']['host'] or !$params['smtp']['port']) {
 							return array('status' => 0, 'errorCode' => 1, 'errorText' => 'SMTP connection parameters are not specified');
 						}
 						$mail->isSMTP();

@@ -230,7 +230,7 @@ class auth_basic extends CoreAuthPlugin {
 
 		}
 
-	 	if (preg_match('/[&<>\\"'."'".']/', $values['login']) || $csError) {
+	 	if (preg_match('/[&<>\\"'."'".']/', $values['login']) or $csError) {
 	 		// Запрещенные HTML символы
 	 		$msg = __('auth_login_html');
 	 		return 0;
@@ -249,7 +249,7 @@ class auth_basic extends CoreAuthPlugin {
 		 	}
 		}
 
-		if ((strlen($values['email']) > 70) || (!preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $values['email']))) {
+		if ((strlen($values['email']) > 70) or (!preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $values['email']))) {
 			// Неверный email
 			$msg = __('auth_email_wrong');
 			return 0;
@@ -286,7 +286,7 @@ class auth_basic extends CoreAuthPlugin {
 			case 0:
 				$newpassword = MakeRandomPassword();
 				$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '')");
-				$userid			=	$mysql->result('select LAST_INSERT_ID()');
+				$userid			= $mysql->result('select LAST_INSERT_ID()');
 				msg(array(
 					'title' => __('msgo_registered'),
 					'message' => str_replace(array('{login}', '{password}'), array($values['login'], $newpassword), __('auth_reg.success0'))
@@ -297,7 +297,7 @@ class auth_basic extends CoreAuthPlugin {
 			case 1:
 				$newpassword = MakeRandomPassword();
 				$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '')");
-				$userid			=	$mysql->result('select LAST_INSERT_ID()');
+				$userid			= $mysql->result('select LAST_INSERT_ID()');
 
 				$tvars['vars'] = array( 'login' => $values['login'],
 										'home' => home,
@@ -327,15 +327,15 @@ class auth_basic extends CoreAuthPlugin {
 			// 2 - С подтверждением [автогенерация пароля, пароль отправляется на email адрес и не показывается в админке]
 			case 2:
  // New password
-				$newpassword	=	MakeRandomPassword();
+				$newpassword	= MakeRandomPassword();
 
  // Random activation code
  $actcode = MakeRandomPassword();
 
  // Insert into DB
 				$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, activation) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '', ".db_squote($actcode).")");
-				$userid			=	$mysql->result('select LAST_INSERT_ID()');
-				$link			=	generatePluginLink('core', 'activation', array('userid' => $userid, 'code' => $actcode), array(), false, true);
+				$userid			= $mysql->result('select LAST_INSERT_ID()');
+				$link			= generatePluginLink('core', 'activation', array('userid' => $userid, 'code' => $actcode), array(), false, true);
 
 				$tvars['vars'] = array( 'login' => $values['login'],
 										'home' => home,
@@ -365,7 +365,7 @@ class auth_basic extends CoreAuthPlugin {
 			// 3 - Ручная с нотификацией [ручная генерация пароля, email нотификация]
 			case 3:
 				$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($values['password'])).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '')");
-				$userid			=	$mysql->result('select LAST_INSERT_ID()');
+				$userid			= $mysql->result('select LAST_INSERT_ID()');
 
 				$tvars['vars'] = array( 'login' => $values['login'],
 										'home' => home,
@@ -393,10 +393,10 @@ class auth_basic extends CoreAuthPlugin {
 
 			// 4 - Ручная с подтверждением [ручная генерация пароля, подтверждение email адреса]
 			case 4:
-				$actcode		=	MakeRandomPassword();
+				$actcode		= MakeRandomPassword();
 				$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, activation) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($values['password'])).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '', ".db_squote($actcode).")");
-				$userid			=	$mysql->result('select LAST_INSERT_ID()');
-				$link			=	generatePluginLink('core', 'activation', array('userid' => $userid, 'code' => $actcode), array(), false, true);
+				$userid			= $mysql->result('select LAST_INSERT_ID()');
+				$link			= generatePluginLink('core', 'activation', array('userid' => $userid, 'code' => $actcode), array(), false, true);
 
 				$tvars['vars'] = array( 'login' => $values['login'],
 										'home' => home,
@@ -570,7 +570,7 @@ class auth_basic extends CoreAuthPlugin {
 
 			}
 
-			if (preg_match('/[&<>\\"'."'".']/', $params['login']) || $csError) {
+			if (preg_match('/[&<>\\"'."'".']/', $params['login']) or $csError) {
 				// Incorrect chars
 				$results['login'] = 3;
 				goto endLoginCheck;

@@ -55,7 +55,7 @@ class cronManager {
 			if (!preg_match("#^(\d+)$#", $v, $m))
 				return false;
 
-			if (($m[1] < $min) || ($m[1] > $max))
+			if (($m[1] < $min) or ($m[1] > $max))
 				return false;
 		}
 		return true;
@@ -73,9 +73,9 @@ class cronManager {
 	// Register new CRON task
 	function registerTask($plugin, $handler, $min ='*', $hour ='*', $day ='*', $month ='*', $dow ='*') {
 		// Проверяем параметры
-		if ((!$this->checkList($min,0,59)) || (!$this->checkList($hour, 0, 23)) ||
-			(!$this->checkList($day, 0, 31)) || (!$this->checkList($month, 0, 12)) ||
-			(!$this->checkList($dow, 0, 6)) || (!$plugin)) {
+		if ((!$this->checkList($min,0,59)) or (!$this->checkList($hour, 0, 23)) ||
+			(!$this->checkList($day, 0, 31)) or (!$this->checkList($month, 0, 12)) ||
+			(!$this->checkList($dow, 0, 6)) or (!$plugin)) {
 			// Неверные значения параметров
 			return 0;
 		}
@@ -98,7 +98,7 @@ class cronManager {
 
 		$ok = 0;
 		foreach ($this->config as $k => $v) {
-			if (((!$min) && ($v['plugin'] == $plugin) && ((!$handler) || ($v['handler'] == $handler))) ||
+			if (((!$min) && ($v['plugin'] == $plugin) && ((!$handler) or ($v['handler'] == $handler))) ||
 				(($v['min'] == $min) && ($v['hour'] == $hour) && ($v['day'] == $day) && ($v['month'] == $month) &&
 			($v['dow'] == $DOW) && ($v['plugin'] == $plugin) && ($v['handler'] == $handler))) {
 				array_splice($this->config, $k, 1);

@@ -184,7 +184,7 @@ function makeVARList($params = array()){
 	$name = array_key_exists('name', $params)?$params['name']:'category';
 
 	$out = '';
-	if (!isset($params['checkarea']) || !$params['checkarea']) {
+	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (!$params['noHeader']) {
 			$out = "<select name=\"$name\" id=\"plugmenu\"".
 				((isset($params['style']) && ($params['style'] != ''))?' style="'.$params['style'].'"':'').
@@ -222,7 +222,7 @@ function makeVARList($params = array()){
 			$optList []= array('k' => ((isset($params['nameval']) && $params['nameval'])?$v[$obj]:$v[$obj]), 'v' => str_repeat('&#8212; ', $v['poslevel']).$v[$obj]);
 		}
 	}
-	if (!isset($params['checkarea']) || !$params['checkarea']) {
+	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (!$params['noHeader']) {
 			$out.="</select>";
 		}

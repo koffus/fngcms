@@ -1043,7 +1043,7 @@ class SMTP
  if ($name == 'HELO') {
  return $this->server_caps['EHLO'];
  }
- if ($name == 'EHLO' || array_key_exists('EHLO', $this->server_caps)) {
+ if ($name == 'EHLO' or array_key_exists('EHLO', $this->server_caps)) {
  return false;
  }
  $this->setError('HELO handshake was used. Client knows nothing about server extensions');

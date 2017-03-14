@@ -90,8 +90,8 @@ class CommentsNewsFilter extends NewsFilter {
 		}
 
 		// Fill variables within news template
-		$tvars['vars']['comments-num']	=	$SQLnews['com'];
-		$tvars['vars']['comnum']	=	$SQLnews['com'];
+		$tvars['vars']['comments-num']	= $SQLnews['com'];
+		$tvars['vars']['comnum']	= $SQLnews['com'];
 		$tvars['regx']['[\[comheader\](.*)\[/comheader\]]'] = ($SQLnews['com'])?'$1':'';
 
 		// Blocks [comments] .. [/comments] and [nocomments] .. [/nocomments]
@@ -165,7 +165,7 @@ class CommentsNewsFilter extends NewsFilter {
 		}
 
 		// Show form for adding comments
-		if ($allowCom && (!pluginGetVariable('comments', 'regonly') || is_array($userROW))) {
+		if ($allowCom && (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
 			$tcvars['vars']['form'] = comments_showform($newsID, $callingCommentsParams);
 			$tcvars['regx']['#\[regonly\](.*?)\[\/regonly\]#is'] = '';
 			$tcvars['regx']['#\[commforbidden\](.*?)\[\/commforbidden\]#is'] = '';
@@ -331,7 +331,7 @@ function plugin_comments_show(){
 	// Try to fetch news
 	$newsID = intval($_REQUEST['news_id']);
 
-	if (!$newsID || !is_array($newsRow = $mysql->record("select * from ".prefix."_news where id = ".$newsID))) {
+	if (!$newsID or !is_array($newsRow = $mysql->record("select * from ".prefix."_news where id = ".$newsID))) {
 		error404();
 		return;
 	}
@@ -401,7 +401,7 @@ function plugin_comments_show(){
  $allowCom = $newsRow['allow_com'];
 
 	// Show form for adding comments
-	if ($newsRow['allow_com'] && (!pluginGetVariable('comments', 'regonly') || is_array($userROW))) {
+	if ($newsRow['allow_com'] && (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
 		$tcvars['vars']['form'] = comments_showform($newsID, $callingCommentsParams);
 		$tcvars['regx']['#\[regonly\](.*?)\[\/regonly\]#is'] = '';
 		$tcvars['regx']['#\[commforbidden\](.*?)\[\/commforbidden\]#is'] = '';
@@ -430,7 +430,7 @@ function plugin_comments_delete(){
 	$params = array();
 
 	// First: check if user have enough permissions
-	if (!is_array($userROW) || ($userROW['status'] > 2) || ($_GET['uT'] != genUToken(intval($_REQUEST['id'])))) {
+	if (!is_array($userROW) or ($userROW['status'] > 2) or ($_GET['uT'] != genUToken(intval($_REQUEST['id'])))) {
 		// Not allowed
 		$output['status']	= 0;
 		$output['data']		= __('perm.denied');

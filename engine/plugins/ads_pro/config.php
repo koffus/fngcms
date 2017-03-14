@@ -12,14 +12,14 @@ pluginsLoadConfig();
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 switch ($_REQUEST['action']) {
-	case 'list':		showlist();		break;
-	case 'add':			add();			break;
-	case 'edit':		add();			break;
+	case 'list': showlist();		break;
+	case 'add': 	add();			break;
+	case 'edit': add();			break;
 	case 'add_submit':	add_submit();	break;
 	case 'edit_submit':	add_submit();	break;
-	case 'move_up':		move('up');		break;
+	case 'move_up': move('up');		break;
 	case 'move_down':	move('down');	break;
-	case 'dell':		delete();		break;
+	case 'dell': delete();		break;
 	case 'main_submit':	main_submit();	break;
 	case 'clear_cash':	clear_cash();
 	default: main();
@@ -106,7 +106,7 @@ function showlist() {
 				$if_view = false;
 			if ($vv['end_view'] && $vv['end_view'] <= $t_time)
 				$if_view = false;
-			$pvars['online'] = ($if_view || $vv['state'] == 1) ? __('ads_pro:online_on') : __('ads_pro:online_off');
+			$pvars['online'] = ($if_view or $vv['state'] == 1) ? __('ads_pro:online_on') : __('ads_pro:online_off');
 			$pvars['state'] = $t_state[$vv['state']];
 			$pvars['type'] = $t_type[$vv['type']];
 
@@ -421,7 +421,7 @@ function clear_cash() {
 	if (($dir = get_plugcache_dir('ads_pro'))) {
 		if ($handle = opendir($dir)) {
 			while (false !== ($file = readdir($handle))) {
-				if ($file == "." || $file == "..")
+				if ($file == "." or $file == "..")
 					continue;
 				unlink ($dir.$file);
 			}

@@ -81,7 +81,7 @@ $query_list_092rc1_092 = array(
 );
 
 // Load plugin list
-$extras	=	pluginsGetList();
+$extras	= pluginsGetList();
 // Load lang files
 Lang::load('extra-config', 'admin');
 
@@ -184,12 +184,12 @@ if ($_REQUEST['update090_091']) {
 	}
 
 	// Сохраняем обновлённый конфиг-файл
-	$handler			=	fopen(confroot.'config.php', "w");
-	$save_config		=	"<?php\n";
-	$save_config		.=	'$config = ';
-	$save_config		.=	var_export($config, true);
-	$save_config		.=	";\n";
-	$save_config		.=	"?>";
+	$handler			= fopen(confroot.'config.php', "w");
+	$save_config		= "<?php\n";
+	$save_config		.= '$config = ';
+	$save_config		.= var_export($config, true);
+	$save_config		.= ";\n";
+	$save_config		.= "?>";
 	fwrite($handler, $save_config);
 	fclose($handler);
 

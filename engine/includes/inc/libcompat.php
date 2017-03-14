@@ -14,7 +14,7 @@ function compatRedirector() {
 	}
 	//print "<pre>".var_export($_SERVER, true)."</pre>";
 
-	if (preg_match('#^\/\?#', $uri, $null) || ($homePrefix && preg_match('#^\/'.$homePrefix.'\/\?#', $uri, $null))) {
+	if (preg_match('#^\/\?#', $uri, $null) or ($homePrefix && preg_match('#^\/'.$homePrefix.'\/\?#', $uri, $null))) {
 		// Наш клиент
 		//print "GET PARAMS:<br/>\n<pre>".var_export($_GET, true)."</pre>";
 		if (isset($_GET['action']) && ($_GET['action'] == 'static')) {

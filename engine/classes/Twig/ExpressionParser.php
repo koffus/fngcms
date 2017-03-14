@@ -244,7 +244,7 @@ class Twig_ExpressionParser
  // * a string -- 'a'
  // * a name, which is equivalent to a string -- a
  // * an expression, which must be enclosed in parentheses -- (1 + 2)
- if ($stream->test(Twig_Token::STRING_TYPE) || $stream->test(Twig_Token::NAME_TYPE) || $stream->test(Twig_Token::NUMBER_TYPE)) {
+ if ($stream->test(Twig_Token::STRING_TYPE) or $stream->test(Twig_Token::NAME_TYPE) or $stream->test(Twig_Token::NUMBER_TYPE)) {
  $token = $stream->next();
  $key = new Twig_Node_Expression_Constant($token->getValue(), $token->getLine());
  } elseif ($stream->test(Twig_Token::PUNCTUATION_TYPE, '(')) {
@@ -270,7 +270,7 @@ class Twig_ExpressionParser
  while (true) {
  $token = $this->parser->getCurrentToken();
  if ($token->getType() == Twig_Token::PUNCTUATION_TYPE) {
- if ('.' == $token->getValue() || '[' == $token->getValue()) {
+ if ('.' == $token->getValue() or '[' == $token->getValue()) {
  $node = $this->parseSubscriptExpression($node);
  } elseif ('|' == $token->getValue()) {
  $node = $this->parseFilterExpression($node);

@@ -85,7 +85,7 @@ function saveForm() {
 	}
 
 	// Сохраняем изменения
-	$flags =	($_REQUEST['jcheck']?'1':'0').
+	$flags = ($_REQUEST['jcheck']?'1':'0').
 				($_REQUEST['captcha']?'1':'0').
 				($_REQUEST['html']?'1':'0').
 				(((intval($_REQUEST['link_news']) >= 0) && (intval($_REQUEST['link_news']) <= 2))?intval($_REQUEST['link_news']):0).
@@ -349,7 +349,7 @@ function editFormRow(){
 		}
 
  // Check if row id is not valid
- if ( is_numeric(substr($fRowId, 0, 1)) || (!preg_match("/^[a-zA-Z\d]+$/", $fRowId)) || (strlen($fRowId) < 3) ) {
+ if ( is_numeric(substr($fRowId, 0, 1)) or (!preg_match("/^[a-zA-Z\d]+$/", $fRowId)) or (strlen($fRowId) < 3) ) {
  $tVars['content'] = "Необходимо соблюдать правила формирования ID!";
  break;
  }
@@ -501,9 +501,9 @@ function doUpdate() {
 	// Now make an action
 
 	switch ($_REQUEST['subaction']) {
-		case 'del':		unset($fData[$fRowId]);
+		case 'del': unset($fData[$fRowId]);
 						break;
-		case 'up':		array_key_move($fData, $fRowId, -1);
+		case 'up': array_key_move($fData, $fRowId, -1);
 						break;
 		case 'down':	array_key_move($fData, $fRowId, 1);
 						break;

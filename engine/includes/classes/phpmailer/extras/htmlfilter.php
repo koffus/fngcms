@@ -130,7 +130,7 @@ function tln_findnxreg($body, $offset, $reg)
  $retarr = array();
  $preg_rule = '%^(.*?)(' . $reg . ')%s';
  preg_match($preg_rule, substr($body, $offset), $matches);
- if (!isset($matches[0]) || !$matches[0]) {
+ if (!isset($matches[0]) or !$matches[0]) {
  $retarr = false;
  } else {
  $retarr[0] = $offset + strlen($matches[1]);
@@ -474,9 +474,9 @@ function tln_defang(&$attvalue)
  }
  do {
  $m = false;
- $m = $m || tln_deent($attvalue, '/\&#0*(\d+);*/s');
- $m = $m || tln_deent($attvalue, '/\&#x0*((\d|[a-f])+);*/si', true);
- $m = $m || tln_deent($attvalue, '/\\\\(\d+)/s', true);
+ $m = $m or tln_deent($attvalue, '/\&#0*(\d+);*/s');
+ $m = $m or tln_deent($attvalue, '/\&#x0*((\d|[a-f])+);*/si', true);
+ $m = $m or tln_deent($attvalue, '/\\\\(\d+)/s', true);
  } while ($m == true);
  $attvalue = stripslashes($attvalue);
 }
@@ -655,7 +655,7 @@ function tln_fixurl($attname, &$attvalue, $trans_image_path, $block_external_ima
  break;
  }
  } else {
- if (!isset($aUrl['path']) || $aUrl['path'] != $trans_image_path) {
+ if (!isset($aUrl['path']) or $aUrl['path'] != $trans_image_path) {
  $$attvalue = $sQuote . $trans_image_path . $sQuote;
  }
  }

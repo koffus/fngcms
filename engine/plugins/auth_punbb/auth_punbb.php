@@ -289,7 +289,7 @@ class auth_punbb {
 		 	}
 		}
 
-		if ((strlen($values['email']) > 70) || (!preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $values['email']))) {
+		if ((strlen($values['email']) > 70) or (!preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $values['email']))) {
 			// Wrong email format
 			$msg = __('auth_email_wrong');
 			return 0;
@@ -349,16 +349,16 @@ class auth_punbb {
 			msg(array('title' => __('msgo_registered'), 'message' => __('msgo_info2')));
 		}
 		if ($config['register_type'] == '2') {
-			$newpassword		=	MakeRandomPassword();
-			$actcode		=	MakeRandomPassword();
+			$newpassword		= MakeRandomPassword();
+			$actcode		= MakeRandomPassword();
 
 			$punbb_password = $this->punBB_gen_password($newpassword);
 			$this->auth_db->query("insert into ".$dbprefix."users (username, group_id, password, email, language, style, registered, registration_ip) values (".db_squote($values['login']).", ".intval(pluginGetVariable('auth_punbb', 'initial_group_id')).", ".db_squote($punbb_password).", ".db_squote($values['email']).", ".db_squote(pluginGetVariable('auth_punbb', 'reg_lang')).", ".db_squote(pluginGetVariable('auth_punbb', 'reg_style')).", unix_timestamp(now()), '$ip')");
 			$punbb_userid = $this->auth_db->record('select LAST_INSERT_ID() as id');
 
 			$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, activation, punbb_userid) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", '4', '".$add_time."', '', '".$actcode."', ".db_squote($punbb_userid['id']).")");
-			$userid			=	$mysql->record('select LAST_INSERT_ID() as id');
-			$actlink		=	($config['mod_rewrite'] == "1") ? '<a href="'.home.'/activation/'.$userid['id'].'/'.$actcode.'">'.home.'/activation/'.$userid['id'].'/'.$actcode.'</a>' : '<a href="'.home.'/?action=activation&userid='.$userid['id'].'&code='.$actcode.'">'.home.'/?action=activation&userid='.$userid['id'].'&code='.$actcode.'</a>';
+			$userid			= $mysql->record('select LAST_INSERT_ID() as id');
+			$actlink		= ($config['mod_rewrite'] == "1") ? '<a href="'.home.'/activation/'.$userid['id'].'/'.$actcode.'">'.home.'/activation/'.$userid['id'].'/'.$actcode.'</a>' : '<a href="'.home.'/?action=activation&userid='.$userid['id'].'&code='.$actcode.'">'.home.'/?action=activation&userid='.$userid['id'].'&code='.$actcode.'</a>';
 			zzMail($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $values['login'], $newpassword).sprintf(__('activate'), $actlink), 'html');
 			msg(array('title' => __('msgo_registered'), 'message' => __('msgo_info3')));
 		}

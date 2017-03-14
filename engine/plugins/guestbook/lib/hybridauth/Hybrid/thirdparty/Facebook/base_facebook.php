@@ -738,7 +738,7 @@ abstract class BaseFacebook
  * code could not be determined.
  */
  protected function getCode() {
- if (!isset($_REQUEST['code']) || !isset($_REQUEST['state']) || $this->state === null) {
+ if (!isset($_REQUEST['code']) or !isset($_REQUEST['state']) or $this->state === null) {
  return false;
  }
  if ($this->state === $_REQUEST['state']) {
@@ -1012,8 +1012,8 @@ abstract class BaseFacebook
  $result = curl_exec($ch);
 
  $errno = curl_errno($ch);
- // CURLE_SSL_CACERT || CURLE_SSL_CACERT_BADFILE
- if ($errno == 60 || $errno == 77) {
+ // CURLE_SSL_CACERT or CURLE_SSL_CACERT_BADFILE
+ if ($errno == 60 or $errno == 77) {
  self::errorLog('Invalid or no certificate authority found, '.
  'using bundled information');
  curl_setopt($ch, CURLOPT_CAINFO,
@@ -1064,7 +1064,7 @@ abstract class BaseFacebook
  */
  protected function parseSignedRequest($signed_request) {
 
- if (!$signed_request || strpos($signed_request, '.') === false) {
+ if (!$signed_request or strpos($signed_request, '.') === false) {
  self::errorLog('Signed request was invalid!');
  return null;
  }
@@ -1076,7 +1076,7 @@ abstract class BaseFacebook
  $data = json_decode(self::base64UrlDecode($payload), true);
 
  if (!isset($data['algorithm'])
- || strtoupper($data['algorithm']) !== self::SIGNED_REQUEST_ALGORITHM
+ or strtoupper($data['algorithm']) !== self::SIGNED_REQUEST_ALGORITHM
  ) {
  self::errorLog(
  'Unknown algorithm. Expected ' . self::SIGNED_REQUEST_ALGORITHM);
@@ -1257,7 +1257,7 @@ abstract class BaseFacebook
  }
  /*apache + variants specific way of checking for https*/
  if (isset($_SERVER['HTTPS']) &&
- ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] == 1)) {
+ ($_SERVER['HTTPS'] === 'on' or $_SERVER['HTTPS'] == 1)) {
  return 'https';
  }
  /*nginx way of checking for https*/

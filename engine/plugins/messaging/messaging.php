@@ -8,10 +8,10 @@ function messaging($subject, $content) {
 
  Lang::loadPlugin('messaging', 'messaging', '', 'mes');
 
- if (!$subject || trim($subject) == "") {
+ if (!$subject or trim($subject) == "") {
  msg(array('type' => 'danger', 'message' => __('mes_msge_subject')));
  }
- elseif (!$content || trim($content) == "") {
+ elseif (!$content or trim($content) == "") {
  msg(array('type' => 'danger', 'message' => __('mes_msge_content')));
  }
  else {

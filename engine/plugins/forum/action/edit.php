@@ -43,8 +43,8 @@
 	$row_2 = $mysql->record($sql_2);
 	$edit_subject = ($id == $row_2['id'])?1:0;
 	
-	if(($edit_subject && (($userROW['id'] == $row['author_id'] && $FORUM_PS[$rows['fid']]['topic_modify_your']) || $FORUM_PS[$rows['fid']]['topic_modify'] || moder_perm($rows['fid'], 'topic_modify', $rows['moderators']))) ||
-		(!$edit_subject && (($userROW['id'] == $row['author_id'] && $FORUM_PS[$rows['fid']]['post_modify_your']) || $FORUM_PS[$rows['fid']]['post_modify'] || moder_perm($rows['fid'], 'post_modify', $rows['moderators'])))){
+	if(($edit_subject && (($userROW['id'] == $row['author_id'] && $FORUM_PS[$rows['fid']]['topic_modify_your']) or $FORUM_PS[$rows['fid']]['topic_modify'] or moder_perm($rows['fid'], 'topic_modify', $rows['moderators']))) ||
+		(!$edit_subject && (($userROW['id'] == $row['author_id'] && $FORUM_PS[$rows['fid']]['post_modify_your']) or $FORUM_PS[$rows['fid']]['post_modify'] or moder_perm($rows['fid'], 'post_modify', $rows['moderators'])))){
 	
 		$message = isset($_REQUEST['message'])?secureinput($_REQUEST['message']):'';
 		$subject = isset($_REQUEST['subject'])?secureinput($_REQUEST['subject']):'';

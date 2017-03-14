@@ -109,8 +109,8 @@ function lastcomments($mode = 0) {
 	$comm_num = 0;
 	$number			= intval(pluginGetVariable('lastcomments', $tpl_prefix.'number'));
 	$comm_length	= intval(pluginGetVariable('lastcomments', $tpl_prefix.'comm_length'));
-	if (($number < 1) || ($number > 50)) 		 			{ $number = $tpl_prefix? 30 : 10; }
-	if (($comm_length < 10) || ($comm_length > ($tpl_prefix? 500 : 100)))	{ $comm_length = $tpl_prefix? 500 : 50; }
+	if (($number < 1) or ($number > 50)) 		 			{ $number = $tpl_prefix? 30 : 10; }
+	if (($comm_length < 10) or ($comm_length > ($tpl_prefix? 500 : 100)))	{ $comm_length = $tpl_prefix? 500 : 50; }
 	if ($mode == 2) { $old_locale = setlocale(LC_TIME,0); setlocale(LC_TIME,'en_EN'); }
 
 	$query = "select c.*, u.avatar as users_avatar, u.id as uid, n.id as nid, n.title, n.alt_name, n.catid, n.postdate as npostdate from ".prefix."_comments c left join ".prefix."_news n on c.post=n.id left join ".uprefix."_users u on c.author_id = u.id where n.approve=1 order by c.id desc limit ".$number;

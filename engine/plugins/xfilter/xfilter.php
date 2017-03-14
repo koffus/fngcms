@@ -63,7 +63,7 @@ function xfilter($params) {
 						if (!$data['required']) $val .= '<option value="">'.__('sh_all').'</option>';
 						if (is_array($data['options']))
 								foreach ($data['options'] as $k => $v) {
-										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v) || ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
+										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v) or ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
 								}
 								$val .= '</select>';
 						break;

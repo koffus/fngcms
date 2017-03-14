@@ -145,7 +145,7 @@ function edit_field($id)
 
  $field = array();
 
- if (!empty($id) || isset($_REQUEST['id'])) {
+ if (!empty($id) or isset($_REQUEST['id'])) {
  $fid = (isset($_REQUEST['id'])) ? $_REQUEST['id'] : $id;
  if (!empty($fid)) {
  $result = $mysql->record('SELECT * FROM ' . prefix . '_guestbook_fields WHERE id = ' . db_squote($fid));
@@ -501,7 +501,7 @@ function edit_message($mid)
 
  $tpath = locatePluginTemplates(array('config/main', 'config/messages_edit'), 'guestbook', 1);
 
- if (!empty($mid) || isset($_REQUEST['id'])) {
+ if (!empty($mid) or isset($_REQUEST['id'])) {
  $id = (isset($mid)) ? intval($mid) : intval($_REQUEST['id']);
  }
 
@@ -520,7 +520,7 @@ function edit_message($mid)
  $message = str_replace(array("\r\n", "\r"), "\n", convert($_REQUEST['message']));
  $answer = str_replace(array("\r\n", "\r"), "\n", convert($_REQUEST['answer']));
 
- if (empty($author) || empty($message)) {
+ if (empty($author) or empty($message)) {
  $errors[] = __('gbconfig')['msge_field_required'];
  }
 

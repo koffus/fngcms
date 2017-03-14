@@ -22,17 +22,17 @@ pluginsLoadConfig();
 Lang::loadPlugin('simple_title_pro', 'config', '', '', '#');
 
 switch ($_REQUEST['action']) {
-	case 'list_cat':		list_cat();		break;
-	case 'list_static':		list_static();	break;
-	case 'list_news':		list_news();	break;
-	case 'send_title':		send_title();	break;
-	case 'clear_cache':		clear_cache();	break;
-	case 'about':			about();		break;
-	case 'license':			license();		break;
-	case 'del_cat':			del_cat();		list_cat();		break;
-	case 'del_static':		del_static();	list_static();	break;
-	case 'del_news':		del_news();		list_news(); 	break;
-	case 'del_news':		del_news();		list_news(); 	break;
+	case 'list_cat': list_cat();		break;
+	case 'list_static': list_static();	break;
+	case 'list_news': list_news();	break;
+	case 'send_title': send_title();	break;
+	case 'clear_cache': clear_cache();	break;
+	case 'about': 	about();		break;
+	case 'license': 	license();		break;
+	case 'del_cat': 	del_cat();		list_cat();		break;
+	case 'del_static': del_static();	list_static();	break;
+	case 'del_news': del_news();		list_news(); 	break;
+	case 'del_news': del_news();		list_news(); 	break;
 	default: main();
 }
 

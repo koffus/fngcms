@@ -165,7 +165,7 @@ class JoditFileBrowser {
 
  $dir = opendir($path);
  while ($file = readdir($dir)) {
- if ($file != '.' && $file != '..' && is_dir($path.$file) and (!$this->config->createThumb || $file !== $this->config->thumbFolderName) and !in_array($file, $this->config->excludeDirectoryNames)) {
+ if ($file != '.' && $file != '..' && is_dir($path.$file) and (!$this->config->createThumb or $file !== $this->config->thumbFolderName) and !in_array($file, $this->config->excludeDirectoryNames)) {
  $this->result->files[] = $file;
  }
  }

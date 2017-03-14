@@ -450,7 +450,7 @@ function doConfig_perm()
  $tvars['vars']['sql_version'] = '<font color="red">unknown</font>';
  $error = 1;
  } else {
- if (($SQL_VERSION[1] < 3) || (($SQL_VERSION[1] == 3) && ($SQL_VERSION[2] < 23))) {
+ if (($SQL_VERSION[1] < 3) or (($SQL_VERSION[1] == 3) && ($SQL_VERSION[2] < 23))) {
  $tvars['vars']['sql_version'] = '<font color="red">' . $SQL_VERSION[0] . '</font>';
  $error = 1;
  } else {
@@ -509,7 +509,7 @@ function doConfig_perm()
  $tvars['vars']['error_message'] .= '<div class="warningDiv">' . __('perm.warning') . '</div>';
  }
 
- $tvars['regx']["'\[error_button\](.*?)\[/error_button\]'si"] = ($error || $warning) ? '$1' : '';
+ $tvars['regx']["'\[error_button\](.*?)\[/error_button\]'si"] = ($error or $warning) ? '$1' : '';
 
  $myparams = array('action', 'stage');
 
@@ -538,7 +538,7 @@ function doConfig_plugins()
  $pluginsDir = root . 'plugins';
  if ($dRec = opendir($pluginsDir)) {
  while (($dName = readdir($dRec)) !== false) {
- if (($dName == '.') || ($dName == '..'))
+ if (($dName == '.') or ($dName == '..'))
  continue;
 
  if (is_dir($pluginsDir . '/' . $dName) && file_exists($vfn = $pluginsDir . '/' . $dName . '/version') && (filesize($vfn)) && ($vf = @fopen($vfn, 'r'))) {
@@ -623,7 +623,7 @@ function doConfig_templates()
  $tDir = $installDir . '/templates';
  if ($dRec = opendir($tDir)) {
  while (($dName = readdir($dRec)) !== false) {
- if (($dName == '.') || ($dName == '..'))
+ if (($dName == '.') or ($dName == '..'))
  continue;
 
  if (is_dir($tDir . '/' . $dName) && file_exists($vfn = $tDir . '/' . $dName . '/version') && (filesize($vfn)) && ($vf = @fopen($vfn, 'r'))) {

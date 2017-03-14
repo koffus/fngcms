@@ -125,37 +125,37 @@ class parse {
 			$content = str_replace($res[0], '<pre>'.str_replace(array('[', '<'), array('&#91;', '&lt;'), $res[1]).'</pre>', $content);
 		}
 
-		//$content	=	preg_replace("#\[code\](.+?)\[/code\]#is", "<pre>$1</pre>",$content);
+		//$content	= preg_replace("#\[code\](.+?)\[/code\]#is", "<pre>$1</pre>",$content);
 
-		$content	=	preg_replace("#\[quote\]\s*(.*?)\s*\[/quote\]#is", "<blockquote><b>".__('bb_quote')."</b><br />$1</blockquote>",$content);
-		$content	=	preg_replace("#\[quote=(.*?)\]\s*(.*?)\s*\[/quote\]#is","<blockquote><b>$1 ".__('bb_wrote')."</b><br />$2</blockquote>",$content);
+		$content	= preg_replace("#\[quote\]\s*(.*?)\s*\[/quote\]#is", "<blockquote><b>".__('bb_quote')."</b><br />$1</blockquote>",$content);
+		$content	= preg_replace("#\[quote=(.*?)\]\s*(.*?)\s*\[/quote\]#is","<blockquote><b>$1 ".__('bb_wrote')."</b><br />$2</blockquote>",$content);
 
-		$content	=	preg_replace("#\[acronym\]\s*(.*?)\s*\[/acronym\]#is", "<acronym>$1</acronym>",$content);
-		$content	=	preg_replace('#\[acronym=([^\"]+?)\]\s*(.*?)\s*\[/acronym\]#is',"<acronym title=\"$1\">$2</acronym>",$content);
+		$content	= preg_replace("#\[acronym\]\s*(.*?)\s*\[/acronym\]#is", "<acronym>$1</acronym>",$content);
+		$content	= preg_replace('#\[acronym=([^\"]+?)\]\s*(.*?)\s*\[/acronym\]#is',"<acronym title=\"$1\">$2</acronym>",$content);
 
-		$content	=	preg_replace("#\[email\]\s*([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,20})\s*\[/email\]#i", "<a href=\"mailto:$1\">$1</a>", $content);
-		$content	=	preg_replace("#\[email\s*=\s*\&quot\;([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,20})\s*\&quot\;\s*\](.*?)\[\/email\]#i", "<a href=\"mailto:$1\">$2</a>", $content);
-		$content	=	preg_replace("#\[email\s*=\s*([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,20})\s*\](.*?)\[\/email\]#i", "<a href=\"mailto:$1\">$2</a>", $content);
-		$content	=	preg_replace("#\[s\](.*?)\[/s\]#is", "<s>$1</s>", $content);
-		$content	=	preg_replace("#\[b\](.+?)\[/b\]#is", "<b>$1</b>", $content);
-		$content	=	preg_replace("#\[i\](.+?)\[/i\]#is", "<i>$1</i>", $content);
-		$content	=	preg_replace("#\[u\](.+?)\[/u\]#is", "<u>$1</u>", $content);
-		$content	=	preg_replace("#\[p\](.+?)\[/p\]#is", "<p>$1</p>", $content);
-		$content	=	preg_replace("#\[ul\](.*?)\[/ul\]#is", "<ul>$1</ul>", $content);
-		$content	=	preg_replace("#\[li\](.*?)\[/li\]#is", "<li>$1</li>", $content);
-		$content	=	preg_replace("#\[ol\](.*?)\[/ol\]#is", "<ol>$1</ol>", $content);
-		$content	=	preg_replace("#\[left\](.*?)\[/left\]#is","<p style=\"text-align: left\">$1</p>", $content);
-		$content	=	preg_replace("#\[right\](.*?)\[/right\]#is","<p style=\"text-align: right\">$1</p>", $content);
-		$content	=	preg_replace("#\[center\](.*?)\[/center\]#is","<p style=\"text-align: center\">$1</p>", $content);
-		$content	=	preg_replace("#\[justify\](.*?)\[/justify\]#is","<p style=\"text-align: justify\">$1</p>", $content);
-		$content	=	preg_replace("#\[br\]#is", "<br/>", $content);
+		$content	= preg_replace("#\[email\]\s*([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,20})\s*\[/email\]#i", "<a href=\"mailto:$1\">$1</a>", $content);
+		$content	= preg_replace("#\[email\s*=\s*\&quot\;([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,20})\s*\&quot\;\s*\](.*?)\[\/email\]#i", "<a href=\"mailto:$1\">$2</a>", $content);
+		$content	= preg_replace("#\[email\s*=\s*([A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,20})\s*\](.*?)\[\/email\]#i", "<a href=\"mailto:$1\">$2</a>", $content);
+		$content	= preg_replace("#\[s\](.*?)\[/s\]#is", "<s>$1</s>", $content);
+		$content	= preg_replace("#\[b\](.+?)\[/b\]#is", "<b>$1</b>", $content);
+		$content	= preg_replace("#\[i\](.+?)\[/i\]#is", "<i>$1</i>", $content);
+		$content	= preg_replace("#\[u\](.+?)\[/u\]#is", "<u>$1</u>", $content);
+		$content	= preg_replace("#\[p\](.+?)\[/p\]#is", "<p>$1</p>", $content);
+		$content	= preg_replace("#\[ul\](.*?)\[/ul\]#is", "<ul>$1</ul>", $content);
+		$content	= preg_replace("#\[li\](.*?)\[/li\]#is", "<li>$1</li>", $content);
+		$content	= preg_replace("#\[ol\](.*?)\[/ol\]#is", "<ol>$1</ol>", $content);
+		$content	= preg_replace("#\[left\](.*?)\[/left\]#is","<p style=\"text-align: left\">$1</p>", $content);
+		$content	= preg_replace("#\[right\](.*?)\[/right\]#is","<p style=\"text-align: right\">$1</p>", $content);
+		$content	= preg_replace("#\[center\](.*?)\[/center\]#is","<p style=\"text-align: center\">$1</p>", $content);
+		$content	= preg_replace("#\[justify\](.*?)\[/justify\]#is","<p style=\"text-align: justify\">$1</p>", $content);
+		$content	= preg_replace("#\[br\]#is", "<br/>", $content);
 
 		// Process spoilers
 		while (preg_match("#\[spoiler\](.*?)\[/spoiler\]#is", $content, $null))
-			$content	=	preg_replace("#\[spoiler\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head" onclick="toggleSpoiler(this.parentNode, this);"><b></b>'.__('bb_spoiler').'</div><div class="sp-body">$1</div></div>', $content);
+			$content	= preg_replace("#\[spoiler\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head" onclick="toggleSpoiler(this.parentNode, this);"><b></b>'.__('bb_spoiler').'</div><div class="sp-body">$1</div></div>', $content);
 
 		while (preg_match("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", $content, $null))
-			$content	=	preg_replace("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head" onclick="toggleSpoiler(this.parentNode, this);"><b></b>$1</div><div class="sp-body">$2</div></div>', $content);
+			$content	= preg_replace("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head" onclick="toggleSpoiler(this.parentNode, this);"><b></b>$1</div><div class="sp-body">$2</div></div>', $content);
 
 		// Process Images
 		// Possible format:
@@ -216,7 +216,7 @@ class parse {
 				}
 
 				// Get URL
-				$urlREF = $this->validateURL((!isset($keys['src']) || !$keys['src'])?$alt:$keys['src']);
+				$urlREF = $this->validateURL((!isset($keys['src']) or !$keys['src'])?$alt:$keys['src']);
 
 				// Return an error if BB code is bad
 				if ((!is_array($keys))||($urlREF === false)) {
@@ -261,7 +261,7 @@ class parse {
 		}
 
 		// Авто-подсветка URL'ов в тексте новости [ пользуемся обработчиком тега [url] ]
-		$content	=	preg_replace("#(^|\s)((http|https|news|ftp)://\w+[^\s\[\]\<]+)#i", "$1[url]$2[/url]", $content);
+		$content	= preg_replace("#(^|\s)((http|https|news|ftp)://\w+[^\s\[\]\<]+)#i", "$1[url]$2[/url]", $content);
 
 		// Process URLS
 		// Possible format:
@@ -371,7 +371,7 @@ class parse {
 		}
 
  // Обработка кириллических символов для украинского языка
- $content	=	str_replace(array('[CYR_I]', '[CYR_i]', '[CYR_E]', '[CYR_e]', '[CYR_II]', '[CYR_ii]'), array('&#1030;', '&#1110;', '&#1028;', '&#1108;', '&#1031;', '&#1111;'), $content);
+ $content	= str_replace(array('[CYR_I]', '[CYR_i]', '[CYR_E]', '[CYR_e]', '[CYR_II]', '[CYR_ii]'), array('&#1030;', '&#1110;', '&#1028;', '&#1108;', '&#1031;', '&#1111;'), $content);
 
 		while (preg_match("#\[color=([^\]]+)\](.+?)\[/color\]#ies", $content, $res)) {
 			$nl = $this->color(array('style' => $res[1], 'text' => $res[2]));
@@ -402,19 +402,19 @@ class parse {
 		if (!$config['use_htmlformatter'])
 			return $content;
 
-		$content	=	preg_replace('|<br />\s*<br />|', "\n\n", $content);
-		$content	=	str_replace(array("\r\n", "\r"), "\n", $content);
-		$content	=	preg_replace("/\n\n+/", "\n\n", $content);
-		$content	=	preg_replace('/\n/', "<br />", $content);
-		$content	=	preg_replace('!<p>\s*(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $content);
-		$content	=	preg_replace("|<p>(<li.+?)</p>|", "$1", $content);
-		$content	=	preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $content);
-		$content	=	str_replace('</blockquote></p>', '</p></blockquote>', $content);
-		$content	=	preg_replace('!<p>\s*(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)!', "$1", $content);
-		$content	=	preg_replace('!(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $content);
-		$content	=	preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $content);
-		$content	=	preg_replace('!(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*<br />!', "$1", $content);
-		$content	=	preg_replace('!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $content);
+		$content	= preg_replace('|<br />\s*<br />|', "\n\n", $content);
+		$content	= str_replace(array("\r\n", "\r"), "\n", $content);
+		$content	= preg_replace("/\n\n+/", "\n\n", $content);
+		$content	= preg_replace('/\n/', "<br />", $content);
+		$content	= preg_replace('!<p>\s*(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $content);
+		$content	= preg_replace("|<p>(<li.+?)</p>|", "$1", $content);
+		$content	= preg_replace('|<p><blockquote([^>]*)>|i', "<blockquote$1><p>", $content);
+		$content	= str_replace('</blockquote></p>', '</p></blockquote>', $content);
+		$content	= preg_replace('!<p>\s*(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)!', "$1", $content);
+		$content	= preg_replace('!(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*</p>!', "$1", $content);
+		$content	= preg_replace('|(?<!<br />)\s*\n|', "<br />\n", $content);
+		$content	= preg_replace('!(</?(?:table|thead|tbody|tr|td|th|div|dl|dd|dt|ul|ol|li|pre|select|form|blockquote|math|p|h[1-6])[^>]*>)\s*<br />!', "$1", $content);
+		$content	= preg_replace('!<br />(\s*</?(?:p|li|div|dl|dd|dt|th|pre|td|ul|ol)>)!', '$1', $content);
  $content = preg_replace_callback(
  "/<code>(.*?)<\/code>/s",
  function ($match) {
@@ -422,7 +422,7 @@ class parse {
  },
  $content
  );
-		$content	=	str_replace("\n</p>\n", "</p>", $content);
+		$content	= str_replace("\n</p>\n", "</p>", $content);
 
 		return $content;
 	}
@@ -433,11 +433,11 @@ class parse {
 		if (!$config['use_smilies'])
 			return $content;
 
-		$smilies_arr	=	explode(',', $config['smilies']);
+		$smilies_arr	= explode(',', $config['smilies']);
 		foreach ($smilies_arr as $null => $smile) {
-			$smile		=	trim($smile);
-			$find[]		=	"':$smile:'";
-			$replace[]	=	"<img class=\"smilies\" alt=\"$smile\" src=\"".skins_url."/smilies/$smile.gif\" />";
+			$smile		= trim($smile);
+			$find[]		= "':$smile:'";
+			$replace[]	= "<img class=\"smilies\" alt=\"$smile\" src=\"".skins_url."/smilies/$smile.gif\" />";
 		}
 		return preg_replace($find, $replace, $content);
 	}

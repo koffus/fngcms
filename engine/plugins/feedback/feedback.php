@@ -70,7 +70,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 	$xfValues = array();
 	if ($link_news > 0) {
 		$linked_id = intval($_REQUEST['linked_id']);
-		if (!$linked_id || !is_array($nrow = $mysql->record("select * from ".prefix."_news where (id = ". db_squote($linked_id) . ") and (approve = 1)"))) {
+		if (!$linked_id or !is_array($nrow = $mysql->record("select * from ".prefix."_news where (id = ". db_squote($linked_id) . ") and (approve = 1)"))) {
 			// No link is provided, but link if required
 			if ($link_news == 2) {
 
@@ -311,7 +311,7 @@ function plugin_feedback_post() {
 	$xfValues = array();
 	if ($link_news > 0) {
 		$linked_id = intval($_REQUEST['linked_id']);
-		if (!$linked_id || !is_array($nrow = $mysql->record("select * from ".prefix."_news where (id = ". db_squote($linked_id) . ") and (approve = 1)"))) {
+		if (!$linked_id or !is_array($nrow = $mysql->record("select * from ".prefix."_news where (id = ". db_squote($linked_id) . ") and (approve = 1)"))) {
 			// No link is provided, but link if required
 			if ($link_news == 2) {
 
@@ -334,7 +334,7 @@ function plugin_feedback_post() {
 	// Check if captcha check if needed
 	if (substr($frow['flags'],1,1)) {
 		$vcode = $_REQUEST['vcode'];
-		if ((!$vcode) || ($vcode != $_SESSION['captcha.feedback'])) {
+		if ((!$vcode) or ($vcode != $_SESSION['captcha.feedback'])) {
 			// Wrong CAPTCHA code (!!!)
 			plugin_feedback_showScreen(1, __('feedback:sform.captcha.badcode'));
 			return;
@@ -388,7 +388,7 @@ function plugin_feedback_post() {
 		switch ($fInfo['type']) {
 			case 'date':	$fieldValue = $_REQUEST['fld_'.$fName.':day'] . '.' . $_REQUEST['fld_'.$fName.':month'] . '.' . $_REQUEST['fld_'.$fName.':year'];
 		 					break;
-			default:		if ($isUTF && $flagsUTF) {
+			default: if ($isUTF && $flagsUTF) {
 								$fieldValue = $_REQUEST['fld_'.$fName];
 							} else {
 								$fieldValue = $_REQUEST['fld_'.$fName];
@@ -523,7 +523,7 @@ function plugin_feedback_post() {
 
 	// USER notification
 	// - DONE via plugin
-	if ($isSentViaPlugin && ($tResult['redirect'] || $tResult['notify.raw'] || $tResult['notify.template'])) {
+	if ($isSentViaPlugin && ($tResult['redirect'] or $tResult['notify.raw'] or $tResult['notify.template'])) {
 		if ($tResult['redirect']) {
 			$SUPRESS_TEMPLATE_SHOW = true;
 			$SUPRESS_MAINBLOCK_SHOW = true;

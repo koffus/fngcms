@@ -171,7 +171,7 @@ function xNewsShowBlock($params) {
 	}
 
 	// skipCurrent
-	if (isset($params['skipCurrent']) && $params['skipCurrent'] && (($CurrentHandler['handlerName'] == 'news') || ($CurrentHandler['handlerName'] == 'print'))) {
+	if (isset($params['skipCurrent']) && $params['skipCurrent'] && (($CurrentHandler['handlerName'] == 'news') or ($CurrentHandler['handlerName'] == 'print'))) {
 		list($xm, $null, $xi) = getCurrentNewsCategory();
 		if (($xm == 'full') && ($xi > 0)) {
 			$filterList []= '(id <> '.intval($xi).')';
@@ -283,7 +283,7 @@ function xNewsShowBlock($params) {
 	$xOut = $xt->render($tVars);
 
 	// Manage `showNoNews` flag
-	if (($showResult['count'] < 1) && (isset($params['showNoNews']) || ($params['showNoNews']))) {
+	if (($showResult['count'] < 1) && (isset($params['showNoNews']) or ($params['showNoNews']))) {
 		$xOut = '';
 	}
 

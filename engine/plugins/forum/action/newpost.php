@@ -53,7 +53,7 @@
 	}
 	
 	$rows = $mysql->record('SELECT id as fid, moderators FROM '.prefix.'_forum_forums WHERE id = '.securemysql($rowse['fid']).' LIMIT 1');
-	if($FORUM_PS[$rows['fid']]['post_send'] || moder_perm($rows['fid'], 'post_send', $rows['moderators'])){
+	if($FORUM_PS[$rows['fid']]['post_send'] or moder_perm($rows['fid'], 'post_send', $rows['moderators'])){
 		$message = isset($_REQUEST['message'])?secureinput($_REQUEST['message']):'';
 		if(empty($message)){
 			if(isset($pid) && $pid){

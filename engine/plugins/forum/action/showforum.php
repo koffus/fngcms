@@ -129,12 +129,12 @@
 		
 		//print "<pre>".var_export($row, true)."</pre>";
 		
-		if(isset($MODE_PS) && $MODE_PS['m_topic_send'] || $FORUM_PS[$result['fid']]['topic_send'])
+		if(isset($MODE_PS) && $MODE_PS['m_topic_send'] or $FORUM_PS[$result['fid']]['topic_send'])
 			$topic_send = true;
 		else 
 			$topic_send = false;
 		
-		if(isset($MODE_PS) && $MODE_PS['m_topic_modify'] || $FORUM_PS[$id]['topic_modify']){
+		if(isset($MODE_PS) && $MODE_PS['m_topic_modify'] or $FORUM_PS[$id]['topic_modify']){
 			$topic_modify = true;
 		} elseif($FORUM_PS[$id]['topic_modify_your']){
 			if($userROW['id'] == $row['author_id'])
@@ -144,7 +144,7 @@
 		} else 
 			$topic_modify = false;
 		
-		if(isset($MODE_PS) && $MODE_PS['m_topic_remove'] || $FORUM_PS[$id]['topic_remove']){
+		if(isset($MODE_PS) && $MODE_PS['m_topic_remove'] or $FORUM_PS[$id]['topic_remove']){
 			$topic_remove = true;
 		}elseif($FORUM_PS[$id]['topic_remove_your']){
 			if($userROW['id'] == $row['author_id'])
@@ -200,7 +200,7 @@
 		'link_rss' => link_rss($id),
 		'home_link' => link_home(),
 		
-		'topic_send' => (isset($MODE_PS) && $MODE_PS['m_topic_send'] || $FORUM_PS[$id]['topic_send'])?1:0,
+		'topic_send' => (isset($MODE_PS) && $MODE_PS['m_topic_send'] or $FORUM_PS[$id]['topic_send'])?1:0,
 		
 		'forum_name' => $forum['title'],
 		'forum_description' => $forum['description'],

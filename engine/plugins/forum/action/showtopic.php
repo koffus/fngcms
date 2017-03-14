@@ -102,7 +102,7 @@
 	$twig->addGlobal('tid', $result['tid']);
 	$twig->addGlobal('state', $result['state']);
 	$twig->addGlobal('pinned', $result['pinned']);
-	$twig->addGlobal('MODE_PS', ($MODE_PS || $userROW['status'] == 1)?1:0);
+	$twig->addGlobal('MODE_PS', ($MODE_PS or $userROW['status'] == 1)?1:0);
 	//print "<pre>".var_export($MODE_PERM[$result['fid']], true)."</pre>";
 	//print "<pre>".var_export($FORUM_PS[$result['fid']], true)."</pre>";
 	
@@ -183,11 +183,11 @@
 	foreach ($result_2 as $row){
 		$i++;
 		
-		if(isset($MODE_PS) && $MODE_PS['m_post_send'] || $FORUM_PS[$result['fid']]['post_send'])
+		if(isset($MODE_PS) && $MODE_PS['m_post_send'] or $FORUM_PS[$result['fid']]['post_send'])
 			$post_send = true;
 		else $post_send = false;
 		
-		if(isset($MODE_PS) && $MODE_PS['m_post_modify'] || $FORUM_PS[$result['fid']]['post_modify'])
+		if(isset($MODE_PS) && $MODE_PS['m_post_modify'] or $FORUM_PS[$result['fid']]['post_modify'])
 			$post_modify = true;
 		elseif($FORUM_PS[$result['fid']]['post_modify_your']){
 			if($userROW['id'] == $row['author_id'])
@@ -196,7 +196,7 @@
 				$post_modify = false;
 		}else $post_modify = false;
 		
-		if(isset($MODE_PS) && $MODE_PS['m_post_remove'] || $FORUM_PS[$result['fid']]['post_remove']){
+		if(isset($MODE_PS) && $MODE_PS['m_post_remove'] or $FORUM_PS[$result['fid']]['post_remove']){
 			$post_remove = true;
 		}elseif($FORUM_PS[$result['fid']]['post_remove_your']){
 			if($userROW['id'] == $row['author_id'])
@@ -315,7 +315,7 @@
 		'forum_link' => link_forum($result['fid']),
 		'forum_name' => $result['Ftitle'],
 		'subject' => $result['Ttitle'],
-		'post_send' => (isset($MODE_PS) && $MODE_PS['m_post_send'] || $FORUM_PS[$result['fid']]['post_send'])?1:0,
+		'post_send' => (isset($MODE_PS) && $MODE_PS['m_post_send'] or $FORUM_PS[$result['fid']]['post_send'])?1:0,
 		'local' => array(
 				'num_guest_loc' => $viewers['num_guest_loc'],
 				'num_user_loc' => $viewers['num_user_loc'],

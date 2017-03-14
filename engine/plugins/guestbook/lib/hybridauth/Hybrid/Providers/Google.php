@@ -76,17 +76,17 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 		if (strpos($this->scope, '/auth/plus.profile.emails.read') !== false) {
 			$verified = $this->api->api("https://www.googleapis.com/plus/v1/people/me");
 
-			if (!isset($verified->id) || isset($verified->error))
+			if (!isset($verified->id) or isset($verified->error))
 				$verified = new stdClass();
 		} else {
 			$verified = $this->api->api("https://www.googleapis.com/plus/v1/people/me/openIdConnect");
 
-			if (!isset($verified->sub) || isset($verified->error))
+			if (!isset($verified->sub) or isset($verified->error))
 				$verified = new stdClass();
 		}
 
 		$response = $this->api->api("https://www.googleapis.com/plus/v1/people/me");
-		if (!isset($response->id) || isset($response->error)) {
+		if (!isset($response->id) or isset($response->error)) {
 			throw new Exception("User profile request failed! {$this->providerId} returned an invalid response.", 6);
 		}
 

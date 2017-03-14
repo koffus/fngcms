@@ -158,7 +158,7 @@ function showNews($handlerName, $params) {
 				}
 
 				// We can't show unexisted categories
-				if (!$category || !isset($catmap[$category])) {
+				if (!$category or !isset($catmap[$category])) {
 					if (!$params['FFC']) {
 						error404();
 					}

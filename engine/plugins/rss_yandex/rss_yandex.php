@@ -57,7 +57,7 @@ function plugin_rss_yandex_generate($catname = ''){
 
 	$maxAge = pluginGetVariable('rss_yandex','news_age');
 	$delay = intval(pluginGetVariable('rss_yandex', 'delay'));
-	if ((!is_numeric($maxAge)) || ($maxAge<0) || ($maxAge>100)) { $maxAge = 10; }
+	if ((!is_numeric($maxAge)) or ($maxAge<0) or ($maxAge>100)) { $maxAge = 10; }
 	$old_locale = setlocale(LC_TIME,0);
 	setlocale(LC_TIME,'en_EN');
 	$query = '';
@@ -110,7 +110,7 @@ function plugin_rss_yandex_generate($catname = ''){
 		$enclosureList = array();
 
 		// Check if Enclosure `xfields` integration is activated
-		if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') && (true || getPluginStatusActive('xfields'))) {
+		if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') && (true or getPluginStatusActive('xfields'))) {
 			// Load (if needed XFIELDS plugin
 			include_once(root."/plugins/xfields/xfields.php");
 

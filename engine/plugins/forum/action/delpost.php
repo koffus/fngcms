@@ -43,7 +43,7 @@
 	$row_3 = $mysql->record($sql_3);
 	
 	if($delet_subject){
-		if(($row['author_id'] == $userROW['id'] && $FORUM_PS[$row['fid']]['post_remove_your']) || moder_perm($row['fid'], 'post_remove', $rows['moderators']) || $FORUM_PS[$row['fid']]['post_remove']){
+		if(($row['author_id'] == $userROW['id'] && $FORUM_PS[$row['fid']]['post_remove_your']) or moder_perm($row['fid'], 'post_remove', $rows['moderators']) or $FORUM_PS[$row['fid']]['post_remove']){
 			delete_topic($row['tid']);
 			$mysql->query('UPDATE '.prefix.'_news SET tid = 0 WHERE tid = '.securemysql($row['tid']).' LIMIT 1');
 			//delete_thank($row['tid']);
@@ -55,7 +55,7 @@
 			return $output = information('Вы не имеете права удалить сообщение', $title = 'Информация');
 		}
 	} else {
-		if(($row['author_id'] == $userROW['id'] && $FORUM_PS[$row['fid']]['topic_remove_your']) || moder_perm($row['fid'], 'topic_remove', $rows['moderators']) || $FORUM_PS[$row['fid']]['topic_remove']){
+		if(($row['author_id'] == $userROW['id'] && $FORUM_PS[$row['fid']]['topic_remove_your']) or moder_perm($row['fid'], 'topic_remove', $rows['moderators']) or $FORUM_PS[$row['fid']]['topic_remove']){
 			delete_post($id, $row['tid']);
 			//delete_thank($row['pid']);
 			delete_attach($row);

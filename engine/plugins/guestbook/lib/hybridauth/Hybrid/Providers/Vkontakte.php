@@ -76,7 +76,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 		}
 
 		// check if authenticated
-		if ( !property_exists($response,'user_id') || ! $this->api->access_token ){
+		if ( !property_exists($response,'user_id') or ! $this->api->access_token ){
 			throw new Exception( "Authentication failed! {$this->providerId} returned an invalid access token.", 5 );
 		}
 
@@ -114,7 +114,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 
 		$response = $this->api->api( 'getProfiles' , 'GET', $params);
 
-		if (!isset( $response->response[0] ) || !isset( $response->response[0]->uid ) || isset( $response->error ) ){
+		if (!isset( $response->response[0] ) or !isset( $response->response[0]->uid ) or isset( $response->error ) ){
 			throw new Exception( "User profile request failed! {$this->providerId} returned an invalid response.", 6 );
 		}
 
@@ -140,7 +140,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 
 		$response = $this->api->api('friends.get','GET',$params);
 
-		if(empty($response) || empty($response->response)){
+		if(empty($response) or empty($response->response)){
 			return array();
 		}
 
@@ -201,7 +201,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			$cities = $this->api->api( 'database.getCitiesById' , 'GET', $params);
 			$city = reset($cities);
 			if (is_array($city)) $city = reset($city);
-			if (is_object($city) || is_string($city)) {
+			if (is_object($city) or is_string($city)) {
 				$user->city = property_exists($city, 'name') ? $city->name : null;
 			}
 		}
@@ -213,7 +213,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			$countries = $this->api->api( 'database.getCountriesById' , 'GET', $params);
 			$country = reset($countries);
 			if (is_array($country)) $country = reset($country);
-			if (is_object($country) || is_string($country)) {
+			if (is_object($country) or is_string($country)) {
 				$user->country = property_exists($country, 'name') ? $country->name : null;
 			}
 		}

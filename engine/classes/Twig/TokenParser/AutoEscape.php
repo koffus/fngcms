@@ -50,7 +50,7 @@ class Twig_TokenParser_AutoEscape extends Twig_TokenParser
  }
  $value = $expr->getAttribute('value');
 
- $compat = true === $value || false === $value;
+ $compat = true === $value or false === $value;
 
  if (true === $value) {
  $value = 'html';

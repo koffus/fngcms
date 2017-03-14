@@ -92,7 +92,7 @@ abstract class OAuthSignatureMethod {
  $built = $this->build_signature($request, $consumer, $token);
 
  // Check for zero length, although unlikely here
- if (strlen($built) == 0 || strlen($signature) == 0) {
+ if (strlen($built) == 0 or strlen($signature) == 0) {
  return false;
  }
 
@@ -259,7 +259,7 @@ class OAuthRequest {
  * attempt to build up a request from what was passed to the server
  */
  public static function from_request($http_method=null, $http_url=null, $parameters=null) {
- $scheme = (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
+ $scheme = (!isset($_SERVER['HTTPS']) or $_SERVER['HTTPS'] != "on")
  ? 'http'
  : 'https';
  if (isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
@@ -410,7 +410,7 @@ class OAuthRequest {
  $path = (isset($parts['path'])) ? $parts['path'] : '';
 
  if (($scheme == 'https' && $port != '443')
- || ($scheme == 'http' && $port != '80')) {
+ or ($scheme == 'http' && $port != '80')) {
  $host = "$host:$port";
  }
  return "$scheme://$host$path";
@@ -837,7 +837,7 @@ class OAuthUtil {
  // parameters like this
  // array('a' => array('b','c'), 'd' => 'e')
  public static function parse_parameters( $input ) {
- if (!isset($input) || !$input) return array();
+ if (!isset($input) or !$input) return array();
 
  $pairs = explode('&', $input);
 

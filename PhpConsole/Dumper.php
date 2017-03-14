@@ -100,10 +100,10 @@ class Dumper {
 			$i = 0;
 			$dataArray = array();
 			foreach($data as $k => &$v) {
-				if(($this->itemsCountLimit && $i >= $this->itemsCountLimit) || $sizeLeft <= 0) {
+				if(($this->itemsCountLimit && $i >= $this->itemsCountLimit) or $sizeLeft <= 0) {
 					break;
 				}
-				if(is_array($v) || is_object($v)) {
+				if(is_array($v) or is_object($v)) {
 					if($levelLimit > 1) {
 						$origQueue[] = $v;
 						$refQueue[] =& $v;

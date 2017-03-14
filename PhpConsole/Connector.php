@@ -158,7 +158,7 @@ class Connector {
 	 * @throws \Exception
 	 */
 	private function initServerCookie() {
-		if(!isset($_COOKIE[self::SERVER_COOKIE]) || $_COOKIE[self::SERVER_COOKIE] != self::SERVER_PROTOCOL) {
+		if(!isset($_COOKIE[self::SERVER_COOKIE]) or $_COOKIE[self::SERVER_COOKIE] != self::SERVER_PROTOCOL) {
 			$isSuccess = setcookie(self::SERVER_COOKIE, self::SERVER_PROTOCOL, null, '/');
 			if(!$isSuccess) {
 				throw new \Exception('Unable to set PHP Console server cookie');
@@ -294,7 +294,7 @@ class Connector {
 
 		if($this->isActiveClient() && $this->isAuthorized() && isset($_POST[Connector::POST_VAR_NAME]['eval'])) {
 			$request = $_POST[Connector::POST_VAR_NAME]['eval'];
-			if(!isset($request['data']) || !isset($request['signature'])) {
+			if(!isset($request['data']) or !isset($request['signature'])) {
 				throw new \Exception('Wrong PHP Console eval request');
 			}
 			if($this->auth->getSignature($request['data']) !== $request['signature']) {
@@ -420,7 +420,7 @@ class Connector {
 	 * @param $encoding
 	 */
 	public function setServerEncoding($encoding) {
-		if($encoding == 'utf8' || $encoding == 'utf-8') {
+		if($encoding == 'utf8' or $encoding == 'utf-8') {
 			$encoding = 'UTF-8'; // otherwise mb_convert_encoding() sometime fails with error(thanks to @alexborisov)
 		}
 		$this->serverEncoding = $encoding;
@@ -466,7 +466,7 @@ class Connector {
 	 * @return bool
 	 */
 	protected function isSsl() {
-		return (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT']) == 443);
+		return (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') or (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT']) == 443);
 	}
 
 	/**
@@ -482,11 +482,11 @@ class Connector {
 				$response->getBackData = $_POST[self::POST_VAR_NAME]['getBackData'];
 			}
 
-			if(!$this->isSslOnlyMode || $this->isSsl()) {
+			if(!$this->isSslOnlyMode or $this->isSsl()) {
 				if($this->auth) {
 					$response->auth = $this->auth->getServerAuthStatus($this->client->auth);
 				}
-				if(!$this->auth || $this->isAuthorized()) {
+				if(!$this->auth or $this->isAuthorized()) {
 					$response->isLocal = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
 					$response->docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : null;
 					$response->sourcesBasePath = $this->sourcesBasePath;
@@ -497,7 +497,7 @@ class Connector {
 
 			$responseData = $this->serializeResponse($response);
 
-			if(strlen($responseData) > $this->headersLimit || !$this->setHeaderData($responseData, self::HEADER_NAME, false)) {
+			if(strlen($responseData) > $this->headersLimit or !$this->setHeaderData($responseData, self::HEADER_NAME, false)) {
 				$this->getPostponeStorage()->push($this->postponeResponseId, $responseData);
 			}
 		}

@@ -60,7 +60,7 @@ function showStaticPage($params) {
 		'postdate'	=> ($row['postdate']> 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
 	);
 
-	if (is_array($userROW) && ($userROW['status'] == 1 || $userROW['status'] == 2)) {
+	if (is_array($userROW) && ($userROW['status'] == 1 or $userROW['status'] == 2)) {
 		$tvars['vars']['[edit-static]'] = "<a href=\"".admin_url."/admin.php?mod=static&action=edit&id=".$row['id']."\" target=\"_blank\">";
 		$tvars['vars']['[/edit-static]'] = "</a>";
 		$tvars['vars']['[del-static]'] = "<a onclick=\"confirmit('".admin_url."/admin.php?mod=static&subaction=do_mass_delete&selected[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
@@ -70,8 +70,8 @@ function showStaticPage($params) {
 		$tvars['regx']["'\\[del-static\\].*?\\[/del-static\\]'si"] = "";
 	}
 
-	$tvars['vars']['[print-link]']	=	"<a href=\"".generatePluginLink('static', 'print', array('id' => $row['id'], 'altname' => $params['altname']), array(), true)."\">";
-	$tvars['vars']['[/print-link]']	=	"</a>";
+	$tvars['vars']['[print-link]']	= "<a href=\"".generatePluginLink('static', 'print', array('id' => $row['id'], 'altname' => $params['altname']), array(), true)."\">";
+	$tvars['vars']['[/print-link]']	= "</a>";
 
 	if (is_array($PFILTERS['static']))
 		foreach ($PFILTERS['static'] as $k => $v) { $v->showStatic($row['id'], $row, $tvars, array()); }

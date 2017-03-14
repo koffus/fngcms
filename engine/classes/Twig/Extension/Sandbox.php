@@ -52,7 +52,7 @@ class Twig_Extension_Sandbox extends Twig_Extension
 
  public function isSandboxed()
  {
- return $this->sandboxedGlobally || $this->sandboxed;
+ return $this->sandboxedGlobally or $this->sandboxed;
  }
 
  public function isSandboxedGlobally()

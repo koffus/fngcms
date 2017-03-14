@@ -25,7 +25,7 @@ class cacheClassFile extends cacheClassAbstract {
 
 		// Check if file is expired. Return if it's so.
 		$stat = fstat($fn);
-		if (!is_array($stat) || ($stat[9]+$expire<time())) {
+		if (!is_array($stat) or ($stat[9]+$expire<time())) {
 			return false;
 		}
 

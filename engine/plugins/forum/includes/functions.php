@@ -249,8 +249,8 @@ function generatePagination_forum($countPages, $pageNo, $paginationParams, $navi
 		if ($pageNo > 5) $pages[] = $navigations['dots'];
 	}
 	for ($current = ($pageNo == 5) ? $pageNo - 3 : $pageNo - 2, $stop = ($pageNo + 4 == $countPages) ? $pageNo + 4 : $pageNo + 3; $current < $stop; ++$current){
-		if ($current < 1 || $current > $countPages) continue;
-		else if ($current != $pageNo || $link_to_all)
+		if ($current < 1 or $current > $countPages) continue;
+		else if ($current != $pageNo or $link_to_all)
 			$pages[] = str_replace( array('%link%', '%page%'), array(generatePageLink($paginationParams, $current, $intlink), $current), $navigations['link_page']);
 		else
 			$pages[] = str_replace('%page%',$current, $navigations['current_page']);

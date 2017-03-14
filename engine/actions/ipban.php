@@ -177,17 +177,14 @@ function ipban_list() {
 	echo $xt->render($tVars);
 }
 
-
 //
 // Main loop
-//
 if(isset($_REQUEST['action']) && $_REQUEST['action'])
 	switch ($_REQUEST['action']) {
-		case 'add':		ipban_add();
+		case 'add': ipban_add();
 						break;
-		case 'del':		ipban_delete();
+		case 'del': ipban_delete();
 						break;
 	}
 
 ipban_list();
-

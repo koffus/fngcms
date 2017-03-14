@@ -75,7 +75,7 @@ function msg_add_submit()
  $errors[] = __('guestbook')['error_req_text'] . ' ' . str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), __('guestbook')['error_length_text']);
  }
 
- if ((mb_strlen($message, 'UTF-8') < $minl || mb_strlen($message, 'UTF-8') > $maxl)) {
+ if ((mb_strlen($message, 'UTF-8') < $minl or mb_strlen($message, 'UTF-8') > $maxl)) {
  $errors[] = str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), __('guestbook')['error_length_text']);
  }
 
@@ -188,7 +188,7 @@ function msg_edit_submit()
  $answer = secure_html(convert($_REQUEST['answer']));
  $message = str_replace("\r\n", "<br />", $message);
 
- if (empty($author) || empty($message)) {
+ if (empty($author) or empty($message)) {
  $errors[] = __('guestbook')['error_field_required'];
  }
 
@@ -272,17 +272,17 @@ function guestbook_list($params = array())
  $privatekey = pluginGetVariable('guestbook', 'private_key');
 
  // ADD notication
- if ((isset($params['act']) && $params['act'] == 'add') || (isset($_REQUEST['add']) && $_REQUEST['add'])) {
+ if ((isset($params['act']) && $params['act'] == 'add') or (isset($_REQUEST['add']) && $_REQUEST['add'])) {
  $success_add[] = (pluginGetVariable('guestbook', 'approve_msg')) ? __('guestbook')['success_add_wo_approve'] : __('guestbook')['success_add'];
  }
 
  // EDIT notication
- if ((isset($params['act']) && $params['act'] == 'upd') || (isset($_REQUEST['upd']) && $_REQUEST['upd'])) {
+ if ((isset($params['act']) && $params['act'] == 'upd') or (isset($_REQUEST['upd']) && $_REQUEST['upd'])) {
  $success_add[] = __('guestbook')['success_edit'];
  }
 
  // DELETE notication
- if ((isset($params['act']) && $params['act'] == 'del') || (isset($_REQUEST['del']) && $_REQUEST['del'])) {
+ if ((isset($params['act']) && $params['act'] == 'del') or (isset($_REQUEST['del']) && $_REQUEST['del'])) {
  $success_add[] = __('guestbook')['success_delete'];
  }
 

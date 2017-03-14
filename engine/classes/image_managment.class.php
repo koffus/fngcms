@@ -46,7 +46,7 @@ class image_managment{
 		}
 
 		// Check if file exists and we can get it's image size
-		if (!file_exists($fname) || !is_array($sz=@getimagesize($fname))) {
+		if (!file_exists($fname) or !is_array($sz=@getimagesize($fname))) {
 			if ($param['rpc']) {
 				return array('status' => 0, 'errorCode' => 352, 'errorText' => __('upload.error.open').$fname);
 			}
@@ -80,7 +80,7 @@ class image_managment{
 			case 6: $cmd .= 'bmp';	break;
 		}
 
-		if (!$cmd || !function_exists($cmd)) {
+		if (!$cmd or !function_exists($cmd)) {
 			if ($param['rpc']) {
 				return array('status' => 0, 'errorCode' => 354, 'errorText' => str_replace('{func}', $cmd, __('upload.error.libformat')));
 			}
@@ -172,7 +172,7 @@ class image_managment{
 
 		// LOAD ORIGINAL IMAGE
 		// Check if file exists and we can get it's image size
-		if (!file_exists($param['image']) || !is_array($sz=@getimagesize($param['image']))) {
+		if (!file_exists($param['image']) or !is_array($sz=@getimagesize($param['image']))) {
 			if ($param['rpc']) {
 				return array('status' => 0, 'errorCode' => 401, 'errorText' => __('upload.error.open').' '.$param['image']);
 			}
@@ -193,7 +193,7 @@ class image_managment{
 			case 6: $cmd .= 'bmp';	break;
 		}
 
-		if (!$cmd || !function_exists($cmd)) {
+		if (!$cmd or !function_exists($cmd)) {
 			if ($param['rpc']) {
 				return array('status' => 0, 'errorCode' => 402, 'errorText' => str_replace('{func}', $cmd, __('upload.error.libformat')));
 			}
@@ -227,7 +227,7 @@ class image_managment{
 			$newImg = imagecreatetruecolor($newX, $newY);
 
 			// Preserver transparency
-			if (($origType == 1) || ($origType == 3)) {
+			if (($origType == 1) or ($origType == 3)) {
 				imagecolortransparent($newImg, imagecolorallocatealpha($newImg, 0, 0, 0, 127));
 				imagealphablending($newImg, false);
 				imagesavealpha($newImg, true);
@@ -244,7 +244,7 @@ class image_managment{
 
 		if ($param['stamp']) {
 			// LOAD STAMP IMAGE
-			if (!file_exists($param['stampfile']) || !is_array($sz=@getimagesize($param['stampfile']))) {
+			if (!file_exists($param['stampfile']) or !is_array($sz=@getimagesize($param['stampfile']))) {
 				if (!$param['stamp_noerror']) {
 					if ($param['rpc']) {
 						return array('status' => 0, 'errorCode' => 404, 'errorText' => __('upload.error.openstamp'));
@@ -267,7 +267,7 @@ class image_managment{
 				case 6: $cmd .= 'bmp';	break;
 			}
 
-			if (!$cmd || !function_exists($cmd)) {
+			if (!$cmd or !function_exists($cmd)) {
 				if ($param['rpc']) {
 					return array('status' => 0, 'errorCode' => 402, 'errorText' => str_replace('{func}', $cmd, __('upload.error.libformat')));
 				}
@@ -305,7 +305,7 @@ class image_managment{
 				return;
 			}
 
-			if (($param['stamp_transparency'] < 1) || ($param['stamp_transparency'] > 100)) {
+			if (($param['stamp_transparency'] < 1) or ($param['stamp_transparency'] > 100)) {
 				$param['stamp_transparency'] = 40;
 			}
 
@@ -318,13 +318,13 @@ class image_managment{
 		$newX = $origX;
 		$newY = $origY;
 		if ($param['shadow']) {
-			$newX			=	$origX + 5;
-			$newY			=	$origY + 5;
-			$newimg			=	imagecreatetruecolor($newX, $newY);
+			$newX			= $origX + 5;
+			$newY			= $origY + 5;
+			$newimg			= imagecreatetruecolor($newX, $newY);
 
-			$background		=	array("r" => 255, "g" => 255, "b" => 255);
-			$step_offset	=	array("r" => ($background["r"] / 10), "g" => ($background["g"] / 10), "b" => ($background["b"] / 10));
-			$current_color	=	$background;
+			$background		= array("r" => 255, "g" => 255, "b" => 255);
+			$step_offset	= array("r" => ($background["r"] / 10), "g" => ($background["g"] / 10), "b" => ($background["b"] / 10));
+			$current_color	= $background;
 
 			for ($i = 0; $i <= 5; $i++) {
 				$colors[$i] = @imagecolorallocate($newimg, round($current_color["r"]), round($current_color["g"]), round($current_color["b"]));

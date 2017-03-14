@@ -40,7 +40,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  */
  public function __construct($optimizers = -1)
  {
- if (!is_int($optimizers) || $optimizers > 2) {
+ if (!is_int($optimizers) or $optimizers > 2) {
  throw new InvalidArgumentException(sprintf('Optimizer mode "%s" is not valid.', $optimizers));
  }
 
@@ -188,7 +188,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  }
 
  // block reference
- elseif ($node instanceof Twig_Node_BlockReference || $node instanceof Twig_Node_Expression_BlockReference) {
+ elseif ($node instanceof Twig_Node_BlockReference or $node instanceof Twig_Node_Expression_BlockReference) {
  $this->addLoopToCurrent();
  }
 
@@ -200,10 +200,10 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  // the loop variable is referenced via an attribute
  elseif ($node instanceof Twig_Node_Expression_GetAttr
  && (!$node->getNode('attribute') instanceof Twig_Node_Expression_Constant
- || 'parent' === $node->getNode('attribute')->getAttribute('value')
+ or 'parent' === $node->getNode('attribute')->getAttribute('value')
  )
  && (true === $this->loops[0]->getAttribute('with_loop')
- || ($node->getNode('node') instanceof Twig_Node_Expression_Name
+ or ($node->getNode('node') instanceof Twig_Node_Expression_Name
  && 'loop' === $node->getNode('node')->getAttribute('name')
  )
  )

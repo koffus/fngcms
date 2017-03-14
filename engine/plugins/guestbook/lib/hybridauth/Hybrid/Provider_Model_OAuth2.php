@@ -65,7 +65,7 @@ class Hybrid_Provider_Model_OAuth2 extends Hybrid_Provider_Model {
 	 * Adapter initializer
 	 */
 	function initialize() {
-		if (!$this->config["keys"]["id"] || !$this->config["keys"]["secret"]) {
+		if (!$this->config["keys"]["id"] or !$this->config["keys"]["secret"]) {
 			throw new Exception("Your application id and secret are required in order to connect to {$this->providerId}.", 4);
 		}
 
@@ -151,7 +151,7 @@ class Hybrid_Provider_Model_OAuth2 extends Hybrid_Provider_Model {
 				if ($this->api->access_token_expires_at <= time()) {
 					$response = $this->api->refreshToken(array("refresh_token" => $this->api->refresh_token));
 
-					if (!isset($response->access_token) || !$response->access_token) {
+					if (!isset($response->access_token) or !$response->access_token) {
 						// set the user as disconnected at this point and throw an exception
 						$this->setUserUnconnected();
 

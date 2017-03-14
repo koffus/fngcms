@@ -162,7 +162,7 @@ class OAuth1Client{
 
  // when making a multipart request, use only oauth_* keys for signature
  foreach( $parameters AS $key => $value ){
- if( !$multipart || strpos( $key, 'oauth_' ) === 0 ){
+ if( !$multipart or strpos( $key, 'oauth_' ) === 0 ){
  $signature_parameters[$key] = $value;
  }
  }

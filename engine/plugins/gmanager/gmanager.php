@@ -49,9 +49,9 @@ function plugin_gmanager_main($params)
 	foreach($mysql->select('select * from '.prefix.'_gmanager where if_active=1 order by `order` '.$limit) as $row)
 	{
 		$icon = $mysql->record('select name, folder from '.prefix.'_images where `id`='.db_squote($row['id_icon']).' limit 1');
-		$folder		=	$icon['folder']?$icon['folder'].'/':'';
-		$fileurl	=	$fmanager->uname.'/'.$folder.$icon['name'];
-		$thumburl	=	file_exists($fmanager->dname.$folder.'/thumb/'.$icon['name'])?$fmanager->uname.'/'.$folder.'/thumb/'.$icon['name']:$fileurl;
+		$folder		= $icon['folder']?$icon['folder'].'/':'';
+		$fileurl	= $fmanager->uname.'/'.$folder.$icon['name'];
+		$thumburl	= file_exists($fmanager->dname.$folder.'/thumb/'.$icon['name'])?$fmanager->uname.'/'.$folder.'/thumb/'.$icon['name']:$fileurl;
 
 		$pvars['regx']['/\[empty\](.*?)\[\/empty\]/si'] = '';
 		$pvars['regx']['/\[not_empty\](.*?)\[\/not_empty\]/si'] = '$1';
@@ -192,8 +192,8 @@ function plugin_gmanager_gallery($params)
 	
 	foreach($mysql->select('select name, description from '.prefix.'_images where folder='.db_squote($name).' order by `date` '.$limit) as $row)
 	{
-		$fileurl	=	$fmanager->uname.'/'.$name.'/'.$row['name'];
-		$thumburl	=	file_exists($fmanager->dname.$name.'/thumb/'.$row['name'])?$fmanager->uname.'/'.$name.'/'.'thumb/'.$row['name']:$fileurl;
+		$fileurl	= $fmanager->uname.'/'.$name.'/'.$row['name'];
+		$thumburl	= file_exists($fmanager->dname.$name.'/thumb/'.$row['name'])?$fmanager->uname.'/'.$name.'/'.'thumb/'.$row['name']:$fileurl;
 
 		$pvars['regx']['/\[empty\](.*?)\[\/empty\]/si'] = '';
 		$pvars['regx']['/\[not_empty\](.*?)\[\/not_empty\]/si'] = '$1';

@@ -56,7 +56,7 @@ class pm{
 			
 		$to_user = trim($to_user);
 		
-		if (!$to_user || (!$torow = $mysql->record("SELECT * FROM ".uprefix."_users WHERE ".(is_numeric($to_user)?"id = ".db_squote($to_user):"name = ".db_squote($to_user)))))
+		if (!$to_user or (!$torow = $mysql->record("SELECT * FROM ".uprefix."_users WHERE ".(is_numeric($to_user)?"id = ".db_squote($to_user):"name = ".db_squote($to_user)))))
 			return -5;
 			
 		$title 	 = secure_html($title);

@@ -21,11 +21,11 @@ function pm_send() {
 	$title = secure_html($_REQUEST['title']);
 	$content = $_REQUEST['content'];
 
-	if (!$title || mb_strlen($title, 'UTF-8') > 50) {
+	if (!$title or mb_strlen($title, 'UTF-8') > 50) {
 		msg(array('type' => 'danger', 'title' => __('msge_title'), 'message' => __('msgi_title')));
 		return;
 	}
-	if (!$content || mb_strlen($content, 'UTF-8') > 3000) {
+	if (!$content or mb_strlen($content, 'UTF-8') > 3000) {
 		msg(array('type' => 'danger', 'title' => __('msge_content'), 'message' => __('msgi_content')));
 		return;
 	}

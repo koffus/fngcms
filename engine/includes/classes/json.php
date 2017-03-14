@@ -607,7 +607,7 @@ class Services_JSON
 
  return $utf8;
 
- } elseif (preg_match('/^\[.*\]$/s', $str) || preg_match('/^\{.*\}$/s', $str)) {
+ } elseif (preg_match('/^\[.*\]$/s', $str) or preg_match('/^\{.*\}$/s', $str)) {
  // array, or object notation
 
  if ($str{0} == '[') {
@@ -649,7 +649,7 @@ class Services_JSON
  $top = end($stk);
  $substr_chrs_c_2 = substr($chrs, $c, 2);
 
- if (($c == $strlen_chrs) || (($chrs{$c} == ',') && ($top['what'] == SERVICES_JSON_SLICE))) {
+ if (($c == $strlen_chrs) or (($chrs{$c} == ',') && ($top['what'] == SERVICES_JSON_SLICE))) {
  // found a comma that is not inside a string, array, etc.,
  // OR we've reached the end of the character list
  $slice = substr($chrs, $top['where'], ($c - $top['where']));
@@ -691,7 +691,7 @@ class Services_JSON
 
  }
 
- } elseif ((($chrs{$c} == '"') || ($chrs{$c} == "'")) && ($top['what'] != SERVICES_JSON_IN_STR)) {
+ } elseif ((($chrs{$c} == '"') or ($chrs{$c} == "'")) && ($top['what'] != SERVICES_JSON_IN_STR)) {
  // found a quote, and we are not inside a string
  array_push($stk, array('what' => SERVICES_JSON_IN_STR, 'where' => $c, 'delim' => $chrs{$c}));
  //print("Found start of string at {$c}\n");

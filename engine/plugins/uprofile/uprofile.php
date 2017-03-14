@@ -274,14 +274,14 @@ function uprofile_editApply(){
 	// If we want to change password
 	if ($_REQUEST['editpassword'] != '') {
 		// Correct OLD password must be presented
-		if (!isset($_POST['oldpass']) || (EncodePassword($_POST['oldpass']) != $currentUser['pass'])) {
+		if (!isset($_POST['oldpass']) or (EncodePassword($_POST['oldpass']) != $currentUser['pass'])) {
 			msg(array('type' => 'danger', 'message' => __('uprofile')['msge_needoldpass']));
 			return;
 		}
 	} else {
 		// Token or correct OLD password must be presented
-		if ((!isset($_POST['token']) || ($_POST['token'] != genUToken('uprofile.update')))&&
-			(!isset($_POST['oldpass']) || (EncodePassword($_POST['oldpass']) != $currentUser['pass']))) {
+		if ((!isset($_POST['token']) or ($_POST['token'] != genUToken('uprofile.update')))&&
+			(!isset($_POST['oldpass']) or (EncodePassword($_POST['oldpass']) != $currentUser['pass']))) {
 				msg(array('type' => 'danger', 'message' => __('uprofile')['msge_needoldpass']));
 				return;
 		}

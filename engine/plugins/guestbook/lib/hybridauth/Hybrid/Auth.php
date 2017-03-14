@@ -355,7 +355,7 @@ class Hybrid_Auth {
 		Hybrid_Logger::info("Enter Hybrid_Auth::redirect( $url, $mode )");
 
 		// Ensure session is saved before sending response, see https://github.com/symfony/symfony/pull/12341
-		if ((PHP_VERSION_ID >= 50400 && PHP_SESSION_ACTIVE === session_status()) || (PHP_VERSION_ID < 50400 && isset($_SESSION) && session_id())) {
+		if ((PHP_VERSION_ID >= 50400 && PHP_SESSION_ACTIVE === session_status()) or (PHP_VERSION_ID < 50400 && isset($_SESSION) && session_id())) {
 			session_write_close();
 		}
 
@@ -390,7 +390,7 @@ class Hybrid_Auth {
 
 		$protocol = 'http://';
 
-		if ((isset($_SERVER['HTTPS']) && ( $_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1 ))
+		if ((isset($_SERVER['HTTPS']) && ( $_SERVER['HTTPS'] == 'on' or $_SERVER['HTTPS'] == 1 ))
 				|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'))
 		{
 			$protocol = 'https://';

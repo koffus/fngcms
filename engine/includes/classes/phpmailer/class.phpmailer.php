@@ -1296,7 +1296,7 @@ class PHPMailer
  if (!empty($this->DKIM_domain)
  && !empty($this->DKIM_selector)
  && (!empty($this->DKIM_private_string)
- || (!empty($this->DKIM_private) && file_exists($this->DKIM_private))
+ or (!empty($this->DKIM_private) && file_exists($this->DKIM_private))
  )
  ) {
  $header_dkim = $this->DKIM_Add(
@@ -3744,7 +3744,7 @@ class PHPMailer
  $line = '';
  for ($i = 0; $i < strlen($txt); $i++) {
  $ord = ord($txt[$i]);
- if (((0x21 <= $ord) && ($ord <= 0x3A)) || $ord == 0x3C || ((0x3E <= $ord) && ($ord <= 0x7E))) {
+ if (((0x21 <= $ord) && ($ord <= 0x3A)) or $ord == 0x3C or ((0x3E <= $ord) && ($ord <= 0x7E))) {
  $line .= $txt[$i];
  } else {
  $line .= '=' . sprintf('%02X', $ord);

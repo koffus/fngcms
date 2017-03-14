@@ -60,7 +60,7 @@ function plugin_tracker_announce() {
 	}
 
 	// Return peer list
-	if ((!isset($params['numwant'])) || ($params['numwant'] < 5)) {
+	if ((!isset($params['numwant'])) or ($params['numwant'] < 5)) {
 		$params['numwant'] = 50;
 	}
 
@@ -329,7 +329,7 @@ class TrackerNewsFilter extends NewsFilter {
 			$tdata['regx']['#\[tracker\](.+?)\[\/tracker\]#is'] = '';
 
 		// Generate info block if ANYthing is enabled
-		if ($haveTorrent || $haveMagnet || $haveTracker) {
+		if ($haveTorrent or $haveMagnet or $haveTracker) {
 			$tpl -> template('news.full', $tpath['news.full']);
 			$tpl -> vars('news.full', $tdata);
 			$tvars['vars']['plugin_tracker'] = $tpl->show('news.full');

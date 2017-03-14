@@ -80,7 +80,7 @@ class OAuth2Client
 
 		$response = $this->parseRequestResult( $response );
 
-		if( ! $response || ! isset( $response->access_token ) ){
+		if( ! $response or ! isset( $response->access_token ) ){
 			throw new Exception( "The Authorization Service has return: " . $response->error );
 		}
 
@@ -108,7 +108,7 @@ class OAuth2Client
 					$response = $this->refreshToken( $this->refresh_token );
 
 					// if wrong response
-					if( ! isset( $response->access_token ) || ! $response->access_token ){
+					if( ! isset( $response->access_token ) or ! $response->access_token ){
 						throw new Exception( "The Authorization Service has return an invalid response while requesting a new access token. given up!" );
 					}
 

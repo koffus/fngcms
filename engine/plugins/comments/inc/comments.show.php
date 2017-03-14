@@ -79,7 +79,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	// Check if we need to use limits
 	$limitStart = isset($callingParams['limitStart'])?intval($callingParams['limitStart']):0;
 	$limitCount = isset($callingParams['limitCount'])?intval($callingParams['limitCount']):0;
-	if ($limitStart || $limitCount) {
+	if ($limitStart or $limitCount) {
 		$sql .= ' limit '.$limitStart.", ".$limitCount;
 		$comnum = $limitStart;
 	}
@@ -91,10 +91,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	$output = '';
 	foreach ($mysql->select($sql) as $row) {
 		$comnum++;
-		$tvars['vars']['id']		=	$row['id'];
-		$tvars['vars']['author']	=	$row['author'];
-		$tvars['vars']['mail']		=	$row['mail'];
-		$tvars['vars']['date']		=	Lang::retDate($timestamp, $row['postdate']);
+		$tvars['vars']['id']		= $row['id'];
+		$tvars['vars']['author']	= $row['author'];
+		$tvars['vars']['mail']		= $row['mail'];
+		$tvars['vars']['date']		= Lang::retDate($timestamp, $row['postdate']);
 
 		if ($row['reg'] && getPluginStatusActive('uprofile')) {
 			$tvars['vars']['profile_link'] = checkLinkAvailable('uprofile', 'show')?
@@ -116,8 +116,8 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
 		/*
 		if (intval($config['com_wrap']) && (strlen($text) > $config['com_wrap'])) {
-			$tvars['vars']['comment-short']	=	substr($text, 0, $config['com_wrap']);
-			$tvars['vars']['comment-full']	=	substr($text, $config['com_wrap']);
+			$tvars['vars']['comment-short']	= substr($text, 0, $config['com_wrap']);
+			$tvars['vars']['comment-full']	= substr($text, $config['com_wrap']);
 			$tvars['regx']["'\[comment_full\](.*?)\[/comment_full\]'si"] = '$1';
 		} else {
 		*/
@@ -167,14 +167,14 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 			if ($config['use_bbcodes'])			{ $answer = $parse -> bbcodes($answer); }
 			if ($config['use_smilies'])			{ $answer = $parse -> smilies($answer); }
 
-			$tvars['vars']['answer']	=	$answer;
-			$tvars['vars']['name']		=	$row['name'];
+			$tvars['vars']['answer']	= $answer;
+			$tvars['vars']['name']		= $row['name'];
 			$tvars['regx']["'\[answer\](.*?)\[/answer\]'si"] = '$1';
 		} else {
 			$tvars['regx']["'\[answer\](.*?)\[/answer\]'si"] = '';
 		}
 
-		if (is_array($userROW) && (($userROW['status'] == 1) || ($userROW['status'] == 2))) {
+		if (is_array($userROW) && (($userROW['status'] == 1) or ($userROW['status'] == 2))) {
 			$edit_link		= admin_url."/admin.php?mod=editcomments&amp;newsid=".$newsID."&amp;comid=".$row['id'];
 			$delete_link	= generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'delete'), array('id' => $row['id'], 'uT' => genUToken($row['id'])), true);
 
@@ -186,8 +186,8 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 			$tvars['vars']['[if-have-perm]'] = '';
 			$tvars['vars']['[/if-have-perm]'] = '';
 		} else {
-			$tvars['regx']["'\\[edit-com\\].*?\\[/edit-com\\]'si"]	=	'';
-			$tvars['regx']["'\\[del-com\\].*?\\[/del-com\\]'si"]	=	'';
+			$tvars['regx']["'\\[edit-com\\].*?\\[/edit-com\\]'si"]	= '';
+			$tvars['regx']["'\\[del-com\\].*?\\[/del-com\\]'si"]	= '';
 			$tvars['vars']['ip'] = '';
 			$tvars['regx']['#\[if-have-perm\].*?\[\/if-have-perm\]#si'] = '';
 		}
@@ -268,11 +268,11 @@ function comments_showform($newsID, $callingParams = array()){
 		$tvars['regx']["'\[captcha\](.*?)\[/captcha\]'si"] = '';
 	}
 
-	$tvars['vars']['captcha_url']	=	admin_url."/captcha.php";
-	$tvars['vars']['bbcodes']		=	BBCodes();
-	$tvars['vars']['skins_url']		=	skins_url;
-	$tvars['vars']['newsid']		=	$newsID.'#'.genUToken('comment.add.'.$newsID);
-	$tvars['vars']['request_uri']	=	secure_html($_SERVER['REQUEST_URI']);
+	$tvars['vars']['captcha_url']	= admin_url."/captcha.php";
+	$tvars['vars']['bbcodes']		= BBCodes();
+	$tvars['vars']['skins_url']		= skins_url;
+	$tvars['vars']['newsid']		= $newsID.'#'.genUToken('comment.add.'.$newsID);
+	$tvars['vars']['request_uri']	= secure_html($_SERVER['REQUEST_URI']);
 
 	// Generate request URL
 	$link = generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'add'));

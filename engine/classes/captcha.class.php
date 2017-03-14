@@ -2,9 +2,9 @@
 
 class captcha {
 
-	var $width	=	85;
-	var $height	=	25;
-	var $size	=	15;
+	var $width	= 85;
+	var $height	= 25;
+	var $size	= 15;
 
 	// Set new value
 	function setValue($value, $group = '') {
@@ -68,8 +68,8 @@ class captcha {
 
 	// Generate image for specified group
 	function generate($group = '') {
-		$font	=	getFont();
-		$val	=	$this->getValue($group);
+		$font	= getFont();
+		$val	= $this->getValue($group);
 		if (!$val) {
 			$val = 'UNDEF';
 		}

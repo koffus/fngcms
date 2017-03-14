@@ -65,7 +65,7 @@ function plugin_wpinger_servicePing() {
 		foreach ($serviceList as $url) {
 			$content .= '<value><string>'.$url.'</string></value>';
 		}
-		$content .=	'</data></array></value></param>'.
+		$content .= '</data></array></value></param>'.
 		'</params>'.
 		'</methodCall>';
 

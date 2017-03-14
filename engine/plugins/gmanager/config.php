@@ -103,7 +103,7 @@ function update()
 	$dir = opendir(images_dir);
 	if ($dir = opendir(images_dir)) {
 		while($file = readdir($dir)) {
-			if (!is_dir(images_dir."/".$file) || $file == "." || $file == ".." || GetKeyFromName($file, $galery) !== false)
+			if (!is_dir(images_dir."/".$file) or $file == "." or $file == ".." or GetKeyFromName($file, $galery) !== false)
 				continue;
 			$mysql->query('insert '.prefix.'_gmanager '.
 				'(`name`, `order`) values '.
@@ -163,7 +163,7 @@ function edit_submit()
 {
 	global $mysql;
 	
-	if (!isset($_REQUEST['id']) || !isset($_POST['title']) || !isset($_POST['if_active']) || !isset($_POST['id_icon']) || !isset($_POST['description']) || !isset($_POST['keywords'])) return;
+	if (!isset($_REQUEST['id']) or !isset($_POST['title']) or !isset($_POST['if_active']) or !isset($_POST['id_icon']) or !isset($_POST['description']) or !isset($_POST['keywords'])) return;
 	$id = intval($_REQUEST['id']);
 	
 	$galery = $mysql->record('select * from '.prefix.'_gmanager where `id`='.db_squote($id).' limit 1');
@@ -281,7 +281,7 @@ function clear_cash()
 	if (($dir = get_plugcache_dir('gmanager'))) {
 		if ($handle = opendir($dir)) {
 			while (false !== ($file = readdir($handle))) { 
-				if ($file == "." || $file == "..")
+				if ($file == "." or $file == "..")
 					continue;
 				unlink ($dir.$file);
 			}

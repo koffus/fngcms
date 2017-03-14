@@ -80,7 +80,7 @@ function admCategoryList($retMode = 0) {
 			$tEntry['level'] = '';
 		}
 		$tEntry['level'] = $tEntry['level'] .
-			'<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/join'.((($num == ($cLen-1) || ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
+			'<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/join'.((($num == ($cLen-1) or ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
 		$tvars['regx']['#\[news\](.*?)\[\/news\]#is'] = ($row['posts']>0)?'$1':'';
 
 		$tEntries []= $tEntry;
@@ -205,13 +205,13 @@ function admCategoriesRPCmodify($params) {
 	}
 
 	// Check for permissions
-	if (!is_array($userROW) || ($userROW['status'] != 1)) {
+	if (!is_array($userROW) or ($userROW['status'] != 1)) {
 		// ACCESS DENIED
 		return array('status' => 0, 'errorCode' => 3, 'errorText' => 'Access denied');
 	}
 
 	// Scan incoming params
-	if (!is_array($params) || !isset($params['mode']) || !isset($params['id']) || !isset($params['token'])) {
+	if (!is_array($params) or !isset($params['mode']) or !isset($params['id']) or !isset($params['token'])) {
 		return array('status' => 0, 'errorCode' => 4, 'errorText' => 'Wrong params type');
 	}
 

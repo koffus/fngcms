@@ -17,7 +17,7 @@ class NSchedNewsFilter extends NewsFilter {
 		$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
 
 		$tvars['plugin']['nsched'] = '';
-		if ($perm['personal.publish'] || $perm['personal.unpublish']) {
+		if ($perm['personal.publish'] or $perm['personal.unpublish']) {
 			$tvars['plugin']['nsched'] .= '<tr><td width="100%" class="contentHead"><img src="'.admin_url.'/skins/default/images/nav.gif" hspace="8" alt="" />Управление публикацией новостей</td></tr><tr><td width="100%" class="contentEntry1"><table>';
 			if ($perm['personal.publish']) {
 				$tvars['plugin']['nsched'] .= '<tr><td>Дата включения:</td><td><input id="nsched_activate" name="nsched_activate" /> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
@@ -53,7 +53,7 @@ class NSchedNewsFilter extends NewsFilter {
 		if ($ndeactivate == '0000-00-00 00:00') { $ndeactivate = ''; }
 
 		$tvars['plugin']['nsched'] = '';
-		if ($perm[$permGroupMode.'.publish'] || $perm[$permGroupMode.'.unpublish']) {
+		if ($perm[$permGroupMode.'.publish'] or $perm[$permGroupMode.'.unpublish']) {
 			$tvars['plugin']['nsched'] .= '<tr><td width="100%" class="contentHead"><img src="'.admin_url.'/skins/default/images/nav.gif" hspace="8" alt="" />Управление публикацией новостей</td></tr><tr><td width="100%" class="contentEntry1"><table>';
 
 			if ($perm[$permGroupMode.'.publish']) {
@@ -116,7 +116,7 @@ function plugin_nsched_cron() {
 	}
 
 	// Проверяем, есть ли новости для (де)активации
-	if (count($listActivate) || count($listDeactivate)) {
+	if (count($listActivate) or count($listDeactivate)) {
 		// Загружаем необходимые плагины
 		loadActionHandlers('admin');
 		loadActionHandlers('admin:mod:editnews');

@@ -88,7 +88,7 @@ function coreRegisterUser() {
 		// Check captcha
 		if ($config['use_captcha']) {
 			$captcha = $_REQUEST['vcode'];
-			if (!$captcha || ($_SESSION['captcha'] != $captcha)) {
+			if (!$captcha or ($_SESSION['captcha'] != $captcha)) {
 				// Fail
 				$msg = __('msge_vcode');
 			}
@@ -281,7 +281,7 @@ function coreRestorePassword() {
 		// Check captcha
 		if ($config['use_captcha']) {
 			$captcha = $_REQUEST['vcode'];
-			if (!$captcha || ($_SESSION['captcha'] != $captcha)) {
+			if (!$captcha or ($_SESSION['captcha'] != $captcha)) {
 				// Fail
 				$msg = __('msge_vcode');
 			}

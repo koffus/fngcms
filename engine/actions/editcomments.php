@@ -65,8 +65,8 @@ if ($subaction == "deletecomment") {
 if ($subaction != "deletecomment") {
 	$row = $mysql->record("select * from ".prefix."_comments where id = ".db_squote($comid));
 	if ($row) {
-		$row['text']	=	str_replace("<br />", "\r\n", $row['text']);
-		$row['answer']	=	str_replace("<br />", "\r\n", $row['answer']);
+		$row['text']	= str_replace("<br />", "\r\n", $row['text']);
+		$row['answer']	= str_replace("<br />", "\r\n", $row['answer']);
 
 		$tvars['vars'] = array(
 			'php_self'	=>	$PHP_SELF,
@@ -83,8 +83,8 @@ if ($subaction != "deletecomment") {
 		$tvars['vars']['comdate'] = Lang::retDate(pluginGetVariable('comments', 'timestamp'), $row['postdate']);
 
 		if ($userROW['status'] < "3"){
-			$tvars['vars']['[answer]']	=	'';
-			$tvars['vars']['[/answer]']	=	'';
+			$tvars['vars']['[answer]']	= '';
+			$tvars['vars']['[/answer]']	= '';
 		} else {
 			$tvars['regx']['[\[answer\](.*)\[/answer\]]'] = '';
 		}

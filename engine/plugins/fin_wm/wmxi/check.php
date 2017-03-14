@@ -18,6 +18,6 @@
 	print(($mda ? " + MHash" : " - MHash")."\n");
 	print(($mdb ? " + Hash" : " - Hash")."\n");
 	print(($mdc ? " + MD4 Class" : " - MD4 Class")."\n");
-	print(" Summary: ".($mda || $mdb || $mdc ? "passed [+]." : "failed [-].")."\n");
+	print(" Summary: ".($mda or $mdb or $mdc ? "passed [+]." : "failed [-].")."\n");
 
 ?>

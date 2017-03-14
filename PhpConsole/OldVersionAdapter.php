@@ -65,7 +65,7 @@ namespace PhpConsole {
 			$handler = Handler::getInstance();
 			$handler->setHandleErrors($handleErrors);
 			$handler->setHandleExceptions($handleExceptions);
-			$handler->setCallOldHandlers(self::$callOldErrorHandler || self::$callOldExceptionsHandler);
+			$handler->setCallOldHandlers(self::$callOldErrorHandler or self::$callOldExceptionsHandler);
 			$handler->start();
 
 			$connector = $handler->getConnector();

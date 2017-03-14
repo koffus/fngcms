@@ -50,7 +50,7 @@ $rows = $mysql->record($sql);
 
 switch($metod){
 	case 'delete':
-		if(moder_perm($rows['tid'], 'topic_remove', $row_['moderators']) || $userROW['status'] == 1){
+		if(moder_perm($rows['tid'], 'topic_remove', $row_['moderators']) or $userROW['status'] == 1){
 			delete_topic($rows['tid']);
 		}
 		
@@ -64,7 +64,7 @@ switch($metod){
 			
 			$row_ = $mysql->record("SELECT * FROM ".prefix."_forum_forums WHERE id = ".securemysql( "{$move_to_forum}" )." LIMIT 1");
 			
-			if(moder_perm($row_['id'], 'topic_move', $row_['moderators']) || $userROW['status'] == 1){
+			if(moder_perm($row_['id'], 'topic_move', $row_['moderators']) or $userROW['status'] == 1){
 				$mysql->query('UPDATE '.prefix.'_forum_topics SET fid = \''.$move_to_forum.'\' WHERE id = '.securemysql($tid).' LIMIT 1');
 				
 				global_update_forum($move_to_forum);
@@ -112,25 +112,25 @@ switch($metod){
 		
 		break;
 	case 'open':
-		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) || $userROW['status'] == 1){
+		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) or $userROW['status'] == 1){
 			$mysql->query('UPDATE '.prefix.'_forum_topics SET state = \'open\' WHERE id = '.securemysql($tid).' LIMIT 1');
 		}
 		return redirect_forum(link_topic($tid));
 		break;
 	case 'close':
-		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) || $userROW['status'] == 1){
+		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) or $userROW['status'] == 1){
 			$mysql->query('UPDATE '.prefix.'_forum_topics SET state = \'closed\' WHERE id = '.securemysql($tid).' LIMIT 1');
 		}
 		return redirect_forum(link_topic($tid));
 	break;
 	case 'stick':
-		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) || $userROW['status'] == 1){
+		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) or $userROW['status'] == 1){
 			$mysql->query('UPDATE '.prefix.'_forum_topics SET pinned = \'1\' WHERE id = '.securemysql($tid).' LIMIT 1');
 		}
 		return redirect_forum(link_topic($tid));
 		break;
 	case 'unstick':
-		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) || $userROW['status'] == 1){
+		if(moder_perm($rows['tid'], 'topic_move', $row_['moderators']) or $userROW['status'] == 1){
 			$mysql->query('UPDATE '.prefix.'_forum_topics SET pinned = \'0\' WHERE id = '.securemysql($tid).' LIMIT 1');
 		}
 		return redirect_forum(link_topic($tid));

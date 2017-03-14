@@ -65,10 +65,10 @@ function rating_show($newsID, $rating, $votes){
 	$tvars['vars']['ajax_url'] = generateLink('core', 'plugin', array('plugin' => 'rating'), array());
 
 	$tvars['vars']['post_id'] = $newsID;
-	$tvars['vars']['rating'] = (!$rating || !$votes) ? 0 : round(($rating / $votes), 0);
+	$tvars['vars']['rating'] = (!$rating or !$votes) ? 0 : round(($rating / $votes), 0);
 	$tvars['vars']['votes'] = $votes;
 
-	if ((isset($_COOKIE['rating'.$newsID]) && $_COOKIE['rating'.$newsID]) || (pluginGetVariable('rating','regonly') && !is_array($userROW))) {
+	if ((isset($_COOKIE['rating'.$newsID]) && $_COOKIE['rating'.$newsID]) or (pluginGetVariable('rating','regonly') && !is_array($userROW))) {
 		// Show
 		$tpl -> template('rating', $tpath['rating']);
 		$tpl -> vars('rating', $tvars);

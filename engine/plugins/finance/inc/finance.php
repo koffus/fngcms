@@ -182,8 +182,8 @@ function finance_get_balance_type($balance_no) {
 //					 списываем средства в валюте
 // # 'ptype' - тип поинтов для оплаты (в случае авто оплаты или оплаты по поинтам)
 // # 'value' - массив с параметрами платежа
-//	'money' =	сумма платежа в валюте
-//	'points' =	массив (тип поинтов,кол-во поинтов) при списании в поинтах
+//	'money' = сумма платежа в валюте
+//	'points' = массив (тип поинтов,кол-во поинтов) при списании в поинтах
 // # 'description' - описание платежа [ для помещения в таблицу finance_history ]
 //
 
@@ -212,7 +212,7 @@ function finance_pay($identity, $payment) {
 	$enough = 0;
 
 	// Проверяем возможные форматы платежей. Если можно платить в поинтах - пытаемся
-	if (!isset($payment['type']) || ($payment['type'] == 'auto') || ($payment['type'] == 'points')) {
+	if (!isset($payment['type']) or ($payment['type'] == 'auto') or ($payment['type'] == 'points')) {
 		// Проверяем наличие достаточной суммы на балансах
 		// $ptype - тип баланса; $pvalue - сумма списания с баланса
 		$ptype	= $payment['ptype'];

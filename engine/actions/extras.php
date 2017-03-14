@@ -27,7 +27,7 @@ if (!defined('NGCMS')) die ('HAL');
 function admGeneratePluginList() {
 	global $twig, $repoPluginInfo, $PHP_SELF;
 
-	$extras	=	pluginsGetList();
+	$extras	= pluginsGetList();
 	ksort($extras);
 
 	$pCount = array (0 => 0, 1 => 0, 2 => 0, 3 => 0);

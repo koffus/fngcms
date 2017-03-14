@@ -78,11 +78,11 @@ $query_list_093svn = array(
 
 );
 // Load plugin list
-$extras	=	pluginsGetList();
+$extras	= pluginsGetList();
 // Load lang files
 Lang::load('extra-config', 'admin');
 
-if ($_REQUEST['update092_093rc1'] || $_REQUEST['xfUpdateDB'] || $_REQUEST['update093svn']) {
+if ($_REQUEST['update092_093rc1'] or $_REQUEST['xfUpdateDB'] or $_REQUEST['update093svn']) {
 	// Выполнение SQL запросов на обновление
 	print '<br/>Выполнение SQL запросов:<br/>';
 	print '<table width="80%">';

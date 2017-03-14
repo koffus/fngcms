@@ -21,8 +21,8 @@ function multi_multisites(){
  if (!is_array($multiconfig)) { return; }
 
  // Если не выбран МультиМастер - не обрабатываем мультиконфиг
- if ( !$multimaster || (!is_array($multiconfig[$multimaster])) ||
- (!$multiconfig[$multimaster]['active']) || (!is_array($multiconfig[$multimaster]['domains']))) { return; }
+ if ( !$multimaster or (!is_array($multiconfig[$multimaster])) ||
+ (!$multiconfig[$multimaster]['active']) or (!is_array($multiconfig[$multimaster]['domains']))) { return; }
  // Обёртка для реализации break'ов
  do {
 	// Проверка мастера

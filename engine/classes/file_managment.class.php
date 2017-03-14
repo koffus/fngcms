@@ -25,7 +25,7 @@ class file_managment {
 			case "file":	return $config['files_dir'];
 			case "avatar":	return $config['avatars_dir'];
 			case "photo":	return $config['photos_dir'];
-			default:		return false;
+			default: return false;
 		}
 	}
 
@@ -66,7 +66,7 @@ class file_managment {
 							$this->uname	= $config['photos_url'];
 							$this->tcat		= 2;
 							break;
-			default:		return false;
+			default: return false;
 		}
 		return true;
 	}

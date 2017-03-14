@@ -174,7 +174,7 @@ class TagsNewsfilter extends NewsFilter {
 		}
 
 		// Load params for display (if needed)
-		if (!isset($this->displayParams) || !is_array($this->displayParams)) {
+		if (!isset($this->displayParams) or !is_array($this->displayParams)) {
 			$tpath = locatePluginTemplates(array(':params.ini'), 'tags', pluginGetVariable('tags', 'localsource'), pluginGetVariable('tags', 'skin')?pluginGetVariable('tags', 'skin'):'default');
 			$this->displayParams = parse_ini_file($tpath[':params.ini'].'params.ini');
 		}
@@ -364,7 +364,7 @@ function plugin_tags_tag($params = array()) {
 
 		// Set page display limit
 		$perPage = intval(pluginGetVariable('tags', 'tpage_limit'));
-		if (($perPage < 1) || ($perPage > 1000))
+		if (($perPage < 1) or ($perPage > 1000))
 			$perPage = 1000;
 
 		// Manage pagination
@@ -465,7 +465,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 
 	// Set page display limit
 	$perPage = intval(pluginGetVariable('tags', ($ppage?'ppage_':'').'limit'));
-	if (($perPage < 1) || ($perPage > 1000))
+	if (($perPage < 1) or ($perPage > 1000))
 		$perPage = 1000;
 
 	if ($ppage) {
@@ -554,7 +554,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	$tagList = $tagCount?(join($displayParams[($ppage?'cloud':'sidebar').'.tag.delimiter']."\n", $tags)):($displayParams[($ppage?'cloud':'sidebar').'.notags']);
 
 	// If we have more than 1 page or current page != 1, we should generate paginator
-	if ( $ppage && (($pagesCount > 1) || ($pageNo != 1))) {
+	if ( $ppage && (($pagesCount > 1) or ($pageNo != 1))) {
 		// Load navigation bar
 		templateLoadVariables(true);
 		$navigations = $TemplateCache['site']['#variables']['navigation'];

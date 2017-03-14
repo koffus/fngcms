@@ -55,7 +55,7 @@ function bbMediaProcess($content) {
 			}
 
 			// Now let's compose a resulting URL
-			$keys['file'] = ((!isset($keys['file']) || !$keys['file'])?$alt:$keys['file']);
+			$keys['file'] = ((!isset($keys['file']) or !$keys['file'])?$alt:$keys['file']);
 
 			// Let's extract file extension and try to retrieve file type
 			$fileExt = strtolower(substr(strrchr($keys['file'], "."), 1));

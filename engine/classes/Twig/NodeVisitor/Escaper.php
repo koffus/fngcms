@@ -74,7 +74,7 @@ class Twig_NodeVisitor_Escaper implements Twig_NodeVisitorInterface
  return $this->escapePrintNode($node, $env, $this->needEscaping($env));
  }
 
- if ($node instanceof Twig_Node_AutoEscape || $node instanceof Twig_Node_Block) {
+ if ($node instanceof Twig_Node_AutoEscape or $node instanceof Twig_Node_Block) {
  array_pop($this->statusStack);
  } elseif ($node instanceof Twig_Node_BlockReference) {
  $this->blocks[$node->getAttribute('name')] = $this->needEscaping($env);
@@ -141,7 +141,7 @@ class Twig_NodeVisitor_Escaper implements Twig_NodeVisitorInterface
  $safe = $this->safeAnalysis->getSafe($expression);
  }
 
- return in_array($type, $safe) || in_array('all', $safe);
+ return in_array($type, $safe) or in_array('all', $safe);
  }
 
  protected function needEscaping(Twig_Environment $env)

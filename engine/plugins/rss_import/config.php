@@ -8,7 +8,7 @@
 pluginsLoadConfig();
 
 $count = pluginGetVariable($plugin, 'count');
-if ((intval($count) < 1) || (intval($count) > 20))
+if ((intval($count) < 1) or (intval($count) > 20))
 	$count = 1;
 
 // Fill configuration parameters

@@ -68,8 +68,8 @@ function processJSON(){
 
 	$methodName = (isset($_POST['methodName']))?$_POST['methodName']:(isset($_GET['methodName'])?$_GET['methodName']:'');
 	switch ($methodName) {
-		case 'admin.rewrite.submit':			$out = rpcRewriteSubmit($params); break;
-		case 'core.users.search':				$out = rpcAdminUsersSearch($params); break;
+		case 'admin.rewrite.submit': 	$out = rpcRewriteSubmit($params); break;
+		case 'core.users.search': 		$out = rpcAdminUsersSearch($params); break;
 		case 'core.registration.checkParams': 	$out = coreCheckRegParams($params);break;
 		default:
 			if (isset($RPCFUNC[$methodName])) {
@@ -161,7 +161,7 @@ function rpcAdminUsersSearch($params){
 	global $userROW, $mysql;
 
 	// Check for permissions
-	if (!is_array($userROW) || ($userROW['status'] > 3)) {
+	if (!is_array($userROW) or ($userROW['status'] > 3)) {
 		// ACCESS DENIED
 		return array('status' => 0, 'errorCode' => 3, 'errorText' => 'Access denied');
 	}

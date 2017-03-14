@@ -138,7 +138,7 @@ function plugin_complain_add() {
  $txvars['vars'] = array ( 'ds_id' => intval($_REQUEST['ds_id']), 'entry_id' => intval($_REQUEST['entry_id']), 'errorlist' => $err );
  $txvars['regx']['#\[notify\](.*?)\[/notify\]#is'] = ((is_array($userROW)) &&(pluginGetVariable('complain', 'inform_reporter') == 2))?'$1':'';
  $txvars['regx']['#\[email\](.*?)\[/email\]#is'] = ((!is_array($userROW)) && pluginGetVariable('complain', 'allow_unreg_inform'))?'$1':'';
- $txvars['regx']['#\[text\](.*?)\[/text\]#is'] = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text')==1)) || (pluginGetVariable('complain', 'allow_text') == 2))?'$1':'';
+ $txvars['regx']['#\[text\](.*?)\[/text\]#is'] = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text')==1)) or (pluginGetVariable('complain', 'allow_text') == 2))?'$1':'';
 
  $txvars['vars']['form_url'] = generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'post'));
 
@@ -215,7 +215,7 @@ function plugin_complain_post() {
  }
 
  // Text error description
- $errorText = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text') == 1)) || (pluginGetVariable('complain', 'allow_text') == 2))? $_REQUEST['error_text'] : '';
+ $errorText = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text') == 1)) or (pluginGetVariable('complain', 'allow_text') == 2))? $_REQUEST['error_text'] : '';
 
  // Fill flags variable
  $flags = $flagNotify?'N':'';
@@ -224,7 +224,7 @@ function plugin_complain_post() {
  $mysql->query("insert into ".prefix."_complain (author_id, publisher_id, publisher_ip, publisher_mail, date, ds_id, entry_id, error_code, error_text, flags) values (".db_squote($cdata['author_id']).", ".db_squote(is_array($userROW)?$userROW['id']:0).", ".db_squote($ip).", ".db_squote($publisherMail).", now(), ".db_squote($cdata['ds_id']).", ".db_squote($cdata['id']).", ".db_squote($errid).", ".db_squote($errorText).", ".db_squote($flags).")");
 
  // Write a mail (if needed)
- if (pluginGetVariable('complain', 'inform_author') || pluginGetVariable('complain', 'inform_admin') || pluginGetVariable('complain', 'inform_admins')) {
+ if (pluginGetVariable('complain', 'inform_author') or pluginGetVariable('complain', 'inform_admin') or pluginGetVariable('complain', 'inform_admins')) {
 
  $tmvars = array (
  'title' => $cdata['title'],

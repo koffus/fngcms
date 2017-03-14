@@ -1048,7 +1048,7 @@ class SimpleImage {
  if(isset($stroke_color) && isset($stroke_size)) {
 
  // Text with stroke
- if(is_array($color) || is_array($stroke_color)) {
+ if(is_array($color) or is_array($stroke_color)) {
  // Multi colored text and/or multi colored stroke
 
  if(is_array($stroke_color)) {
@@ -1389,7 +1389,7 @@ class SimpleImage {
  'a' => 0
  );
 
- } elseif (is_array($color) && (count($color) == 3 || count($color) == 4)) {
+ } elseif (is_array($color) && (count($color) == 3 or count($color) == 4)) {
 
  if (isset($color['r'], $color['g'], $color['b'])) {
  return array(

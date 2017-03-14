@@ -72,7 +72,7 @@ class Hybrid_Provider_Model_OAuth1 extends Hybrid_Provider_Model {
 	 */
 	function initialize() {
 		// 1 - check application credentials
-		if (!$this->config["keys"]["key"] || !$this->config["keys"]["secret"]) {
+		if (!$this->config["keys"]["key"] or !$this->config["keys"]["secret"]) {
 			throw new Exception("Your application key and secret are required in order to connect to {$this->providerId}.", 4);
 		}
 
@@ -139,7 +139,7 @@ class Hybrid_Provider_Model_OAuth1 extends Hybrid_Provider_Model {
 		$oauth_token = (array_key_exists('oauth_token', $_REQUEST)) ? $_REQUEST['oauth_token'] : "";
 		$oauth_verifier = (array_key_exists('oauth_verifier', $_REQUEST)) ? $_REQUEST['oauth_verifier'] : "";
 
-		if (!$oauth_token || !$oauth_verifier) {
+		if (!$oauth_token or !$oauth_verifier) {
 			throw new Exception("Authentication failed! {$this->providerId} returned an invalid oauth verifier.", 5);
 		}
 

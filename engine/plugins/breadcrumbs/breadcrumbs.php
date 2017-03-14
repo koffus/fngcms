@@ -173,14 +173,14 @@ function breadcrumbs(){
  } elseif ($pluginName != 'news') { 
  if ($pluginName == "static") $location_last = $SYSTEM_FLAGS['info']['title']['item'];
  
- elseif (($pluginName == 'uprofile' && $CurrentHandler['handlerName'] == 'edit') || $pluginName == 'search')
+ elseif (($pluginName == 'uprofile' && $CurrentHandler['handlerName'] == 'edit') or $pluginName == 'search')
  $location_last = $SYSTEM_FLAGS['info']['title']['group'];
  elseif ($pluginName == 'uprofile' && $CurrentHandler['handlerName'] == 'show')
  $location_last = $SYSTEM_FLAGS['info']['title']['group'].' '.$SYSTEM_FLAGS['info']['title']['item'];
  elseif ($pluginName == 'core' && (in_array($CurrentHandler['handlerName'], array('registration', 'lostpassword', 'login'))))
  $location_last = $SYSTEM_FLAGS['info']['title']['group'];
  
- elseif ($params['plugin'] || $pluginName){
+ elseif ($params['plugin'] or $pluginName){
 
  # if plugin provide put some info
  if($SYSTEM_FLAGS['info']['breadcrumbs']){
@@ -242,7 +242,7 @@ function breadcrumbs(){
 
  $location_last = $SYSTEM_FLAGS['info']['title']['item'];
  
- if(count($catids) != 1 || pluginGetVariable('breadcrumbs', 'block_full_path')){
+ if(count($catids) != 1 or pluginGetVariable('breadcrumbs', 'block_full_path')){
  if ($CurrentHandler['params']['category'] != 'none') {
  foreach ($catids as $cid) {
  foreach ($catz as $cc) {

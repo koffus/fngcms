@@ -111,7 +111,7 @@ function showList($grp) {
 									$dEntry['perm'][$kg['id']] = $catArray; //$PERM[$kg['id']][$kb][$ka][$ke];
 								} else {
 									$dEntry['perm'][$kg['id']] = $x; //$PERM[$kg['id']][$kb][$ka][$ke];
-									$dvalue[$dEntry['name'].'|'.$kg['id']] = (!isset($PERM[$kg['id']][$kb][$ka][$ke]) || ($PERM[$kg['id']][$kb][$ka][$ke] === NULL))?-1:($x?1:0);
+									$dvalue[$dEntry['name'].'|'.$kg['id']] = (!isset($PERM[$kg['id']][$kb][$ka][$ke]) or ($PERM[$kg['id']][$kb][$ka][$ke] === NULL))?-1:($x?1:0);
 								}
 							}
 
@@ -201,7 +201,7 @@ function updateConfig() {
 			}
 
 			$markValue = 99;
-			if (!isset($PERM[$m[4]][$m[1]][$m[2]][$m[3]]) || ($PERM[$m[4]][$m[1]][$m[2]][$m[3]] === NULL)) {
+			if (!isset($PERM[$m[4]][$m[1]][$m[2]][$m[3]]) or ($PERM[$m[4]][$m[1]][$m[2]][$m[3]] === NULL)) {
 				$markValue = -1;
 			} else {
 				if ($itemIsCategories) {

@@ -91,7 +91,7 @@ $note_path = root.'trash/'.$parse->translit(strtolower(name)).'_note.inc.txt';
 if ($action == 'save') {
 	$note = secure_html(trim($_POST['note']));
 
-	if (!$note || $note == '') {
+	if (!$note or $note == '') {
 		@unlink($note_path);
 	} elseif (mb_strlen($note, 'UTF-8') > 3000) {
 		msg(array('type' => 'danger', 'title' => __('msge_badnote'), 'message' => __('msgi_badnote')));
@@ -104,8 +104,8 @@ if ($action == 'save') {
 }
 
 if (file_exists($note_path)) {
-	$fp		=	fopen($note_path, 'r');
-	$note	=	fread($fp, filesize($note_path));
+	$fp		= fopen($note_path, 'r');
+	$note	= fread($fp, filesize($note_path));
 	fclose($fp);
 } else {
 	$note = '';

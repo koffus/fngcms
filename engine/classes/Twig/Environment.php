@@ -326,7 +326,7 @@ class Twig_Environment
  if (false === $cache = $this->getCacheFilename($name)) {
  eval('?>'.$this->compileSource($this->loader->getSource($name), $name));
  } else {
- if (!is_file($cache) || ($this->isAutoReload() && !$this->isTemplateFresh($name, filemtime($cache)))) {
+ if (!is_file($cache) or ($this->isAutoReload() && !$this->isTemplateFresh($name, filemtime($cache)))) {
  $this->writeCacheFile($cache, $this->compileSource($this->loader->getSource($name), $name));
  }
 
@@ -1057,7 +1057,7 @@ class Twig_Environment
  $alternatives = array();
  foreach ($items as $item) {
  $lev = levenshtein($name, $item);
- if ($lev <= strlen($name) / 3 || false !== strpos($item, $name)) {
+ if ($lev <= strlen($name) / 3 or false !== strpos($item, $name)) {
  $alternatives[$item] = $lev;
  }
  }
@@ -1100,7 +1100,7 @@ class Twig_Environment
  $tmpFile = tempnam(dirname($file), basename($file));
  if (false !== @file_put_contents($tmpFile, $content)) {
  // rename does not work on Win32 before 5.2.6
- if (@rename($tmpFile, $file) || (@copy($tmpFile, $file) && unlink($tmpFile))) {
+ if (@rename($tmpFile, $file) or (@copy($tmpFile, $file) && unlink($tmpFile))) {
  @chmod($file, 0666 & ~umask());
 
  return;

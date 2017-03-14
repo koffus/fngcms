@@ -35,7 +35,7 @@ function plugin_block_zgallery($number, $mode, $cat, $overrideTemplateName, $cac
  
  $filter_where = (count($filter)?"where ".join(" and ",$filter):'');
  
- if (intval($number) > 0 || intval($number) < 1000) {
+ if (intval($number) > 0 or intval($number) < 1000) {
  $limit = "limit ".$number;
  }
  else {

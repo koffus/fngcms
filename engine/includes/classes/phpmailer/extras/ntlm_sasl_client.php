@@ -21,7 +21,7 @@ class ntlm_sasl_client_class
  public function initialize(&$client)
  {
  if (!function_exists($function = "mcrypt_encrypt")
- || !function_exists($function = "mhash")
+ or !function_exists($function = "mhash")
  ) {
  $extensions = array(
  "mcrypt_encrypt" => "mcrypt",

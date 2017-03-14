@@ -11,12 +11,12 @@ function xfields_rpc_group_modify($params){
 	if (!is_array($xf = xf_configLoad()))
 		$xf = array();
 
-	if (!is_array($userROW) || ($userROW['status'] != 1)) {
+	if (!is_array($userROW) or ($userROW['status'] != 1)) {
 		return array('status' => 0, 'errorCode' => 1, 'errorText' => 'Security error');
 
 	}
 
-	if (!is_array($params) || !isset($params['action']))
+	if (!is_array($params) or !isset($params['action']))
 		return array('status' => 0, 'errorCode' => 2, 'errorText' => 'Activity mode is not set');
 
 	switch ($params['action']) {

@@ -64,7 +64,7 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
 	}
 
 	// * 1 = There are new messages [ or no $lastEventID is set ]
-	if (($newEvents['type'] == 1) || ($lastEventID < 1)) {
+	if (($newEvents['type'] == 1) or ($lastEventID < 1)) {
 		$query = "select id, postdate, author, author_id, text from ".prefix."_jchat where id >".intval($maxLoadedID)." order by id desc limit ".$limit;
 	}
 
@@ -287,7 +287,7 @@ function plugin_jchat_del() {
 	$SUPRESS_TEMPLATE_SHOW = 1;
 
 	// Only ADMINS can delete items from chat
-	if (!is_array($userROW) || ($userROW['status'] > 1)) {
+	if (!is_array($userROW) or ($userROW['status'] > 1)) {
 		print json_encode(array('status' => 0, 'error' => 'Permission denied'));
 
 		// Terminate execution of script
@@ -392,7 +392,7 @@ if (pluginGetVariable('jchat', 'enable_panel')) {
 }
 
 // Register processing applications if SELF or PANEL modes are enabled
-if (pluginGetVariable('jchat', 'enable_win') || pluginGetVariable('jchat', 'enable_panel')) {
+if (pluginGetVariable('jchat', 'enable_win') or pluginGetVariable('jchat', 'enable_panel')) {
 	register_plugin_page('jchat','add','plugin_jchat_add',0);
 	register_plugin_page('jchat','del','plugin_jchat_del',0);
 	register_plugin_page('jchat','show','plugin_jchat_show',0);

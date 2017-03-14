@@ -104,7 +104,7 @@ class Twig_Loader_NGCMS implements Twig_LoaderInterface
  	}
 
 	// Process BASIC conversion
-	if (!isset($this->templateOptions[$name]) || !is_array($this->templateOptions[$name]) || isset($this->templateOptions[$name]) || (!$this->templateOptions[$name]['nobasic'])) {
+	if (!isset($this->templateOptions[$name]) or !is_array($this->templateOptions[$name]) or isset($this->templateOptions[$name]) or (!$this->templateOptions[$name]['nobasic'])) {
 		// Enabled
 		// - static conversion
 		$content = preg_replace(

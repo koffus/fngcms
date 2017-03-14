@@ -21,7 +21,7 @@ if ($_REQUEST['action'] == 'commit') {
 		$src	= $_REQUEST['src'];
 		$dest	= $_REQUEST['dest'];
 
-		if (!mb_strlen($src, 'UTF-8') || !mb_strlen($dest, 'UTF-8')) {
+		if (!mb_strlen($src, 'UTF-8') or !mb_strlen($dest, 'UTF-8')) {
 			// No src/dest text
 			msg(array('type' => 'danger', 'message' => __('ireplace:error.notext')));
 			break;

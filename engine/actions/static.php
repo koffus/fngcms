@@ -220,8 +220,8 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 	$requestID = ($sID > 0)?$sID:((isset($_REQUEST['id']) && $_REQUEST['id'])?$_REQUEST['id']:0);
 
 	// EDIT
-	if (($operationMode == 3) || ($operationMode == 4)) {
-		if (!$requestID || !is_array($row = $mysql->record("select * from ".prefix."_static where id = ".db_squote($requestID)))) {
+	if (($operationMode == 3) or ($operationMode == 4)) {
+		if (!$requestID or !is_array($row = $mysql->record("select * from ".prefix."_static where id = ".db_squote($requestID)))) {
 			msg(array('type' => 'danger', 'message' => __('msge_not_found')));
 			return 0;
 		}
@@ -230,13 +230,13 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 	}
 
 	// ADD
-	if (($operationMode == 1) || ($operationMode == 2)) {
+	if (($operationMode == 1) or ($operationMode == 2)) {
 		// ADD mode
 		$row['id'] = 0;
 	}
 
 	// Populate `repeat previous attempt` data
-	if (($operationMode == 2) || ($operationMode == 4)) {
+	if (($operationMode == 2) or ($operationMode == 4)) {
 		foreach (array('title', 'content', 'alt_name', 'template', 'description', 'keywords') as $k) {
 			if (isset($_REQUEST[$k]))
 				$row[$k] = $_REQUEST[$k];
@@ -421,10 +421,10 @@ function editStatic(){
 		return -1;
 	}
 
-	$id			=	intval($_REQUEST['id']);
-	$title		=	$_REQUEST['title'];
-	$content	=	$_REQUEST['content'];
-	$alt_name	=	$parse->translit(trim($_REQUEST['alt_name']),1, 1);
+	$id			= intval($_REQUEST['id']);
+	$title		= $_REQUEST['title'];
+	$content	= $_REQUEST['content'];
+	$alt_name	= $parse->translit(trim($_REQUEST['alt_name']),1, 1);
 
 	// Try to find news that we're trying to edit
 	if ( !is_array($row = $mysql->record("select * from ".prefix."_static where id=".db_squote($id))) ) {
@@ -489,20 +489,20 @@ function editStatic(){
 // # Action selection #
 // #=======================================#
 
-$action		=	isset($_REQUEST['action'])?$_REQUEST['action']:'';
+$action		= isset($_REQUEST['action'])?$_REQUEST['action']:'';
 
 switch ($action) {
-	case 'add':			if ($id = addStatic()) {
+	case 'add': 	if ($id = addStatic()) {
 							addEditStaticForm(3, $id);
 						} else {
 							addEditStaticForm(2);
 						}
 						break;
 
-	case 'addForm':		addEditStaticForm(1);
+	case 'addForm': addEditStaticForm(1);
 						break;
 
-	case 'edit':		if (($id = editStatic())>0) {
+	case 'edit': if (($id = editStatic())>0) {
 							addEditStaticForm(3, $id);
 						} else if ($id == 0) {
 							addEditStaticForm(4);
@@ -516,9 +516,9 @@ switch ($action) {
 
 	default: {
 		switch ($action) {
-			case 'do_mass_approve':		massStaticModify('approve = 1', 'msgo_approved', 'approve');		break;
+			case 'do_mass_approve': massStaticModify('approve = 1', 'msgo_approved', 'approve');		break;
 			case 'do_mass_forbidden':	massStaticModify('approve = 0', 'msgo_forbidden', 'forbidden');		break;
-			case 'do_mass_delete':		massStaticDelete();													break;
+			case 'do_mass_delete': massStaticDelete();													break;
 		}
 		listStatic();
 	}

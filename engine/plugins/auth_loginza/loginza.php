@@ -160,7 +160,7 @@ function loginzaRegister(){
 function loginzaDelete() {
 	global $userROW, $mysql, $config, $tpl, $template;
 	
-	if (!is_array($userROW) || !$userROW['loginza_id']) header('Location: '.$config['home_url'].'');
+	if (!is_array($userROW) or !$userROW['loginza_id']) header('Location: '.$config['home_url'].'');
 	
 	$mysql->query("UPDATE `".uprefix."_users` SET `loginza_id` = '' WHERE id = ".db_squote($userROW['id']));
 	
@@ -272,7 +272,7 @@ function genNickname ($responce) {
 function genFullName (&$responce) {
 		if ($responce['name']['full_name']) {
 			return $responce['name']['full_name'];
-		} elseif ( $responce['name']['first_name'] || $responce['name']['last_name'] ) {
+		} elseif ( $responce['name']['first_name'] or $responce['name']['last_name'] ) {
 			return trim($responce['name']['first_name'].' '.$responce['name']['last_name']);
 		}
 		

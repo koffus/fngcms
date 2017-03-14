@@ -26,7 +26,7 @@ class CatDescriptionNewsFilter extends NewsFilter {
 						break;
 				}
 			}
-			if ($catid === false || $catid === null)
+			if ($catid === false or $catid === null)
 				return 1;
 			
 			$cacheFileName = md5('cat_description'.$catid.$config['home_url'].$config['theme'].$config['default_lang']).'.txt';

@@ -117,7 +117,7 @@ class NeighboringNewsFilter extends NewsFilter
  'previous_news' => $previous_news
  )));
 
- if ($next_news != "" || $previous_news != "")
+ if ($next_news != "" or $previous_news != "")
  $tvars['vars']['neighboring_news'] = $tpl->show('neighboring_news');
  else $tvars['vars']['neighboring_news'] = "";
 
@@ -225,7 +225,7 @@ class NeighboringNewsFilter extends NewsFilter
  'previous_news' => $previous_news
  )));
 
- if ($next_news != "" || $previous_news != "")
+ if ($next_news != "" or $previous_news != "")
  $tvars['vars']['neighboring_news'] = $tpl->show('neighboring_news');
  else $tvars['vars']['neighboring_news'] = "";
 

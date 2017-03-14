@@ -85,7 +85,7 @@ function editNewsForm() {
 	$tVars = array(
 		'php_self'			=>	$PHP_SELF,
 		'cdate'				=> date('d.m.Y H:i', $row['postdate']),
-		'mastercat'			=>	makeCategoryList(array('doempty' => ($perm[$permGroupMode.'.nocat'] || !count($cats))?1:0, 'greyempty' => !$perm['personal.nocat'], 'nameval' => 0, 'selected' => count($cats)?$cats[0]:0)),
+		'mastercat'			=>	makeCategoryList(array('doempty' => ($perm[$permGroupMode.'.nocat'] or !count($cats))?1:0, 'greyempty' => !$perm['personal.nocat'], 'nameval' => 0, 'selected' => count($cats)?$cats[0]:0)),
 		'extcat'			=> makeCategoryList(array('nameval' => 0, 'checkarea' => 1, 'selected' => (count($cats)>1)?array_slice($cats,1):array(), 'disabledarea' => !$perm[$permGroupMode.'.multicat'])),
 		'allcats'			=>	resolveCatNames($cats),
 		'id'				=>	$row['id'],
@@ -118,8 +118,8 @@ function editNewsForm() {
 			'can_catpinned'		=> $perm[$permGroupMode.'.catpinned']?true:false,
 			'raw'				=> ($row['flags'] & 1),
 			'html'				=> ($row['flags'] & 2),
-			'extended_more'		=> ($config['extended_more'] || ($tvars['vars']['content.delimiter'] != ''))?true:false,
-			'editable'			=> (($perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) || ($perm[$permGroupMode.'.unpublish']))?true:false,
+			'extended_more'		=> ($config['extended_more'] or ($tvars['vars']['content.delimiter'] != ''))?true:false,
+			'editable'			=> (($perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) or ($perm[$permGroupMode.'.unpublish']))?true:false,
 			'deleteable'		=> ($perm[$permGroupMode.'.delete'.(($row['approve'] == 1)?'.published':'')])?true:false,
 			'html.lost'			=> (($row['flags'] & 2) && (!$perm[$permGroupMode.'.html']))?1:0,
 			'mainpage.lost'		=> (($row['mainpage']) && (!$perm[$permGroupMode.'.mainpage']))?true:false,
@@ -146,11 +146,11 @@ function editNewsForm() {
 		$tVars['link'] = newsGenerateLink($row, false, 0, true);
 	}
 
-	$tVars['flags']['can_publish']		= ((($row['approve'] == 1) && ($perm[$permGroupMode.'.modify.published'])) || (($row['approve'] < 1) && $perm[$permGroupMode.'.publish']))?1:0;
-	$tVars['flags']['can_unpublish']	= (($row['approve'] < 1) || ($perm[$permGroupMode.'.unpublish']))?1:0;
-	$tVars['flags']['can_draft']		= (($row['approve'] == -1) || ($perm[$permGroupMode.'.unpublish']))?1:0;
+	$tVars['flags']['can_publish']		= ((($row['approve'] == 1) && ($perm[$permGroupMode.'.modify.published'])) or (($row['approve'] < 1) && $perm[$permGroupMode.'.publish']))?1:0;
+	$tVars['flags']['can_unpublish']	= (($row['approve'] < 1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
+	$tVars['flags']['can_draft']		= (($row['approve'] == -1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
 
-	$tVars['flags']['params.lost']		= ($tVars['flags']['publish.lost'] || $tVars['flags']['html.lost'] || $tVars['flags']['mainpage.lost'] || $tVars['flags']['pinned.lost'] || $tVars['flags']['catpinned.lost'] || $tVars['flags']['multicat.lost'])?1:0;
+	$tVars['flags']['params.lost']		= ($tVars['flags']['publish.lost'] or $tVars['flags']['html.lost'] or $tVars['flags']['mainpage.lost'] or $tVars['flags']['pinned.lost'] or $tVars['flags']['catpinned.lost'] or $tVars['flags']['multicat.lost'])?1:0;
 
 	// Generate data for content input fields
 	if ($config['news.edit.split']) {
@@ -228,7 +228,7 @@ function massCommentDelete(){
 		return;
 	}
 
-	if (!$delcomid || !count($delcomid)){
+	if (!$delcomid or !count($delcomid)){
 		msg(array('type' => 'danger', 'title' => __('msge_selectcom'), 'message' => __('msgi_selectcom')));
 		return;
 	}
@@ -338,7 +338,7 @@ function listNewsForm() {
 	));
 
 	// Check if we have view access
-	if (!$perm['view'] || (!$perm['personal.list'] && !$perm['other.list'])) {
+	if (!$perm['view'] or (!$perm['personal.list'] && !$perm['other.list'])) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
 		return;
 	}
@@ -379,12 +379,12 @@ function listNewsForm() {
 	// Sort mode
 	$fSort = '';
 	switch(getIsSet($_REQUEST['sort'])){
-		case 'id':				$fSort = 'id';				break;
-		case 'id_desc':			$fSort = 'id desc';			break;
-		case 'postdate':		$fSort = 'postdate';		break;
+		case 'id': 		$fSort = 'id';				break;
+		case 'id_desc': 	$fSort = 'id desc';			break;
+		case 'postdate': $fSort = 'postdate';		break;
 		case 'postdate_desc':	$fSort = 'postdate desc';	break;
-		case 'title':			$fSort = 'title';			break;
-		case 'title_desc':		$fSort = 'title desc';		break;
+		case 'title': 	$fSort = 'title';			break;
+		case 'title_desc': $fSort = 'title desc';		break;
 	}
 	$fSort = ' order by '.($fSort?$fSort:'id desc');
 
@@ -471,7 +471,7 @@ function listNewsForm() {
 
 	$sqlResult = $sqlQ." LIMIT ".(($pageNo - 1)* $fRPP).",".$fRPP;
 	foreach ($mysql->select($sqlResult) as $row) {
-		$cats		=	explode(',', $row['catid']);
+		$cats		= explode(',', $row['catid']);
 
 		$newsEntry = array(
 			'php_self'		=> $PHP_SELF,
@@ -519,7 +519,7 @@ function listNewsForm() {
 
 	$tVars['category_select'] = makeCategoryList(array('doall' => 1, 'dowithout' => 1, 'selected' => $fCategoryId, 'style' => 'width: 200px;'));
 
-	$maxNavigations = !(empty($config['newsNavigationsAdminCount']) || $config['newsNavigationsAdminCount'] < 1)?$config['newsNavigationsAdminCount']:8;
+	$maxNavigations = !(empty($config['newsNavigationsAdminCount']) or $config['newsNavigationsAdminCount'] < 1)?$config['newsNavigationsAdminCount']:8;
 
 	if (count($newsEntries) > 0) {
 		$pagesss = new Paginator;
@@ -578,7 +578,7 @@ function listNewsForm() {
 				$tcRec['cutter'] = '';
 			}
 			$tcRec['cutter'] = $tcRec['cutter'] .
-				'<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/join'.((($num == ($cLen-1) || ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
+				'<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/join'.((($num == ($cLen-1) or ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
 
 			$tcRecs []= $tcRec;
 		}
@@ -657,7 +657,7 @@ function addNewsForm($retry = ''){
 			'html.disabled'		=> !$perm['personal.html'],
 			'customdate.disabled'	=> !$perm['personal.customdate'],
 			'multicat.show'		=> $perm['personal.multicat'],
-			'extended_more'		=> ($config['extended_more'] || (getIsSet($tvars['vars']['content.delimiter']) != ''))?true:false,
+			'extended_more'		=> ($config['extended_more'] or (getIsSet($tvars['vars']['content.delimiter']) != ''))?true:false,
 			'can_publish'		=> $perm['personal.publish'],
 			'altname.disabled'	=> (!$perm['personal.altname'])?true:false,
 			'mondatory_cat'		=> (!$perm['personal.nocat'])?true:false,
@@ -678,8 +678,8 @@ function addNewsForm($retry = ''){
 // # Action selection #
 // #==============================================================================#
 
-$action		=	getIsSet($_REQUEST['action']);
-$subaction	=	getIsSet($_REQUEST['subaction']);
+$action		= getIsSet($_REQUEST['action']);
+$subaction	= getIsSet($_REQUEST['subaction']);
 
 // Main execution block
 do {

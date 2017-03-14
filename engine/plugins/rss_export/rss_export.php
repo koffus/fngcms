@@ -53,7 +53,7 @@ function plugin_rss_export_generate($catname = ''){
 
 	$limit = pluginGetVariable('rss_export','news_count');
 	$delay = intval(pluginGetVariable('rss_export', 'delay'));
-	if ((!is_numeric($limit)) || ($limit<0) || ($limit>500)) { $limit = 50; }
+	if ((!is_numeric($limit)) or ($limit<0) or ($limit>500)) { $limit = 50; }
 	$old_locale = setlocale(LC_TIME,0);
 	setlocale(LC_TIME,'en_EN');
 	if (is_array($xcat)) {
@@ -120,7 +120,7 @@ function plugin_rss_export_generate($catname = ''){
 		$enclosure = '';
 
 		// Check if Enclosure `xfields` integration is activated
-		if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') && (true || getPluginStatusActive('xfields'))) {
+		if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') && (true or getPluginStatusActive('xfields'))) {
 			// Load (if needed XFIELDS plugin
 			include_once(root."/plugins/xfields/xfields.php");
 

@@ -44,7 +44,7 @@ function basket_rpc_manage($params){
 
 	LoadPluginLibrary('xfields', 'common');
 
-	if (!is_array($params) || !isset($params['action']))
+	if (!is_array($params) or !isset($params['action']))
 		return array('status' => 0, 'errorCode' => 1, 'errorText' => 'Activity mode is not set');
 
 	switch ($params['action']) {

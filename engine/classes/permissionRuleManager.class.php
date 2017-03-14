@@ -58,7 +58,7 @@ class permissionRuleManager {
 	}
 
 	function removePlugin($plugin) {
-		if (!$this->isLoaded || ($plugin == '#admin')) {
+		if (!$this->isLoaded or ($plugin == '#admin')) {
 			return false;
 		}
 		if (isset($this->rules[$plugin]))

@@ -75,7 +75,7 @@ function editform()
 	if (!$qwer) return; 
 
 	$category_list = array();
-	if ($qwer[0]['catid'] == 0 || !$mysql->select('select `id` from '.prefix.'_cat_description where `catid`=\'0\' limit 1'))
+	if ($qwer[0]['catid'] == 0 or !$mysql->select('select `id` from '.prefix.'_cat_description where `catid`=\'0\' limit 1'))
 		$category_list[0] = __('cat_description:main');
 	foreach ($mysql->select('select '.prefix.'_category.id, '.prefix.'_category.name from '.prefix.'_category left join '.prefix.'_cat_description on '.prefix.'_category.id ='.prefix.'_cat_description.catid where '.prefix.'_cat_description.catid is null or '.prefix.'_cat_description.id='.db_squote($id).' order by `id`') as $row) $category_list[$row['id']] = $row['name'];
 	
@@ -148,7 +148,7 @@ function clear_cash()
 	if (($dir = get_plugcache_dir('cat_description'))) {
 		if ($handle = opendir($dir)) {
 			while (false !== ($file = readdir($handle))) { 
-				if ($file == "." || $file == "..")
+				if ($file == "." or $file == "..")
 					continue;
 				unlink ($dir.$file);
 			}

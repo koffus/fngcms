@@ -2,10 +2,10 @@
 
 class tpl {
 
-	var $data	=	array();
-	var $root	=	'.';
-	var $ext	=	'.tpl';
-	var $da_vr	=	array();
+	var $data	= array();
+	var $root	= '.';
+	var $ext	= '.tpl';
+	var $da_vr	= array();
 	var $execTime = 0;
 	var $execCount = 0;
 
@@ -31,17 +31,17 @@ class tpl {
 			ngFatalError(sprintf(__('msge_no_tpldir'), $dir));
 		}
 
-		$nn		=	$name;
+		$nn		= $name;
 
-		$fname	=	$dir.($file?$file:((substr($dir, -1) != '/'?'/':'').$name.$this->ext));
+		$fname	= $dir.($file?$file:((substr($dir, -1) != '/'?'/':'').$name.$this->ext));
 
 		if (!is_file($fname)) {
 			$this->data[$nn] = '[<b>TEMPLATE NOT FOUND</b> ('.$fname.')]';
 			ngFatalError(sprintf(str_replace('{fname}', $fname, __('fatal.tpl.lost'), $fname)));
 		}
 
-		$fp		=	fopen($fname,'r');
-		$data	=	filesize($fname)?fread($fp,filesize($fname)):'';
+		$fp		= fopen($fname,'r');
+		$data	= filesize($fname)?fread($fp,filesize($fname)):'';
 		fclose($fp);
 
 		// Check if includes feature is activated

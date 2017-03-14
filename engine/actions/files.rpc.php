@@ -52,9 +52,9 @@ function admRPCFilesUpload($params){
 	}
 
 	// For images - we need to transform images
-	$mkThumb = (($config['thumb_mode'] == 2) || (!$config['thumb_mode'] && $_REQUEST['thumb']))?1:0;
-	$mkStamp = (($config['stamp_mode'] == 2) || (!$config['stamp_mode'] && $_REQUEST['stamp']))?1:0;
-	$mkShadow = (($config['shadow_mode'] == 2) || (!$config['shadow_mode'] && $_REQUEST['shadow']))?1:0;
+	$mkThumb = (($config['thumb_mode'] == 2) or (!$config['thumb_mode'] && $_REQUEST['thumb']))?1:0;
+	$mkStamp = (($config['stamp_mode'] == 2) or (!$config['stamp_mode'] && $_REQUEST['stamp']))?1:0;
+	$mkShadow = (($config['shadow_mode'] == 2) or (!$config['shadow_mode'] && $_REQUEST['shadow']))?1:0;
 
 	$stampFileName = '';
 	if (file_exists(root.'trash/'.$config['wm_image'].'.gif')) {
@@ -75,7 +75,7 @@ function admRPCFilesUpload($params){
 			// If we created thumb - check if we need to transform it
 			$stampThumb = ($mkStamp && $config['stamp_place'] && ($stampFileName != ''))?1:0;
 			$shadowThumb = ($mkShadow && $config['shadow_place'])?1:0;
-			if ($shadowThumb || $stampThumb) {
+			if ($shadowThumb or $stampThumb) {
 				$stamp = $imanager->image_transform(
 					array('image' => $dir.$ures['data']['category'].'/thumb/'.$ures['data']['name'],
 					'stamp' => $stampThumb,
@@ -90,7 +90,7 @@ function admRPCFilesUpload($params){
 	$stampOrig = ($mkStamp && ($config['stamp_place'] != 1) && ($stampFileName != ''))?1:0;
 	$shadowOrig = ($mkShadow && ($config['shadow_place'] != 1))?1:0;
 
-	if ($shadowOrig || $stampOrig) {
+	if ($shadowOrig or $stampOrig) {
 		$stamp = $imanager->image_transform(
 			array('image' => $dir.$ures['data']['category'].'/'.$ures['data']['name'],
 			'stamp' => $stampOrig,

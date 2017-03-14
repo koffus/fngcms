@@ -119,7 +119,7 @@ class urlHandler {
 	function populateHandler($ULIB, $data){
 		//
 		// First - find references from URL library
-		if (!isset($data['pluginName']) || !isset($data['handlerName']) || !isset($ULIB->CMD[$data['pluginName']][$data['handlerName']])) {
+		if (!isset($data['pluginName']) or !isset($data['handlerName']) or !isset($ULIB->CMD[$data['pluginName']][$data['handlerName']])) {
 			return array(array(1, 'No match with URL library'.var_export($data, true)), false);
 		}
 
@@ -316,7 +316,7 @@ class urlHandler {
 		$position = count($this->hList);
 		while ($position >= 0) {
 			$h = $this->hList[$position];
-			if ((isset($h['pluginName'])) && ($h['pluginName'] == $pluginName) && (isset($h['handlerName'])) &&	(($handlerName == '*') || ($h['handlerName'] == $handlerName))) {
+			if ((isset($h['pluginName'])) && ($h['pluginName'] == $pluginName) && (isset($h['handlerName'])) &&	(($handlerName == '*') or ($h['handlerName'] == $handlerName))) {
 				array_splice($this->hList, $position, 1);
 			}
 			$position--;
@@ -339,7 +339,7 @@ class urlHandler {
 		if (is_file($this->configFileName)) {
 			// Include REC
 			include $this->configFileName;
-			if (!isset($handlerList) || !isset($handlerPrimary)) {
+			if (!isset($handlerList) or !isset($handlerPrimary)) {
 				$this->fatalError = 1;
 				return false;
 			}
@@ -500,7 +500,7 @@ class urlHandler {
 		$hRec = $this->hList[$hId[0]];
 
 		// Check integrity
-		if (!is_array($hRec) || !is_array($hRec['rstyle']['genrMAP']))
+		if (!is_array($hRec) or !is_array($hRec['rstyle']['genrMAP']))
 			return false;
 
 		// First: find block dependency
@@ -514,7 +514,7 @@ class urlHandler {
 		// Now we can generate URL
 		$url = array();
 		foreach ($hRec['rstyle']['genrMAP'] as $rec) {
-			if (!$rec[2] || ($rec[2] && isset($params[$depMAP[$rec[2]]]))) {
+			if (!$rec[2] or ($rec[2] && isset($params[$depMAP[$rec[2]]]))) {
 				switch ($rec[0]) {
 					case 0:	$url[] = $rec[1]; break;
 					case 1: $url[] = urlencode($params[$rec[1]]); break;

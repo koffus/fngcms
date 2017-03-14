@@ -151,7 +151,7 @@ function modify()
 global $mysql;
 	
 	$selected_news = $_REQUEST['selected_subscribe_comments'];
-	$subaction	=	$_REQUEST['subaction'];
+	$subaction	= $_REQUEST['subaction'];
 	
 	$id = implode( ',', $selected_news );
 	

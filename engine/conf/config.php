@@ -118,6 +118,6 @@ $config = array (
   'memcached_ip' => '',
   'memcached_port' => '',
   'memcached_prefix' => '',
-  'UUID' => '05306eeef9b0ccb5e5b825181f5f48dc9f4bbdf11c5a751391770df13aff8da1',
+  'UUID' => 'aed83091da10b47ff4fc84e3f3a9a850182b9720aa17ae58363fc53846b8779f',
 )
 ;?>

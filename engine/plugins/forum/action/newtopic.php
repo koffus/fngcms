@@ -36,7 +36,7 @@
 	if(!$rows = $mysql->record('SELECT id as fid, moderators FROM '.prefix.'_forum_forums WHERE id = '.securemysql($id).' LIMIT 1'))
 		return $output = information('Этого раздела не существует', $title = 'Информация');
 	
-	if($FORUM_PS[$rows['fid']]['topic_send'] || moder_perm($rows['fid'], 'topic_send', $rows['moderators'])){
+	if($FORUM_PS[$rows['fid']]['topic_send'] or moder_perm($rows['fid'], 'topic_send', $rows['moderators'])){
 		$subject = isset($_REQUEST['subject'])?secureinput($_REQUEST['subject']):'';
 		$message = isset($_REQUEST['message'])?secureinput($_REQUEST['message']):'';
 		$time = time() + ($config['date_adjust'] * 60);

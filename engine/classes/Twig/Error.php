@@ -68,7 +68,7 @@ class Twig_Error extends Exception
  $this->lineno = $lineno;
  $this->filename = $filename;
 
- if (-1 === $this->lineno || null === $this->filename) {
+ if (-1 === $this->lineno or null === $this->filename) {
  $this->guessTemplateInfo();
  }
 
@@ -167,7 +167,7 @@ class Twig_Error extends Exception
  }
 
  if ($this->filename) {
- if (is_string($this->filename) || (is_object($this->filename) && method_exists($this->filename, '__toString'))) {
+ if (is_string($this->filename) or (is_object($this->filename) && method_exists($this->filename, '__toString'))) {
  $filename = sprintf('"%s"', $this->filename);
  } else {
  $filename = json_encode($this->filename);
@@ -189,7 +189,7 @@ class Twig_Error extends Exception
  $template = null;
  foreach (debug_backtrace() as $trace) {
  if (isset($trace['object']) && $trace['object'] instanceof Twig_Template && 'Twig_Template' !== get_class($trace['object'])) {
- if (null === $this->filename || $this->filename == $trace['object']->getTemplateName()) {
+ if (null === $this->filename or $this->filename == $trace['object']->getTemplateName()) {
  $template = $trace['object'];
  }
  }
@@ -200,7 +200,7 @@ class Twig_Error extends Exception
  $this->filename = $template->getTemplateName();
  }
 
- if (null === $template || $this->lineno > -1) {
+ if (null === $template or $this->lineno > -1) {
  return;
  }
 
@@ -208,14 +208,14 @@ class Twig_Error extends Exception
  $file = $r->getFileName();
 
  $exceptions = array($e = $this);
- while (($e instanceof self || method_exists($e, 'getPrevious')) && $e = $e->getPrevious()) {
+ while (($e instanceof self or method_exists($e, 'getPrevious')) && $e = $e->getPrevious()) {
  $exceptions[] = $e;
  }
 
  while ($e = array_pop($exceptions)) {
  $traces = $e->getTrace();
  while ($trace = array_shift($traces)) {
- if (!isset($trace['file']) || !isset($trace['line']) || $file != $trace['file']) {
+ if (!isset($trace['file']) or !isset($trace['line']) or $file != $trace['file']) {
  continue;
  }
 

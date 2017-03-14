@@ -106,7 +106,7 @@ function showFieldList(){
 			'area'		=> (intval($data['area'])>0)?intval($data['area']):'',
 			'flags'		=> array(
 				'required'	=> $data['required']?true:false,
-				'default'	=> (($data['default'] != '') || ($data['type']=="checkbox"))?true:false,
+				'default'	=> (($data['default'] != '') or ($data['type']=="checkbox"))?true:false,
 				'disabled'	=> $data['disabled']?true:false,
 				'regpage'	=> $data['regpage']?true:false,
 			),
@@ -333,7 +333,7 @@ function doAddEdit() {
 
 			if (isset($_REQUEST['so_data']) && is_array($_REQUEST['so_data'])) {
 				foreach ($_REQUEST['so_data'] as $k => $v) {
-					if (is_array($v) && isset($v[0]) && isset($v[1]) && (($v[0] != '') || ($v[1] != ''))) {
+					if (is_array($v) && isset($v[0]) && isset($v[1]) && (($v[0] != '') or ($v[1] != ''))) {
 						if ($v[0] != '') {
 							$optlist[$v[0]] = $v[1];
 						} else {
@@ -385,7 +385,7 @@ function doAddEdit() {
 
 			if (isset($_REQUEST['mso_data']) && is_array($_REQUEST['mso_data'])) {
 				foreach ($_REQUEST['mso_data'] as $k => $v) {
-					if (is_array($v) && isset($v[0]) && isset($v[1]) && (($v[0] != '') || ($v[1] != ''))) {
+					if (is_array($v) && isset($v[0]) && isset($v[1]) && (($v[0] != '') or ($v[1] != ''))) {
 						if ($v[0] != '') {
 							$optlist[$v[0]] = $v[1];
 						} else {
@@ -511,7 +511,7 @@ function doAddEdit() {
 
 	// 1. If we add XFIELD and field already exists in DB - drop it!
 	// 2. If we don't want to store data in separate field - drop it!
-	if ($found && (!$editMode || !$DB['new']['storage'])) {
+	if ($found && (!$editMode or !$DB['new']['storage'])) {
 		$mysql->query("alter table ".$tableName." drop column `xfields_".$field."`");
 	}
 
@@ -523,10 +523,10 @@ function doAddEdit() {
 
 		$ftype = '';
 		switch ($DB['new']['db.type']) {
-			case 'int':			$ftype = 'int'; break;
-			case 'decimal':		$ftype = 'decimal (12,2)'; break;
+			case 'int': 	$ftype = 'int'; break;
+			case 'decimal': $ftype = 'decimal (12,2)'; break;
 			case 'datetime':	$ftype = 'datetime'; break;
-			case 'char':		if (($DB['new']['db.len'] > 0)&&($DB['new']['db.len'] <= 255)) { $ftype = 'char('.intval($DB['new']['db.len']).')'; break; }
+			case 'char': if (($DB['new']['db.len'] > 0)&&($DB['new']['db.len'] <= 255)) { $ftype = 'char('.intval($DB['new']['db.len']).')'; break; }
 			case 'text':	$ftype = 'text'; break;
 		}
 
@@ -592,7 +592,7 @@ function doUpdate() {
 
 	$notif = '';
 	switch ($_REQUEST['subaction']) {
-		case 'del':		// Delete field from SQL table if required
+		case 'del': // Delete field from SQL table if required
 						if (($XF[$sectionID][$field]['storage'])&&($tableName = xf_getTableBySectionID($sectionID))) {
 							// Check if field really exist
 							$found = 0;
@@ -609,13 +609,13 @@ function doUpdate() {
 						unset($XF[$sectionID][$field]);
 						$notif = __('xfields_done_del');
 						break;
-		case 'up':		array_key_move($XF[$sectionID], $field, -1);
+		case 'up': array_key_move($XF[$sectionID], $field, -1);
 						$notif = __('xfields_done_up');
 						break;
 		case 'down':	array_key_move($XF[$sectionID], $field, 1);
 						$notif = __('xfields_done_down');
 						break;
-		default:		$notif = __('xfields_updateunk');
+		default: $notif = __('xfields_updateunk');
 	}
 
 	if (!xf_configSave()) {

@@ -53,7 +53,7 @@ function comments_add(){
 		return;
 	}
 
-	$SQL['text']	=	secure_html($_POST['content']);
+	$SQL['text']	= secure_html($_POST['content']);
 
 	// If user is not logged, make some additional tests
 	if (!$is_member) {
@@ -85,11 +85,11 @@ function comments_add(){
 		}
 
 		// Check if author name use incorrect symbols. Check should be done only for unregs
-		if ((!$SQL['author_id']) && (preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/", $SQL['author']) || mb_strlen($SQL['author'], 'UTF-8') > 60)) {
+		if ((!$SQL['author_id']) && (preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/", $SQL['author']) or mb_strlen($SQL['author'], 'UTF-8') > 60)) {
 			msg(array('type' => 'danger', 'message' => __('comments:err.badname')));
 			return;
 		}
-		if (strlen($SQL['mail']) > 70 || !preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $SQL['mail'])) {
+		if (strlen($SQL['mail']) > 70 or !preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $SQL['mail'])) {
 			msg(array('type' => 'danger', 'message' => __('comments:err.badmail')));
 			return;
 		}
@@ -238,7 +238,7 @@ function comments_add(){
 			$v->addCommentsNotify($memberRec, $news_row, $tvars, $SQL, $comment_id);
 
 	// Email informer
-	if (pluginGetVariable('comments', 'inform_author') || pluginGetVariable('comments', 'inform_admin')) {
+	if (pluginGetVariable('comments', 'inform_author') or pluginGetVariable('comments', 'inform_admin')) {
 		$alink = ($SQL['author_id']) ? generatePluginLink('uprofile', 'show', array('name' => $SQL['author'], 'id' => $SQL['author_id']), array(), false, true) : '';
 		$body = str_replace(
 			array(	'{username}',

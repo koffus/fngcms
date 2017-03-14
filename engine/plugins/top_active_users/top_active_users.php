@@ -10,7 +10,7 @@ function plugin_top_active_users($number, $mode, $overrideTemplateName, $cacheEx
 	$cacheKeys = array();
 	$cacheDisabled = false;
 	
-	if (($number < 1) || ($number > 100))
+	if (($number < 1) or ($number > 100))
 		$number = 5;
 		
 	switch ($mode) {
@@ -20,10 +20,10 @@ function plugin_top_active_users($number, $mode, $overrideTemplateName, $cacheEx
 						break;
 		case 'last':	$sql = "SELECT id, name, com, news, avatar, mail, last, reg FROM ".uprefix."_users ORDER BY reg DESC";
 						break;
-		case 'rnd':		$cacheDisabled = true;
+		case 'rnd': $cacheDisabled = true;
 						$sql = "SELECT id, name, com, news, avatar, mail, last, reg FROM ".uprefix."_users ORDER BY RAND() DESC";
 						break;
-		default:		$mode = 'news';
+		default: $mode = 'news';
 						$sql = "SELECT id, name, com, news, avatar, mail, last, reg FROM ".uprefix."_users ORDER BY news DESC";
 						break;
 	}

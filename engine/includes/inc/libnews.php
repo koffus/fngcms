@@ -74,13 +74,13 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		}
 
 		// Check if correct categories were specified [ only for SINGLE category display
-		if ((isset($callingParams['validateCategoryID']) || isset($callingParams['validateCategoryAlt']) || 1) && $config['news_multicat_url']) {
+		if ((isset($callingParams['validateCategoryID']) or isset($callingParams['validateCategoryAlt']) or 1) && $config['news_multicat_url']) {
 			if(getIsSet($row['catid']))
 				$nci = intval(array_shift(explode(',', $row['catid'])));
 			
 			$nca = (getIsSet($nci))?$catmap[$nci]:'none';
 
-			if ((isset($callingParams['validateCategoryID']) && ($callingParams['validateCategoryID'] != $nci)) || (isset($callingParams['validateCategoryAlt']) && ($callingParams['validateCategoryAlt'] != $nca))) {
+			if ((isset($callingParams['validateCategoryID']) && ($callingParams['validateCategoryID'] != $nci)) or (isset($callingParams['validateCategoryAlt']) && ($callingParams['validateCategoryAlt'] != $nca))) {
 				$redirectURL = newsGenerateLink($row, false, 0, true);
 				coreRedirectAndTerminate($redirectURL);
 			}
@@ -151,7 +151,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 	$tX3 = $timer->stop(4);
 	$timer->registerEvent('call newsFillVariables() for [ '.($tX3 - $tX2).' ] sec');
 
-	$tvars['vars']['comnum']	=	$row['com'];
+	$tvars['vars']['comnum']	= $row['com'];
 
 	// Prepare list of linked files and images
 	$callingParams['linkedFiles'] = array();
@@ -206,12 +206,12 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		$tvars['vars']['[icon]']	= '';
 		$tvars['vars']['[/icon]']	= '';
 	} else {
-		$tvars['vars']['icon']		=	'';
+		$tvars['vars']['icon']		= '';
 		$tvars['regx']["'\[icon\].*?\[/icon\]'si"] = '';
 	}
 
 	// Show edit/detele news buttons
-	if (is_array($userROW) && ($row['author_id'] == $userROW['id'] || $userROW['status'] == "1" || $userROW['status'] == "2")) {
+	if (is_array($userROW) && ($row['author_id'] == $userROW['id'] or $userROW['status'] == "1" or $userROW['status'] == "2")) {
 		$tvars['vars']['news']['flags']['canEdit']		= true;
 		$tvars['vars']['news']['flags']['canDelete']	= true;
 		$tvars['vars']['news']['url']['edit']			= admin_url."/admin.php?mod=news&amp;action=edit&amp;id=".$row['id'];
@@ -226,9 +226,9 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		$tvars['regx']["'\\[del-news\\].*?\\[/del-news\\]'si"] = "";
 	}
 
-	$newsid				=	$row['id'];
-	$allow_comments		=	$row['allow_com'];
-	$row['views']		=	$row['views']+1;
+	$newsid				= $row['id'];
+	$allow_comments		= $row['allow_com'];
+	$row['views']		= $row['views']+1;
 
 	// Extract embedded images/files if requested
 	// news.embed.images	- list of URL's
@@ -333,7 +333,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 	$tpl -> vars($templateName, $tvars);
 
 	// No comments/meta in emulation or export mode
-	if (is_array(getIsSet($callingParams['emulate'])) || ($callingParams['style'] == 'export'))
+	if (is_array(getIsSet($callingParams['emulate'])) or ($callingParams['style'] == 'export'))
 		return $tpl -> show($templateName);
 
 	// Set meta tags for news page
@@ -520,8 +520,8 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$orderBy = 'id desc';
 
 	switch ((isset($callingParams['pin']) && $callingParams['pin'])?$callingParams['pin']:'') {
-		case 1:		$orderBy = 'catpinned desc, '.$orderBy;	break;
-		case 2:		break;
+		case 1: $orderBy = 'catpinned desc, '.$orderBy;	break;
+		case 2: break;
 		default:	$orderBy = 'pinned desc, '.$orderBy;	break;
 	}
 
@@ -535,11 +535,11 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 	// Call `SELECT` query
 	// * Check if we need to override query
 	if (isset($callingParams['overrideSQLquery']) && ($callingParams['overrideSQLquery'] != '')) {
-		$query['result']	=	$callingParams['overrideSQLquery'];
+		$query['result']	= $callingParams['overrideSQLquery'];
 		// ** FORCE TO DISABLE PAGINATION !!
 		$callingParams['disablePagination'] = true;
 	} else {
-		$query['result']	=	"SELECT * FROM ".prefix."_news WHERE ".$query['filter'].$query['orderby'];
+		$query['result']	= "SELECT * FROM ".prefix."_news WHERE ".$query['filter'].$query['orderby'];
 	}
 
 	$selectResult = $mysql->select($query['result'], 1);
@@ -551,7 +551,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		if (isset($callingParams['paginationCategoryID']) && ($callingParams['paginationCategoryID'] > 0)) {
 			$query['count'] = 'SELECT count(*) FROM '.prefix.'_news_map where categoryID = '.db_squote($callingParams['paginationCategoryID']);
 		} else {
-			$query['count']		=	"SELECT count(*) as count FROM ".prefix."_news WHERE ".$query['filter'];
+			$query['count']		= "SELECT count(*) as count FROM ".prefix."_news WHERE ".$query['filter'];
 		}
 		$newsCount = $mysql->result($query['count']);
 		$pages_count = ceil($newsCount / $showNumber);
@@ -730,7 +730,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 			$tvars['regx']["'\\[icon\\].*?\\[/icon\\]'si"] = '';
 		}
 
-		if (is_array($userROW) && ($userROW['id'] == $row['author_id'] || ($userROW['status'] == 1 || $userROW['status'] == 2))) {
+		if (is_array($userROW) && ($userROW['id'] == $row['author_id'] or ($userROW['status'] == 1 or $userROW['status'] == 2))) {
 			// [TWIG] news.flags.canEdit, news.flags.canDelete, news.url.edit, news.url.delete
 			$tvars['vars']['news']['flags']['canEdit']		= true;
 			$tvars['vars']['news']['flags']['canDelete']	= true;

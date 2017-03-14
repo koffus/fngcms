@@ -63,7 +63,7 @@ class SimilarNewsfilter extends NewsFilter {
 
 			// Filter for dimensions
 			$filter = '';
-			if (!($similar_enabled = intval(pluginGetVariable('similar', 'similar_enabled'))) || !($samecat_enabled=intval(pluginGetVariable('similar', 'samecat_enabled')))) {
+			if (!($similar_enabled = intval(pluginGetVariable('similar', 'similar_enabled'))) or !($samecat_enabled=intval(pluginGetVariable('similar', 'samecat_enabled')))) {
 				if ($similar_enabled) {
 					$filter = 'and (dimension = 0)';
 				} else if ($samecat_enabled) {

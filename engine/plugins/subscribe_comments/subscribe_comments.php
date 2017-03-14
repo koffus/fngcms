@@ -83,8 +83,8 @@ global $mysql;
 	{ $subscribe_box = '1'; $subscribe_box_checked = 'checked'; }
 	else { $subscribe_box = '0'; $subscribe_box_checked = ''; }
 	
-	$tvars['vars']['subscribe_box']	=	$subscribe_box;
-	$tvars['vars']['subscribe_box_checked']	=	$subscribe_box_checked;
+	$tvars['vars']['subscribe_box']	= $subscribe_box;
+	$tvars['vars']['subscribe_box_checked']	= $subscribe_box_checked;
 	
 	$tvars['vars']['test_var'] = 'tested';
 		

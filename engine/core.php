@@ -115,7 +115,7 @@ $PLUGINS	= array(
 				if (extension_loaded($kModule) && function_exists($vFunction)) break;
 				if(!next($pFunction)) $is_error = true;
 			}
-		} else if (!extension_loaded($pModule) || !function_exists($pFunction)) {
+		} else if (!extension_loaded($pModule) or !function_exists($pFunction)) {
 			$kModule = $pModule;
 			$vFunction = $pFunction;
 			$is_error = true;
@@ -216,9 +216,9 @@ $UHANDLER = new urlHandler();
 $UHANDLER->loadConfig();
 
 // ** Other libraries
-$parse	=	new parse;
-$tpl	=	new tpl;
-$ip		=	checkIP();
+$parse	= new parse;
+$tpl	= new tpl;
+$ip		= checkIP();
 
 // ** Load configuration file
 if ( (!file_exists(confroot.'config.php')) or (filesize(confroot.'config.php')<10) ) {

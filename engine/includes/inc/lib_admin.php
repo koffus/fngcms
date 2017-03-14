@@ -519,9 +519,9 @@ function addNews($mode = array()){
 	// 1 = HTML enable	[if set, HTML codes may be used in news]
 
 	if ($perm['personal.html']) {
-		$SQL['flags']	=	($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0);
+		$SQL['flags']	= ($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0);
 	} else {
-		$SQL['flags']	=	0;
+		$SQL['flags']	= 0;
 	}
 
 	$SQL['mainpage']	= intval(intval($_REQUEST['mainpage']) and $perm['personal.mainpage']);
@@ -531,8 +531,8 @@ function addNews($mode = array()){
 
 	switch (intval($_REQUEST['approve'])) {
 		case -1:	$SQL['approve'] = -1;								break;
-		case 0:		$SQL['approve'] = 0;								break;
-		case 1:		$SQL['approve'] = $perm['personal.publish']?1:0;	break;
+		case 0: $SQL['approve'] = 0;								break;
+		case 1: $SQL['approve'] = $perm['personal.publish']?1:0;	break;
 		default:	$SQL['approve']	= 0;
 	}
 
@@ -849,8 +849,8 @@ function editNews($mode = array()) {
 
 	switch (intval($_REQUEST['approve'])) {
 		case -1:	$SQL['approve'] = -1;								break;
-		case 0:		$SQL['approve'] = 0;								break;
-		case 1:		$SQL['approve'] = (($row['approve'] == 1) or (($row['approve'] < 1) and ($perm[$permGroupMode.'.publish'])))?1:0;
+		case 0: $SQL['approve'] = 0;								break;
+		case 1: $SQL['approve'] = (($row['approve'] == 1) or (($row['approve'] < 1) and ($perm[$permGroupMode.'.publish'])))?1:0;
 			break;
 		default:	$SQL['approve']	= 0;
 	}

@@ -311,7 +311,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
  final protected function getContext($context, $item, $ignoreStrictCheck = false)
  {
  if (!array_key_exists($item, $context)) {
- if ($ignoreStrictCheck || !$this->env->isStrictVariables()) {
+ if ($ignoreStrictCheck or !$this->env->isStrictVariables()) {
  return null;
  }
 
@@ -342,7 +342,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
  // array
  if (Twig_TemplateInterface::METHOD_CALL !== $type) {
  if ((is_array($object) && array_key_exists($item, $object))
- || ($object instanceof ArrayAccess && isset($object[$item]))
+ or ($object instanceof ArrayAccess && isset($object[$item]))
  ) {
  if ($isDefinedTest) {
  return true;
@@ -356,7 +356,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
  return false;
  }
 
- if ($ignoreStrictCheck || !$this->env->isStrictVariables()) {
+ if ($ignoreStrictCheck or !$this->env->isStrictVariables()) {
  return null;
  }
 
@@ -375,7 +375,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
  return false;
  }
 
- if ($ignoreStrictCheck || !$this->env->isStrictVariables()) {
+ if ($ignoreStrictCheck or !$this->env->isStrictVariables()) {
  return null;
  }
 
@@ -386,7 +386,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
 
  // object property
  if (Twig_TemplateInterface::METHOD_CALL !== $type) {
- if (isset($object->$item) || array_key_exists($item, $object)) {
+ if (isset($object->$item) or array_key_exists($item, $object)) {
  if ($isDefinedTest) {
  return true;
  }
@@ -418,7 +418,7 @@ abstract class Twig_Template implements Twig_TemplateInterface
  return false;
  }
 
- if ($ignoreStrictCheck || !$this->env->isStrictVariables()) {
+ if ($ignoreStrictCheck or !$this->env->isStrictVariables()) {
  return null;
  }
 

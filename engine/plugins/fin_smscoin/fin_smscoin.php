@@ -77,7 +77,7 @@ class Finance_Acceptor_SMSCOIN extends Finance_Acceptor {
 				$priceTree[$record['country']]['providers'] = array();
 
 			// Check if we have providers
-			if (!is_array($record['providers']) || !count($record['providers'])) {
+			if (!is_array($record['providers']) or !count($record['providers'])) {
 
 				if (!is_array($priceTree[$record['country']]['providers']['']))
 					$priceTree[$record['country']]['providers'][''] = array('name' => '', 'recs' => array());
@@ -181,7 +181,7 @@ class Finance_Acceptor_SMSCOIN extends Finance_Acceptor {
 		}
 
 		// Проверяем наличие передаваемых данных
-		if (!isset($_REQUEST['s_purse']) || !isset($_REQUEST['s_amount']) || !isset($_REQUEST['s_phone']) || !isset($_REQUEST['s_sign_v2'])) {
+		if (!isset($_REQUEST['s_purse']) or !isset($_REQUEST['s_amount']) or !isset($_REQUEST['s_phone']) or !isset($_REQUEST['s_sign_v2'])) {
 			return 'Неверный запрос';
 		}
 

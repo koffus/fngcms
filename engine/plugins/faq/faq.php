@@ -40,7 +40,7 @@ function plug_faq($maxnum, $overrideTemplateName, $order, $cacheExpire) {
 	$lang = Lang::get();
 	$langMonths = Lang::$months;
 
-	if (($maxnum < 1) || ($maxnum > 50)) $maxnum = 12;
+	if (($maxnum < 1) or ($maxnum > 50)) $maxnum = 12;
 	
 	if ($overrideTemplateName) {
  $templateName = $overrideTemplateName;

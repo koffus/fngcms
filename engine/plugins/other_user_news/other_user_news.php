@@ -13,7 +13,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 	$cacheKeys = array();
 	$cacheDisabled = false;
 	
-	if (($number < 1) || ($number > 100))
+	if (($number < 1) or ($number > 100))
 		$number = 5;
 
  $current_news_id = $SYSTEM_FLAGS['news']['db.record']['id'];
@@ -29,10 +29,10 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 						break;
  case 'dt':	$sql .= "ORDER BY postdate DESC";
 						break;
-		case 'rnd':		$cacheDisabled = true;
+		case 'rnd': $cacheDisabled = true;
 						$sql .= "ORDER BY RAND() DESC";
 						break;
-		default:		$mode = 'dt';
+		default: $mode = 'dt';
 						$sql .= "ORDER BY postdate DESC";
 						break;
 	}

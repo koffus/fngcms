@@ -77,7 +77,7 @@ abstract class Dispatcher {
 					}
 				}
 			}
-			if($i < $ignoreByNumber || (isset($call['file']) && $call['file'] == $file && $call['line'] == $line)) {
+			if($i < $ignoreByNumber or (isset($call['file']) && $call['file'] == $file && $call['line'] == $line)) {
 				unset($trace[$i]);
 			}
 		}

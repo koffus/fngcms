@@ -29,7 +29,7 @@ global $tpl, $mysql, $twig;
 			$active = 1;
 
 			
-			if(empty($question) || empty($answer))
+			if(empty($question) or empty($answer))
 			{
 				$error_text[] = 'Вы заполнили не все обязательные поля';
 			}
@@ -101,7 +101,7 @@ global $tpl, $mysql, $twig;
 			$question = $_REQUEST['question'];
 			$answer = $_REQUEST['answer'];
 			
-			if(empty($question) || empty($answer))
+			if(empty($question) or empty($answer))
 			{
 				$error_text[] = 'Вы заполнили не все обязательные поля';
 			}
@@ -169,7 +169,7 @@ function modify()
 global $mysql;
 	
 	$selected_faq = $_REQUEST['selected_faq'];
-	$subaction	=	$_REQUEST['subaction'];
+	$subaction	= $_REQUEST['subaction'];
 
 	
 	if( empty($selected_faq) )

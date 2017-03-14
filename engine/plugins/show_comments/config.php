@@ -36,7 +36,7 @@ function show_comments()
  }
 
  $comm_length = pluginGetVariable('show_comments', 'comm_length');
- if (($comm_length < 10) || ($comm_length > 5000)) {
+ if (($comm_length < 10) or ($comm_length > 5000)) {
  $comm_length = 50;
  }
 

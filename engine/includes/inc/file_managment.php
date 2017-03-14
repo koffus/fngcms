@@ -243,14 +243,14 @@ function manage_showlist($type) {
 	$nCount = 0;
 	foreach ($mysql->select($query['sql']) as $row) {
 		$nCount++;
-		$folder				=	$row['folder']?$row['folder'].'/':'';
-		$fname				=	$fmanager->dname.$folder.$row['name'];
-		$fileurl			=	$fmanager->uname.'/'.$folder.$row['name'];
-		$thumburl			=	$fmanager->uname.'/'.$folder.'thumb/'.$row['name'];
+		$folder				= $row['folder']?$row['folder'].'/':'';
+		$fname				= $fmanager->dname.$folder.$row['name'];
+		$fileurl			= $fmanager->uname.'/'.$folder.$row['name'];
+		$thumburl			= $fmanager->uname.'/'.$folder.'thumb/'.$row['name'];
 		if (is_readable($fname)) {
-			$fsize		=	FormatSize(filesize($fname));
+			$fsize		= FormatSize(filesize($fname));
 		} else {
-			$fsize		=	'-';
+			$fsize		= '-';
 		}
 
 		if ($type == 'image') {
@@ -368,9 +368,9 @@ function manage_showlist($type) {
 		$dirlist	= 'n/a';
 		$dirlistcat	= 'n/a';
 	} else {
-		$dirlistS	=	ListDirs($type.'s', false, 0, 'categorySelect');
-		$dirlist	=	ListDirs($type.'s', false, 0);
-		$dirlistcat	=	ListDirs($type.'s', (isset($_REQUEST['category']) and $_REQUEST['category'])?$_REQUEST['category']:'');
+		$dirlistS	= ListDirs($type.'s', false, 0, 'categorySelect');
+		$dirlist	= ListDirs($type.'s', false, 0);
+		$dirlistcat	= ListDirs($type.'s', (isset($_REQUEST['category']) and $_REQUEST['category'])?$_REQUEST['category']:'');
 	}
 
 	// Prepare list of available extensions
@@ -409,8 +409,8 @@ function manage_showlist($type) {
 	$tvars['vars']['authcookie'] = $userROW['authcookie'];
 
 	if ($userROW['status'] < "3") {
-		$tvars['vars']['[status]']	=	'';
-		$tvars['vars']['[/status]']	=	'';
+		$tvars['vars']['[status]']	= '';
+		$tvars['vars']['[/status]']	= '';
 	} else {
 		$tvars['regx']["#\[status\].*?\[/status\]#si"] = "";
 	}
@@ -435,14 +435,14 @@ function manage_editForm($type, $id){
 		case 'image':
 			if ($irow = $mysql->record("select * from ".prefix."_images where id = ".db_squote($id))) {
 
-				$folder				=	$irow['folder']?$irow['folder'].'/':'';
-				$fname				=	$fmanager->dname.$folder.$irow['name'];
-				$thumbname			=	$fmanager->dname.$folder.'thumb/'.$irow['name'];
-				$fileurl			=	$fmanager->uname.'/'.$folder.$irow['name'];
-				$thumburl			=	$fmanager->uname.'/'.$folder.'thumb/'.$irow['name'];
+				$folder				= $irow['folder']?$irow['folder'].'/':'';
+				$fname				= $fmanager->dname.$folder.$irow['name'];
+				$thumbname			= $fmanager->dname.$folder.'thumb/'.$irow['name'];
+				$fileurl			= $fmanager->uname.'/'.$folder.$irow['name'];
+				$thumburl			= $fmanager->uname.'/'.$folder.'thumb/'.$irow['name'];
 
-				$fsize			=	is_readable($fname) ? FormatSize(@filesize($fname)) : '-';
-				$thumbsize		=	is_readable($thumbname) ? FormatSize(@filesize($thumbname)) : '-';
+				$fsize			= is_readable($fname) ? FormatSize(@filesize($fname)) : '-';
+				$thumbsize		= is_readable($thumbname) ? FormatSize(@filesize($thumbname)) : '-';
 
 				$tvars['vars'] = array(
 					'id'		=> $irow['id'],

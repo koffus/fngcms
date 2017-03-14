@@ -9,7 +9,7 @@ pluginsLoadConfig();
 Lang::loadPlugin('xnews', 'config', '', 'tn', ':');
 
 $count = intval(pluginGetVariable($plugin, 'count'));
-if ($count < 1 || $count > 50)
+if ($count < 1 or $count > 50)
 	$count = 1;
 
 # fill configuration parameters

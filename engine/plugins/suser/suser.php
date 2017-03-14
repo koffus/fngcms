@@ -81,7 +81,7 @@ function get_xflist() {
  
  $xf = xf_configLoad(); 
  foreach ($xf['users'] as $id => $data) {
- if (($data['type'] == 'text') || ($data['type'] == 'select')) {
+ if (($data['type'] == 'text') or ($data['type'] == 'select')) {
  $xfList[] = array('id' => 'xfields_'.$id, 'title' => $data['title']);
  }
  }
@@ -125,7 +125,7 @@ function suser_search($params){
  if (!$data['required']) $val .= '<option value="">'.__('sh_all').'</option>';
  if (is_array($data['options']))
  foreach ($data['options'] as $k => $v) {
- $val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v) || ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
+ $val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v) or ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
  }
  $val .= '</select>';
  break;

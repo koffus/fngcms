@@ -328,12 +328,12 @@ function admCategoryEdit(){
 		return;
 	}
 
-	if (!$SQL['name'] || !$catid || (!is_array($SQLold = $catz[$catmap[$catid]]))) {
+	if (!$SQL['name'] or !$catid or (!is_array($SQLold = $catz[$catmap[$catid]]))) {
 		msg(array('type' => 'danger', 'title' => __('msge_name'), 'message' => __('msgi_name')));
 		return;
 	}
 
-	if (!$catid || (!is_array($SQLold = $catz[$catmap[$catid]]))) {
+	if (!$catid or (!is_array($SQLold = $catz[$catmap[$catid]]))) {
 		msg(array('type' => 'danger', 'title' => __('msge_id'), 'message' => __('msgi_id')));
 		return;
 	}

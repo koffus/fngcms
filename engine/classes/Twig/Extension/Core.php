@@ -332,7 +332,7 @@ function twig_random(Twig_Environment $env, $values = null)
  return mt_rand();
  }
 
- if (is_int($values) || is_float($values)) {
+ if (is_int($values) or is_float($values)) {
  return $values < 0 ? mt_rand($values, 0) : mt_rand(0, $values);
  }
 
@@ -457,7 +457,7 @@ function twig_date_converter(Twig_Environment $env, $date = null, $timezone = nu
  }
 
  $asString = (string) $date;
- if (ctype_digit($asString) || (!empty($asString) && '-' === $asString[0] && ctype_digit(substr($asString, 1)))) {
+ if (ctype_digit($asString) or (!empty($asString) && '-' === $asString[0] && ctype_digit(substr($asString, 1)))) {
  $date = new DateTime('@'.$date);
  $date->setTimezone($defaultTimezone);
 
@@ -582,7 +582,7 @@ function _twig_markup2string(&$value)
  */
 function twig_array_merge($arr1, $arr2)
 {
- if (!is_array($arr1) || !is_array($arr2)) {
+ if (!is_array($arr1) or !is_array($arr2)) {
  throw new Twig_Error_Runtime('The merge filter only works with arrays or hashes.');
  }
 
@@ -1007,7 +1007,7 @@ function _twig_escape_html_attr_callback($matches)
  * The following replaces characters undefined in HTML with the
  * hex entity for the Unicode replacement character.
  */
- if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") || ($ord >= 0x7f && $ord <= 0x9f)) {
+ if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") or ($ord >= 0x7f && $ord <= 0x9f)) {
  return '&#xFFFD;';
  }
 
@@ -1164,7 +1164,7 @@ else {
 /* used internally */
 function twig_ensure_traversable($seq)
 {
- if ($seq instanceof Traversable || is_array($seq)) {
+ if ($seq instanceof Traversable or is_array($seq)) {
  return $seq;
  }
 
@@ -1191,7 +1191,7 @@ function twig_test_empty($value)
  return 0 == count($value);
  }
 
- return false === $value || (empty($value) && '0' != $value);
+ return false === $value or (empty($value) && '0' != $value);
 }
 
 /**
@@ -1210,5 +1210,5 @@ function twig_test_empty($value)
  */
 function twig_test_iterable($value)
 {
- return $value instanceof Traversable || is_array($value);
+ return $value instanceof Traversable or is_array($value);
 }

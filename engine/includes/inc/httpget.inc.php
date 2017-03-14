@@ -121,7 +121,7 @@ class http_get {
 
 	function get($url, $timeout = 3, $referer = 0) {
 		$resp = $this->request('GET', $url, '', $timeout, $referer);
-		if (!is_array($resp) || !$resp[0])
+		if (!is_array($resp) or !$resp[0])
 			return false;
 
 		return $resp[2];
