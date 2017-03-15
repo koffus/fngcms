@@ -1,1 +1,1 @@
-<a href="#" onclick="insertext(':{smile}: ','', {area})" class="btn btn-default btn-sm"><img alt="{smile}" src="{skins_url}/smilies/{smile}.gif"/></a>
+<a href="#" onclick="insertext(':{smile}: ','', {area});return false;" class="btn btn-default btn-sm"><img alt="{smile}" src="{skins_url}/smilies/{smile}.gif"/></a>
