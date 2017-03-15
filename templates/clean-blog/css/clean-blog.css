@@ -290,9 +290,11 @@ hr.small {
     display: block;
 }
 @media (min-width: 960px) {
+	.comment-content .gravatar {
+		float: left;
+	}
 	.comment-content .gravatar img {
 		display: block;
-    float: left;
 	}
 	.comment-meta.post-meta {
 		margin-left: 90px;
