@@ -148,68 +148,6 @@ $(document).on('click', '.edit_form', function(){
 	return false;
 });
 
-/* confirmIt */
-function confirmIt(url, text){
-	var agree = confirm(text);
-	if (agree) document.location=url;
-}
-
-/* Main function to show Modal Bootsrtap */
-function showModal(textOrID, header, footer, size) {
-	var withID = document.getElementById(textOrID);
-	if (withID && !header && !footer) { // Show modal with ID
-		$(withID).modal('show');
-		return;
-	}
-	var modalContent = '';
-	if (header) {
-		if (textOrID) {
-		modalContent = '<div class="modal-header">\
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">\
-								<span aria-hidden="true">&times;</span>\
-							</button>\
-							<h4 class="modal-title">' + header + '</h4>\
-						</div>';
-		} else {
-		modalContent = '<div class="modal-header">\
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">\
-								<span aria-hidden="true">&times;</span>\
-							</button>\
-							<h4 class="modal-title">Info</h4>\
-						</div>';
-		}
-	} else {
-		modalContent = '<div class="modal-header">\
-							<button type="button" class="close" data-dismiss="modal" aria-label="Close">\
-								<span aria-hidden="true">&times;</span>\
-							</button>\
-							<h4 class="modal-title">Error</h4>\
-						</div>';
-	}
-	if (textOrID)
-		modalContent += '<div class="modal-body">' + textOrID + '</div>';
-	else
-		modalContent += '<div class="modal-body">Unable to load content . . .</div>';
-	
-	if (footer) {
-		modalContent += '<div class="modal-footer">' + footer + '</div>';
-	} else {
-		modalContent += '<div class="modal-footer">\
-							<button type="button" class="btn btn-default" data-dismiss="modal">\
-							Close\
-							</button>\
-						</div>';
-	}
-	if (size == 'modal-lg')
-		$('#modal-dialog .modal-dialog').addClass('modal-lg');
-	else
-		$('#modal-dialog .modal-dialog').removeClass('modal-lg');
-
-	$('#modal-dialog .modal-content').html(modalContent); // #modal-dialog isset in html document'е
-	$('#modal-dialog').modal('show');
-
-	return;
-}
 /* cookie style core */
 function createCookie(name,value,days) {
 	if (days) {
