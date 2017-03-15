@@ -230,7 +230,6 @@ hr.small {
     padding: 36px 0px 0px 0px;
 }
 .comment-content .gravatar {
-    float: left;
 	max-width: 72px;
     min-height: 72px;
 }
@@ -293,6 +292,7 @@ hr.small {
 @media (min-width: 960px) {
 	.comment-content .gravatar img {
 		display: block;
+    float: left;
 	}
 	.comment-meta.post-meta {
 		margin-left: 90px;
