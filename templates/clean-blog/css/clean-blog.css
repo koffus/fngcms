@@ -56,10 +56,7 @@ hr.small {
     border-width: 4px;
     border-color: #fff;
 }
-article img {
-	width: 100%;
-	height: auto;
-}
+
 .btn-group-justified {
   display: table;
   width: 100%;
@@ -177,8 +174,7 @@ article img {
     line-height: 1.1;
     display: block;
     font-weight: 300; }
-	.intro-header .post-heading .meta a,
-	.intro-header .post-heading .subheading a {
+	.intro-header .post-heading a {
 		color: #fff;
 	}
 .post-preview > a {
@@ -215,11 +211,99 @@ article img {
 	left: 0;*/
 	width: 100%;
 }
-
+.post-full img {
+	width: 100%;
+	height: auto;
+}
 .section-heading {
   margin-top: 1.5rem;
   font-weight: 700; }
+  
+.comment-list .comment {
+	border-color: #eaeaea;
+	border-bottom-width: 1px;
+    border-bottom-style: solid;
+    padding-bottom: 36px;
+}
+.comments-list .comment-content {
+    position: relative;
+    padding: 36px 0px 0px 0px;
+}
+.comment-content .gravatar {
+    float: left;
+	max-width: 72px;
+    min-height: 72px;
+}
+.gravatar img {
+    max-width: 5em;
+    min-height: 5em;
+    -webkit-border-radius: 50%;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 50%;
+    -moz-background-clip: padding;
+    border-radius: 50%;
+    background-clip: padding-box;
+    margin: 0 auto;
+}
 
+.comment-meta.post-meta {
+    margin-left: 0;
+    padding: 0px 18px 18px 18px;
+    border-width: 0px;
+    border-style: solid;
+    border-color: transparent;
+    -webkit-border-radius: 2px;
+    -webkit-background-clip: padding-box;
+    -moz-border-radius: 2px;
+    -moz-background-clip: padding;
+    border-radius: 2px;
+    background-clip: padding-box;
+}
+
+.comment-content .comment-meta {
+    padding-right: 0px!important;
+    padding-bottom: 0px!important;
+}
+.comment-content .comment-author {
+    display: inline-block;
+    text-transform: capitalize;
+    margin: 0;
+    font-size: 17px;
+	font-weight: 600;
+}
+.comment-content .comment-meta-item,
+.comment-content .comment-reply-link span {
+    font-size: 11px;
+}
+
+.comment-content .comment-meta-item {
+    margin: 9px 0px 0px 0px;
+    display: block;
+}
+.comment-content .comment-meta p {
+    margin: 9px 0px 0px 0px;
+}
+.comment-content .comment-reply-link {
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 18px 0px 0px 0px;
+    display: block;
+}
+@media (min-width: 960px) {
+	.comment-content .gravatar img {
+		display: block;
+	}
+	.comment-meta.post-meta {
+		margin-left: 90px;
+	}
+	.comment-content .comment-reply-link {
+		position: absolute;
+		top: 0;
+		right: 0;
+		margin-top: 32px;
+	}
+}
 footer {
   padding: 50px 0 65px; }
   footer .list-inline {

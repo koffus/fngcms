@@ -1,27 +1,24 @@
-<div class="comments">
-	<ul class="list-unstyled">
-		<div id="new_comments_rev"></div>
+<section class="">
+	<ul class="comments-list list-unstyled">
 		{entries}
+		<li id="new_comments"></li>
 	</ul>
-</div>
 
-<div class="pagination">
-	<ul class="list-unstyled">
-		<li>{more_comments}</li>
-	</ul>
-</div>
+	<!-- Pager -->
+	<nav><ul class="pagination justify-content-center">{more_comments}</ul></nav>
 
-{form}
+	{form}
 
-[regonly]
-<div class="alert alert-info">
-	Уважаемый посетитель, Вы зашли на сайт как незарегистрированный пользователь.<br />
-	Мы рекомендуем Вам <a href="/register/">зарегистрироваться</a> либо <a href="/login/">войти</a> на сайт под своим именем.
-</div>
-[/regonly]
+	[regonly]
+	<div class="alert alert-info">
+		Уважаемый посетитель, Вы зашли на сайт как незарегистрированный пользователь.<br />
+		Мы рекомендуем Вам <a href="{home}/register/">зарегистрироваться</a> либо <a href="{home}/login/">войти</a> на сайт под своим именем.
+	</div>
+	[/regonly]
 
-[commforbidden]
-<div class="alert alert-info">
-	Комментирование данной новости запрещено.
-</div>
-[/commforbidden]
+	[commforbidden]
+	<div class="alert alert-info">
+		Комментирование данной новости запрещено.
+	</div>
+	[/commforbidden]
+</section>
