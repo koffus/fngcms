@@ -6,8 +6,8 @@
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
 	<meta name="generator" content="{{ what }} {{ version }}" />
 	<meta name="document-state" content="dynamic" />
-	{{ htmlvars }}
 	<title>{{ titles }}</title>
+	{{ htmlvars }}
 	<!-- Bootstrap Core CSS -->
 	<link rel="stylesheet" href="{{ tpl_url }}/lib/bootstrap/css/bootstrap.min.css">
 	<!-- Additional fonts for this theme -->
@@ -82,7 +82,7 @@
 				<div class="row">
 					<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 						<div class="site-heading">
-							<h1>{{ home_title }}</h1>
+							<h1>Мой первый блог</h1>
 							<hr class="small">
 							<span class="subheading">{{ lang.news }}</span>
 						</div>
@@ -99,7 +99,6 @@
 			</div>
 		</div>
 	{% else %}
-		
 		{{ mainblock }}
 	{% endif %}
 
@@ -136,13 +135,13 @@
 							</a>
 						</li>
 					</ul>
-					<p class="copyright text-muted">Copyright &copy;  <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>. Powered by <a title="Next Generation CMS" target="_blank" href="http://ngcms.ru/">NG CMS</a> 2007 — {{ now|date("Y") }}. <br />{{ lang.sql_queries }}: <b>{{ queries }}</b> | {{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }} | <b>{{ memPeakUsage }}</b> Mb&nbsp;</p>
+					<p class="copyright text-muted">Copyright &copy;  <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>. Powered by <a title="Fork of Next Generation CMS" target="_blank" href="https://github.com/russsiq/fngcms">FNG CMS</a> 2007 — {{ now|date("Y") }}. <br />{{ lang.sql_queries }}: <b>{{ queries }}</b> | {{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }} | <b>{{ memPeakUsage }}</b> Mb&nbsp;</p>
 				</div>
 			</div>
 		</div>
 	</footer>
 
-	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> Пожалуйста, подождите . . .</div>
+	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
 
 	<!-- jQuery Version 3.1.1 ->
 	<script src="{{ tpl_url }}/lib/jquery/jquery.js"></script>
