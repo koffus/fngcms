@@ -56,7 +56,7 @@ function add_comment(){
 }
 </script>
 
-<div class="title">Добавить комментарий</div>
+<h4 class="section-heading">Добавить комментарий</h4>
 
 <div class="respond">
 	<form id="comment" method="post" action="{post_url}" name="form" [ajax]onsubmit="add_comment(); return false;"[/ajax] novalidate>
@@ -78,7 +78,30 @@ function add_comment(){
 			</div>
 		</div>
 		[/not-logged]
-		{bbcodes}{smilies}
+		{bbcodes}
+		<!-- SMILES -->
+		<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Вставить смайл</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body text-center">
+
+								{smilies}
+
+						
+					</div>
+					<div class="modal-footer">
+						<button type="cancel" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+					</div>
+
+				</div>
+			</div>
+		</div>
 		<div class="row control-group">
 			<div class="form-group col col-xs-12 floating-label-form-group controls">
 				<label>Message</label>

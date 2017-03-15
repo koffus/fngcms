@@ -25,7 +25,7 @@
 						Posted by {% if pluginIsActive('uprofile') %}<a href="{{ news.author.url }}">{% endif %}{{ news.author.name }}{% if pluginIsActive('uprofile') %}</a>{% endif %} on {{ news.date }}
 					</span>
 					<span class="pull-right">
-						<i class="fa fa-eye" title="{{ lang.views }}"></i> {{ news.views }}{% if pluginIsActive('comments') %} | <i class="fa fa-eye" title="{{ lang.com }}"></i> {comments-num}{% endif %}
+						<i class="fa fa-eye" title="{{ lang.views }}"></i> {{ news.views }}{% if pluginIsActive('comments') %} <i class="fa fa-comments" title="{{ lang.com }}"></i> {comments-num}{% endif %}
 					</span>
 				</p>
 				<hr class="alert-info">
