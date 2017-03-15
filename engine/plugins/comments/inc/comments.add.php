@@ -53,7 +53,7 @@ function comments_add(){
 		return;
 	}
 
-	$SQL['text']	= secure_html($_POST['content']);
+	$SQL['text'] = secure_html($_POST['content']);
 
 	// If user is not logged, make some additional tests
 	if (!$is_member) {
@@ -105,7 +105,7 @@ function comments_add(){
 	$maxlen = intval(pluginGetVariable('comments', 'maxlen'));
 	$maxlen = ($maxlen > 2) ? $maxlen : 500;
 	if (mb_strlen($SQL['text'], 'UTF-8') > $maxlen or mb_strlen($SQL['text'], 'UTF-8') < 2) {
-		msg(array('type' => 'danger', 'message' => str_replace('{maxlen}', $maxlen, __('comments:err.badtext')) . $SQL['text']));
+		msg(array('type' => 'danger', 'message' => str_replace('{maxlen}', $maxlen, __('comments:err.badtext'))));
 		return;
 	}
 
@@ -120,9 +120,9 @@ function comments_add(){
 		// If hidden mode is active - say that news is not found
 		if ($ban_mode == 2) {
 			msg(array('type' => 'danger', 'message' => __('comments:err.notfound')));
-	 } else {
-	 	msg(array('type' => 'danger', 'message' => __('comments:err.ipban')));
-	 }
+		} else {
+			msg(array('type' => 'danger', 'message' => __('comments:err.ipban')));
+		}
 		return;
 	}
 
@@ -214,7 +214,9 @@ function comments_add(){
 
 	// Create comment
 	$vnames = array(); $vparams = array();
-	foreach ($SQL as $k => $v) { $vnames[] = $k; $vparams[] = db_squote($v); }
+	foreach ($SQL as $k => $v) {
+		$vnames[] = $k; $vparams[] = db_squote($v);
+	}
 
 	$mysql->query("insert into ".prefix."_comments (".implode(",",$vnames).") values (".implode(",",$vparams).")");
 

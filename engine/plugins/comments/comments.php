@@ -289,15 +289,9 @@ function plugin_comments_add() {
 		// Some errors.
 		if ($_REQUEST['ajax']) {
 			// AJAX MODE
-			// Set default template path [from site template / comments plugin subdirectory]
-			$templatePath = tpl_site.'plugins/comments';
-
-			$tpl -> template('comments.error', $templatePath);
-			$tpl -> vars('comments.error', array( 'vars' => array('content' => $template['vars']['mainblock'])));
-
 			$output = array(
 				'status' => 0,
-				'data' => $tpl -> show('comments.error'),
+				'data' => $template['vars']['mainblock'],
 				);
 			print json_encode($output);
 			$template['vars']['mainblock'] = '';
@@ -398,7 +392,7 @@ function plugin_comments_show(){
 	if ($page == $pageCount)
 		$callingCommentsParams['noajax'] = 0;
 
- $allowCom = $newsRow['allow_com'];
+	$allowCom = $newsRow['allow_com'];
 
 	// Show form for adding comments
 	if ($newsRow['allow_com'] && (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {

@@ -79,7 +79,7 @@ if ($subaction != "deletecomment") {
 			'newsid'	=>	$newsid,
 			'comid'		=>	$comid
 		);
-		$tvars['vars']['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies("content", 5) : '';
+		$tvars['vars']['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('content', 5) : '';
 		$tvars['vars']['comdate'] = Lang::retDate(pluginGetVariable('comments', 'timestamp'), $row['postdate']);
 
 		if ($userROW['status'] < "3"){
