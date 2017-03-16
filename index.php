@@ -199,18 +199,10 @@ foreach ($EXTRA_HTML_VARS as $htmlvar) {
 	$dupCheck[] = $htmlvar['data'];
 
 	switch ($htmlvar['type']) {
-		case 'css':
-			$htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="stylesheet" />';
-			break;
-		case 'js' :
-			$htmlrow[] = '<script src="' . $htmlvar['data'] . '"></script>';
-			break;
-		case 'rss' :
-			$htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="alternate" type="application/rss+xml" title="RSS" />';
-			break;
-		case 'plain':
-			$htmlrow[] = $htmlvar['data'];
-			break;
+		case 'css': $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="stylesheet" />'; break;
+		case 'js': $htmlrow[] = '<script src="' . $htmlvar['data'] . '"></script>'; break;
+		case 'rss': $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="alternate" type="application/rss+xml" title="RSS" />'; break;
+		case 'plain': $htmlrow[] = $htmlvar['data']; break;
 	}
 }
 if (count($htmlrow))
