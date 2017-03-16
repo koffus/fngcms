@@ -1066,28 +1066,29 @@ function showPreview() {
 	// Generate metatags
 	$EXTRA_HTML_VARS[] = array('type' => 'plain', 'data' => GetMetatags());
 
-	$txv['vars']['htmlvars'] = '';
 	// Fill additional HTML vars
 	$htmlrow = array();
 	$dupCheck = array();
 	foreach ($EXTRA_HTML_VARS as $htmlvar) {
+		// Skip empty
+		if (!$htmlvar['data'])
+			continue;
+
+		// Check for duplicated rows
 		if (in_array($htmlvar['data'], $dupCheck))
 			continue;
 		$dupCheck[] = $htmlvar['data'];
+
 		switch ($htmlvar['type']) {
-			case 'css'	: 	$htmlrow[] = "<link href=\"".$htmlvar['data']."\" rel=\"stylesheet\" type=\"text/css\" />";
-							break;
-			case 'js'	:	$htmlrow[] = "<script type=\"text/javascript\" src=\"".$htmlvar['data']."\"></script>";
-							break;
-			case 'rss'	:	$htmlrow[] = "<link href=\"".$htmlvar['data']."\" rel=\"alternate\" type=\"application/rss+xml\" title=\"RSS\" />";
-							break;
-			case 'plain':	$htmlrow[] = $htmlvar['data'];
-				break;
+			case 'css': $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="stylesheet" />'; break;
+			case 'js': $htmlrow[] = '<script src="' . $htmlvar['data'] . '"></script>'; break;
+			case 'rss': $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="alternate" type="application/rss+xml" title="RSS" />'; break;
+			case 'plain': $htmlrow[] = $htmlvar['data']; break;
 		}
 	}
 
 	if (count($htmlrow))
-		$tvx['vars']['htmlvars'] = join("\n",$htmlrow);
+		$tvx['vars']['htmlvars'] = join("\n", $htmlrow);
 
 	$tpl -> template('preview', tpl_actions);
 	$tpl -> vars('preview', $tvx);
