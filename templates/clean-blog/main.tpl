@@ -58,33 +58,7 @@
 		</div>
 	</nav>
 
-	{% if isHandler('news:main|news:by.category|news:by.month|news:by.day') %}
-	
-	<!-- Page Header -->
-		<header class="intro-header" style="background-image: url('{{ tpl_url }}/img/home-bg.jpg')">
-			<div class="container">
-				<div class="row">
-					<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-						<div class="site-heading">
-							<h1>Мой первый блог</h1>
-							<hr class="small">
-							<span class="subheading">{{ lang.news }}</span>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
-		<!-- Main Content -->
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
-					{{ mainblock }}
-				</div>
-			</div>
-		</div>
-	{% else %}
-		{{ mainblock }}
-	{% endif %}
+	{{ mainblock }}
 
 	<hr>
 

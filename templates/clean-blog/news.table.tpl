@@ -1,10 +1,33 @@
-{% for entry in data %}
-	{{ entry }}
-{% else %}
-	<div class="alert alert-info">
-		<strong>{{ lang.notifyWindowInfo }}</strong>
-		{{ lang.msgi_no_news }}
-	</div>
-{% endfor %}
+{% if isHandler('news:main|news:by.category') %}
+	<!-- Page Header -->
+	<header class="intro-header" style="background-image: url('{{ tpl_url }}/img/home-bg.jpg')">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+					<div class="post-heading">
+						<h1>{% if isHandler('news:by.category') %}{{ category.name }}{% else %}Мой первый блог{% endif %}</h1>
+						<hr class="small">
+						<span class="subheading">{{ lang.news }}</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+{% endif %}
+<!-- Main Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+			{% for entry in data %}
+				{{ entry }}
+			{% else %}
+				<div class="alert alert-info">
+					<strong>{{ lang.notifyWindowInfo }}</strong>
+					{{ lang.msgi_no_news }}
+				</div>
+			{% endfor %}
 
-{{ pagination }}
+			{{ pagination }}
+		</div>
+	</div>
+</div>
