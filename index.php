@@ -95,8 +95,6 @@ if ( $config['lock'] and ( !is_array($userROW ) or ( !checkPermission(array('plu
 		$tpl -> vars('lock', $tvars);
 		$template['regx']["'\[sitelock\].*?\[/sitelock\]'si"] = $tpl -> show('lock');
 		$template['regx']["'\[debug\].*?\[/debug\]'si"] = '';
-		$template['vars']['metatags'] = '';
-		$template['vars']['extracss'] = '';
 		$template['vars']['htmlvars'] = '';
 
 		$tpl -> template('main', tpl_site);
@@ -173,10 +171,6 @@ executeActionHandler('index_post');
 
 // ===================================================================
 // Prepare JS/CSS/RSS references
-
-// Make empty OLD STYLE variables
-$template['vars']['metatags'] = '';
-$template['vars']['extracss'] = '';
 
 // Fill extra CSS links
 foreach ($EXTRA_CSS as $css => $null)
