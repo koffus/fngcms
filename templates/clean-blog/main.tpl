@@ -19,16 +19,12 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	
 	<!-- jQuery Version 3.1.1 -->
 	<script src="{{ tpl_url }}/lib/jquery/jquery.js"></script>
-
 	<!-- Tether -->
 	<script src="{{ tpl_url }}/lib/tether/tether.min.js"></script>
-
 	<!-- Bootstrap Core JavaScript -->
 	<script src="{{ tpl_url }}/lib/bootstrap/js/bootstrap.min.js"></script>
-
 	<!-- Theme JavaScript -->
 	<script src="{{ tpl_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
