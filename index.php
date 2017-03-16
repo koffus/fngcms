@@ -51,10 +51,11 @@ ini_set('magic_quotes_gpc', 0);
 ini_set('magic_quotes_sybase', 0);
 
 // Load CORE module
-if(file_exists($core = 'engine/core.php'))
+if( file_exists($core = 'engine/core.php') ) {
 	require_once $core;
-else
+} else {
 	die('Unable to load CORE!');
+}
 
 // Init GZip handler
 initGZipHandler();
@@ -72,7 +73,7 @@ $template = array(
 		'titles'		=>	home_title,
 		'home_title'	=>	home_title,
 		'mainblock'	=>	'',
-		'htmlvars'	=> 	'',
+		'htmlvars'	=>	 '',
 	),
 );
 
