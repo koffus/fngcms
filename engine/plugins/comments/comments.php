@@ -230,7 +230,6 @@ class CommentsFilterAdminCategories extends FilterAdminCategories{
 
 }
 
-
 function plugin_comments_add() {
 	global $config, $catz, $catmap, $tpl, $template, $SUPRESS_TEMPLATE_SHOW;
 
@@ -329,7 +328,7 @@ function plugin_comments_show(){
 		error404();
 		return;
 	}
-	$SYSTEM_FLAGS['info']['title']['item']		= $newsRow['title'];
+	$SYSTEM_FLAGS['info']['title']['item'] = $newsRow['title'];
 
 	// Prepare params for call
 	// AJAX is turned off by default
@@ -406,7 +405,7 @@ function plugin_comments_show(){
 	}
 
 	// Show header file
-	$tcvars['vars']['link']	= newsGenerateLink($newsRow);
+	$tcvars['vars']['link']		= newsGenerateLink($newsRow);
 	$tcvars['vars']['title']	= secure_html($newsRow['title']);
 	$tcvars['regx']['[\[comheader\](.*)\[/comheader\]]'] = ($newsRow['com'])?'$1':'';
 
