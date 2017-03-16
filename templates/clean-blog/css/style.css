@@ -73,6 +73,15 @@ hr.small {
     .btn-group-justified .btn .dropdown-menu,
     .btn-group-justified .btn-group .dropdown-menu {
       left: auto; }
+.navbar-toggler {
+		z-index: 1;
+	}
+	
+	@media (max-width: 576px) {
+		nav > .container {
+			width: 100%;
+		}
+	}
 #mainNav {
   background-color: white;
   border-bottom: 1px solid #eeeeee;

@@ -14,23 +14,11 @@
 	<link rel="stylesheet" href="{{ tpl_url }}/lib/font-awesome/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300">
 	<!-- Custom styles for this theme -->
-	<link href="{{ tpl_url }}/css/clean-blog.css" rel="stylesheet">
+	<link href="{{ tpl_url }}/css/style.css" rel="stylesheet">
 	<!--[if lt IE 9]>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 	<![endif]-->
-	<!-- Temporary navbar container fix until Bootstrap 4 is patched -->
-	<style>
-	.navbar-toggler {
-		z-index: 1;
-	}
-	
-	@media (max-width: 576px) {
-		nav > .container {
-			width: 100%;
-		}
-	}
-	</style>
 	
 	<!-- jQuery Version 3.1.1 -->
 	<script src="{{ tpl_url }}/lib/jquery/jquery.js"></script>
@@ -42,7 +30,7 @@
 	<script src="{{ tpl_url }}/lib/bootstrap/js/bootstrap.min.js"></script>
 
 	<!-- Theme JavaScript -->
-	<script src="{{ tpl_url }}/js/clean-blog.js"></script>
+	<script src="{{ tpl_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
 	<script src="{{ scriptLibrary }}/ajax.js"></script>
 	{% if pluginIsActive('rss_export') %}<link href="{{ home }}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />{% endif %}
@@ -153,7 +141,7 @@
 	<script src="{{ tpl_url }}/lib/bootstrap/js/bootstrap.min.js"></script>
 
 	<!-- Theme JavaScript ->
-	<script src="{{ tpl_url }}/js/clean-blog.js"></script>
+	<script src="{{ tpl_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
 	<script src="{{ scriptLibrary }}/ajax.js"></script-->
 

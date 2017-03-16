@@ -1,5 +1,5 @@
-<section class="">
-	<ul class="comments-list list-unstyled">
+<section class="comments-list">
+	<ul class="list-unstyled">
 		{entries}
 		<li id="new_comments"></li>
 	</ul>

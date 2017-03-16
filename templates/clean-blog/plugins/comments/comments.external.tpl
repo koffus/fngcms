@@ -19,9 +19,8 @@
 		<div class="row">
 			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
 				<ul class="list-unstyled">
-					<div id="new_comments_rev"></div>
 					{entries}
-					<div id="new_comments"></div>
+					<li id="new_comments"></li>
 				</ul>
 
 				<!-- Pager -->

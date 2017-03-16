@@ -61,7 +61,7 @@ function add_comment(){
 <h4 class="section-heading">Добавить комментарий</h4>
 
 <div class="respond">
-	<form id="comment" method="post" action="{post_url}" name="form" [ajax]onsubmit="add_comment(); $('.alert').alert();return false;"[/ajax] novalidate>
+	<form id="comment" method="post" action="{post_url}" name="form" [ajax]onsubmit="add_comment(); return false;"[/ajax] novalidate>
 	<input type="hidden" name="newsid" value="{newsid}" />
 	<input type="hidden" name="referer" value="{request_uri}" />
 		[not-logged]
