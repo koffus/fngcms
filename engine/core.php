@@ -25,9 +25,12 @@ if ( !function_exists('__') ) {
 
 // Автозагрузка классов
 spl_autoload_register(function($className) {
-	$file = root . 'classes/' . strtolower($className). '.class.php';
+	$file = root . 'classes/' . $className. '.class.php';
 	
 	if (file_exists($file)) {
+		require_once($file); // !!! require once !!!
+		return;
+	} elseif ( file_exists($file = root . 'classes/' . strtolower($className). '.class.php') ) {
 		require_once($file); // !!! require once !!!
 		return;
 	} else {

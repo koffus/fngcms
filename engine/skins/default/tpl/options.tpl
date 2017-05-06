@@ -22,7 +22,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -40,7 +40,7 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="row">
 		<div class="col-md-6">
 			<div class="panel panel-default">
@@ -57,7 +57,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
@@ -74,49 +74,7 @@
 			</div>
 		</div>
 	</div>
-	
-	<div class="row">
-		<div class="col-md-12">
-			<div class="panel panel-default">
-				<div class="panel-heading">
-					<h4>Настройки админ. панели</h4>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<!--Block 1-->
-						<div class="col col-md-3 col-sm-6">
-							<div class="form-group">
-								<label>Тема оформления </label>
-								<div class="input-group">
-									<select id="theme-style">
-										<option value="default">Default</option>
-										<option value="cerulean">Cerulean</option>
-										<option value="cosmo">Cosmo</option>
-										<option value="cyborg">Cyborg</option>
-										<option value="darkly">Darkly</option>
-										<option value="flatly">Flatly</option>
-										<option value="journal">Journal</option>
-										<option value="lumen">Lumen</option>
-										<option value="paper">Paper</option>
-										<option value="sandstone">Sandstone</option>
-										<option value="simplex">Simplex</option>
-										<option value="slate">Slate</option>
-										<option value="spacelab">Spacelab</option>
-										<option value="superhero">Superhero</option>
-										<option value="united">United</option>
-										<option value="yeti">Yeti</option>
-									</select>
-									<span class="input-group-btn">
-										<button type="button" id="themes" class="btn btn-success">{{ lang['ok'] }}</button>
-									</span>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+
 </div>
 <script>
 if (typeof(localStorage) == "undefined") {

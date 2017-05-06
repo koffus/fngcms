@@ -6,7 +6,7 @@
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<link href="{{ skins_url }}/assets/css/fontawesome.css" rel="stylesheet">
-	<link href="{{ themeStyle }}" rel="stylesheet">
+	<link href="{{ skin }}" rel="stylesheet">
 	<link href="{{ skins_url }}/css/style.css" rel="stylesheet">
 
 	<script src="{{ skins_url }}/assets/js/jquery-2.1.4.min.js"></script>
@@ -17,7 +17,7 @@
 	<script src="{{ scriptLibrary }}/admin.js"></script>
 </head>
 <body>
-	
+
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container-fluid">
 			<div class="navbar-header">
@@ -29,7 +29,7 @@
 				</button>
 				<a class="navbar-brand hidden-xs" href="admin.php" title="{{ lang['mainpage_t'] }}">Next Generation CMS</a>
 			</div>
-			
+
 			<div class="navbar-custom-menu">
 				<ul class="nav navbar-nav">
 					<li class="dropdown">
@@ -84,9 +84,7 @@
 
 	<div class="side-menu-container navbar navbar-inverse">
 		<ul class="nav navbar-nav">
-			
 			<li><a href="{{ home }}" target="_blank"><i class="fa fa-external-link"></i> {{ lang['mainpage'] }}</a></li>
-			
 			<li>
 				<a href="#active_content" data-toggle="collapse" {{ h_active.content }}>
 					<i class="fa fa-newspaper-o"></i> {{ lang['content'] }} <span class="caret"></span></a>
@@ -98,7 +96,6 @@
 					<li><a href="admin.php?mod=files">{{ lang['content_files'] }}</a></li>
 				</ul>
 			</li>
-			
 			<li>
 				<a href="#h_active_users" data-toggle="collapse" {{ h_active.users }}>
 					<i class="fa fa-users"></i> {{ lang['users'] }} <span class="caret"></span></a>
@@ -109,11 +106,8 @@
 					<li><a href="admin.php?mod=perm">{{ lang['users_perm'] }}</a></li>
 				</ul>
 			</li>
-			
 			<li><a href="admin.php?mod=extras" {{ h_active.extras }}><i class="fa fa-puzzle-piece"></i> {{ lang['extras'] }}</a></li>
-			
 			<li><a href="admin.php?mod=templates" {{ h_active.templates }}><i class="fa fa-th-large"></i> {{ lang['templates'] }}</a></li>
-			
 			<li>
 				<a href="#h_active_options" data-toggle="collapse" {{ h_active.options }}>
 					<i class="fa fa-cogs"></i> {{ lang['options'] }} <span class="caret"></span></a>
@@ -126,7 +120,6 @@
 					<li><a href="admin.php?mod=statistics">{{ lang['options_statistics'] }}</a></li>
 				</ul>
 			</li>
-
 			<li>
 				<a href="#active_help" data-toggle="collapse" {{ h_active.help }}>
 					<i class="fa fa-leanpub"></i> {{ lang['help'] }} <span class="caret"></span></a>

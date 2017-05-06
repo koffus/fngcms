@@ -208,6 +208,10 @@
 				<td>{{ mkSelect({'name' : 'save_con[theme]', 'value' : config['theme'], 'values' : list['theme'] }) }}</td>
 				</tr>
 				<tr>
+				<td width="50%">{{ lang['skin'] }} <span class="help-block">{{ lang['skin_desc'] }}</span></td>
+				<td>{{ mkSelect({'name' : 'save_con[skin]', 'value' : config['skin'], 'values' : list['skin'] }) }}</td>
+				</tr>
+				<tr>
 				<td width="50%">{{ lang['lang'] }} <span class="help-block">{{ lang['lang_desc'] }}</span></td>
 				<td>{{ mkSelect({'name' : 'save_con[default_lang]', 'value' : config['default_lang'], 'values' : list['default_lang'] }) }}</td>
 				</tr>

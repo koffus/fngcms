@@ -217,6 +217,7 @@ if ( $mod != 'preview' ) {
 	$tVars = array(
 		'php_self' => $PHP_SELF,
 		'titles' => __('adminpanel') . ' : ' . $config['home_title'],
+		'skin' => $skins_url . '/assets/css/themes/' . $config['skin'] . '.css', // switchTheme
 		'user' => array(
 			'id' => $userROW['id'],
 			'name' => $userROW['name'],
@@ -233,16 +234,6 @@ if ( $mod != 'preview' ) {
 		'unnAppText' => $unnAppText,
 		'newpmText' => $newpmText,
 	);
-
-	// switchTheme
-	if ( isset($_COOKIE['theme-style'] )
-		and $_COOKIE['theme-style'] != 'default'
-		and $_COOKIE['theme-style'] != 'undefined'
-		and !empty($_COOKIE['theme-style']) ) {
-		$tVars['themeStyle'] = $skins_url . '/assets/css/themes/' . $_COOKIE['theme-style'] . '.css';
-	} else {
-		$tVars['themeStyle'] = $skins_url . '/assets/css/bootstrap.css';
-	}
 
 	$xt = $twig->loadTemplate('skins/default/tpl/header.tpl');
 	echo $xt->render($tVars);

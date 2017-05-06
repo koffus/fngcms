@@ -941,7 +941,7 @@ function doInstall()
  'meta' => '1',
  'description' => 'Здесь описание вашего сайта',
  'keywords' => 'Здесь ключевые слова, через запятую (,)',
- 'skin' => 'default',
+ 'skin' => 'yeti',
  'theme' => $_POST['template'],
  'default_lang' => $currentLanguage,
  'auto_backup' => '0',
