@@ -63,7 +63,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">{l_db.password}</label>
 						<div class="col-sm-9">
-							<input type="text" name="reg_dbpass" value="{reg_dbpass}" class="form-control">
+							<input type="password" name="reg_dbpass" value="{reg_dbpass}" class="form-control">
 							<span class="help-block">{l_db.password#desc}</span>
 						</div>
 					</div>
