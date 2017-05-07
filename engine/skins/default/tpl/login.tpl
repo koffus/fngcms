@@ -3,9 +3,11 @@
 <head>
 	<meta charset="{l_encoding}">
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+
 	<title>{home_title}</title>
+
 	<link href="{skins_url}/assets/css/fontawesome.css" rel="stylesheet">
-	<link href="{skins_url}/assets/css/bootstrap.css" rel="stylesheet">
+	<link href="{skins_url}/assets/css/themes/default.css" rel="stylesheet">
 	<link href="{skins_url}/css/login.css" rel="stylesheet">
 </head>
 <body>
