@@ -1,6 +1,6 @@
 ID: faq
 Name: Вопросы и ответы
-Version: 0.1
+Version: 0.2
 Acts: ppages, index
 File: faq.php
 Config: config.php
