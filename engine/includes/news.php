@@ -194,15 +194,15 @@ function showNews($handlerName, $params) {
 					$SYSTEM_FLAGS['meta']['keywords'] = $currentCategory['keywords'];
 				} else {
 					// Удаляем все слова меньше 3-х символов
-					$currentCategory['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#i', '', $currentCategory['keywords']);
+					$currentCategory['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', $currentCategory['name']);
 					// Удаляем знаки препинания
-					$currentCategory['keywords'] = preg_replace('#[^\d\w ]+#i', '', $currentCategory['keywords']);
+					$currentCategory['keywords'] = preg_replace('#[^\d\w ]+#iu', '', $currentCategory['keywords']);
 					// Удаляем лишние пробельные символы
-					$currentCategory['keywords'] = preg_replace('#[\s]+#i', ' ', $currentCategory['keywords']);
+					$currentCategory['keywords'] = preg_replace('#[\s]+#iu', ' ', $currentCategory['keywords']);
 					// Заменяем пробелы на запятые
-					$currentCategory['keywords'] = preg_replace('#[\s]#i', ',', $currentCategory['keywords']);
+					$currentCategory['keywords'] = preg_replace('#[\s]#iu', ',', $currentCategory['keywords']);
 					// Выводим для леньтяев
-					$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $currentCategory['name']);
+					$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $currentCategory['keywords']);
 				}
 
 				// Set personal `order by` for category
