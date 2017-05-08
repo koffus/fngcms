@@ -1,6 +1,5 @@
 <?php
 
-
 //
 // Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
 // Name: rewrite.php
@@ -12,13 +11,11 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Check for permissions
-if (!checkPermission(array('plugin' => '#admin', 'item' => 'rewrite'), null, 'details')) {
+if ( !checkPermission(array('plugin' => '#admin', 'item' => 'rewrite'), null, 'details') ) {
 	msg(array("type" => "error", "text" => $lang['perm.denied']), 1, 1);
 	ngSYSLOG(array('plugin' => '#admin', 'item' => 'rewrite'), array('action' => 'details'), null, array(0, 'SECURITY.PERM'));
 	return false;
 }
-
-
 
 @include_once 'includes/classes/uhandler.class.php';
 $ULIB = new urlLibrary();
@@ -27,22 +24,20 @@ $ULIB->loadConfig();
 $UH = new urlHandler();
 $UH->loadConfig();
 
-
 $lang = Lang::load('rewrite', 'admin');
 
 // ================================================================
 // Handlers for new REWRITE format
 // ================================================================
 
-
 //
 // Generate list of supported commands [ config ]
 //
 $jconfig = array();
-foreach ($ULIB->CMD as $plugin => $crow) {
-	foreach ($crow as $cmd => $param) {
+foreach ( $ULIB->CMD as $plugin => $crow ) {
+	foreach ( $crow as $cmd => $param ) {
 		$jconfig[$plugin][$cmd] = array('vars' => array(), 'descr' => $ULIB->extractLangRec($param['descr']));
-		foreach($param['vars'] as $vname => $vdata) {
+		foreach( $param['vars'] as $vname => $vdata ) {
 			$jconfig[$plugin][$cmd]['vars'][$vname] = $ULIB->extractLangRec($vdata['descr']);
 		}
 	}
@@ -53,7 +48,7 @@ foreach ($ULIB->CMD as $plugin => $crow) {
 //
 $recno = 0;
 $jdata = array();
-foreach ($UH->hList as $hId) {
+foreach ( $UH->hList as $hId ) {
 	$jrow = array(
 			'id'				=> $recno,
 			'pluginName'		=> $hId['pluginName'],
