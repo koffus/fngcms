@@ -185,10 +185,25 @@ function showNews($handlerName, $params) {
 				$callingParams['currentCategoryId'] = $currentCategory['id'];
 
 				// Set meta tags for category page
-				if ($currentCategory['description'])
+				if ($currentCategory['description']) {
 					$SYSTEM_FLAGS['meta']['description'] = $currentCategory['description'];
-				if ($currentCategory['keywords'])
+				} else {
+					$SYSTEM_FLAGS['meta']['description'] = home_title . ' - ' . $currentCategory['name'];
+				}
+				if ($currentCategory['keywords']) {
 					$SYSTEM_FLAGS['meta']['keywords'] = $currentCategory['keywords'];
+				} else {
+					// Удаляем все слова меньше 3-х символов
+					$currentCategory['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#i', '', $currentCategory['keywords']);
+					// Удаляем знаки препинания
+					$currentCategory['keywords'] = preg_replace('#[^\d\w ]+#i', '', $currentCategory['keywords']);
+					// Удаляем лишние пробельные символы
+					$currentCategory['keywords'] = preg_replace('#[\s]+#i', ' ', $currentCategory['keywords']);
+					// Заменяем пробелы на запятые
+					$currentCategory['keywords'] = preg_replace('#[\s]#i', ',', $currentCategory['keywords']);
+					// Выводим для леньтяев
+					$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $currentCategory['name']);
+				}
 
 				// Set personal `order by` for category
 				if ($currentCategory['number'])
