@@ -43,6 +43,10 @@ class Lang {
 			$toinc = root . 'lang/english' . $where . '/' . $what . '.ini';
 		}
 
+		if ( !file_exists($toinc) ) {
+			$toinc = root . 'lang/russian' . $where . '/' . $what . '.ini';
+		}
+
 		if ( file_exists($toinc) ) {
 			$content = parse_ini_file($toinc, true);
 
