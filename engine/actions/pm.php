@@ -38,10 +38,11 @@ function pm_send() {
 	} else {
 		msg(array('type' => 'danger', 'title' => __('msge_nouser'), 'message' => __('msgi_nouser')));
 	}
+	pm_list();
 }
 
-function pm_list (){
-	global $mysql, $config, $userROW, $tpl, $mod, $PHP_SELF;
+function pm_list () {
+	global $mysql, $config, $userROW, $twig, $mod, $PHP_SELF;
 
 	$entries = '';
 	foreach($mysql->select("select pm.*, u.id as uid, u.name as uname from ".uprefix."_users_pm pm left join ".uprefix."_users u on pm.from_id=u.id where pm.to_id = ".db_squote($userROW['id'])." order by pmid desc limit 0, 30") as $row) {
@@ -57,37 +58,34 @@ function pm_list (){
 			$author = __('messaging');
 		}
 
-
-		$tvars['vars'] = array(
-			'php_self'	=>	$PHP_SELF,
-			'pmid'		=>	$row['pmid'],
-			'pmdate'	=>	Lang::retDate('j.m.Y - H:i', $row['pmdate']),
-			'title'		=>	$row['title'],
-			'link'		=>	$author,
-			'viewed'	=>	$row['viewed'] = ($row['viewed'] == 1 ? __("viewed") : "<font color=green><b>__(unviewed)</b></font>")
+		$tVars = array(
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['pmid'],
+			'pmdate' => Lang::retDate('j.m.Y - H:i', $row['pmdate']),
+			'title' => $row['title'],
+			'link' => $author,
+			'viewed' => $row['viewed'] = ($row['viewed'] == 1 ? __('viewed') : '<font color="green"><b>'. __('unviewed') . '</b></font>')
 		);
-		$tpl -> template('entries', tpl_actions.$mod);
-		$tpl -> vars('entries', $tvars);
-		$entries .= $tpl -> show('entries');
+		$xt = $twig->loadTemplate(tpl_actions.$mod.'/entries.tpl');
+		$entries .= $xt->render($tVars);
+		
 	}
 
-	$tpl -> template('table', tpl_actions.$mod);
-	$tvars['vars'] = array(
+	$tVars = array(
 		'php_self'	=>	$PHP_SELF,
 		'entries'	=>	$entries
 	);
 	executeActionHandler('pm');
-	$tpl -> vars('table', $tvars);
-	echo $tpl -> show('table');
+	$xt = $twig->loadTemplate(tpl_actions.$mod.'/table.tpl');
+	echo $xt->render($tVars);
 }
 
-function pm_read(){
-	global $mysql, $config, $userROW, $tpl, $mod, $parse, $PHP_SELF;
+function pm_read() {
+	global $mysql, $config, $userROW, $twig, $mod, $parse, $PHP_SELF;
 
 	$pmid = $_REQUEST['pmid'];
 	if ($row = $mysql->record("select * from ".uprefix."_users_pm where pmid = ".db_squote($pmid)."and (to_id = ".db_squote($userROW['id'])." or from_id=".db_squote($userROW['id']).")")) {
-		$tpl -> template('read', tpl_actions.$mod);
-		$tvars['vars'] = array(
+		$tVars = array(
 			'php_self'		=>	$PHP_SELF,
 			'pmid'			=>	$row['pmid'],
 			'title'			=>	$row['title'],
@@ -95,8 +93,8 @@ function pm_read(){
 			'content'		=>	$parse->htmlformatter($parse->smilies($parse->bbcodes($row['content'])))
 		);
 		executeActionHandler('pm_read');
-		$tpl -> vars('read', $tvars);
-		echo $tpl -> show('read');
+		$xt = $twig->loadTemplate(tpl_actions.$mod.'/read.tpl');
+		echo $xt->render($tVars);
 		if ((!$row['viewed'])&&($row['to_id'] == $userROW['id'])) {
 			$mysql->query("update ".uprefix."_users_pm set `viewed` = '1' WHERE `pmid` = ".db_squote($row['pmid']));
 		}
@@ -105,8 +103,8 @@ function pm_read(){
 	}
 }
 
-function pm_reply(){
-	global $mysql, $config, $userROW, $tpl, $mod, $parse;
+function pm_reply() {
+	global $mysql, $config, $userROW, $twig, $mod, $parse;
 
 	$pmid = $_REQUEST['pmid'];
 	if ($row = $mysql->record("select * from ".uprefix."_users_pm where pmid = ".db_squote($pmid)."and (to_id = ".db_squote($userROW['id'])." or from_id=".db_squote($userROW['id']).")")) {
@@ -115,39 +113,37 @@ function pm_reply(){
 			return;
 		}
 
-		$tpl -> template('reply', tpl_actions.$mod);
-		$tvars['vars'] = array(
-			'php_self'	=>	$PHP_SELF,
-			'pmid'		=>	$row['pmid'],
-			'title'		=>	'Re:'.$row['title'],
-			'sendto'	=>	$row['from_id'],
-			'quicktags'	=>	QuickTags(false, "pmmes")
+		$tVars = array(
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['pmid'],
+			'title' => 'Re:'.$row['title'],
+			'sendto' => $row['from_id'],
+			'quicktags' => QuickTags(false, 'pmmes'),
+			'smilies' => ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '',
 		);
-		$tvars['vars']['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '';
 		executeActionHandler('pm_reply');
-		$tpl -> vars('reply', $tvars);
-		echo $tpl -> show('reply');
+		$xt = $twig->loadTemplate(tpl_actions.$mod.'/reply.tpl');
+		echo $xt->render($tVars);
 	} else {
 		msg(array('type' => 'danger', 'message' => __('msge_bad')));
 	}
 }
 
-function pm_write(){
-	global $mysql, $config, $userROW, $tpl, $mod, $PHP_SELF;
+function pm_write() {
+	global $mysql, $config, $userROW, $twig, $mod, $PHP_SELF;
 
-	$tpl -> template('write', tpl_actions.$mod);
-	$tvars['vars'] = array(
-		'php_self'	=>	$PHP_SELF,
-		'quicktags'	=>	QuickTags(false, "pmmes")
+	$tVars = array(
+		'php_self' => $PHP_SELF,
+		'quicktags' => QuickTags(false, 'pmmes'),
+		'smilies' => ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '',
 	);
-	$tvars['vars']['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '';
 	executeActionHandler('pm_write');
-	$tpl -> vars('write', $tvars);
-	echo $tpl -> show('write');
+	$xt = $twig->loadTemplate(tpl_actions.$mod.'/write.tpl');
+	echo $xt->render($tVars);
 }
 
 function pm_delete(){
-	global $mysql, $config, $userROW, $tpl, $mod;
+	global $mysql, $config, $userROW, $mod;
 
 	$selected_pm = getIsSet($_REQUEST['selected_pm']);
 
@@ -159,6 +155,7 @@ function pm_delete(){
 		$mysql->query("delete from ".uprefix."_users_pm where `pmid`=".db_squote($id)." and (from_id=".db_squote($userROW['id'])." or to_id=".db_squote($userROW['id']).")");
 	}
 	msg(array('message' => __('msgo_deleted')));
+	pm_list();
 }
 
 switch($action){
