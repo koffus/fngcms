@@ -38,9 +38,9 @@
 				</div>
 				
 				<fieldset>
-					<h4>Извините, но продолжить установку можно только приняв условия лицензионного соглашения!</h4>
+					<h4>{l_welcome.licence.notagree}</h4>
 					<div class="f1-buttons">
-						<a href="install.php" class="btn btn-previous">&laquo; Вернуться к установке</a>
+						<a href="install.php" class="btn btn-previous">&laquo; {l_button.return}</a>
 					</div>
 				</fieldset>
 			</div>

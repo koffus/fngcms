@@ -62,7 +62,7 @@ function __ ($key, $default_value = '') {
 
 // Для установки системы отключаем кеширование
 // т.к. возникают проблемы с сохранением конфигурационного файла в PHP > 5.5
-header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // дата в прошлом
+header('Expires: Mon, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
 header('Cache-Control: no-store, no-cache, must-revalidate');// HTTP/1.1
 header('Cache-Control: post-check=0, pre-check=0', false);
@@ -76,13 +76,13 @@ if (function_exists('xcache_get'))
 // Задаем дефолт константы для tpl.class.php
 // чтобы не ругался php об asumed
 if (!defined('admin_url'))
-	define('admin_url',		'../engine');
+	define('admin_url', '../engine');
 if (!defined('tpl_url'))
-	define('tpl_url',			'../templates/default');
+	define('tpl_url', '../templates/default');
 if (!defined('scriptLibrary'))
-	define('scriptLibrary',	'../lib');
+	define('scriptLibrary', '../lib');
 if (!defined('skins_url'))
-	define('skins_url',		'skins/default');
+	define('skins_url', 'skins/default');
 
 // Пошла система
 define('NGCMS', 1);
@@ -98,17 +98,27 @@ multi_multisites();
 @define('confroot', root . 'conf/' . ($multiDomainName && $multimaster && ($multiDomainName != $multimaster) ? 'multi/' . $multiDomainName . '/' : ''));
 
 // Check if config file already exists
-if ((@fopen(confroot . 'config.php', 'r')) && (filesize(confroot . 'config.php'))) {
+if ( (@fopen(confroot . 'config.php', 'r')) && (filesize(confroot . 'config.php')) ) {
 	echo "<font color=red><b>Error: configuration file already exists!</b></font><br />Delete it and continue.<br />\n";
 	return;
 }
 
 // =============================================================
-// Fine, we're ready to start installation
+// Fine, we are ready to start installation
 // =============================================================
 
-// Determine user's language (support only RUSSIAN/ENGLISH)
+// Determine user's language
 $currentLanguage = isset($_REQUEST['language']) ? $_REQUEST['language'] : 'english';
+
+if ( !file_exists($toinc = root . 'lang/' . $currentLanguage . '/install.ini') ) {
+	$toinc = root . 'lang/english/install.ini';
+	$currentLanguage = 'english';
+}
+
+if ( !file_exists($toinc) ) {
+	$toinc = root . 'lang/russian/install.ini';
+	$currentLanguage = 'russian';
+}
 
 // Load language variables
 @include_once root . 'classes/lang.class.php';
@@ -171,18 +181,18 @@ if ($flagPendingChanges) {
 	$list = pluginsGetList();
 	foreach ($pluginInstallList as $pName) {
 		if ($list[$pName]['install']) {
-			include_once root . "plugins/" . $pName . "/" . $list[$pName]['install'];
+			include_once root . 'plugins/' . $pName . '/' . $list[$pName]['install'];
 			$res = call_user_func('plugin_' . $pName . '_install', 'autoapply');
 
 			if ($res) {
-				array_push($LOG, __('msg.plugin.installation') . " <b>" . $pName . "</b> ... OK");
+				array_push($LOG, __('msg.plugin.installation') . ' <b>' . $pName . '</b> ... ' . __('msg.ok'));
 			} else {
-				array_push($ERROR, __('msg.plugin.installation') . " <b>" . $pName . "</b> ... ERROR");
+				array_push($ERROR, __('msg.plugin.installation') . ' <b>' . $pName . '</b> ... ' . __('msg.error'));
 				$error = 1;
 				break;
 			}
 		}
-		array_push($LOG, __('msg.plugin.activation') . " <b>" . $pName . "</b> ... " . (pluginSwitch($pName, 'on') ? 'OK' : 'ERROR'));
+		array_push($LOG, __('msg.plugin.activation') . ' <b>' . $pName . '</b> ... ' . (pluginSwitch($pName, 'on') ? __('msg.ok') : __('msg.error')));
 	}
 
 	print '<div class="body"><p style="width: 99%;">';
@@ -209,29 +219,20 @@ function printHeader() {
 	echo $tpl->show('header');
 }
 
-function mkLanguageSelect($params) {
-	$values = '';
-	if (isset($params['values']) && is_array($params['values'])) {
-		foreach ($params['values'] as $k => $v) {
-			$values .= '<option value="' . $k . '"' . (($k == $params['value']) ? ' selected="selected"' : '') . '>' . $v . '</option>';
-		}
-	}
-
-	$onchange = "window.location = document.location.protocol + '//' + document.location.hostname + document.location.pathname + '?language=' + this.options[this.selectedIndex].value;";
-
-	return "<select " . ((isset($params['id']) && $params['id']) ? 'id="' . $params['id'] . '" ' : '') . 'name="' . $params['name'] . '" onchange="' . $onchange . '">' . $values . '</select>';
-}
-
 function doWelcome() {
-	global $tpl, $tvars, $templateDir, $currentLanguage;
+	global $tpl, $tvars, $templateDir;
 
-	include_once root . "includes/inc/functions.inc.php";
+	include_once root . 'includes/inc/functions.inc.php';
 
 	// Print header
 	$tvars['vars']['menu_begin'] = ' class="hover"';
 	printHeader();
+	
+	$lang_select = '';
 	$langs = ListFiles('lang', '');
-	$lang_select = mkLanguageSelect(array('values' => $langs, 'value' => $currentLanguage, 'id' => 'language', 'name' => 'language'));
+	foreach ($langs as $k => $v) {
+		$lang_select .= '<li><a href="install.php?language=' . $v . '">' . $v . '</a></li>';
+	}
 	$tvars['vars']['lang_select'] = $lang_select;
 
 	// Load license
@@ -691,7 +692,7 @@ function doConfig_common() {
 
 // Генерация конфигурационного файла
 function doInstall() {
-	global $tvars, $tpl, $templateDir, $installDir, $adminDirName, $pluginInstallList, $currentLanguage;
+	global $tvars, $tpl, $templateDir, $installDir, $adminDirName, $pluginInstallList;
 
 	$tvars['vars']['menu_install'] = ' class="hover"';
 	printHeader();
@@ -718,7 +719,7 @@ function doInstall() {
 				$error = 1;
 				break;
 			}
-			array_push($LOG, __('msg.fcreating') . ' "<b>' . $k . '</b>" ... OK');
+			array_push($LOG, __('msg.fcreating') . ' <b>' . $k . '</b> ... ' . __('msg.ok'));
 		}
 		array_push($LOG, '');
 
@@ -731,7 +732,7 @@ function doInstall() {
 		if ( $_POST['reg_autocreate'] ) {
 			if ( @$mysql->connect($_POST['reg_dbhost'], $_POST['reg_dbadminuser'], $_POST['reg_dbadminpass']) ) {
 				// Успешно подключились
-				array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '" ... OK');
+				array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '" ... ' . __('msg.ok'));
 
 				// 1. Создание БД
 				if ( !@$mysql->select_db($_POST['reg_dbname']) ) {
@@ -742,10 +743,10 @@ function doInstall() {
 						$error = 1;
 						break;
 					} else {
-						array_push($LOG, 'Создание БД "' . $_POST['reg_dbname'] . '" ... OK');
+						array_push($LOG, 'Создание БД "' . $_POST['reg_dbname'] . '" ... ' . __('msg.ok'));
 					}
 				} else {
-					array_push($LOG, 'БД "' . $_POST['reg_dbname'] . '" уже существует ... OK');
+					array_push($LOG, 'БД "' . $_POST['reg_dbname'] . '" уже существует ... ' . __('msg.ok'));
 				}
 
 				// 2. Предоставление доступа к БД
@@ -754,7 +755,7 @@ function doInstall() {
 					$error = 1;
 					break;
 				} else {
-					array_push($LOG, 'Предоставление доступа пользователю "' . $_POST['reg_dbuser'] . '" к БД "' . $_POST['reg_dbname'] . '" ... OK');
+					array_push($LOG, 'Предоставление доступа пользователю "' . $_POST['reg_dbuser'] . '" к БД "' . $_POST['reg_dbname'] . '" ... ' . __('msg.ok'));
 				}
 			} else {
 				array_push($ERROR, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '"');
@@ -771,7 +772,7 @@ function doInstall() {
 			$error = 1;
 			break;
 		}
-		array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" ... OK');
+		array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" ... ' . __('msg.ok'));
 
 		// Открываем нужную БД
 		if ( !@$mysql->select_db($_POST['reg_dbname']) ) {
@@ -834,7 +835,7 @@ function doInstall() {
 		}
 		if ( $error ) break;
 
-		array_push($LOG, 'Проверка наличия дублирующихся таблиц ... OK');
+		array_push($LOG, 'Проверка наличия дублирующихся таблиц ... ' . __('msg.ok'));
 		array_push($LOG, '');
 
 		$SUPRESS_CHARSET = 0;
@@ -873,21 +874,21 @@ function doInstall() {
 					$error = 1;
 					break;
 				}
-				array_push($LOG, 'Создание таблицы "<b>' . $tname . '</b>" ... OK');
+				array_push($LOG, 'Создание таблицы "<b>' . $tname . '</b>" ... ' . __('msg.ok'));
 			}
 		}
-		array_push($LOG, 'Все таблицы успешно созданы ... OK');
+		array_push($LOG, 'Все таблицы успешно созданы ... ' . __('msg.ok'));
 		array_push($LOG, '');
 
 		// 1.5 Создание пользователя-администратора
 		$query = "insert into `" . $_POST['reg_dbprefix'] . "_users` (`name`, `pass`, `mail`, `status`, `reg`) VALUES ('" . $mysql->db_quote($_POST['admin_login']) . "', '" . $mysql->db_quote(md5(md5($_POST['admin_password']))) . "', '" . $mysql->db_quote($_POST['admin_email']) . "', '1', unix_timestamp(now()))";
 		if ( !@$mysql->query($query) ) {
-			array_push($LOG, 'Активация пользователя-администратора ... <font color="red">FAIL</font>');
+			array_push($LOG, 'Активация пользователя-администратора ... <font color="red">' . __('msg.error') . '</font>');
 		} else {
-			array_push($LOG, 'Активация пользователя-администратора ... OK');
+			array_push($LOG, 'Активация пользователя-администратора ... ' . __('msg.ok'));
 		}
 		// 1.6 Сохраняем конфигурационную переменную database.engine.version
-		@$mysql->query("insert into `" . $_POST['reg_dbprefix'] . "_config` (name, value) values ('database.engine.version', '0.9.4 Release+SVN')");
+		@$mysql->query("insert into `" . $_POST['reg_dbprefix'] . "_config` (name, value) values ('database.engine.version', '0.9.5 RC')");
 
 		// Вычищаем лишний перевод строки из 'home_url'
 		if ( substr($_POST['home_url'], -1, 1) == '/' )
@@ -973,7 +974,7 @@ function doInstall() {
 			'UUID' => md5(mt_rand() . mt_rand()) . md5(mt_rand() . mt_rand()),
 			);
 
-		array_push($LOG, "Подготовка параметров конфигурационного файла ... OK");
+		array_push($LOG, 'Подготовка параметров конфигурационного файла ... ' . __('msg.ok'));
 
 		// Записываем конфиг
 		$confData = "<?php\n" . '$config = ' . var_export($newconf, true) . ";\n";
@@ -1015,7 +1016,7 @@ function doInstall() {
 		foreach ( array_keys($frec) as $k )
 			fclose($frec[$k]);
 
-		array_push($LOG, 'Сохранение конфигурационного файла ... OK');
+		array_push($LOG, 'Сохранение конфигурационного файла ... ' . __('msg.ok'));
 
 		// А теперь - включаем необходимые плагины
 		include_once root . 'core.php';
@@ -1039,13 +1040,17 @@ function doInstall() {
 	if ( $error ) {
 		$output .= "<br/>\n";
 		foreach ( $ERROR as $errText ) {
-			$output .= '<div class="errorDiv"><b><u>Ошибка</u>!</b><br/>' . $errText . '</div>';
+			$output .= '<div class="errorDiv"><b><u>' . __('msg.error') . '</u>!</b><br/>' . $errText . '</div>';
 		}
 
 		// Make navigation menu
 		$output .= '<div class="warningDiv">';
-		$output .= '<input type="button" style="width: 230px;" value="Вернуться к настройке БД" onclick="document.getElementById(\'stage\').value=\'0\'; form.submit();"/> - если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку.<br/>';
-		$output .= '<input type="button" style="width: 230px;" value="Попробовать ещё раз" onclick="document.getElementById(\'action\').value=\'install\'; form.submit();"/> - если Вы самостоятельно устранили ошибку, то нажмите сюда.';
+		$output .= 'Если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку.<br/>';
+		$output .= '<input type="button" style="width: 230px;" value="Вернуться к настройке БД" onclick="document.getElementById(\'stage\').value=\'0\'; form.submit();"/>';
+		$output .= '</div>';
+		$output .= '<div class="warningDiv">';
+		$output .= 'Если Вы самостоятельно устранили ошибку, то попробуйте еще раз.';
+		$output .= '<input type="button" style="width: 230px;" value="Попробовать ещё раз" onclick="document.getElementById(\'action\').value=\'install\'; form.submit();"/>';
 		$output .= '</div>';
 
 	}
