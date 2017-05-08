@@ -7,91 +7,114 @@
 
 <!-- Info content -->
 <div class="page-main">
-	<form action="admin.php?mod=categories" method="post" enctype="multipart/form-data">
+	<form action="admin.php?mod=categories" method="post" enctype="multipart/form-data" class="form-horizontal">
 		<input type="hidden" name="token" value="{{ token }}" />
 		<input type="hidden" name="action" value="doadd" />
-		
-		<table class="table table-condensed">
-			<tr>
-				<td width="50%">{{ lang['show_main'] }}</td>
-				<td width="50%">
-					<label class="btn btn-default form-control">
-						<input type="checkbox" autocomplete="off" id="cat_show" name="cat_show" value="1" checked>
-					</label>
-				</td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['parent'] }}</td>
-				<td width="50%">{{ parent }}</td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['title'] }}</td>
-				<td width="50%"><input type="text" name="name" /></td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['alt_name'] }}</td>
-				<td width="50%"><input type="text" name="alt" /></td>
-			</tr>
-			{% if (flags.haveMeta) %}
-			<tr>
-				<td width="50%">{{ lang['cat_desc'] }}</td>
-				<td width="50%"><input type="text" name="description" /></td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['cat_keys'] }}</td>
-				<td width="50%"><input type="text" name="keywords" /></td>
-			</tr>
-			{% endif %}
-			<tr>
-				<td width="50%">{{ lang['cat_number'] }}</td>
-				<td width="50%"><input type="text" size="4" name="number" /></td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['show.link'] }}</td>
-				<td width="50%">
-				<select name="show_link">
+
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['show_main'] }}</div>
+			<div class="col-sm-7">
+				<label class="btn btn-default form-control">
+					<input type="checkbox" autocomplete="off" id="cat_show" name="cat_show" value="1" checked>
+				</label>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['parent'] }}</div>
+			<div class="col-sm-7">
+				{{ parent }}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['title'] }}</div>
+			<div class="col-sm-7">
+				<input type="text" name="name" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['alt_name'] }}</div>
+			<div class="col-sm-7">
+				<input type="text" name="alt" class="form-control" />
+			</div>
+		</div>
+		{% if (flags.haveMeta) %}
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['cat_desc'] }}</div>
+			<div class="col-sm-7">
+				<input type="text" name="description" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['cat_keys'] }}</div>
+			<div class="col-sm-7">
+				<input type="text" name="keywords" class="form-control" />
+			</div>
+		</div>
+		{% endif %}
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['cat_number'] }}</div>
+			<div class="col-sm-7">
+				<input type="text" name="number" size="4" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['show.link'] }}</div>
+			<div class="col-sm-7">
+				<select name="show_link" class="form-control">
 					<option value="0">{{ lang['link.always'] }}</option>
 					<option value="1">{{ lang['link.ifnews'] }}</option>
 					<option value="2">{{ lang['link.never'] }}</option>
 				</select>
-				</td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['cat_tpl'] }}</td>
-				<td width="50%"><select name="tpl">{{ tpl_list }}</select></td>
-			</tr>
-			<tr>
-				<td width="70%">{{ lang['template_mode'] }}</td>
-				<td width="30%"><select name="template_mode">{{ template_mode }}</select></td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['icon'] }}<br/><small>{{ lang['icon#desc'] }}</small></td>
-				<td width="50%"><input type="text" name="icon" maxlength="255" /></td>
-			</tr>
-			<tr>
-				<td width="70%">{{ lang['attached_icon'] }}<br/><small>{{ lang['attached_icon#desc'] }}</small></td>
-				<td width="30%">
-					<div class="btn btn-default btn-fileinput form-control">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['cat_tpl'] }}</div>
+			<div class="col-sm-7">
+				<select name="tpl" class="form-control">{{ tpl_list }}</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['template_mode'] }}</div>
+			<div class="col-sm-7">
+				<select name="template_mode" class="form-control">{{ template_mode }}</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['icon'] }}<span class="help-block">{{ lang['icon#desc'] }}</span></div>
+			<div class="col-sm-7">
+				<input type="text" name="icon" maxlength="255" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['attached_icon'] }}<span class="help-block">{{ lang['attached_icon#desc'] }}</span></div>
+			<div class="col-sm-7">
+				<div class="btn btn-default btn-fileinput form-control">
 						<span>{{ lang['attach.new'] }}</span>
 						<input type="file" name="image" id="image" onchange="validateFile(this);">
 					</div>
-				</td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['alt_url'] }}</td>
-				<td width="50%"><input type=text name="alt_url" /></td>
-			</tr>
-			<tr>
-				<td width="50%">{{ lang['orderby'] }}</td>
-				<td width="50%">{{ orderlist }}</td>
-			</tr>
-			<tr>
-				<td width="70%" valign="top">{{ lang['category.info'] }}<br/><small>{{ lang['category.info#desc'] }}</small></td>
-				<td width="30%"><textarea id="info" name="info" cols="70" rows="5"></textarea></td>
-			</tr>
-				{{ extend }}
-		</table>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['alt_url'] }}</div>
+			<div class="col-sm-7">
+				<input type="text" name="alt_url" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['orderby'] }}</div>
+			<div class="col-sm-7">
+				{{ orderlist }}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">{{ lang['category.info'] }}<span class="help-block">{{ lang['category.info#desc'] }}</span></div>
+			<div class="col-sm-7">
+				<textarea id="info" name="info" rows="5" class="form-control"></textarea>
+			</div>
+		</div>
+		{{ extend }}
 
+		
 		<div class="well text-center">
 			<input type="submit" value="{{ lang['addnew'] }}" class="btn btn-success">
 		</div>
