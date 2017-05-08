@@ -65,7 +65,7 @@
 								<img src="{{ user.avatar }}" class="img-circle" alt="User Image">
 							</li>
 							<li class="user-body">
-								<p><b>{{ user.name }}</b><br>{{ user.status }}</p>
+								<p><b>{{ user.name }}</b><br><small class="text-muted">{{ user.status }}</small></p>
 							</li>
 							<li class="user-footer">
 								<div class="pull-left">

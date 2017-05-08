@@ -10,7 +10,7 @@
 	<div class="panel panel-default panel-table">
 		{% if flags.permModify %}
 			<div class="panel-heading text-right">
-				<a href="#" title="{{ lang.ipban['add.submit'] }}" data-toggle="modal" data-target="#add_edit_form" class="btn btn-danger add_form"><i class="fa fa-ban"></i> </a>
+				<a href="#" title="{{ lang.ipban['add.submit'] }}" data-toggle="modal" data-target="#ban_form" class="btn btn-danger"><i class="fa fa-ban"></i> </a>
 				
 			</div>
 		{% endif %}
@@ -46,7 +46,7 @@
 </div>
 
 {% if flags.permModify %}
-<div id="add_edit_form" class="modal fade" tabindex="-1" role="dialog">
+<div id="ban_form" class="modal fade" tabindex="-1" role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">
 			<form name="form" method="post" action="admin.php?mod=ipban" class="form-horizontal">
