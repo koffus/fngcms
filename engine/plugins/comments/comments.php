@@ -194,13 +194,14 @@ class CommentsFilterAdminCategories extends FilterAdminCategories{
 
 		$allowCom = pluginGetVariable('comments', 'default_categories');
 
-		$ms = '<select name="allow_com">';
+		$ms = '<select name="allow_com" class="form-control">';
 		$cv = array( '0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию');
 		for ($i = 0; $i < 3; $i++) {
 			$ms .= '<option value="'.$i.'"'.(($allowCom == $i)?' selected="selected"':'').'>'.$cv[$i].'</option>';
 		}
+		$ms .= '</select>';
 
-		$tvars['extend'] .= '<tr><td width="70%" class="contentEntry1">'.__('comments:categories.comments').'<br/><small>'.__('comments:categories.comments#desc').'</small></td><td width="30%" class="contentEntry2">'.$ms.'</td></tr>';
+		$tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">'.__('comments:categories.comments').'<span class="help-block">'.__('comments:categories.comments#desc').'</span></div><div class="col-sm-7">'.$ms.'</div></div>';
 		return 1;
 	}
 
@@ -212,13 +213,14 @@ class CommentsFilterAdminCategories extends FilterAdminCategories{
 			$SQL['allow_com'] = pluginGetVariable('comments', 'default_categories');
 		}
 
-		$ms = '<select name="allow_com">';
+		$ms = '<select name="allow_com" class="form-control">';
 		$cv = array( '0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию');
 		for ($i = 0; $i < 3; $i++) {
 			$ms .= '<option value="'.$i.'"'.(($SQL['allow_com'] == $i)?' selected="selected"':'').'>'.$cv[$i].'</option>';
 		}
+		$ms .= '</select>';
 
-		$tvars['extend'] .= '<tr><td width="70%" class="contentEntry1">'.__('comments:categories.comments').'<br/><small>'.__('comments:categories.comments#desc').'</small></td><td width="30%" class="contentEntry2">'.$ms.'</td></tr>';
+		$tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">'.__('comments:categories.comments').'<span class="help-block">'.__('comments:categories.comments#desc').'</span></div><div class="col-sm-7">'.$ms.'</div></div>';
 		return 1;
 	}
 
