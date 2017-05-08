@@ -185,12 +185,12 @@ function showNews($handlerName, $params) {
 				$callingParams['currentCategoryId'] = $currentCategory['id'];
 
 				// Set meta tags for category page
-				if ($currentCategory['description']) {
+				if ( getIsSet($currentCategory['description']) != '' ) {
 					$SYSTEM_FLAGS['meta']['description'] = $currentCategory['description'];
 				} else {
-					$SYSTEM_FLAGS['meta']['description'] = home_title . ' - ' . $currentCategory['name'];
+					$SYSTEM_FLAGS['meta']['description'] = home_title . '. ' . $currentCategory['name'];
 				}
-				if ($currentCategory['keywords']) {
+				if ( getIsSet($currentCategory['keywords']) != '' ) {
 					$SYSTEM_FLAGS['meta']['keywords'] = $currentCategory['keywords'];
 				} else {
 					// Удаляем все слова меньше 3-х символов
