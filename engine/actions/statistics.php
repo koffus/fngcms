@@ -89,7 +89,7 @@ $backup = ($backup != "777") ? '<span style="color:red;">'.$backup.'</span>' : '
 $note_path = root.'trash/'.$parse->translit(strtolower(name)).'_note.inc.txt';
 
 if ($action == 'save') {
-	$note = secure_html(trim($_POST['note']));
+	$note = secure_html($_POST['note']);
 
 	if (!$note or $note == '') {
 		@unlink($note_path);

@@ -31,7 +31,7 @@ function pm_send() {
 	}
 
 	if ($sendto && ($torow = $mysql->record("select * from ".uprefix."_users where ".(is_numeric($sendto)?"id = ".db_squote($sendto):"name = ".db_squote($sendto))))) {
-		$content = secure_html(trim($content));
+		$content = secure_html($content);
 		executeActionHandler('pm_send');
 		$mysql->query("insert into ".uprefix."_users_pm (from_id, to_id, pmdate, title, content) VALUES (".db_squote($userROW['id']).", ".db_squote($torow['id']).", ".db_squote($time).", ".db_squote($title).", ".db_squote($content).")");
 		msg(array('message' => __('msgo_sent')));

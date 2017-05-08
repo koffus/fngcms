@@ -239,7 +239,7 @@ function plugin_jchat_add() {
 	if (($maxwlen < 1)||($maxlen > 5000)) $maxwlen = 500;
 
 	// Load text & strip it to maxlen
-	$postText = substr(secure_html(trim($_REQUEST['text'])), 0, $maxlen);
+	$postText = substr(secure_html($_REQUEST['text']), 0, $maxlen);
 
 	$ptb = array();
 

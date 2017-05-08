@@ -267,7 +267,7 @@ function send_title()
 			}
 			
 			if (isset($_REQUEST['submit'])){
-				$title = secure_html(trim($_REQUEST['title']));
+				$title = secure_html($_REQUEST['title']);
 				if(empty($title))
 					$error_text[] = 'Титле обязательна для заполнения';
 				
@@ -311,7 +311,7 @@ function send_title()
 					$options .= '<option value="' . $row['id'] . '"'.(($row['id']==$frow['news_id'])?'selected':'').'>' . $row['title'] . '</option>';
 			}
 			if (isset($_REQUEST['submit'])){
-				$title = secure_html(trim($_REQUEST['title']));
+				$title = secure_html($_REQUEST['title']);
 				if(empty($title))
 					$error_text[] = 'Титле обязательна для заполнения';
 				
@@ -356,7 +356,7 @@ function send_title()
 			}
 			
 			if (isset($_REQUEST['submit'])){
-				$title = secure_html(trim($_REQUEST['title']));
+				$title = secure_html($_REQUEST['title']);
 				if(empty($title))
 					$error_text[] = 'Титле обязательна для заполнения';
 				
@@ -491,19 +491,19 @@ function main()
 	}
 	
 	if (isset($_REQUEST['submit'])){
- 		pluginSetVariable('simple_title_pro', 'c_title', secure_html(trim($_REQUEST['c_title'])));
-		pluginSetVariable('simple_title_pro', 'n_title', secure_html(trim($_REQUEST['n_title'])));
-		pluginSetVariable('simple_title_pro', 'm_title', secure_html(trim($_REQUEST['m_title'])));
-		pluginSetVariable('simple_title_pro', 'static_title', secure_html(trim($_REQUEST['static_title'])));
-		pluginSetVariable('simple_title_pro', 'num_title', secure_html(trim($_REQUEST['num_title'])));
-		pluginSetVariable('simple_title_pro', 'num_cat', secure_html(trim($_REQUEST['num_cat'])));
-		pluginSetVariable('simple_title_pro', 'num_news', secure_html(trim($_REQUEST['num_news'])));
-		pluginSetVariable('simple_title_pro', 'num_static', secure_html(trim($_REQUEST['num_static'])));
-		pluginSetVariable('simple_title_pro', 'o_title', secure_html(trim($_REQUEST['o_title'])));
-		pluginSetVariable('simple_title_pro', 'e_title', secure_html(trim($_REQUEST['e_title'])));
-		pluginSetVariable('simple_title_pro', 'html_secure', secure_html(trim($_REQUEST['html_secure'])));
-		pluginSetVariable('simple_title_pro', 'p_title', secure_html(trim($_REQUEST['p_title'])));
-		pluginSetVariable('simple_title_pro', 'cache', secure_html(trim($_REQUEST['cache'])));
+ 		pluginSetVariable('simple_title_pro', 'c_title', secure_html($_REQUEST['c_title']));
+		pluginSetVariable('simple_title_pro', 'n_title', secure_html($_REQUEST['n_title']));
+		pluginSetVariable('simple_title_pro', 'm_title', secure_html($_REQUEST['m_title']));
+		pluginSetVariable('simple_title_pro', 'static_title', secure_html($_REQUEST['static_title']));
+		pluginSetVariable('simple_title_pro', 'num_title', secure_html($_REQUEST['num_title']));
+		pluginSetVariable('simple_title_pro', 'num_cat', secure_html($_REQUEST['num_cat']));
+		pluginSetVariable('simple_title_pro', 'num_news', secure_html($_REQUEST['num_news']));
+		pluginSetVariable('simple_title_pro', 'num_static', secure_html($_REQUEST['num_static']));
+		pluginSetVariable('simple_title_pro', 'o_title', secure_html($_REQUEST['o_title']));
+		pluginSetVariable('simple_title_pro', 'e_title', secure_html($_REQUEST['e_title']));
+		pluginSetVariable('simple_title_pro', 'html_secure', secure_html($_REQUEST['html_secure']));
+		pluginSetVariable('simple_title_pro', 'p_title', secure_html($_REQUEST['p_title']));
+		pluginSetVariable('simple_title_pro', 'cache', secure_html($_REQUEST['cache']));
 		pluginsSaveConfig();
 		redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro');
 	}

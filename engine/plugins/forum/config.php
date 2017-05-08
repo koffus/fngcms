@@ -120,8 +120,8 @@ function edit_group(){
 	$group = $mysql->record('SELECT * from '.prefix.'_forum_group WHERE id = '.$id.' LIMIT 1');
 	//print "<pre>".var_export($_REQUEST, true)."</pre>";
 	
-	$group_name = isset($_REQUEST['group_name'])?secure_html(trim($_REQUEST['group_name'])):secure_html(trim($group['group_name']));
-	$group_color = isset($_REQUEST['group_color'])?secure_html(trim($_REQUEST['group_color'])):secure_html(trim($group['group_color']));
+	$group_name = isset($_REQUEST['group_name'])?secure_html($_REQUEST['group_name']):secure_html($group['group_name']);
+	$group_color = isset($_REQUEST['group_color'])?secure_html($_REQUEST['group_color']):secure_html($group['group_color']);
 	$group_read = isset($_REQUEST['group_read'])?intval(trim($_REQUEST['group_read'])):intval(trim($group['group_read']));
 	$group_news = isset($_REQUEST['group_news'])?intval(trim($_REQUEST['group_news'])):intval(trim($group['group_news']));
 	$group_search = isset($_REQUEST['group_search'])?intval(trim($_REQUEST['group_search'])):intval(trim($group['group_search']));
@@ -434,9 +434,9 @@ function edit_section(){
 	
 	$forum = $mysql->record('SELECT * FROM '.prefix.'_forum_forums WHERE id = '.db_squote($id).' LIMIT 1');
 	
-	$name = isset($_REQUEST['name'])?secure_html(trim($_REQUEST['name'])):secure_html(trim($forum['title']));
-	$description = isset($_REQUEST['description'])?secure_html(trim($_REQUEST['description'])):secure_html(trim($forum['description']));
-	$keywords = isset($_REQUEST['keywords'])?secure_html(trim($_REQUEST['keywords'])):secure_html(trim($forum['keywords']));
+	$name = isset($_REQUEST['name'])?secure_html($_REQUEST['name']):secure_html($forum['title']);
+	$description = isset($_REQUEST['description'])?secure_html($_REQUEST['description']):secure_html($forum['description']);
+	$keywords = isset($_REQUEST['keywords'])?secure_html($_REQUEST['keywords']):secure_html($forum['keywords']);
 	
 	if (isset($_REQUEST['submit'])){
 		if(empty($name)) $error_text[] = 'Название раздела обязательно для заполнения';
@@ -549,21 +549,21 @@ function edit_forum(){
 	$forum_moderators = implode(', ',$forum_mode_list);
 	
 	//print "<pre>".var_export($forum_moderators, true)."</pre>";
-	$forum_name = isset($_REQUEST['forum_name'])?secure_html(trim($_REQUEST['forum_name'])):$forum['title'];
-	$forum_description = isset($_REQUEST['forum_description'])?secure_html(trim($_REQUEST['forum_description'])):$forum['description'];
-	$forum_keywords = isset($_REQUEST['forum_keywords'])?secure_html(trim($_REQUEST['forum_keywords'])):$forum['keywords'];
-	$forum_lock_passwd = isset($_REQUEST['forum_lock_passwd'])?secure_html(trim($_REQUEST['forum_lock_passwd'])):$forum['lock_passwd'];
-	$forum_redirect_url = isset($_REQUEST['forum_redirect_url'])?secure_html(trim($_REQUEST['forum_redirect_url'])):$forum['redirect_url'];
-	$forum_moderators = isset($_REQUEST['forum_moderators'])?secure_html(trim($_REQUEST['forum_moderators'])):$forum_moderators;
-	$forum_parent = isset($_REQUEST['forum_parent'])?secure_html(trim($_REQUEST['forum_parent'])):$forum['parent'];
+	$forum_name = isset($_REQUEST['forum_name'])?secure_html($_REQUEST['forum_name']):$forum['title'];
+	$forum_description = isset($_REQUEST['forum_description'])?secure_html($_REQUEST['forum_description']):$forum['description'];
+	$forum_keywords = isset($_REQUEST['forum_keywords'])?secure_html($_REQUEST['forum_keywords']):$forum['keywords'];
+	$forum_lock_passwd = isset($_REQUEST['forum_lock_passwd'])?secure_html($_REQUEST['forum_lock_passwd']):$forum['lock_passwd'];
+	$forum_redirect_url = isset($_REQUEST['forum_redirect_url'])?secure_html($_REQUEST['forum_redirect_url']):$forum['redirect_url'];
+	$forum_moderators = isset($_REQUEST['forum_moderators'])?secure_html($_REQUEST['forum_moderators']):$forum_moderators;
+	$forum_parent = isset($_REQUEST['forum_parent'])?secure_html($_REQUEST['forum_parent']):$forum['parent'];
 	
-	$m_topic_send = isset($_REQUEST['m_topic_send'])?secure_html(trim($_REQUEST['m_topic_send'])):$forum_mode_perm['m_topic_send'];
-	$m_topic_modify = isset($_REQUEST['m_topic_modify'])?secure_html(trim($_REQUEST['m_topic_modify'])):$forum_mode_perm['m_topic_modify'];
-	$m_topic_closed = isset($_REQUEST['m_topic_closed'])?secure_html(trim($_REQUEST['m_topic_closed'])):$forum_mode_perm['m_topic_closed'];
-	$m_topic_remove = isset($_REQUEST['m_topic_remove'])?secure_html(trim($_REQUEST['m_topic_remove'])):$forum_mode_perm['m_topic_remove'];
-	$m_post_send = isset($_REQUEST['m_post_send'])?secure_html(trim($_REQUEST['m_post_send'])):$forum_mode_perm['m_post_send'];
-	$m_post_modify = isset($_REQUEST['m_post_modify'])?secure_html(trim($_REQUEST['m_post_modify'])):$forum_mode_perm['m_post_modify'];
-	$m_post_remove = isset($_REQUEST['m_post_remove'])?secure_html(trim($_REQUEST['m_post_remove'])):$forum_mode_perm['m_post_remove'];
+	$m_topic_send = isset($_REQUEST['m_topic_send'])?secure_html($_REQUEST['m_topic_send']):$forum_mode_perm['m_topic_send'];
+	$m_topic_modify = isset($_REQUEST['m_topic_modify'])?secure_html($_REQUEST['m_topic_modify']):$forum_mode_perm['m_topic_modify'];
+	$m_topic_closed = isset($_REQUEST['m_topic_closed'])?secure_html($_REQUEST['m_topic_closed']):$forum_mode_perm['m_topic_closed'];
+	$m_topic_remove = isset($_REQUEST['m_topic_remove'])?secure_html($_REQUEST['m_topic_remove']):$forum_mode_perm['m_topic_remove'];
+	$m_post_send = isset($_REQUEST['m_post_send'])?secure_html($_REQUEST['m_post_send']):$forum_mode_perm['m_post_send'];
+	$m_post_modify = isset($_REQUEST['m_post_modify'])?secure_html($_REQUEST['m_post_modify']):$forum_mode_perm['m_post_modify'];
+	$m_post_remove = isset($_REQUEST['m_post_remove'])?secure_html($_REQUEST['m_post_remove']):$forum_mode_perm['m_post_remove'];
 	
 	$forum_perm = is_array($_REQUEST['forum_perm'])?$_REQUEST['forum_perm']:$forum_perm;
 	
@@ -792,20 +792,20 @@ global $twig, $plugin, $mysql;
 	
 	$forum = $mysql->record('SELECT * FROM '.prefix.'_forum_forums WHERE id = '.db_squote($id).' LIMIT 1');
 	
-	$forum_name = isset($_REQUEST['forum_name'])?secure_html(trim($_REQUEST['forum_name'])):'';
-	$forum_description = isset($_REQUEST['forum_description'])?secure_html(trim($_REQUEST['forum_description'])):'';
-	$forum_keywords = isset($_REQUEST['forum_keywords'])?secure_html(trim($_REQUEST['forum_keywords'])):'';
-	$forum_redirect_url = isset($_REQUEST['forum_redirect_url'])?secure_html(trim($_REQUEST['forum_redirect_url'])):'';
-	$forum_lock_passwd = isset($_REQUEST['forum_lock_passwd'])?secure_html(trim($_REQUEST['forum_lock_passwd'])):'';
-	$forum_moderators = isset($_REQUEST['forum_moderators'])?secure_html(trim($_REQUEST['forum_moderators'])):'';
+	$forum_name = isset($_REQUEST['forum_name'])?secure_html($_REQUEST['forum_name']):'';
+	$forum_description = isset($_REQUEST['forum_description'])?secure_html($_REQUEST['forum_description']):'';
+	$forum_keywords = isset($_REQUEST['forum_keywords'])?secure_html($_REQUEST['forum_keywords']):'';
+	$forum_redirect_url = isset($_REQUEST['forum_redirect_url'])?secure_html($_REQUEST['forum_redirect_url']):'';
+	$forum_lock_passwd = isset($_REQUEST['forum_lock_passwd'])?secure_html($_REQUEST['forum_lock_passwd']):'';
+	$forum_moderators = isset($_REQUEST['forum_moderators'])?secure_html($_REQUEST['forum_moderators']):'';
 	
-	$m_topic_send = isset($_REQUEST['m_topic_send'])?secure_html(trim($_REQUEST['m_topic_send'])):'';
-	$m_topic_modify = isset($_REQUEST['m_topic_modify'])?secure_html(trim($_REQUEST['m_topic_modify'])):'';
-	$m_topic_closed = isset($_REQUEST['m_topic_closed'])?secure_html(trim($_REQUEST['m_topic_closed'])):'';
-	$m_topic_remove = isset($_REQUEST['m_topic_remove'])?secure_html(trim($_REQUEST['m_topic_remove'])):'';
-	$m_post_send = isset($_REQUEST['m_post_send'])?secure_html(trim($_REQUEST['m_post_send'])):'';
-	$m_post_modify = isset($_REQUEST['m_post_modify'])?secure_html(trim($_REQUEST['m_post_modify'])):'';
-	$m_post_remove = isset($_REQUEST['m_post_remove'])?secure_html(trim($_REQUEST['m_post_remove'])):'';
+	$m_topic_send = isset($_REQUEST['m_topic_send'])?secure_html($_REQUEST['m_topic_send']):'';
+	$m_topic_modify = isset($_REQUEST['m_topic_modify'])?secure_html($_REQUEST['m_topic_modify']):'';
+	$m_topic_closed = isset($_REQUEST['m_topic_closed'])?secure_html($_REQUEST['m_topic_closed']):'';
+	$m_topic_remove = isset($_REQUEST['m_topic_remove'])?secure_html($_REQUEST['m_topic_remove']):'';
+	$m_post_send = isset($_REQUEST['m_post_send'])?secure_html($_REQUEST['m_post_send']):'';
+	$m_post_modify = isset($_REQUEST['m_post_modify'])?secure_html($_REQUEST['m_post_modify']):'';
+	$m_post_remove = isset($_REQUEST['m_post_remove'])?secure_html($_REQUEST['m_post_remove']):'';
 	
 	$forum_perm = is_array($_REQUEST['forum_perm'])?$_REQUEST['forum_perm']:array(
 		0 => array(
@@ -1087,35 +1087,35 @@ global $twig, $plugin;
 	$tpath = locatePluginTemplates(array('title'), 'forum', 1, '', 'config');
 	
 	if (isset($_REQUEST['submit'])){
-		pluginSetVariable($plugin, 'home_title', secure_html(trim($_REQUEST['home_title'])));
-		pluginSetVariable($plugin, 'forums_title', secure_html(trim($_REQUEST['forums_title'])));
-		pluginSetVariable($plugin, 'topic_title', secure_html(trim($_REQUEST['topic_title'])));
-		pluginSetVariable($plugin, 'userlist_title', secure_html(trim($_REQUEST['userlist_title'])));
-		pluginSetVariable($plugin, 'search_title', secure_html(trim($_REQUEST['search_title'])));
-		pluginSetVariable($plugin, 'register_title', secure_html(trim($_REQUEST['register_title'])));
-		pluginSetVariable($plugin, 'login_title', secure_html(trim($_REQUEST['login_title'])));
-		pluginSetVariable($plugin, 'profile_title', secure_html(trim($_REQUEST['profile_title'])));
-		pluginSetVariable($plugin, 'out_title', secure_html(trim($_REQUEST['out_title'])));
-		pluginSetVariable($plugin, 'addreply_title', secure_html(trim($_REQUEST['addreply_title'])));
-		pluginSetVariable($plugin, 'newtopic_title', secure_html(trim($_REQUEST['newtopic_title'])));
-		pluginSetVariable($plugin, 'delpost_title', secure_html(trim($_REQUEST['delpost_title'])));
-		pluginSetVariable($plugin, 'edit_title', secure_html(trim($_REQUEST['edit_title'])));
-		pluginSetVariable($plugin, 'rules_title', secure_html(trim($_REQUEST['rules_title'])));
-		pluginSetVariable($plugin, 'show_new_title', secure_html(trim($_REQUEST['show_new_title'])));
-		pluginSetVariable($plugin, 'markread_title', secure_html(trim($_REQUEST['markread_title'])));
-		pluginSetVariable($plugin, 'rep_title', secure_html(trim($_REQUEST['rep_title'])));
-		pluginSetVariable($plugin, 'addr_title', secure_html(trim($_REQUEST['addr_title'])));
-		pluginSetVariable($plugin, 'news_title', secure_html(trim($_REQUEST['news_title'])));
-		pluginSetVariable($plugin, 'news_feed_title', secure_html(trim($_REQUEST['news_feed_title'])));
-		pluginSetVariable($plugin, 'act_title', secure_html(trim($_REQUEST['act_title'])));
-		pluginSetVariable($plugin, 'thank_title', secure_html(trim($_REQUEST['thank_title'])));
-		pluginSetVariable($plugin, 'complaints_title', secure_html(trim($_REQUEST['complaints_title'])));
-		pluginSetVariable($plugin, 'send_pm_title', secure_html(trim($_REQUEST['send_pm_title'])));
-		pluginSetVariable($plugin, 'list_pm_title', secure_html(trim($_REQUEST['list_pm_title'])));
-		pluginSetVariable($plugin, 'del_pm_title', secure_html(trim($_REQUEST['del_pm_title'])));
-		pluginSetVariable($plugin, 'downloads_title', secure_html(trim($_REQUEST['downloads_title'])));
-		pluginSetVariable($plugin, 'erro404_title', secure_html(trim($_REQUEST['erro404_title'])));
-		pluginSetVariable($plugin, 'num_title', secure_html(trim($_REQUEST['num_title'])));
+		pluginSetVariable($plugin, 'home_title', secure_html($_REQUEST['home_title']));
+		pluginSetVariable($plugin, 'forums_title', secure_html($_REQUEST['forums_title']));
+		pluginSetVariable($plugin, 'topic_title', secure_html($_REQUEST['topic_title']));
+		pluginSetVariable($plugin, 'userlist_title', secure_html($_REQUEST['userlist_title']));
+		pluginSetVariable($plugin, 'search_title', secure_html($_REQUEST['search_title']));
+		pluginSetVariable($plugin, 'register_title', secure_html($_REQUEST['register_title']));
+		pluginSetVariable($plugin, 'login_title', secure_html($_REQUEST['login_title']));
+		pluginSetVariable($plugin, 'profile_title', secure_html($_REQUEST['profile_title']));
+		pluginSetVariable($plugin, 'out_title', secure_html($_REQUEST['out_title']));
+		pluginSetVariable($plugin, 'addreply_title', secure_html($_REQUEST['addreply_title']));
+		pluginSetVariable($plugin, 'newtopic_title', secure_html($_REQUEST['newtopic_title']));
+		pluginSetVariable($plugin, 'delpost_title', secure_html($_REQUEST['delpost_title']));
+		pluginSetVariable($plugin, 'edit_title', secure_html($_REQUEST['edit_title']));
+		pluginSetVariable($plugin, 'rules_title', secure_html($_REQUEST['rules_title']));
+		pluginSetVariable($plugin, 'show_new_title', secure_html($_REQUEST['show_new_title']));
+		pluginSetVariable($plugin, 'markread_title', secure_html($_REQUEST['markread_title']));
+		pluginSetVariable($plugin, 'rep_title', secure_html($_REQUEST['rep_title']));
+		pluginSetVariable($plugin, 'addr_title', secure_html($_REQUEST['addr_title']));
+		pluginSetVariable($plugin, 'news_title', secure_html($_REQUEST['news_title']));
+		pluginSetVariable($plugin, 'news_feed_title', secure_html($_REQUEST['news_feed_title']));
+		pluginSetVariable($plugin, 'act_title', secure_html($_REQUEST['act_title']));
+		pluginSetVariable($plugin, 'thank_title', secure_html($_REQUEST['thank_title']));
+		pluginSetVariable($plugin, 'complaints_title', secure_html($_REQUEST['complaints_title']));
+		pluginSetVariable($plugin, 'send_pm_title', secure_html($_REQUEST['send_pm_title']));
+		pluginSetVariable($plugin, 'list_pm_title', secure_html($_REQUEST['list_pm_title']));
+		pluginSetVariable($plugin, 'del_pm_title', secure_html($_REQUEST['del_pm_title']));
+		pluginSetVariable($plugin, 'downloads_title', secure_html($_REQUEST['downloads_title']));
+		pluginSetVariable($plugin, 'erro404_title', secure_html($_REQUEST['erro404_title']));
+		pluginSetVariable($plugin, 'num_title', secure_html($_REQUEST['num_title']));
 		
 		pluginsSaveConfig();
 		redirect_forum_config('?mod=extra-config&plugin=forum&action=title');
@@ -1905,7 +1905,7 @@ function rules()
 {global $twig, $plugin;
 	if (isset($_REQUEST['submit'])){
 		pluginSetVariable('forum', 'rules_on_off', (int)$_REQUEST['rules_on_off']);
-		pluginSetVariable('forum', 'rules', secure_html(trim($_REQUEST['rules'])));
+		pluginSetVariable('forum', 'rules', secure_html($_REQUEST['rules']));
 		pluginsSaveConfig();
 		redirect_forum_config('?mod=extra-config&plugin=forum&action=rules');
 	}
@@ -1914,7 +1914,7 @@ function rules()
 	$xg = $twig->loadTemplate($tpath['rules'].'rules.tpl');
 	$tVars = array(
 		'rules_on_off' => MakeDropDown(array(0 => 'Нет', 1 => 'Да'), 'rules_on_off', (int)pluginGetVariable($plugin,'rules_on_off')),
-		'rules' => secure_html(trim(pluginGetVariable($plugin,'rules'))),
+		'rules' => secure_html(pluginGetVariable($plugin,'rules')),
 		'forum_tpl' => $tpath['url::'],
 	);
 	
@@ -1930,7 +1930,7 @@ function ads()
 {global $twig, $plugin;
 	if (isset($_REQUEST['submit'])){
 		pluginSetVariable('forum', 'announcement_on_off', (int)$_REQUEST['announcement_on_off']);
-		pluginSetVariable('forum', 'announcement', secure_html(trim($_REQUEST['announcement'])));
+		pluginSetVariable('forum', 'announcement', secure_html($_REQUEST['announcement']));
 		pluginsSaveConfig();
 		//redirect_forum_config('?mod=extra-config&plugin=forum&action=ads');
 	}
@@ -1939,7 +1939,7 @@ function ads()
 	$xg = $twig->loadTemplate($tpath['ads'].'ads.tpl');
 	$tVars = array(
 		'announcement_on_off' => MakeDropDown(array(0 => 'Нет', 1 => 'Да'), 'announcement_on_off', (int)pluginGetVariable($plugin,'announcement_on_off')),
-		'announcement' => secure_html(trim(pluginGetVariable($plugin,'announcement'))),
+		'announcement' => secure_html(pluginGetVariable($plugin,'announcement')),
 		'forum_tpl' => $tpath['url::'],
 	);
 	
@@ -1960,9 +1960,9 @@ function new_news()
 	
 	$news_ar = $mysql->record('SELECT * FROM '.prefix.'_forum_news WHERE id = '.db_squote($edit_id).' LIMIT 1');
 	
-	$title = isset($_REQUEST['title'])?secure_html(trim($_REQUEST['title'])):secure_html(trim($news_ar['title']));
-	$content = isset($_REQUEST['content'])?secure_html(trim($_REQUEST['content'])):secure_html(trim($news_ar['content']));
-	$mail = secure_html(trim($_REQUEST['mail']));
+	$title = isset($_REQUEST['title'])?secure_html($_REQUEST['title']):secure_html($news_ar['title']);
+	$content = isset($_REQUEST['content'])?secure_html($_REQUEST['content']):secure_html($news_ar['content']);
+	$mail = secure_html($_REQUEST['mail']);
 	
 	if (isset($_REQUEST['submit'])){
 		
@@ -2184,11 +2184,11 @@ function general()
 		pluginSetVariable('forum', 'redirect_time', (int)$_REQUEST['redirect_time']);
 		pluginSetVariable('forum', 'online_time', (int)$_REQUEST['online_time']);
 		pluginSetVariable('forum', 'online', (int)$_REQUEST['online']);
-		pluginSetVariable('forum', 'forum_title', secure_html(trim($_REQUEST['forum_title'])));
-		pluginSetVariable('forum', 'forum_description', secure_html(trim($_REQUEST['forum_description'])));
-		pluginSetVariable('forum', 'forum_keywords', secure_html(trim($_REQUEST['forum_keywords'])));
+		pluginSetVariable('forum', 'forum_title', secure_html($_REQUEST['forum_title']));
+		pluginSetVariable('forum', 'forum_description', secure_html($_REQUEST['forum_description']));
+		pluginSetVariable('forum', 'forum_keywords', secure_html($_REQUEST['forum_keywords']));
 		pluginSetVariable('forum', 'edit_del_time', (int)($_REQUEST['edit_del_time']));
-		pluginSetVariable('forum', 'localskin', secure_html(trim($_REQUEST['localskin'])));
+		pluginSetVariable('forum', 'localskin', secure_html($_REQUEST['localskin']));
 		
 		pluginSetVariable('forum', 'topic_per_page', (int)($_REQUEST['topic_per_page']));
 		pluginSetVariable('forum', 'search_per_page', (int)($_REQUEST['search_per_page']));
@@ -2226,9 +2226,9 @@ function general()
 		'online' => MakeDropDown(array(0 => 'Нет', 1 => 'Да'), 'online', (int)pluginGetVariable($plugin,'online')),
 		'redirect_time' => (int)pluginGetVariable($plugin,'redirect_time'),
 		'online_time' => (int)pluginGetVariable($plugin,'online_time'),
-		'forum_title' => secure_html(trim(pluginGetVariable($plugin,'forum_title'))),
-		'forum_description' => secure_html(trim(pluginGetVariable($plugin,'forum_description'))),
-		'forum_keywords' => secure_html(trim(pluginGetVariable($plugin,'forum_keywords'))),
+		'forum_title' => secure_html(pluginGetVariable($plugin,'forum_title')),
+		'forum_description' => secure_html(pluginGetVariable($plugin,'forum_description')),
+		'forum_keywords' => secure_html(pluginGetVariable($plugin,'forum_keywords')),
 		'localskin' => MakeDropDown(ListFiles($localskin, ''), 'localskin', pluginGetVariable($plugin,'localskin')),
 		'edit_del_time' => (int)pluginGetVariable($plugin,'edit_del_time'),
 		'display_main' => MakeDropDown(array(0 => 'Основной шаблон', 1 => 'Отдельная страница'), 'display_main', (int)pluginGetVariable($plugin,'display_main')),

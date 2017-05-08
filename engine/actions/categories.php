@@ -82,7 +82,7 @@ function admCategoryAdd() {
 	global $mysql, $mod, $parse, $config, $AFILTERS;
 
 	$SQL			= array();
-	$SQL['name']	= secure_html(trim($_REQUEST['name']));
+	$SQL['name']	= secure_html($_REQUEST['name']);
 	$SQL['info']	= $_REQUEST['info'];
 	$SQL['alt']		= trim($_REQUEST['alt']);
 	$SQL['parent']	= intval($_REQUEST['parent']);
@@ -141,8 +141,8 @@ function admCategoryAdd() {
 	}
 
 	if ($config['meta']) {
-		$SQL['description']	= secure_html(trim($_REQUEST['description']));
-		$SQL['keywords']	= secure_html(trim($_REQUEST['keywords']));
+		$SQL['description']	= $_REQUEST['description'] ? secure_html($_REQUEST['description']) : '';
+		$SQL['keywords']	= $_REQUEST['keywords'] ? secure_html($_REQUEST['keywords']) : '';
 	}
 
 	$pluginNoError = 1;
@@ -356,8 +356,8 @@ function admCategoryEdit(){
 	}
 
 	if ($config['meta']) {
-		$SQL['description']	= secure_html(trim($_REQUEST['description']));
-		$SQL['keywords']	= secure_html(trim($_REQUEST['keywords']));
+		$SQL['description']	= $_REQUEST['description'] ? secure_html($_REQUEST['description']) : '';
+		$SQL['keywords']	= $_REQUEST['keywords'] ? secure_html($_REQUEST['keywords']) : '';
 	}
 
 	$fmanager = new file_managment();
@@ -424,9 +424,9 @@ function admCategoryEdit(){
 	$SQLout = array();
 	foreach ($SQL as $var => $val)
 		$SQLout []= '`'.$var.'` = '.db_squote($val);
-	
+
 	cacheStoreFile('LoadCategories.dat', '');
-	
+
 	$mysql->query("update ".prefix."_category set ".join(", ", $SQLout)." where id=".db_squote($catid));
 	msg(array('message' => __('msgo_saved')));
 }
