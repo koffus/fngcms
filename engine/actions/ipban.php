@@ -179,12 +179,13 @@ function ipban_list() {
 
 //
 // Main loop
-if(isset($_REQUEST['action']) && $_REQUEST['action'])
+if( isset($_REQUEST['action']) && $_REQUEST['action'] ) {
 	switch ($_REQUEST['action']) {
 		case 'add': ipban_add();
 						break;
 		case 'del': ipban_delete();
 						break;
 	}
+}
 
 ipban_list();
