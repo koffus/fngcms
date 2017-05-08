@@ -197,7 +197,7 @@
 								<thead>
 									<tr>
 										<th>{l_attach.filename} - {l_attach.size}</th>
-										<th class="text-right" width="10">{l_do_delete}</th>
+										<th class="text-right" width="10">{l_delete}</th>
 									</tr>
 								</thead>
 								<tbody>
@@ -246,7 +246,7 @@
 								<thead>
 									<tr>
 										<th>{l_attach.url}</th>
-										<th class="text-right" width="10">{l_do_delete}</th>
+										<th class="text-right" width="10">{l_delete}</th>
 									</tr>
 								</thead>
 								<tbody>

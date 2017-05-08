@@ -78,7 +78,7 @@
 				</div>
 				{% endif %}
 				<div class="btn btn-default btn-fileinput form-control">
-					<span><i class="fa fa-plus"></i> {l_attach.new}</span>
+					<span>{{ lang['attach.new'] }}</span>
 					<input type="file" name="image" id="image" onchange="validateFile(this);">
 				</div>
 			</td>

@@ -72,7 +72,7 @@
 				<td width="70%">{{ lang['attached_icon'] }}<br/><small>{{ lang['attached_icon#desc'] }}</small></td>
 				<td width="30%">
 					<div class="btn btn-default btn-fileinput form-control">
-						<span><i class="fa fa-plus"></i> {l_attach.new}</span>
+						<span>{{ lang['attach.new'] }}</span>
 						<input type="file" name="image" id="image" onchange="validateFile(this);">
 					</div>
 				</td>

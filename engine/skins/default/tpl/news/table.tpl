@@ -108,7 +108,7 @@
 				<table class="table table-condensed">
 					<thead>
 						<tr>
-							<th><input type="checkbox" class="select-all"></th>
+							<th><input type="checkbox" class="select-all" title="{{ lang.select_all }}"></th>
 							<th class="hidden-xs">{{ lang.editnews['postid_short'] }}</th>
 							<th class="hidden-xs"></th>
 							<th>{{ lang.editnews['title'] }}</th>
@@ -176,7 +176,7 @@
 						{% if flags.allow_modify %}
 						<div class="input-group">
 							<select name="subaction" class="form-control">
-								<option value="">-- {{ lang.editnews['action'] }} --</option>
+								<option value="">-- {{ lang['action'] }} --</option>
 								<option value="mass_approve">{{ lang.editnews['approve'] }}</option>
 								<option value="mass_forbidden">{{ lang.editnews['forbidden'] }}</option>
 								<option value="" class="divider" disabled>===================</option>

@@ -194,7 +194,7 @@
 											<th>{{ lang.editnews['attach.filename'] }}</th>
 											<th>{{ lang.editnews['attach.size'] }}</th>
 											<th>{{ lang.editnews['attach.date'] }}</th>
-											<th class="text-center">{{ lang['do_delete'] }}</th>
+											<th class="text-center">{{ lang['delete'] }}</th>
 										</tr>
 									</thead>
 									<tbody>

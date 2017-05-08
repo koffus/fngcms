@@ -40,12 +40,10 @@
 				</div>
 				
 				<div class="text-center">
-					<!--{lang_select}-->
 					<div class="btn-group">
-						<button type="button" class="btn btn-next dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width:158px">Language <span class="caret"></span></button>
+						<button type="button" class="btn btn-next dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Language <span class="caret"></span></button>
 						<ul class="dropdown-menu">
-							<li><a href="install.php?language=english">English</a></li>
-							<li><a href="install.php?language=russian">Русский</a></li>
+							{lang_select}
 						</ul>
 					</div>
 				</div><br/>
@@ -62,7 +60,7 @@
 					</div>
 				</fieldset>
 				<div class="f1-buttons">
-					<button type="submit" class="btn btn-next">{l_welcome.continue} &raquo;</button>
+					<button type="submit" class="btn btn-next">{l_button.continue} &raquo;</button>
 				</div>
 			</form>
 		</div>

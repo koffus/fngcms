@@ -169,7 +169,7 @@
 									<thead>
 										<tr>
 											<th>{{ lang['attach.filename'] }} - {{ lang['attach.size'] }}</th>
-											<th class="text-center" width="10">{{ lang['do_delete'] }}</th>
+											<th class="text-center" width="10">{{ lang['delete'] }}</th>
 										</tr>
 									</thead>
 									<tbody>
