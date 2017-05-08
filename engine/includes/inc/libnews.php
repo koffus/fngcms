@@ -337,8 +337,26 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		return $tpl -> show($templateName);
 
 	// Set meta tags for news page
- $SYSTEM_FLAGS['meta']['description'] = (getIsSet($row['description']) != '')?$row['description']:((getIsSet($catmap[$masterCatID]) && is_array($catz[$catmap[$masterCatID]]))?$catz[$catmap[$masterCatID]]['description']:$config['description']);
-	$SYSTEM_FLAGS['meta']['keywords'] = (getIsSet($row['keywords']) != '' )?$row['keywords']:((getIsSet($catmap[$masterCatID]) && is_array($catz[$catmap[$masterCatID]]))?$catz[$catmap[$masterCatID]]['keywords']:$config['keywords']);
+	if (getIsSet($row['description']) != '') {
+		$SYSTEM_FLAGS['meta']['description'] = $row['description'];
+	} else {
+		$SYSTEM_FLAGS['meta']['description'] = home_title . '. ' . GetCategories($row['catid'], true) . '. ' . secure_html($row['title']);
+	}
+	if ( getIsSet($row['keywords']) != '' ) {
+		$SYSTEM_FLAGS['meta']['keywords'] = $row['keywords'];
+	} else {
+		// Удаляем все слова меньше 3-х символов
+		$row['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', GetCategories($row['catid'], true) . '. ' . secure_html($row['title']));
+		// Удаляем знаки препинания
+		$row['keywords'] = preg_replace('#[^\d\w ]+#iu', '', $row['keywords']);
+		// Удаляем лишние пробельные символы
+		$row['keywords'] = preg_replace('#[\s]+#iu', ' ', $row['keywords']);
+		// Заменяем пробелы на запятые
+		$row['keywords'] = preg_replace('#[\s]#iu', ',', $row['keywords']);
+		// Выводим для леньтяев
+		$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $row['keywords']);
+	}
+
 	// Prepare title
 	//$SYSTEM_FLAGS['info']['title']['group']	= $config["category_link"]?GetCategories($row['catid'], true):Lang::retDate(timestamp, $row['postdate']);
 	$SYSTEM_FLAGS['info']['title']['group']	= GetCategories($row['catid'], true);
