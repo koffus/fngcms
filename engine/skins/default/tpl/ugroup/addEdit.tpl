@@ -20,6 +20,7 @@
 						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						<h4>{% if flags.editMode %} {{ lang['edit_group'] }} "{{ entry.identity }}" [ {{ entry.id }} ]{% else %}{{ lang['add_group'] }}{% endif %}</h4>
 					</div>
+
 					<div class="modal-body">
 						<div class="form-group">
 							<label class="col-sm-4">ID</label>
