@@ -183,33 +183,73 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		if ( $data['type'] == 'select' ) {
 			if (is_array($data['options']))
 				foreach ($data['options'] as $k => $v) {
-					array_push($sOpts, '<tr><td><input size="12" name="so_data['.($fNum).'][0]" type="text" value="'.($data['storekeys']?htmlspecialchars($k, ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').'"/></td><td><input type="text" size="55" name="so_data['.($fNum).'][1]" value="'.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8').'"/></td><td><a href="#" onclick="return false;"><img src="'.skins_url.'/images/delete.gif" alt="DEL" width="12" height="12" /></a></td></tr>');
+					array_push($sOpts, '<tr>
+								<td>
+									<input type="text" size="12" name="so_data['.($fNum).'][0]" value="'.($data['storekeys']?htmlspecialchars($k, ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').'" class="form-control" />
+								</td>
+								<td>
+									<input type="text" size="55" name="so_data['.($fNum).'][1]" value="'.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8').'" class="form-control" />
+								</td>
+								<td class="text-center">
+									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>');
 					$fNum++;
 				}
 		}
 		if (!count($sOpts)) {
-			array_push($sOpts, '<tr><td><input size="12" name="so_data[1][0]" type="text" value=""/></td><td><input type="text" size="55" name="so_data[1][1]" value=""/></td><td><a href="#" onclick="return false;"><img src="'.skins_url.'/images/delete.gif" alt="DEL" width="12" height="12" /></a></td></tr>');
+			array_push($sOpts, '<tr>
+								<td>
+									<input type="text" size="12" name="so_data[1][0]" value="" class="form-control" />
+								</td>
+								<td>
+									<input type="text" size="55" name="so_data[1][1]" value="" class="form-control" />
+								</td>
+								<td class="text-center">
+									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>');
 		}
- 
+
  $m_sOpts = array();
 		$fNum = 1;
  if ( $data['type'] == 'multiselect' ) {
 			if (is_array($data['options']))
 				foreach ($data['options'] as $k => $v) {
-					array_push($m_sOpts, '<tr><td><input size="12" name="mso_data['.($fNum).'][0]" type="text" value="'.($data['storekeys']?htmlspecialchars($k, ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').'"/></td><td><input type="text" size="55" name="mso_data['.($fNum).'][1]" value="'.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8').'"/></td><td><a href="#" onclick="return false;"><img src="'.skins_url.'/images/delete.gif" alt="DEL" width="12" height="12" /></a></td></tr>');
+					array_push($m_sOpts, '<tr>
+								<td>
+									<input size="12" name="mso_data['.($fNum).'][0]" type="text" value="'.($data['storekeys']?htmlspecialchars($k, ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').'" class="form-control" />
+								</td>
+								<td>
+									<input type="text" size="55" name="mso_data['.($fNum).'][1]" value="'.htmlspecialchars($v, ENT_COMPAT | ENT_HTML401, 'UTF-8').'" class="form-control" />
+								</td>
+								<td class="text-center">
+									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>');
 					$fNum++;
 				}
 		}
 		if (!count($m_sOpts)) {
-			array_push($m_sOpts, '<tr><td><input size="12" name="mso_data[1][0]" type="text" value=""/></td><td><input type="text" size="55" name="mso_data[1][1]" value=""/></td><td><a href="#" onclick="return false;"><img src="'.skins_url.'/images/delete.gif" alt="DEL" width="12" height="12" /></a></td></tr>');
+			array_push($m_sOpts, '<tr>
+								<td>
+									<input size="12" name="mso_data[1][0]" type="text" value="" class="form-control" />
+								</td>
+								<td>
+									<input type="text" size="55" name="mso_data[1][1]" value="" class="form-control" />
+								</td>
+								<td class="text-center">
+									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>');
 		}
 
 		$tVars = $tVars + array(
 			'sOpts'		=> implode("\n", $sOpts),
  'm_sOpts'		=> implode("\n", $m_sOpts),
 			'type_opts'	=> $xsel,
-			'storekeys_opts'	=> '<option value="0">Сохранять значение</option><option value="1"'.(($data['storekeys'])?' selected':'').'>Сохранять код</option>',
-			'required_opts'		=> '<option value="0">Нет</option><option value="1"'.(($data['required'])?' selected':'').'>Да</option>',
+			'storekeys_opts'	=> '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1"'.(($data['storekeys'])?' selected':'').'>'.__('xfconfig')['tselect_store_key'].'</option>',
+			'required_opts'		=> '<option value="0">'.__('noa').'</option><option value="1"'.(($data['required'])?' selected':'').'>'.__('yesa').'</option>',
 			'images'	=> array(
 				'maxCount'	=> intval($data['maxCount']),
 				'thumbWidth'	=> intval($data['thumbWidth']),
@@ -223,10 +263,30 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 	//print "<pre>".var_export($tVars, true)."</pre>";
 	} else {
 		$sOpts = array();
-		array_push($sOpts, '<tr><td><input size="12" name="so_data[1][0]" type="text" value=""/></td><td><input type="text" size="55" name="so_data[1][1]" value=""/></td><td><a href="#" onclick="return false;"><img src="'.skins_url.'/images/delete.gif" alt="DEL" width="12" height="12" /></a></td></tr>');
- 
+		array_push($sOpts, '<tr>
+								<td>
+									<input type="text" size="12" name="so_data[1][0]" value="" class="form-control" />
+								</td>
+								<td>
+									<input type="text" size="55" name="so_data[1][1]" value="" class="form-control" />
+								</td>
+								<td class="text-center">
+									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>');
+
  $m_sOpts = array();
-		array_push($m_sOpts, '<tr><td><input size="12" name="mso_data[1][0]" type="text" value=""/></td><td><input type="text" size="55" name="mso_data[1][1]" value=""/></td><td><a href="#" onclick="return false;"><img src="'.skins_url.'/images/delete.gif" alt="DEL" width="12" height="12" /></a></td></tr>');
+		array_push($m_sOpts, '<tr>
+								<td>
+									<input size="12" name="mso_data[1][0]" type="text" value="" class="form-control" />
+								</td>
+								<td>
+									<input type="text" size="55" name="mso_data[1][1]" value="" class="form-control" />
+								</td>
+								<td class="text-center">
+									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+								</td>
+							</tr>');
 
 		$tVars['flags']['editmode'] = 0;
 		$tVars['flags']['disabled'] = false;
@@ -244,13 +304,13 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$xsel = '';
 		foreach (array('text', 'textarea', 'select', 'multiselect', 'checkbox', 'images') as $ts) {
 			$tVars['defaults'][$ts] = '';
-			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == 'text')?' selected':'').'>'.__('xfields_type_'.$ts);
+			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == 'text')?' selected':'').'>'.__('xfields_type_'.$ts).'</option>';
 		}
 
 		$tVars = $tVars + array(
 			'type_opts'			=> $xsel,
-			'storekeys_opts'	=> '<option value="0">Сохранять значение</option><option value="1">Сохранять код</option>',
-			'required_opts'		=> '<option value="0">Нет</option><option value="1">Да</option>',
+			'storekeys_opts'	=> '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1">'.__('xfconfig')['tselect_store_key'].'</option>',
+			'required_opts'		=> '<option value="0">'.__('noa').'</option><option value="1">'.__('yesa').'</option>',
 			'select_options'	=> '',
 
 			'images'			=> array(

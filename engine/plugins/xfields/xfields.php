@@ -222,11 +222,11 @@ class XFieldsNewsFilter extends NewsFilter {
 									$xfEntry['input'] = $val;
 									break;
 
-					case 'text' : 	$val = '<input type="text" id="form_xfields_'.$id.'" name="xfields['.$id.']" title="'.$data['title'].'" value="'.secure_html($data['default']).'"/>';
+					case 'text' : 	$val = '<input type="text" id="form_xfields_'.$id.'" name="xfields['.$id.']" title="'.$data['title'].'" value="'.secure_html($data['default']).'" class="form-control" />';
 									$xfEntry['input'] = $val;
 									break;
 
-					case 'select': 	$val = '<select name="xfields['.$id.']" id="form_xfields_'.$id.'" >';
+					case 'select': 	$val = '<select name="xfields['.$id.']" id="form_xfields_'.$id.'" class="form-control">';
 									if (!$data['required']) $val .= '<option value=""></option>';
 									if (is_array($data['options']))
 										foreach ($data['options'] as $k => $v)
@@ -234,7 +234,7 @@ class XFieldsNewsFilter extends NewsFilter {
 									$val .= '</select>';
 									$xfEntry['input'] = $val;
 									break;
-					case 'multiselect': 	$val = '<select name="xfields['.$id.'][]" id="form_xfields_'.$id.'" multiple="multiple">';
+					case 'multiselect': 	$val = '<select name="xfields['.$id.'][]" id="form_xfields_'.$id.'" multiple="multiple" class="form-control">';
 									if (!$data['required']) $val .= '<option value=""></option>';
 									if (is_array($data['options']))
 										foreach ($data['options'] as $k => $v)
@@ -242,7 +242,7 @@ class XFieldsNewsFilter extends NewsFilter {
 									$val .= '</select>';
 									$xfEntry['input'] = $val;
 									break;
-					case 'textarea' :	$val = '<textarea cols="30" rows="5" name="xfields['.$id.']" id="form_xfields_'.$id.'" >'.$data['default'].'</textarea>';
+					case 'textarea' :	$val = '<textarea rows="5" name="xfields['.$id.']" id="form_xfields_'.$id.'" class="form-control">'.$data['default'].'</textarea>';
 									$xfEntry['input'] = $val;
 									break;
 					case 'images'	:
@@ -503,11 +503,11 @@ class XFieldsNewsFilter extends NewsFilter {
 							$xfEntries[intval($data['area'])][] = $xfEntry;
 							break;
 
-				case 'text' : 	$val = '<input type="text" name="xfields['.$id.']" id="form_xfields_'.$id.'" title="'.$data['title'].'" value="'.secure_html($xdata[$id]).'" />';
+				case 'text' : 	$val = '<input type="text" name="xfields['.$id.']" id="form_xfields_'.$id.'" title="'.$data['title'].'" value="'.secure_html($xdata[$id]).'" class="form-control" />';
 								$xfEntry['input'] = $val;
 								$xfEntries[intval($data['area'])][] = $xfEntry;
 								break;
-				case 'select': 	$val = '<select name="xfields['.$id.']" id="form_xfields_'.$id.'" >';
+				case 'select': 	$val = '<select name="xfields['.$id.']" id="form_xfields_'.$id.'" class="form-control">';
 								if (!$data['required']) $val .= '<option value="">&nbsp;</option>';
 								if (is_array($data['options']))
 									foreach ($data['options'] as $k => $v) {
@@ -517,7 +517,7 @@ class XFieldsNewsFilter extends NewsFilter {
 								$xfEntry['input'] = $val;
 								$xfEntries[intval($data['area'])][] = $xfEntry;
 								break;
-				case 'multiselect': 	$val = '<select name="xfields['.$id.'][]" id="form_xfields_'.$id.'" multiple="multiple">';
+				case 'multiselect': 	$val = '<select name="xfields['.$id.'][]" id="form_xfields_'.$id.'" multiple="multiple" class="form-control">';
 								if (!$data['required']) $val .= '<option value="">&nbsp;</option>';
 								if (is_array($data['options']))
 									foreach ($data['options'] as $k => $v) {
@@ -529,7 +529,7 @@ class XFieldsNewsFilter extends NewsFilter {
 								$xfEntries[intval($data['area'])][] = $xfEntry;
 								break;
 				case 'textarea'	:
-								$val = '<textarea cols="30" rows="4" name="xfields['.$id.']" id="form_xfields_'.$id.'">'.$xdata[$id].'</textarea>';
+								$val = '<textarea rows="5" name="xfields['.$id.']" id="form_xfields_'.$id.'" class="form-control">'.$xdata[$id].'</textarea>';
 								$xfEntry['input'] = $val;
 								$xfEntries[intval($data['area'])][] = $xfEntry;
 								break;
@@ -1100,10 +1100,10 @@ if (getPluginStatusActive('uprofile')) {
 					case 'checkbox':$val = '<input type="checkbox" id="form_xfields_'.$id.'" name="xfields['.$id.']" title="'.$data['title'].'" value="1" '.($data['default']?'checked="checked"':'').'"/>';
 						$xfEntry['input'] = $val;
 						break;
-					case 'text' : 	$val = '<input type="text" name="xfields['.$id.']" id="form_xfields_'.$id.'" title="'.$data['title'].'" value="'.secure_html($xdata[$id]).'" />';
+					case 'text' : 	$val = '<input type="text" name="xfields['.$id.']" id="form_xfields_'.$id.'" title="'.$data['title'].'" value="'.secure_html($xdata[$id]).'" class="form-control" />';
 						$xfEntry['input'] = $val;
 						break;
-					case 'select': 	$val = '<select name="xfields['.$id.']" id="form_xfields_'.$id.'" >';
+					case 'select': 	$val = '<select name="xfields['.$id.']" id="form_xfields_'.$id.'" class="form-control">';
 						if (!$data['required']) $val .= '<option value="">&nbsp;</option>';
 						if (is_array($data['options']))
 							foreach ($data['options'] as $k => $v) {
@@ -1113,7 +1113,7 @@ if (getPluginStatusActive('uprofile')) {
 						$xfEntry['input'] = $val;
 						break;
 					case 'textarea'	:
-						$val = '<textarea cols="30" rows="4" name="xfields['.$id.']" id="form_xfields_'.$id.'">'.$xdata[$id].'</textarea>';
+						$val = '<textarea rows="5" name="xfields['.$id.']" id="form_xfields_'.$id.'" class="form-control">'.$xdata[$id].'</textarea>';
 						$xfEntry['input'] = $val;
 						break;
 					case 'images'	:
@@ -1430,7 +1430,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 		$xf = xf_configLoad();
 
 		// Prepare select
-		$ms = '<select name="xf_group"><option value="">** все поля **</option>';
+		$ms = '<select name="xf_group" class="form-control"><option value="">** все поля **</option>';
 		if (isset($xf['grp.news'])) {
 			foreach ($xf['grp.news'] as $k => $v) {
 				$ms .= '<option value="'.$k.'">'.$k.' ('.$v['title'].')</option>';
@@ -1449,7 +1449,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 		$xf = xf_configLoad();
 
 		// Prepare select
-		$ms = '<select name="xf_group"><option value="">** все поля **</option>';
+		$ms = '<select name="xf_group" class="form-control"><option value="">** все поля **</option>';
 		foreach ($xf['grp.news'] as $k => $v) {
 			$ms .= '<option value="'.$k.'"'.(($SQL['xf_group'] == $k)?' selected="selected"':'').'>'.$k.' ('.$v['title'].')</option>';
 		}

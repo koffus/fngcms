@@ -1,4 +1,4 @@
-<input type="hidden" id="xftable" name="xftable" value=""/>
+<input type="hidden" id="xftable" name="xftable" value="" />
 
 <script>
 <!--

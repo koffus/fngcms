@@ -146,8 +146,8 @@
 					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
 					<!-- XFields -->
 					<table class="table table-condensed">
-							{{ plugin.xfields[1] }}
-						</table>
+						{{ plugin.xfields[1] }}
+					</table>
 					<!-- /XFields -->
 					{% endif %}
 				</div>

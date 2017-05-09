@@ -1,20 +1,19 @@
 <!-- Navigation bar -->
 <ul class="breadcrumb">
-	<li><a href="admin.php">{l_home}</a></li>
-	<li><a href="admin.php?mod=extras" title="{l_extras}">{l_extras}</a></li>
+	<li><a href="admin.php">{{ lang['home'] }}</a></li>
+	<li><a href="admin.php?mod=extras">{{ lang['extras'] }}</a></li>
 	<li class="active">xfields</li>
 </ul>
 
 <!-- Info content -->
 <div class="page-main">
-
-	<form action="admin.php?mod=extra-config" method="POST" class="form-horizontal">
-		<input type="hidden" name="plugin" value="xfields" />
+	<form action="admin.php?mod=extra-config&plugin=xfields" method="POST" class="form-horizontal">
 		<input type="hidden" name="action" value="add" />
 		<input type="hidden" name="section" value="{{ sectionID }}" />
 
 		{% include 'plugins/xfields/tpl/navi.tpl' %}
 
+		<br>
 		<table class="table table-condensed">
 			<thead>
 			<tr>
@@ -27,7 +26,7 @@
 				{% if (sectionID != 'tdata') %}
 					<th>Блок</th>
 				{% endif %}
-				<th class="text-right">{{ lang.action }}</th>
+				<th class="text-right">{{ lang['action'] }}</th>
 			</tr>
 			</thead>
 			<tbody>
@@ -38,7 +37,7 @@
 					<td>{{ entry.type }}</td>
 					<td>{{ entry.options }}</td>
 					<td>{% if (entry.flags.default) %}{{ entry.default }}{% else %}<font color="red">не задано</font>{% endif %}</td>
-					<td>{% if (entry.flags.required) %}<font color="red"><b>Да</b></font>{% else %}Нет{% endif %}</td>
+					<td>{% if (entry.flags.required) %}<font color="red"><b>{{ lang['yesa'] }}</b></font>{% else %}{{ lang['noa'] }}{% endif %}</td>
 					{% if (sectionID != 'tdata') %}
 						<td>{{ entry.area }}</td>
 					{% endif %}
@@ -48,6 +47,8 @@
 						<a  href="{{ entry.linkdel }}" onclick="return confirm('{{ lang.xfconfig['suretest'] }}');" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
 					</td>
 				</tr>
+				{% else %}
+					{{ lang.xfconfig['nof'] }}
 				{% endfor %}
 			</tbody>
 		</table>

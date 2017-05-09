@@ -12,7 +12,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 
 		$allowCom = pluginGetVariable('comments', 'default_categories');
 
-		$ms = '<select name="allow_com">';
+		$ms = '<select name="allow_com" class="form-control">';
 		$cv = array( '0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию');
 		for ($i = 0; $i < 3; $i++) {
 			$ms .= '<option value="'.$i.'"'.(($allowCom == $i)?' selected="selected"':'').'>'.$cv[$i].'</option>';
@@ -30,7 +30,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 			$SQL['allow_com'] = pluginGetVariable('comments', 'default_categories');
 		}
 
-		$ms = '<select name="allow_com">';
+		$ms = '<select name="allow_com" class="form-control">';
 		$cv = array( '0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию');
 		for ($i = 0; $i < 3; $i++) {
 			$ms .= '<option value="'.$i.'"'.(($SQL['allow_com'] == $i)?' selected="selected"':'').'>'.$cv[$i].'</option>';
