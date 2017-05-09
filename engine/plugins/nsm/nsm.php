@@ -776,7 +776,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  $tVars = array(
  'xfields' => $xfields,
  'php_self' => $PHP_SELF,
- 'changedate' => ChangeDate($row['postdate'], 1),
+ //'changedate' => ChangeDate($row['postdate'], 1),
  'mastercat' => makeCategoryList(array('doempty' => ($perm['personal.nocat'] or !count($cats))?1:0, 'greyempty' => !$perm['personal.nocat'], 'nameval' => 0, 'selected' => count($cats)?$cats[0]:0)),
  'extcat' => makeCategoryList(array('nameval' => 0, 'checkarea' => 1, 'selected' => (count($cats)>1)?array_slice($cats,1):array(), 'disabledarea' => !$perm[$permGroupMode.'.multicat'])),
  'allcats' => resolveCatNames($cats),
