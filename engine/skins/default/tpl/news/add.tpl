@@ -169,7 +169,7 @@
 									<thead>
 										<tr>
 											<th>{{ lang['attach.filename'] }} - {{ lang['attach.size'] }}</th>
-											<th class="text-center" width="10">{{ lang['delete'] }}</th>
+											<th class="text-center" width="10">{{ lang['action'] }}</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -191,8 +191,16 @@
 			<div id="rightBar" class="col col-sm-4">
 				{% if flags['multicat.show'] %}
 				<div class="panel panel-default">
-					<div class="panel-heading"><h4 class="panel-title">{{ lang['editor.extcat'] }}</h4></div>
-					<div class="panel-body cat-list">{{ extcat }}</div>
+					<div class="panel-heading">
+						<h4 class="panel-title">{{ lang['editor.extcat'] }}</h4>
+					</div>
+					<div class="panel-body">
+						<div class="has-feedback" onclick="$('.cat-list').toggle();">
+							<input id="catSelector" class="form-control" type="button" value="{{ lang['no_cat'] }}" hidefocus="" autocomplete="off" readonly="" style="white-space: pre-wrap;height: auto; text-align: left;">
+							<span class="form-control-feedback"><span class="caret"></span></span>
+						</div>
+						<div class="cat-list" style="display: none;">{{ extcat }}</div>
+					</div>
 				</div>
 				{% endif %}
 				<div class="panel panel-default">
@@ -291,6 +299,24 @@
 <script src="{{ skins_url }}/assets/js/datetimepicker.js"></script>
 
 <script>
+function insertselcat(cat) {
+	var ss = $('select[name=category] option:selected');
+	if( ss.val() == 0 ) {
+		$('input[name*=category_]').map(function() {$(this).prop('checked', false);});
+	}
+	var ctstring = $('input[name*=category_]:checked').map(function() {
+		if( $.trim(ss.text()) != $.trim($(this).parent().text()) ) {
+			return $(this).parent().text();
+		} else {
+			$(this).prop('checked', false);
+		}
+	}).get().join(", ") || "{{ lang['no_cat'] }}";
+	$("#catSelector").val( ctstring.replace(/&amp;/g, '&') );
+}
+$('input[name*=category_], select[name=category]').on('click', function (e) {
+	insertselcat();
+});
+//insertselcat();
 
 $('#cdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
 
