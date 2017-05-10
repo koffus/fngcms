@@ -57,6 +57,9 @@ function generate_config_page($module, $params, $values = array()) {
 		if ( $values[$param['name']] ) {
 			$param['value'] = $values[$param['name']];
 		}
+		if ( !empty($_POST[$param['name']]) ) {
+			$param['value'] = $_POST[$param['name']];
+		}
 
 		if ( $param['type'] == 'text' ) {
 			$tvars['input'] = '<textarea name="'.$param['name'].'" '.$param['html_flags'].' class="form-control">'.secure_html($param['value']).'</textarea>';
@@ -69,7 +72,7 @@ function generate_config_page($module, $params, $values = array()) {
 		} elseif ($param['type'] == 'select') {
 			$tvars['input'] = '<select name="'.$param['name'].'" '.$param['html_flags'].' class="form-control">';
 			foreach ($param['values'] as $oid => $oval) {
-				$tvars['input'] .= '<option value="'.$oid.'"'.($param['value']==$oid?' selected':'').'>'.$oval.'</option>';
+				$tvars['input'] .= '<option value="'.intval($oid).'"'.($param['value']==$oid?' selected':'').'>'.secure_html($oval).'</option>';
 			}
 			$tvars['input'] .='</select>';
 		} else if ($param['type'] == 'manual') {
@@ -159,8 +162,6 @@ function load_commit_params($cfg, $outparams) {
 
 // Priint page with config change complition notification
 function print_commit_complete($plugin, $cfg) {
-	// Load cofig
-	pluginsLoadConfig();
 	generate_config_page($plugin, $cfg);
 	msg(array('message' => __('commited')));
 }
