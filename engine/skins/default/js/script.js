@@ -121,19 +121,8 @@ $(document).ready(function(){
 		var $img = $lightbox.find('img');
 		$lightbox.find('.modal-dialog').css({'width': $img.width() + 30});
 	});
-	
-	/* switchTheme */
-	$('#themes').on('click', function(e) {
-		switchTheme( $("#theme-style option:selected").val());
-	});
 
 });
-
-/* switchTheme */
-function switchTheme(theme) {
-	createCookie('theme-style', theme, 365);
-	location.reload();
-}
 
 // Добавление элементов (пользователь, группы) в modal
 $(document).on('click', '.add_form', function(){
