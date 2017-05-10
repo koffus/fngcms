@@ -167,6 +167,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 				'name'			=> $v['name'],
 				'origName'		=> secure_html($v['orig_name']),
 				'description'	=> secure_html($v['description']),
+				'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['files_dir']).'/'.$v['folder'].'/'.$v['name'])),
 			);
 		}
 	}
@@ -189,6 +190,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 				'name'			=> $v['name'],
 				'origName'		=> secure_html($v['orig_name']),
 				'description'	=> secure_html($v['description']),
+				'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['images_dir']).'/'.$v['folder'].'/'.$v['name'])),
 				'flags'		=> array(
 					'hasPreview'	=> $v['preview'],
 				),
@@ -679,6 +681,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 						'name'			=> $v['name'],
 						'origName'		=> secure_html($v['orig_name']),
 						'description'	=> secure_html($v['description']),
+						'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['files_dir']).'/'.$v['folder'].'/'.$v['name'])),
 					);
 				}
 			}
@@ -703,6 +706,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 						'name'			=> $v['name'],
 						'origName'		=> secure_html($v['orig_name']),
 						'description'	=> secure_html($v['description']),
+						'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['images_dir']).'/'.$v['folder'].'/'.$v['name'])),
 						'flags'		=> array(
 							'hasPreview'	=> $v['preview'],
 						),
