@@ -153,7 +153,7 @@ $template['vars']['categories'] = generateCategoryMenu();
 $timer->registerEvent('Category menu created');
 
 // Generate page title
-$template['vars']['titles'] = join(' : ', array_values($SYSTEM_FLAGS['info']['title']));
+$template['vars']['titles'] = join(' — ', array_values($SYSTEM_FLAGS['info']['title']));
 
 // Generate user menu
 coreUserMenu();

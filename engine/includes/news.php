@@ -120,7 +120,7 @@ function showNews($handlerName, $params) {
 
 		switch ($handlerName) {
 			case 'main':
-				$SYSTEM_FLAGS['info']['title']['group'] = __('mainpage');
+				$SYSTEM_FLAGS['info']['title']['group'] = !empty($config['meta_title']) ? $config['meta_title'] : __('mainpage');
 				$paginationParams = checkLinkAvailable('news', 'main')?
 							array('pluginName' => 'news', 'pluginHandler' => 'main', 'params' => array(), 'xparams' => array(), 'paginator' => array('page', 0, false)):
 							array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'news', 'handler' => 'main'), 'xparams' => array(), 'paginator' => array('page', 1, false));

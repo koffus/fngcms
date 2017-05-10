@@ -167,11 +167,27 @@
 					</div>
 					<div class="form-group">
 						<div class="col-md-5">{{ lang['admin_url'] }} <span class="help-block">{{ lang['example'] }} http://server.com/engine</span></div>
-						<div class="col-md-7"><input class="form-control" type="text" name="save_con[admin_url]" value="{{ config['admin_url'] }}" /></div>
+						<div class="col-md-7"><input class="form-control" type="text" name="save_con[admin_url]" value="{{ config['admin_url'] }}" readonly/></div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-5">{{ lang['home_title'] }} <span class="help-block">{{ lang['example'] }} NGcms</span></div>
 						<div class="col-md-7"><input type="text" class="form-control" name="save_con[home_title]" value="{{ config['home_title']|escape }}" /></div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-5">{{ lang['meta'] }} <span class="help-block">{{ lang['meta_desc'] }}</span></div>
+						<div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[meta]', 'value' : config['meta'] }) }}</div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-5">{{ lang['meta_title'] }} <span class="help-block">{{ lang['meta_title_desc'] }}</span></div>
+						<div class="col-md-7"><input type="text" class="form-control" name="save_con[meta_title]" value="{{ config['meta_title'] }}" /></div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-5">{{ lang['description'] }} <span class="help-block">{{ lang['description_desc'] }}</span></div>
+						<div class="col-md-7"><input type="text" class="form-control" name="save_con[description]" value="{{ config['description'] }}" /></div>
+					</div>
+					<div class="form-group">
+						<div class="col-md-5">{{ lang['keywords'] }} <span class="help-block">{{ lang['keywords_desc'] }}</span></div>
+						<div class="col-md-7"><input type="text" class="form-control" name="save_con[keywords]" value="{{ config['keywords'] }}" /></div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-5">{{ lang['admin_mail'] }} <span class="help-block">{{ lang['example'] }} admin@server.com</span></div>
@@ -184,18 +200,6 @@
 					<div class="form-group">
 						<div class="col-md-5">{{ lang['lock_reason'] }} <span class="help-block">{{ lang['lock_reason_desc'] }}</span></div>
 						<div class="col-md-7"><input type="text" class="form-control" name="save_con[lock_reason]" value="{{ config['lock_reason'] }}" maxlength="200" /></div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-5">{{ lang['meta'] }} <span class="help-block">{{ lang['meta_desc'] }}</span></div>
-						<div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[meta]', 'value' : config['meta'] }) }}</div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-5">{{ lang['description'] }} <span class="help-block">{{ lang['description_desc'] }}</span></div>
-						<div class="col-md-7"><input type="text" class="form-control" name="save_con[description]" value="{{ config['description'] }}" /></div>
-					</div>
-					<div class="form-group">
-						<div class="col-md-5">{{ lang['keywords'] }} <span class="help-block">{{ lang['keywords_desc'] }}</span></div>
-						<div class="col-md-7"><input type="text" class="form-control" name="save_con[keywords]" value="{{ config['keywords'] }}" /></div>
 					</div>
 					<div class="form-group">
 						<div class="col-md-5">{{ lang['theme'] }} <span class="help-block">{{ lang['theme_desc'] }}</span></div>

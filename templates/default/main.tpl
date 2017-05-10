@@ -1,6 +1,7 @@
 [TWIG]<!DOCTYPE html>
 <html lang="{{ lang['langcode'] }}">
 <head>
+	<title>{{ titles }}</title>
 	<meta charset="{{ lang['encoding'] }}" />
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
 	<meta name="generator" content="{{ what }} {{ version }}" />
@@ -25,7 +26,6 @@
 	<script src="{{ scriptLibrary }}/jq/jquery.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
 	<script src="{{ scriptLibrary }}/ajax.js"></script>
-	<title>{{ titles }}</title>
 </head>
 	<body>
 		<div id="loading-layer"><img src="{{ tpl_url }}/img/loading.gif" alt="" /></div>
