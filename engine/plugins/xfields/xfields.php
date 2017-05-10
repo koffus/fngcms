@@ -1436,8 +1436,9 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 				$ms .= '<option value="'.$k.'">'.$k.' ('.$v['title'].')</option>';
 			}
 		}
+		$ms .= '</select>';
 
-		$tvars['extend'] .= '<tr><td width="70%" class="contentEntry1">'.__('xfields:categories.group').'<br/><small>'.__('xfields:categories.group#desc').'</small></td><td width="30%" class="contentEntry2">'.$ms.'</td></tr>';
+		$tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">'.__('xfields:categories.group').'<span class="help-block">'.__('xfields:categories.group#desc').'</span></div><div class="col-sm-7">'.$ms.'</div></div>';
 		return 1;
 	}
 
@@ -1453,8 +1454,10 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 		foreach ($xf['grp.news'] as $k => $v) {
 			$ms .= '<option value="'.$k.'"'.(($SQL['xf_group'] == $k)?' selected="selected"':'').'>'.$k.' ('.$v['title'].')</option>';
 		}
+		$ms .= '</select>';
 
-		$tvars['extend'] .= '<tr><td width="70%" class="contentEntry1">'.__('xfields:categories.group').'<br/><small>'.__('xfields:categories.group#desc').'</small></td><td width="30%" class="contentEntry2">'.$ms.'</td></tr>';
+		$tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">'.__('xfields:categories.group').'<span class="help-block">'.__('xfields:categories.group#desc').'</span></div><div class="col-sm-7">'.$ms.'</div></div>';
+		
 		return 1;
 	}
 
