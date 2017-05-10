@@ -13,6 +13,12 @@ engine/trash/*.inc.txt
 uploads/*.*
 uploads/**/*.*
 uploads/**/**/*.*
+templates/vlad-stroi/*.*
+templates/vlad-stroi/**/*.*
+templates/vlad-stroi/**/**/*.*
+templates/clean-blog/*.*
+templates/clean-blog/**/*.*
+templates/clean-blog/**/**/*.*
 
 #################
 ## Eclipse
