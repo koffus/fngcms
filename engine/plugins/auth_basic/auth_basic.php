@@ -170,10 +170,10 @@ class auth_basic extends CoreAuthPlugin {
 		Lang::loadPlugin('auth_basic', 'auth','','auth');
 		array_push($params, array('name' => 'login', 'id' => 'reg_login', 'title' => __('auth_login'), 'descr' => __('auth_login_descr'),'type' => 'input'));
 		if ($config['register_type'] >= 3) {
- array_push($params, array('id' => 'reg_password', 'name' => 'password', title => __('auth_pass'), 'descr' => __('auth_pass_descr'), 'type' => 'password'));
-			array_push($params, array('id' => 'reg_password2', 'name' => 'password2', title => __('auth_pass2'), 'descr' => __('auth_pass2_descr'),'type' => 'password'));
+ array_push($params, array('id' => 'reg_password', 'name' => 'password', 'title' => __('auth_pass'), 'descr' => __('auth_pass_descr'), 'type' => 'password'));
+			array_push($params, array('id' => 'reg_password2', 'name' => 'password2', 'title' => __('auth_pass2'), 'descr' => __('auth_pass2_descr'),'type' => 'password'));
 		}
-		array_push($params, array('name' => 'email', id => 'reg_email', 'title' => __('auth_email'), 'descr' => __('auth_email_descr'),'type' => 'input'));
+		array_push($params, array('name' => 'email', 'id' => 'reg_email', 'title' => __('auth_email'), 'descr' => __('auth_email_descr'),'type' => 'input'));
 		return $params;
 	}
 
@@ -237,11 +237,15 @@ class auth_basic extends CoreAuthPlugin {
 	 	}
 
 	 	if ($config['register_type'] >= 3) {
-	 		if (strlen($values['password']) < 3) {
+	 		if ( strlen($values['password']) < 8 ) {
 		 		// Слишком короткий пароль
 		 		$msg = __('auth_pass_short');
 		 		return 0;
 
+		 	} else if ( strlen($values['password']) > 32 ) {
+				// Слишком длинный пароль
+		 		$msg = __('auth_pass_long');
+		 		return 0;
 		 	} else if ($values['password'] != $values['password2']) {
 		 		// Несовпадение паролей
 		 		$msg = __('auth_pass_diff');
