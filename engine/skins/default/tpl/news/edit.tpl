@@ -113,9 +113,38 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label">{{ lang.addnews['keywords'] }}</label>
+							<label class="col-sm-3 control-label">
+								{{ lang.addnews['keywords'] }}
+								<i class="fa fa-question-circle" title="Указываются через запятую, при автозаполнении составляется из содержания новости"></i>
+								<i class="fa fa-refresh" title="Заполнить автоматически" onclick="countKeywords();/*$('#keywords').val($('#title').val().split(' ').join(',').toLowerCase());*/"></i> 
+								<i class="fr fa fa-cog" onclick="$('.c2').toggle();" title="Настроить генерацию ключевых слов"></i>
+							</label>
 							<div class="col-sm-9">
-								<input type="text" name="keywords" id="newsKeywords" value="{{ keywords }}" tabindex="7" class="form-control"/>
+								<input type="text" name="keywords" id="newsKeywords" value="{{ keywords }}" tabindex="7" class="form-control" maxlength="255" />
+							</div>
+						</div>
+						<div class="c2 well" style="display: none">
+							<div class="row">
+								<div class="col-sm-offset-3 col-sm-9">
+									<div class="form-group">
+										<label class="col-sm-5 control-label">Минимальная длина слова</label>
+										<div class="col-sm-7">
+											<input type="number" value="5" id="minLengthKeyword" class="form-control" />
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-5 control-label">Минимальное число повторений</label>
+										<div class="col-sm-7">
+											<input type="number" value="3" id="minRepeatKeyword" class="form-control" />
+										</div>
+									</div>
+									<div class="row">
+										<label class="col-sm-5 control-label">Коэффициент совпадения</label>
+										<div class="col-sm-7">
+											<input type="number" value="0.7" id="coincidence" class="form-control" />
+										</div>
+									</div>
+								</div>
 							</div>
 						</div>
 						{% endif %}
@@ -495,3 +524,61 @@ document.onkeydown = function(e) {
 </script>
 
 {{ includ_bb }}
+
+<script type="text/javascript">
+  var keywords1, keywords2 = new Array(), keywords3 =  new Array(), del_symbols;
+  
+  function getKeywords(s) {
+    var tmp;
+    tmp = s.toLowerCase().replace(/<[^>]+>/g,'').replace(/[^а-яА-Яa-zA-Z]+/g, ' ').replace(/\[.*?\].*?\[.*?\]/gi, '');
+    return tmp.split(' ');
+  }
+  function countKeywords () {
+    var s = $('#ng_news_content').val()+$('#title').val()+$('#description').val();
+	var minLengthKeyword = parseInt($('#minLengthKeyword').val());
+	var minRepeatKeyword = parseInt($('#minRepeatKeyword').val());
+	var coincidence = parseFloat($('#coincidence').val());
+	
+	var tmpKeywords1 = getKeywords(s);
+	var tmpKeywords2 = new Array();
+    
+	for (i=0;i<tmpKeywords1.length;i++) {
+      var currentWord = tmpKeywords1[i];
+      if (currentWord.length >= minLengthKeyword) keywords2.push(currentWord);
+    }
+    
+    for (i=0;i<keywords2.length;i++) {
+      var currentWord = keywords2[i];
+      currentWordCore = currentWord.substr(0,Math.round(currentWord.length*coincidence));
+      
+      var inwords2 = keywords2.grep(currentWordCore);
+      if (inwords2.length >= minRepeatKeyword && keywords3.grep(currentWordCore).length <1) {
+        keywords3.push(currentWord);
+      }
+    }
+    
+    $('#newsKeywords').val(keywords3);
+    keywords2 = new Array();
+    keywords3 = new Array();
+  }
+  
+  function grep(str) {
+    var ar = new Array();
+    var arSub = 0;
+    for (var i in this) {
+      if (typeof this[i] == "string" && this[i].indexOf(str) != -1){
+        ar[arSub] = this[i];
+        arSub++;
+      }
+    }
+    return ar;
+  }
+  
+  Array.prototype.remove=function(s) {
+    for(i=0;i<this .length;i++) {
+      if(s==this[i]) this.splice(i, 1);
+    }
+  }
+  
+  Array.prototype.grep = grep;
+</script>
