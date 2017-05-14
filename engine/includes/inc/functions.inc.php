@@ -623,7 +623,7 @@ function OrderList($value, $showDefault = false) {
 
 	$output = "<select name=\"orderby\" class=\"form-control\">\n";
 	if ($showDefault)
-		$output .= '<option value="">'.__(order_default);
+		$output .= '<option value="">'.__('order_default').'</option>'."\n";
 	foreach (array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc', 'rating desc', 'rating asc') as $v) {
 	 $vx = str_replace(' ','_',$v);
 		$output.='<option value="'.$v.'"'.(($value==$v)?' selected="selected"':'').'>'.__('order_'.$vx).'</option>'."\n";
