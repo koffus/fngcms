@@ -4,7 +4,7 @@
 			{% if (loop.index)==1 %}
 				<li typeof="v:Breadcrumb">
 					<i class="fa fa-home pr-10"></i>&nbsp;
-					<a href="{{ loc.url }}" rel="v:url" property="v:title">{home_title}</a>
+					<a href="{{ loc.url }}" rel="v:url" property="v:title">{{ home_title }}</a>
 				</li>
 			{% else %}
 				<li typeof="v:Breadcrumb">

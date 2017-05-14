@@ -18,7 +18,6 @@ $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'block_full_path',
 		'title' => __($plugin.':block_full_path'),
-		//'descr' => __($plugin.':block_full_path#desc'),
 		'type' => 'select',
 		'values' => array ('0' => __('noa'), '1' => __('yesa')),
 		'value' => intval(pluginGetVariable($plugin, 'block_full_path')),

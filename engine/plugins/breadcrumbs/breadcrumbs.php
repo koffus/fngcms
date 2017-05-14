@@ -258,7 +258,7 @@ function breadcrumbs() {
 	$tVars = array (
 		'location' => $location,
 		'location_last' => $location_last,
-		'separator' => $separator
+		'home_title' => home_title,
 		);
 
 	$xt = $twig->loadTemplate($tpath['breadcrumbs'].'breadcrumbs.tpl');
