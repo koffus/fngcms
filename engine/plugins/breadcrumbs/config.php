@@ -1,40 +1,55 @@
 <?php
 
-/*
- * Configuration file for plugin "Breadcrumbs" for Next Generation CMS 0.9.3
- * Copyright (C) 2010-2011 Alexey N. Zhukov (http://digitalplace.ru)
- * web: http://digitalplace.ru
- * e-mail: zhukov.alexei@gmail.com
- */
+//
+// Configuration file for plugin
+//
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
 pluginsLoadConfig();
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
-Lang::loadPlugin('breadcrumbs', 'config', '', 'bc', ':');
-
-$cfg = array();
-array_push($cfg, array('descr' => __('bc:description')));
-array_push($cfg, array(
- 'name' => 'block_full_path', 
- 'title' => __('bc:block_full_path'), 
- 'type' => 'select', 
- 'values' => array(1 => __('yesa'), 0 => __('noa')), 
- 'value' => pluginGetVariable($plugin, 'block_full_path')));
+// Fill configuration parameters
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
-array_push($cfgX, array(
- 'name' => 'template_source', 
- 'title' => __('bc:template_source_title'), 
- 'type' => 'select', 
- 'values' => array ( '0' => __('bc:template_source_site'), '1' => __('bc:template_source_plugin')), 
- 'value' => intval(pluginGetVariable($plugin, 'template_source'))));
+	array_push($cfgX, array(
+		'name' => 'block_full_path',
+		'title' => __($plugin.':block_full_path'),
+		//'descr' => __($plugin.':block_full_path#desc'),
+		'type' => 'select',
+		'values' => array ('0' => __('noa'), '1' => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin, 'block_full_path')),
+		));
+
 array_push($cfg, array(
- 'mode' => 'group', 
- 'title' => __('bc:template_source'), 
- 'entries' => $cfgX));
- 
+	'mode' => 'group',
+	'title' => __($plugin.':group.config'),
+	'entries' => $cfgX,
+	));
+
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'template_source',
+		'title' => __($plugin.':template_source_title'),
+		'descr' => __($plugin.':template_source_title#desc'),
+		'type' => 'select',
+		'values' => array ('0' => __($plugin.':template_source_site'), '1' => __($plugin.':template_source_plugin')),
+		'value' => intval(pluginGetVariable($plugin, 'template_source')),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __($plugin.':template_source'),
+	'entries' => $cfgX,
+	));
+
+// RUN
 if ($_REQUEST['action'] == 'commit') {
- commit_plugin_config_changes($plugin, $cfg);
- print_commit_complete($plugin, $cfg);
+	// If submit requested, do config save
+	commit_plugin_config_changes($plugin, $cfg);
+	print_commit_complete($plugin, $cfg);
 } else {
- generate_config_page($plugin, $cfg);
+	generate_config_page($plugin, $cfg);
 }
