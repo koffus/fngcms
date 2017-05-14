@@ -128,6 +128,11 @@ class CommentsNewsFilter extends NewsFilter {
 				$templatePath = tpl_site.'ncustom/'.$ctname;
 			}
 		}
+		// -> desired template
+		$templateName = 'comments.internal';
+		if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
+			$templatePath = tpl_site.'plugins/comments';
+		}
 
 		include_once(root."/plugins/comments/inc/comments.show.php");
 
@@ -176,9 +181,9 @@ class CommentsNewsFilter extends NewsFilter {
 		}
 		$tcvars['regx']['#\[comheader\](.*)\[/comheader\]#is'] = ($SQLnews['com'])?'$1':'';
 
-		$tpl->template('comments.internal', $templatePath);
-		$tpl->vars('comments.internal', $tcvars);
-		$tvars['vars']['plugin_comments'] = $tpl->show('comments.internal');
+		$tpl->template($templateName, $templatePath);
+		$tpl->vars($templateName, $tcvars);
+		$tvars['vars']['plugin_comments'] = $tpl->show($templateName);
 	}
 }
 
@@ -313,7 +318,7 @@ function plugin_comments_add() {
 }
 
 // Show dedicated page for comments
-function plugin_comments_show(){
+function plugin_comments_show() {
 	global $config, $catz, $mysql, $catmap, $tpl, $template, $SUPRESS_TEMPLATE_SHOW, $userROW, $TemplateCache, $SYSTEM_FLAGS;
 
 	// Load lang file, that is required for [hide]..[/hide] block
@@ -344,9 +349,15 @@ function plugin_comments_show(){
 	// Check if there is a custom mapping
 	if ($fcat && $catmap[$fcat] && ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
 		// Check if directory exists
-		if (is_dir(tpl_site.'ncustom/'.$ctname))
+		if (is_dir(tpl_site.'ncustom/'.$ctname)) {
 			$callingCommentsParams['overrideTemplatePath'] = tpl_site.'ncustom/'.$ctname;
 			$templatePath = tpl_site.'ncustom/'.$ctname;
+		}
+	}
+	// -> desired template
+	$templateName = 'comments.external';
+	if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
+		$templatePath = tpl_site.'plugins/comments';
 	}
 
 	// Check if we need pagination
@@ -411,10 +422,9 @@ function plugin_comments_show(){
 	$tcvars['vars']['title']	= secure_html($newsRow['title']);
 	$tcvars['regx']['[\[comheader\](.*)\[/comheader\]]'] = ($newsRow['com'])?'$1':'';
 
-	$tpl->template('comments.external', $templatePath);
-	$tpl->vars('comments.external', $tcvars);
-
-	$template['vars']['mainblock'] .= $tpl->show('comments.external');
+	$tpl->template($templateName, $templatePath);
+	$tpl->vars($templateName, $tcvars);
+	$template['vars']['mainblock'] .= $tpl->show($templateName);
 }
 
 // Delete comment

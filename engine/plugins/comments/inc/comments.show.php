@@ -43,6 +43,9 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	} else {
 		$templateName = 'comments.show';
 	}
+	if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
+		$templatePath = tpl_site.'plugins/comments';
+	}
 
 	$tpl -> template($templateName, $templatePath);
 
@@ -230,6 +233,9 @@ function comments_showform($newsID, $callingParams = array()){
 		$templateName = $callingParams['overrideTemplateName'];
 	} else {
 		$templateName = 'comments.form';
+	}
+	if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
+		$templatePath = tpl_site.'plugins/comments';
 	}
 
 	$tpl -> template($templateName, $templatePath);
