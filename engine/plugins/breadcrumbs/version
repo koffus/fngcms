@@ -5,7 +5,7 @@
 ID: breadcrumbs
 Name: «Хлебные крошки»
 Version: 1.2
-Acts: index
+Acts: index, twig
 File: breadcrumbs.php
 Config: config.php
 Type: plugin
