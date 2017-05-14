@@ -20,6 +20,8 @@
 @define('engineVersionType', 'GIT');
 @define('engineVersionBuild', '20170212');
 
+@define('DS', DIRECTORY_SEPARATOR );
+
 @define('prefix', $config['prefix']);
 @define('uprefix',$config['uprefix']);
 @define('home', $config['home_url']);
