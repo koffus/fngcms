@@ -27,7 +27,7 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin('breadcrumbs', 'main', '', 'bc', ':');
 
 function breadcrumbs() {
-	global $catz, $catmap, $template, $CurrentHandler, $config, $SYSTEM_FLAGS, $tpl, $systemAccessURL, $twig;
+	global $catz, $catmap, $CurrentHandler, $config, $SYSTEM_FLAGS, $systemAccessURL, $twig;
 
 	$tpath = locatePluginTemplates( array('breadcrumbs'), 'breadcrumbs', pluginGetVariable('breadcrumbs', 'template_source') );
 
