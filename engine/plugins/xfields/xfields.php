@@ -859,7 +859,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
 	// Show news call :: processor (call after all processing is finished and before show)
 	function showNews($newsID, $SQLnews, &$tvars, $mode = array()) {
-		global $mysql, $config, $twigLoader, $twig, $PFILTERS, $twig, $twigLoader, $parse;
+		global $mysql, $config, $twigLoader, $twig, $PFILTERS, $parse;
 		// Try to load config. Stop processing if config was not loaded
 		if (($xf = xf_configLoad()) === false) return;
 
