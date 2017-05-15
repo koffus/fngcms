@@ -412,7 +412,7 @@ function manage_showlist($type) {
 		$tvars['vars']['[status]']	= '';
 		$tvars['vars']['[/status]']	= '';
 	} else {
-		$tvars['regx']["#\[status\].*?\[/status\]#si"] = "";
+		$tvars['regx']["#\[status\].*?\[/status\]#si"] = '';
 	}
 	$tpl -> vars('table', $tvars);
 	echo $tpl -> show('table');
