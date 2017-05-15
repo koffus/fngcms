@@ -2543,13 +2543,12 @@ function coreUserMenu() {
 }
 
 function coreSearchForm(){
-	global $tpl, $template;
-	
+	global $twig, $template;
+
 	Lang::load('search', 'site');
-	
-	$tpl -> template('search.form', tpl_site);
-	$tpl -> vars('search.form', array('vars' => array('form_url' =>	generateLink('search', '', array()) )));
-	$template['vars']['search_form'] = $tpl -> show('search.form');
+
+	$xt = $twig->loadTemplate(tpl_site . 'search.form.tpl');
+	$template['vars']['search_form'] .= $xt->render( array('form_url' => generateLink('search', '', array())) );
 }
 
 // Return current news category
