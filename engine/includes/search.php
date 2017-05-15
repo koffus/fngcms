@@ -130,7 +130,9 @@ function search_news(){
 	$tvars['vars']['author'] = secure_html($_REQUEST['author']);
 	$tvars['vars']['search'] = secure_html($_REQUEST['search']);
 	$tvars['vars']['orderlist'] = $orderlist;
-	$tvars['vars']['searchSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? ' checked="checked"' : '';
+	$tvars['vars']['searchSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? '' : 'collapsed';
+	$tvars['vars']['viewSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? ' in' : '';
+	$tvars['vars']['checkSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? '  checked="checked"' : '';
 
 	$tvars['vars']['count'] = $found['count'];
 	$tvars['vars']['form_url'] = generateLink('search', '', array());
