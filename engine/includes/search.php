@@ -104,7 +104,7 @@ function search_news(){
 	}
 
 	// Configure display params
-	$callingParams = array('style' => 'short','searchFlag' => true, 'extendedReturn' => true, 'customCategoryTemplate' => false, 'newsOrder' =>$_REQUEST['orderby']);
+	$callingParams = array('style' => 'short','searchFlag' => true, 'extendedReturn' => true, 'entendedReturnPagination' => true, 'customCategoryTemplate' => false, 'newsOrder' =>$_REQUEST['orderby']);
 	if ( $_REQUEST['page'] ) {
 		$callingParams['page'] = $_REQUEST['page'];
 	}
@@ -143,6 +143,7 @@ function search_news(){
 
 	// Results of search
 	$tvars['vars']['entries'] = $found['data'];
+	$tvars['vars']['pagination'] = $found['pagination'];
 	// Make month list
 	$mnth_list = explode(',', __('months'));
 	foreach ( $mysql->select("SELECT month(from_unixtime(postdate)) as month, year(from_unixtime(postdate)) as year, COUNT(id) AS cnt FROM " . prefix . "_news WHERE approve = '1' GROUP BY year, month ORDER BY year DESC, month DESC") as $row ) {
