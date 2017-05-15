@@ -400,10 +400,10 @@ function manage_showlist($type) {
 		'shadow_checked'	=>	($config['shadow_mode'] == 2)?' checked':'',
 		'stamp_checked'		=>	($config['stamp_mode'] == 2)?' checked':'',
 		'thumb_checked'		=>	($config['thumb_mode'] == 2)?' checked':'',
-		'box_preview'	=> (isset($_COOKIE['img_preview']) and $_COOKIE['img_preview']?' checked="checked"':''),
+		'box_preview'	=>		(isset($_COOKIE['img_preview']) and $_COOKIE['img_preview']) ? ' checked="checked"' : '',
 	);
 
-	$tvars['regx']['#\[preview\](.+?)\[/preview\]#is'] = (isset($_COOKIE['img_preview']) and $_COOKIE['img_preview'])?'$1':'';
+	$tvars['regx']['#\[preview\](.+?)\[/preview\]#is'] = (isset($_COOKIE['img_preview']) and $_COOKIE['img_preview']) ? '$1' : '';
 
 	// Create auth cookie
 	$tvars['vars']['authcookie'] = $userROW['authcookie'];
