@@ -34,7 +34,7 @@
 //		'extractEmbeddedItems'	- Extract embedded images/files from news body
 //		Returns:
 //			false - when news is not found
-//			data - when news is found && export is used
+//			data - when news is found and export is used
 //			news row - when news is found
 function news_showone($newsID, $alt_name, $callingParams = array()) {
 	global $mysql, $tpl, $userROW, $catz, $catmap, $config, $template, $parse, $SYSTEM_FLAGS, $PFILTERS, $EXTRA_HTML_VARS;
@@ -44,7 +44,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 	// Calculate exec time
 	$tX0 = $timer->stop(4);
 
-	if (isset($callingParams['emulate']) && is_array($callingParams['emulate'])) {
+	if (isset($callingParams['emulate']) and is_array($callingParams['emulate'])) {
 		$row = $callingParams['emulate'];
 		$callingParams['emulateMode'] = 1;
 	} else {
@@ -74,13 +74,13 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		}
 
 		// Check if correct categories were specified [ only for SINGLE category display
-		if ((isset($callingParams['validateCategoryID']) or isset($callingParams['validateCategoryAlt']) or 1) && $config['news_multicat_url']) {
+		if ((isset($callingParams['validateCategoryID']) or isset($callingParams['validateCategoryAlt']) or 1) and $config['news_multicat_url']) {
 			if(getIsSet($row['catid']))
 				$nci = intval(array_shift(explode(',', $row['catid'])));
 			
 			$nca = (getIsSet($nci))?$catmap[$nci]:'none';
 
-			if ((isset($callingParams['validateCategoryID']) && ($callingParams['validateCategoryID'] != $nci)) or (isset($callingParams['validateCategoryAlt']) && ($callingParams['validateCategoryAlt'] != $nca))) {
+			if ((isset($callingParams['validateCategoryID']) and ($callingParams['validateCategoryID'] != $nci)) or (isset($callingParams['validateCategoryAlt']) and ($callingParams['validateCategoryAlt'] != $nca))) {
 				$redirectURL = newsGenerateLink($row, false, 0, true);
 				coreRedirectAndTerminate($redirectURL);
 			}
@@ -106,7 +106,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		if(getIsSet($row['catid']))
 			$cid = intval(array_shift(explode(',', $row['catid'])));
 		
-		if (getIsSet($cid) && isset($catmap[$cid])) {
+		if (getIsSet($cid) and isset($catmap[$cid])) {
 			// Save current category identifier
 			$SYSTEM_FLAGS['news']['currentCategory.alt']	= $catz[$catmap[$cid]]['alt'];
 			$SYSTEM_FLAGS['news']['currentCategory.id']		= $catz[$catmap[$cid]]['id'];
@@ -203,7 +203,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 	if(getIsSet($row['catid']))
 		$masterCatID = intval(array_shift(explode(',', $row['catid'])));
 
-	if ($masterCatID && isset($catmap[$masterCatID]) && trim($catz[$catmap[$masterCatID]]['icon'])) {
+	if ($masterCatID and isset($catmap[$masterCatID]) and trim($catz[$catmap[$masterCatID]]['icon'])) {
 		$tvars['vars']['icon']		= trim($catz[$catmap[$masterCatID]]['icon']);
 		$tvars['vars']['[icon]']	= '';
 		$tvars['vars']['[/icon]']	= '';
@@ -213,7 +213,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 	}
 
 	// Show edit/detele news buttons
-	if (is_array($userROW) && ($row['author_id'] == $userROW['id'] or $userROW['status'] == "1" or $userROW['status'] == "2")) {
+	if (is_array($userROW) and ($row['author_id'] == $userROW['id'] or $userROW['status'] == "1" or $userROW['status'] == "2")) {
 		$tvars['vars']['news']['flags']['canEdit']		= true;
 		$tvars['vars']['news']['flags']['canDelete']	= true;
 		$tvars['vars']['news']['url']['edit']			= admin_url."/admin.php?mod=news&amp;action=edit&amp;id=".$row['id'];
@@ -280,7 +280,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		return $tvars['vars'];
 
 	// Update visits counter if we're not in emulation mode
-	if (empty($callingParams['emulate']) && ($callingParams['style'] == 'full') && (getIsSet($_REQUEST['page']) < 2)) {
+	if (empty($callingParams['emulate']) and ($callingParams['style'] == 'full') and (getIsSet($_REQUEST['page']) < 2)) {
 		$cmode = intval($config['news_view_counters']);
 		if ($cmode > 1) {
 			// Delayed update of counters
@@ -319,7 +319,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 		if(getIsSet($row['catid']))
 			$fcat = array_shift(explode(',', $row['catid']));
 		// Check if there is a custom mapping
-		if (getIsSet($fcat) && $catmap[$fcat] && ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+		if (getIsSet($fcat) and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
 			// Check if directory exists
 			if (is_dir($templatePath.'/ncustom/'.$ctname)) {
 				$templatePath = $templatePath.'/ncustom/'.$ctname;
@@ -502,7 +502,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$callingParams['style'] = 'short';
 
 	// -> desired template - override template if needed
-	if (isset($callingParams['overrideTemplateName']) && $callingParams['overrideTemplateName']) {
+	if (isset($callingParams['overrideTemplateName']) and $callingParams['overrideTemplateName']) {
 		$templateName = $callingParams['overrideTemplateName'];
 	} else {
 		// -> generate template name for selected style
@@ -529,7 +529,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 	$i = $start_from ? $start_from : 0;
 
 	$showNumber = ($config['number']>=1)?$config['number']:5;
-	if (isset($callingParams['showNumber']) && (intval($callingParams['showNumber'])>0))
+	if (isset($callingParams['showNumber']) and (intval($callingParams['showNumber'])>0))
 			$showNumber = intval($callingParams['showNumber']);
 
 	$limit_start = $cstart?($cstart-1)*$showNumber:0;
@@ -539,7 +539,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 	if (!in_array($orderBy, array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc')))
 		$orderBy = 'id desc';
 
-	switch ((isset($callingParams['pin']) && $callingParams['pin'])?$callingParams['pin']:'') {
+	switch ((isset($callingParams['pin']) and $callingParams['pin'])?$callingParams['pin']:'') {
 		case 1: $orderBy = 'catpinned desc, '.$orderBy;	break;
 		case 2: break;
 		default:	$orderBy = 'pinned desc, '.$orderBy;	break;
@@ -554,7 +554,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 
 	// Call `SELECT` query
 	// * Check if we need to override query
-	if (isset($callingParams['overrideSQLquery']) && ($callingParams['overrideSQLquery'] != '')) {
+	if (isset($callingParams['overrideSQLquery']) and ($callingParams['overrideSQLquery'] != '')) {
 		$query['result']	= $callingParams['overrideSQLquery'];
 		// ** FORCE TO DISABLE PAGINATION !!
 		$callingParams['disablePagination'] = true;
@@ -564,11 +564,11 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 
 	$selectResult = $mysql->select($query['result'], 1);
 
-	if (isset($callingParams['disablePagination']) && ($callingParams['disablePagination'])) {
+	if (isset($callingParams['disablePagination']) and ($callingParams['disablePagination'])) {
 		$newsCount = count($selectResult);
 		$pages_count = 1;
 	} else {
-		if (isset($callingParams['paginationCategoryID']) && ($callingParams['paginationCategoryID'] > 0)) {
+		if (isset($callingParams['paginationCategoryID']) and ($callingParams['paginationCategoryID'] > 0)) {
 			$query['count'] = 'SELECT count(*) FROM '.prefix.'_news_map where categoryID = '.db_squote($callingParams['paginationCategoryID']);
 		} else {
 			$query['count']		= "SELECT count(*) as count FROM ".prefix."_news WHERE ".$query['filter'];
@@ -669,7 +669,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$callingParams['linkedFiles'] = array();
 		$tvars['vars']['_files'] = array();
 		
-		if(isset($linkedFiles['data']) && is_array($linkedFiles['data']))
+		if(isset($linkedFiles['data']) and is_array($linkedFiles['data']))
 			foreach ($linkedFiles['data'] as $k => $v) {
 				if ($v['linked_id'] == $row['id']) {
 					$callingParams['linkedFiles']['ids'] []= $v['id'];
@@ -689,7 +689,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$callingParams['linkedFiles'] = array();
 		$tvars['vars']['_images'] = array();
 		
-		if(isset($linkedImages['data']) && is_array($linkedImages['data']))
+		if(isset($linkedImages['data']) and is_array($linkedImages['data']))
 			foreach ($linkedImages['data'] as $k => $v) {
 				if ($v['linked_id'] == $row['id']) {
 					$callingParams['linkedImages']['ids'] []= $v['id'];
@@ -740,7 +740,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$tvars['vars']['news']['embed']['imgCount'] = count($tvars['vars']['news']['embed']['images']);
 
 		// Print icon if only one parent category
-		if (isset($row['catid']) && $row['catid'] && !stristr(",", $row['catid']) && isset($catmap[$row['catid']]) && ($catalt = $catmap[$row['catid']]) && isset($catz[$catalt]['icon']) && $catz[$catalt]['icon']) {
+		if (isset($row['catid']) and $row['catid'] and !stristr(",", $row['catid']) and isset($catmap[$row['catid']]) and ($catalt = $catmap[$row['catid']]) and isset($catz[$catalt]['icon']) and $catz[$catalt]['icon']) {
 			// [TWIG] news.flags.hasCategoryIcon
 			$tvars['news']['flags']['hasCategoryIcon'] = true;
 			$tvars['vars']['icon'] = $catz[$catalt]['icon'];
@@ -752,7 +752,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 			$tvars['regx']["'\\[icon\\].*?\\[/icon\\]'si"] = '';
 		}
 
-		if (is_array($userROW) && ($userROW['id'] == $row['author_id'] or ($userROW['status'] == 1 or $userROW['status'] == 2))) {
+		if (is_array($userROW) and ($userROW['id'] == $row['author_id'] or ($userROW['status'] == 1 or $userROW['status'] == 2))) {
 			// [TWIG] news.flags.canEdit, news.flags.canDelete, news.url.edit, news.url.delete
 			$tvars['vars']['news']['flags']['canEdit']		= true;
 			$tvars['vars']['news']['flags']['canDelete']	= true;
@@ -783,9 +783,9 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$templatePath = tpl_dir.$config['theme'];
 
 		// -> desired template path - override path if needed
-		if (isset($callingParams['overrideTemplatePath']) && $callingParams['overrideTemplatePath']) {
+		if (isset($callingParams['overrideTemplatePath']) and $callingParams['overrideTemplatePath']) {
 			$templatePath = $callingParams['overrideTemplatePath'];
-		} else if (isset($callingParams['customCategoryTemplate']) && $callingParams['customCategoryTemplate']) {
+		} else if (isset($callingParams['customCategoryTemplate']) and $callingParams['customCategoryTemplate']) {
 			// -> check for custom category templates
 			// Check mode:
 			// 1 - Master category
@@ -798,7 +798,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 			}
 
 			// Check if there is a custom mapping
-			if ($fcat && $catmap[$fcat] && ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+			if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
 				// Check if directory exists
 				if (is_dir($templatePath.'/ncustom/'.$ctname))
 					$templatePath = $templatePath.'/ncustom/'.$ctname;
@@ -808,7 +808,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		// Hack for 'automatic search mode'
 		$currentTemplateName = $templateName;
 		// switch to `search` template if no templateName was overrided AND style is search AND searchFlag is set AND search template file exists
-		if (isset($callingParams['searchFlag']) && ($callingParams['searchFlag']) && (!isset($callingParams['overrideTemplatePath'])) && ($callingParams['style'] == 'short') && (@file_exists($templatePath.'/news.search.tpl'))) {
+		if (isset($callingParams['searchFlag']) and ($callingParams['searchFlag']) and (!isset($callingParams['overrideTemplatePath'])) and ($callingParams['style'] == 'short') and (@file_exists($templatePath.'/news.search.tpl'))) {
 			$currentTemplateName = 'news.search';
 		}
 
@@ -850,13 +850,13 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 
 	// Generate pagination/navigation if it's not disabled
 	$paginationOutput = '';
-	if (!(isset($callingParams['disablePagination']) && ($callingParams['disablePagination']))) {
+	if (!(isset($callingParams['disablePagination']) and ($callingParams['disablePagination']))) {
 		templateLoadVariables(true);
 		$navigations = $TemplateCache['site']['#variables']['navigation'];
 		$tpl -> template('pages', tpl_dir.$config['theme']);
 
 		// Prev page link
-		if ($limit_start && $nCount) {
+		if ($limit_start and $nCount) {
 			$prev = floor($limit_start / $showNumber);
 			$tvars['regx']["'\[prev-link\](.*?)\[/prev-link\]'si"] = str_replace('%page%',"$1",str_replace('%link%',generatePageLink($paginationParams, $prev), $navigations['prevlink']));
 		} else {
@@ -872,27 +872,27 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 		$tvars['vars']['pages'] = generatePagination($cstart, 1, $pages_count, $maxNavigations, $paginationParams, $navigations);
 
 		// Next page link
-		if (($prev + 2 <= $pages_count) && $nCount) {
+		if (($prev + 2 <= $pages_count) and $nCount) {
 			$tvars['regx']["'\[next-link\](.*?)\[/next-link\]'si"] = str_replace('%page%',"$1",str_replace('%link%',generatePageLink($paginationParams, $prev+2), $navigations['nextlink']));
 		} else {
 			$tvars['regx']["'\[next-link\](.*?)\[/next-link\]'si"] = "";
 			$no_next = true;
 		}
 
-		if ($nCount && ($pages_count>1)){
+		if ($nCount and ($pages_count>1)){
 			$tpl -> vars('pages', $tvars);
 			$paginationOutput = $tpl -> show('pages');
 		}
 
-		if (!isset($callingParams['entendedReturnPagination']) && !$callingParams['extendedReturnPagination'])
+		if (!isset($callingParams['entendedReturnPagination']) and !$callingParams['extendedReturnPagination'])
 			$output .= $paginationOutput;
 	}
 
 	// Return result
-	if ((isset($callingParams['extendedReturn']) && $callingParams['extendedReturn'])) {
+	if ((isset($callingParams['extendedReturn']) and $callingParams['extendedReturn'])) {
 		$returnData = array(
 			'count' => $newsCount,
-			'data' => (isset($callingParams['extendedReturnData']) && $callingParams['extendedReturnData'])?$outputList:$output,
+			'data' => (isset($callingParams['extendedReturnData']) and $callingParams['extendedReturnData'])?$outputList:$output,
 			'pages' => array(
 				'current'	=> $cstart,
 				'total'		=> $pages_count,
@@ -900,7 +900,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 			)
 		);
 
-		if (isset($callingParams['entendedReturnPagination']) && $callingParams['entendedReturnPagination']) {
+		if (isset($callingParams['entendedReturnPagination']) and $callingParams['entendedReturnPagination']) {
 			$returnData['pagination'] = $paginationOutput;
 		}
 
