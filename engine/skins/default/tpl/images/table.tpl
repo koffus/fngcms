@@ -341,11 +341,7 @@
 $(document).ready(function(){
 
 	$('#mfs').html('Максимальный размер изображения: ' + formatSize({maxSize})+'. Допустимые расширения изображений: {listExt}');
-	
-	if ($('#show_preview').prop("checked")){
-		$('#show_preview').parent().addClass('active');
-	}
-	
+
 	$('#modal-upload').on("hidden.bs.modal", function(){
 		if (flagRequireReload)
 			document.location.href = document.location.href;
