@@ -181,10 +181,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 			$edit_link		= admin_url."/admin.php?mod=editcomments&amp;newsid=".$newsID."&amp;comid=".$row['id'];
 			$delete_link	= generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'delete'), array('id' => $row['id'], 'uT' => genUToken($row['id'])), true);
 
-			$tvars['vars']['[edit-com]'] = "<a href=\"".$edit_link."\" target=\"_blank\" title=\"".__('addanswer')."\">";
-			$tvars['vars']['[/edit-com]'] = "</a>";
-			$tvars['vars']['[del-com]'] = "<a href=\"".$delete_link."\" title=\"".__('comdelete')."\">";
-			$tvars['vars']['[/del-com]'] = "</a>";
+			$tvars['regx']["'\[edit-com\](.*?)\[/edit-com\]'si"] = '$1';
+			$tvars['vars']['edit_link'] = $edit_link;
+			$tvars['regx']["'\[del-com\](.*?)\[/del-com\]'si"] = '$1';
+			$tvars['vars']['delete_link'] = $delete_link;
 			$tvars['vars']['ip'] = "<a href=\"http://www.nic.ru/whois/?ip=$row[ip]\" title=\"".__('whois')."\">".__('whois')."</a>";
 			$tvars['vars']['[if-have-perm]'] = '';
 			$tvars['vars']['[/if-have-perm]'] = '';
