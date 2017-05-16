@@ -14,29 +14,40 @@
 
 	<noscript><div class="alert alert-danger">Внимание! В вашем браузере отключен <b>JavaScript</b><br />Для полноценной работы с админ. панелью <b>включите его</b></div></noscript>
 
-	<div class="container">
-		<div class="row">
-			<div class="col-xs-12">
-				<!--Login block-->
-				<div class="well">
-					<form name="login" method="post" action="admin.php">
-						<input type="hidden" name="redirect" value="{redirect}">
-						<input type="hidden" name="action" value="login">
+	<div class="container-fluid">
+		<div class="row-fluid" >
+			<div class="col-md-offset-4 col-md-4" id="box">
+				<h2>Login</h2>
+				<hr>
+				<form name="login" action="admin.php" method="post" class="form-horizontal">
+					<input type="hidden" name="redirect" value="{redirect}">
+					<input type="hidden" name="action" value="login">
+
+					<fieldset>
 						<div class="form-group">
-							<label for="login" class="control-label">{l_name}</label>
-							<input type="text" class="form-control" id="username" name="username" required>
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user"></i></span>
+									<input type="text" name="username" id="username" placeholder="{l_name}" class="form-control" required />
+								</div>
+							</div>
 						</div>
 						<div class="form-group">
-							<label for="password" class="control-label">{l_password}</label>
-							<input type="password" class="form-control" id="password" name="password" required>
+							<div class="col-md-12">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-lock"></i></span>
+									<input type="password" name="password" id="password" placeholder="{l_password}" class="form-control" required />
+								</div>
+							</div>
 						</div>
 						<div class="form-group">
-							<button type="submit" class="btn btn-success btn-block" data-loading-text="Login …">{l_login}</button>
+							<div class="col-md-12">
+								<button type="submit" class="btn btn-md btn-login pull-right" data-loading-text="Login …">{l_login}</button>
+							</div>
 						</div>
 						<p class="copyright">2008-{year} © <a href="http://ngcms.ru" target="_blank">Next Generation CMS</a></p>
-					</form>
-				</div>
-				<!--/Login block-->
+					</fieldset>
+				</form>
 			</div>
 		</div>
 	</div>
