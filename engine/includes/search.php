@@ -106,7 +106,7 @@ function search_news() {
 		'searchFlag' => true,
 		'extendedReturn' => true,
 		'extendedReturnData' => true,
-		'entendedReturnPagination' => true,
+		'entendedReturnPagination' => false,
 		'customCategoryTemplate' => false,
 		'newsOrder' => $orderby,
 		);
@@ -135,6 +135,7 @@ function search_news() {
 	$tableVars['author'] = $author;
 	$tableVars['search'] = $search;
 	$tableVars['searchSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? '  checked="checked"' : '';
+	$tableVars['pagination'] = $tableVars['pages']['output'];
 	$tableVars['flags'] = array(
 		'found'			=> (count($search_array) and $tableVars['count']) ? 1 : 0,
 		'notfound'	=> (count($search_array) and !$tableVars['count']) ? 1 : 0,
