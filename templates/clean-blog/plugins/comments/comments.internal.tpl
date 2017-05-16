@@ -1,11 +1,14 @@
-<section class="comments-list">
+<section class="section comments-list">
+	[comheader]<h5 class="section-title">Комментарии ({comnum})</h5>[/comheader]
+
 	<ul class="list-unstyled">
 		{entries}
 		<li id="new_comments"></li>
 	</ul>
 
-	<!-- Pager -->
-	<nav><ul class="pagination justify-content-center">{more_comments}</ul></nav>
+	<nav>
+		<ul class="pagination">{more_comments}</ul>
+	</nav>
 
 	{form}
 
