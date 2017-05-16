@@ -187,8 +187,8 @@ if ( $mod != 'preview' ) {
 	// Get user variables
 	LoadPluginLibrary('uprofile', 'lib');
 	$status = $UGROUP[$userROW['status']]['langName'][$config['default_lang']];
-	$userPhoto = userGetPhoto($userROW);
-	$userAvatar = ( !empty($userROW['avatar'])) ? userGetAvatar($userROW)[1] : $skins_url . '/assets/img/default-avatar.jpg';
+	$userPhoto = function_exists(userGetPhoto) ? userGetPhoto($userROW) : $skins_url . '/assets/img/default-avatar.jpg';
+	$userAvatar = ( !empty($userROW['avatar']) and function_exists(userGetAvatar)) ? userGetAvatar($userROW)[1] : $skins_url . '/assets/img/default-avatar.jpg';
 
 	// Calculate number of un-approved
 	$unnAppCount = '0';
