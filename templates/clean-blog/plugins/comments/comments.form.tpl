@@ -5,7 +5,7 @@ function reload_captcha() {
 	if (captc != null) {
 		captc.src = "{captcha_url}?rand="+Math.random();
 	}
-}	
+}
 
 function add_comment(){
 	// First - delete previous error message
@@ -48,83 +48,75 @@ function add_comment(){
 			}
 		} else {
 			alert('TX.fail: HTTP code '+cajax.responseStatus[0]);
-		}	
+		}
 		[captcha]
 			reload_captcha();
 		[/captcha]
 	}
 	cajax.runAJAX();
-	
 }
 </script>
 
-<h4 class="section-heading">Добавить комментарий</h4>
+<div class="respond card card-block">
+	<form id="comment" method="post" action="{post_url}" name="form" onsubmit="add_comment(); return false;"[ajax][/ajax] novalidate>
+		<input type="hidden" name="newsid" value="{newsid}" />
+		<input type="hidden" name="referer" value="{request_uri}" />
 
-<div class="respond">
-	<form id="comment" method="post" action="{post_url}" name="form" [ajax]onsubmit="add_comment(); return false;"[/ajax] novalidate>
-	<input type="hidden" name="newsid" value="{newsid}" />
-	<input type="hidden" name="referer" value="{request_uri}" />
-		[not-logged]
-		<div class="row control-group">
-			<div class="form-group col col-xs-12 floating-label-form-group controls">
-				<label>Name</label>
-				<input type="text" name="name" value="{savedname}" class="form-control" placeholder="Name" id="name" required="" data-validation-required-message="Please enter your name." aria-invalid="false">
-				<p class="help-block text-danger"></p>
-			</div>
-		</div>
-		<div class="row control-group">
-			<div class="form-group col col-xs-12 floating-label-form-group controls">
-				<label>Email Address</label>
-				<input type="email" name="mail" value="{savedmail}" class="form-control" placeholder="Email Address" id="email" required="" data-validation-required-message="Please enter your email address." aria-invalid="false">
-				<p class="help-block text-danger"></p>
-			</div>
-		</div>
-		[/not-logged]
-		{bbcodes}
-		<!-- SMILES -->
-		<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
-			<div class="modal-dialog modal-sm" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title">Вставить смайл</h5>
-						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-							<span aria-hidden="true">&times;</span>
-						</button>
-					</div>
-					<div class="modal-body text-center">
-						{smilies}
-					</div>
-					<div class="modal-footer">
-						<button type="cancel" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+		<fieldset>
+			<legend class="">Добавить комментарий</legend>
+			<div class="row">
+				[not-logged]
+				<div class="col-md-4">
+					<div class="form-group">
+						<input type="text" name="name" value="{savedname}" class="form-control" placeholder="Имя" id="name" required="" />
 					</div>
 				</div>
-			</div>
-		</div>
-		<div class="row control-group">
-			<div class="form-group col col-xs-12 floating-label-form-group controls">
-				<label>Message</label>
-				<textarea onkeypress="if(event.keyCode==10 || (event.ctrlKey && event.keyCode==13)) {add_comment();}" name="content" id="content" rows="5" class="form-control" placeholder="Message" required="" data-validation-required-message="Please enter a message." aria-invalid="false"></textarea>
-				<p class="help-block text-danger"></p>
-			</div>
-		</div>
-		[captcha]
-		<div class="row control-group">
-			<div class="form-group col col-xs-12 floating-label-form-group controls">
-				<label>Код безопасности</label>
-				<div class="input-group">
-					<input type="text" name="vcode" class="form-control" placeholder="Код безопасности" id="captcha" required="" data-validation-required-message="Please enter Код безопасности." aria-invalid="false">
-					<p class="help-block text-danger"></p>
-					<span class="input-group-addon"><img id="img_captcha" onclick="reload_captcha();" src="{captcha_url}?rand={rand}" alt="captcha" /></span>
+				<div class="col-md-4">
+					<div class="form-group">
+						<input type="email" name="mail" value="{savedmail}" class="form-control" placeholder="Email" id="email" required="" />
+					</div>
 				</div>
-				
-				
+				[/not-logged]
+				[captcha]
+				<div class="col-md-4">
+					<div class="input-group">
+						<input type="text" name="vcode" class="form-control" placeholder="Код безопасности" id="captcha" required="" />
+						<span class="input-group-addon p-0">
+							<img id="img_captcha" onclick="reload_captcha();" src="{captcha_url}?rand={rand}" alt="captcha" class="captcha"/>
+						</span>
+					</div>
+				</div>
+				[/captcha]
 			</div>
-		</div>
-		[/captcha]
-		<div class="row control-group mt-4">
-			<div class="form-group col col-xs-12">
-				<button type="submit" id="sendComment" class="btn btn-default">Добавить комментарий</button>
+			<div class="form-group">
+				{bbcodes}
+				<!-- SMILES -->
+				<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
+					<div class="modal-dialog modal-sm" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h5 class="modal-title">Вставить смайл</h5>
+							</div>
+							<div class="modal-body text-center">
+								{smilies}
+							</div>
+							<div class="modal-footer">
+								<button type="cancel" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /SMILES -->
+				<textarea onkeypress="if(event.keyCode==10 || (event.ctrlKey && event.keyCode==13)) {add_comment();}" name="content" id="content" rows="8" class="form-control message-content" placeholder="Комментарий" required=""></textarea>
 			</div>
+			<div class="form-group">
+				<p>Ваш e-mail не будет опубликован. Убедительная просьба соблюдать правила этики. Администрация оставляет за собой право удалять сообщения без объяснения причин.</p>
+			</div>
+		</fieldset>
+
+		<div class="form-group">
+			<button type="submit" id="sendComment" class="btn btn-primary">Написать</button>
 		</div>
 	</form>
 </div>

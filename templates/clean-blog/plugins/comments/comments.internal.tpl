@@ -1,5 +1,5 @@
 <section class="section comments-list">
-	[comheader]<h5 class="section-title">Комментарии ({comnum})</h5>[/comheader]
+	[comheader]<h5 class="section-heading">Комментарии ({comnum})</h5>[/comheader]
 
 	<ul class="list-unstyled">
 		{entries}

@@ -1,16 +1,26 @@
-// Floating label headings for the contact form
-$(function() {
-	$('body').on('input propertychange', '.floating-label-form-group', function(e) {
-		$(this).toggleClass('floating-label-form-group-with-value', !!$(e.target).val());
-	}).on('focus', '.floating-label-form-group', function() {
-		$(this).addClass('floating-label-form-group-with-focus');
-	}).on('blur', '.floating-label-form-group', function() {
-		$(this).removeClass('floating-label-form-group-with-focus');
-	});
-});
-
-// Navigation Scripts to Show Header on Scroll-Up
 $(document).ready(function($) {
+
+	/* SCROLLUP */
+	$('body').append('<div class="scrollup fa fa-angle-up"></div>');
+	$(window).scroll(function () {
+		if ($(this).scrollTop() > 60) {
+			$('.scrollup').show();
+			$('.navbar-home').addClass('navbar-lite');
+		} else {
+			$('.scrollup').hide();
+			$('.navbar-home').removeClass('navbar-lite');
+		}
+	});
+	$('.scrollup').on('click', function(){$('html, body').animate({scrollTop:0}, 1888);});
+
+	// Share news
+	$('.share').click(function() {
+		var nWin = window.open($(this).prop('href'), 'shareWindow', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=300,width=600');
+		if (window.focus) nWin.focus();
+		return false;
+	});
+
+	// Navigation Scripts to Show Header on Scroll-Up
 	var MQL = 1170;
 
 	//primary navigation slide-in effect

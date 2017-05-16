@@ -1,1 +1,1 @@
-<li>[if_link]<a href="{link}">[/if_link]<b>{mark} {cat} {counter}</b>[if_link]</a>[/if_link]</li>
+[if_link]<a class="dropdown-item" href="{link}">[/if_link]{mark} {cat} {counter}[if_link]</a>[/if_link]

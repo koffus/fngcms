@@ -1,21 +1,92 @@
-[found]<div class="alert alert-success">{l_search.found}: <b>{count}</b></div>[/found]
-[notfound]<div class="alert alert-info">{l_search.notfound}</div>[/notfound]
-[error]<div class="alert alert-error"><b>{l_search.error}</b></div>[/error]
-<form method="GET" action="{form_url}">
-<div class="block-title">{l_search.site_search}</div>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin:20px 0 0 0;">
-	<tr align="center">
-		<td>{l_search.filter.author} <input type="text" name="author" class="input" value="{author}" style="width:130px" /></td>
-		<td>{l_search.filter.category} <div class="search_catz">{catlist}</div></td>
-		<td>{l_search.filter.date} <select name="postdate"><option value=""></option>{datelist}</select></td>
-	</tr>
-</table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin:0 0 20px 0;">
-	<tr>
-		<td align="center"><br /><input type=text name="search" value="{search}" style="width:400px" class="input" /> <input class="button" type="submit" value="{l_search.submit}" /></td>
-	</tr>
-</table>
-</form>
-<div class="articles full">
-	{entries}
+<!-- Page Header -->
+<header class="intro-header" style="background-image: url('{{ tpl_url }}/img/home-bg.jpg')">
+	<div class="container">
+		<div class="row">
+			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+				<div class="post-heading">
+					<h1>{{ lang['search.site_search'] }}</h1>
+					<hr class="small">
+					<span class="subheading">{{ lang.news }}</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<!-- Page Content -->
+<div class="container">
+	<div class="row">
+		<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+			<form method="GET" action="{{ form_url }}">
+				<fieldset>
+					<div class="form-group">
+						<div class="input-group">
+							<input type="text" name="search" value="{{ search }}" placeholder="{{ lang['search.enter'] }}" class="form-control" />
+							<span class="input-group-btn">
+								<div class="btn-group" data-toggle="buttons">
+									<span class="btn btn-secondary" data-toggle="collapse" data-target="#searchSettings">
+										<input type="checkbox" autocomplete="off" onchange="setCookie('searchSettings',this.checked?1:0);" {{ searchSettings }} /> <i class="fa fa-sliders"></i>
+									</span>
+								</div>
+							</span>
+							<span class="input-group-btn">
+								<button id="submit" type="submit" name="submit" class="btn btn-secondary" title="{{ lang['search.submit'] }}"><i class="fa fa-search"></i></button>
+							</span>
+						</div>
+					</div>
+
+					<div id="searchSettings" class="collapse {% if searchSettings %}show{% endif %}">
+						<div class="row">
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label>{{ lang['search.filter.category'] }}</label>  
+									<div>
+										<div class="search_catz">{{ catlist }}</div>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>{{ lang['search.filter.date'] }}</label>  
+									<div>
+										<select name="postdate" class="form-control"><option value="">Любая</option>{{ datelist }}</select>
+									</div>
+								</div>
+							</div>
+							<div class="col-sm-6">
+								<div class="form-group">
+									<label>{{ lang['search.filter.orderlist'] }}</label>  
+									<div>
+										<select name="orderby" class="form-control">{{ orderlist }}</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label>{{ lang['search.filter.author'] }}</label>  
+									<div>
+										<input type="text" name="author" value="{{ author }}" class="form-control" />
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</form>
+
+			{% if flags.notfound %}
+				<p class="alert alert-info">{{ lang['search.notfound'] }}</p>
+			{% endif %}
+			{% if flags.error %}
+				<p class="alert alert-danger">{{ lang['search.error'] }}</p>
+			{% endif %}
+
+			{% if flags.found %}
+				<p class="alert alert-success">{{ lang['search.found'] }}: <b>{{ count }}</b></p>
+				<section class="section">
+					{% for entry in data %}
+						{{ entry }}
+					{% endfor %}
+				</section>
+			{% endif %}
+
+			{{ pagination }}
+		</div>
+	</div>
 </div>

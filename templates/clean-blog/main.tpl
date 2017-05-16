@@ -1,30 +1,29 @@
 [TWIG]<!DOCTYPE html>
 <html lang="{{ lang['langcode'] }}">
 <head>
+	<title>{{ titles }}</title>
 	<meta charset="{{ lang['encoding'] }}" />
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
 	<meta name="generator" content="{{ what }} {{ version }}" />
 	<meta name="document-state" content="dynamic" />
-	<title>{{ titles }}</title>
 	{{ htmlvars }}
 	<!-- Bootstrap Core CSS -->
-	<link rel="stylesheet" href="{{ tpl_url }}/lib/bootstrap/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
 	<!-- Additional fonts for this theme -->
-	<link rel="stylesheet" href="{{ tpl_url }}/lib/font-awesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet">
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 	<!-- Custom styles for this theme -->
 	<link href="{{ tpl_url }}/css/style.css" rel="stylesheet">
 	<!--[if lt IE 9]>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-	<!-- jQuery Version 3.1.1 -->
-	<script src="{{ tpl_url }}/lib/jquery/jquery.js"></script>
-	<!-- Tether -->
-	<script src="{{ tpl_url }}/lib/tether/tether.min.js"></script>
-	<!-- Bootstrap Core JavaScript -->
-	<script src="{{ tpl_url }}/lib/bootstrap/js/bootstrap.min.js"></script>
+	<!-- jQuery first, then Tether, then Bootstrap JS. -->
+	<script src="https://yastatic.net/jquery/1.10.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 	<!-- Theme JavaScript -->
 	<script src="{{ tpl_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
@@ -48,10 +47,27 @@
 						<a class="nav-link page-scroll" href="about.html">About</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-scroll" href="post.html">Sample Post</a>
+						<a class="nav-link page-scroll" href="contact.html">Contact</a>
+					</li>
+					<li class="nav-item dropdown">
+						<a href="{{ home }}#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Categories </a>
+						<div class="dropdown-menu dropdown-menu-right">
+							{{ categories }}
+						</div>
+					</li>
+					<li class="nav-item dropdown">
+						<a href="{{ home }}#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-user fa-lg"></i> </a>
+						<div class="dropdown-menu dropdown-menu-right">
+						{% if (global.flags.isLogged) %}
+							{{ personal_menu }}
+						{% else %}
+							<a href="{{ home }}/register/" class="dropdown-item">{{ lang.registration }}</a>
+							<a href="{{ home }}/login/" class="dropdown-item" data-toggle="modal" data-target="#auth-modal">{{ lang.theme['login'] }}</a>
+						{% endif %}
+						</div>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link page-scroll" href="contact.html">Contact</a>
+						<a class="nav-link page-scroll" href="{{ home }}/search/"><i class="fa fa-search"></i></a>
 					</li>
 				</ul>
 			</div>
@@ -99,21 +115,8 @@
 		</div>
 	</footer>
 
+	{% if not (global.flags.isLogged) %}{{ personal_menu }}{% endif %}
 	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
-
-	<!-- jQuery Version 3.1.1 ->
-	<script src="{{ tpl_url }}/lib/jquery/jquery.js"></script>
-
-	<!-- Tether ->
-	<script src="{{ tpl_url }}/lib/tether/tether.min.js"></script>
-
-	<!-- Bootstrap Core JavaScript ->
-	<script src="{{ tpl_url }}/lib/bootstrap/js/bootstrap.min.js"></script>
-
-	<!-- Theme JavaScript ->
-	<script src="{{ tpl_url }}/js/script.js"></script>
-	<script src="{{ scriptLibrary }}/functions.js"></script>
-	<script src="{{ scriptLibrary }}/ajax.js"></script-->
 
 </body>
 </html>
