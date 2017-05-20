@@ -16,8 +16,6 @@ if (!defined('NGCMS')) die ('HAL');
 @include_once root.'includes/inc/extraconf.inc.php';
 @include_once root.'includes/inc/httpget.inc.php';
 
-
-
 // ==========================================================
 // Functions
 // ==========================================================
@@ -83,7 +81,7 @@ function admGeneratePluginList() {
 		}
 
 		$tEntry['url'] = (isset($extra['config']) && $extra['config'] && (!$needinstall) && is_file(extras_dir.'/'.$extra['dir'].'/'.$extra['config']))?'<a href="'.$PHP_SELF.'?mod=extra-config&amp;plugin='.$extra['id'].'">'.$extra['name'].'</a>' : $extra['name'];
-		$tEntry['link'] = (getPluginStatusActive($id) ? '<a href="'.$PHP_SELF.'?mod=extras&amp;&amp;token='.genUToken('admin.extras').'&amp;disable='.$id.'">'.__('switch_off').'</a>' : '<a href="'.$PHP_SELF.'?mod=extras&amp;&amp;token='.genUToken('admin.extras').'&amp;enable='.$id.'">'.__('switch_on').'</a>');
+		$tEntry['link'] = (getPluginStatusActive($id) ? '<a href="'.$PHP_SELF.'?mod=extras&amp;token='.genUToken('admin.extras').'&amp;disable='.$id.'">'.__('switch_off').'</a>' : '<a href="'.$PHP_SELF.'?mod=extras&amp;token='.genUToken('admin.extras').'&amp;enable='.$id.'">'.__('switch_on').'</a>');
 
 		if ($needinstall) {
 			$tEntry['link'] = '';
@@ -178,7 +176,7 @@ if (isset($_REQUEST['manageConfig']) && $_REQUEST['manageConfig']) {
 if ($enable) {
 	if (pluginSwitch($enable, 'on')) {
 		ngSYSLOG(array('plugin' => '#admin', 'item' => 'extras'), array('action' => 'switch_on', 'list' => array('plugin' => $enable)), null, array(1, ''));
-		msg(array('message' => sprintf(__('msgo_is_on'), $extras[$enable]['name'])));
+		msg(array('message' => sprintf(__('msgo_is_on'), 'admin.php?mod=extra-config&plugin=' . $extras[$enable]['id'], $extras[$enable]['name'])));
 	} else {
 		// generate error message
 		ngSYSLOG(array('plugin' => '#admin', 'item' => 'extras'), array('action' => 'switch_on', 'list' => array('plugin' => $enable)), null, array(0, 'ERROR: '.$enable));
@@ -193,7 +191,7 @@ if ($disable) {
 	} else {
 		if (pluginSwitch($disable, 'off')) {
 			ngSYSLOG(array('plugin' => '#admin', 'item' => 'extras'), array('action' => 'switch_off', 'list' => array('plugin' => $disable)), null, array(1, ''));
-			msg(array('message' => sprintf(__('msgo_is_off'), $extras[$enable]['name'])));
+			msg(array('message' => sprintf(__('msgo_is_off'), 'admin.php?mod=extra-config&plugin=' . $extras[$disable]['id'], $extras[$disable]['name'])));
 		} else {
 			// generate error message
 			ngSYSLOG(array('plugin' => '#admin', 'item' => 'extras'), array('action' => 'switch_on', 'list' => array('plugin' => $disable)), null, array(0, 'ERROR: ' . $disable));
