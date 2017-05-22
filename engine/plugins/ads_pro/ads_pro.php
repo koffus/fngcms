@@ -223,4 +223,5 @@ function plugin_ads_pro($params) {
 
 		}
 	}
+
 }

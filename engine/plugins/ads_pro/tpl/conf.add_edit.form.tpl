@@ -5,19 +5,37 @@ function AddBlok() {
 	var iteration = lastRow+1;
 	var row = tbl.insertRow(lastRow);
 	var cellRight = row.insertCell(0);
+	cellRight.setAttribute('class', 'location_' + iteration);
 	cellRight.innerHTML = iteration+': ';
 	cellRight = row.insertCell(1);
-	cellRight.setAttribute('align', 'left');
+	cellRight.setAttribute('class', 'location_' + iteration);
 
-	var el = '<select name="location[' + iteration + '][mode]" onchange="AddSubBlok(this, ' + iteration + ');"><option value=0>{{ lang['ads_pro:around'] }}</option><option value=1>{{ lang['ads_pro:main'] }}</option><option value=2>{{ lang['ads_pro:not_main'] }}</option><option value=3>{{ lang['ads_pro:category'] }}</option><option value=4>{{ lang['ads_pro:static'] }}</option>{% if flags.support_news %}<option value=5>{{ lang['ads_pro:news'] }}</option>{% endif %}<option value=6>{{ lang['ads_pro:plugins'] }}</option></select>';
+	var el = '<select name="location[' + iteration + '][mode]" onchange="AddSubBlok(this, ' + iteration + ');" class="form-control">\
+		<option value=0>{{ lang['ads_pro:around'] }}</option>\
+		<option value=1>{{ lang['ads_pro:main'] }}</option>\
+		<option value=2>{{ lang['ads_pro:not_main'] }}</option>\
+		<option value=3>{{ lang['ads_pro:category'] }}</option>\
+		<option value=4>{{ lang['ads_pro:static'] }}</option>\
+		{% if flags.support_news %}<option value=5>{{ lang['ads_pro:news'] }}</option>{% endif %}\
+		<option value=6>{{ lang['ads_pro:plugins'] }}</option>\
+	</select>';
 
 	cellRight.innerHTML += el;
 	
-	el = '<select name="location[' + iteration + '][view]" class="form-control"><option value=0>{{ lang['ads_pro:view'] }}</option><option value=1>{{ lang['ads_pro:not_view'] }}</option></select>';
-	
+	cellRight = row.insertCell(2);
+	cellRight.setAttribute('class', 'location_' + iteration);
+
+	cellRight = row.insertCell(3);
+	cellRight.setAttribute('class', 'location_' + iteration);
+
+	el = '<select name="location[' + iteration + '][view]" class="form-control">\
+		<option value=0>{{ lang['ads_pro:view'] }}</option>\
+		<option value=1>{{ lang['ads_pro:not_view'] }}</option>\
+	</select>';
+
 	cellRight.innerHTML += el;
 }
-function AddSubBlok(el, iteration){
+function AddSubBlok(el, iteration) {
 	var subel = null;
 	var subsubel = null;
 	switch (el.value){
@@ -40,10 +58,8 @@ function AddSubBlok(el, iteration){
 			{{ plugins_list }}
 			break;
 	}
-	if (el.nextSibling.name == 'location[' + iteration + '][id]')
-		el.parentNode.removeChild(el.nextSibling);
-	if (subel)
-		el.parentNode.insertBefore(subel, el.nextSibling);
+	$('.location_' + iteration).eq(2).html();
+	$('.location_' + iteration).eq(2).html(subel);
 }
 function RemoveBlok() {
 	var tbl = document.getElementById('blokup');
@@ -53,98 +69,111 @@ function RemoveBlok() {
 	}
 }
 function createNamedElement(type, name) {
- var element = null;
- try {
- element = document.createElement('<'+type+' name="'+name+'">');
- } catch (e) {
- }
- if (!element || element.nodeName != type.toUpperCase()) {
- element = document.createElement(type);
- element.setAttribute("name", name);
- }
- return element;
+	var element = null;
+	try {
+		element = document.createElement('<'+type+' name="'+name+'">');
+	} catch (e) {
+		
+	}
+	if (!element || element.nodeName != type.toUpperCase()) {
+		element = document.createElement(type);
+		element.setAttribute('name', name);
+		element.setAttribute('class', 'form-control');
+		//element.setAttribute('id', name);
+	}
+	return element;
 }
 </script>
 
-<form method="post" action="admin.php?mod=extra-config&amp;plugin=ads_pro&amp;action={% if flags.add %}add_submit{% endif %}{% if flags.edit %}edit_submit{% endif %}">
+<form method="post" action="admin.php?mod=extra-config&plugin=ads_pro&action={% if flags.add %}add_submit{% endif %}{% if flags.edit %}edit_submit{% endif %}" class="form-horizontal">
 	<input type="hidden" name="id" value="{% if flags.add %}0{% endif %}{% if flags.edit %}{{ id }}{% endif %}" />
 
 	<fieldset>
 		<legend>{{ lang['ads_pro:general'] }}</legend>
 		<div class="form-group">
-			<div class="row">
-				<div class="col-sm-8">
-					{{ lang['ads_pro:name'] }}
-					<span class="help-block">{{ lang['ads_pro:name#desc'] }}</span>
-				</div>
-				<div class="col-sm-4">
-					<input type="text" class="form-control" name="name"{% if flags.edit %} value="{{ name }}"{% endif %} />
-				</div>
+			<div class="col-sm-5">
+				{{ lang['ads_pro:name'] }}
+				<span class="help-block">{{ lang['ads_pro:name#desc'] }}</span>
+			</div>
+			<div class="col-sm-7">
+				<input type="text" name="name"{% if flags.edit %} value="{{ name }}"{% endif %} class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="row">
-				<div class="col-sm-8">
-					{{ lang['ads_pro:description'] }}
-					<span class="help-block">{{ lang['ads_pro:description#desc'] }}</span>
-				</div>
-				<div class="col-sm-4">
-					<input type="text" class="form-control" name="description"{% if flags.edit %} value="{{ description }}"{% endif %} />
-				</div>
+			<div class="col-sm-5">
+				{{ lang['ads_pro:description'] }}
+				<span class="help-block">{{ lang['ads_pro:description#desc'] }}</span>
+			</div>
+			<div class="col-sm-7">
+				<input type="text" name="description"{% if flags.edit %} value="{{ description }}"{% endif %} class="form-control" />
 			</div>
 		</div>
-		
-		<table border="0" width="100%" cellspacing="0" cellpadding="0">
-		<tr>
-		<td width="50%" class="contentEntry1">{{ lang['ads_pro:type'] }}<br /><small>{{ lang['ads_pro:type#desc'] }}</small></td>
-		<td width="50%" class="contentEntry2">{{ type_list }}</td>
-		</tr>
-		<tr>
-		<td width="50%" class="contentEntry1">{{ lang['ads_pro:location'] }}<br /><small>{{ lang['ads_pro:location#desc'] }}</small></td>
-		<td width="50%" class="contentEntry2"><input type="button" class="button" value="{{ lang['ads_pro:location_dell'] }}" onClick="RemoveBlok();return false;" />&nbsp;
-		<input type="button" class="button" value="{{ lang['ads_pro:location_add'] }}" onClick="AddBlok();return false;" /><br />
-		<table id="blokup" align="left">{% if flags.edit %}{{ location_list }}{% endif %}</table>
-		</td>
-		</tr>
-		<tr>
-		<td width="50%" class="contentEntry1">{{ lang['ads_pro:state'] }}<br /><small>{{ lang['ads_pro:state#desc'] }}</small></td>
-		<td width="50%" class="contentEntry2">{{ state_list }}</td>
-		</tr>
-		</table>
+		<div class="form-group">
+			<div class="col-sm-5">
+				{{ lang['ads_pro:type'] }}
+				<span class="help-block">{{ lang['ads_pro:type#desc'] }}</span>
+			</div>
+			<div class="col-sm-7">
+				{{ type_list }}
+			</div>
+		</div>
 	</fieldset>
 
 	<fieldset>
-	<legend>{{ lang['ads_pro:sched_legend'] }}</legend>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-	<td width="50%" class="contentEntry1">{{ lang['ads_pro:start_view'] }}<br /><small>{{ lang['ads_pro:start_view#desc'] }}</small></td>
-	<td width="50%" class="contentEntry2"><input type="text" class="form-control" name="start_view"{% if flags.edit %} value="{{ start_view }}"{% endif %} /></td>
-	</tr>
-	<tr>
-	<td width="50%" class="contentEntry1">{{ lang['ads_pro:end_view'] }}<br /><small>{{ lang['ads_pro:end_view#desc'] }}</small></td>
-	<td width="50%" class="contentEntry2"><input type="text" class="form-control" name="end_view"{% if flags.edit %} value="{{ end_view }}"{% endif %} /></td>
-	</tr>
-	</table>
-	</fieldset><br />
-	<fieldset>
-	<legend>{{ lang['ads_pro:ads_blok_legend'] }}</legend>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-	<td width="100%" class="contentEntry1" align="center">
-	<div style="width:100%; text-align: left;">{{ lang['ads_pro:ads_blok_info'] }}</div>
-	<TEXTAREA NAME="ads_blok" COLS="150" ROWS="30">{% if flags.edit %}{{ ads_blok }}{% endif %}</TEXTAREA>
-	</td>
-	</tr>
-	</table>
+		<legend>{{ lang['ads_pro:state'] }}</legend>
+		<div class="form-group">
+			<div class="col-sm-5">
+				{{ lang['ads_pro:state#desc'] }}
+			</div>
+			<div class="col-sm-7">
+				{{ state_list }}
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">
+				{{ lang['ads_pro:location'] }}
+				<span class="help-block">{{ lang['ads_pro:location#desc'] }}</span>
+			</div>
+			<div class="col-sm-7">
+				<input type="button" class="btn btn-default" value="{{ lang['ads_pro:location_add'] }}" onClick="AddBlok();return false;" />
+				<input type="button" class="btn btn-default" value="{{ lang['ads_pro:location_dell'] }}" onClick="RemoveBlok();return false;" />
+			</div>
+		</div>
+		<table id="blokup" class="well table table-condensed">{% if flags.edit %}{{ location_list }}{% endif %}</table>
 	</fieldset>
 
+	<fieldset>
+		<legend>{{ lang['ads_pro:sched_legend'] }}</legend>
+		<div class="form-group">
+			<div class="col-sm-5">
+				{{ lang['ads_pro:start_view'] }}
+				<span class="help-block">{{ lang['ads_pro:start_view#desc'] }}</span>
+			</div>
+			<div class="col-sm-7">
+				<input type="text" name="start_view"{% if flags.edit %} value="{{ start_view }}"{% endif %} class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="col-sm-5">
+				{{ lang['ads_pro:end_view'] }}
+				<span class="help-block">{{ lang['ads_pro:end_view#desc'] }}</span>
+			</div>
+			<div class="col-sm-7">
+				<input type="text" name="end_view"{% if flags.edit %} value="{{ end_view }}"{% endif %} class="form-control" />
+			</div>
+		</div>
+	</fieldset>
 
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr><td width="100%" colspan="2">&nbsp;</td></tr>
-	<tr>
-	<td width="100%" colspan="2" class="contentEdit" align="center">
-	<input type="submit" value="{% if flags.add %}{{ lang['ads_pro:add_submit'] }}{% endif %}{% if flags.edit %}{{ lang['ads_pro:edit_submit'] }}{% endif %}" class="button" />
-	</td>
-	</tr>
-	</table>
+	<fieldset>
+		<legend>{{ lang['ads_pro:ads_blok_legend'] }}</legend>
+		<div class="form-group">
+			<div class="col-sm-12">
+				<span class="help-block">{{ lang['ads_pro:ads_blok_info'] }}</span>
+				<br>
+				<textarea name="ads_blok" rows="15" class="form-control">{% if flags.edit %}{{ ads_blok }}{% endif %}</textarea>
+			</div>
+		</div>
+	</fieldset>
+	
+	<div class="well text-center"><input type="submit" value="{% if flags.add %}{{ lang['ads_pro:add_submit'] }}{% endif %}{% if flags.edit %}{{ lang['ads_pro:edit_submit'] }}{% endif %}" class="btn btn-success" /></div>
 </form>

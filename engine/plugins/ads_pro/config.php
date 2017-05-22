@@ -220,12 +220,15 @@ function add() {
 		$ttvars['end_view'] = $var['end_view']?date('Y.m.d H:i', $var['end_view']):'';
 		$ttvars['location_list'] = '';
 		foreach($var['location'] as $k => $v) {
-			$ttvars['location_list'] .= '<tr><td>'.($k).': </td><td align="left">';
+			$ttvars['location_list'] .= '<tr><td class="location_'.($k).'">'.($k).': </td><td class="location_'.($k).'">';
 			$ttvars['location_list'] .= MakeDropDown(array(0 => __('ads_pro:around'), 1 => __('ads_pro:main'), 2 => __('ads_pro:not_main'), 3 => __('ads_pro:category'), 4 => __('ads_pro:static'), 5 => __('ads_pro:news'), 6 => __('ads_pro:plugins')), 'location['.($k).'][mode]" onchange="AddSubBlok(this, '.($k).');', $v['mode']);
+
+			$ttvars['location_list'] .= '</td><td class="location_'.($k).'">';
 			if ($v['mode'] == 3) $ttvars['location_list'] .= MakeDropDown($t_category_list, 'location['.($k).'][id]', $v['id']);
 			if ($v['mode'] == 4) $ttvars['location_list'] .= MakeDropDown($t_static_list, 'location['.($k).'][id]', $v['id']);
 			if ($v['mode'] == 5) $ttvars['location_list'] .= MakeDropDown($t_news_list, 'location['.($k).'][id]', $v['id']);
 			if ($v['mode'] == 6) $ttvars['location_list'] .= MakeDropDown($t_plugin_list, 'location['.($k).'][id]', $v['id']);
+			$ttvars['location_list'] .= '</td><td class="location_'.($k).'">';
 
 			$ttvars['location_list'] .= MakeDropDown(array(0 => __('ads_pro:view'), 1 => __('ads_pro:not_view')), 'location['.($k).'][view]', $v['view']);
 			$ttvars['location_list'] .= '</td></tr>';
