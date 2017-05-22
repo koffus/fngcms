@@ -18,8 +18,6 @@ function plugin_archive($params) {
 
 	global $config, $mysql, $twig, $twigLoader, $CurrentHandler;
 
-	$langMonths = Lang::$months;
-
 	$maxnum = isset($params['maxnum']) ? $params['maxnum'] : pluginGetVariable('archive', 'maxnum');
 	$counter = isset($params['counter']) ? $params['counter'] : pluginGetVariable('archive', 'counter');
 	$tcounter = isset($params['tcounter']) ? $params['tcounter'] : pluginGetVariable('archive', 'tcounter');
@@ -66,14 +64,14 @@ function plugin_archive($params) {
 		}
 
 		if ( $tcounter ) {
-			$ctext = ' ' . Padeg($row['cnt'], __('archive:counter.case'));
+			$ctext = ' ' . Padeg($row['cnt'], __('news.counter_case'));
 		} else {
 			$ctext = '';
 		}
 
 		$tVars['entries'][] = array(
 			'link' => $month_link,
-			'title' => $langMonths[$row['month'] - 1] . ' ' . $row['year'],
+			'title' => Lang::$months[$row['month'] - 1] . ' ' . $row['year'],
 			'cnt' => $row['cnt'],
 			'counter' => $counter,
 			'ctext' => $ctext,

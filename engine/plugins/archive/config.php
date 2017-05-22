@@ -63,7 +63,7 @@ $cfgX = array();
 		'title' => __('archive:localsource'),
 		'descr' => __('archive:localsource#desc'),
 		'type' => 'select',
-		'values' => array('0' => 'Шаблон сайта', '1' => 'Плагин'),
+		'values' => array('0' => __('archive:localsource_0'), '1' => __('archive:localsource_1'),),
 		'value' => intval(pluginGetVariable($plugin, 'localsource'))
 		));
 array_push($cfg, array(
