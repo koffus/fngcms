@@ -1,16 +1,11 @@
+<h2>Вопрос / Ответ</h2>
 {% if (entries) %}
-	<h2 class="title top">
-		<span>Вопросы / Ответы</span>
-	</h2>
-	<section class="questions">
+	<dl>
 		{% for entry in entries %}
-			<div class="question_item">
-				<div class="question">{{ entry.question }}</div>
-				<div class="answer">{{ entry.answer }}</div>
-			</div>
-			<div class="line"></div>
+			<dt>{{ entry.question }}</dt>
+			<dd>{{ entry.answer }}</dd>
 		{% endfor %}
-	</section>
+	</dl>
+<hr>
 {% endif %}
-
-			
+<a href="{{ home }}/plugin/faq/add/" class="btn btn-secondary">Добавить вопрос</a>

@@ -5,24 +5,36 @@ register_plugin_page('faq', '', 'plugin_faq');
 register_plugin_page('faq', 'add', 'plugin_faq_add');
 
 function plugin_faq_add() {
-	global $mysql;
+	global $mysql, $config;
 
+	Lang::loadPlugin('faq', 'main', '', '', ':');
 	$tpl_name = 'faq_add';
 
 	if ($_SERVER['REQUEST_METHOD'] != "POST") {
 		plugin_faq_addForm($tpl_name);
 	} else {
-		if (empty($_REQUEST['question'])) {
+		$question = isset($_REQUEST['question']) ? secure_html($_REQUEST['question']) : null;
+		if (empty($question)) {
 			$info = array('status' => 'error');
 		} else {
 			$mysql->query('INSERT INTO ' . prefix . '_faq (question, active) 
 					VALUES 
 					(
-						' . db_squote($_REQUEST['question']) . ',
+						' . db_squote($question) . ',
 						0
 					)
 				');
 			$info = array('status' => 'success');
+			$body = str_replace(
+				array(	'{question}',
+						'{questionlink}',
+						),
+				array(	$question,
+						admin_url . '?mod=extra-config&plugin=faq',
+						),
+				__('faq:email_body')
+			);
+			zzMail($config['admin_mail'], 'Новый вопрос', $body, 'html');
 		}
 		plugin_faq_addForm($tpl_name, $info);
 	}

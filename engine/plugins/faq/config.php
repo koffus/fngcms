@@ -1,9 +1,16 @@
 <?php
-if (!defined('NGCMS')) {
-	exit('HAL');
-}
-plugins_load_config();
-LoadPluginLang('faq', 'config', '', '', '#');
+
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
+pluginsLoadConfig();
+Lang::loadPlugin($plugin, 'config', '', '', '#');
+
 switch ($_REQUEST['action']) {
 	case 'list_faq':
 		show_faq();
@@ -29,7 +36,7 @@ function show_add_faq() {
 		$question = $_REQUEST['question'];
 		$answer = $_REQUEST['answer'];
 		$active = 1;
-		if (empty($question) || empty($answer)) {
+		if (empty($question) or empty($answer)) {
 			$error_text[] = 'Вы заполнили не все обязательные поля';
 		}
 		if (empty($error_text)) {
@@ -46,7 +53,7 @@ function show_add_faq() {
 	}
 	if (!empty($error_text)) {
 		foreach ($error_text as $error) {
-			$error_input .= msg(array("type" => "error", "text" => $error), 0, 2);
+			$error_input .= msg(array("type" => "danger", 'message' => $error), 0, 2);
 		}
 	} else {
 		$error_input = '';
@@ -64,6 +71,10 @@ function show_add_faq() {
 	$xg = $twig->loadTemplate($tpath['main'] . 'main.tpl');
 	$tVars = array(
 		'entries' => $xt->render($tVars),
+		'action'     => 'Добавить вопрос',
+		'class'     => array(
+			'add_faq' => 'active',
+			),
 	);
 	print $xg->render($tVars);
 }
@@ -78,7 +89,7 @@ function show_edit_faq() {
 		if (isset($_REQUEST['submit'])) {
 			$question = $_REQUEST['question'];
 			$answer = $_REQUEST['answer'];
-			if (empty($question) || empty($answer)) {
+			if (empty($question) or empty($answer)) {
 				$error_text[] = 'Вы заполнили не все обязательные поля';
 			}
 			if (empty($error_text)) {
@@ -92,7 +103,7 @@ function show_edit_faq() {
 		}
 		if (!empty($error_text)) {
 			foreach ($error_text as $error) {
-				$error_input .= msg(array("type" => "error", "text" => $error), 0, 2);
+				$error_input .= msg(array('type' => 'danger', 'message' => $error), 0, 2);
 			}
 		} else {
 			$error_input = '';
@@ -108,7 +119,7 @@ function show_edit_faq() {
 			'error'     => $error_input,
 		);
 	} else {
-		msg(array("type" => "error", "text" => "Не найден id"));
+		msg(array('type' => 'danger', 'message' => "Не найден id"));
 	}
 	$tVars = array(
 		'skins_url' => skins_url,
@@ -122,6 +133,10 @@ function show_edit_faq() {
 	$xg = $twig->loadTemplate($tpath['main'] . 'main.tpl');
 	$tVars = array(
 		'entries' => $xt->render($tVars),
+		'action'     => 'Редактировать вопрос',
+		'class'     => array(
+			'edit_faq' => 'active',
+			),
 	);
 	print $xg->render($tVars);
 }
@@ -132,7 +147,7 @@ function modify() {
 	$selected_faq = $_REQUEST['selected_faq'];
 	$subaction = $_REQUEST['subaction'];
 	if (empty($selected_faq)) {
-		return msg(array("type" => "error", "text" => "Ошибка, вы не выбрали записи"));
+		return msg(array('type' => 'danger', 'message' => "Ошибка, вы не выбрали записи"));
 	}
 	switch ($subaction) {
 		case 'mass_approve'      :
@@ -158,7 +173,7 @@ function modify() {
 			$result = 'Записи удалены';
 		}
 	}
-	msg(array("type" => "info", "info" => $result));
+	msg(array('type' => 'info', 'message' => $result));
 }
 
 function show_faq() {
@@ -170,7 +185,7 @@ function show_faq() {
 	// - Load
 	$news_per_page = 10;
 	// - Set default value for `Records Per Page` parameter
-	if (($news_per_page < 2) || ($news_per_page > 2000))
+	if (($news_per_page < 2) or ($news_per_page > 2000))
 		$news_per_page = 10;
 	$fSort = " ORDER BY id ASC";
 	$sqlQPart = "from " . prefix . "_faq" . $fSort;
@@ -186,21 +201,44 @@ function show_faq() {
 			'id'       => $row['id'],
 			'question' => $row['question'],
 			'answer'   => $row['answer'],
-			'active'   => $row['active']
+			'active'   => $row['active'],
+			'rat_p'   => $row['rat_p'],
+			'rat_m'   => $row['rat_m'],
 		);
 	}
-	$xt = $twig->loadTemplate($tpath['list_faq'] . 'list_faq.tpl');
+
 	$tVars = array(
-		'pagesss'   => generateAdminPagelist(array('current' => $pageNo, 'count' => $countPages, 'url' => admin_url . '/admin.php?mod=extra-config&plugin=faq' . ($news_per_page ? '&rpp=' . $news_per_page : '') . '&page=%page%')),
 		'entries'   => isset($tEntry) ? $tEntry : '',
 		'php_self'  => $PHP_SELF,
 		'skins_url' => skins_url,
 		'home'      => home,
-		'rpp'       => $news_per_page
+		'rpp'       => $news_per_page,
 	);
+
+	$maxNavigations = !(empty($config['newsNavigationsAdminCount']) or $config['newsNavigationsAdminCount'] < 1)?$config['newsNavigationsAdminCount']:8;
+
+	if ( count($tEntry) ) {
+		$pagesss = new Paginator;
+		$tVars['pagesss'] = $pagesss->get(
+			array(
+				'maxNavigations' => $maxNavigations,
+				'current' => $pageNo,
+				'count' => $countPages,
+				'url' => admin_url.
+					'/admin.php?mod=extra-config&plugin=faq'.
+					($news_per_page ? '&rpp=' . $news_per_page : '').
+					'&page=%page%'
+			));
+	}
+
+	$xt = $twig->loadTemplate($tpath['list_faq'] . 'list_faq.tpl');
 	$xg = $twig->loadTemplate($tpath['main'] . 'main.tpl');
 	$tVars = array(
 		'entries' => $xt->render($tVars),
+		'action'     => 'Список вопросов',
+		'class'     => array(
+			'list_faq' => 'active',
+			),
 	);
 	print $xg->render($tVars);
 }

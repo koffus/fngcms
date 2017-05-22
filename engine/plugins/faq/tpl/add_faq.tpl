@@ -1,14 +1,31 @@
 {{ error }}
-<table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
-	<form method="post" action="" name="form">
-		<dl>
-			<dt><label>Вопрос [*]</label></dt>
-			<dd><textarea type="text" name="question" rows=8 cols=100>{{ question }}</textarea></dd>
-		</dl>
-		<dl>
-			<dt><label>Ответ [*]</label></dt>
-			<dd><textarea type="text" name="answer" rows=8 cols=100>{{ answer }}</textarea></dd>
-		</dl>
-		<span class="right_s"><input type="reset" class="button" value="Сброс"/>&nbsp;<input name="submit" type="submit" class="button" value="Отправить"/></span>
-	</form>
-</table>
+<form name="form" action="" method="post">
+
+	<fieldset>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-sm-4">
+					Вопрос
+				</div>
+				<div class="col-sm-8">
+					<textarea type="text" name="question" rows="4" class="form-control">{{ question }}</textarea>
+				</div>
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="row">
+				<div class="col-sm-4">
+					Ответ
+				</div>
+				<div class="col-sm-8">
+					<textarea type="text" name="answer" rows="4" class="form-control">{{ answer }}</textarea>
+				</div>
+			</div>
+		</div>
+	</fieldset>
+
+	<div class="well text-center">
+		<input type="reset" value="Сброс" class="btn btn-default" /> 
+		<input type="submit" name="submit" value="{{ lang['add'] }}" class="btn btn-success" />
+	</div>
+</form>

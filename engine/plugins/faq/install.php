@@ -13,7 +13,9 @@ function plugin_faq_install($action) {
 				array('action' => 'cmodify', 'name' => 'id', 'type' => 'int(10)', 'params' => 'not null auto_increment'),
 				array('action' => 'cmodify', 'name' => 'question', 'type' => 'text', 'params' => "default ''"),
 				array('action' => 'cmodify', 'name' => 'answer', 'type' => 'text', 'params' => "default ''"),
-				array('action' => 'cmodify', 'name' => 'active', 'type' => 'tinyint(1)', 'params' => "NOT NULL DEFAULT '0'")
+				array('action' => 'cmodify', 'name' => 'active', 'type' => 'tinyint(1)', 'params' => "NOT NULL DEFAULT '0'"),
+				array('action' => 'cmodify', 'name' => 'rat_p', 'type' => 'int(10)', 'params' => "NOT NULL DEFAULT '0'"),
+				array('action' => 'cmodify', 'name' => 'rat_m', 'type' => 'int(10)', 'params' => "NOT NULL DEFAULT '0'"),
 			)
 		),
 	);
@@ -25,9 +27,13 @@ function plugin_faq_install($action) {
 			if ($install) {
 				if (fixdb_plugin_install('faq', $db_update, 'install', ($action == 'autoapply') ? true : false)) {
 					plugin_mark_installed('faq');
-				} else return false;
-			} else return false;
-			extra_commit_changes();
+				} else {
+					return false;
+				}
+			} else {
+				return false;
+			}
+			pluginsSaveConfig();
 			break;
 	}
 
