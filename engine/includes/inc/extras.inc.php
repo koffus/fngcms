@@ -153,7 +153,7 @@ function loadPluginLibrary($plugin, $libname = '') {
 	}
 }
 
-function registerActionHandler($action, $function, $priority = 5) {
+function registerActionHandler($action, $function, $arguments = 0, $priority = 5) {
 	global $acts;
 
 	// Check if function is already loaded for this action
@@ -165,7 +165,7 @@ function registerActionHandler($action, $function, $priority = 5) {
 	}
 
 	// Register new item
-	$acts[$item][$priority][] = $function;
+	$acts[$action][$priority][] = $function;
 
 	return true;
 
