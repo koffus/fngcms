@@ -42,5 +42,3 @@ if ($_REQUEST['action'] == 'commit') {
 	$text = __('comments:desc_uninstall');
 	generate_install_page('comments', $text, 'deinstall');
 }
-
-?>
