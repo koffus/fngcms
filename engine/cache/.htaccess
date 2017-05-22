@@ -1,3 +1,4 @@
 # Lock access
-Order Deny,Allow
+<FilesMatch .*>
 Deny from all
+</FilesMatch>
