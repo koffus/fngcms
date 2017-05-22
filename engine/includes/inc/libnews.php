@@ -361,7 +361,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 
 	// Prepare title
 	//$SYSTEM_FLAGS['info']['title']['group']	= $config["category_link"]?GetCategories($row['catid'], true):Lang::retDate(timestamp, $row['postdate']);
-	$SYSTEM_FLAGS['info']['title']['group']	= GetCategories($row['catid'], true);
+	$SYSTEM_FLAGS['info']['title']['group']	= $row['catid'] ? GetCategories($row['catid'], true) : __('no_cat');
 	$SYSTEM_FLAGS['info']['title']['item']	= secure_html($row['title']);
 
 	// We are in short or full mode. Add data into {mainblock}
