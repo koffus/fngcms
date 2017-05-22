@@ -158,25 +158,26 @@ button, input, optgroup, select, textarea {
 		transform: translate3d(0, 100%, 0); } }
 
 .intro-header {
-  background-color: #777777;
-  background: no-repeat center center;
-  background-size: cover;
-  background-attachment: fixed;
-  z-index: 1;
-  position: relative;
-  overflow: hidden;
-  margin-bottom: 50px; }
-  .intro-header:before {
-    content: " ";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    /*z-index: 3;*/
-    background: transparent none repeat 0 0;
-	background: url(../img/dots.png);
-}
+	background-color: #777777;
+	background: no-repeat center center;
+	background-size: cover;
+	background-attachment: fixed;
+	z-index: 1;
+	position: relative;
+	overflow: hidden;
+	margin-bottom: 50px;
+	}
+	.intro-header:before {
+	content: " ";
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	/*z-index: 3;*/
+	background: transparent none repeat 0 0;
+	background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAABdJREFUeNpiZmBgmAnEjMwgAogZAAIMAAjQAKJamcscAAAAAElFTkSuQmCC');
+	}
   .intro-header .site-heading,
   .intro-header .post-heading,
   .intro-header .page-heading {
@@ -208,6 +209,12 @@ button, input, optgroup, select, textarea {
 	font-weight: 300; }
 	.intro-header .post-heading a {
 		color: #fff;
+		border-bottom: 1px dashed;
+	}
+	.intro-header .post-heading a:hover,
+	.intro-header .post-heading a:focus {
+		text-decoration: none;
+		border-bottom: 1px solid;
 	}
 .post-preview > a {
   color: #333333; }
@@ -272,7 +279,7 @@ button, input, optgroup, select, textarea {
 .post-share .share-btn.twitter:hover {background-color: #00aced;}
 .post-share .share-btn.whatsapp:hover {background-color: #65bc54;}
 .post-share .share-btn.print:hover {background-color: #888;}
-/* Comments
+/* BBcodes
 -------------------------------------------------------------- */
 .bbcodes {
     border: 1px solid #ccc;
@@ -281,6 +288,17 @@ button, input, optgroup, select, textarea {
     color: #b0bac2;
 	background-color: #fff;
 }
+.bbcodes .btn {
+    padding: 8px 1px;
+}
+.bbcodes >.btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-bottom-left-radius: 0;
+}
+.bbcodes >.btn:last-child:not(:first-child):not(.dropdown-toggle) {
+    border-bottom-right-radius: 0;
+}
+/* Comments
+-------------------------------------------------------------- */
 .message-content {
     border-top-left-radius: 0;
     border-top-right-radius: 0;
@@ -439,8 +457,7 @@ footer {
 
 /* SCROLLUP
 -------------------------------------------------- */
-.scrollup{display:none;z-index:9999;width:40px;height:40px;text-align:center;font-size:24px;position:fixed;bottom:15px;right:15px;cursor:pointer;overflow:auto;border-radius:5px;}.scrollup:before{width:40px;height:40px;line-height:40px;color:#fff;}
-.scrollup{background-color:#0085A1;color:#fff;border-color:#0085A1;transition:all .2s ease}
+.scrollup{display:none;z-index:9999;width:40px;height:40px;text-align:center;font-size:24px;position:fixed;bottom:15px;right:15px;cursor:pointer;overflow:auto;border-radius:5px;background-color:#0085A1;color:#fff;border-color:#0085A1;transition:all .2s ease;opacity:.8;}.scrollup:before{width:40px;height:40px;line-height:40px;color:#fff;}.scrollup:hover{opacity:1;background-color: #003d4a;border-color: #001c22;}
 #loading-layer {
     display: none;
     padding: 15px;

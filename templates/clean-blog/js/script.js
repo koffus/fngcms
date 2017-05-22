@@ -3,15 +3,12 @@ $(document).ready(function($) {
 	/* SCROLLUP */
 	$('body').append('<div class="scrollup fa fa-angle-up"></div>');
 	$(window).scroll(function () {
-		if ($(this).scrollTop() > 60) {
+		if ($(this).scrollTop() > 60)
 			$('.scrollup').show();
-			$('.navbar-home').addClass('navbar-lite');
-		} else {
+		else
 			$('.scrollup').hide();
-			$('.navbar-home').removeClass('navbar-lite');
-		}
 	});
-	$('.scrollup').on('click', function(){$('html, body').animate({scrollTop:0}, 1888);});
+	$('.scrollup').on('click', function(){$('html, body').animate({scrollTop:0}, 888);});
 
 	// Share news
 	$('.share').click(function() {

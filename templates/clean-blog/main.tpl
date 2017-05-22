@@ -61,8 +61,8 @@
 						{% if (global.flags.isLogged) %}
 							{{ personal_menu }}
 						{% else %}
-							<a href="{{ home }}/register/" class="dropdown-item">{{ lang.registration }}</a>
-							<a href="{{ home }}/login/" class="dropdown-item" data-toggle="modal" data-target="#auth-modal">{{ lang.theme['login'] }}</a>
+							<a href="{{ home }}/register/" class="dropdown-item">{{ lang['registration'] }}</a>
+							<a href="{{ home }}/login/" class="dropdown-item" data-toggle="modal" data-target="#auth-modal">{{ lang['login'] }}</a>
 						{% endif %}
 						</div>
 					</li>

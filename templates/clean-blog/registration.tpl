@@ -248,7 +248,7 @@
 <script type="text/javascript">
 	function validate() {
 		if (document.register.agree.checked == false) {
-			window.alert('{{ lang.theme['registration_check_rules'] }}');
+			alert( '{{ lang.theme['registration_check_rules'] }}' );
 			return false;
 		}
 		return true;

@@ -16,7 +16,7 @@
 		<div class="modal-dialog modal-sm" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
-					<h5 class="modal-title" id="exampleModalLabel">{{ lang.theme['login_title'] }}</h5>
+					<h5 class="modal-title" id="exampleModalLabel">{{ lang['login_title'] }}</h5>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				</div>
 				<form name="login" action="{{ form_action }}" method="post" class="form-horizontal">
@@ -36,8 +36,8 @@
 							</div>
 						</div>
 						<div class="modal-footer">
-							<a href="{{ lost_link }}">{{ lang.lostpassword }}</a>
-							<button type="submit" class="btn btn-primary">{{ lang.theme['login'] }}</button>
+							<a href="{{ lost_link }}">{{ lang['lostpassword'] }}</a>
+							<button type="submit" class="btn btn-primary">{{ lang['login'] }}</button>
 						</div>
 					</fieldset>
 				</form>
