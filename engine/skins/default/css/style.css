@@ -316,7 +316,7 @@ margin-left: 240px;
 	margin: 10px 0;
 }
 .panel-table .panel-body .table > tbody > tr > td {
- line-height: 30px;
+ /*line-height: 30px;*/
 }
 .panel-table .panel-footer .pagination {
  margin: 0; 
