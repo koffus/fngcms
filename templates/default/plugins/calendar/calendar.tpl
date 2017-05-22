@@ -1,24 +1,33 @@
 {% if (not flags.ajax) %}
-<script>
-function ng_calendar_walk(month, year, offset, category) {
-	$.post('/engine/rpc.php', { json : 1, methodName : 'plugin.calendar.show', rndval: new Date().getTime(), params : json_encode({ 'year' : year, 'offset' : offset, 'month' : month, 'category' : category }) }, function(data) {
-		// Try to decode incoming data
-		try {
-			resTX = eval('('+data+')');
-		} catch (err) { alert('Error parsing JSON output. Result: '+linkTX.response); }
-		if (!resTX['status']) {
-			$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else {
-			$('#ngCalendarDiv').html(resTX['data']);
-		}
-	}, "text").error(function() { ngHideLoading(); $.notify({message: 'HTTP error during request'},{type: 'danger'}); });
+	<script type="text/javascript" language="javascript">
+		function ng_calendar_walk(month, year, offset, category) {
+			$.post('{{ home }}/engine/rpc.php', {
+				json: 1,
+				methodName: 'plugin.calendar.show',
+				rndval: new Date().getTime(),
+				params: json_encode({'year': year, 'offset': offset, 'month': month, 'category': category})
+			}, function (data) {
+				// Try to decode incoming data
+				try {
+					resTX = eval('(' + data + ')');
+				} catch (err) {
+					alert('Error parsing JSON output. Result: ' + linkTX.response);
+				}
+				if (!resTX['status']) {
+					alert('Error [' + resTX['errorCode'] + ']: ' + resTX['errorText']);
+				} else {
+					$('#ngCalendarDiv').html(resTX['data']);
+				}
+			}, "text").error(function () {
+				alert('HTTP error during request');
+			});
 
-}
-</script>
+		}
+	</script>
 {% endif %}
 <div id="ngCalendarDiv">
-	<div class="block calendar-block">
-		<div class="block-title">{{ lang.theme['calendar'] }}</div>
+	<div class="widget widget-calendar">
+		<h3 class="widget-title">{{ lang['calendar:plugin_title'] }}</h3>
 		<table width="100%" cellspacing="0" cellpadding="0" id="calendar">
 			<tr>
 				<td>
