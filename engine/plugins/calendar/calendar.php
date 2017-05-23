@@ -111,7 +111,7 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 					'dayNo'		=> $dayno,
 					'countNews'	=> isset($counters[$dayno])?$counters[$dayno]:0,
 					'link'		=> $day_link,
-					'className'	=> __('calendar_class_'.(($flagCurrentMonth && ($localTime[3] == $dayno))?'today_':'').'week'.(($j<6)?'day':'end')),
+					'className'	=> __('calendar:class_'.(($flagCurrentMonth && ($localTime[3] == $dayno))?'today_':'').'week'.(($j<6)?'day':'end')),
 					'isToday'	=> ($localTime[3] == $dayno)?true:false,
 					'isWeekDay'	=> ($j<6)?true:false,
 					'isWeekEnd'	=> ($j == 7)?true:false,
