@@ -932,6 +932,8 @@ function doInstall() {
 			'use_cookies' => '0',
 			'use_sessions' => '1',
 			'number' => '5',
+			'news_view_counters' => '1',
+			'category_counters' => '1',
 			'category_link' => '1',
 			'add_onsite' => '1',
 			'add_onsite_guests' => '0',
