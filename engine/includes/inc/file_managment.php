@@ -197,8 +197,8 @@ function manage_showlist($type) {
 	// Load admin page based cookies
 	$admCookie = admcookie_get();
 
-	$cstart		= abs(isset($_REQUEST['page']) and $_REQUEST['page']?intval($_REQUEST['page']):0);
-	$start_from	= abs(isset($_REQUEST['start_from']) and $_REQUEST['page']?intval($_REQUEST['start_from']):0);
+	$cstart		= (isset($_REQUEST['page']) and $_REQUEST['page']) ? abs(intval($_REQUEST['page'])) : false;
+	$start_from	= (isset($_REQUEST['start_from']) and $_REQUEST['start_from']) ? abs(intval($_REQUEST['start_from'])) : false;
 
 	if (!$cstart) { $cstart = 1; }
 	$npp = isset($_REQUEST['npp'])?intval($_REQUEST['npp']):intval($admCookie[$type]['pp']);
