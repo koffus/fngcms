@@ -4,155 +4,157 @@
 	<title>{{ titles }}</title>
 	<meta charset="{{ lang['encoding'] }}" />
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 	<meta name="generator" content="{{ what }} {{ version }}" />
 	<meta name="document-state" content="dynamic" />
 	{{ htmlvars }}
-	<link rel="stylesheet" href="{{ tpl_url }}/css/normalize.css">
-	<link rel="stylesheet" href="{{ tpl_url }}/css/main.css">
-	<link rel="stylesheet" href="{{ tpl_url }}/css/style.css">
-	<link rel="stylesheet" href="{{ tpl_url }}/css/slider.css">
+	<!-- Bootstrap Core CSS -->
+	<link href="{{ tpl_url }}/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<!-- Additional fonts for this theme -->
+	<!--link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" /-->
+	<link href="{{ tpl_url }}/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+	<!-- Custom styles for this theme -->
+	<link href="{{ tpl_url }}/css/style.css" rel="stylesheet">
 	<!--[if lt IE 9]>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
-	<!--[if lte IE 7]>
-		<link rel="stylesheet" href="{{ tpl_url }}/css/ie7.css">
-		<script src="{{ tpl_url }}/js/ie7.js"></script>
-	<![endif]-->
-	<!--[if lte IE 6]>
-		<link rel="stylesheet" href="{{ tpl_url }}/css/ie6.css">
-	<![endif]-->
-	{% if pluginIsActive('rss_export') %}<link href="{{ home }}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />{% endif %}
+	<!-- jQuery first, then Tether, then Bootstrap JS. -->
 	<script src="{{ scriptLibrary }}/jq/jquery.js"></script>
+	<script src="{{ tpl_url }}/bootstrap/js/tether.min.js"></script>
+	<script src="{{ tpl_url }}/bootstrap/js/bootstrap.min.js"></script>
+	<!-- Theme JavaScript -->
+	<script src="{{ tpl_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
 	<script src="{{ scriptLibrary }}/ajax.js"></script>
+	{% if pluginIsActive('rss_export') %}<link href="{{ home }}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />{% endif %}
 </head>
-	<body>
-		<div id="loading-layer"><img src="{{ tpl_url }}/img/loading.gif" alt="" /></div>
-		<div id="wrapper">
-			<header id="header">
-				<div id="logo">
-					<a href="{{ home }}"><img src="{{ tpl_url }}/img/logo.png" alt=""></a>
+<body>
+
+	<div class="header-top navbar-inverse bg-inverse">
+		<div class="container">
+			<div class="row">
+				<div class="col-6 text-left">
+					<a href="mailto:info@site.com" class="nav-link"><span class="fa fa-envelope"></span> info@site.com</a>
 				</div>
-				{% if (global.flags.isLogged) %}
-					{{ personal_menu }}
-				{% else %}
-					<div id="auth">
-						<a href="/register/" class="auth-registration">{{ lang.registration }}</a>
-						<a href="#auth-modal" rel="modal" class="auth-login">{{ lang.theme['login'] }}</a>
-					</div>
-				{% endif %}
-				<div class="clearfix"></div>
-				<div id="menu" class="clearfix">
-					<nav class="menu">
-						<ul>
-							<li><a href="{{ home }}">{{ lang.theme.home }}</a></li>
-							<li><a href="#">{{ lang.theme.news }}</a></li>
-							<li><a href="#">{{ lang.theme.forum }}</a></li>
-							<li><a href="#">{{ lang.theme.article }}</a>
-								<ul>
-									<li><a href="#">{{ lang.theme.recent_article }}</a></li>
-									<li><a href="#">{{ lang.theme.catalog }}</a></li>
-									<li><a href="#">{{ lang.theme.job }}</a></li>
-								</ul>
-							</li>
-							<li><a href="#">{{ lang.theme.blog }}</a></li>
-							<li><a href="#">{{ lang.theme.catalog }}</a></li>
-							<li><a href="#">{{ lang.theme.job }}</a></li>
-							<li><a href="#">{{ lang.theme.about }}</a></li>
-						</ul>
-					</nav>
-					<div id="search">
-						{{ search_form }}
-					</div>
+				<div class="col-6 text-right">
+					<a href="tel:88001234567" class="nav-link"><span class="fa fa-phone-square"></span> 8 (800) 123-45-67</a>
 				</div>
-			</header>
-			<section id="container" class="clearfix">
-				<div id="content-main">
-					{% include "slider.tpl" %}
-					{% if isHandler('news:main|news:by.category|news:by.month|news:by.day') %}
-						<div class="articles full">
-							<div class="articles-switch">
-								<a href="#" id="articles-switch-1" class="articles-switch-1" onclick="javascript:save_articles_switch_one();"></a>
-								<a href="#" id="articles-switch-2" class="articles-switch-2" onclick="javascript:save_articles_switch_two();"></a>
-							</div>
-							<div class="block-title">{{ lang.news }}</div>
-							<div class="clearfix"></div>
-							{{ mainblock }}
-						</div>
-					{% else %}
-						{{ mainblock }}
-					{% endif %}
-				</div>
-				<aside id="sidebar">
-					<div class="block popular-block">
-						<div class="block-title">{{ lang.theme.popular_article }}</div>
-						<ul class="tabs tabs-full" id="popular-news">
-							<li class="active"><a href="#tab-1" data-transitional="fade">{{ lang.theme.day_1 }}</a></li>
-							<li><a href="#tab-2" data-transitional="fade">{{ lang.theme.day_2 }}</a></li>
-							<li><a href="#tab-3" data-transitional="fade">{{ lang.theme.day_3 }}</a></li>
-						</ul>
-						<div class="tab-content tab-bordered">
-							<div class="tab-pane active" id="tab-1">
-								{% if pluginIsActive('xnews') %}
-									{{ callPlugin('xnews.show', {'order' : 'last', 'count': '6', 'template' : 'xnews1'}) }}
-								{% endif %}
-							</div>
-							<div class="tab-pane" id="tab-2">
-								{% if pluginIsActive('xnews') %}
-									{{ callPlugin('xnews.show', {'order' : 'last', 'count': '6', 'template' : 'xnews1'}) }}
-								{% endif %}
-							</div>
-							<div class="tab-pane" id="tab-3">
-								{% if pluginIsActive('xnews') %}
-									{{ callPlugin('xnews.show', {'order' : 'last', 'count': '6', 'template' : 'xnews1'}) }}
-								{% endif %}
-							</div>
-						</div>
-					</div>
-					{% if pluginIsActive('archive') %}
-					<div class="block archive-block">
-						{{ callPlugin('archive.show', {'maxnum' : 12, 'counter' : 1, 'tcounter' : 1, 'template': 'archive', 'cacheExpire': 60}) }}
-					</div>
-					{% endif %}
-					{% if pluginIsActive('calendar') %}
-						{{ callPlugin('calendar.show', {}) }}
-					{% endif %}
-					{% if pluginIsActive('voting') %}
-						{{ voting }}
-					{% endif %}
-					{% if pluginIsActive('tags') %}
-						{{ plugin_tags }}
-					{% endif %}
-					{% if pluginIsActive('switcher') %}
-						{{ switcher }}
-					{% endif %}
-					{% if pluginIsActive('top_active_users') %}
-					<div class="block popular-authors-block">
-						<div class="block-title">{{ lang.theme.popular_authors }}</div>
-						{{ callPlugin('top_active_users.show', {'number' : 12, 'mode' : 'news', 'template': 'top_active_users', 'cacheExpire': 60}) }}
-					</div>
-					{% endif %}
-				</aside>
-			</section>
-			<footer id="footer">
-				<div class="copyright">
-					<p>&copy; <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a> Powered by <a title="Next Generation CMS" target="_blank" href="http://ngcms.ru/">NG CMS</a> 2007 — {{ now|date("Y") }}. <br />{{ lang.sql_queries }}: <b>{{ queries }}</b> | {{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }} | <b>{{ memPeakUsage }}</b> Mb&nbsp;</p>
-					<p>{{ lang.all_right_reserved }} <br /> {{ lang.theme.copying_materials }}</p>
-				</div>
-				<div class="poweredby">
-					<p>{{ lang.theme.design_by }} - <a href="http://cargocollective.com/Qesoart">Qesoart</a></p>
-					<p>{{ lang.theme.bugs_report }}</p>
-				</div>
-			</footer>
+			</div>
 		</div>
-		{% if not (global.flags.isLogged) %}{{ personal_menu }}{% endif %}
-		{% if isHandler('news:news') %}<script src="{{ tpl_url }}/js/jquery.custom-scrollbar.min.js"></script>{% endif %}
-		<script src="{{ tpl_url }}/js/slider.js"></script>
-		<script src="{{ tpl_url }}/js/script.js"></script>
-	</body>
+	</div>
+
+
+	<header id="mainNav" class="navbar navbar-toggleable-md  navbar-inverse bg-inverse">
+		<nav class="container">
+			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
+			<a class="navbar-brand" href="{{ home }}">{{ home_title }}</a>
+			<div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+				<ul class="navbar-nav mr-auto">
+					<li class="nav-item"><a href="{{ home }}" class="nav-link">{{ lang['home'] }}</a></li>
+					<li class="nav-item dropdown">
+						<a href="{{ home }}#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ lang['news'] }} </a>
+						<div class="dropdown-menu dropdown-menu-right">
+							{{ categories }}
+						</div>
+					</li>
+					<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.forum }}</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.article }}</a></li>
+					<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.about }}</a></li>
+				</ul>
+				{{ personal_menu }}
+			</div>
+		</nav>
+	</header>
+
+	{% if isHandler('news:main') %}
+		{% include 'main.promo.tpl' %}
+		<div class="container section">
+			<h2 class="section-title">{{ lang['news'] }}</h2>
+			{{ mainblock }}
+		</div>
+	{% else %}
+		{% include 'main.page.tpl' %}
+	{% endif %}
+
+	<footer class="footer section">
+		<div class="container">
+			<div class="row mb-5 text-center text-md-left">
+				<div class="col-md-3 col-lg-6">
+					<a class="footer-title" href="{{ home }}">{{ home_title }}</a>
+					<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
+				</div>
+				<div class="col-md-3 col-lg-2">
+					<h4 class="footer-title">Category 1</h4>
+					<ul class="nav-footer">
+						<li class="nav-item">
+							<a class="nav-link" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Our Work</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Contact</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-3 col-lg-2">
+					<h4 class="footer-title">Category 2</h4>
+					<ul class="nav-footer">
+						<li class="nav-item">
+							<a class="nav-link" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Our Work</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Contact</a>
+						</li>
+					</ul>
+				</div>
+				<div class="col-md-3 col-lg-2">
+					<h4 class="footer-title">Category 3</h4>
+					<ul class="nav-footer">
+						<li class="nav-item">
+							<a class="nav-link" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">About</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Our Work</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Contact</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container-fluid">
+			<div class="divider"></div>
+		</div>
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 text-md-left">
+					<p class="copyright">&copy; <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>, {{ lang.all_right_reserved }} Powered by <a title="Next Generation CMS" target="_blank" href="http://ngcms.ru/">NG CMS</a> 2007 — {{ now|date("Y") }}.</p>
+				</div>
+				<div class="col-md-6 text-md-right">
+					{{ lang.sql_queries }}: <b>{{ queries }}</b>&nbsp;&nbsp;•&nbsp;&nbsp;{{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }}&nbsp;&nbsp;•&nbsp;&nbsp;<b>{{ memPeakUsage }}</b> Mb&nbsp;
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<div id="loading-layer"><img src="{{ tpl_url }}/img/loading.gif" alt="" /></div>
+</body>
 </html>
-[debug]
-{debug_queries}<br/>{debug_profiler}
-[/debug]
+[debug]{debug_queries}{debug_profiler}[/debug]
 [/TWIG]

@@ -7,46 +7,50 @@
 				<input type="text" name="search" value="{{ search }}" placeholder="{{ lang['search.enter'] }}" class="form-control" />
 				<span class="input-group-btn">
 					<div class="btn-group" data-toggle="buttons">
-						<label class="btn btn-default" data-toggle="collapse" data-target="#searchSettings">
+						<span class="btn btn-secondary" data-toggle="collapse" data-target="#searchSettings">
 							<input type="checkbox" autocomplete="off" onchange="setCookie('searchSettings',this.checked?1:0);" {{ searchSettings }} /> <i class="fa fa-sliders"></i>
-						</label>
+						</span>
 					</div>
-					<button id="submit" type="submit" name="submit" class="btn btn-default" title="{{ lang['search.submit'] }}"><i class="fa fa-search"></i></button>
+				</span>
+				<span class="input-group-btn">
+					<button id="submit" type="submit" name="submit" class="btn btn-secondary" title="{{ lang['search.submit'] }}"><i class="fa fa-search"></i></button>
 				</span>
 			</div>
 		</div>
 
-		<div id="searchSettings" class="row collapse {% if searchSettings %}in{% endif %}">
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label>{{ lang['search.filter.category'] }}</label>  
-					<div>
-						<div class="search_catz">{{ catlist }}</div>
+		<div id="searchSettings" class="collapse {% if searchSettings %}show{% endif %}">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label>{{ lang['search.filter.category'] }}</label>  
+						<div>
+							<div class="search_catz">{{ catlist }}</div>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>{{ lang['search.filter.date'] }}</label>  
+						<div>
+							<select name="postdate" class="form-control"><option value="">Любая</option>{{ datelist }}</select>
+						</div>
 					</div>
 				</div>
-				<div class="form-group">
-					<label>{{ lang['search.filter.date'] }}</label>  
-					<div>
-						<select name="postdate" class="form-control"><option value="">Любая</option>{{ datelist }}</select>
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label>{{ lang['search.filter.orderlist'] }}</label>  
+						<div>
+							<select name="orderby" class="form-control">{{ orderlist }}</select>
+						</div>
 					</div>
-				</div>
-			</div>
-			<div class="col-sm-6">
-				<div class="form-group">
-					<label>{{ lang['search.filter.orderlist'] }}</label>  
-					<div>
-						<select name="orderby" class="form-control">{{ orderlist }}</select>
-					</div>
-				</div>
-				<div class="form-group">
-					<label>{{ lang['search.filter.author'] }}</label>  
-					<div>
-						<input type="text" name="author" value="{{ author }}" class="form-control" />
+					<div class="form-group">
+						<label>{{ lang['search.filter.author'] }}</label>  
+						<div>
+							<input type="text" name="author" value="{{ author }}" class="form-control" />
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	<fieldset>
+	</fieldset>
 </form>
 
 {% if flags.notfound %}
@@ -59,11 +63,9 @@
 {% if flags.found %}
 	<p class="alert alert-success">{{ lang['search.found'] }}: <b>{{ count }}</b></p>
 	<section class="section">
-		<ul class="media-list">
 		{% for entry in data %}
 			{{ entry }}
 		{% endfor %}
-		</ul>
 	</section>
 {% endif %}
 
