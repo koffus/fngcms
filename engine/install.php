@@ -692,7 +692,7 @@ function doConfig_common() {
 
 // Генерация конфигурационного файла
 function doInstall() {
-	global $tvars, $tpl, $templateDir, $installDir, $adminDirName, $pluginInstallList;
+	global $tvars, $tpl, $templateDir, $installDir, $adminDirName, $pluginInstallList, $currentLanguage;
 
 	$tvars['vars']['menu_install'] = ' class="hover"';
 	printHeader();
