@@ -1,33 +1,28 @@
-<article class="full-post">
-	<h1 class="title"><a href="{link}">{title}</a></h1>
-	<p><br />[comheader]Все комментарии посетителей к данной новости[/comheader]</p>
-</article>
+<h2 class="section-title">Все комментарии посетителей к записи <a href="{link}">{title}</a></h2>
 
-<div class="comments">
-	<ul>
-		<div id="new_comments_rev"></div>
+<section class="section comments-list">
+
+	<ul class="list-unstyled">
 		{entries}
-		<div id="new_comments"></div>
+		<li id="new_comments"></li>
 	</ul>
-</div>
 
-<div class="pagination">
-	<ul>
-		<li>{more_comments}</li>
-	</ul>
-</div>
+	<nav>
+		<ul class="pagination">{more_comments}</ul>
+	</nav>
 
-{form}
+	{form}
 
-[regonly]
-<div class="alert alert-info">
-	Уважаемый посетитель, Вы зашли на сайт как незарегистрированный пользователь.<br />
-	Мы рекомендуем Вам <a href="/register/">зарегистрироваться</a> либо <a href="/login/">войти</a> на сайт под своим именем.
-</div>
-[/regonly]
+	[regonly]
+	<div class="alert alert-info">
+		Уважаемый посетитель, Вы зашли на сайт как незарегистрированный пользователь.<br />
+		Мы рекомендуем Вам <a href="{home}/register/">зарегистрироваться</a> либо <a href="{home}/login/">войти</a> на сайт под своим именем.
+	</div>
+	[/regonly]
 
-[commforbidden]
-<div class="alert alert-info">
-	Комментирование данной новости запрещено.
-</div>
-[/commforbidden]
+	[commforbidden]
+	<div class="alert alert-danger">
+		Комментирование данной новости запрещено.
+	</div>
+	[/commforbidden]
+</section>

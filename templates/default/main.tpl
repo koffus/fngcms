@@ -153,7 +153,7 @@
 		</div>
 	</footer>
 
-	<div id="loading-layer"><img src="{{ tpl_url }}/img/loading.gif" alt="" /></div>
+	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
 </body>
 </html>
 [debug]{debug_queries}{debug_profiler}[/debug]

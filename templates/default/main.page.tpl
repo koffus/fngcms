@@ -42,6 +42,10 @@
 				{{ callPlugin('calendar.show', {}) }}
 			{% endif %}
 
+			{% if pluginIsActive('lastcomments') %}
+				{{ plugin_lastcomments }}
+			{% endif %}
+
 			{% if pluginIsActive('voting') %}
 				{{ voting }}
 			{% endif %}

@@ -1,21 +1,31 @@
 [TWIG]
-<div class="block-title">{{ lang['lostpassword_title'] }}</div>
+<h2 class="section-title">{{ lang['lostpassword_title'] }}</h2>
+
 <form name="lostpassword" action="{{ form_action }}" method="post">
-<input type="hidden" name="type" value="send" />
-	{{entries}}
+	<input type="hidden" name="type" value="send" />
+
+	{{ entries }}
 	[captcha]
-		<div class="label label-table captcha pull-left">
-			<label>{{ lang['captcha'] }}:</label>
-			<input type="text" name="vcode" class="input">
-			<img src="{{admin_url}}/captcha.php" onclick="reload_captcha();" id="img_captcha" style="cursor: pointer;" alt="{{ lang['captcha'] }}"/>
-			<div class="label-desc">{{ lang['captcha_desc'] }}</div>
+	<div class="form-group row">
+		<label for="vcode" class="col-sm-4 col-form-label">{{lang.theme['captcha_title'] }}</label>
+		<div class="col-sm-8">
+			<div class="input-group">
+				<input type="text" name="vcode" id="vcode" class="form-control" required />
+				<span class="input-group-addon p-0">
+					<img src="{{ admin_url }}/captcha.php" id="img_captcha" onclick="reload_captcha();" alt="Security code" class="captcha"/>
+				</span>
+			</div>
+			<small id="{{ entry.id }}">{{ lang['captcha_desc'] }}</small>
 		</div>
-		<div class="clearfix"></div>
-		<div class="label">
-			<input type="submit" value="{{ lang['send_pass'] }}" class="button">
-		</div>
+	</div>
 	[/captcha]
+	<div class="form-group">
+		<div class="col-sm-8 offset-sm-4">
+			<button type="submit" class="btn btn-success" />{{ lang['send_pass'] }}</button>
+		</div>
+	</div>
 </form>
+
 <script type="text/javascript">
 	function reload_captcha() {
 		var captc = document.getElementById('img_captcha');

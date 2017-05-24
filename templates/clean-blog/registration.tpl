@@ -224,7 +224,7 @@
 										<img src="{{ admin_url }}/captcha.php" id="img_captcha" onclick="reload_captcha();" alt="Security code" class="captcha"/>
 									</span>
 								</div>
-								<small id="{{ entry.id }}">{{ lang.theme.captcha_code }}</small>
+								<small id="{{ entry.id }}">{{ lang['captcha_desc'] }}</small>
 							</div>
 						</div>
 					{% endif %}
