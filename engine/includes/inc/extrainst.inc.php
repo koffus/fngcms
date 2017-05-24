@@ -72,7 +72,7 @@ function generate_config_page($module, $params, $values = array()) {
 		} elseif ($param['type'] == 'select') {
 			$tvars['input'] = '<select name="'.$param['name'].'" '.$param['html_flags'].' class="form-control">';
 			foreach ($param['values'] as $oid => $oval) {
-				$tvars['input'] .= '<option value="'.intval($oid).'"'.($param['value']==$oid?' selected':'').'>'.secure_html($oval).'</option>';
+				$tvars['input'] .= '<option value="'.secure_html($oid).'"'.($param['value']==secure_html($oid)?' selected':'').'>'.secure_html($oval).'</option>';
 			}
 			$tvars['input'] .='</select>';
 		} else if ($param['type'] == 'manual') {
