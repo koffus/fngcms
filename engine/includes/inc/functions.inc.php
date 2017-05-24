@@ -2711,3 +2711,11 @@ function dd($obj) {
 
  echo '<pre>' . htmlentities($obj, ENT_QUOTES) . "</pre><br>\n";
 }
+
+// Выводит текущую дату в формате, выбранном в админке. А так же помещает её в тег, который динамически обновляется под клиента.
+function cDate($date, $format = false, $relative = true) {
+
+	if (!$format) $format = timestamp;//'j F Yг. в G:i';
+
+	return '<time datetime="' . date('c', $date) . '" data-type="' . $format . '" data-relative="' . $relative . '">' . Lang::retDate($format, $date) . '</time>';
+}

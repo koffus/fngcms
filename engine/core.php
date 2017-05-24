@@ -291,6 +291,7 @@ $twig->addFunction('engineMSG', 	new Twig_Function_Function('twigEngineMSG'));
 
 // - Define filters
 $twig->addFilter('truncateHTML',	new Twig_Filter_Function('twigTruncateHTML'));
+$twig->addFilter('cdate',			new Twig_Filter_Function('cdate'));
 
 // [[MARKER]] TWIG template engine is loaded
 $timer->registerEvent('Template engine is activated');
