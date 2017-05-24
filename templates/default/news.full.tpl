@@ -1,21 +1,7 @@
-[TWIG]Прикрепленные файлы: {{ debugValue(_files) }}<br/>
-Прикрепленные картинки: {{ debugValue(_images) }}
-{% for file in _files %}
-* <a href="{{ file.url }}">{{ file.origName }}</a><br/>
-{% endfor %}
-[/TWIG]
 [TWIG]
 <article class="full-post">
 	<h1 class="title">{{ news.title }}</h1>
 	<span class="meta">{{ news.date }} | {% if pluginIsActive('uprofile') %}<a href="{{ news.author.url }}">{% endif %}{{ news.author.name }}{% if pluginIsActive('uprofile') %}</a>{% endif %}</span>
-	[xfield_tested]
-     Данный адаптер был протестирован в нашей лаборатории.<br/>
-     [xfield_vendor]Производитель: [xvalue_vendor]<br/>[/xfield_vendor]
-     [xfield_reldate]Дата выхода на рынок: [xvalue_reldate]<br/>[/xfield_reldate]
-    [xfield_multi]Установка нескольких адаптеров в систему: [xvalue_multi]<br/>[/xfield_multi]
-     [xfield_index]Индекс производительности: [xvalue_index]<br/>[/xfield_index]
-     [xfield_result]Мнение ред. коллегии:<div>[xvalue_result]</div>[/xfield_result]
-    [/xfield_tested]
     <p>{{ news.short }}{{ news.full }}</p>
 	{% if (news.flags.hasPagination) %}
 		<div class="pagination">
