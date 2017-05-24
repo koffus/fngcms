@@ -6,12 +6,14 @@
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<link href="{{ skins_url }}/assets/css/fontawesome.css" rel="stylesheet">
+	<link href="{{ skins_url }}/assets/css/perfect-scrollbar.css" rel="stylesheet">
 	<link href="{{ skin }}" rel="stylesheet">
 	<link href="{{ skins_url }}/css/style.css" rel="stylesheet">
 
 	<script src="{{ skins_url }}/assets/js/jquery-2.1.4.min.js"></script>
 	<script src="{{ skins_url }}/assets/js/bootstrap.js"></script>
 	<script src="{{ skins_url }}/assets/js/notify.js"></script>
+	<script src="{{ skins_url }}/assets/js/perfect-scrollbar.js"></script>
 	<script src="{{ skins_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
 	<script src="{{ scriptLibrary }}/admin.js"></script>

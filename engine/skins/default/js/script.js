@@ -46,6 +46,7 @@ $(document).ready(function(){
 		else
 			$('#sidenav-overlay').fadeOut('slow');
 	});
+	$('.side-menu-container').perfectScrollbar();
 
 	/* Select/unselect all */
 	$('table .select-all').click(function() {

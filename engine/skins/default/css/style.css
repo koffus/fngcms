@@ -201,7 +201,7 @@ nav .navbar-brand {
 }
 .side-menu-container {
 	position: fixed;
-	overflow-y: auto;
+	/*overflow-y: auto;*/
 	top: 50px;
 	bottom: 0;
 	padding: 0;
