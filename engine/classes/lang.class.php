@@ -7,7 +7,6 @@ class Lang {
 	public static $weekdays;
 	public static $short_weekdays;
 	public static $months;
-	public static $months_s;
 	public static $short_months;
 
 	final function __construct() {
@@ -24,7 +23,6 @@ class Lang {
 		self::$weekdays = explode(',', __('weekdays'));
 		self::$short_weekdays = explode(',', __('short_weekdays'));
 		self::$months = explode(',', __('months'));
-		self::$months_s = explode(',', __('months_s'));
 		self::$short_months = explode(',', __('short_months'));
 
 		// - Global variables [by REFERENCE]
@@ -161,7 +159,6 @@ class Lang {
 		$weekdays = self::$weekdays;
 		$short_weekdays = self::$short_weekdays;
 		$months = self::$months;
-		$months_s = self::$months_s;
 		$short_months = self::$short_months;
 		
 		foreach ($weekdays as $name => $value)
@@ -173,15 +170,11 @@ class Lang {
 		foreach ($months as $name => $value)
 			$months[$name] = preg_replace("/./", "\\\\\\0", $value);
 
-		foreach ($months_s as $name => $value)
-			$months_s[$name] = preg_replace("/./", "\\\\\\0", $value);
-
 		foreach ($short_months as $name => $value)
 			$short_months[$name] = preg_replace("/./", "\\\\\\0", $value);
 
 		$format = @preg_replace("/(?<!\\\\)D/", $short_weekdays[date("w", $timestamp)], $format);
 		$format = @preg_replace("/(?<!\\\\)F/", $months[date("n", $timestamp) - 1], $format);
-		$format = @preg_replace("/(?<!\\\\)Q/", $months_s[date("n", $timestamp) - 1], $format);
 		$format = @preg_replace("/(?<!\\\\)l/", $weekdays[date("w", $timestamp)], $format);
 		$format = @preg_replace("/(?<!\\\\)M/", $short_months[date("n", $timestamp) - 1], $format);
 
