@@ -68,7 +68,7 @@ function breadcrumbs() {
 			'link' => $main_page,
 			);
 
-		$location_last = $main_page;
+		$location_last = $params['page'] ? __('bc:page') . ' ' . $params['page']: $main_page;
 
 		# if category
 		if ($CurrentHandler['handlerName'] == 'by.category') {
