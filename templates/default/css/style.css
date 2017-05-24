@@ -3,12 +3,22 @@
 /* Padding below the footer and lighter body text */
 
 body {
-  /*padding-top: 6rem;
-  /*padding-bottom: 3rem;*/
-  color: #5a5a5a;
+	/*padding-top: 6rem;
+	/*padding-bottom: 3rem;*/
+	color: #5a5a5a;
+	font-weight: 300;
 }
 button, input, optgroup, select, textarea {
+	font-weight: inherit;
 	font-family: inherit;
+}
+img {
+	max-width: 100%;
+	height: auto;
+}
+.h1, .h2, .h3, .h4, .h5, .h6,
+h1, h2, h3, h4, h5, h6 {
+	font-weight: inherit;
 }
 @media (max-width: 992px) {
 	.header-top .row {
@@ -33,10 +43,6 @@ button, input, optgroup, select, textarea {
 	transition: top 500ms ease;
 
 	
-}
-#mainNav .navbar-nav {
-	font-weight: 100;
-    text-transform: uppercase;
 }
 #mainNav .navbar-nav .nav-link {
     padding-top: 1rem;
@@ -184,6 +190,25 @@ button, input, optgroup, select, textarea {
  padding: 10px;
 }
 
+/* User profile
+-------------------------------------------------- */
+
+.table-user-information label {
+    font-weight: 300;
+}
+.table-user-information > tbody > tr {
+    border-top: 1px solid #eceeef;
+}
+.table-user-information > tbody > tr:first-child {
+    border-top: 0;
+}
+.table-user-information > tbody > tr > td {
+    border-top: 0;
+}
+.table-user-information td,
+.table-user-information th {
+    padding: .5rem;
+}
 /* CUSTOMIZE THE CAROUSEL
 -------------------------------------------------- */
 
@@ -251,12 +276,10 @@ button, input, optgroup, select, textarea {
     height: 6rem;
     background: none;
     border: 0.15rem solid #696b6e;
-	border-radius: 50%;
 }
 .jumbotron {
   
 }
-
 
 /* FOOTER CONTENT
 -------------------------------------------------- */
