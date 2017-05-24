@@ -1,7 +1,7 @@
 {% if data %}
 	<div class="row">
 	{% for entry in data %}
-		<div class="{% if isHandler('news:main') %}col-lg-4 col-md-4{% endif %}  col-sm-12 col-xs-12">{{ entry }}</div>
+		<div class="{% if isHandler('news:main') and (pages.current == 1) %}col-lg-4 col-md-4{% endif %}  col-sm-12 col-xs-12">{{ entry }}</div>
 	{% endfor %}
 	</div>
 {% else %}
