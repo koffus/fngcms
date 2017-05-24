@@ -18,4 +18,5 @@ Author_URI: http://digitalplace.ru/
 Title: Личные сообщения
 Information: Плагин организует возможность обмена приватными сообщениями между зарегистрированными пользователями сайта
 Preinstall: default_no
+Preinstall_vars: title_length="50"; message_length="3000";
 Library: lib; lib/pm.lib.php

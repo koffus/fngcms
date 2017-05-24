@@ -52,7 +52,7 @@
 <div class="block-title">{{ lang['pm:new'] }}</div>
 <table class="table table-striped table-bordered">
 	<tr>
-		<th colspan="2"><a href="/plugin/pm/">{{ lang['pm:inbox'] }}</a> | <a href="/plugin/pm/?action=outbox">{{ lang['pm:outbox'] }}</a> | <a href="{{ php_self }}?action=set" align="right">{{ lang['pm:set'] }}</a></th>
+		<th colspan="2"><a href="{{ home }}/plugin/pm/">{{ lang['pm:inbox'] }}</a> | <a href="{{ home }}/plugin/pm/?action=outbox">{{ lang['pm:outbox'] }}</a> | <a href="{{ php_self }}?action=set" align="right">{{ lang['pm:set'] }}</a></th>
 	</tr>
 	<tr>
 		<td width="30%">{{ lang['pm:subject'] }}</td>
@@ -93,6 +93,7 @@
 				'hlr' : 'true',
 				'stColsHLR'	: [ true ],
 				'reqMethodName' : 'pm_get_username',
+				'localPrefix' : '{{ home }}',
 			}
 		);
 	}

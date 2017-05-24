@@ -41,17 +41,20 @@ class pm{
 	 */
 	function sendMsg($to_user, $from_username, $title, $message, $mail_from = false, $saveoutbox = 0){
 		global $mysql, $config;
-		
-		if (mb_strlen($title, 'UTF-8') > pluginGetVariable('pm', 'title_length'))
+
+		$title_length = pluginGetVariable('pm', 'title_length') ? pluginGetVariable('pm', 'title_length') : 50;
+		$message_length = pluginGetVariable('pm', 'message_length') ? pluginGetVariable('pm', 'message_length') : 3000;
+
+		if ( mb_strlen($title, 'UTF-8') > $title_length )
 			return -1;
 		
-		if (!$title)
-			return -2;	
+		if ( !$title )
+			return -2;
 		
-		if (mb_strlen($message, 'UTF-8') > pluginGetVariable('pm', 'message_length'))
+		if ( mb_strlen($message, 'UTF-8') > $message_length )
 			return -3;
 			
-		if(!$message)	
+		if( !$message )
 			return -4;
 			
 		$to_user = trim($to_user);
