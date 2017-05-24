@@ -1,3 +1,9 @@
+{% if (handler == 'by.category') and (pages.current == 1) %}
+	<h2 class="section-title">{{ category.name }}</h2>
+	{% if category.icon.purl %}<img src="{{ category.icon.purl }}" />{% endif %}
+	{% if category.info %}{{ category.info }}<hr />{% endif %}
+{% endif %}
+
 {% if data %}
 	<div class="row">
 	{% for entry in data %}
