@@ -10,7 +10,7 @@
 	<link href="{{ skin }}" rel="stylesheet">
 	<link href="{{ skins_url }}/css/style.css" rel="stylesheet">
 
-	<script src="{{ skins_url }}/assets/js/jquery-2.1.4.min.js"></script>
+	<script src="{{ scriptLibrary }}/jq/jquery.min.js"></script>
 	<script src="{{ skins_url }}/assets/js/bootstrap.js"></script>
 	<script src="{{ skins_url }}/assets/js/notify.js"></script>
 	<script src="{{ skins_url }}/assets/js/perfect-scrollbar.js"></script>

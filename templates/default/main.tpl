@@ -21,7 +21,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 	<!-- jQuery first, then Tether, then Bootstrap JS. -->
-	<script src="{{ scriptLibrary }}/jq/jquery.js"></script>
+	<script src="{{ scriptLibrary }}/jq/jquery.min.js"></script>
 	<script src="{{ tpl_url }}/bootstrap/js/tether.min.js"></script>
 	<script src="{{ tpl_url }}/bootstrap/js/bootstrap.min.js"></script>
 	<!-- Theme JavaScript -->
