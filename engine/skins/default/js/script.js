@@ -29,14 +29,9 @@ $(document).ready(function(){
 	
 	// Прокрутка вверх
 	$(window).scroll(function () {
-		( $(this).scrollTop() != 0 ) ? $('#scrollup').fadeIn() : $('#scrollup').fadeOut();
+		( $(this).scrollTop() != 0 ) ? $('#scrollTop').fadeIn() : $('#scrollTop').fadeOut();
 	});
-	
-	$('#scrollup').click(function(){
-		$('html, body').animate({ scrollTop: 0 }, 888);
-		return;
-	});
-	
+
 	// Боковое меню
 	$('.sidebar-toggle, #sidenav-overlay').click(function () {
 		$('.side-menu-container').toggleClass('slide-in');
@@ -47,11 +42,6 @@ $(document).ready(function(){
 			$('#sidenav-overlay').fadeOut('slow');
 	});
 	$('.side-menu-container').perfectScrollbar();
-
-	/* Select/unselect all */
-	$('table .select-all').click(function() {
-		$(this).parents('table').find('input:checkbox:not([disabled])').prop('checked', $(this).prop('checked'));
-	});
 
 	/* admGroup hide/show */
 	$('.adm-group-toggle').click(function() {
@@ -84,20 +74,23 @@ $(document).ready(function(){
 		}
 	});
 
-	/* Устранение дергания экрана при вызове modal */
-	$('.modal').on("show.bs.modal", function(){
-		var $bodyWidth = $("body").width();
-		$('body').css({'overflow-y': 'hidden'}).css({'padding-right': ($("body").width()-$bodyWidth)});
-	});
-
-	$('.modal').on("hidden.bs.modal", function(){
-		$('body').css({'padding-right': "0", 'overflow-y': "auto"});
-	});
-	
 	/*****************************
 	 * ACTION
 	******************************/
-	
+
+	// Добавление элементов (пользователь, группы) в modal
+	$(document).on('click', '.add_form', function(){
+		$('#modal-dialog .modal-dialog').load($(this).attr('href') + ' #add_edit_form .modal-content');
+		$('#modal-dialog').modal('show');
+		return false;
+	});
+	// Редактирование элементов (пользователь, группы) в modal
+	$(document).on('click', '.edit_form', function(){
+		$('#modal-dialog .modal-dialog').load($(this).attr('href') + ' #add_edit_form .modal-content');
+		$('#modal-dialog').modal('show');
+		return false;
+	});
+
 	/*
 	 * Images
 	*/
@@ -125,71 +118,6 @@ $(document).ready(function(){
 
 });
 
-// Добавление элементов (пользователь, группы) в modal
-$(document).on('click', '.add_form', function(){
-	$('#modal-dialog .modal-dialog').load($(this).attr('href') + ' #add_edit_form .modal-content');
-	$('#modal-dialog').modal('show');
-	return false;
-});
-// Редактирование элементов (пользователь, группы) в modal
-$(document).on('click', '.edit_form', function(){
-	$('#modal-dialog .modal-dialog').load($(this).attr('href') + ' #add_edit_form .modal-content');
-	$('#modal-dialog').modal('show');
-	return false;
-});
-
-/* cookie style core */
-function createCookie(name,value,days) {
-	if (days) {
-		var date = new Date();
-		date.setTime(date.getTime()+(days*24*60*60*1000));
-		var expires = "; expires="+date.toGMTString();
-	}
-	else var expires = "";
-	document.cookie = name+"="+value+expires+"; path=/";
-}
-function readCookie(name) {
-	var nameEQ = name + "=";
-	var ca = document.cookie.split(';');
-	for(var i=0;i < ca.length;i++) {
-		var c = ca[i];
-		while (c.charAt(0)==' ') c = c.substring(1,c.length);
-		if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
-	}
-	return null;
-}
-function eraseCookie(name) {
-	createCookie(name,"",-1);
-}
-
-// formatSize
-function formatSize($file_size){
-	if ($file_size >= 1073741824) {
-		$file_size = Math.round( $file_size / 1073741824 * 100 ) / 100 + " Gb";
-	} else if ($file_size >= 1048576) {
-		$file_size = Math.round( $file_size / 1048576 * 100 ) / 100 + " Mb";
-	} else if ($file_size >= 1024) {
-		$file_size = Math.round( $file_size / 1024 * 100 ) / 100 + " Kb";
-	} else {
-		$file_size = $file_size + " b";
-	}
-	return $file_size;
-}
-
-function printElem(data) {
-	
-	var printing_css='<style>* {color:#888;} input{display:none;} a {text-decoration:none;}</style>';
-	var html_to_print=printing_css + data;
-	var iframe=$('<iframe id="print_frame">');
-	$('body').append(iframe);
-	var doc = $('#print_frame')[0].contentDocument || $('#print_frame')[0].contentWindow.document;
-	var win = $('#print_frame')[0].contentWindow || $('#print_frame')[0];
-	doc.getElementsByTagName('body')[0].innerHTML=html_to_print;
-	win.print();
-	$('iframe').remove();
-
-	return true;
-}
 /* **************** Insert image ****************** */
 
 $(document).on('click', '.preview-img a', function(){
