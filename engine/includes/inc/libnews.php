@@ -221,7 +221,7 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 
 		$tvars['vars']['[edit-news]'] = "<a href=\"".admin_url."/admin.php?mod=news&amp;action=edit&amp;id=".$row['id']."\" target=\"_blank\">";
 		$tvars['vars']['[/edit-news]'] = "</a>";
-		$tvars['vars']['[del-news]'] = "<a onclick=\"confirmit('".admin_url."/admin.php?mod=news&amp;subaction=do_mass_delete&amp;token=".genUToken('admin.news.edit')."&amp;selected_news[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
+		$tvars['vars']['[del-news]'] = "<a onclick=\"confirmIt('".admin_url."/admin.php?mod=news&amp;subaction=do_mass_delete&amp;token=".genUToken('admin.news.edit')."&amp;selected_news[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
 		$tvars['vars']['[/del-news]'] = "</a>";
 	} else {
 		$tvars['regx']["'\\[edit-news\\].*?\\[/edit-news\\]'si"] = "";
@@ -762,7 +762,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 			$tvars['vars']['editNewsLink']		= admin_url."/admin.php?mod=news&amp;action=edit&amp;id=".$row['id'];
 			$tvars['vars']['[edit-news]']		= "<a href=\"".admin_url."/admin.php?mod=news&amp;action=edit&amp;id=".$row['id']."\" target=\"_blank\">";
 			$tvars['vars']['[/edit-news]']		= "</a>";
-			$tvars['vars']['[del-news]']		= "<a onclick=\"confirmit('".admin_url."/admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;token=".genUToken('admin.news.edit')."&amp;selected_news[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
+			$tvars['vars']['[del-news]']		= "<a onclick=\"confirmIt('".admin_url."/admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;token=".genUToken('admin.news.edit')."&amp;selected_news[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
 			$tvars['vars']['deleteNewsLink']	= admin_url."/admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;token=".genUToken('admin.news.edit')."&amp;selected_news[]=".$row['id'];
 			$tvars['vars']['[/del-news]']		= "</a>";
 		} else {

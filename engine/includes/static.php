@@ -63,7 +63,7 @@ function showStaticPage($params) {
 	if (is_array($userROW) && ($userROW['status'] == 1 or $userROW['status'] == 2)) {
 		$tvars['vars']['[edit-static]'] = "<a href=\"".admin_url."/admin.php?mod=static&action=edit&id=".$row['id']."\" target=\"_blank\">";
 		$tvars['vars']['[/edit-static]'] = "</a>";
-		$tvars['vars']['[del-static]'] = "<a onclick=\"confirmit('".admin_url."/admin.php?mod=static&subaction=do_mass_delete&selected[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
+		$tvars['vars']['[del-static]'] = "<a onclick=\"confirmIt('".admin_url."/admin.php?mod=static&subaction=do_mass_delete&selected[]=".$row['id']."', '".__('sure_del')."')\" target=\"_blank\" style=\"cursor: pointer;\">";
 		$tvars['vars']['[/del-static]'] = "</a>";
 	} else {
 		$tvars['regx']["'\\[edit-static\\].*?\\[/edit-static\\]'si"] = "";
