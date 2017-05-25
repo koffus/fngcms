@@ -43,5 +43,3 @@ if ($_REQUEST['action'] == 'commit') {
 	$text = __('xfields_desc_uninstall');
 	generate_install_page('xfields', $text, 'deinstall');
 }
-
-?>
