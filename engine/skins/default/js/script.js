@@ -41,7 +41,9 @@ $(document).ready(function(){
 		else
 			$('#sidenav-overlay').fadeOut('slow');
 	});
-	$('.side-menu-container').perfectScrollbar();
+	if (typeof perfectScrollbar == 'function') {
+		$('.side-menu-container').perfectScrollbar();
+	}
 
 	/* admGroup hide/show */
 	$('.adm-group-toggle').click(function() {

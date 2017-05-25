@@ -67,7 +67,7 @@
 	<!-- List of images: BEGIN -->
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading text-right">
-			<a href="#" data-toggle="modal" data-target="#categories" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+			<a href="#" data-toggle="modal" data-target="#categories" class="btn btn-default btn-secondary"><i class="fa fa-pencil"></i></a>
 			<div class="btn-group" data-toggle="buttons">
 				<label class="btn btn-primary" title="{l_show_preview}">
 				<input type="checkbox" id="show_preview" autocomplete="off" onchange="setCookie('img_preview',this.checked?1:0); document.location=document.location;" {box_preview}> <i class="fa fa-eye"></i>
@@ -111,7 +111,7 @@
 									<option value="delete">{l_delete}</option>
 								</select>
 								<span class="input-group-btn">
-									<button type="submit" class="btn btn-default">{l_ok}</button>
+									<button type="submit" class="btn btn-default btn-secondary">{l_ok}</button>
 								</span>
 							</div>
 						</div>
@@ -166,7 +166,7 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+				<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">{l_cancel}</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
@@ -209,7 +209,7 @@
 								<tbody>
 									<tr>
 										<td>
-											<div class="btn btn-default btn-fileinput">
+											<div class="btn btn-default btn-secondary btn-fileinput">
 												<span><i class="fa fa-plus"></i> Add files ...</span>
 												<input type="file" name="userfile[1]" onchange="validateFile(this, multiple);" multiple="multiple">
 											</div>
@@ -257,7 +257,7 @@
 								<label class="col-sm-4">
 								</label>
 								<div class="col-sm-8">
-									<button type="button" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+									<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">{l_cancel}</button>
 									<input type="submit" id="i_submit" value='{l_upload}' class="btn btn-success"/>
 								</div>
 							</div>
@@ -315,7 +315,7 @@
 								<hr>
 								<label class="col-sm-4"></label>
 								<div class="col-sm-8">
-									<button type="button" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+									<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">{l_cancel}</button>
 									<input type="submit" value='{l_upload}' class="btn btn-success">
 								</div>
 							</div>
@@ -338,7 +338,7 @@
 				<img src="" alt="" />
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+				<button type="button" class="btn btn-default btn-secondary" data-dismiss="modal">{l_cancel}</button>
 			</div>
 		</div>
 	</div>
