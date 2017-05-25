@@ -50,6 +50,7 @@ h1, h2, h3, h4, h5, h6 {
 .header-top {
    padding: .5rem 0;
    border-bottom: 1px solid;
+   font-size: .8rem;
 }
 
 #mainNav {
