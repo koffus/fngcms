@@ -235,6 +235,7 @@ function manage_showlist($type) {
 	$dir = $fmanager->dname;
 
 	// Show only images, that are not linked to any DataStorage
+	// при удалении плагинов изображения и запись о них в бд остаются !!!!!!!
 	array_push($filter, 'linked_ds = 0');
 	$limit				= (count($filter)?"where ".join(" and ",$filter):'');
 	$query['sql']		= "select * from ".prefix."_".$fmanager->tname." ".$limit." order by date desc limit ".$start_from.", ".$npp;
