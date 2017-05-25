@@ -400,7 +400,7 @@ function _guestbook_records($order, $start, $perpage)
  // set date format
  $date_format = pluginGetVariable('guestbook', 'date');
  if (empty($date_format)) {
- $date_format = 'j Q Y';
+ $date_format = 'j F Y';
  }
 
  // get social data

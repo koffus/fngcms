@@ -52,7 +52,7 @@ function userEditForm(){
 	$tVars = array(
 		'php_self'		=>	$PHP_SELF,
 		'name'			=>	secure_html($row['name']),
-		'regdate'		=>	Lang::retDate("l, j Q Y - H:i", $row['reg']),
+		'regdate'		=>	Lang::retDate("l, j F Y - H:i", $row['reg']),
 		'com'			=>	$row['com'],
 		'news'			=>	$row['news'],
 		'status'		=>	$status,
@@ -62,7 +62,7 @@ function userEditForm(){
 		'where_from'	=>	secure_html($row['where_from']),
 		'info'			=>	secure_html($row['info']),
 		'id'			=>	$id,
-		'last'			=>	(empty($row['last'])) ? __('no_last') : Lang::retDate('l, j Q Y - H:i', $row['last']),
+		'last'			=>	(empty($row['last'])) ? __('no_last') : Lang::retDate('l, j F Y - H:i', $row['last']),
 		'ip'			=>	$row['ip'],
 		'token'			=> genUToken('admin.users'),
 		'perm'			=> array(
@@ -429,8 +429,8 @@ function userList(){
 			'groupName'		=>	$status,
 			'cntNews'		=>	$row['news'],
 			'cntComments'	=>	$row['com'],
-			'regdate'		=>	Lang::retDate('j Q Y - H:i', $row['reg']),
-			'lastdate'		=>	(empty($row['last'])) ? __('no_last') : Lang::retDate('j Q Y - H:i', $row['last']),
+			'regdate'		=>	Lang::retDate('j F Y - H:i', $row['reg']),
+			'lastdate'		=>	(empty($row['last'])) ? __('no_last') : Lang::retDate('j F Y - H:i', $row['last']),
 			'flags'			=>	array(
 				'isActive'		=> (!$row['activation']  or  $row['activation'] == "")?1:0,
 			),

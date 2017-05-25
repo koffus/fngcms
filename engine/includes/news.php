@@ -249,7 +249,7 @@ function showNews($handlerName, $params) {
 				$tableVars['day']		= $day;
 				$tableVars['dateStamp']	= mktime("0", "0", "0", $month, $day, $year);
 
-				$SYSTEM_FLAGS['info']['title']['group'] = Lang::retDate("j Q Y", mktime("0", "0", "0", $month, $day, $year));
+				$SYSTEM_FLAGS['info']['title']['group'] = Lang::retDate("j F Y", mktime("0", "0", "0", $month, $day, $year));
 				$paginationParams = checkLinkAvailable('news', 'by.day') ? 
 							array(
 								'pluginName' => 'news',
