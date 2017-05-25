@@ -208,6 +208,17 @@
 								</thead>
 								<tbody>
 									<tr>
+										<td>
+											<div class="btn btn-default btn-fileinput">
+												<span><i class="fa fa-plus"></i> Add files ...</span>
+												<input type="file" name="userfile[1]" onchange="validateFile(this, multiple);" multiple="multiple">
+											</div>
+										</td>
+										<td class="text-center">
+											<button type="button" onclick="document.getElementById('imageup').deleteRow(this.parentNode.parentNode.rowIndex);" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+										</td>
+									</tr>
+									<tr>
 										<td></td>
 										<td class="text-center" width="10">
 											<button type="button" title="{l_attach.more_rows}" onclick="attachAddRow('imageup');" class="btn btn-primary" title="{l_attach.more_rows}"><i class="fa fa-plus"></i></button>
@@ -359,7 +370,7 @@ function updateAction() {
 
 // Add first row
 var flagRequireReload = 0;
-attachAddRow('imageup');
+//attachAddRow('imageup');
 attachAddRow('imageup2');
 
 </script>
