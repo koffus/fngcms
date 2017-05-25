@@ -32,7 +32,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	// Use default <noavatar> file
 	// - Check if noavatar is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noAvatarURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noAvatarImage']) && $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.gif");
+	$noAvatarURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noAvatarImage']) && $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
 	// -> desired template path
 	$templatePath = ($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');

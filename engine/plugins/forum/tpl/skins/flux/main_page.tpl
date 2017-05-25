@@ -91,7 +91,7 @@
 						<tbody>
 							<tr>
 								<td style="width: 100px" class="addcc">
-									<img width= "100" height="100" src="{% if (avatar.true) %}{{ avatar.print }}{% else %}{{ avatar.print }}/noavatar.gif{% endif %}" />
+									<img width= "100" height="100" src="{% if (avatar.true) %}{{ avatar.print }}{% else %}{{ avatar.print }}/noavatar.png{% endif %}" />
 								</td>
 								<td class="addcc" valign="top">
 									<table cellpadding="0" cellspacing="0" width="100%" align="left" >
@@ -148,7 +148,7 @@
 						<tbody>
 							<tr>
 								<td style="width: 100px" class="addcc">
-									<img width= "100" height="100" src="{% if (avatar.true) %}{{ avatar.print }}{% else %}{{ avatar.print }}/noavatar.gif{% endif %}" />
+									<img width= "100" height="100" src="{% if (avatar.true) %}{{ avatar.print }}{% else %}{{ avatar.print }}/noavatar.png{% endif %}" />
 								</td>
 								<td class="addcc" valign="top">
 									Здравствуйте, уважаемый посетитель! К сожалению вы не были распознаны форумом как зарегистрированный пользователь. Для полноценного использования возможностей нашего форума вам необходимо <a href='{{ register }}'>зарегистрироваться</a>. Если вы уже зарегистрированы на форуме, то вам необходимо пройти авторизацию, используя Ваш логин и пароль. Зарегистрированные пользователи получают возможность просматривать закрытые разделы форума, а также возможность общения на нашем форуме.

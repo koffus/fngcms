@@ -35,7 +35,7 @@
 					<dl> 
 						<dt><strong><a href="{{ entry.profile_link }}">{{ entry.author }}</a>{% if (entry.tc) %} ТС{% endif %}</strong></dt>
 						<dd class="usertitle"><strong>{{ entry.userstatus }}</strong></dd>
-						<dd class="postavatar"><img src="{% if (entry.avatar.true) %}{{ entry.avatar.print }}{% else %}{{ entry.avatar.print }}/noavatar.gif{% endif %}" /></dd>
+						<dd class="postavatar"><img src="{% if (entry.avatar.true) %}{{ entry.avatar.print }}{% else %}{{ entry.avatar.print }}/noavatar.png{% endif %}" /></dd>
 						<dd>Зарегистрирован: {{ entry.data_reg|date("Y-m-d") }}</dd>
 						<dd>Сообщений: {{ entry.num_post }}</dd>
 						{% if (entry.ip.true) %}

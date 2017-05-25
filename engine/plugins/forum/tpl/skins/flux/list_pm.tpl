@@ -33,7 +33,7 @@
 					<dl>
 						<dt><strong><a href="{{ pm.profile_link }}">{{ pm.profile }}</a></strong></dt>
 						<dd class="usertitle"><strong>{{ pm.userstatus }}</strong></dd>
-						<dd class="postavatar"><img src="{% if (pm.avatar.true) %}{{ pm.avatar.print }}{% else %}{{ pm.avatar.print }}/noavatar.gif{% endif %}" /></dd>
+						<dd class="postavatar"><img src="{% if (pm.avatar.true) %}{{ pm.avatar.print }}{% else %}{{ pm.avatar.print }}/noavatar.png{% endif %}" /></dd>
 
 					<dd>Зарегистрирован: {{ pm.pmdate2|date("Y-m-d") }}</dd>
 					<dd>Сообщений: {{ pm.num_post }}</dd>

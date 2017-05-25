@@ -144,7 +144,7 @@ function jChat(maxRows, refresh, tableID, msgOrder) {
 				// 1. Floating DIV with add date/time
 				'<div style="float: right; font-size: 75%;" title="'+rec['datetime']+'">'+rec['time']+'</div>'+
 				// 2. Image to identify registered user. Also it will contain external link in case if uprofile plugin is enabled
-				((rec['author_id']>0)?('[isplugin uprofile]<a target="_blank" href="'+rec['profile_link']+'">[/isplugin]<img src="{skins_url}/images/profile.png" width="13" height="13" border="0"/>[isplugin uprofile]</a>[/isplugin] '):'')+
+				((rec['author_id']>0)?('[isplugin uprofile]<a target="_blank" href="'+rec['profile_link']+'">[/isplugin]<img src="{home}/uploads/avatars/noavatar.png" width="13" height="13" border="0"/>[isplugin uprofile]</a>[/isplugin] '):'')+
 				// 3. Author's name [ BOLD ]
 				'<span class="jchat_userName">'+rec['author']+'</span>'+
 				// 4. DELETE button (for admins)

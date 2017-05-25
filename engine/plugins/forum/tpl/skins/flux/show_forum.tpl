@@ -37,7 +37,7 @@
 						{% if (entry.last_post_forum.topic_name) %}
 						<div class="last_post_img">Тема: 
 							<span style="padding: 0px 3px 0px 0px;">
-								<a href="{{ entry.last_post_forum.l_author_link }}" title="Профиль {{ entry.last_post_forum.l_author }}"><img src="{% if (entry.last_post_forum.l_author_avatar.true) %}{{ entry.last_post_forum.l_author_avatar.print }}{% else %}{{ entry.last_post_forum.l_author_avatar.print }}/noavatar.gif{% endif %}" width="100" height="100" alt="" /></a>
+								<a href="{{ entry.last_post_forum.l_author_link }}" title="Профиль {{ entry.last_post_forum.l_author }}"><img src="{% if (entry.last_post_forum.l_author_avatar.true) %}{{ entry.last_post_forum.l_author_avatar.print }}{% else %}{{ entry.last_post_forum.l_author_avatar.print }}/noavatar.png{% endif %}" width="100" height="100" alt="" /></a>
 							</span>
 							<a href="{{ entry.last_post_forum.topic_link }}">{{ entry.last_post_forum.topic_name }}</a> <span class="byuser">Автор: <a href="{{ entry.last_post_forum.l_author_link }}" title="Профиль {{ entry.last_post_forum.l_author }}">{{ entry.last_post_forum.l_author }}</a> 
 							(<i style="font-size: 11px;">{% if entry.last_post_forum.date|date('d-m-Y') == "now"|date('d-m-Y') %}
@@ -96,7 +96,7 @@
 						{% if (entry.last_post_forum.topic_name) %}
 						<div class="last_post_img">Тема: 
 							<span style="padding: 0px 3px 0px 0px;">
-								<a href="{{ entry.last_post_forum.l_author_link }}" title="Профиль {{ entry.last_post_forum.l_author }}"><img src="{% if (entry.last_post_forum.l_author_avatar.true) %}{{ entry.last_post_forum.l_author_avatar.print }}{% else %}{{ entry.last_post_forum.l_author_avatar.print }}/noavatar.gif{% endif %}" width="100" height="100" alt="" /></a>
+								<a href="{{ entry.last_post_forum.l_author_link }}" title="Профиль {{ entry.last_post_forum.l_author }}"><img src="{% if (entry.last_post_forum.l_author_avatar.true) %}{{ entry.last_post_forum.l_author_avatar.print }}{% else %}{{ entry.last_post_forum.l_author_avatar.print }}/noavatar.png{% endif %}" width="100" height="100" alt="" /></a>
 							</span>
 							<a href="{{ entry.last_post_forum.topic_link }}">{{ entry.last_post_forum.topic_name }}</a> <span class="byuser">Автор: <a href="{{ entry.last_post_forum.l_author_link }}" title="Профиль {{ entry.last_post_forum.l_author }}">{{ entry.last_post_forum.l_author }}</a> 
 							(<i style="font-size: 11px;">{% if entry.last_post_forum.date|date('d-m-Y') == "now"|date('d-m-Y') %}

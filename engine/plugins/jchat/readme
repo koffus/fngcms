@@ -51,7 +51,7 @@ cell.innerHTML =
 	// 1. Поле для отображения даты&времени записи (со стилем float: right)
 	'<div style="float: right; font-size: 75%;" title="'+rec['datetime']+'">'+rec['time']+'</div>'+
 	// 2. Изображение-признак зарегистрированного пользователя, оно также является ссылкой на профиль пользователя (если включен плагин uprofile)
-	((rec['author_id']>0)?('[isplugin uprofile]<a target="_blank" href="'+rec['profile_link']+'">[/isplugin]<img src="{skins_url}/images/profile.png" width="13" height="13" border="0"/>[isplugin uprofile]</a>[/isplugin] '):'')+
+	((rec['author_id']>0)?('[isplugin uprofile]<a target="_blank" href="'+rec['profile_link']+'">[/isplugin]<img src="{home}/uploads/avatars/noavatar.png" width="13" height="13" border="0"/>[isplugin uprofile]</a>[/isplugin] '):'')+
 	// 3. Имя автора [жирным, используется специальный класс jchat_userName для автовставки имени]
 	'<span class="jchat_userName">'+rec['author']+'</span>'+
 	// 4. Переход на новую страницу

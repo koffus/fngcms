@@ -13,7 +13,7 @@
  {% set avatar = entry.social.Google.photo %}
  {% endif %}
  {% else %}
- {% set avatar = '/uploads/avatars/noavatar.gif' %}
+ {% set avatar = '{{ home }}/uploads/avatars/noavatar.png' %}
  {% endif %}
  <div class="person-photo"><img src="{{ avatar }}" width="60" height="60"></div>
  <div class="person-name">{% if entry.author == 'guest' %} {{ entry.fields.firstname.value }} {{ entry.fields.lastname.value }}{% else %}{{ entry.author }}{% endif %}</div>
