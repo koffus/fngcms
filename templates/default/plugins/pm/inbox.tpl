@@ -9,7 +9,7 @@
 		<td width="40%">{{ lang['pm:subject'] }}</td>
 		<td width="25%">{{ lang['pm:from'] }}</td>
 		<td width="10%">{{ lang['pm:state'] }}</td>
-		<td width="5%"><input type="checkbox" name="master_box" title="{{ lang['pm:checkall'] }}" onclick="javascript:check_uncheck_all(form)"></td>
+		<td width="5%"><input type="checkbox" class="select-all" title="{{ lang['select_all'] }}" /></td>
 	</tr>
 	{% for entry in entries %}
 	<tr align="center">

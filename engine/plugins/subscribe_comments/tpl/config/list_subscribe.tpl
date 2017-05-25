@@ -5,7 +5,7 @@
 <td width="5%" nowrap>ID</td>
 <td width="45%" >Страница</td>
 <td width="10%">Email</td>
-<td width="5%"><input class="check" type="checkbox" name="master_box" title="Выбрать все" onclick="javascript:check_uncheck_all(subscribe_comments)" /></td>
+<td width="5%"><input type="checkbox" class="select-all" title="{l_select_all}" /></td>
 </tr>
 {entries}
 <tr>

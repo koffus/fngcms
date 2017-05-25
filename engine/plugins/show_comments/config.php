@@ -75,7 +75,7 @@ function show_comments()
  echo '<th>Новость</th>';
  echo '<th style="width:14%;">Автор</th>';
  echo '<th style="width:13%;">IP</th>';
- echo '<th><input type="checkbox" name="master_box" title="Выбрать все" onclick="javascript:check_uncheck_all(select_comments)" ></th>';
+ echo '<th><input type="checkbox" class="select-all" title="{l_select_all}" /></th>';
  echo '</tr>';
 
  foreach ($result as $prd) {

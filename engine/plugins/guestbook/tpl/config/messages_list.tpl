@@ -9,7 +9,7 @@
  <td width="10%">{{ lang['gbconfig']['message_status'] }}</td>
  <td colspan="2" width="5%">{{ lang['gbconfig']['message_action'] }}</td>
  <td width="5%">
- <input class="check" type="checkbox" name="master_box" onclick="javascript:check_uncheck_all(check_messages)" />
+ <input type="checkbox" class="select-all" title="{{ lang['select_all'] }}" />
  </td>
  </tr>
  {% for entry in entries %}
