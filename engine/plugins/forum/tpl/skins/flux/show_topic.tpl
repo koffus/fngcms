@@ -91,11 +91,12 @@
 						<script>
 							$(document).ready(function() {
 							 $("#IncertText_{{ entry.post_id }}").click(function() {
-								 $('#content').execCommand('quotes',{author: '{{ entry.author }}',seltext:'{{ entry.quote.quote }}'});
+								$('#content').execCommand('quotes',{author: '{{ entry.author }}',seltext:'{{ entry.quote.quote }}'});
+								return false;
 							 });
 							})
 						</script>
-						<li><a href="javascript:ShowOrHide('#');" id="IncertText_{{ entry.post_id }}">Цитировать</a></li>
+						<li><a href="#" id="IncertText_{{ entry.post_id }}">Цитировать</a></li>
 						{% endif %}
 					</ul>
 				</div>
