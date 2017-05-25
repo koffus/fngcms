@@ -508,9 +508,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 
-/* SCROLLUP
+/* scrollTop
 -------------------------------------------------- */
-.scrollup{
+.scrollTop{
 	display:none;
 	z-index:9999;
 	width:40px;
@@ -529,13 +529,13 @@ h1, h2, h3, h4, h5, h6 {
 	transition:all .2s ease;
 	opacity:.8;
 	}
-	.scrollup:before{
+	.scrollTop:before{
 		width:40px;
 		height:40px;
 		line-height:40px;
 		color:#fff;
 		}
-	.scrollup:hover{
+	.scrollTop:hover{
 		opacity:1;
 		}
 

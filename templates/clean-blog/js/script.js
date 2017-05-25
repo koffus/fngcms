@@ -1,14 +1,14 @@
 $(document).ready(function($) {
 
-	/* SCROLLUP */
-	$('body').append('<div class="scrollup fa fa-angle-up"></div>');
+	/* scrollTop */
+	$('body').append('<div class="scrollTop fa fa-angle-up"></div>');
 	$(window).scroll(function () {
 		if ($(this).scrollTop() > 60)
-			$('.scrollup').show();
+			$('.scrollTop').show();
 		else
-			$('.scrollup').hide();
+			$('.scrollTop').hide();
 	});
-	$('.scrollup').on('click', function(){$('html, body').animate({scrollTop:0}, 888);});
+	$('.scrollTop').on('click', function(){$('html, body').animate({scrollTop:0}, 888);});
 
 	// Share news
 	$('.share').click(function() {
