@@ -1,6 +1,5 @@
 <h2 class="section-title">{{ lang.uprofile['profile_of'] }} <b>{{ user.name }}</b></h2>
 
-
 <form id="profileForm" action="{{ form_action }}" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="token" value="{{ token }}" />
 

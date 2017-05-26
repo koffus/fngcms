@@ -297,6 +297,27 @@ button, input, optgroup, select, textarea {
 .bbcodes >.btn:last-child:not(:first-child):not(.dropdown-toggle) {
     border-bottom-right-radius: 0;
 }
+/* SPOILERs */
+.spoiler {
+ margin: 10px 0;
+ padding: 0px;
+ clear: both;
+}
+.sp-head {
+ border: 1px solid #ccc;
+ background: #eee;
+ padding: 2px 4px;
+ cursor: pointer;
+ color: #888;
+}
+.spoiler .sp-head b {}
+.spoiler .sp-head b.expanded {}
+.sp-body {
+ display: none;
+ border: 1px solid #ccc;
+ border-top: 0;
+ padding: 4px 8px;
+}
 /* Comments
 -------------------------------------------------------------- */
 .message-content {

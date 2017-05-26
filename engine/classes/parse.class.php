@@ -152,10 +152,10 @@ class parse {
 
 		// Process spoilers
 		while (preg_match("#\[spoiler\](.*?)\[/spoiler\]#is", $content, $null))
-			$content	= preg_replace("#\[spoiler\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head" onclick="toggleSpoiler(this.parentNode, this);"><b></b>'.__('bb_spoiler').'</div><div class="sp-body">$1</div></div>', $content);
+			$content	= preg_replace("#\[spoiler\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head"><b>'.__('bb_spoiler').'</b></div><div class="sp-body">$1</div></div>', $content);
 
 		while (preg_match("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", $content, $null))
-			$content	= preg_replace("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head" onclick="toggleSpoiler(this.parentNode, this);"><b></b>$1</div><div class="sp-body">$2</div></div>', $content);
+			$content	= preg_replace("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head"><b>$1</b></div><div class="sp-body">$2</div></div>', $content);
 
 		// Process Images
 		// Possible format:

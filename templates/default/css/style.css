@@ -352,6 +352,27 @@ h1, h2, h3, h4, h5, h6 {
 .bbcodes .btn:hover {
     color: #444;
 }
+/* SPOILERs */
+.spoiler {
+ margin: 10px 0;
+ padding: 0px;
+ clear: both;
+}
+.sp-head {
+ border: 1px solid #ccc;
+ background: #eee;
+ padding: 2px 4px;
+ cursor: pointer;
+ color: #888;
+}
+.spoiler .sp-head b {}
+.spoiler .sp-head b.expanded {}
+.sp-body {
+ display: none;
+ border: 1px solid #ccc;
+ border-top: 0;
+ padding: 4px 8px;
+}
 /* Comments
 -------------------------------------------------------------- */
 .message-content {
