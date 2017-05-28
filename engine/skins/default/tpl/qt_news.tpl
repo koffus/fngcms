@@ -1,51 +1,51 @@
 <span id="save_area" style="display: block;"></span>
 <div id="tags" class="btn-group btn-group-justified bbcodes" data-toggle="buttons">
 	
-	<a href="#" class="btn btn-sm btn-default" onclick="insertext('[p]','[/p]', {area})" title='{l_tags.paragraph}'><i class="fa fa-paragraph"></i></a>
+	<a href="#" class="btn btn-sm btn-secondary btn-default" onclick="insertext('[p]','[/p]', {area})" title='{l_tags.paragraph}'><i class="fa fa-paragraph"></i></a>
 
 	<div class="btn-group">
-		<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-font"></i> <span class="caret"></span></button>
+		<button type="button" class="btn btn-sm btn-secondary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-font"></i> <span class="caret"></span></button>
 		<ul class="dropdown-menu">
-			<li><a href="#" onclick="insertext('[b]','[/b]', {area})"><i class="fa fa-bold"></i> {l_tags.bold}</a></li>
-			<li><a href="#" onclick="insertext('[u]','[/u]', {area})"><i class="fa fa-underline"></i> {l_tags.underline}</a></li>
-			<li><a href="#" onclick="insertext('[i]','[/i]', {area})"><i class="fa fa-italic"></i> {l_tags.italic}</a></li>
-			<li><a href="#" onclick="insertext('[s]','[/s]', {area})"><i class="fa fa-strikethrough"></i>{l_tags.crossline}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[b]','[/b]', {area})" class="dropdown-item"><i class="fa fa-bold"></i> {l_tags.bold}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[u]','[/u]', {area})" class="dropdown-item"><i class="fa fa-underline"></i> {l_tags.underline}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[i]','[/i]', {area})" class="dropdown-item"><i class="fa fa-italic"></i> {l_tags.italic}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[s]','[/s]', {area})" class="dropdown-item"><i class="fa fa-strikethrough"></i>{l_tags.crossline}</a></li>
 		</ul>
 	</div>
 	
 	<div class="btn-group">
-		<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-align-left"></i> <span class="caret"></span></button>
+		<button type="button" class="btn btn-sm btn-secondary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-align-left"></i> <span class="caret"></span></button>
 		<ul class="dropdown-menu">
-			<li><a href="#" onclick="insertext('[left]','[/left]', {area})"><i class="fa fa-align-left"></i> {l_tags.left}</a></li>
-			<li><a href="#" onclick="insertext('[center]','[/center]', {area})"><i class="fa fa-align-center"></i> {l_tags.center}</a></li>
-			<li><a href="#" onclick="insertext('[right]','[/right]', {area})"><i class="fa fa-align-right"></i> {l_tags.right}</a></li>
-			<li><a href="#" onclick="insertext('[justify]','[/justify]', {area})"><i class="fa fa-align-justify"></i> {l_tags.justify}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[left]','[/left]', {area})" class="dropdown-item"><i class="fa fa-align-left"></i> {l_tags.left}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[center]','[/center]', {area})" class="dropdown-item"><i class="fa fa-align-center"></i> {l_tags.center}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[right]','[/right]', {area})" class="dropdown-item"><i class="fa fa-align-right"></i> {l_tags.right}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[justify]','[/justify]', {area})" class="dropdown-item"><i class="fa fa-align-justify"></i> {l_tags.justify}</a></li>
 		</ul>
 	</div>
 	
 	<div class="btn-group">
-		<button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-quote-left"></i> <span class="caret"></span></button>
+		<button type="button" class="btn btn-sm btn-secondary btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-quote-left"></i> <span class="caret"></span></button>
 		<ul class="dropdown-menu">
-			<li><a href="#" onclick="insertext('[ul]\n[li][/li]\n[li][/li]\n[li][/li]\n[/ul]','', {area})"><i class="fa fa-list-ul"></i> {l_tags.bulllist}</a></li>
-			<li><a href="#" onclick="insertext('[ol]\n[li][/li]\n[li][/li]\n[li][/li]\n[/ol]','', {area})"><i class="fa fa-list-ol"></i> {l_tags.numlist}</a></li>
-			<li role="separator" class="divider"></li>
-			<li><a href="#" onclick="insertext('[quote]','[/quote]', {area})"><i class="fa fa-quote-left"></i> {l_tags.comment}</a></li>
-			<li><a href="#" onclick="insertext('[code]','[/code]', {area})"><i class="fa fa-code"></i> {l_tags.code}</a></li>
-			<li><a href="#" onclick="insertext('[hide]','[/hide]', {area})"><i class="fa fa-shield"></i> {l_tags.hide}</a></li>
-			<li><a href="#" onclick="insertext('[spoiler]','[/spoiler]', {area})"><i class="fa fa-list-alt"></i> {l_tags.spoiler}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[ul]\n[li][/li]\n[li][/li]\n[li][/li]\n[/ul]','', {area})" class="dropdown-item"><i class="fa fa-list-ul"></i> {l_tags.bulllist}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[ol]\n[li][/li]\n[li][/li]\n[li][/li]\n[/ol]','', {area})" class="dropdown-item"><i class="fa fa-list-ol"></i> {l_tags.numlist}</a></li>
+			<li role="separator" class="dropdown-divider"></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[quote]','[/quote]', {area})" class="dropdown-item"><i class="fa fa-quote-left"></i> {l_tags.comment}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[code]','[/code]', {area})" class="dropdown-item"><i class="fa fa-code"></i> {l_tags.code}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[hide]','[/hide]', {area})" class="dropdown-item"><i class="fa fa-shield"></i> {l_tags.hide}</a></li>
+			<li class="nav-item"><a href="#" onclick="insertext('[spoiler]','[/spoiler]', {area})" class="dropdown-item"><i class="fa fa-list-alt"></i> {l_tags.spoiler}</a></li>
 		</ul>
 	</div>
 	
-	<a href="#modal-url" class="btn btn-sm btn-default" data-toggle="modal" title="{l_tags.link}"><i class="fa fa-link"></i></a>
+	<a href="#modal-url" class="btn btn-sm btn-secondary btn-default" data-toggle="modal" title="{l_tags.link}"><i class="fa fa-link"></i></a>
 	
-	<a href="#" class="btn btn-sm btn-default" onclick="try{document.forms['DATA_tmp_storage'].area.value={area};} catch(err){;} getImageList('img_popup', 8, 1);" title='{l_tags.image}'><i class="fa fa-file-image-o"></i></a>
+	<a href="#" class="btn btn-sm btn-secondary btn-default" onclick="try{document.forms['DATA_tmp_storage'].area.value={area};} catch(err){;} getImageList('img_popup', 8, 1);" title='{l_tags.image}'><i class="fa fa-file-image-o"></i></a>
 	
-	<a href="#" class="btn btn-sm btn-default" onclick="try{document.forms['DATA_tmp_storage'].area.value={area};} catch(err){;} window.open('admin.php?mod=files&amp;ifield='+{area}, '_Addfile', 'height=600,resizable=yes,scrollbars=yes,width=767');return false;" target="DATA_Addfile" title='{l_tags.file}'><i class="fa fa-file-text-o"></i></a>
+	<a href="#" class="btn btn-sm btn-secondary btn-default" onclick="try{document.forms['DATA_tmp_storage'].area.value={area};} catch(err){;} window.open('admin.php?mod=files&amp;ifield='+{area}, '_Addfile', 'height=600,resizable=yes,scrollbars=yes,width=767');return false;" target="DATA_Addfile" title='{l_tags.file}'><i class="fa fa-file-text-o"></i></a>
 	
-	<a href="#" class="btn btn-sm btn-default" onclick="insertext('<!--nextpage-->','', {area})" title="{l_tags.nextpage}"><i class="fa fa-files-o"></i></a>
-	<a href="#" class="btn btn-sm btn-default" onclick="insertext('<!--more-->','', {area})" title="{l_tags.more}"><i class="fa fa-ellipsis-h"></i></a>
+	<a href="#" class="btn btn-sm btn-secondary btn-default" onclick="insertext('<!--nextpage-->','', {area})" title="{l_tags.nextpage}"><i class="fa fa-files-o"></i></a>
+	<a href="#" class="btn btn-sm btn-secondary btn-default" onclick="insertext('<!--more-->','', {area})" title="{l_tags.more}"><i class="fa fa-ellipsis-h"></i></a>
 	
-	<a href="#modal-smiles" class="btn btn-sm btn-default" data-toggle="modal"><i class="fa fa-smile-o"></i></a>
+	<a href="#modal-smiles" class="btn btn-sm btn-secondary btn-default" data-toggle="modal"><i class="fa fa-smile-o"></i></a>
 	
 </div>
 
@@ -62,8 +62,8 @@
 			<div class="modal-body">
 				<ul class="nav nav-tabs nav-justified">
 					<li class="active"><a href="#tags-link" data-toggle="tab" aria-expanded="true">{l_tags.link}</a></li>
-					<li><a href="#tags-email" data-toggle="tab" aria-expanded="false">{l_tags.email}</a></li>
-					<li><a href="#tags-img-url" data-toggle="tab" aria-expanded="false">{l_tags.imagelink}</a></li>
+					<li class="nav-item"><a href="#tags-email" data-toggle="tab" aria-expanded="false">{l_tags.email}</a></li>
+					<li class="nav-item"><a href="#tags-img-url" data-toggle="tab" aria-expanded="false">{l_tags.imagelink}</a></li>
 				</ul>
 				
 				<div class="form-group"></div>
@@ -153,7 +153,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="cancel" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+				<button type="cancel" class="btn btn-secondary btn-default" data-dismiss="modal">{l_cancel}</button>
 				<button type="button" id="modal-url-submit" class="btn btn-success" data-dismiss="modal">{l_ok}</button>
 			</div>
 		</div>
