@@ -607,25 +607,4 @@ $urlLibrary = array (
       ),
     ),
   ),
-  'a_test' => 
-  array (
-    '' => 
-    array (
-      'vars' => 
-      array (
-        'action' => 
-        array (
-          'matchRegex' => '.+?',
-          'descr' => 
-          array (
-            'russian' => 'Super action',
-          ),
-        ),
-      ),
-      'descr' => 
-      array (
-        'russian' => 'Super description',
-      ),
-    ),
-  ),
 );
