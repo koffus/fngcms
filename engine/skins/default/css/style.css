@@ -413,6 +413,7 @@ a.small-box:hover {
 	margin: 0 0 10px 0;
 	white-space: nowrap;
 	padding: 0;
+	color: #fff;
 }
 .small-box p {
 	font-size: 15px;
