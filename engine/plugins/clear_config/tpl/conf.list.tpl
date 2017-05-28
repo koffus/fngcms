@@ -1,24 +1,28 @@
-<div style="text-align : left;">
+<!-- Navigation bar -->
+<ul class="breadcrumb">
+	<li><a href="admin.php">{{ lang['home'] }}</a></li>
+	<li><a href="admin.php?mod=extras">{{ lang['extras'] }}</a></li>
+	<li class="active">{{ lang['с_с:page_title'] }}</li>
+</ul>
 
-<table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
-<tr>
-<td width="100%" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" /><a href="admin.php?mod=extras">Управление плагинами</a></td>
-</tr>
-<tr><td>&nbsp;</td></tr>
-<tr>
-<td width="100%" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" />Настройка плагина: clear_config</td>
-</tr>
-<tr><td>&nbsp;</td></tr>
-<tr><td class="contentNav" ><font color="red"><b>ЭТО ВАЖНО!!!</b><br />Обязательно сделайте резервную копию папки <b>.../engine/conf/</b></font></td></tr>
-</table>
-<br />
-<table width="97%" class="content" border="0" cellspacing="0" cellpadding="0" align="center">
-<tr align="center" class="contHead">
-<td>Код плагина</td>
-<td>Удалить конфигурацию</td>
-</tr>
-{entries}
-<tr><td width="100%" colspan="2">&nbsp;</td></tr>
-<tr class="contentEdit"><td colspan="2">&nbsp;</td></tr>
-</table>
+<!-- Info content -->
+<div class="page-main">
+	<div class="alert alert-warning">{{ lang['с_с:alert_warning'] }}</div>
+
+	<table class="table table-condensed">
+		<thead>
+			<tr>
+				<th>{{ lang['с_с:id'] }}</th>
+				<th>{{ lang['с_с:del_config'] }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% for entry in entries %}
+			<tr>
+				<td>{{ entry.id }}</td>
+				<td>{{ entry.conf }}</td>
+			</tr>
+		{% endfor %}
+		</tbody>
+	</table>
 </div>

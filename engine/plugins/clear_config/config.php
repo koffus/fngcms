@@ -12,7 +12,7 @@ switch ($_REQUEST['action']) {
 }
 
 function showlist() {
-	global $tpl, $PLUGINS;
+	global $twig, $PLUGINS;
 
 	pluginsLoadConfig();
 	$ULIB = new urlLibrary();
@@ -45,32 +45,33 @@ function showlist() {
 		foreach($ULIB->CMD as $key => $row) {
 			if ($key != 'core' and $key != 'static' and $key != 'search' and $key != 'news' and !in_array($key, $plug)) $plug[] = $key;
 			$conf[$key][] = 'urlcmd'; } }
-	$tpath = locatePluginTemplates(array('conf.list', 'conf.list.row'), 'clear_config'); $output = '';	
+	$tpath = locatePluginTemplates(array('conf.list', 'conf.list.row'), 'clear_config');
+	$output = '';
 	sort($plug);
 	foreach($plug as $key => $row) {
-		$pvars['vars']['id'] = $row;
-		$pvars['vars']['conf'] = '';
+		$pvars = array();
+		$pvars['id'] = $row;
+		$pvars['conf'] = '';
 		foreach($conf[$row] as $kkey => $rrow) {
-			$pvars['vars']['conf'] .= 
-			'<a href="' . home . '/engine/admin.php?mod=extra-config&plugin=clear_config&action=delete&id='.$row.
-			'&conf='.$rrow.
-			'" title="'.$lang['с_с:'.$rrow].
-			'" onclick="return confirm(\''.sprintf($lang['с_с:confirm'], $lang['с_с:'.$rrow], $row).'\');" '.
-			'><img src="' . home . '/engine/plugins/clear_config/tpl/images/'.$rrow.'.png" /></a>&#160;'; }
-		$tpl->template('conf.list.row', $tpath['conf.list.row']);
-		$tpl -> vars('conf.list.row', $pvars);
-		$output .= $tpl->show('conf.list.row'); }
-	$tvars['vars']['entries'] = $output;
-	$tpl->template('conf.list', $tpath['conf.list']);
-	$tpl->vars('conf.list', $tvars);
-	print $tpl->show('conf.list');
+			if ( $pvars['id'] == 'auth_basic' )
+				continue;
+			$pvars['conf'] .= 
+			'<a href="#" title="'.__('с_с:'.$rrow). '"' .
+			' onclick="confirmIt(\'' . home . '/engine/admin.php?mod=extra-config&plugin=clear_config&action=delete&id='.$row.
+			'&conf='.$rrow.'\', \''.sprintf(__('с_с:confirm'), __('с_с:'.$rrow), $row).'\');">'.
+			'<img src="' . home . '/engine/plugins/clear_config/tpl/images/'.$rrow.'.png" /></a>&#160;';
+		}
+		$tvars['entries'][] = $pvars;
+	}
+	
+	$xt = $twig->loadTemplate('plugins/clear_config/tpl/conf.list.tpl');
+	echo $xt->render($tvars);
 }
 
-function delete()
-{
+function delete() {
 	global $PLUGINS;
 	if (!isset($_REQUEST['id']) or !isset($_REQUEST['conf'])) {
-		msg(array('type' => 'danger', 'message' => $lang['с_с:error']));
+		msg(array('type' => 'danger', 'message' => __('с_с:error')));
 		showlist();	return false; }
 	$id = secure_html(convert($_REQUEST['id']));
 	$conf = secure_html(convert($_REQUEST['conf']));
@@ -78,8 +79,8 @@ function delete()
 		case 'active':
 			if (isset($PLUGINS['active']['active'][$id])){
 				unset($PLUGINS['active']['active'][$id]);
-				msg(array('message' => sprintf($lang['с_с:del_ok'], 'active', $id)));}
-			else msg(array('type' => 'danger', 'message' => sprintf($lang['с_с:del_er'], 'active', $id)));
+				msg(array('message' => sprintf(__('с_с:del_ok'), 'active', $id)));}
+			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'active', $id)));
 			break;
 		case 'actions':
 			$if_delete = false;
@@ -88,34 +89,34 @@ function delete()
 					if (isset($PLUGINS['active']['actions'][$key][$id])) {
 						unset($PLUGINS['active']['actions'][$key][$id]);
 						$if_delete = true;} } }
-			if ($if_delete) msg(array('message' => sprintf($lang['с_с:del_ok'], 'actions', $id)));
-			else msg(array('type' => 'danger', 'message' => sprintf($lang['с_с:del_er'], 'actions', $id)));
+			if ($if_delete) msg(array('message' => sprintf(__('с_с:del_ok'), 'actions', $id)));
+			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'actions', $id)));
 			break;
 		case 'installed':
 			if (isset($PLUGINS['active']['installed'][$id])) {
 				unset($PLUGINS['active']['installed'][$id]);
-				msg(array('message' => sprintf($lang['с_с:del_ok'], 'installed', $id))); }
-			else msg(array('type' => 'danger', 'message' => sprintf($lang['с_с:del_er'], 'installed', $id)));
+				msg(array('message' => sprintf(__('с_с:del_ok'), 'installed', $id))); }
+			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'installed', $id)));
 			break;
 		case 'libs':
 			if (isset($PLUGINS['active']['libs'][$id])) {
 				unset($PLUGINS['active']['libs'][$id]);
-				msg(array('message' => sprintf($lang['с_с:del_ok'], 'libs', $id))); }
-			else msg(array('type' => 'danger', 'message' => sprintf($lang['с_с:del_er'], 'libs', $id)));
+				msg(array('message' => sprintf(__('с_с:del_ok'), 'libs', $id))); }
+			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'libs', $id)));
 			break;
 		case 'config':
 			if (isset($PLUGINS['config'][$id])) {
 				unset($PLUGINS['config'][$id]);
-				msg(array('message' => sprintf($lang['с_с:del_ok'], 'config', $id))); }
-			else msg(array('type' => 'danger', 'message' => sprintf($lang['с_с:del_er'], 'config', $id)));
+				msg(array('message' => sprintf(__('с_с:del_ok'), 'config', $id))); }
+			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'config', $id)));
 			break;
 		case 'urlcmd':
 			$ULIB = new urlLibrary();
 			$ULIB->loadConfig();
 			if (isset($ULIB->CMD[$id])) {
 				unset($ULIB->CMD[$id]);
-				msg(array('message' => sprintf($lang['с_с:del_ok'], 'urlcmd', $id))); }
-			else msg(array('type' => 'danger', 'message' => sprintf($lang['с_с:del_er'], 'urlcmd', $id)));
+				msg(array('message' => sprintf(__('с_с:del_ok'), 'urlcmd', $id))); }
+			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'urlcmd', $id)));
 			$ULIB->saveConfig();
 			break;
 	}
