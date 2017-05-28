@@ -33,7 +33,7 @@ select .divider{height:1px;margin:9px 0;overflow:hidden;background-color:#e5e5e5
 label.control-label{text-align:left!important}
 .nav-tabs.nav-justified{white-space: nowrap}
 .dropdown-menu > li > a {padding:4px 15px}
-.dropdown-menu .divider {margin:1px 0}
+.dropdown-divider {height: 1px;margin: .5rem 0;overflow: hidden;background-color: #eceeef;}
 .bg-info {background-color:#00c0ef}
 .bg-success {background-color:#00a65a}
 .bg-warning {background-color:#f39c12}

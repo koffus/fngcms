@@ -188,7 +188,7 @@
 								{% if flags.comments %}<option value="mass_com_approve">{{ lang.editnews['com_approve'] }}</option>
 								<option value="mass_com_forbidden">{{ lang.editnews['com_forbidden'] }}</option>
 								<option value="" class="divider" disabled>===================</option>{% endif %}
-								<option value="mass_delete">{{ lang.editnews['delete'] }}</option>
+								<option value="mass_delete">{{ lang['delete'] }}</option>
 							</select>
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-default">{{ lang['ok'] }}</button>
