@@ -1,5 +1,17 @@
 [TWIG]
 <article class="full-post">
+	<div class="btn-group pull-right">
+		<button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>
+		<div class="dropdown-menu dropdown-menu-right">
+			<a href="{{ news.url.print }}" class="dropdown-item"><i class="fa fa-print"></i> {{ lang.print }}</a>
+			{% if (news.flags.canEdit) %}<a href="{{ news.url.edit }}" class="dropdown-item"><i class="fa fa-pencil"></i> {{ lang.editnews }}</a>{% endif %}
+			{% if pluginIsActive('bookmarks') %}{{ plugin_bookmarks_news }}{% endif %}
+			{% if (news.flags.canDelete) %}
+				<div class="dropdown-divider"></div>
+				<a href="#" onclick="confirmIt('{{ news.url.delete }}', '{{ lang['sure_del'] }}'); return false;" target="_blank" class="dropdown-item"><i class="fa fa-trash"></i> {{ lang.delnews }}</a>
+			{% endif %}
+		</div>
+	</div>
 	<h1 class="section-title">{{ news.title }}</h1>
 	<p>{{ news.short }}</p>
 	{% for file in _files %}
@@ -25,7 +37,7 @@
 	
 	<div class="post-full-footer">
 		{% if pluginIsActive('tags') %}{% if (p.tags.flags.haveTags) %}<div class="post-full-tags">{{ lang.tags }}: {{ tags }}</div>{% endif %}{% endif %}
-		{% if pluginIsActive('rating') %}<div class="post-rating">{{ lang.rating }}: <span class="post-rating-inner">{{ plugin_rating }}</span></div>{% endif %}
+		{% if pluginIsActive('rating') %}<div class="post-rating">{{ lang.rating }}: <span class="post-rating-inner">{{ rating }}</span></div>{% endif %}
 	</div>
 </article>
 
