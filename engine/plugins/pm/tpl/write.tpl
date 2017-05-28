@@ -1,87 +1,64 @@
-<script src="{{ scriptLibrary }}/libsuggest.js"></script>
-<style>
-.suggestWindow {
-	background: #f9f9f9;
-	border: 1px solid #efefef;
-	width: 316px;
-	position: absolute;
-	display: block;
-	visibility: hidden;
-	padding: 0px;
-	font: normal 12px tahoma, sans-serif;
-	top: 0px;
-	margin: 0;
-	left: 80px;
-}
-#suggestBlock {
-	padding-top: 2px;
-	padding-bottom: 2px;
-	width: 100%;
-	border: 0px;
-}
-#suggestBlock td {
-	padding-left: 2px;
-}
-#suggestBlock tr {
-	padding: 3px;
-	padding-left: 8px;
-	background: white;
-}
-#suggestBlock .suggestRowHighlight {
-	background: #59a6ec;
-	color: white;
-	cursor: default;
-}
-#suggestBlock .cleft {
-	padding-left: 5px;
-}
-#suggestBlock .cright {
-	text-align: right;
-	padding-right: 5px;
-}
-.suggestClose {
-	display: block;
-	text-align: right;
-	font: normal 10px verdana, tahoma, sans-serif;
-	background: #efefef;
-	padding: 5px;
-	cursor: pointer;
-}
-</style>
-<form method=post name=form action="{{ php_self }}?action=send">
-<div class="block-title">{{ lang['pm:new'] }}</div>
-<table class="table table-striped table-bordered">
-	<tr>
-		<th colspan="2"><a href="{{ home }}/plugin/pm/">{{ lang['pm:inbox'] }}</a> | <a href="{{ home }}/plugin/pm/?action=outbox">{{ lang['pm:outbox'] }}</a> | <a href="{{ php_self }}?action=set" align="right">{{ lang['pm:set'] }}</a></th>
-	</tr>
-	<tr>
-		<td width="30%">{{ lang['pm:subject'] }}</td>
-		<td width="70%"><input class="input" type="text" name="title" tabindex="2" /></td>
-	</tr>
-	
-	<tr>
-		<td width="30%">{{ lang['pm:too'] }}<br /><small>{{ lang['pm:to'] }}</small></td>
-		<td width="70%"><input class="input" type="text" name="to_username" id="to_username" tabindex="3" autocomplete="off" value="{{ username }}" /><span id="suggestLoader" style="width: 20px; visibility: hidden;"><img src="{{skins_url}}/images/loading.gif"/></span></td>
-	</tr>
-	<tr>
-		<td width="100%" colspan="2">
-			<div class="clearfix"></div>
-			{{ quicktags }} {{ smilies }}
-			<div class="clearfix"></div>
-			<div class="label">
-				<label></label>
-				<textarea name="content" id="pm_content" style="width: 100%; height: 120px;" /></textarea>
-				<br /><br /><input name="saveoutbox" type="checkbox"/> {{ lang['pm:saveoutbox'] }}
+<h2 class="section-title">{{ lang['pm:new'] }}</h2>
+
+<form method="post" name="form" action="{{ php_self }}?action=send">
+
+	<div class="row">
+		<div class="col-md-4">
+			<div class="list-group">
+				<a href="{{ php_self }}?action=write" class="list-group-item list-group-item-action active">{{ lang['pm:write'] }}</a>
+				<a href="{{ home }}/plugin/pm/" class="list-group-item list-group-item-action"><i class="fa fa-inbox"></i>&nbsp;{{ lang['pm:inbox'] }}</a>
+				<a href="{{ home }}/plugin/pm/?action=outbox" class="list-group-item list-group-item-action"><i class="fa fa-envelope-o"></i>&nbsp;{{ lang['pm:outbox'] }}</a>
+				<a href="{{ php_self }}?action=set" class="list-group-item list-group-item-action"> <i class="fa fa-cog"></i>&nbsp;{{ lang['pm:set'] }}</a>
 			</div>
-		</td>
-	</tr>
-</table>
-<div class="clearfix"></div>
-<div class="label pull-right">
-	<label class="default">&nbsp;</label>
-	<input class="button" type="submit" value="{{ lang['pm:send'] }}" accesskey="s" />
-</div>
+		</div>
+
+		<div class="col-md-8">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="form-group">
+						<input type="text" name="title" tabindex="2" placeholder="{{ lang['pm:subject'] }}" class="form-control" />
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="form-group">
+						<input type="text" name="to_username" id="to_username" tabindex="3" autocomplete="off" value="{{ username }}" placeholder="{{ lang['pm:too'] }}" class="form-control" />
+						<span id="suggestLoader" style="width: 20px;visibility: hidden;position: absolute;top: 8px;right: 15px;"><i class="fa fa-spinner fa-pulse"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="form-group">
+				{{ quicktags }}
+				<!-- SMILES -->
+				<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
+					<div class="modal-dialog modal-sm" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Вставить смайл</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							</div>
+							<div class="modal-body text-center">
+								{{ smilies }}
+							</div>
+							<div class="modal-footer">
+								<button type="cancel" class="btn btn-secondary" data-dismiss="modal">{l_cancel}</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<textarea name="content" id="pm_content" rows="8" class="form-control message-content" /></textarea>
+			</div>
+			<div class="form-group">
+				<input name="saveoutbox" type="checkbox"/> {{ lang['pm:saveoutbox'] }}
+			</div>
+			<div class="form-group">
+				<input type="submit" value="{{ lang['pm:send'] }}" accesskey="s" class="btn btn-success" />
+			</div>
+		</div>
+	</div>
 </form>
+
+<script src="{{ scriptLibrary }}/libsuggest.js"></script>
+
 <script type="text/javascript">
 	function systemInit() {
 		new ngSuggest('to_username',

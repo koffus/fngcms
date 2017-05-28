@@ -67,3 +67,52 @@ input.pm:focus,textarea.pm_content:focus { background-attachment:scroll; backgro
  color: white;
  padding:3px; cursor: pointer;
 }
+
+.suggestWindow {
+	background: #f9f9f9;
+	border: 1px solid #efefef;
+	width: 100%;
+	position: absolute;
+	display: block;
+	visibility: hidden;
+	padding: 0px;
+	font: normal 12px tahoma, sans-serif;
+	top: 0px;
+	margin: 0;
+	left: 80px;
+	z-index: 3;
+}
+#suggestBlock {
+	padding-top: 2px;
+	padding-bottom: 2px;
+	width: 100%;
+	border: 0px;
+}
+#suggestBlock td {
+	padding-left: 2px;
+}
+#suggestBlock tr {
+	padding: 3px;
+	padding-left: 8px;
+	background: white;
+}
+#suggestBlock .suggestRowHighlight {
+	background: #59a6ec;
+	color: white;
+	cursor: default;
+}
+#suggestBlock .cleft {
+	padding-left: 5px;
+}
+#suggestBlock .cright {
+	text-align: right;
+	padding-right: 5px;
+}
+.suggestClose {
+	display: block;
+	text-align: right;
+	font: normal 10px verdana, tahoma, sans-serif;
+	background: #efefef;
+	padding: 5px;
+	cursor: pointer;
+}

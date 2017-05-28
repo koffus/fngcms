@@ -312,7 +312,7 @@ function pm_write(){
 		'quicktags'	=>	BBCodes('pm_content')
 	);
 	
-	$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, 'pm_content') : '';
+	$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, "'pm_content'") : '';
 	
 	$xt = $twig->loadTemplate($tpath['write'].'write.tpl');
 	$template['vars']['mainblock'] = $xt->render($tVars);
@@ -405,7 +405,7 @@ function pm_reply(){
 			'quicktags'		=>	BBCodes('pm_content')
 		);
 
-		$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, 'pm_content') : '';
+		$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, "'pm_content'") : '';
 	
 		$xt = $twig->loadTemplate($tpath['reply'].'reply.tpl');
 		$template['vars']['mainblock'] = $xt->render($tVars);
