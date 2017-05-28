@@ -1,14 +1,15 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
 // Preload config file
 pluginsLoadConfig();
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Fill configuration parameters
 $skList = array();
@@ -19,21 +20,50 @@ if ($skDir = opendir(extras_dir.'/rating/tpl/skins')) {
 		}
 	}
 	closedir($skDir);
-}	
+}
 
 // Fill configuration parameters
-$cfg = array();
-$cfgX = array();
-array_push($cfg, array('descr' => 'Плагин позволяет посетителям проставлять рейтинг для новостей на сайте.'));
-array_push($cfgX, array('name' => 'regonly', 'title' => 'Рейтинг только для зарегистрированных','descr' => '<b>Да</b> - проставлять оценки могут только зарегистрированные пользователи<br><b>Нет</b> - проставлять оценки могут все','type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => pluginGetVariable($plugin,'regonly')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки плагина</b>', 'entries' => $cfgX));
+$cfg = array('description' => __($plugin . ':description'));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'localsource', 'title' => "Выберите каталог из которого плагин будет брать шаблоны для отображения<br /><small><b>Шаблон сайта</b> - плагин будет пытаться взять шаблоны из общего шаблона сайта; в случае недоступности - шаблоны будут взяты из собственного каталога плагина<br /><b>Плагин</b> - шаблоны будут браться из собственного каталога плагина</small>", 'type' => 'select', 'values' => array ( '0' => 'Шаблон сайта', '1' => 'Плагин'), 'value' => intval(pluginGetVariable($plugin,'localsource'))));
-array_push($cfgX, array('name' => 'localskin', 'title' => "Выберите активный шаблон<br /><small>Выбранный скин будет использоваться при установке <b>Плагин</b> в предыдущем поле</small>", 'type' => 'select', 'values' => $skList, 'value' => pluginGetVariable($plugin,'localskin')?pluginGetVariable($plugin,'localskin'):'basic'));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки отображения</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'regonly',
+		'title' => __($plugin . ':for_reg'),
+		'descr' => __($plugin . ':for_reg#desc'),
+		'type' => 'select',
+		'values' => array('0' => __('noa'), '1' => __('yesa')),
+		'value' => pluginGetVariable($plugin,'regonly'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __($plugin . ':group.config'),
+	'entries' => $cfgX,
+	));
 
-// RUN 
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'localsource',
+		'title' => __($plugin . ':localsource'),
+		'descr' => __($plugin . ':localsource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __($plugin . ':localsource_0'), '1' => __($plugin . ':localsource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localsource'))
+		));
+	array_push($cfgX, array(
+		'name' => 'localskin',
+		'title' => __($plugin . ':localskin'),
+		'descr' => __($plugin . ':localskin#desc'),
+		'type' => 'select',
+		'values' => $skList,
+		'value' => pluginGetVariable($plugin,'localskin') ? pluginGetVariable($plugin,'localskin') : 'basic',
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __($plugin . ':group.source'),
+	'entries' => $cfgX,
+	));
+
+// RUN
 if ($_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
@@ -41,4 +71,3 @@ if ($_REQUEST['action'] == 'commit') {
 } else {
 	generate_config_page($plugin, $cfg);
 }
-?>
