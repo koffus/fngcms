@@ -1,7 +1,9 @@
-<h2 class="section-title">{{ category.name }}</h2>
 {% if (handler == 'by.category') and (pages.current == 1) %}
+	<h2 class="section-title">{{ category.name }}</h2>
 	{% if category.icon.purl %}<img src="{{ category.icon.purl }}" />{% endif %}
 	{% if category.info %}{{ category.info }}<hr />{% endif %}
+{% else %}
+	<h2 class="section-title">{{ lang.news }}</h2>
 {% endif %}
 
 {% if data %}

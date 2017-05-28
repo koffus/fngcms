@@ -142,8 +142,6 @@ h1, h2, h3, h4, h5, h6 {
 .article-item-text h3 {
     font-size: 18px;
     line-height: 30px;
-    position: relative;
-    text-align: left;
 }
 .article-item-text h3 a {
     color: #555;
@@ -158,7 +156,6 @@ h1, h2, h3, h4, h5, h6 {
 .article-item-text .article-one-footer a,
 .article-item-text .article-one-footer span {
 	display: inline-block;
-    font-size: 12px;
     padding-right: 15px;
     color: #999;
 }

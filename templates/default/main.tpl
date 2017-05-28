@@ -71,7 +71,6 @@
 	{% if isHandler('news:main') and not(handler.params.page) %}
 		{% include 'main.promo.tpl' %}
 		<div class="container section">
-			<h2 class="section-title">{{ lang['news'] }}</h2>
 			{{ mainblock }}
 		</div>
 	{% else %}
