@@ -25,72 +25,72 @@ foreach (array(
 }
 
 // Fill configuration parameters
-$cfg = array('description' => __('archive:description'));
+$cfg = array('description' => __($plugin . ':description'));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'maxnum',
-		'title' => __('archive:maxnum'),
-		'descr' => __('archive:maxnum#desc'),
+		'title' => __($plugin . ':maxnum'),
+		'descr' => __($plugin . ':maxnum#desc'),
 		'type' => 'input',
 		'value' => intval(pluginGetVariable($plugin, 'maxnum'))
 		));
 	array_push($cfgX, array(
 		'name' => 'counter',
-		'title' => __('archive:counter'),
-		'descr' => __('archive:counter#desc'),
+		'title' => __($plugin . ':counter'),
+		'descr' => __($plugin . ':counter#desc'),
 		'type' => 'select',
 		'values' => array('0' => __('noa'), '1' => __('yesa')),
 		'value' => intval(pluginGetVariable($plugin, 'counter'))
 		));
 	array_push($cfgX, array(
 		'name' => 'tcounter',
-		'title' => __('archive:tcounter'),
-		'descr' => __('archive:tcounter#desc'),
+		'title' => __($plugin . ':tcounter'),
+		'descr' => __($plugin . ':tcounter#desc'),
 		'type' => 'select',
 		'values' => array('0' => __('noa'), '1' => __('yesa')),
 		'value' => intval(pluginGetVariable($plugin, 'tcounter'))
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __('archive:group.config'),
+	'title' => __($plugin . ':group.config'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'localsource',
-		'title' => __('archive:localsource'),
-		'descr' => __('archive:localsource#desc'),
+		'title' => __($plugin . ':localsource'),
+		'descr' => __($plugin . ':localsource#desc'),
 		'type' => 'select',
-		'values' => array('0' => __('archive:localsource_0'), '1' => __('archive:localsource_1'),),
+		'values' => array('0' => __($plugin . ':localsource_0'), '1' => __($plugin . ':localsource_1'),),
 		'value' => intval(pluginGetVariable($plugin, 'localsource'))
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __('archive:group.source'),
+	'title' => __($plugin . ':group.source'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'cache',
-		'title' => __('archive:cache'),
-		'descr' => __('archive:cache#desc'),
+		'title' => __($plugin . ':cache'),
+		'descr' => __($plugin . ':cache#desc'),
 		'type' => 'select',
 		'values' => array('1' => __('yesa'), '0' => __('noa')),
 		'value' => intval(pluginGetVariable($plugin, 'cache'))
 	));
 	array_push($cfgX, array(
 		'name' => 'cacheExpire',
-		'title' => __('archive:cacheExpire'),
-		'descr' => __('archive:cacheExpire#desc'),
+		'title' => __($plugin . ':cacheExpire'),
+		'descr' => __($plugin . ':cacheExpire#desc'),
 		'type' => 'input',
 		'value' => intval(pluginGetVariable($plugin, 'cacheExpire'))
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __('archive:group.cache'),
+	'title' => __($plugin . ':group.cache'),
 	'entries' => $cfgX,
 	));
 
