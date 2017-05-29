@@ -177,7 +177,7 @@ foreach ($EXTRA_CSS as $css => $null)
 	$EXTRA_HTML_VARS[] = array('type' => 'css', 'data' => $css);
 
 // Generate metatags
-$EXTRA_HTML_VARS[] = array('type' => 'plain', 'data' => GetMetatags());
+array_unshift($EXTRA_HTML_VARS, array('type' => 'plain', 'data' => GetMetatags())); //$EXTRA_HTML_VARS[]=array('type'=>'plain','data'=>GetMetatags());
 
 // Fill additional HTML vars
 $htmlrow = array();
@@ -200,7 +200,7 @@ foreach ($EXTRA_HTML_VARS as $htmlvar) {
 	}
 }
 if (count($htmlrow))
-	$template['vars']['htmlvars'] .= join("\n", $htmlrow);
+	$template['vars']['htmlvars'] .= join("\n\t", $htmlrow);
 
 // Add support of blocks [is-logged] .. [/isnt-logged] in main template
 $template['regx']['#\[is-logged\](.+?)\[/is-logged\]#is']		= is_array($userROW)?'$1':'';

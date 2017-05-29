@@ -399,8 +399,6 @@ function register_plugin_page($pname, $mode, $func_name, $show_template = 1) {
 function register_htmlvar($type, $data) {
 	global $EXTRA_HTML_VARS;
 
-	// Check for duplicate
-
 	$EXTRA_HTML_VARS[] = array('type' => $type, 'data' => $data);
 }
 
@@ -408,6 +406,7 @@ function register_htmlvar($type, $data) {
 // Add new stylesheet into template
 function register_stylesheet($url) {
 	global $EXTRA_CSS;
+
 	register_htmlvar('css', $url);
 }
 
