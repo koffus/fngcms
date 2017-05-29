@@ -489,6 +489,10 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 		margin-top: 32px;*/
 	}
 }
+.media-left {
+    max-width: 180px;
+    margin-right: 20px;
+}
 /* FOOTER CONTENT
 -------------------------------------------------- */
 

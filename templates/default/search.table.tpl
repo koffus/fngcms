@@ -1,4 +1,4 @@
-<h2 class="page-header">{{ lang['search.site_search'] }}</h2>
+<h2 class="section-title">{{ lang['search.site_search'] }}</h2>
 
 <form method="GET" action="{{ form_url }}">
 	<fieldset>
