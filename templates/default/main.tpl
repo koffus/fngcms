@@ -70,9 +70,9 @@
 
 	{% if isHandler('news:main') and not(handler.params.page) %}
 		{% include 'main.promo.tpl' %}
-		<div class="container section">
+		<main class="container section">
 			{{ mainblock }}
-		</div>
+		</main>
 	{% else %}
 		{% include 'main.page.tpl' %}
 	{% endif %}

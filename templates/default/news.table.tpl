@@ -19,4 +19,27 @@
 	</div>
 {% endif %}
 
+{% if not(isHandler('news:main') and (pages.current == 1)) %}
+	<a href="#" onclick="nextPage(); return false;" class="btn btn-success pull-right" id="next-page" style="cursor: pointer">Показать еще</a>
+	<script type="text/javascript">
+		function nextPage() {
+			var nextPage = $('#ajax-next-page a').attr('href');
+			ngShowLoading("");
+			if (nextPage !== undefined) {
+				$.ajax({ url: nextPage, success: function(data) {
+					$('#ajax-next-page, #next-page, #nav-page').remove();
+					ngHideLoading("");
+					$('main').append($('main', data).html());
+				}})
+			}
+		};
+		$(function() {
+			var nextPage = $('#ajax-next-page a').attr('href');
+			if (nextPage === undefined) {
+				$('#ajax-next-page, #next-page, #nav-page').remove();
+			}
+		});
+	</script>
+{% endif %}
+
 {{ pagination }}
