@@ -1,0 +1,267 @@
+body {
+	font-family: -apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	color: #292b2c;
+	background-color: #fff;
+	margin: 0;
+}
+* {
+	margin: 0;
+	padding: 0;
+}
+*, *:before, *:after {
+	-moz-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	box-sizing: border-box;
+}
+::-webkit-scrollbar {
+	width: 12px;
+}
+::-webkit-scrollbar {
+	width: 6px;
+}
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+::-webkit-scrollbar-thumb {
+	background:#ddd; 
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: #ddd; 
+}
+html {
+	font-family: sans-serif;
+	line-height: 1.15;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+}
+html {
+	-ms-overflow-style: scrollbar;
+	-webkit-tap-highlight-color: transparent;
+}
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+.section {
+	margin-top: 2.5rem;
+	position: relative;
+	margin-left: auto;
+	margin-right: auto;
+	padding-right: 15px;
+	padding-left: 15px;
+}
+@media (min-width: 576px) {
+.section {
+	width: 540px;
+	max-width: 100%;
+}
+}
+@media (min-width: 768px) {
+	.section {
+		width: 720px;
+		max-width: 100%;
+	}
+}
+@media (min-width: 992px) {
+	.section {
+		width: 960px;
+		max-width: 100%;
+		padding-right: 15px;
+		padding-left: 15px;
+	}
+}
+@media (min-width: 1200px) {
+	.section {
+		width: 1140px;
+		max-width: 100%;
+	}
+}
+ol, ul {
+	list-style: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+h1 {
+	margin-bottom: .5rem;
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+	font-size: 2rem;
+	font-weight: 300;
+	padding-bottom: 9px;
+	margin: 0 0 20px 0;
+	border-bottom: 1px solid #eee;
+}
+textarea {
+	overflow: auto;
+	resize: vertical;
+}
+
+button, input, optgroup, select, textarea {
+	font-family: sans-serif;
+	font-size: 100%;
+	line-height: 1.15;
+	margin: 0;
+}
+[role=button], a, area, button, input, label, select, summary, textarea {
+	-ms-touch-action: manipulation;
+	touch-action: manipulation;
+}
+button, input, select, textarea {
+	line-height: inherit;
+}
+button, input, optgroup, select, textarea {
+	font-weight: inherit;
+	font-family: inherit;
+}
+[type=reset], [type=submit], button, html [type=button] {
+	-webkit-appearance: button;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+.form-control {
+	display: block;
+	width: 100%;
+	padding: .5rem .75rem;
+	font-size: 1rem;
+	line-height: 1.25;
+	color: #464a4c;
+	background-color: #fff;
+	background-image: none;
+	-webkit-background-clip: padding-box;
+	background-clip: padding-box;
+	border: 1px solid rgba(0,0,0,.15);
+	border-radius: .25rem;
+	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
+}
+.btn {
+	letter-spacing: 1px;
+	cursor: pointer;
+	display: inline-block;
+	font-weight: 400;
+	line-height: 1.25;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: middle;
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	border: 1px solid transparent;
+	padding: .5rem 1rem;
+	font-size: 1rem;
+	border-radius: .25rem;
+	-webkit-transition: all .2s ease-in-out;
+	-o-transition: all .2s ease-in-out;
+	transition: all .2s ease-in-out;
+}
+.btn:focus,
+.btn:hover {
+	text-decoration: none;
+	outline: 0;
+	-webkit-box-shadow: 0 0 0 2px rgba(2,117,216,.25);
+	box-shadow: 0 0 0 2px rgba(2,117,216,.25);
+}
+.btn.active,
+.btn:active {
+	background-image: none;
+}
+.btn-primary {
+	color: #fff;
+	background-color: #0275d8;
+	border-color: #0275d8;
+}
+.btn-primary:hover {
+	color: #fff;
+	background-color: #025aa5;
+	border-color: #01549b;
+}
+.btn-primary.focus,
+.btn-primary:focus {
+	-webkit-box-shadow: 0 0 0 2px rgba(2,117,216,.5);
+	box-shadow: 0 0 0 2px rgba(2,117,216,.5);
+}
+.btn-primary.active,
+.btn-primary:active {
+	color: #fff;
+	background-color: #025aa5;
+	background-image: none;
+	border-color: #01549b;
+}
+.jchat_ODD TD { background-color: #FFFFFF; width: 100%; text-align: left;}
+.jchat_EVEN TD { background-color: #FBFBFB; width: 100%; text-align: left; }
+.jchat_INFO TD { background-color: #FFFFFF; width: 100%; text-align: left; font: 12px arial; }
+.chat-textarea {
+    position: relative;
+}
+.chat-table {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	max-height: 400px;
+	font-size: 14px;
+	margin-bottom: 1rem;
+}
+.chat-table tr>td {
+	padding: 15px 24px;
+}
+.chat-table tr>td:before,
+.chat-table tr>td:after {
+	content: " ";
+	display: table;
+}
+.chat-table tr>td:after {
+	clear: both;
+}
+.chat-table .user-avatar {
+	float: left;
+}
+.chat-table .user-avatar img {
+	border-radius: 50%;
+	width: 34px;
+	height: 34px;
+	border-radius: 50%;
+}
+.chat-table .user {
+	font-weight: bold;
+	cursor: pointer;
+	margin: 0 0 0 20px;
+	float: left;
+}
+.chat-table time {
+	float: right;
+	font-style: italic;
+	color: rgba(190, 192, 194, 0.8);
+	font-size: 11px;
+}
+.chat-table p {
+	float: left;
+	max-width: 80%;
+	margin: 0 0 0 20px;
+}
+#jChatText {
+	padding-right: 40px;
+}
+#jchatWLen {
+	right: 20px;
+	bottom: 15px;
+	font-size: 12px;
+	position: absolute;
+}

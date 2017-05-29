@@ -78,6 +78,7 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
 		$row['text'] = preg_replace('#^\@(.+?)\:#','<i>$1</i>:',$row['text']);
 		$row['time'] = strftime($format_time, $row['postdate']);
 		$row['datetime'] = strftime($format_date, $row['postdate']);
+		$row['cdate'] = cDate($row['postdate']);
 		if (getPluginStatusActive('uprofile')) {
 			$row['profile_link'] = generatePluginLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id']));
 		}
@@ -142,7 +143,9 @@ function plugin_jchat_index() {
 	}
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('jchat'), 'jchat', pluginGetVariable('jchat', 'localsource'));
+	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat'), 'jchat', pluginGetVariable('jchat', 'localsource'));
+	register_stylesheet($tpath['url::jchat.css'].'/jchat.css');
+
 	$tvars = array();
 	$start = isset($_REQUEST['start'])?intval($_REQUEST['start']):0;
 	$tvars['vars']['data'] = json_encode(jchat_show(0,0));
@@ -196,7 +199,7 @@ function plugin_jchat_add() {
 
 			exit;
 		}
-		$SQL['author'] = secure_html(substr(trim($_REQUEST['name']),0,30));
+		$SQL['author'] = secure_html(mb_substr(trim($_REQUEST['name']),0,30, 'UTF-8'));
 		$SQL['author_id'] = 0;
 	}
 
@@ -239,14 +242,14 @@ function plugin_jchat_add() {
 	if (($maxwlen < 1)||($maxlen > 5000)) $maxwlen = 500;
 
 	// Load text & strip it to maxlen
-	$postText = substr(secure_html($_REQUEST['text']), 0, $maxlen);
+	$postText = mb_substr(secure_html($_REQUEST['text']), 0, $maxlen, 'UTF-8');
 
 	$ptb = array();
 
 	foreach (preg_split('#(\s|^)(http\:\/\/[A-Za-z\-\.0-9]+\/\S*)(\s|$)#', $postText, -1, PREG_SPLIT_DELIM_CAPTURE) as $cx) {
 		if (preg_match('#http\:\/\/[A-Za-z\-\.0-9]+\/\S*#', $cx, $m)) {
 			// LINK
-			$cx = '<a href="'.htmlspecialchars($cx, ENT_COMPAT | ENT_HTML401, 'UTF-8').'">'.((strlen($cx)>$maxwlen)?(substr($cx, 0, $maxwlen-2).'..'):$cx).'</a>';
+			$cx = '<a href="'.htmlspecialchars($cx, ENT_COMPAT | ENT_HTML401, 'UTF-8').'">'.((strlen($cx)>$maxwlen)?(mb_substr($cx, 0, $maxwlen-2, 'UTF-8').'..'):$cx).'</a>';
 		} else {
 			$cx = preg_replace('/(\S{'.$maxwlen.'})(?!\s)/', '$1 ', $cx);
 		}
@@ -344,10 +347,17 @@ function plugin_jchat_win() {
 		return;
 	}
 
-	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('jchat.main', 'jchat.self'), 'jchat', pluginGetVariable('jchat', 'localsource'));
-
 	$tvars = array();
+
+	// Determine paths for all template files
+	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat.main', 'jchat.self'), 'jchat', pluginGetVariable('jchat', 'localsource'));
+	register_stylesheet($tpath['url::jchat.css'].'/jchat.css');
+
+	if ( intval(pluginGetVariable('jchat', 'win_mode')) ) {
+		$tvars['vars']['home'] = home;
+		$tvars['vars']['jchat.self.css'] = $tpath['url::jchat.css'].'/jchat.self.css';
+	}
+
 	$tvars['vars']['data'] = json_encode(jchat_show(0,0, array(array('setWinMode', 1))));
 
 	$history = intval(pluginGetVariable('jchat', 'win_history'));

@@ -2,6 +2,7 @@
 function chatSubmitForm() {
 	var formID = document.getElementById('jChatForm');
 	CHATTER.postMessage(formID.name.value, formID.text.value);
+	UpdateTime();
 }
 
 function jChat(maxRows, refresh, tableID, msgOrder) {
@@ -142,17 +143,17 @@ function jChat(maxRows, refresh, tableID, msgOrder) {
 			// ** **
  		cell.innerHTML =
 				// 1. Floating DIV with add date/time
-				'<div style="float: right; font-size: 75%;" title="'+rec['datetime']+'">'+rec['time']+'</div>'+
+				rec['cdate']+ //'<span class="time" title="'+rec['datetime']+'">'+rec['time']+'</span>'+
 				// 2. Image to identify registered user. Also it will contain external link in case if uprofile plugin is enabled
-				((rec['author_id']>0)?('[isplugin uprofile]<a target="_blank" href="'+rec['profile_link']+'">[/isplugin]<img src="{home}/uploads/avatars/noavatar.png" width="13" height="13" border="0"/>[isplugin uprofile]</a>[/isplugin] '):'')+
+				((rec['author_id']>0)?('[isplugin uprofile]<a target="_blank" href="'+rec['profile_link']+'" class="user-avatar">[/isplugin]<img src="{home}/uploads/avatars/noavatar.png" class="img-thumbnail" />[isplugin uprofile]</a>[/isplugin] '):'<div class="user-avatar"><img src="{home}/uploads/avatars/noavatar.png" /></div>')+
 				// 3. Author's name [ BOLD ]
-				'<span class="jchat_userName">'+rec['author']+'</span>'+
+				'<span class="user">'+rec['author']+'</span>'+
 				// 4. DELETE button (for admins)
 				'[is.admin] <img src="{skins_url}/images/delete.gif" alt="x" style="cursor: pointer;" onclick="CHATTER.deleteMessage('+rec['id']+');"/>[/is.admin]'+
 				// 5. New line delimiter
 				'<br/> '+
 				// 6. Chat message test
-				rec['text'];
+				'<p> '+rec['text']+'</p>';
 
  		thisObject.maxLoadedID = rec['id'];
 		}
@@ -163,6 +164,9 @@ function jChat(maxRows, refresh, tableID, msgOrder) {
 
 			thisObject.tableRef.parentNode.scrollTop = thisObject.tableRef.parentNode.scrollHeight;
 		}
+
+		UpdateTime();
+
 	}
 
 	//
@@ -284,7 +288,7 @@ function jchatProcessAreaClick(event) {
  if (!evt) return;
  var trg=evt.target?evt.target:evt.srcElement;
  if (!trg) return;
- if (trg.className != 'jchat_userName') return;
+ if (trg.className != 'user') return;
  var mText = document.getElementById('jChatText');
  if (mText) {
  mText.value += '@'+trg.innerHTML+': ';

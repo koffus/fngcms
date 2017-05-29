@@ -1,55 +1,53 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
 // Preload config file
 pluginsLoadConfig();
-
-Lang::loadPlugin('jchat', 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Calculate row count
 $jcRowCount = $mysql->result("select count(*) from ".prefix."_jchat");
 // Fill configuration parameters
-$cfg = array();
-array_push($cfg, array('descr' => __('jchat:desc')));
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
-array_push($cfgX, array('type' => 'flat', 'input' => '<tr><td class="contentEntry1" valign="top" colspan="2">Всего записей: '.$jcRowCount.'</td></tr>'));
-array_push($cfgX, array('type' => 'flat', 'input' => '<tr><td class="contentEntry1" valign="top" colspan="2"><input type="checkbox" name="purge" value="1"/> Удалить старые записи, оставив последние <input type="text" name="purge_save" size="3" value="50"/></td></tr>'));
-array_push($cfgX, array('type' => 'flat', 'input' => '<tr><td class="contentEntry1" valign="top" colspan="2"><input type="checkbox" name="reload" value="1"/> Перезагрузить страницу у всех посетителей</td></tr>'));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>'.__('jchat:conf.stat').'</b>', 'entries' => $cfgX));
+array_push($cfgX, array('name' => 'jcRowCount','title' => 'Всего записей','descr' => '','type' => 'input','html_flags' => 'readonly','value' => intval($jcRowCount),));
+array_push($cfgX, array('name' => 'purge_save','title' => 'Удалить старые записи, оставив последние','descr' => '','type' => 'manual','input' => '<div class="input-group"><span class="input-group-addon"><input type="checkbox" name="purge" value="1" /></span><input type="text" name="purge_save" value="50" size="3" class="form-control" /></div>',));
+array_push($cfgX, array('type' => 'manual','input' => '<input type="checkbox" name="reload" value="1" /> Перезагрузить страницу у всех посетителей',));
+array_push($cfg, array('mode' => 'group','title' => __($plugin.':conf.stat'),'entries' => $cfgX,));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'localsource', 'title' => __('jchat:localsource'), 'descr' => __('jchat:localsource#desc'), 'type' => 'select', 'values' => array ( '0' => __('jchat:lsrc.site'), '1' => __('jchat:lsrc.plugin')), 'value' => intval(pluginGetVariable($plugin,'localsource'))));
-array_push($cfgX, array('name' => 'access', 'title' => __('jchat:access'), 'descr' => __('jchat:access#desc'), 'type' => 'select', 'values' => array ('0' => __('jchat:access.off'), '1' => __('jchat:access.ro'), '2' => __('jchat:access.rw')), 'value' => pluginGetVariable($plugin,'access')));
-array_push($cfgX, array('name' => 'rate_limit', 'title' => __('jchat:rate_limit'), 'descr' => __('jchat:rate_limit#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'rate_limit')));
-array_push($cfgX, array('name' => 'maxwlen', 'title' => __('jchat:maxwlen'), 'descr' => __('jchat:maxwlen#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'maxwlen')));
-array_push($cfgX, array('name' => 'maxlen', 'title' => __('jchat:maxlen'), 'descr' => __('jchat:maxlen#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'maxlen')));
-array_push($cfgX, array('name' => 'format_time', 'title' => __('jchat:format_time'), 'descr' => __('jchat:format_time#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'format_time')));
-array_push($cfgX, array('name' => 'format_date', 'title' => __('jchat:format_date'), 'descr' => __('jchat:format_date#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'format_date')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>'.__('jchat:conf.main').'</b>', 'entries' => $cfgX));
+array_push($cfgX, array('name' => 'localsource','title' => __($plugin.':localsource'),'descr' => __($plugin.':localsource#desc'),'type' => 'select','values' => array ( '0' => __($plugin.':lsrc.site'), '1' => __($plugin.':lsrc.plugin')),'value' => intval(pluginGetVariable($plugin,'localsource')),));
+array_push($cfgX, array('name' => 'access', 'title' => __($plugin.':access'), 'descr' => __($plugin.':access#desc'), 'type' => 'select', 'values' => array ('0' => __($plugin.':access.off'), '1' => __($plugin.':access.ro'), '2' => __($plugin.':access.rw')), 'value' => pluginGetVariable($plugin,'access')));
+array_push($cfgX, array('name' => 'rate_limit', 'title' => __($plugin.':rate_limit'), 'descr' => __($plugin.':rate_limit#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'rate_limit')));
+array_push($cfgX, array('name' => 'maxwlen', 'title' => __($plugin.':maxwlen'), 'descr' => __($plugin.':maxwlen#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'maxwlen')));
+array_push($cfgX, array('name' => 'maxlen', 'title' => __($plugin.':maxlen'), 'descr' => __($plugin.':maxlen#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'maxlen')));
+array_push($cfgX, array('name' => 'format_time', 'title' => __($plugin.':format_time'), 'descr' => __($plugin.':format_time#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'format_time')));
+array_push($cfgX, array('name' => 'format_date', 'title' => __($plugin.':format_date'), 'descr' => __($plugin.':format_date#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'format_date')));
+array_push($cfg, array('mode' => 'group', 'title' => __($plugin.':conf.main'), 'entries' => $cfgX));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'enable_panel', 'title' => __('jchat:enable.panel'), 'descr' => __('jchat:enable.panel#desc'), 'type' => 'select', 'values' => array('0' => __('noa'), '1' => __('yesa')), 'value' => pluginGetVariable($plugin,'enable_panel')));
-array_push($cfgX, array('name' => 'refresh', 'title' => __('jchat:refresh'), 'descr' => __('jchat:refresh#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'refresh')));
-array_push($cfgX, array('name' => 'history', 'title' => __('jchat:history'), 'descr' => __('jchat:history#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'history')));
-array_push($cfgX, array('name' => 'maxidle', 'title' => __('jchat:maxidle'), 'descr' => __('jchat:maxidle#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'maxidle')));
-array_push($cfgX, array('name' => 'order', 'title' => __('jchat:order'), 'descr' => __('jchat:order#desc'), 'type' => 'select', 'values' => array('0' => __('jchat:order.asc'), '1' => __('jchat:order.desc')), 'value' => pluginGetVariable($plugin,'order')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>'.__('jchat:conf.panel').'</b>', 'entries' => $cfgX));
+array_push($cfgX, array('name' => 'enable_panel', 'title' => __($plugin.':enable.panel'), 'descr' => __($plugin.':enable.panel#desc'), 'type' => 'select', 'values' => array('0' => __('noa'), '1' => __('yesa')), 'value' => pluginGetVariable($plugin,'enable_panel')));
+array_push($cfgX, array('name' => 'refresh', 'title' => __($plugin.':refresh'), 'descr' => __($plugin.':refresh#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'refresh')));
+array_push($cfgX, array('name' => 'history', 'title' => __($plugin.':history'), 'descr' => __($plugin.':history#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'history')));
+array_push($cfgX, array('name' => 'maxidle', 'title' => __($plugin.':maxidle'), 'descr' => __($plugin.':maxidle#desc'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'maxidle')));
+array_push($cfgX, array('name' => 'order', 'title' => __($plugin.':order'), 'descr' => __($plugin.':order#desc'), 'type' => 'select', 'values' => array('0' => __($plugin.':order.asc'), '1' => __($plugin.':order.desc')), 'value' => pluginGetVariable($plugin,'order')));
+array_push($cfg, array('mode' => 'group', 'title' => __($plugin.':conf.panel'), 'entries' => $cfgX));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'enable_win', 'title' => __('jchat:enable.win'), 'descr' => __('jchat:enable.win#desc'), 'type' => 'select', 'values' => array('0' => __('noa'), '1' => __('yesa')), 'value' => pluginGetVariable($plugin,'enable_win')));
-array_push($cfgX, array('name' => 'win_mode', 'title' => __('jchat:win.mode'), 'descr' => __('jchat:win.mode#desc'), 'type' => 'select', 'values' => array('0' => __('jchat:win.mode.internal'), '1' => __('jchat:win.mode.external')), 'value' => pluginGetVariable($plugin,'win_mode')));
-array_push($cfgX, array('name' => 'win_refresh', 'title' => __('jchat:refresh'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'win_refresh')));
-array_push($cfgX, array('name' => 'win_history', 'title' => __('jchat:history'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'win_history')));
-array_push($cfgX, array('name' => 'win_maxidle', 'title' => __('jchat:maxidle'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'win_maxidle')));
-array_push($cfgX, array('name' => 'win_order', 'title' => __('jchat:order'), 'type' => 'select', 'values' => array('0' => __('jchat:order.asc'), '1' => __('jchat:order.desc')), 'value' => pluginGetVariable($plugin,'win_order')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>'.__('jchat:conf.window').'</b>', 'entries' => $cfgX));
+array_push($cfgX, array('name' => 'enable_win', 'title' => __($plugin.':enable.win'), 'descr' => __($plugin.':enable.win#desc'), 'type' => 'select', 'values' => array('0' => __('noa'), '1' => __('yesa')), 'value' => pluginGetVariable($plugin,'enable_win')));
+array_push($cfgX, array('name' => 'win_mode', 'title' => __($plugin.':win.mode'), 'descr' => __($plugin.':win.mode#desc'), 'type' => 'select', 'values' => array('0' => __($plugin.':win.mode.internal'), '1' => __($plugin.':win.mode.external')), 'value' => pluginGetVariable($plugin,'win_mode')));
+array_push($cfgX, array('name' => 'win_refresh', 'title' => __($plugin.':refresh'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'win_refresh')));
+array_push($cfgX, array('name' => 'win_history', 'title' => __($plugin.':history'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'win_history')));
+array_push($cfgX, array('name' => 'win_maxidle', 'title' => __($plugin.':maxidle'), 'type' => 'input', 'value' => pluginGetVariable($plugin,'win_maxidle')));
+array_push($cfgX, array('name' => 'win_order', 'title' => __($plugin.':order'), 'type' => 'select', 'values' => array('0' => __($plugin.':order.asc'), '1' => __($plugin.':order.desc')), 'value' => pluginGetVariable($plugin,'win_order')));
+array_push($cfg, array('mode' => 'group', 'title' => __($plugin.':conf.window'), 'entries' => $cfgX));
 
 // RUN
 if ($_REQUEST['action'] == 'commit') {
@@ -60,7 +58,6 @@ if ($_REQUEST['action'] == 'commit') {
 		if (($_REQUEST['purge_save'] != '')&&($dc > 0)) {
 			$mysql->query("delete from ".prefix."_jchat order by id limit ".$dc);
 		}
-
 	}
 
 	// Check if we need to reload page
@@ -68,7 +65,6 @@ if ($_REQUEST['action'] == 'commit') {
 		$mysql->query("insert into ".prefix."_jchat_events (chatid, postdate, type) values (1, unix_timestamp(now()), 3)");
 		$lid = $mysql->result("select LAST_INSERT_ID()");
 		$mysql->query("delete from ".prefix."_jchat_events where type=3 and id <> ".db_squote($lid));
-
 	}
 
 	// If submit requested, do config save
