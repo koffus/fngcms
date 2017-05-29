@@ -27,7 +27,7 @@ for ($i = 1; $i <= $count; $i++) {
 
 	array_push($cfgX, array(
 						'name' => "{$currentVar}_name",
-						'title' => 'Идентификатор блока<br/><small>По данному ID можно будет формировать данный блок через вызов <b>TWIG</b> функции <b>callPlugin()</b>',
+						'title' => 'Идентификатор блока<br/><small>По данному ID можно будет формировать данный блок через вызов <b>TWIG</b> функции <b>callPlugin()</b></small>',
 						'type' => 'input',
 						'value' => pluginGetVariable($plugin, "{$currentVar}_name"))
 	);
@@ -50,7 +50,7 @@ for ($i = 1; $i <= $count; $i++) {
 
 	array_push($cfgX, array(
 						'name' => "{$currentVar}_visibilityCList",
-						'title' => 'Список категорий на которых отображается блок<br/><small>Можно указать конкретные категории при выборе <b>категории/новости</b> в предыдущем пункте',
+						'title' => 'Список категорий на которых отображается блок<br/><small>Можно указать конкретные категории при выборе <b>категории/новости</b> в предыдущем пункте</small>',
 						'type' => 'input',
 						'value' => pluginGetVariable($plugin, "{$currentVar}_visibilityCList"))
 	);
@@ -126,7 +126,7 @@ for ($i = 1; $i <= $count; $i++) {
 
 	array_push($cfgX, array(
 						'name' => "{$currentVar}_skip",
-						'title' => 'Пропустить первые <b>X</b> новостей при показе блока<br/><small>Значение по умолчанию: 0',
+						'title' => 'Пропустить первые <b>X</b> новостей при показе блока<br/><small>Значение по умолчанию: 0</small>',
 						'type' => 'input',
 						'value' => intval(pluginGetVariable($plugin, "{$currentVar}_skip")) ? pluginGetVariable($plugin , "{$currentVar}_skip") : '0')
 	);
