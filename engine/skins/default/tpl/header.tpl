@@ -13,7 +13,6 @@
 	<script src="{{ scriptLibrary }}/jq/jquery.min.js"></script>
 	<script src="{{ skins_url }}/assets/js/bootstrap.js"></script>
 	<script src="{{ skins_url }}/assets/js/notify.js"></script>
-	<script src="{{ skins_url }}/assets/js/perfect-scrollbar.js"></script>
 	<script src="{{ skins_url }}/js/script.js"></script>
 	<script src="{{ scriptLibrary }}/functions.js"></script>
 	<script src="{{ scriptLibrary }}/ajax.js"></script>
