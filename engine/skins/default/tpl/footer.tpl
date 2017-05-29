@@ -13,7 +13,7 @@
 	</div><!-- /.modal -->
 	
 	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang['loading'] }}</div>
-	<div id="scrollTop" class="fa fa-angle-up"></div>
+	<div class="fa fa-angle-up scrollTop"></div>
 	<div id="sidenav-overlay"></div>
 </body>
 </html>

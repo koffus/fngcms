@@ -39,7 +39,9 @@ function generate_config_page($module, $params, $values = array()) {
 	function mkParamLine($param) {
 
 		if ($param['type'] == 'flat') {
-			return $param['input'];
+			$tvars['input'] = $param['input'];
+			return $tvars;
+			
 		}
 
 		$tvars = array(

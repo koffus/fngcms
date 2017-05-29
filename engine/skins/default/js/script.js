@@ -29,7 +29,7 @@ $(document).ready(function(){
 	
 	// Прокрутка вверх
 	$(window).scroll(function () {
-		( $(this).scrollTop() != 0 ) ? $('#scrollTop').fadeIn() : $('#scrollTop').fadeOut();
+		( $(this).scrollTop() != 0 ) ? $('.scrollTop').fadeIn() : $('.scrollTop').fadeOut();
 	});
 
 	// Боковое меню
