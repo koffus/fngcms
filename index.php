@@ -223,6 +223,8 @@ if ($config['debug']) {
 	} else {
 		$template['regx']["#\[debug\].*?\[/debug\]#si"] = '';
 	}
+} else {
+	$template['regx']["#\[debug\].*?\[/debug\]#si"] = '';
 }
 
 // ===================================================================
