@@ -160,9 +160,9 @@
 							</div>
 						</div>
 						{% endif %}
+						{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
 						<div class="form-group">
-							<label class="col-sm-3">{{ lang.editnews['set_views'] }}</label>
-							<div class="col-sm-3">
+							<div class="col-sm-3 col-sm-offset-3">
 								<div class="input-group">
 									<span class="input-group-addon">
 										<input type="checkbox" name="setViews" value="1" id="setViews" {% if (flags['setviews.disabled']) %}disabled{% endif %} />
@@ -170,6 +170,7 @@
 									<input type="text" name="views" value="{{ views }}" {% if (flags['setviews.disabled']) %}disabled{% endif %}class="form-control" />
 								</div>
 							</div>
+							<label class="col-sm-6 control-label">{{ lang.editnews['set_views'] }}</label>
 						</div>
 					</div>
 					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
@@ -194,7 +195,6 @@
 								<table class="table table-condensed">
 									<tbody>
 										<tr>
-										{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
 										{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}{{ plugin.xfields[0] }}{% endif %}
 										{% if (pluginIsActive('nsched')) %}{{ plugin.nsched }}{% endif %}
 										{% if (pluginIsActive('finance')) %}{{ plugin.finance }}{% endif %}

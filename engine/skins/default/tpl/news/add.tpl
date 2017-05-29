@@ -150,6 +150,7 @@
 							</div>
 						</div>
 						{% endif %}
+						{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
 					</div>
 					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
 					<!-- XFields -->
@@ -173,7 +174,6 @@
 								<table class="table table-condensed">
 									<tbody>
 										<tr>
-										{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
 										{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}{{ plugin.xfields[0] }}{% endif %}
 										{% if (pluginIsActive('nsched')) %}{{ plugin.nsched }}{% endif %}
 										{% if (pluginIsActive('finance')) %}{{ plugin.finance }}{% endif %}
