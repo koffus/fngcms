@@ -108,11 +108,13 @@ tblLoadData(1);
 // Update visibility of XFields fields
 function xf_update_visibility(cid) {
 	// Show only fields for this category profile
-	if ((xfCategories[cid] != '') && (xfGroupConfig[xfCategories[cid]])) {
-		var xfGrp = xfGroupConfig[xfCategories[cid]];
-		$("#xf_profile").text("[ "+xfCategories[cid]+" :: "+xfGroupConfig[xfCategories[cid]]['title']+" ]");
-	} else {
-		$("#xf_profile").text("");
+	if ((xfCategories[cid] != null)){
+		if ((xfGroupConfig[xfCategories[cid]])) {
+			var xfGrp = xfGroupConfig[xfCategories[cid]];
+			$("#xf_profile").text("[ "+xfCategories[cid]+" :: "+xfGroupConfig[xfCategories[cid]]['title']+" ]");
+		} else {
+			$("#xf_profile").text("");
+		}
 	}
 
 
@@ -122,15 +124,17 @@ function xf_update_visibility(cid) {
 		//alert('check field: '+xf);
 
 		// Show only fields for this category profile
-		if ((xfCategories[cid] != '') && (xfGroupConfig[xfCategories[cid]])) {
-			if (in_array(xf, xfGroupConfig[xfCategories[cid]]['entries'])) {
-				//alert('< in_array');
-				$("#xfl_"+xf).show();
+		if ((xfCategories[cid] != null)){
+			if ((xfGroupConfig[xfCategories[cid]])) {
+				if (in_array(xf, xfGroupConfig[xfCategories[cid]]['entries'])) {
+					//alert('< in_array');
+					$("#xfl_"+xf).show();
+				} else {
+					$("#xfl_"+xf).hide();
+				}
 			} else {
-				$("#xfl_"+xf).hide();
+				$("#xfl_"+xf).show();
 			}
-		} else {
-			$("#xfl_"+xf).show();
 		}
 	}
 }

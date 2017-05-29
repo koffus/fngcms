@@ -16,18 +16,18 @@
 		<br>
 		<table class="table table-condensed">
 			<thead>
-			<tr>
-				<th>ID поля</th>
-				<th>Название поля</th>
-				<th>Тип поля</th>
-				<th>Возможные значения</th>
-				<th>По умолчанию</th>
-				<th>Обязательно</th>
-				{% if (sectionID != 'tdata') %}
-					<th>Блок</th>
-				{% endif %}
-				<th class="text-right">{{ lang['action'] }}</th>
-			</tr>
+				<tr>
+					<th>ID поля</th>
+					<th>Название поля</th>
+					<th>Тип поля</th>
+					<th>Возможные значения</th>
+					<th>По умолчанию</th>
+					<th>Обязательно</th>
+					{% if (sectionID != 'tdata') %}
+						<th>Блок</th>
+					{% endif %}
+					<th class="text-right">{{ lang['action'] }}</th>
+				</tr>
 			</thead>
 			<tbody>
 				{% for entry in entries %}

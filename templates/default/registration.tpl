@@ -31,7 +31,7 @@
 		</div>
 		{% endif %}
 		{% if entry.type == 'select' %}
-			<div class="form-group">
+			<div class="form-group row">
 				<label for="{{ entry.id }}" class="col-sm-4 col-form-label">{{ entry.title }}</label>
 				<div class="col-sm-8">
 					<select class="form-control" type="{{ entry.type }}" name="{{ entry.name }}">{% for key,value in entry.values %}<option value="{{ key }}">{{ value }}</option>{% endfor %}</select>

@@ -9,7 +9,7 @@
 		{% endif %}
 	</div>
 
-	<div class="col-md-9"> 
+	<div class="col-md-9">
 		<table class="table table-user-information">
 			<tbody>
 				<tr>
@@ -39,6 +39,24 @@
 				<tr>
 					<td colspan="2">{{ lang.uprofile['about'] }}<br />{{ user.info }}</td>
 				</tr>
+				{% if (pluginIsActive('xfields')) %}
+					{% for field in p.xfields %}
+						{% if (field.type == 'images') %}
+							{{ field.value }}
+						{% else %}
+						<tr>
+							<td>{{ field.title }}</td>
+							<td>
+								{% if (field.type == 'checkbox') %}
+									{% if (field.value) %}{{ lang['yesa'] }}{% else %}{{ lang['noa'] }}{% endif %}
+								{% else %}
+									{{ field.value }}
+								{% endif %}
+							</td>
+						</tr>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
 				{% if (user.flags.isOwnProfile) %}
 				<tr>
 					<td colspan="2"><br /><a href="{{ home }}/profile.html" class="btn btn-primary">{{ lang.uprofile['edit_profile'] }}</a></td>
@@ -46,5 +64,9 @@
 				{% endif %}
 			</tbody>
 		</table>
+		{% if pluginIsActive('xfields') %}
+			{{ plugin_xfields_0 }}
+			{{ plugin_xfields_1 }}
+		{% endif %}
 	</div>
 </div>

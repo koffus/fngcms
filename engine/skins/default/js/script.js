@@ -255,47 +255,6 @@ function checkImage(where, idnumber) {
 	});
 }
 
-function validateFile(fileInput,multiple,fileMaxSize) {
-	var htext = '';
-	var hsize = '';
-	var btnFileInput = $(fileInput).closest('.btn-fileinput');
-	
-	if (!fileInput.value) {
-		btnFileInput.attr('style', '');
-		btnFileInput.addClass('btn');
-		btnFileInput.children('span').eq(0).html('<i class="fa fa-plus"></i> Add files ...');
-		btnFileInput.children('span').attr('style', '');
-		return false;
-	}
-	
-	if (multiple) {
-		for (var i=0;i<fileInput.files.length;i++) {
-			if (fileMaxSize) {
-				htext += '<tr><td style="overflow:hidden;text-overflow:ellipsis;max-width: 400px;">' + fileInput.files[i].name+'</td><td nowrap><b class="pull-right' + (fileInput.files[i].size>fileMaxSize?' text-danger':'') + '">'+formatSize(fileInput.files[i].size)+'</b></td></tr>';
-			} else {
-				htext += '<tr><td style="overflow:hidden;text-overflow:ellipsis;max-width: 400px;">' + fileInput.files[i].name+'</td><td nowrap><b class="pull-right">'+formatSize(fileInput.files[i].size)+'</td></tr>';
-			}
-			hsize = Number(fileInput.files[i].size) + Number(hsize);
-		}
-		
-		btnFileInput.removeClass('btn');
-		btnFileInput.children('span').eq(0).html('<table\
-			class="table-condensed" style="width: 100%;">\
-			' + htext + '<tr><td colspan="2" class="text-right">' + formatSize(hsize) + '</td></tr></table><div class="progress"><div id="progressbar" class="progress-bar progress-bar-success" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div></div>');
-		btnFileInput.children('span').eq(0).css({'width': '100%', 'display': 'block'/*, 'white-space': 'nowrap'*/});
-		btnFileInput.css({'width': '100%', 'display': 'block'});
-	} else {
-		for (var i=0;i< fileInput.files.length;i++) {
-			htext += fileInput.files[i].name+' ('+formatSize(fileInput.files[i].size)+')<br />';
-			hsize = Number(fileInput.files[i].size) + Number(hsize);
-		}
-		
-		btnFileInput.children('span').eq(0).html(htext);
-	}
-	
-	return true;
-}
-
 function attachAddRow(id) {
 	
 	++attachAbsoluteRowID;

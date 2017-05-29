@@ -49,10 +49,8 @@ if ($_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('xfields', $db_update)) {
 		plugin_mark_installed('xfields');
-	}	
+	}
 } else {
 	$text = __('xfields_desc_install');
 	generate_install_page('xfields', $text);
 }
-
-?>

@@ -67,10 +67,6 @@
 							<td><label class="control-label">{{ lang.uprofile['photo'] }}</label></td><td>{{ lang.uprofile['photos_denied'] }}</td>
 						</tr>
 					{% endif %}
-					{% if pluginIsActive('xfields') %}
-						{{ plugin_xfields_0 }}
-						{{ plugin_xfields_1 }}
-					{% endif %}
 					<tr>
 						<td><label class="control-label">{{ lang.uprofile['email'] }}</label></td><td><input type="text" name="editmail" value="{{ user.email }}" class="form-control input-sm" /></td>
 					</tr>
@@ -83,6 +79,23 @@
 						<td><input type="password" name="oldpass" value="" class="form-control input-sm" />
 						<span class="help-block">{{ lang.uprofile['oldpass#desc'] }}</span></td>
 					</tr>
+					{% if (pluginIsActive('xfields')) %}
+						{% for field in p.xfields.fields %}
+							{% if (field.data['type'] == 'images') %}
+								<tr><td colspan="2"><legend>{{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</legend>{{field.input}}</td></tr>
+							{% else %}
+							<tr>
+								{% if (field.data['type'] == 'checkbox') %}
+									<td></td>
+									<td>{{field.input}} {{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</td>
+								{% else %}
+									<td>{{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</td>
+									<td>{{field.input}}</td>
+								{% endif %}
+							</tr>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
 				</tbody>
 			</table>
 			<input type="submit" onclick="return validate_form();" value="{{ lang.uprofile['save'] }}" class="btn btn-success" />

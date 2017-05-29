@@ -173,7 +173,7 @@
 						<span class="help-block">{{ lang.xfconfig['tselect_default_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
-						<input type="text" name="select_default_multi" value="{{ defaults.select }}" class="form-control" />
+						<input type="text" name="select_default_multi" value="{{ defaults.multiselect }}" class="form-control" />
 					</div>
 				</div>
 				<div class="form-group">
@@ -352,7 +352,7 @@
 				</div>
 			</div>
 			{% if (sectionID == 'users') and (type != 'images') %}
-			<div class="row">
+			<div class="form-group">
 				<div class="col-sm-offset-5 col-sm-7">
 					<div class="checkbox">
 						<label>

@@ -12,54 +12,84 @@
 
 		{% include 'plugins/xfields/tpl/navi.tpl' %}
 
-		<table class="table table-condensed">
-			<thead>
-				<tr>
-					<th colspan="2">Группы</th>
-					<th colspan="2">Поля, находящиеся в группе (<span id="grpName">n/a</span>)</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-				<td width="200" colspan="2"><select name="gList" id="gList" onclick="selectGroupList(0);" onkeyup="selectGroupList(0);" class="form-control"size="15"></select></td>
-				<td colspan="3">
-				<div class="fldHead">
-				<table width="100%" class="fldList" id="fList">
-				<tr>
-				 <td width="50">date</td>
-				 <td>Дата добавления новости</td>
-				 <td width="90" align="right" nowrap>(up) (down) (del)</td>
-				</tr>
-				<tr>
-				 <td width="50">&nbsp;date</td>
-				 <td>Дата добавления новости</td>
-				 <td width="90" align="right" nowrap>(up) (down) (del)</td>
-				</tr>
-				</table>
+		<br>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="well">
+					<fieldset class="">
+						<legend>Группы</legend>
+								<div class="form-group">
+							<div class="col-md-12">
+									<select name="gList" id="gList" onclick="selectGroupList(0);" onkeyup="selectGroupList(0);" size="6" class="form-control"></select>
+								</div>
+								</div>
+							
+								<div class="form-group">
+								<label for="" class="col-md-4 control-label">ID группы:</label>
+							<div class="col-md-8">
+								<input type="text" id="edGrpId" class="form-control">
+								</div>
+								</div>
+								
+								
+								<div class="form-group">
+									<label for="" class="col-md-4 control-label">Имя группы:</label>
+							<div class="col-md-8">
+									<input id="edGrpName" class="form-control">
+								</div>
+								</div>
+								<div class="row">
+							<div class="col-md-8 col-md-offset-4">
+									<input type="button" id="btnModGroup" class="btn btn-success" value="Добавить" />
+									<input type="button" id="btnDelGroup" class="btn btn-danger" value="Удалить"/>
+								</div>
+								</div>
+					</fieldset>
 				</div>
-				</td>
-				</tr>
-				<tr class="contRow1">
-				<td width="70" nowrap="nowrap">ID группы:</td>
-				<td><input id="edGrpId" style="width: 200px; height: 15px;"> <input type="button" id="btnDelGroup" class="button" value="Удалить"/></td>
-				<td width="90">Добавить поле:</td><td><select style="width: 200px; height: 19px; border: #BFBFBF 1px solid;" id="selectFList"></select> <input type="button" id="btnAddField" class="button" value="Добавить"/></td>
-				</tr>
-				<tr class="contRow1">
-				<td width="70" nowrap="nowrap">Имя группы:</td>
-				<td><input id="edGrpName" style="width: 200px; height: 15px;"></td>
-				</tr>
-			</tbody>
-		</table>
-
-		<div class="well text-center">
-			<input type="button" id="btnModGroup" class="btn btn-success" value="Добавить" />
+			</div>
+			<div class="col-md-6">
+				<div class="well" id="fldGroup">
+					<fieldset>
+						<legend>Поля, находящиеся в группе (<span id="grpName">n/a</span>)</legend>
+						<table class="table table-condensed table-bordered">
+							<thead>
+								<tr>
+									<th>ID поля</th>
+									<th>Название поля</th>
+									<th class="text-right">{{ lang['action'] }}</th>
+								</tr>
+							</thead>
+							<tbody id="fList">
+								<tr>
+									<td>date</td>
+									<td>Дата добавления новости</td>
+									<td nowrap class="text-right">(up) (down) (del)</td>
+								</tr>
+								<tr>
+									<td>date</td>
+									<td>Дата добавления новости</td>
+									<td nowrap class="text-right">(up) (down) (del)</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="form-group">
+							<label for="" class="col-md-4 control-label">Добавить поле:</label>
+							<div class="col-md-8">
+								<div class="input-group">
+									<select id="selectFList" class="form-control"></select>
+									<span class="input-group-btn">
+										<input type="button" id="btnAddField" class="btn btn-success" value="Добавить"/>
+									</span>
+								</div>
+							</div>
+						</div>
+					</fieldset>
+				</div>
+			</div>
 		</div>
 	</form>
 
 </div>
-
-<script src="{{ scriptLibrary }}/ajax.js"></script>
-<script src="{{ scriptLibrary }}/admin.js"></script>
 
 <script>
 <!--
@@ -83,27 +113,32 @@ function selectGroupList(force) {
 		if (grpList.value != '') {
 			var rowNo = 0;
 			for (var i in gConfig[grpList.value]['entries']) {
-			 var fldName = gConfig[grpList.value]['entries'][i];
+				var fldName = gConfig[grpList.value]['entries'][i];
 
-			 var r = fldList.insertRow(-1);
-			 r.tag = rowNo++;
-			 //r.onclick = function() { alert(this.tag); }
-			 var tl = document.createElement('td');
-			 tl.innerHTML = fldName;
-			 tl.width = 50;
-			 r.appendChild(tl);
+				var r = fldList.insertRow(-1);
+				r.tag = rowNo++;
+				var tl = document.createElement('td');
+				tl.innerHTML = fldName;
+				r.appendChild(tl);
 
-			 tl = document.createElement('td');
-			 tl.innerHTML = fConfig[fldName]?fConfig[fldName]['title']:'n/a';
-			 r.appendChild(tl);
+				tl = document.createElement('td');
+				tl.innerHTML = fConfig[fldName]?fConfig[fldName]['title']:'n/a';
+				r.appendChild(tl);
 
-			 tl = document.createElement('td');
-			 tl.width = 70;
-			 tl.style.align = 'right';
-			 tl.innerHTML =	'<img src="/engine/skins/default/images/up.gif" onclick="fieldModifyRequest(this.parentNode.parentNode.tag, 1);"/> '+
-			 				'<img src="/engine/skins/default/images/down.gif" onclick="fieldModifyRequest(this.parentNode.parentNode.tag, 2);"/> '+
-			 				'<img src="/engine/skins/default/images/delete.gif" onclick="fieldModifyRequest(this.parentNode.parentNode.tag, 3);"/>';
-			 r.appendChild(tl);
+				tl = document.createElement('td');
+				tl.setAttribute('class', 'text-right');
+				tl.setAttribute('nowrap', 'nowrap');
+				tl.innerHTML =	'<div class="btn-group"><a href="#" class="btn btn-default" onclick="fieldModifyRequest(this.parentNode.parentNode.parentNode.tag, 1);"><i class="fa fa-arrow-up"></i></a>' + 
+								'<a href="#" class="btn btn-default" onclick="fieldModifyRequest(this.parentNode.parentNode.parentNode.tag, 2);"><i class="fa fa-arrow-down"></i></a>' + 
+								'<a href="#" class="btn btn-danger" onclick="fieldModifyRequest(this.parentNode.parentNode.parentNode.tag, 3);"><i class="fa fa-trash-o"></i></a></div>';
+				r.appendChild(tl);
+			}
+
+			if ( rowNo == 0 ) {
+				var r = fldList.insertRow(-1);
+				var xCell = r.insertCell(0);
+				xCell.setAttribute('colspan', '3');
+				xCell.innerHTML = 'В этой группе нет полей';
 			}
 		}
 
@@ -116,10 +151,14 @@ function selectGroupList(force) {
 			document.getElementById('edGrpId').readOnly = false;
 			document.getElementById('edGrpId').style.backgroundColor= '#FFFFFF';
 			document.getElementById('btnModGroup').value = "Добавить";
+			document.getElementById('btnDelGroup').style.display = 'none';
+			document.getElementById('fldGroup').style.display = 'none';
 		} else {
 			document.getElementById('edGrpId').readOnly = true;
 			document.getElementById('edGrpId').style.backgroundColor= '#EAF0F7';
 			document.getElementById('btnModGroup').value = "Сохранить";
+			document.getElementById('btnDelGroup').style.display = '';
+			document.getElementById('fldGroup').style.display = '';
 		}
 	}
 

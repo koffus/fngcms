@@ -1298,14 +1298,15 @@ if (getPluginStatusActive('uprofile')) {
 		}
 
 		function showProfile($userID, $SQLrow, &$tvars) {
-		global $mysql, $config, $twig, $twigLoader;
+			global $mysql, $config, $twig, $twigLoader;
+
 			// Try to load config. Stop processing if config was not loaded
 			if (($xf = xf_configLoad()) === false) return;
 
 			$fields = xf_decode($SQLrow['xfields']);
 
 			// Check if we have at least one `image` field and load TWIG template if any
-			if (is_array($xf['users']))
+			if (is_array($xf['users'])) {
 				foreach ($xf['users'] as $k => $v) {
 					if ($v['type'] == 'images') {
 
@@ -1317,10 +1318,17 @@ if (getPluginStatusActive('uprofile')) {
 						break;
 					}
 				}
+			}
 
 			// Show extra fields if we have it
-			if (is_array($xf['users']))
+			if (is_array($xf['users'])) {
 				foreach ($xf['users'] as $k => $v) {
+
+					// Skip disabled fields
+					if ($v['disabled']) {
+						continue;
+					}
+
 					$kp = preg_quote($k, "#");
 					$xfk = isset($fields[$k])?$fields[$k]:'';
 
@@ -1410,7 +1418,10 @@ if (getPluginStatusActive('uprofile')) {
 						// TWIG based variables
 						$tvars['p']['xfields'][$k]['value'] = $xfk;
 					}
+					$tvars['p']['xfields'][$k]['type'] = $v['type'];
+					$tvars['p']['xfields'][$k]['title'] = secure_html($v['title']);
 				}
+			}
 		}
 	}
 	pluginRegisterFilter('plugin.uprofile','xfields', new XFieldsUPrifileFilter);
