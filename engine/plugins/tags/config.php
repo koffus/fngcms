@@ -111,7 +111,7 @@ elseif ($_REQUEST['action'] == 'commit') {
 		$mysql->query("delete from ".prefix."_tags where posts = 0");
 
 		$mysql->query("unlock tables");
-		print __('tags:cmd.rebuild.done').'<br/>';
+		msg(array('message' => __('tags:cmd.rebuild.done')));
 	}
 	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);

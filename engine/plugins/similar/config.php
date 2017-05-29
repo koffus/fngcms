@@ -15,7 +15,7 @@ $cfg = array();
 array_push($cfg, array('name' => 'rebuild', 'title' => __('similar:rebuild'), 'descr' => __('similar:rebuild_desc'), 'type' => 'select', 'value' => 0, 'values' => array ( 0 => __('noa'), 1 => __('yesa')), 'nosave' => 1));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'localsource', 'title' => __('similar:localsource'), 'descr' => __('simiar_localsource'), 'type' => 'select', 'values' => array ( '0' => __('similar:lsrc_site'), '1' => __('similar:lsrc_plugin')), 'value' => intval(pluginGetVariable($plugin,'localsource'))));
+array_push($cfgX, array('name' => 'localsource', 'title' => __('similar:localsource'), 'descr' => __('similar:localsource'), 'type' => 'select', 'values' => array ( '0' => __('similar:lsrc_site'), '1' => __('similar:lsrc_plugin')), 'value' => intval(pluginGetVariable($plugin,'localsource'))));
 array_push($cfg, array('mode' => 'group', 'title' => '<b>'.__('similar:cfg_display').'</b>', 'entries' => $cfgX));
 
 $cfgX = array();
@@ -51,7 +51,7 @@ elseif ($_REQUEST['action'] == 'commit') {
 		// * Mark all news to have broken index
 		$mysql->query("update ".prefix."_news set similar_status = 0");
 
-		print __('tags_rebuild_done')."<br/>";
+		msg(array('message' => __($plugin.':rebuild_done')));
 	}
 	print_commit_complete($plugin, $cfg);
 }
