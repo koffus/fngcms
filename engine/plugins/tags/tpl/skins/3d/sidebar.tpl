@@ -28,14 +28,14 @@
 	</table>
 </td></tr>
 </table>
-<script src="/engine/plugins/tags/tpl/skins/3d/swfobject.js"></script>
+<script src="{home}/engine/plugins/tags/tpl/skins/3d/swfobject.js"></script>
 <script>
 var insertCloudElementID = 'insertTagCloud';
 var insertCloudClientWidth = document.getElementById(insertCloudElementID).clientWidth;
 var insertCloudClientHeight = insertCloudClientWidth; //140;
 var tagLine = '{cloud3d}';
 var rnumber = Math.floor(Math.random()*9999999);
-var widget_so = new SWFObject("/engine/plugins/tags/tpl/skins/3d/tagcloud.swf?r="+rnumber, "tagcloudflash", insertCloudClientWidth, insertCloudClientHeight, "9", "#ffffff");
+var widget_so = new SWFObject("{home}/engine/plugins/tags/tpl/skins/3d/tagcloud.swf?r="+rnumber, "tagcloudflash", insertCloudClientWidth, insertCloudClientHeight, "9", "#ffffff");
 widget_so.addParam("allowScriptAccess", "always");
 widget_so.addParam("wmode", "transparent");
 widget_so.addVariable("tcolor", "0x333333");
