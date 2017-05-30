@@ -53,10 +53,6 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
  * Input[type="file"]
  */
 .btn-fileinput{cursor:pointer;display:inline-block;overflow:hidden;position:relative;height:auto;text-align:left}.btn-fileinput input[type=file]{margin:0;cursor:pointer;font-size:100px;filter:alpha(opacity=1);-moz-opacity:0.01;opacity:0.01;position:absolute;right:0;top:0}.btn-fileinput span{cursor:pointer;display:inline-block;white-space:normal}.btn-fileinput .table{margin:0;}
-/*
- * Appending elements
- */
-#loading-layer {display:none;padding:15px;border:1px solid transparent;border-radius:4px;color:#3c763d;background-color:#dff0d8;border-color:#d6e9c6;z-index:99999!important;}#loading-layer i.fa{margin-right:8px;}#scrollTop{z-index:999;background:#000;width:40px;height:40px;text-align:center;font-size:24px;position:fixed;display:none;bottom:15px;right:15px;cursor:pointer;overflow:auto;opacity:0.8;transition:all .3s ease-in-out;border-radius:4px;}#scrollTop:before{width:40px;height:40px;line-height:40px;color:#fff;}#scrollTop:hover{opacity:1;}#sidenav-overlay {display:none;position:fixed;top:0;right:0;bottom:0;left:0;height:100%;background-color:#000;filter:alpha(opacity=50);opacity:.5;z-index:997;}
 
 @media (max-width: 992px) {
 	.header-top .row {
@@ -578,16 +574,7 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 		opacity:1;
 		}
 
-#loading-layer {
-	display: none;
-	padding: 15px;
-	border: 1px solid transparent;
-	border-radius: 4px;
-	color: #3c763d;
-	background-color: #dff0d8;
-	border-color: #d6e9c6;
-	z-index: 99999!important;
-	}
+#loading-layer {display:none;padding:15px;border-radius:4px;border:1px solid #222;color:#fff;background-color:#444;z-index:99999!important;}#loading-layer i.fa{margin-right:8px;}
 
 .timeProfiler {
 	width: 100%;
