@@ -665,111 +665,102 @@
 <script>
 // Check DB connection
 function ngCheckDB() {
-	ngShowLoading();
-	$.post('{{ admin_url }}/rpc.php', {
-			json : 1,
-			methodName : 'admin.configuration.dbCheck',
+	$.ajax({
+		type: 'POST',
+		url: '{{ admin_url }}/rpc.php',
+		dataType: 'json',
+		data: {
+			json: 1,
 			rndval: new Date().getTime(),
-			params : json_encode(
-				{
-					'token' : '{{ token }}',
-					'dbhost' : $("#db_dbhost").val(),
-					'dbname' : $("#db_dbname").val(),
-					'dbuser' : $("#db_dbuser").val(),
-					'dbpasswd' : $("#db_dbpasswd").val(),
-				}
-			) }, function(data) {
+			methodName: 'admin.configuration.dbCheck',
+			params: json_encode({
+					'token': '{{ token }}',
+					'dbhost': $("#db_dbhost").val(),
+					'dbname': $("#db_dbname").val(),
+					'dbuser': $("#db_dbuser").val(),
+					'dbpasswd': $("#db_dbpasswd").val(),
+				}),
+		},
+		beforeSend: function() {ngShowLoading();},
+		error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
+	}).done(function( data ) {
 		ngHideLoading();
-		// Try to decode incoming data
-		try {
-			resTX = eval('('+data+')');
-		} catch (err) {
-			$.notify({message: '{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});
-		}
-		if (!resTX['status']) {
-			$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else {
-			$.notify({message: resTX['errorText']},{type: 'success'});
-		}
-	}, "text").error(function() { ngHideLoading();
-		$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});
+		try {resTX = eval(data);} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
+		if (!resTX['status'])
+			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+		else
+			$.notify({message:resTX['errorText']},{type: 'success'});
 	});
 }
 
 // Check MEMCached connection
 function ngCheckMemcached() {
-	ngShowLoading();
-	$.post('{{ admin_url }}/rpc.php', {
-			json : 1,
-			methodName : 'admin.configuration.memcachedCheck',
+	$.ajax({
+		type: 'POST',
+		url: '{{ admin_url }}/rpc.php',
+		dataType: 'json',
+		data: {
+			json: 1,
 			rndval: new Date().getTime(),
-			params : json_encode(
-				{
+			methodName: 'admin.configuration.memcachedCheck',
+			params: json_encode({
 					'token' : '{{ token }}',
 					'ip' : $("#memcached_ip").val(),
 					'port' : $("#memcached_port").val(),
 					'prefix' : $("#memcached_prefix").val(),
-				}
-			) }, function(data) {
+				}),
+		},
+		beforeSend: function() {ngShowLoading();},
+		error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
+	}).done(function( data ) {
 		ngHideLoading();
-		// Try to decode incoming data
-		try {
-			resTX = eval('('+data+')');
-		} catch (err) {
-			$.notify({message: '{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});
-		}
-		if (!resTX['status']) {
-			$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else {
-			$.notify({message: resTX['errorText']},{type: 'success'});
-		}
-	}, "text").error(function() { ngHideLoading();
-		$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});
+		try {resTX = eval(data);} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
+		if (!resTX['status'])
+			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+		else
+			$.notify({message:resTX['errorText']},{type: 'success'});
 	});
 }
 
 // Send test e-mail message
 function ngCheckEmail() {
-	ngShowLoading();
-	$.post('{{ admin_url }}/rpc.php', {
-			json : 1,
-			methodName : 'admin.configuration.emailCheck',
+	$.ajax({
+		type: 'POST',
+		url: '{{ admin_url }}/rpc.php',
+		dataType: 'json',
+		data: {
+			json: 1,
 			rndval: new Date().getTime(),
-			params : json_encode(
-				{
-					'token' : '{{ token }}',
-					'mode' : $("#mail_mode").val(),
-					'from' : {
-						'name'	: $("#mail_fromname").val(),
-						'email' : $("#mail_frommail").val(),
+			methodName: 'admin.configuration.emailCheck',
+			params: json_encode({
+					'token': '{{ token }}',
+					'mode': $("#mail_mode").val(),
+					'from': {
+						'name': $("#mail_fromname").val(),
+						'email': $("#mail_frommail").val(),
 					},
-					'to'	: {
-						'email' : $("#mail_tomail").val(),
+					'to': {
+						'email': $("#mail_tomail").val(),
 					},
-					'smtp'	: {
+					'smtp': {
 						'host': $("#mail_smtp_host").val(),
 						'port' : $("#mail_smtp_port").val(),
 						'auth' : $("#mail_smtp_auth").val(),
 						'login': $("#mail_smtp_login").val(),
 						'pass': $("#mail_smtp_pass").val(),
 						'secure': $("#mail_smtp_secure").val(),
-					},
-				}
-			) }, function(data) {
+					}
+				}),
+		},
+		beforeSend: function() {ngShowLoading();},
+		error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
+	}).done(function( data ) {
 		ngHideLoading();
-		// Try to decode incoming data
-		try {
-			resTX = eval('('+data+')');
-		} catch (err) {
-			$.notify({message: '{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});
-		}
-		if (!resTX['status']) {
-			$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else {
-			$.notify({message: resTX['errorText']},{type: 'success'});
-		}
-	}, "text").error(function() { ngHideLoading();
-		$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});
+		try {resTX = eval(data);} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
+		if (!resTX['status'])
+			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+		else
+			$.notify({message:resTX['errorText']},{type: 'success'});
 	});
 }
 </script>

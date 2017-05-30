@@ -148,18 +148,27 @@ var ngFileTreeFunc = function(file) {
 		//(file == 'main.tpl'?' Страницы сайта':'');
 		
 		ngFileName = file;
-		ngShowLoading();
-		$.post('{{ admin_url }}/rpc.php', { json : 1, methodName : 'admin.templates.getFile', rndval: new Date().getTime(), params : json_encode({ template : ngTemplateName, 'file' : file, token : '{{ token }}' }) }, function(data) {
+		$.ajax({
+			type: 'POST',
+			url: '{{ admin_url }}/rpc.php',
+			dataType: 'json',
+			data: {
+				json: 1,
+				rndval: new Date().getTime(),
+				methodName : 'admin.templates.getFile',
+				params: json_encode({
+						'token': '{{ token }}',
+						'template': ngTemplateName,
+						'file': file,
+					}),
+			},
+			beforeSend: function() {ngShowLoading();},
+			error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
+		}).done(function( data ) {
 			ngHideLoading();
-			// Try to decode incoming data
-			try {
-				resTX = eval('('+data+')');
-			} catch (err) {
-				$.notify({message: 'Error parsing JSON output (mod=templates). Result: '+resTX.response},{type: 'danger'});
-			}
-			
+			try {resTX = eval(data);} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
 			if (!resTX['status'])
-				$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+				$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
 
 			ngFileContent = '';
 			ngFileType = resTX['type'];
@@ -211,9 +220,6 @@ var ngFileTreeFunc = function(file) {
 				ngFileContent = resTX['content'];
 				emmetCodeMirror(cm);
 			}
-		}, "text").error(function() {
-			ngHideLoading();
-			$.notify({message: 'HTTP error during request'},{type: 'danger'});
 		});
 		$('html, body').animate({scrollTop: $('.fileEditorInfo').offset().top - 50}, '888');
 
@@ -241,21 +247,32 @@ function submitTemplateSelector(selTpl) {
 
 function submitTemplateEdit() {
 	var editedContent = $('#fileEditorSelector').val();
-	ngShowLoading();
-	$.post('{{ admin_url }}/rpc.php', { json : 1, methodName : 'admin.templates.updateFile', rndval: new Date().getTime(), params : json_encode({ template : ngTemplateName, 'file' : ngFileName, token : '{{ token }}', 'content' : editedContent }) }, function(data) {
+	$.ajax({
+		type: 'POST',
+		url: '{{ admin_url }}/rpc.php',
+		dataType: 'json',
+		data: {
+			json: 1,
+			rndval: new Date().getTime(),
+			methodName : 'admin.templates.updateFile',
+			params: json_encode({
+					'token': '{{ token }}', 
+					'template': ngTemplateName,
+					'file': ngFileName,
+					'content': editedContent,
+				}),
+		},
+		beforeSend: function() {ngShowLoading();},
+		error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
+	}).done(function( data ) {
 		ngHideLoading();
-		// Try to decode incoming data
-		try {
-			resTX = eval('('+data+')');
-		} catch (err) {
-			$.notify({message: 'Error parsing JSON output. Result: '+linkTX.response},{type: 'danger'});
-		}
-		if (!resTX['status']) {
-			$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else {
-			$.notify({message: resTX['content']},{type: 'info'});
-		}
-	}, "text").error(function() { ngHideLoading(); $.notify({message: 'HTTP error during request'},{type: 'danger'}); });
+		try {resTX = eval(data);} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
+		if (!resTX['status'])
+			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+		else
+			$.notify({message:resTX['content']},{type: 'info'});
+	});
+
 }
 
 $(document).ready( function() {

@@ -24,26 +24,37 @@
 
 <script>
 function loadData() {
-	ngShowLoading();
-	$.post('{{ admin_url }}/rpc.php', { json : 1, methodName : 'admin.extras.getPluginConfig', rndval: new Date().getTime(), params : json_encode({ token : '{{ token }}' }) }, function(data) {
+
+	$.ajax({
+		type: 'POST',
+		url: '{{ admin_url }}/rpc.php',
+		dataType: 'json',
+		data: {
+			json: 1,
+			rndval: new Date().getTime(),
+			methodName : 'admin.extras.getPluginConfig',
+			params: json_encode({
+					'token': '{{ token }}',
+				}),
+		},
+		beforeSend: function() {ngShowLoading();},
+		error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
+	}).done(function( data ) {
 		ngHideLoading();
-		// Try to decode incoming data
-		try {
-			resTX = eval('('+data+')');
-		} catch (err) { alert('Error parsing JSON output. Result: '+linkTX.response); }
+		try {resTX = eval(data);} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
 		if (!resTX['status']) {
-			$.notify({message: 'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
 		} else {
 			var line = resTX['content'];
 			var newline = line.replace(/\\u/g, "%u");
 			$('#configArea').val(unescape(newline));
 		}
-	}, "text").error(function() { ngHideLoading(); $.notify({message: 'HTTP error during request'},{type: 'danger'}); });
+	});
+
 }
 
 function showContent() {
  alert($('#configArea').val());
 }
-
 
 </script>

@@ -1,164 +1,142 @@
-<script type="text/javascript">
-function ChangeOption(selectedOption) {
-	document.getElementById('maincontent').style.display = "none";
-	document.getElementById('additional').style.display = "none";
+<h2 class="section-title">{{ lang.uprofile['profile_of'] }} <b>{{ user.name }}</b></h2>
 
-	if(selectedOption == 'maincontent') {
-		document.getElementById('maincontent').style.display = "";
-	}
-	
-	if(selectedOption == 'additional') {
-		document.getElementById('additional').style.display = "";
-	}
-}
+<form id="profileForm" action="{{ form_action }}" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="token" value="{{ token }}" />
 
-function validate_form() {
- var f = document.getElementById('profileForm');
+	<div class="row">
+		<div class="col-md-3 text-center">
+			{% if (flags.avatarAllowed) %}
+				<a href="{{ user.avatar }}" target="_blank"><img src="{{ user.avatar }}" alt="{{ user.name }}" class="rounded-circle" /></a>
+				{% if (user.flags.hasAvatar) %}
+					<p class="checkbox"><label><input type="checkbox" name="delavatar" id="delavatar" /> {{ lang.uprofile['avatar_delete'] }}</label></p>
+				{% endif %}
+			{% endif %}
 
- // ICQ
- var icq = f.editicq.value;
- if ((icq.length > 0)&&(! icq.match(/^\d{4,10}$/))) { 
- 	alert("{l_uprofile:wrong_icq}"); 
- 	return false; 
- }
+			{% if (flags.photoAllowed and user.flags.hasPhoto) %}
+				<a href="{{ user.photo }}" target="_blank"><img src="{{ user.photo_thumb }}" alt="{{ user.name }}" class="rounded-circle" /></a>
+				<p class="checkbox"><label><input type="checkbox" name="delphoto" id="delphoto" /> {{ lang.uprofile['photo_delete'] }}</label></p>
+			{% endif %}
+		</div>
 
- // Email
- var email = f.editmail.value;
- if ((email.length > 0) && (! emailCheck(email))) {
- 	alert("{l_uprofile:wrong_email}");
- 	return false;
- }
-
- // About
- var about = f.editabout.value;
- if (({about_sizelimit} > 0) && (about.length > {about_sizelimit})) {
- 	alert("{about_sizelimit_text}");
- 	return false;	
- }
- return true;
-}
-</script>
-<form id="profileForm" method="post" action="{form_action}" enctype="multipart/form-data">
-<input type="hidden" name="token" value="{token}"/>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-		<td>
-		<table border="0" width="100%" cellspacing="0" cellpadding="0">
-			<tr>
-				<td>
-				<img border="0" src="{tpl_url}/images/2z_40.gif" width="7" height="36"></td>
-				<td background="{tpl_url}/images/2z_41.gif" width="100%">&nbsp;<b><font color="#FFFFFF">{l_uprofile:profile_of} {name}</font></b></td>
-				<td>
-				<img border="0" src="{tpl_url}/images/2z_44.gif" width="7" height="36"></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table border="0" width="100%" cellspacing="0" cellpadding="0">
-			<tr>
-				<td background="{tpl_url}/images/2z_54.gif" width="7">&nbsp;</td>
-				<td bgcolor="#FFFFFF">
-				<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr align="center">
-<td width="100%" class="contentEdit" align="center" valign="top">
-<input type="button" onmousedown="javascript:ChangeOption('maincontent')" value="{l_uprofile:maincontent}" class="button" />
-<input type="button" onmousedown="javascript:ChangeOption('additional')" value="{l_uprofile:additional}" class="button" />
-</td>
-</tr>
-</table>
-<br />
-<table id="maincontent" class="content" width="100%" border="0" cellspacing="0" cellpadding="0" align="center">
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:status}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{status}</td>
-</tr>
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:regdate}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{regdate}</td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:last}</td>
-<td style="padding: 5px;" class="entry">{last}</td>
-</tr>
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:all_news}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{news}</td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:all_comments}</td>
-<td style="padding: 5px;" class="entry">{comments}</td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:email}</td>
-<td style="padding: 5px;" class="entry"><input type="text" class="email" name="editmail" value="{email}" size="40" /></td>
-</tr>
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:site}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry"><input type="text" name="editsite" value="{site}" size="40" /></td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:icq}</td>
-<td style="padding: 5px;" class="entry"><input type="text" name="editicq" value="{icq}" size="40" maxlength="10" /></td>
-</tr>
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:from}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry"><input type="text" name="editfrom" value="{from}" size="40" maxlength="60" /></td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:about} {about_sizelimit_text}</td>
-<td style="padding: 5px;" class="entry"><textarea name="editabout" rows="7" cols="55">{about}</textarea></td>
-</tr>
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:new_pass}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry"><input class="password" name="editpassword" size="40" maxlength="16" autocomplete="off" /><br /><small>{l_uprofile:pass_left}</small></td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:oldpass}<br/><small>{l_uprofile:oldpass#desc}</small></td>
-<td style="padding: 5px;" class="entry"><input type="password" name="oldpass" value="" size="40" maxlength="10" autocomplete="off" /></td>
-</tr>
-{plugin_xfields_1}
-</table>
-
-<table id="additional" style="display: none;" class="content" border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{l_uprofile:avatar}</td>
-<td style="padding: 5px; background-color: #f9fafb;" class="entry">{avatar}</td>
-</tr>
-<tr>
-<td style="padding: 5px;" class="entry">{l_uprofile:photo}</td>
-<td style="padding: 5px;" class="entry">{photo}</td>
-</tr>
-{plugin_xfields_0}
-</table>
-<br />
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr align="center">
-<td width="100%" class="contentEdit" align="center" valign="top">
-<input type="submit" value="{l_uprofile:save}" class="button" onclick="return validate_form();"/>
-<input type="hidden" name="plugin_cmd" value="apply" />
-</td>
-</tr>
-</table>
-				</td>
-				<td background="{tpl_url}/images/2z_59.gif" width="7">&nbsp;</td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td>
-		<table border="0" width="100%" cellspacing="0" cellpadding="0">
-			<tr>
-				<td>
-				<img border="0" src="{tpl_url}/images/2z_68.gif" width="7" height="4"></td>
-				<td background="{tpl_url}/images/2z_69.gif" width="100%"></td>
-				<td>
-				<img border="0" src="{tpl_url}/images/2z_70.gif" width="7" height="4"></td>
-			</tr>
-		</table>
-		</td>
-	</tr>
-</table>
+		<div class="col-md-9">
+			<table class="table table-user-information">
+				<tbody>
+					<tr>
+						<td>{l_uprofile:status}</td><td>{status}</td>
+					</tr>
+					<tr>
+						<td>{l_uprofile:regdate}</td><td>{regdate}</td>
+					</tr>
+					<tr>
+						<td>{l_uprofile:last}</td><td>{last}</td>
+					</tr>
+					<tr>
+						<td>{l_uprofile:all_news}</td><td>{news}</td>
+					</tr>
+					<tr>
+						<td>{l_uprofile:all_comments}</td><td>{comments}</td>
+					</tr>
+					<tr>
+						<td><label class="control-label">{{ lang.uprofile['site'] }}</label></td><td><input type="text" name="editsite" value="{{ user.site }}" class="form-control input-sm" /></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">{{ lang.uprofile['icq'] }}</label></td><td><input type="text" name="editicq" value="{{ user.icq }}" class="form-control input-sm" /></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">{{ lang.uprofile['from'] }}</label></td><td><input type="text" name="editfrom" value="{{ user.from }}" class="form-control" /></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">{{ lang.uprofile['about'] }}</label></td><td><textarea name="editabout" id="editabout" rows="5" class="form-control" {% if (info_sizelimit > 0) %} maxlength="{about_sizelimit}" {% endif %}>{{ user.info }}</textarea>
+						{% if (info_sizelimit > 0) %}<span class="help-block">{{ lang.uprofile['sizelimit_min'] }} {{ lang.uprofile['characters'] }}: <b id="sizelimit_text">{about_sizelimit}</b></span>{% endif %}</td>
+					</tr>
+					{% if (flags.avatarAllowed) %}
+						<tr>
+							<td><label class="control-label">{{ lang.uprofile['avatar_upload'] }}</label></td><td><input type="file" name="newavatar" /></td>
+						</tr>
+					{% else %}
+						<tr>
+							<td><label class="control-label">{{ lang.uprofile['avatar'] }}</label></td><td>{{ lang.uprofile['avatars_denied'] }}</td>
+						</tr>
+					{% endif %}
+					{% if (flags.photoAllowed) %}
+						<tr>
+							<td><label class="control-label">{{ lang.uprofile['photo_upload'] }}</label></td><td><input type="file" name="newphoto" /></td>
+						</tr>
+					{% else %}
+						<tr>
+							<td><label class="control-label">{{ lang.uprofile['photo'] }}</label></td><td>{{ lang.uprofile['photos_denied'] }}</td>
+						</tr>
+					{% endif %}
+					<tr>
+						<td><label class="control-label">{{ lang.uprofile['email'] }}</label></td><td><input type="text" name="editmail" value="{{ user.email }}" class="form-control input-sm" /></td>
+					</tr>
+					<tr>
+						<td><label class="control-label">{{ lang.uprofile['new_pass'] }}</label></td>
+						<td><input type="password" name="editpassword" class="form-control input-sm" onclick="$('#oldpass').css('display', '');" onchange="$('#oldpass').css('display', '');" /></td>
+					</tr>
+					<tr id="oldpass" style="display:none;">
+						<td><label class="control-label">{{ lang.uprofile['oldpass'] }}</label></td>
+						<td><input type="password" name="oldpass" value="" class="form-control input-sm" />
+						<span class="help-block">{{ lang.uprofile['oldpass#desc'] }}</span></td>
+					</tr>
+					{% if (pluginIsActive('xfields')) %}
+						{% for field in p.xfields.fields %}
+							{% if (field.data['type'] == 'images') %}
+								<tr><td colspan="2"><legend>{{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</legend>{{field.input}}</td></tr>
+							{% else %}
+							<tr>
+								{% if (field.data['type'] == 'checkbox') %}
+									<td></td>
+									<td>{{field.input}} {{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</td>
+								{% else %}
+									<td>{{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</td>
+									<td>{{field.input}}</td>
+								{% endif %}
+							</tr>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				</tbody>
+			</table>
+			<input type="submit" onclick="return validate_form();" value="{{ lang.uprofile['save'] }}" class="btn btn-success" />
+		</div>
+	</div>
 </form>
+
+<script type="text/javascript">
+	$(function() {
+		var sizelimit = {{ info_sizelimit }};
+		if(sizelimit > 0 ) {
+			calculateMaxLen($('#editabout'), $('#sizelimit_text'), sizelimit);
+		}
+
+		$('#editabout').on('click focus keyup', function(event) {
+			if(sizelimit > 0 ) {
+				calculateMaxLen($(this), $('#sizelimit_text'), sizelimit);
+			}
+		});
+	});
+
+	function validate_form() {
+		var f = document.getElementById('profileForm');
+		// ICQ
+		var icq = f.editicq.value;
+		if ((icq.length > 0)&&(! icq.match(/^\d{4,10}$/))) { 
+			alert("{{ lang.uprofile['wrong_icq'] }}"); 
+			return false; 
+		}
+		// Email
+		var email = f.editmail.value;
+		if ((email.length > 0) && (! emailCheck(email))) {
+			alert("{{ lang.uprofile['wrong_email'] }}");
+			return false;
+		}
+		// About
+		var about = f.editabout.value;
+		if (({{ info_sizelimit }} > 0) && (about.length > {{ info_sizelimit }})) {
+			alert("{{ info_sizelimit_text }}");
+			return false;	
+		}
+		return true;
+	}
+</script>
