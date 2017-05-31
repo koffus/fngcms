@@ -15,8 +15,7 @@ Lang::loadPlugin('archive', 'main', '', '', ':');
 //  * template - Personal template for plugin
 //  * cacheExpire - age of cache [in seconds]
 function plugin_archive($params) {
-
-	global $config, $mysql, $twig, $twigLoader, $CurrentHandler;
+	global $config, $mysql, $twig;
 
 	$maxnum = isset($params['maxnum']) ? $params['maxnum'] : pluginGetVariable('archive', 'maxnum');
 	$counter = isset($params['counter']) ? $params['counter'] : pluginGetVariable('archive', 'counter');
@@ -25,9 +24,6 @@ function plugin_archive($params) {
 	$localsource = pluginGetVariable('archive', 'localsource');
 	$cache = isset($params['cache']) ? $params['cache'] : pluginGetVariable('archive', 'cache');
 	$cacheExpire = isset($params['cacheExpire']) ? $params['cacheExpire'] : pluginGetVariable('archive', 'cacheExpire');
-
-	if ( ($maxnum < 1) or ($maxnum > 50) )
-		$maxnum = 12;
 
 	if ($overrideTemplateName) {
 		$templateName = $overrideTemplateName;
@@ -44,6 +40,9 @@ function plugin_archive($params) {
 			return $cacheData;
 		}
 	}
+
+	if ( ($maxnum < 1) or ($maxnum > 50) )
+		$maxnum = 12;
 
 	// Determine paths for all template files
 	$tpath = locatePluginTemplates(array($templateName), 'archive', $localsource);

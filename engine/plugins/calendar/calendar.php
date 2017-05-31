@@ -45,7 +45,7 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 	$month = sprintf('%02s', $month);
 
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
-	$cacheFileName = md5('calendar'.$config['theme'].'|'.join(",",$categoryList).$overrideTemplateName.$config['default_lang'].$year.$month).'.txt';
+	$cacheFileName = md5('calendar'.$config['theme'].'|'.join(',',$categoryList).$overrideTemplateName.$config['default_lang'].$year.$month).'.txt';
 
 	if ($cacheExpire > 0) {
 		$cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'calendar');

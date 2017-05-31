@@ -32,47 +32,62 @@
 </head>
 <body>
 
-	<div class="header-top navbar-inverse bg-inverse">
-		<div class="container">
-			<div class="row">
-				<div class="col-6 text-left">
-					<a href="mailto:info@site.com" class="nav-link"><span class="fa fa-envelope"></span> info@site.com</a>
-				</div>
-				<div class="col-6 text-right">
-					<a href="tel:88001234567" class="nav-link"><span class="fa fa-phone-square"></span> 8 (800) 123-45-67</a>
+	<header>
+		<div class="header-top navbar-inverse bg-inverse">
+			<div class="container">
+				<div class="row">
+					<div class="col-6 text-left">
+						<a href="mailto:info@site.com" class="nav-link"><span class="fa fa-envelope"></span> info@site.com</a>
+					</div>
+					<div class="col-6 text-right">
+						<a href="tel:88001234567" class="nav-link"><span class="fa fa-phone-square"></span> 8 (800) 123-45-67</a>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 
-
-	<header id="mainNav" class="navbar navbar-toggleable-md  navbar-inverse bg-inverse">
-		<nav class="container">
-			<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
-			<a class="navbar-brand" href="{{ home }}">{{ home_title }}</a>
-			<div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
-				<ul class="navbar-nav mr-auto">
-					<li class="nav-item"><a href="{{ home }}" class="nav-link">{{ lang['home'] }}</a></li>
-					<li class="nav-item dropdown">
-						<a href="{{ home }}#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ lang['news'] }} </a>
-						<div class="dropdown-menu dropdown-menu-right">
-							{{ categories }}
-						</div>
-					</li>
-					<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.forum }}</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.article }}</a></li>
-					<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.about }}</a></li>
-				</ul>
-				{{ personal_menu }}
+		<div class="container">
+			<div class="row card-block align-items-center">
+				<div class="col-6">
+					<h1 class="site-title-heading">
+						<a href="{{ home }}" title="{{ home_title }}" rel="home">{{ home_title }}</a>
+					</h1>
+					<p class="site-description">
+						Lorem ipsum dolor sit amet
+					</p>
+				</div>
+				<div class="col-6">
+					{{ search_form }}
+				</div>
 			</div>
-		</nav>
+		</div>
+
+		<div class="container">
+			<div class="row"><div class="col-md-12">
+			
+			<nav id="mainNav" class="navbar navbar-toggleable-md  navbar-inverse bg-inverse">
+				<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
+				<a class="navbar-brand" href="{{ home }}" title="{{ home_title }}" rel="home">{{ home_title }}</a>
+				<div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item dropdown">
+							<a href="{{ home }}#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ lang['news'] }} </a>
+							<div class="dropdown-menu">
+								{{ categories }}
+							</div>
+						</li>
+						<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.forum }}</a></li>
+						<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.article }}</a></li>
+						<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.about }}</a></li>
+					</ul>
+					{{ personal_menu }}
+				</div>
+			</nav></div></div>
+		</div>
 	</header>
 
 	{% if isHandler('news:main') and not(handler.params.page) %}
 		{% include 'main.promo.tpl' %}
-		<main class="container section">
-			{{ mainblock }}
-		</main>
 	{% else %}
 		{% include 'main.page.tpl' %}
 	{% endif %}
