@@ -205,13 +205,15 @@ function showNews($handlerName, $params) {
 					$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $currentCategory['keywords']);
 				}
 
-				// Set personal `order by` for category
+				// Set number of `news per page` if this parameter is filled in category
 				if ($currentCategory['number'])
 						$callingParams['showNumber'] = $currentCategory['number'];
 
-				// Set number of `news per page` if this parameter is filled in category
-				if ($currentCategory['orderby'])
+				// Set personal `order by` for category
+				if ( $currentCategory['orderby'] )
 					$callingParams['newsOrder'] = $currentCategory['orderby'];
+				if ( isset($_COOKIE['newsOrder']) )
+					$callingParams['newsOrder'] =  $_COOKIE['newsOrder'];
 
 				$paginationParams = checkLinkAvailable('news', 'by.category')?
 							array('pluginName' => 'news', 'pluginHandler' => 'by.category', 'params' => array('category' => $catmap[$category]), 'xparams' => array(), 'paginator' => array('page', 0, false)):
@@ -228,6 +230,27 @@ function showNews($handlerName, $params) {
 
 				// TABLE - prepare information about category
 				$tableVars['category'] = array_shift(makeCategoryInfo($currentCategory['id']));
+
+				// TABLE - prepare information about sorting block
+				$sortDefault = array(/*'id desc', */'postdate desc', 'title desc', 'views desc', 'com desc');
+				//if ( isset($_COOKIE['newsOrder']) and in_array($callingParams['newsOrder'], $sortDefault) ) {
+					$sortKey		= array_search( $callingParams['newsOrder'], $sortDefault );
+					$sortDefault	= array_diff( $sortDefault, [$callingParams['newsOrder']] );
+					$sortDefault	= $sortDefault + [$sortKey => str_replace('desc', 'asc', $callingParams['newsOrder'])];
+					ksort($sortDefault);
+				//}
+
+				$sortOrder = explode(' ', $callingParams['newsOrder']);
+				foreach ( $sortDefault as $key => $value ) {
+					$pieces = explode(' ', $value);
+					if ( $pieces[0] == 'com' and !getPluginStatusActive('comments') )
+						continue;
+					if ( $pieces[0] == $sortOrder[0] ) {
+						$tableVars['newsOrder'] .= '<span onclick="newsorder(\'' . $value . '\'); return false;" class="news-order-link active ' . $pieces[1] . '">' . __('news.order.'.$pieces[0]) . '</span>';
+					} else {
+						$tableVars['newsOrder'] .= '<span onclick="newsorder(\'' . $value . '\'); return false;" class="news-order-link">' . __('news.order.'.$pieces[0]) . '</span>';
+					}
+				}
 
 				// Check if template 'news.table.tpl' exists [first check custom category template (if set), after that - common template for the whole site
 				if ( $currentCategory['tpl'] )

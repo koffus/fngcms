@@ -1,9 +1,16 @@
-{% if (handler == 'by.category') and (pages.current == 1) %}
+{% if (handler == 'by.category') %}
+	<small class="pull-right">{{ count }}</small>
 	<h2 class="section-title">{{ category.name }}</h2>
-	{% if category.icon.purl %}<img src="{{ category.icon.purl }}" />{% endif %}
-	{% if category.info %}{{ category.info }}<hr />{% endif %}
+	{% if (pages.current == 1) %}
+		{% if category.icon.purl %}<img src="{{ category.icon.purl }}" />{% endif %}
+		{% if category.info %}{{ category.info }}<hr />{% endif %}
+	{% endif %}
+
+	{% include 'news-order.tpl' %}
+
 {% else %}
-	<h2 class="section-title">{{ lang.news }}</h2>
+	 <small class="pull-right">{{ count }}</small>
+	 <h2 class="section-title">{{ lang.news }}</h2>
 {% endif %}
 
 {% if data %}
@@ -36,7 +43,7 @@
 		$(function() {
 			var nextPage = $('#ajax-next-page a').attr('href');
 			if (nextPage === undefined) {
-				$('#ajax-next-page, #next-page, #nav-page').remove();
+				$('#next-page').remove();
 			}
 		});
 	</script>

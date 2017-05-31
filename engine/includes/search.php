@@ -96,7 +96,7 @@ function search_news() {
 			'author' => $author,
 			'catid' => $catid,
 			'postdate' => $postdate,
-			'newsOrder' => $orderby,
+			'orderby' => $orderby,
 			),
 		'paginator' => array('page', 1, false));
 
@@ -154,8 +154,12 @@ function search_news() {
 	}
 
 	// Make News order list
+	$sortDefault = array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc', 'views desc', 'views asc', 'com desc', 'com asc');
 	$tableVars['orderlist'] = '<option value="">'.__('search.order_default').'</option>';
-	foreach (array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc') as $v) {
+	foreach ( $sortDefault as $v ) {
+		$pieces = explode(' ', $value);
+		if ( $pieces[0] == 'com' and !getPluginStatusActive('comments') )
+			continue;
 		$vx = str_replace(' ','_',$v);
 		$tableVars['orderlist'] .= '<option value="'.$v.'"'.($orderby == $v ? ' selected="selected"' : '').'>'.__('search.order_'.$vx).'</option>';
 	}
