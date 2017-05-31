@@ -3,9 +3,9 @@
 	<div class="media-left">
 		<a href="{{ news.url.full }}">
 			{% if (news.embed.imgCount > 0) %}
-				<img src="{{ news.embed.images[0] }}" class="media-object" />
+				<img src="{{ news.embed.images[0] }}" alt="{{ news.title }}" class="media-object" />
 			{% else %}
-				<img src="http://placehold.it/900x300" class="media-object" />
+				<img src="{{ tpl_url }}/img/img-none.png" alt="{{ news.title }}" class="media-object" />
 			{% endif %}
 		</a>
 	</div>

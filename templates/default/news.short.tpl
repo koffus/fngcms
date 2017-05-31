@@ -5,7 +5,7 @@
 			{% if (news.embed.imgCount > 0) %}
 				<img src="{{ news.embed.images[0] }}" alt="{{ news.title }}" />
 			{% else %}
-				<img src="http://placehold.it/900x300" alt="{{ news.title }}" />
+				<img src="{{ tpl_url }}/img/img-none.png" alt="{{ news.title }}" />
 			{% endif %}
 		</a>
 	</div>
