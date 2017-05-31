@@ -66,7 +66,7 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 }
 
 #mainNav {
-	padding: 0;
+	padding: 0 15px;
 	position: static;
 	z-index:1030;
 	top: -56px; /* to animate */
@@ -175,10 +175,12 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 	margin-bottom: 2.5rem;
 }
 .widget-title {
-    font-size: 1.2rem;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
+	font-size: 1.2rem;
+	margin-bottom: 1rem;
 	font-weight: 400;
+	border-bottom: 2px solid #222;
+	color: #222;
+	padding-bottom: 8px;
 }
 .widget ul,
 .widget ol {
@@ -368,14 +370,28 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
  clear: both;
 }
 .sp-head {
- border: 1px solid #ccc;
- background: #eee;
- padding: 2px 4px;
- cursor: pointer;
- color: #888;
+	border: 1px solid #ccc;
+	background: #eee;
+	border-radius: 4px;
+	padding: 4px 8px;
+	cursor: pointer;
+	color: #444;
 }
-.spoiler .sp-head b {}
-.spoiler .sp-head b.expanded {}
+.sp-head.expanded {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+.sp-head::before {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin: .3em;
+    vertical-align: middle;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-left: .3em solid transparent;
+}
 .sp-body {
  display: none;
  border: 1px solid #ccc;
