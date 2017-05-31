@@ -1,30 +1,25 @@
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr><td>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-	<td><img border="0" src="{tpl_url}/images/2z_35.gif" width="7" height="36" /></td>
-	<td style="background-image:url('{tpl_url}/images/2z_36.gif');" width="100%"><b>
-		<font color="#FFFFFF">Последние комментарии</font></b></td>
-	<td><img border="0" src="{tpl_url}/images/2z_38.gif" width="7" height="36" /></td>
-	</tr>
-	</table>
-</td></tr>
-<tr><td>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-	<td style="background-image:url('{tpl_url}/images/2z_56.gif');" width="7">&nbsp;</td>
-	<td bgcolor="#FFFFFF">{entries}[nocomments]Комментариев пока что нету.[/nocomments]</td>
-	<td style="background-image:url('{tpl_url}/images/2z_58.gif');" width="7">&nbsp;</td>
-	</tr>
-	</table>
-</td></tr>
-<tr><td>
-	<table border="0" width="100%" cellspacing="0" cellpadding="0">
-	<tr>
-	<td><img border="0" src="{tpl_url}/images/2z_60.gif" width="7" height="11" /></td>
-	<td style="background-image:url('{tpl_url}/images/2z_61.gif');" width="100%"></td>
-	<td><img border="0" src="{tpl_url}/images/2z_62.gif" width="7" height="11" /></td>
-	</tr>
-	</table>
-</td></tr>
-</table>
+<h2 class="section-title">Последние комментарии</h2>
+
+<section class="section comments-list">
+
+	<ul class="list-unstyled">
+	{% if entries %}
+		{% for entry in entries %}
+		<div class="{{ entry.alternating }}">
+			<div style="float:left; width:32px;padding: 5px;">
+				<img style="width:100%;" src="{{ entry.avatar_url }}" />
+			</div>
+			<div>
+				&raquo; {{ entry.text }} <small>({{ entry.dateStamp|cdate }})</small><br/>
+				{% if (entry.answer != '') %}<div>Ответ от <b>{{ entry.name }}</b><br/>{{ entry.answer }}</div><br />{% endif %}
+				<small>// <a href="{{ entry.link }}" title="{{ entry.title }}">{{ entry.title }}</a></small><br/>
+				Автор {% if (entry.author_id) and (pluginIsActive('uprofile')) %}<a target="_blank" href="{{ entry.author_link }}">{% endif %}{{ entry.author }}{% if (entry.author_id) and (pluginIsActive('uprofile')) %}</a>{% endif %}
+			</div>
+		</div>
+		{% endfor %}
+	{% else %}
+		Комментариев пока что нету.
+	{% endif %}
+	</ul>
+
+</section>

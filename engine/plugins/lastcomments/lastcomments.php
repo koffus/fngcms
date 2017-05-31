@@ -74,16 +74,10 @@ function lastcomments($mode = 0) {
 	global $config, $mysql, $twig, $twigLoader, $parse, $TemplateCache;
 
 	switch ($mode) {
-		case 1: 
-			$tpl_prefix = "pp_"; 	// plugin page
-		break;
-		case 2:
-			$tpl_prefix = "rss_"; 	// rss feed
-		break;
+		case 1: $tpl_prefix = 'pp_'; break; // plugin page
+		case 2: $tpl_prefix = "rss_"; break; // rss feed
 		case 0:
-		default:
-			$tpl_prefix = ""; 		// sidepanel widget
-		break;
+		default: $tpl_prefix = ""; break; // sidepanel widget
 	}
 	
 	// Generate cache file name [ we should take into account SWITCHER plugin & calling parameters ]
@@ -118,14 +112,14 @@ function lastcomments($mode = 0) {
 
 	foreach ($mysql->select($query) as $row) {
 
+		$comm_num++;
 		// Parse comments
 		$text = $row['text'];
 		if ($config['blocks_for_reg'])		{ $text = $parse -> userblocks($text); }
 		if ($config['use_bbcodes'])			{ $text = $parse -> bbcodes($text); }
 		if ($config['use_htmlformatter'])	{ $text = $parse -> htmlformatter($text); }
 		if ($config['use_smilies'])			{ $text = $parse -> smilies($text); }
-	 if (mb_strlen($text, 'UTF-8') > $comm_length)	{ $text = $parse -> truncateHTML($text, $comm_length);}
-	 $comm_num++;
+		if (mb_strlen($text, 'UTF-8') > $comm_length)	{ $text = $parse -> truncateHTML($text, $comm_length);}
 
 		// gen answer
 		if ($row['answer'] != '') {
@@ -136,6 +130,10 @@ function lastcomments($mode = 0) {
 			if ($config['use_htmlformatter'])	{ $answer = $parse -> htmlformatter($answer); }
 			if ($config['use_bbcodes'])			{ $answer = $parse -> bbcodes($answer); }
 			if ($config['use_smilies'])			{ $answer = $parse -> smilies($answer); }
+			if (mb_strlen($answer, 'UTF-8') > $comm_length)	{ $answer = $parse -> truncateHTML($answer, $comm_length);}
+		} else {
+			$answer = '';
+			$name = '';
 		}
 		
 		// gen avatar
@@ -164,12 +162,12 @@ function lastcomments($mode = 0) {
 				generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));
 		} else {
 			$author_link = '';
-			
 		}
 
 		$data[] = array(
 			'link'			=>	newsGenerateLink(array('id' => $row['nid'], 'alt_name' => $row['alt_name'], 'catid' => $row['catid'], 'postdate' => $row['npostdate'])),
 			'date'			=>	Lang::retDate('d.m.Y', $row['postdate']),
+			'dateStamp'			=>	$row['postdate'],
 			'author'		=>	str_replace('<', '&lt;', $row['author']),
 			'author_id'		=>	$row['author_id'],
 			'title'			=>	str_replace('<', '&lt;', $row['title']),
@@ -184,61 +182,24 @@ function lastcomments($mode = 0) {
 			'alternating'	=> ($comnum%2)?"lastcomments_even":"lastcomments_odd",
 			'rsslink'		=> home."?id=".$row['nid'],
 			'rssdate'		=> 	gmstrftime('%a, %d %b %Y %H:%M:%S GMT',$row['postdate']),
-		);
- }
+			);
+	}
 
- $tpath = locatePluginTemplates(array($tpl_prefix.'lastcomments', $tpl_prefix.'entries'), 'lastcomments', pluginGetVariable('lastcomments', 'localsource'));
+	$tpath = locatePluginTemplates(array($tpl_prefix.'lastcomments'), 'lastcomments', pluginGetVariable('lastcomments', 'localsource'));
 
- // Prepare REGEX conversion table
-	$conversionConfigRegex = array(
-			"#\[profile\](.*?)\[/profile\]#si"			=> "{% if (entry.author_id) and (pluginIsActive('uprofile')) %}$1{% endif %}",
-			"#\[answer\](.*?)\[/answer\]#si"			=> "{% if (entry.answer != '') %}$1{% endif %}",
-			"#\[nocomments\](.*?)\[/nocomments\]#si"	=> "{% if (comnum == 0) %}$1{% endif %}",
-	//		"#\{l_([0-9a-zA-Z\-\_\.\#]+)}#"					=> "{{ lang['$1'] }}",
+	$xt = $twig->loadTemplate($tpath[$tpl_prefix.'lastcomments'].$tpl_prefix."lastcomments".'.tpl');
+	$tVars = array(
+		'comnum' 		=> $comm_num,
+		'entries' 		=> $data,
+		'home_title'	=> $config['home_title'],
+		'home_url'		=> $config['home_url'],
+		'description'	=> $config['description'],
+		'generator' => 'Plugin Lastcomments ('.lastcomments_version.') // Next Generation CMS ('.engineName.' '.engineVersion.')',
 	);
 
-	// Prepare conversion table
-	$conversionConfig = array(
-		'{tpl_url}'			=> '{{ tpl_url }}',
-		'{link}'			=>	'{{ entry.link }}',
-		'{date}'			=>	'{{ entry.date }}',
-		'{author}'			=>	'{{ entry.author }}',
-		'{author_id}'		=>	'{{ entry.author_id }}',
-		'{title}'			=>	'{{ entry.title }}',
-		'{text}'			=>	'{{ entry.text }}',
-		'{category_link}'	=>	'{{ entry.category_link }}',
-		'{comnum}'			=>	'{{ entry.comnum }}',
-		'{author_link}' 	=>	'{{ entry.author_link }}',
-		'{avatar}' 			=>	'{{ entry.avatar }}',
-		'{avatar_url}'		=>	'{{ entry.avatar_url }}',
-		'{answer}'			=> '{{ entry.answer }}',
-		'{name}'			=> '{{ entry.name }}',
-		'{alternating}'		=>	'{{ entry.alternating }}',
-		'{entries}'			=> '{% for entry in entries %}{% include localPath(0) ~ "entries.tpl" %}{% endfor %}'
-	);
+	$output = $xt->render($tVars);
 
-	$twigLoader->setConversion($tpath[$tpl_prefix.'lastcomments'].$tpl_prefix."lastcomments".'.tpl', $conversionConfig, $conversionConfigRegex);
-	$twigLoader->setConversion($tpath[$tpl_prefix.'entries'].$tpl_prefix."entries".'.tpl', $conversionConfig, $conversionConfigRegex);
-
- if (isset($tpath[$tpl_prefix.'entries']))
-		$twig->loadTemplate($tpath[$tpl_prefix.'entries'].$tpl_prefix.'entries'.'.tpl');
-
- $xt = $twig->loadTemplate($tpath[$tpl_prefix.'lastcomments'].$tpl_prefix."lastcomments".'.tpl');
- $tVars = array(
- 	'comnum' 		=> $comm_num,
- 	'entries' 		=> $data,
- 		
- 	'home_title'	=> $config['home_title'],
-	 'home_url'		=> $config['home_url'],
-	 'description'	=> $config['description'],
-
-	 'generator' => 'Plugin Lastcomments ('.lastcomments_version.') // Next Generation CMS ('.engineName.' '.engineVersion.')',
-
- );
-
- $output = $xt->render($tVars);
-
- if ($mode == 2) setlocale(LC_TIME,$old_locale);
+	if ($mode == 2) setlocale(LC_TIME,$old_locale);
 
 	if (pluginGetVariable('lastcomments','cache')) {
 		cacheStoreFile($cacheFileName, $output, 'lastcomments');
