@@ -1,4 +1,5 @@
-<li id="comment_{id}" class="comment" itemscope="" itemtype="http://schema.org/Comment">
+<li class="comment" itemscope="" itemtype="http://schema.org/Comment">
+<a id="comment_{id}"></a>
 	<div class="comment-content post-content" itemprop="text">
 		<figure class="gravatar">
 			{avatar}
