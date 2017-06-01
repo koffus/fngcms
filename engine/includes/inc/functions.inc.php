@@ -70,7 +70,7 @@ function checkIP() {
 function initGZipHandler() {
 	global $config;
 
-	if ($config['use_gzip'] == "1" && extension_loaded('zlib') && function_exists('ob_gzhandler')) {
+	if ($config['use_gzip'] == "1" and extension_loaded('zlib') and function_exists('ob_gzhandler')) {
 		@ob_start('ob_gzhandler');
 	}
 }
@@ -112,7 +112,7 @@ function AutoBackup($delayed = false, $force = false) {
 			// TTL for marker is 5 min
 			if ($time_now > ($markerTime + 180)) {
 				// Delete OLD marker, create ours
-				if (unlink($backupMarkerFile) && (($fm = fopen($backupMarkerFile, 'x')) !== FALSE)) {
+				if (unlink($backupMarkerFile) and (($fm = fopen($backupMarkerFile, 'x')) !== FALSE)) {
 					// Created, write CALL time
 					fwrite($fm, $time_now);
 					fclose($fm);
@@ -157,7 +157,7 @@ function InsertSmilies($insert_location, $break_location = false, $area = false)
 		$smilies = explode(',', $config['smilies']);
 
 		// For smilies in comments, try to use 'smilies.tpl' from site template
-		$templateDir = (($insert_location == 'comments') && is_readable(tpl_dir.$config['theme'].'/smilies.tpl'))?tpl_dir.$config['theme']:tpl_actions;
+		$templateDir = (($insert_location == 'comments') and is_readable(tpl_dir.$config['theme'].'/smilies.tpl'))?tpl_dir.$config['theme']:tpl_actions;
 
 		$i = 0;
 		$output = '';
@@ -174,7 +174,7 @@ function InsertSmilies($insert_location, $break_location = false, $area = false)
 			$tpl -> vars('smilies', $tvars);
 			$output .= $tpl -> show('smilies');
 
-			if (($break_location>0) && (! $i % $break_location)) {
+			if (($break_location>0) and (! $i % $break_location)) {
 				$output .= "<br />";
 			}
 		}
@@ -232,18 +232,18 @@ function Padeg($n, $s) {
 	$l1	= $n - ((int)($n / 10)) * 10;
 	$l2	= $n - ((int)($n / 100)) * 100;
 
-	if ("11" <= $l2 && $l2 <= "14") {
+	if ("11" <= $l2 and $l2 <= "14") {
 		$e = $a[2];
 	} else {
 		if ($l1 == "1") {
 			$e = $a[0];
 		}
 
-		if ("2" <= $l1 && $l1 <= "4") {
+		if ("2" <= $l1 and $l1 <= "4") {
 			$e = $a[1];
 		}
 
-		if (("5" <= $l1 && $l1 <= "9") or $l1 == "0") {
+		if (("5" <= $l1 and $l1 <= "9") or $l1 == "0") {
 			$e=$a[2];
 		}
 	}
@@ -271,9 +271,9 @@ function checkBanned($ip, $act, $subact, $userRec, $name) {
 	if ($ban_row = $mysql->record("select * from ".prefix."_ipban where addr_start <= ".db_squote($check_ip)." and addr_stop >= ".db_squote($check_ip)." order by netlen limit 1")) {
 		// Row is found. Let's check for event type. STATIC CONVERSION
 		$mode = 0;
-		if		(($act == 'users') &&		($subact == 'register'))	{ $mode = 1; }
-		else if	(($act == 'users') && 		($subact == 'auth'))		{ $mode = 2; }
-		else if	(($act == 'comments') &&	($subact == 'add'))			{ $mode = 3; }
+		if		(($act == 'users') and 		($subact == 'register'))	{ $mode = 1; }
+		else if	(($act == 'users') and 		($subact == 'auth'))		{ $mode = 2; }
+		else if	(($act == 'comments') and 	($subact == 'add'))			{ $mode = 3; }
 		if (($locktype = intval(substr($ban_row['flags'], $mode, 1))) > 0) {
 			$mysql->query("update ".prefix."_ipban set hitcount=hitcount+1 where id=".db_squote($ban_row['id']));
 			return $locktype;
@@ -344,7 +344,7 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
 	$mail->Body		= $message;
 	$mail->ContentType	= $ctype;
 	$mail->AddAddress($to, $to);
-	if (($filename !== false) && (is_file($filename))) {
+	if (($filename !== false) and (is_file($filename))) {
 		$mail->AddAttachment($filename);
 	}
 
@@ -500,7 +500,7 @@ function directoryWalk($dir, $blackmask = null, $whitemask = null, $returnFiles 
 	while (count($path)) {
 		if (($count % 100) == 0) {
 			$tNow = microtime(true);
-			if (($execTimeLimit > 0) && (($tNow-$tStart) >= $execTimeLimit)) {
+			if (($execTimeLimit > 0) and (($tNow-$tStart) >= $execTimeLimit)) {
 				return array($size, $count, $files, true);
 
 			}
@@ -569,16 +569,16 @@ function makeCategoryList($params = array()){
 	$out = '';
 	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (empty($params['noHeader'])) {
-			$out = "<select name=\"$name\" id=\"catmenu\"".
-				((isset($params['style']) && ($params['style'] != ''))?' style="'.$params['style'].'"':'').
-				((isset($params['class']) && ($params['class'] != ''))?' class="'.$params['class'].'" class="form-control"':' class="form-control"').
-				">\n";
+			$out = '<select name="'.$name.'" id="catmenu"'.
+				( ( isset($params['style']) and (trim($params['style'])) ) ? ' style="'.$params['style'].'"' : '').
+				( ( isset($params['class']) and (trim($params['class'])) ) ? ' class="'.$params['class'].'" class="form-control"' : ' class="form-control"').
+				'>';
 		}
-	 if (isset($params['doempty']) && $params['doempty'])		{ $out.= "<option ".(((isset($params['greyempty']) && $params['greyempty']))?'style="background: #c41e3a;" ':'')."value=\"0\">".__(no_cat)."</option>\n"; $optList []= array('k' => 0, 'v' => __(no_cat)); }
-	 if (isset($params['doall']) && $params['doall'])			{ $out.= "<option value=\"".(isset($params['allmarker'])?$params['allmarker']:'')."\">".__(sh_all)."</option>\n"; $optList []= array('k' => (isset($params['allmarker'])?$params['allmarker']:''), 'v' => __(sh_all)); }
-	 if (isset($params['dowithout']) && $params['dowithout'])	{ $out.= "<option value=\"0\"".(((!is_null($params['selected'])) && ($params['selected'] == 0))?' selected="selected"':'').">".__(sh_empty)."</option>\n"; $optList []= array('k' => 0, 'v' => __(sh_empty)); }
+	 if (isset($params['doempty']) and $params['doempty'])		{ $out.= "<option ".(((isset($params['greyempty']) and $params['greyempty']))?'style="background: #c41e3a;" ':'')."value=\"0\">".__(no_cat)."</option>\n"; $optList []= array('k' => 0, 'v' => __(no_cat)); }
+	 if (isset($params['doall']) and $params['doall'])			{ $out.= "<option value=\"".(isset($params['allmarker'])?$params['allmarker']:'')."\">".__(sh_all)."</option>\n"; $optList []= array('k' => (isset($params['allmarker'])?$params['allmarker']:''), 'v' => __(sh_all)); }
+	 if (isset($params['dowithout']) and $params['dowithout'])	{ $out.= "<option value=\"0\"".(((!is_null($params['selected'])) and ($params['selected'] == 0))?' selected="selected"':'').">".__(sh_empty)."</option>\n"; $optList []= array('k' => 0, 'v' => __(sh_empty)); }
 	}
-	if (isset($params['resync']) && $params['resync']) {
+	if (isset($params['resync']) and $params['resync']) {
 		$catz = array();
 		foreach ($mysql->select("select * from `".prefix."_category` order by posorder asc", 1) as $row) {
 			$catz[$row['alt']] = $row;
@@ -587,23 +587,23 @@ function makeCategoryList($params = array()){
 	}
 
 	foreach($catz as $k => $v){
-		if (in_array($v['id'], $params['skip'])) { continue; }
-		if (isset($params['skipDisabled']) && $params['skipDisabled'] && ($v['alt_url'] != '')) { continue; }
-		if (isset($params['checkarea']) && $params['checkarea']) {
+		if ( in_array($v['id'], $params['skip']) ) { continue; }
+		if ( isset($params['skipDisabled']) and $params['skipDisabled'] and (trim($v['alt_url'])) ) { continue; }
+		if ( isset($params['checkarea']) and $params['checkarea'] ) {
 			$out .= str_repeat('&#8212; ', $v['poslevel']).
 					'<label><input type="checkbox" name="'.
 					$name.
 					'_'.
 					$v['id'].
 					'" value="1"'.
-					((isset($params['selected']) && is_array($params['selected']) && in_array($v['id'], $params['selected']))?' checked="checked"':'').
-					(((($v['alt_url'] != '')||(isset($params['disabledarea']) && $params['disabledarea'])))?' disabled="disabled"':'').
+					((isset($params['selected']) and is_array($params['selected']) and in_array($v['id'], $params['selected']))?' checked="checked"':'').
+					((((trim($v['alt_url'])) or (isset($params['disabledarea']) and $params['disabledarea'])))?' disabled="disabled"':'').
 					'/> '.
 					$v['name'].
 					"</label><br/>\n";
 		} else {
-			$out.="<option value=\"".((isset($params['nameval']) && $params['nameval'])?$v['name']:$v['id'])."\"".((isset($params['selected']) && ($v['id']==$params['selected']))?' selected="selected"':'').($v['alt_url'] != ''?' disabled="disabled" style="background: #c41e3a;"':'').">".str_repeat('&#8212; ', $v['poslevel']).$v['name']."</option>\n";
-			$optList []= array('k' => ((isset($params['nameval']) && $params['nameval'])?$v['name']:$v['id']), 'v' => str_repeat('&#8212; ', $v['poslevel']).$v['name']);
+			$out.="<option value=\"".((isset($params['nameval']) and $params['nameval'])?$v['name']:$v['id'])."\"".((isset($params['selected']) and ($v['id']==$params['selected']))?' selected="selected"':'').(trim($v['alt_url'])?' disabled="disabled" style="background: #c41e3a;"':'').">".str_repeat('&#8212; ', $v['poslevel']).$v['name']."</option>\n";
+			$optList []= array('k' => ((isset($params['nameval']) and $params['nameval'])?$v['name']:$v['id']), 'v' => str_repeat('&#8212; ', $v['poslevel']).$v['name']);
 		}
 	}
 	if (!isset($params['checkarea']) or !$params['checkarea']) {
@@ -612,7 +612,7 @@ function makeCategoryList($params = array()){
 		}
 	}
 
-	if (isset($params['returnOptArray']) && $params['returnOptArray'])
+	if (isset($params['returnOptArray']) and $params['returnOptArray'])
 		return $optList;
 
 	return $out;
@@ -711,7 +711,7 @@ function ListDirs($folder, $category = false, $alllink = true, $elementID = '') 
 	reset($filelist);
 
 	foreach ($filelist as $file) {
-		if (is_dir($wdir."/".$file) && $file != "." && $file != "..")
+		if (is_dir($wdir."/".$file) and $file != "." and $file != "..")
 			$select .= "<option value=\"".$file."\"".($category==$file?' selected="selected"':'').">".$file."</option>\n";
 	}
 	$select .= '</select>';
@@ -793,7 +793,7 @@ function GetCategories($catid, $plain = false, $firstOnly = false) {
 	$catline = array();
 	$cats = is_array($catid)?$catid:explode(',', $catid);
 
-	if (count($cats) && $firstOnly) {
+	if (count($cats) and $firstOnly) {
 		$cats = array($cats[0]);
 	}
 	foreach ($cats as $v) {
@@ -825,7 +825,7 @@ function makeCategoryInfo($ctext) {
 				'url'	=> $url,
 				'text'	=> '<a href="'.$url.'">'.$row['name'].'</a>',
 			);
-			if ($row['icon_id'] && $row['icon_folder']) {
+			if ($row['icon_id'] and $row['icon_folder']) {
 				$record['icon']	= array(
 					'url'			=> $config['attach_url'].'/'.$row['icon_folder'].'/'.$row['icon_name'],
 					'purl'			=> $row['icon_preview']?($config['attach_url'].'/'.$row['icon_folder'].'/thumb/'.$row['icon_name']):'',
@@ -871,7 +871,7 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 
 	// Determine working mode - old or new
 	// If template 'news.categories' exists - use `new way`, else - old
-	if (file_exists(tpl_site.'news.categories.tpl') or (isset($flags['returnData']) && $flags['returnData'])) {
+	if (file_exists(tpl_site.'news.categories.tpl') or (isset($flags['returnData']) and $flags['returnData'])) {
 
 		$tVars = array();
 		$tEntries = array();
@@ -885,7 +885,7 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 			'level'			=> 0,
 		);
 
-		if (!is_null($treeMasterCategory) && preg_match('#^(\:){0,1}(\d+)$#', $treeMasterCategory, $m)) {
+		if (!is_null($treeMasterCategory) and preg_match('#^(\:){0,1}(\d+)$#', $treeMasterCategory, $m)) {
 			$treeSelector['defined']		= true;
 			$treeSelector['skipDefined']	= $m[1]?true:false;
 			$treeSelector['id']				= intval($m[2]);
@@ -924,8 +924,8 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 				'icon'		=>	$v['icon'],
 
 				'flags'		=> array(
-					'active'	=>	(isset($SYSTEM_FLAGS['news']['currentCategory.id']) && ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?true:false,
-					'counter'	=>	($config['category_counters'] && $v['posts'])?true:false,
+					'active'	=>	(isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?true:false,
+					'counter'	=>	($config['category_counters'] and $v['posts'])?true:false,
 				)
 			);
 			$tEntries []= $tEntry;
@@ -999,12 +999,12 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 		}
 
 		$tvars['vars'] = array(
-			'if_active'	=>	(isset($SYSTEM_FLAGS['news']['currentCategory.id']) && ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?$markers['class.active']:$markers['class.inactive'],
+			'if_active'	=>	(isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?$markers['class.active']:$markers['class.inactive'],
 			'link'		=>	($v['alt_url'] == '')?generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])):$v['alt_url'],
 			'mark'		=>	isset($markers['mark.level.'.$v['poslevel']])?$markers['mark.level.'.$v['poslevel']]:str_repeat($markers['mark.default'], $v['poslevel']),
 			'level'		=>	$v['poslevel'],
 			'cat'		=>	$v['name'],
-			'counter'	=>	($config['category_counters'] && $v['posts'])?('['.$v['posts'].']'):'',
+			'counter'	=>	($config['category_counters'] and $v['posts'])?('['.$v['posts'].']'):'',
 			'icon'		=>	$v['icon'],
 		);
 		$tvars['regx']['[\[icon\](.*)\[/icon\]]'] = trim($v['icon'])?'$1':'';
@@ -1069,7 +1069,7 @@ function newsGenerateLink($row, $flagPrint = false, $page = 0, $absoluteLink = f
 		$ccats = array();
 		$icats = array();
 		foreach (explode(',', $row['catid']) as $ccatid) {
-			if ($catmap[$ccatid] != '') {
+			if ( trim($catmap[$ccatid]) ) {
 				$ccats[] = $catmap[$ccatid];
 				$icats[] = $ccatid;
 			}
@@ -1154,7 +1154,7 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 	$page = 1;
 
 	// Check if long part is divided into several pages
-	if ($full && (!$disablePagination) && (mb_strpos($full, '<!--nextpage-->', 0, 'UTF-8') !== false)) {
+	if ($full and (!$disablePagination) and (mb_strpos($full, '<!--nextpage-->', 0, 'UTF-8') !== false)) {
 		$page = intval( isset($CurrentHandler['params']['page']) ? $CurrentHandler['params']['page'] : (isset($_REQUEST['page']) ? $_REQUEST['page'] : 0) );
 		if ($page < 1) $page = 1;
 
@@ -1174,7 +1174,7 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 			$catid = intval(array_shift(explode(',', $row['catid'])));
 
 			$cname = 'none';
-			if ($catid && isset($catmap[$catid]))
+			if ($catid and isset($catmap[$catid]))
 				$cname = $catmap[$catid];
 
 			// Generate pagination within news
@@ -1230,19 +1230,19 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 	// Make conversion
 	if ($config['blocks_for_reg'])		{ $short = $parse -> userblocks($short);	$full = $parse -> userblocks($full); }
 	if ($config['use_bbcodes'])			{ $short = $parse -> bbcodes($short);		$full = $parse -> bbcodes($full); }
-	if ($config['use_htmlformatter'] && (!($row['flags'] & 1)))	{
+	if ($config['use_htmlformatter'] and (!($row['flags'] & 1)))	{
 		$short = $parse -> htmlformatter($short);	$full = $parse -> htmlformatter($full);
 	}
 	if ($config['use_smilies'])			{ $short = $parse -> smilies($short);		$full = $parse -> smilies($full); }
-	if (1 && templateLoadVariables()) 	{
+	if (1 and templateLoadVariables()) 	{
 
 		$short = $parse -> parseBBAttach($short, $mysql, $TemplateCache['site']['#variables']);
 		$full = $parse -> parseBBAttach($full, $mysql, $TemplateCache['site']['#variables']);
 	}
 
 	// Check if we need to regenerate short news
-	if (isset($regenShortNews['mode']) && ($regenShortNews['mode'] != '')) {
-		if ((($regenShortNews['mode'] == 'force')||(trim($short) == ''))&&(trim($full) != '')) {
+	if ( isset($regenShortNews['mode']) and (trim($regenShortNews['mode'])) ) {
+		if ( (($regenShortNews['mode'] == 'force') or (trim($short) == '')) and (trim($full)) ) {
 			// REGEN
 			if (!isset($regenShortNews['len']) or (intval($regenShortNews['len']) < 0)) { $regenShortNews['len'] = 50; }
 			if (!isset($regenShortNews['finisher'])) { $regenShortNews['finisher'] = '&nbsp;...'; }
@@ -1381,14 +1381,14 @@ function GetMetatags() {
 	$meta['description']	= $config['description'];
 	$meta['keywords']		= $config['keywords'];
 
-	if (isset($SYSTEM_FLAGS['meta']['description']) && ($SYSTEM_FLAGS['meta']['description'] != ''))
+	if ( isset($SYSTEM_FLAGS['meta']['description']) and (trim($SYSTEM_FLAGS['meta']['description'])) )
 		$meta['description'] = $SYSTEM_FLAGS['meta']['description'];
 
-	if (isset($SYSTEM_FLAGS['meta']['keywords']) && ($SYSTEM_FLAGS['meta']['keywords'] != ''))
+	if ( isset($SYSTEM_FLAGS['meta']['keywords']) and (trim($SYSTEM_FLAGS['meta']['keywords'])) )
 		$meta['keywords'] = $SYSTEM_FLAGS['meta']['keywords'];
 
-	$result = ($meta['description'] != '')?"<meta name=\"description\" content=\"".secure_html($meta['description'])."\" />\r\n":'';
-	$result .= ($meta['keywords'] != '')?"<meta name=\"keywords\" content=\"".secure_html($meta['keywords'])."\" />\r\n":'';
+	$result = ( trim($meta['description']) ) ? '<meta name="description" content="'.secure_html($meta['description'])."\" />\r\n" : '';
+	$result .= ( trim($meta['keywords']) ) ? '<meta name="keywords" content="'.secure_html($meta['keywords'])."\" />\r\n" : '';
 
 	return $result;
 }
@@ -1618,24 +1618,24 @@ function parseParams($paramLine){
 		switch ($state) {
 			case 0: if ($x == "'") { $quotes = 1; $state = 1; $keyName = '';}
 					 else if ($x == "'") { $quotes = 2; $state = 1; $keyName = ''; }
-					 else if ((($x >='A')&&($x <='Z'))||(($x >='a')&&($x <='z'))) { $state = 1; $keyName = $x; }
+					 else if ((($x >='A') and ($x <='Z')) or (($x >='a') and ($x <='z'))) { $state = 1; $keyName = $x; }
 					 break;
-			case 1: if ((($quotes == 1)&&($x == "'"))||(($quotes == 2)&&($x == '"'))) { $quotes = 0; $state=2; }
-					 else if ((($x >='A')&&($x <='Z'))||(($x >='a')&&($x <='z'))) { $keyName .= $x; }
+			case 1: if ((($quotes == 1) and ($x == "'")) or (($quotes == 2) and ($x == '"'))) { $quotes = 0; $state=2; }
+					 else if ((($x >='A') and ($x <='Z')) or (($x >='a') and ($x <='z'))) { $keyName .= $x; }
 					 else if ($x == '=') { $state = 3; }
-					 else if (($x == ' ')||($x == chr(9))) { $state = 2; }
+					 else if (($x == ' ') or ($x == chr(9))) { $state = 2; }
 					 else { $erorFlag = 1; }
 					 break;
 			case 2: if ($x == '=') { $state = 3; }
-					 else if (($x == ' ')||($x == chr(9))) { ; }
+					 else if (($x == ' ') or ($x == chr(9))) { ; }
 					 else { $errorFlag = 1; }
 					 break;
 			case 3: if ($x == "'") { $quotes = 1; $state = 4; $keyValue = '';}
 					 else if ($x == '"') { $quotes = 2; $state = 4; $keyValue = ''; }
-					 else if ((($x >='A')&&($x <='Z'))||(($x >='a')&&($x <='z'))) { $state = 4; $keyValue = $x; }
+					 else if ((($x >='A') and ($x <='Z')) or (($x >='a') and ($x <='z'))) { $state = 4; $keyValue = $x; }
 					 break;
-			case 4: if ((($quotes == 1)&&($x == "'"))||(($quotes == 2)&&($x == '"'))) { $quotes = 0; $state=5; }
-					 else if (!$quotes && (($x == ' ')||($x == chr(9)))) { $state = 5; }
+			case 4: if ((($quotes == 1) and ($x == "'")) or (($quotes == 2) and ($x == '"'))) { $quotes = 0; $state=5; }
+					 else if (!$quotes and (($x == ' ') or ($x == chr(9)))) { $state = 5; }
 					 else { $keyValue .= $x; }
 					 break;
 		}
@@ -1746,7 +1746,7 @@ function checkPermission($identity, $user = null, $mode = '', $way = '') {
 	}
 
 	// Determine user's groups
-	$uGroup = (isset($user) && isset($user['status']))?$user['status']:$userROW['status'];
+	$uGroup = (isset($user) and isset($user['status']))?$user['status']:$userROW['status'];
 
 	// Check if permissions for this group exists. Break if no.
 	if (!isset($PERM[$uGroup])) {
@@ -1779,10 +1779,10 @@ function checkPermission($identity, $user = null, $mode = '', $way = '') {
 	}
 	// - access item
 	$ai = '';
-	if (isset($PERM[$uGroup][$ag][$identity['item']]) && ($PERM[$uGroup][$ag][$identity['item']] !== NULL)) {
+	if (isset($PERM[$uGroup][$ag][$identity['item']]) and ($PERM[$uGroup][$ag][$identity['item']] !== NULL)) {
 		// Plugin found
 		$ai = $identity['item'];
-	} elseif (isset($PERM[$uGroup][$ag]['*']) && ($PERM[$uGroup][$ag]['*'] !== NULL)) {
+	} elseif (isset($PERM[$uGroup][$ag]['*']) and ($PERM[$uGroup][$ag]['*'] !== NULL)) {
 		// Perform default action
 		$ai = '*';
 	} else {
@@ -1804,16 +1804,16 @@ function checkPermission($identity, $user = null, $mode = '', $way = '') {
 	foreach ($mList as $mKey) {
 		// The very default - DENY
 		$iStatus = false;
-		if (isset($PERM[$uGroup][$ag]) && isset($PERM[$uGroup][$ag][$ai]) && isset($PERM[$uGroup][$ag][$ai][$mKey]) && ($PERM[$uGroup][$ag][$ai][$mKey] !== NULL)) {
+		if (isset($PERM[$uGroup][$ag]) and isset($PERM[$uGroup][$ag][$ai]) and isset($PERM[$uGroup][$ag][$ai][$mKey]) and ($PERM[$uGroup][$ag][$ai][$mKey] !== NULL)) {
 			// Check specific mode
 			$iStatus = $PERM[$uGroup][$ag][$ai][$mKey];
-		} else if (isset($PERM[$uGroup][$ag]) && isset($PERM[$uGroup][$ag][$ai]) && isset($PERM[$uGroup][$ag][$ai]['*']) && ($PERM[$uGroup][$ag][$ai]['*'] !== NULL)) {
+		} else if (isset($PERM[$uGroup][$ag]) and isset($PERM[$uGroup][$ag][$ai]) and isset($PERM[$uGroup][$ag][$ai]['*']) and ($PERM[$uGroup][$ag][$ai]['*'] !== NULL)) {
 			// Ckeck '*' under specifig Group/Item
 			$iStatus = $PERM[$uGroup][$ag][$ai]['*'];
-		} else if (isset($PERM[$uGroup][$ag]) && isset($PERM[$uGroup][$ag]['*']) && isset($PERM[$uGroup][$ag]['*']['*']) && ($PERM[$uGroup][$ag]['*']['*'] !== NULL)) {
+		} else if (isset($PERM[$uGroup][$ag]) and isset($PERM[$uGroup][$ag]['*']) and isset($PERM[$uGroup][$ag]['*']['*']) and ($PERM[$uGroup][$ag]['*']['*'] !== NULL)) {
 			// Check '*' under specific Group
 			$iStatus = $PERM[$uGroup][$ag]['*']['*'];
-		} else if (isset($PERM[$uGroup]['*']) && isset($PERM[$uGroup]['*']['*']) && isset($PERM[$uGroup]['*']['*']['*']) && ($PERM[$uGroup]['*']['*']['*'] !== NULL)) {
+		} else if (isset($PERM[$uGroup]['*']) and isset($PERM[$uGroup]['*']['*']) and isset($PERM[$uGroup]['*']['*']['*']) and ($PERM[$uGroup]['*']['*']['*'] !== NULL)) {
 			// Check '*' under current UserGroupID
 			$iStatus = $PERM[$uGroup]['*']['*']['*'];
 		}
@@ -2030,7 +2030,7 @@ function twigIsHandler($rules) {
 	foreach (preg_split("#\|#", $rules) as $rule) {
 		if (preg_match("#^(.+?)\:(.+?)$#", $rule, $pt)) {
 			// Specified: Plugin + Handler
-			if (($pt[1] == $CurrentHandler['pluginName']) && ($pt[2] == $CurrentHandler['handlerName'])) {
+			if (($pt[1] == $CurrentHandler['pluginName']) and ($pt[2] == $CurrentHandler['handlerName'])) {
 				$ruleCatched = true;
 				break;
 			}
@@ -2060,11 +2060,11 @@ function twigIsCategory($list) {
 	if ($list == ':id')						return $currentCategory['id'];
 	if ($list == ':alt')					return secure_html($currentCategory['alt']);
 	if ($list == ':name')					return secure_html($currentCategory['name']);
-	if ($list == ':icon')					return ($currentCategory['image_id'] && $currentCategory['icon_id'])?1:0;
+	if ($list == ':icon')					return ($currentCategory['image_id'] and $currentCategory['icon_id'])?1:0;
 	if ($list == ':icon.url')				return $config['attach_url'].'/'.$currentCategory['icon_folder'].'/'.$currentCategory['icon_name'];
 	if ($list == ':icon.width')				return intval($currentCategory['icon_width']);
 	if ($list == ':icon.height')			return intval($currentCategory['icon_height']);
-	if ($list == ':icon.preview')			return ($currentCategory['image_id'] && $currentCategory['icon_id'] && $currentCategory['icon_preview'])?1:0;
+	if ($list == ':icon.preview')			return ($currentCategory['image_id'] and $currentCategory['icon_id'] and $currentCategory['icon_preview'])?1:0;
 	if ($list == ':icon.preview.url')		return $config['attach_url'].'/'.$currentCategory['icon_folder'].'/thumb/'.$currentCategory['icon_name'];
 	if ($list == ':icon.preview.width')		return intval($currentCategory['icon_pwidth']);
 	if ($list == ':icon.preview.height')	return intval($currentCategory['icon_pheight']);
@@ -2075,10 +2075,10 @@ function twigIsCategory($list) {
 			continue;
 
 		if (ctype_digit($key)) {
-			if (isset($catmap[$key]) && is_array($currentCategory) && ($currentCategory['id'] == $key))
+			if (isset($catmap[$key]) and is_array($currentCategory) and ($currentCategory['id'] == $key))
 				return true;
 		} else {
-			if (isset($catz[$key]) && is_array($catz[$key]) && is_array($currentCategory) && ($currentCategory['alt'] == $key))
+			if (isset($catz[$key]) and is_array($catz[$key]) and is_array($currentCategory) and ($currentCategory['alt'] == $key))
 				return true;
 		}
 
@@ -2092,7 +2092,7 @@ function twigIsNews($rules) {
 
 	// Return if user is not in news
 	if ($CurrentHandler['pluginName'] != 'news')														return false;
-	if (($CurrentHandler['handlerName'] != 'news') && ($CurrentHandler['handlerName'] != 'print'))		return false;
+	if (($CurrentHandler['handlerName'] != 'news') and ($CurrentHandler['handlerName'] != 'print'))		return false;
 	if (!isset($SYSTEM_FLAGS['news']['db.id']))			return false;
 
 	$ruleList = array('news' => array(), 'cat' => array(), 'mastercat' => array());
@@ -2135,14 +2135,14 @@ function twigIsNews($rules) {
 				// List of categories from news
 				foreach ($rVal as $key) {
 					if (ctype_digit($key)) {
-						if (($rType == 'mastercat') && ($SYSTEM_FLAGS['news']['db.categories'][0] == $key))
+						if (($rType == 'mastercat') and ($SYSTEM_FLAGS['news']['db.categories'][0] == $key))
 							return true;
-						if (($rType == 'cat') && (in_array($key, $SYSTEM_FLAGS['news']['db.categories'])))
+						if (($rType == 'cat') and (in_array($key, $SYSTEM_FLAGS['news']['db.categories'])))
 							return true;
 					} else {
-						if (($rType == 'mastercat') && (is_array($catz[$key])) && ($SYSTEM_FLAGS['news']['db.categories'][0] == $catz[$key]['id']))
+						if (($rType == 'mastercat') and (is_array($catz[$key])) and ($SYSTEM_FLAGS['news']['db.categories'][0] == $catz[$key]['id']))
 							return true;
-						if (($rType == 'cat') && (is_array($catz[$key])) && (in_array($catz[$key]['id'], $SYSTEM_FLAGS['news']['db.categories'])))
+						if (($rType == 'cat') and (is_array($catz[$key])) and (in_array($catz[$key]['id'], $SYSTEM_FLAGS['news']['db.categories'])))
 							return true;
 					}
 				}
@@ -2162,7 +2162,7 @@ function twigIsPerm($rules) {
 function twigIsSet($context, $val) {
 	//print "call TWIG::isSet(".var_export($context, true)." or ".var_export($val, true).");<br/>";
 	//print "call TWIG::isSet(".var_export($val, true).");<br/>";
-	if ((!isset($val))||(is_array($val) && (count($val) == 0)))
+	if ((!isset($val)) or (is_array($val) and (count($val) == 0)))
 		return false;
 	return true;
 }
@@ -2195,7 +2195,7 @@ function coreNormalTerminate($mode = 0) {
 			'queries'	=> $mysql->query_list,
 			'events'	=> $timer->printEvents(1),
 		);
-		$mysql->query("insert into ".prefix."_profiler (dt, userid, exectime, memusage, url, tracedata) values (now(), ".((isset($userROW) && is_array($userROW))?$userROW['id']:0).", ".$exectime.", ".sprintf("%7.3f", (memory_get_peak_usage()/1024/1024)).", ".db_squote($systemAccessURL).", ".db_squote(serialize($trace)).")");
+		$mysql->query("insert into ".prefix."_profiler (dt, userid, exectime, memusage, url, tracedata) values (now(), ".((isset($userROW) and is_array($userROW))?$userROW['id']:0).", ".$exectime.", ".sprintf("%7.3f", (memory_get_peak_usage()/1024/1024)).", ".db_squote($systemAccessURL).", ".db_squote(serialize($trace)).")");
 	}
 }
 
@@ -2249,7 +2249,7 @@ function core_cron($isSysCron, $handler) {
 	global $config;
 
 	// Execute DB backup if automatic backup is enabled
-	if (($handler == 'db_backup') && (isset($config['auto_backup'])) && $config['auto_backup']) {
+	if (($handler == 'db_backup') and (isset($config['auto_backup'])) and $config['auto_backup']) {
 		AutoBackup($isSysCron, false);
 	}
 
@@ -2271,7 +2271,7 @@ function coreUserMenu() {
 	// Use default <noavatar> file
 	// - Check if noavatar is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noAvatarURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noAvatarImage']) && $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
+	$noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
 	// Preload plugins for usermenu
 	loadActionHandlers('usermenu');
@@ -2345,7 +2345,7 @@ function coreUserMenu() {
 	}
 
 	// Execute filters - add additional variables
-	if (isset($PFILTERS['core.userMenu']) && is_array($PFILTERS['core.userMenu']))
+	if (isset($PFILTERS['core.userMenu']) and is_array($PFILTERS['core.userMenu']))
 		foreach ($PFILTERS['core.userMenu'] as $k => $v) { $v->showUserMenu($tVars); }
 
 	$twigLoader->setConversion('usermenu.tpl', $conversionConfig, $conversionConfigRegex);
@@ -2371,11 +2371,11 @@ function getCurrentNewsCategory() {
 	global $currentCategory, $catz, $catmap, $config, $CurrentHandler, $SYSTEM_FLAGS;
 
 	// Return if user is not reading any news
-	if (($CurrentHandler['pluginName'] != 'news')||(!isset($SYSTEM_FLAGS['news']['currentCategory.id'])))
+	if (($CurrentHandler['pluginName'] != 'news') or (!isset($SYSTEM_FLAGS['news']['currentCategory.id'])))
 		return false;
 
 	// Return if user is not reading short/full news from categories
-	if (($CurrentHandler['handlerName'] != 'news') && ($CurrentHandler['handlerName'] != 'print') && ($CurrentHandler['handlerName'] != 'by.category'))
+	if (($CurrentHandler['handlerName'] != 'news') and ($CurrentHandler['handlerName'] != 'print') and ($CurrentHandler['handlerName'] != 'by.category'))
 		return false;
 
 	return array(($CurrentHandler['handlerName'] == 'by.category')?'short':'full', $SYSTEM_FLAGS['news']['currentCategory.id'], $SYSTEM_FLAGS['news']['db.id']);
@@ -2423,12 +2423,12 @@ function jsonFormatter($json) {
 		$char = substr($json, $i, 1);
 
 		// Are we inside a quoted string?
-		if ($char == '"' && $prevChar != '\\') {
+		if ($char == '"' and $prevChar != '\\') {
 			$outOfQuotes = !$outOfQuotes;
 
 			// If this character is the end of an element,
 			// output a new line and indent the next line.
-		} else if (($char == '}' or $char == ']') && $outOfQuotes) {
+		} else if (($char == '}' or $char == ']') and $outOfQuotes) {
 			$result .= $newLine;
 			$pos--;
 			for ($j = 0; $j < $pos; $j++) {
@@ -2441,7 +2441,7 @@ function jsonFormatter($json) {
 
 		// If the last character was the beginning of an element,
 		// output a new line and indent the next line.
-		if (($char == ',' or $char == '{' or $char == '[') && $outOfQuotes) {
+		if (($char == ',' or $char == '{' or $char == '[') and $outOfQuotes) {
 			$result .= $newLine;
 			if ($char == '{' or $char == '[') {
 				$pos++;

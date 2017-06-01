@@ -224,7 +224,7 @@ class Database { /* need, wery to extends PDO */
 	}
 
 	function lastid($table = '') {
-		if ($table != '') {
+		if ( trim($table) ) {
 			$row = $this->record("SHOW TABLE STATUS LIKE '".prefix."_".$table."'");
 			return ($row['Auto_increment'] - 1);
 		} else {

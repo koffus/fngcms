@@ -521,7 +521,7 @@ class parse {
 			foreach ($pcatch as $catch) {
 
 				// Find attach UID
-				if ($catch[1] != '') {
+				if ( trim($catch[1]) ) {
 					$uid = substr($catch[1], 1);
 					$title = $catch[2];
 				} else {

@@ -21,7 +21,7 @@ $blockName = isset($_REQUEST['id'])?$_REQUEST['id']:'';
 $cShowNumber = 'n/c';
 
 // Check if special block is requested
-if ($blockName != '') {
+if ( trim($blockName) ) {
 	// Check if captchaID is prepared for this block
 	if (isset($_SESSION['captcha.'.$blockName]) && ($_SESSION['captcha.'.$blockName])) {
 		$cShowNumber = $_SESSION['captcha.'.$blockName];

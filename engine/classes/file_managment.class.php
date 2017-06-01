@@ -117,7 +117,7 @@ class file_managment {
 		Lang::load('files');
 
 		// Normalize category (to make it possible to have empty category)
-		$wCategory = ($param['category'] != '')?($param['category'].'/'):'';
+		$wCategory = ( trim($param['category']) ) ? ($param['category'].'/') : '';
 
 		//print "CALL file_upload -> upload(".$param['http_var']."//".$param['http_varnum'].")<br>\n<pre>"; var_dump($param); print "</pre><br>\n";
 

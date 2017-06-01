@@ -28,7 +28,7 @@ function admRPCFilesUpload($params){
 	// Check parameters:
 	// - type: file / image
 	$uploadType = $_POST['uploadType'];
-	if (($uploadType != 'file') && ($uploadType != 'image')) {
+	if (($uploadType != 'file') and ($uploadType != 'image')) {
 		@header('HTTP/1.1 404 Wrong upload type');
 		return;
 	}
@@ -52,9 +52,9 @@ function admRPCFilesUpload($params){
 	}
 
 	// For images - we need to transform images
-	$mkThumb = (($config['thumb_mode'] == 2) or (!$config['thumb_mode'] && $_REQUEST['thumb']))?1:0;
-	$mkStamp = (($config['stamp_mode'] == 2) or (!$config['stamp_mode'] && $_REQUEST['stamp']))?1:0;
-	$mkShadow = (($config['shadow_mode'] == 2) or (!$config['shadow_mode'] && $_REQUEST['shadow']))?1:0;
+	$mkThumb = (($config['thumb_mode'] == 2) or (!$config['thumb_mode'] and $_REQUEST['thumb']))?1:0;
+	$mkStamp = (($config['stamp_mode'] == 2) or (!$config['stamp_mode'] and $_REQUEST['stamp']))?1:0;
+	$mkShadow = (($config['shadow_mode'] == 2) or (!$config['shadow_mode'] and $_REQUEST['shadow']))?1:0;
 
 	$stampFileName = '';
 	if (file_exists(root.'trash/'.$config['wm_image'].'.gif')) {
@@ -71,10 +71,10 @@ function admRPCFilesUpload($params){
 		if (($tsy < 10)||($tsy > 1000)) $tsy = 150;
 		$thumb = $imanager->create_thumb($config['images_dir'].$ures['data']['category'], $ures['data']['name'], $tsx,$tsy, $config['thumb_quality'], array('rpc' => 1));
 		$ures['data']['thumb'] = $thumb;
-		if (is_array($thumb) && ($thumb['status'])) {
+		if (is_array($thumb) and ($thumb['status'])) {
 			// If we created thumb - check if we need to transform it
-			$stampThumb = ($mkStamp && $config['stamp_place'] && ($stampFileName != ''))?1:0;
-			$shadowThumb = ($mkShadow && $config['shadow_place'])?1:0;
+			$stampThumb = ( $mkStamp and $config['stamp_place'] and (trim($stampFileName)) )?1:0;
+			$shadowThumb = ($mkShadow and $config['shadow_place'])?1:0;
 			if ($shadowThumb or $stampThumb) {
 				$stamp = $imanager->image_transform(
 					array('image' => $dir.$ures['data']['category'].'/thumb/'.$ures['data']['name'],
@@ -87,8 +87,8 @@ function admRPCFilesUpload($params){
 		}
 	}
 
-	$stampOrig = ($mkStamp && ($config['stamp_place'] != 1) && ($stampFileName != ''))?1:0;
-	$shadowOrig = ($mkShadow && ($config['shadow_place'] != 1))?1:0;
+	$stampOrig = ( $mkStamp and ($config['stamp_place'] != 1) and (trim($stampFileName)) )?1:0;
+	$shadowOrig = ($mkShadow and ($config['shadow_place'] != 1))?1:0;
 
 	if ($shadowOrig or $stampOrig) {
 		$stamp = $imanager->image_transform(
@@ -108,7 +108,7 @@ function admRPCFilesUpload($params){
 		// Gather filesize for thumbinals
 		$thumb_size_x = 0;
 		$thumb_size_y = 0;
-		if (is_array($thumb) && is_readable($dir.$ures['data']['category'].'/thumb/'.$ures['data']['name']) && is_array($szt = $imanager->get_size($dir.$ures['data']['category'].'/thumb/'.$ures['data']['name']))) {
+		if (is_array($thumb) and is_readable($dir.$ures['data']['category'].'/thumb/'.$ures['data']['name']) and is_array($szt = $imanager->get_size($dir.$ures['data']['category'].'/thumb/'.$ures['data']['name']))) {
 			$thumb_size_x = $szt[1];
 			$thumb_size_y = $szt[2];
 		}

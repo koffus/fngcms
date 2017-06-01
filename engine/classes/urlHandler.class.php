@@ -295,7 +295,7 @@ class urlHandler {
 		if (isset($this->hList[$position])) {
 			// Position found. Check parameters
 			$h = $this->hList[$position];
-			if (isset($h['pluginName']) && ($h['pluginName'] == $pluginName) && isset($h['handlerName']) && ($h['handlerName'] == $handlerName)) {
+			if (isset($h['pluginName']) and ($h['pluginName'] == $pluginName) and isset($h['handlerName']) and ($h['handlerName'] == $handlerName)) {
 				// Yes, we can delete
 				array_splice($this->hList, $position, 1);
 
@@ -316,7 +316,7 @@ class urlHandler {
 		$position = count($this->hList);
 		while ($position >= 0) {
 			$h = $this->hList[$position];
-			if ((isset($h['pluginName'])) && ($h['pluginName'] == $pluginName) && (isset($h['handlerName'])) &&	(($handlerName == '*') or ($h['handlerName'] == $handlerName))) {
+			if ((isset($h['pluginName'])) and ($h['pluginName'] == $pluginName) and (isset($h['handlerName'])) &&	(($handlerName == '*') or ($h['handlerName'] == $handlerName))) {
 				array_splice($this->hList, $position, 1);
 			}
 			$position--;
@@ -369,7 +369,7 @@ class urlHandler {
 			// Skip disabled records
 			if ($hData['flagDisabled']) { continue; }
 			if (isset($hPrimary[$hData['pluginName']][$hData['handlerName']])) {
-				if (!$hPrimary[$hData['pluginName']][$hData['handlerName']][1] && ($hData['flagPrimary'])) {
+				if (!$hPrimary[$hData['pluginName']][$hData['handlerName']][1] and ($hData['flagPrimary'])) {
 					$hPrimary[$hData['pluginName']][$hData['handlerName']] = array($hId, $hData['flagPrimary']);
 				}
 			} else {
@@ -409,7 +409,7 @@ class urlHandler {
 			print "urlHandler :: RUN(".$url.")<br>\n";
 
 		// Modity calling URL if localPrefix is defined
-		if (isset($flags['localPrefix']) && ($flags['localPrefix'] != '')) {
+		if ( isset($flags['localPrefix']) and (trim($flags['localPrefix'])) ) {
 			if (substr($url, 0, mb_strlen($flags['localPrefix'], 'UTF-8')) == $flags['localPrefix']) {
 				// Catched prefix
 				$url = substr($url, mb_strlen($flags['localPrefix'], 'UTF-8'));
@@ -448,12 +448,12 @@ class urlHandler {
 					$h['callback'] = '_MASTER_URL_PROCESSOR';
 
 				// Set configured vars
-				if (isset($h['rstyle']['setVars']) && is_array($h['rstyle']['setVars']))
+				if (isset($h['rstyle']['setVars']) and is_array($h['rstyle']['setVars']))
 					foreach ($h['rstyle']['setVars'] as $k => $v) {
 						if (is_array($v)) {
 							if ($v[0] == 0) {
 								$result[$k] = $v[1];
-							} else if (($v[0] == 1) && isset($result[$v[1]])) {
+							} else if (($v[0] == 1) and isset($result[$v[1]])) {
 								$result[$k] = $result[$v[1]];
 							}
 						}
@@ -461,7 +461,7 @@ class urlHandler {
 
 				$skip = array ('FFC' => $h['flagFailContinue']?true:false);
 				$res = call_user_func($h['callback'], $h['pluginName'], $h['handlerName'], $result, $skip, $handlerParams);
-				if (is_array($res) && isset($res['fail']) && $res['fail'])
+				if (is_array($res) and isset($res['fail']) and $res['fail'])
 					continue;
 
 				return ++$catchCount;
@@ -507,14 +507,14 @@ class urlHandler {
 		$depMAP = array();
 		foreach ($hRec['rstyle']['genrMAP'] as $rec) {
 			// If dependent block & this is variable & no rec in $depMAP - save
-			if ($rec[2] && $rec[0] && !isset($depMAP[$rec[2]]))
+			if ($rec[2] and $rec[0] and !isset($depMAP[$rec[2]]))
 				$depMAP[$rec[2]] = $rec[1];
 		}
 
 		// Now we can generate URL
 		$url = array();
 		foreach ($hRec['rstyle']['genrMAP'] as $rec) {
-			if (!$rec[2] or ($rec[2] && isset($params[$depMAP[$rec[2]]]))) {
+			if (!$rec[2] or ($rec[2] and isset($params[$depMAP[$rec[2]]]))) {
 				switch ($rec[0]) {
 					case 0:	$url[] = $rec[1]; break;
 					case 1: $url[] = urlencode($params[$rec[1]]); break;
@@ -532,13 +532,13 @@ class urlHandler {
 		}
 
 		foreach ($xparams as $k => $v) {
-			if (($k != 'plugin') && ($k != 'handler'))
+			if (($k != 'plugin') and ($k != 'handler'))
 				$uparams[]= $k.'='.urlencode($v);
 		}
 
-		$linkPrefix = ($absoluteLink && isset($this->options['domainPrefix']) && ($this->options['domainPrefix'] != '')) ?
+		$linkPrefix = ($absoluteLink and isset($this->options['domainPrefix']) and (trim($this->options['domainPrefix']))) ?
 				$this->options['domainPrefix'] :
-				( (isset($this->options['localPrefix']) && ($this->options['localPrefix'] != '')) ? $this->options['localPrefix'] : '');
+				( (isset($this->options['localPrefix']) and (trim($this->options['localPrefix']))) ? $this->options['localPrefix'] : '');
 
 		return	$linkPrefix.
 				join('', $url).

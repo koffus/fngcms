@@ -103,7 +103,7 @@ function editcomment() {
 			$tvars['regx']['[\[answer\](.*)\[/answer\]]'] = '';
 		}
 
-		if ($row['text'] != '') {
+		if ( trim($row['text']) ) {
 			$xt = $twig->loadTemplate('skins/default/tpl/editcomments.tpl');
 			echo $xt->render($tvars);
 		}

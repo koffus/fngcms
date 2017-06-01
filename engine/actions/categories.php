@@ -116,7 +116,7 @@ function admCategoryAdd() {
 	}
 
 	// IF alt name is set:
-	if ($SQL['alt'] != '') {
+	if ( trim($SQL['alt']) ) {
 		// - check for allowed chars
 		if (!$parse->nameCheck($SQL['alt'])) {
 			// ERROR

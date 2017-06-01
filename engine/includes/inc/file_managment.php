@@ -106,7 +106,7 @@ function manage_upload($type){
 	// LOAD ATTACHED FILE LIST
 	if (getIsSet($_FILES['userfile']['name']) and is_array($_FILES['userfile']['name']))
 		foreach($_FILES['userfile']['name'] as $i => $v)
-			if ($v != '')
+			if ( trim($v) )
 				array_push($filelist, array('type' => $type, 'category' => $subdirectory, 'http_var' => 'userfile', 'http_varnum' => $i, 'replace' => getIsSet($_REQUEST['replace'])?1:0, 'randprefix' => getIsSet($_REQUEST['rand'])?1:0));
 
 	foreach($filelist as $fparam) {
@@ -144,7 +144,7 @@ function manage_upload($type){
 					$thumb = $imanager->create_thumb($config['images_dir'].$subdirectory, $up[1], $tsx,$tsy, $config['thumb_quality']);
 					if ($thumb) {
 						// If we created thumb - check if we need to transform it
-						$stampThumb = ($mkStamp and $config['stamp_place'] and ($stampFileName != ''))?1:0;
+						$stampThumb = ( $mkStamp and $config['stamp_place'] and (trim($stampFileName)) ) ? 1 : 0;
 						$shadowThumb = ($mkShadow and $config['shadow_place'])?1:0;
 						if ($shadowThumb or $stampThumb) {
 							$stamp = $imanager->image_transform(
@@ -157,7 +157,7 @@ function manage_upload($type){
 					}
 				}
 
-				$stampOrig = ($mkStamp and ($config['stamp_place'] != 1) and ($stampFileName != ''))?1:0;
+				$stampOrig = ( $mkStamp and ($config['stamp_place'] != 1) and (trim($stampFileName)) ) ? 1 : 0;
 				$shadowOrig = ($mkShadow and ($config['shadow_place'] != 1))?1:0;
 
 				if ($shadowOrig or $stampOrig) {

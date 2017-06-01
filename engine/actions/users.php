@@ -27,7 +27,7 @@ function userEditForm(){
 	$permDetails	= $perm['details'];
 
 	// Check for permissions
-	if (!$perm['modify'] && !$perm['details']) {
+	if (!$perm['modify'] and !$perm['details']) {
 		ngSYSLOG(array('plugin' => '#admin', 'item' => 'users', 'ds_id' => $id), array('action' => 'editForm'), null, array(0, 'SECURITY.PERM'));
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
 		return;
@@ -296,10 +296,10 @@ function userMassDelete(){
 			if ($urow['status'] == 1) { continue; }
 
 			// Check if user has his own photo or avatar
-			if (($urow['avatar'] != '') && (file_exists($config['avatars_dir'].$urow['photo'])))
+			if ( (trim($urow['avatar'])) and (file_exists($config['avatars_dir'].$urow['photo'])) )
 				@unlink($config['avatars_dir'].$urow['avatar']);
 
-			if (($urow['photo'] != '') && (file_exists($config['photos_dir'].$urow['photo'])))
+			if ( (trim($urow['photo'])) and (file_exists($config['photos_dir'].$urow['photo'])) )
 				@unlink($config['photos_dir'].$urow['photo']);
 
 			$mysql->query("delete from ".uprefix."_users where id=".db_squote($id));
@@ -366,7 +366,7 @@ function userList(){
 		'gd'	=> 'status desc',
 	);
 
-	$inSort = (isset($_REQUEST['sort']) && (isset($sortOrderMap[$_REQUEST['sort']])))?$_REQUEST['sort']:'i';
+	$inSort = (isset($_REQUEST['sort']) and (isset($sortOrderMap[$_REQUEST['sort']])))?$_REQUEST['sort']:'i';
 
 	$sortLinkMap = array();
 	foreach (array('i', 'n', 'r', 'l', 'p', 'g') as $kOrder) {
@@ -375,25 +375,25 @@ function userList(){
 		if ($sRec['isActive']) {
 			$sRec['sign'] = ($inSort == $kOrder)?'&#8595;&#8595;':'&#8593;&#8593;';
 			$sRec['link'] = admin_url.'/admin.php?mod=users&action=list'.
-				(isset($_REQUEST['name']) && $_REQUEST['name']?'&name='.htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
-				(isset($_REQUEST['rpp']) && $_REQUEST['rpp']?'&rpp='.intval($_REQUEST['rpp']):'').
+				(isset($_REQUEST['name']) and $_REQUEST['name']?'&name='.htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
+				(isset($_REQUEST['rpp']) and $_REQUEST['rpp']?'&rpp='.intval($_REQUEST['rpp']):'').
 				'&sort='.$kOrder.(($inSort == $kOrder)?'d':'');
 		} else {
 			$sRec['sign'] = '';
 			$sRec['link'] = admin_url.'/admin.php?mod=users&action=list'.
-				(isset($_REQUEST['name']) && $_REQUEST['name']?'&name='.htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
-				(isset($_REQUEST['rpp']) && $_REQUEST['rpp']?'&rpp='.intval($_REQUEST['rpp']):'').
+				(isset($_REQUEST['name']) and $_REQUEST['name']?'&name='.htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
+				(isset($_REQUEST['rpp']) and $_REQUEST['rpp']?'&rpp='.intval($_REQUEST['rpp']):'').
 				'&sort='.$kOrder;
 		}
 		$sortLinkMap[$kOrder] = $sRec;
 	}
 
-	$sortValue = (isset($_REQUEST['sort']) && isset($sortOrderMap[$_REQUEST['sort']]))?$sortOrderMap[$_REQUEST['sort']]:'id';
-	$name = (isset($_REQUEST['name']) && $_REQUEST['name'] != '')?("'%".$mysql->db_quote($_REQUEST['name'])."%'"):'';
+	$sortValue = (isset($_REQUEST['sort']) and isset($sortOrderMap[$_REQUEST['sort']]))?$sortOrderMap[$_REQUEST['sort']]:'id';
+	$name = (isset($_REQUEST['name']) and trim($_REQUEST['name']))?("'%".$mysql->db_quote($_REQUEST['name'])."%'"):'';
 
 	// Records Per Page
 	// - Load
-	$fRPP			= (isset($_REQUEST['rpp']) && ($_REQUEST['rpp'] != ''))?intval($_REQUEST['rpp']):intval($admCookie['users']['pp']);
+	$fRPP = (isset($_REQUEST['rpp']) and (trim($_REQUEST['rpp']))) ? intval($_REQUEST['rpp']) : intval($admCookie['users']['pp']);
 	// - Set default value for `Records Per Page` parameter
 	if (($fRPP < 2) or ($fRPP > 2000))
 		$fRPP = 30;
@@ -402,7 +402,7 @@ function userList(){
 	$admCookie['users']['pp'] = $fRPP;
 	admcookie_set($admCookie);
 
-	$pageNo = (isset($_REQUEST['page']) && $_REQUEST['page'])?intval($_REQUEST['page']):0;
+	$pageNo = (isset($_REQUEST['page']) and $_REQUEST['page'])?intval($_REQUEST['page']):0;
 	if (!$pageNo)
 		$pageNo = 1;
 
@@ -411,7 +411,7 @@ function userList(){
 	if (mb_strlen($name, 'UTF-8')) {
 		$whereRules []= 'name like '.$name;
 	}
-	if (isset($_REQUEST['group']) && (intval($_REQUEST['group']) > 0)) {
+	if (isset($_REQUEST['group']) and (intval($_REQUEST['group']) > 0)) {
 		$whereRules []= 'status = '.intval($_REQUEST['group']);
 	}
 
@@ -450,9 +450,9 @@ function userList(){
 			'current' => $pageNo,
 			'count' => $pageCount,
 			'url' => admin_url.'/admin.php?mod=users&action=list'.
-				(isset($_REQUEST['name']) && $_REQUEST['name']?'&name='.htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
-				(isset($_REQUEST['how']) && $_REQUEST['how']?'&how='.htmlspecialchars($_REQUEST['how'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
-				(isset($_REQUEST['rpp']) && $_REQUEST['rpp']?'&rpp='.intval($_REQUEST['rpp']):'').
+				(isset($_REQUEST['name']) and $_REQUEST['name']?'&name='.htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
+				(isset($_REQUEST['how']) and $_REQUEST['how']?'&how='.htmlspecialchars($_REQUEST['how'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'').
+				(isset($_REQUEST['rpp']) and $_REQUEST['rpp']?'&rpp='.intval($_REQUEST['rpp']):'').
 				'&page=%page%'
 		));
 
@@ -470,7 +470,7 @@ function userList(){
 	$tVars	= array(
 		'php_self'		=> $PHP_SELF,
 		'rpp'			=> $fRPP,
-		'name'			=> (isset($_REQUEST['name']) && $_REQUEST['name'])?htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'',
+		'name'			=> (isset($_REQUEST['name']) and $_REQUEST['name'])?htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'',
 		'token'			=> genUToken('admin.users'),
 		'pagination'	=> $pagination,
 		'ugroup'		=> $tUgroup,

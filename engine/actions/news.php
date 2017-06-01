@@ -118,7 +118,7 @@ function editNewsForm() {
 			'can_catpinned'		=> $perm[$permGroupMode.'.catpinned']?true:false,
 			'raw'				=> ($row['flags'] & 1),
 			'html'				=> ($row['flags'] & 2),
-			'extended_more'		=> ($config['extended_more'] or ($tvars['vars']['content.delimiter'] != ''))?true:false,
+			'extended_more'		=> ( $config['extended_more'] or (trim($tvars['vars']['content.delimiter'])) ) ? true : false,
 			'editable'			=> (($perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) or ($perm[$permGroupMode.'.unpublish']))?true:false,
 			'deleteable'		=> ($perm[$permGroupMode.'.delete'.(($row['approve'] == 1)?'.published':'')])?true:false,
 			'html.lost'			=> (($row['flags'] & 2) && (!$perm[$permGroupMode.'.html']))?1:0,
@@ -179,7 +179,8 @@ function editNewsForm() {
 		$num = 0;
 		foreach ($row['#files'] as $arow) {
 			// Skip files, that are attached by plugins
-			if ($arow['plugin'] != '') continue;
+			if ( trim($arow['plugin']) )
+				continue;
 
 			$attachNumber++;
 			$attachEntry = array(
@@ -369,12 +370,12 @@ function listNewsForm() {
 	}
 
 	// Category
-	$fCategoryId	= NULL;
-	if (getIsSet($_REQUEST['category']) != '')
+	$fCategoryId = NULL;
+	if ( trim(getIsSet($_REQUEST['category'])) )
 		$fCategoryId = intval(getIsSet($_REQUEST['category']));
 
 	// Status
-	$fStatus		= intval(getIsSet($_REQUEST['status']));
+	$fStatus = intval(getIsSet($_REQUEST['status']));
 
 	// Sort mode
 	$fSort = '';
@@ -449,7 +450,7 @@ function listNewsForm() {
 		array_push($conditions, "approve = ".(intval($fStatus)-2));
 
 	// Perform search
-	if ($fSearchLine != '') {
+	if ( trim($fSearchLine) ) {
 		array_push($conditions, ($fSearchType?'content':'title')." like ".db_squote('%'.$fSearchLine.'%'));
 	}
 
@@ -531,13 +532,13 @@ function listNewsForm() {
 				'url' => admin_url.
 					'/admin.php?mod=news'.
 					($fRPP?'&rpp='.$fRPP:'').
-					($fAuthorName != ''?'&an='.$fAuthorName:'').
-					($fSearchLine != ''?'&sl='.$fSearchLine:'').
-					($fSearchType != ''?'&st='.$fSearchType:'').
-					($fDateStartText != ''?'&dr1='.$fDateStartText:'').
-					($fDateStopText != ''?'&dr2='.$fDateStopText:'').
-					($fCategoryId != ''?'&category='.$fCategoryId:'').
-					($fStatus != ''?'&status='.$fStatus:'').
+					(trim($fAuthorName)?'&an='.$fAuthorName:'').
+					(trim($fSearchLine)?'&sl='.$fSearchLine:'').
+					(trim($fSearchType)?'&st='.$fSearchType:'').
+					(trim($fDateStartText)?'&dr1='.$fDateStartText:'').
+					(trim($fDateStopText)?'&dr2='.$fDateStopText:'').
+					(trim($fCategoryId)?'&category='.$fCategoryId:'').
+					(trim($fStatus)?'&status='.$fStatus:'').
 					'&page=%page%'
 			));
 	}
@@ -657,7 +658,7 @@ function addNewsForm($retry = ''){
 			'html.disabled'		=> !$perm['personal.html'],
 			'customdate.disabled'	=> !$perm['personal.customdate'],
 			'multicat.show'		=> $perm['personal.multicat'],
-			'extended_more'		=> ($config['extended_more'] or (getIsSet($tvars['vars']['content.delimiter']) != ''))?true:false,
+			'extended_more'		=> ( $config['extended_more'] or (trim(getIsSet($tvars['vars']['content.delimiter']))) ) ? true : false,
 			'can_publish'		=> $perm['personal.publish'],
 			'altname.disabled'	=> (!$perm['personal.altname'])?true:false,
 			'mondatory_cat'		=> (!$perm['personal.nocat'])?true:false,

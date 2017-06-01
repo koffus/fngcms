@@ -98,9 +98,9 @@ function loadPlugin($pluginName, $actionList = '*') {
 
 	// Scan all available actions and preload plugin's file if needed
 	foreach ($plugList['actions'] as $aName => $pList) {
-		if (isset($pList[$pluginName]) &&
-			((is_array($actionList) and in_array($aName, $actionList)) ||
-			(!is_array($actionList) and (($actionList == '*')||($actionList == $aName))))
+		if (isset($pList[$pluginName]) and 
+			((is_array($actionList) and in_array($aName, $actionList)) or 
+			(!is_array($actionList) and (($actionList == '*') or ($actionList == $aName))))
 		 ) {
 			// Yes, we should load this file. If it's not loaded earlier
 			$pluginFileName = $pList[$pluginName];
@@ -364,7 +364,7 @@ function pluginsGetList() {
 	while (false != ($dir = @readdir($handle))) {
 		$edir = extras_dir.'/'.$dir;
 		// Skip special dirs ',' and '..'
-		if (($dir == '.')||($dir == '..')||(!is_dir($edir))) { continue; }
+		if (($dir == '.') or ($dir == '..') or (!is_dir($edir))) { continue; }
 
 		// Check 'version' file
 		if (!is_file($edir.'/version')) { continue; }
@@ -607,10 +607,10 @@ function locatePluginTemplates($tname, $plugin, $localsource = 0, $skin = '', $b
 	}
 
 	// Text SKIN+BLOCK
-	$tsb = ((($skin != '')||($block != ''))?'/':'').
-			($skin?'skins/'.$skin:'').
-			((($skin != '') and ($block != ''))?'/':'').
-			($block?$block:'');
+	$tsb = ( ((trim($skin)) or (trim($block))) ? '/' : '' ).
+			( $skin ? 'skins/'.$skin : '').
+			( ((trim($skin)) and (trim($block)))?'/':'' ).
+			( $block ? $block : '' );
 
 	$tpath = array();
 	foreach ($tname as $fn) {

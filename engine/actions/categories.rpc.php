@@ -63,8 +63,8 @@ function admCategoryList($retMode = 0) {
 			'alt_url'	=>	$row['alt_url'],
 			'info'		=>	$row['info'],
 			'show_main'	=>	intval(substr($row['flags'],0,1)) ? ('<img src="'.skins_url.'/images/yes.png" alt="'.__('yesa').'" title="'.__('yesa').'"/>') : ('<img src="'.skins_url.'/images/no.png" alt="'.__('noa').'"/>'),
-			'template'	=>	($row['tpl'] != '')?$row['tpl']:'--',
-			'news'		=>	($row['posts']>0)?$row['posts']:'--',
+			'template'	=> trim($row['tpl']) ? $row['tpl'] : '--',
+			'news'		=>	($row['posts']>0)?$row['posts'] : '--',
 			'linkView'	=> (checkLinkAvailable('news', 'by.category')?
 							generateLink('news', 'by.category', array('category' => $row['alt'], 'catid' => $row['id']), array(), false, true):
 							generateLink('core', 'plugin', array('plugin' => 'news', 'handler' => 'by.category'), array('category' => $row['alt'], 'catid' => $row['id']), false, true)),
