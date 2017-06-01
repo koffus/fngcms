@@ -715,9 +715,9 @@ function edit_forum(){
 	//print "<pre>".var_export($_REQUEST['GROUP_PERM'], true)."</pre>";
 	foreach ($mysql-> select("SELECT id, title FROM ".prefix."_forum_forums WHERE parent = '0' ORDER BY position", 1 ) as $row){
 		$tEntry2[] = array(
-			'id'		=>	$row['id'],
-			'title'		=>	$row['title'],
-			'id_set'	=> intval($forum_parent)
+			'id' => $row['id'],
+			'title' => $row['title'],
+			'id_set' => intval($forum_parent)
 		);
 	}
 	
@@ -810,99 +810,99 @@ global $twig, $plugin, $mysql;
 	$forum_perm = is_array($_REQUEST['forum_perm'])?$_REQUEST['forum_perm']:array(
 		0 => array(
 			'forum_read' => true,
-			'topic_read'=> true,
-			'topic_send'=> false,
-			'topic_modify'=> false,
-			'topic_modify_your'=> false,
-			'topic_closed'=> false,
-			'topic_closed_your'=> false,
-			'topic_remove'=> false,
-			'topic_remove_your'=> false,
-			'post_send'=> false,
-			'post_modify'=> false,
-			'post_modify_your'=> false,
-			'post_remove'=> false,
-			'post_remove_your'=> false
+			'topic_read' => true,
+			'topic_send' => false,
+			'topic_modify' => false,
+			'topic_modify_your' => false,
+			'topic_closed' => false,
+			'topic_closed_your' => false,
+			'topic_remove' => false,
+			'topic_remove_your' => false,
+			'post_send' => false,
+			'post_modify' => false,
+			'post_modify_your' => false,
+			'post_remove' => false,
+			'post_remove_your' => false
 		),
 		1 => array(
 			'forum_read' => true,
-			'topic_read'=> true,
-			'topic_send'=> true,
-			'topic_modify'=> true,
-			'topic_modify_your'=> true,
-			'topic_closed'=> true,
-			'topic_closed_your'=> true,
-			'topic_remove'=> true,
-			'topic_remove_your'=> true,
-			'post_send'=> true,
-			'post_modify'=> true,
-			'post_modify_your'=> true,
-			'post_remove'=> true,
-			'post_remove_your'=> true
+			'topic_read' => true,
+			'topic_send' => true,
+			'topic_modify' => true,
+			'topic_modify_your' => true,
+			'topic_closed' => true,
+			'topic_closed_your' => true,
+			'topic_remove' => true,
+			'topic_remove_your' => true,
+			'post_send' => true,
+			'post_modify' => true,
+			'post_modify_your' => true,
+			'post_remove' => true,
+			'post_remove_your' => true
 		),
 		2 => array(
 			'forum_read' => true,
-			'topic_read'=> true,
-			'topic_send'=> true,
-			'topic_modify'=> false,
-			'topic_modify_your'=> false,
-			'topic_closed'=> false,
-			'topic_closed_your'=> false,
-			'topic_remove'=> false,
-			'topic_remove_your'=> false,
-			'post_send'=> true,
-			'post_modify'=> false,
-			'post_modify_your'=> true,
-			'post_remove'=> false,
-			'post_remove_your'=> true
+			'topic_read' => true,
+			'topic_send' => true,
+			'topic_modify' => false,
+			'topic_modify_your' => false,
+			'topic_closed' => false,
+			'topic_closed_your' => false,
+			'topic_remove' => false,
+			'topic_remove_your' => false,
+			'post_send' => true,
+			'post_modify' => false,
+			'post_modify_your' => true,
+			'post_remove' => false,
+			'post_remove_your' => true
 		),
 		3 => array(
 			'forum_read' => true,
-			'topic_read'=> true,
-			'topic_send'=> true,
-			'topic_modify'=> false,
-			'topic_modify_your'=> false,
-			'topic_closed'=> false,
-			'topic_closed_your'=> false,
-			'topic_remove'=> false,
-			'topic_remove_your'=> false,
-			'post_send'=> true,
-			'post_modify'=> false,
-			'post_modify_your'=> true,
-			'post_remove'=> false,
-			'post_remove_your'=> true
+			'topic_read' => true,
+			'topic_send' => true,
+			'topic_modify' => false,
+			'topic_modify_your' => false,
+			'topic_closed' => false,
+			'topic_closed_your' => false,
+			'topic_remove' => false,
+			'topic_remove_your' => false,
+			'post_send' => true,
+			'post_modify' => false,
+			'post_modify_your' => true,
+			'post_remove' => false,
+			'post_remove_your' => true
 		),
 		4 => array(
 			'forum_read' => true,
-			'topic_read'=> true,
-			'topic_send'=> true,
-			'topic_modify'=> false,
-			'topic_modify_your'=> false,
-			'topic_closed'=> false,
-			'topic_closed_your'=> false,
-			'topic_remove'=> false,
-			'topic_remove_your'=> false,
-			'post_send'=> true,
-			'post_modify'=> false,
-			'post_modify_your'=> true,
-			'post_remove'=> false,
-			'post_remove_your'=> true
+			'topic_read' => true,
+			'topic_send' => true,
+			'topic_modify' => false,
+			'topic_modify_your' => false,
+			'topic_closed' => false,
+			'topic_closed_your' => false,
+			'topic_remove' => false,
+			'topic_remove_your' => false,
+			'post_send' => true,
+			'post_modify' => false,
+			'post_modify_your' => true,
+			'post_remove' => false,
+			'post_remove_your' => true
 		),
 		5 => array(
 			'forum_read' => true,
-			'topic_read'=> true,
-			'topic_send'=> false,
-			'topic_modify'=> false,
-			'topic_modify_your'=> false,
-			'topic_closed'=> false,
-			'topic_closed_your'=> false,
-			'topic_remove'=> false,
-			'topic_remove_your'=> false,
-			'post_send'=> true,
-			'post_modify'=> false,
-			'post_modify_your'=> false,
-			'post_remove'=> false,
-			'post_remove_your'=> false
+			'topic_read' => true,
+			'topic_send' => false,
+			'topic_modify' => false,
+			'topic_modify_your' => false,
+			'topic_closed' => false,
+			'topic_closed_your' => false,
+			'topic_remove' => false,
+			'topic_remove_your' => false,
+			'post_send' => true,
+			'post_modify' => false,
+			'post_modify_your' => false,
+			'post_remove' => false,
+			'post_remove_your' => false
 		),
 	);
 	//print "<pre>".var_export($forum_perm, true)."</pre>";
@@ -1296,7 +1296,7 @@ function url()
 					$ULIB->registerCommand('forum', '',
 						array ('vars' =>
 							array(),
-							'descr'	=> array ('russian' => 'Главная страница форума'),
+							'descr' => array ('russian' => 'Главная страница форума'),
 						)
 					);
 					
@@ -1342,7 +1342,7 @@ function url()
 					$ULIB->registerCommand('forum', 'register',
 						array ('vars' =>
 								array(),
-								'descr'	=> array ('russian' => 'Страница регистрации на форуме'),
+								'descr' => array ('russian' => 'Страница регистрации на форуме'),
 						)
 					);
 					
@@ -1388,7 +1388,7 @@ function url()
 					$ULIB->registerCommand('forum', 'login',
 						array ('vars' =>
 								array(),
-								'descr'	=> array ('russian' => 'Страница авторизации на форуме'),
+								'descr' => array ('russian' => 'Страница авторизации на форуме'),
 						)
 					);
 					
@@ -1434,7 +1434,7 @@ function url()
 					$ULIB->registerCommand('forum', 'out',
 						array ('vars' =>
 								array(),
-								'descr'	=> array ('russian' => 'Выйти с форума'),
+								'descr' => array ('russian' => 'Выйти с форума'),
 						)
 					);
 					
@@ -1481,7 +1481,7 @@ function url()
 						array ('vars' =>
 								array(	'id' => array('matchRegex' => '\d+', 'descr' => array('russian' => 'id темы')),
 								),
-								'descr'	=> array ('russian' => 'Ссылка на новое сообщение'),
+								'descr' => array ('russian' => 'Ссылка на новое сообщение'),
 						)
 					);
 					
@@ -1541,7 +1541,7 @@ function url()
 						array ('vars' =>
 								array(	'id' => array('matchRegex' => '\d+', 'descr' => array('russian' => 'id раздела')),
 								),
-								'descr'	=> array ('russian' => 'Ссылка на новую тему'),
+								'descr' => array ('russian' => 'Ссылка на новую тему'),
 						)
 					);
 					
@@ -1603,7 +1603,7 @@ function url()
 										'name' => array('matchRegex' => '.+?', 'descr' => array('russian' => 'Логин пользователя')),
 										'act' => array('matchRegex' => '.+?', 'descr' => array('russian' => 'Дополнительное действие')),
 								),
-								'descr'	=> array ('russian' => 'Ссылка на профиль'),
+								'descr' => array ('russian' => 'Ссылка на профиль'),
 						)
 					);
 					
@@ -1677,7 +1677,7 @@ function url()
 								array(	'id' => array('matchRegex' => '\d+', 'descr' => array('russian' => 'id категории')),
 										'page' => array('matchRegex' => '\d{1,4}', 'descr' => array('russian' => 'Постраничная навигация')),
 								),
-								'descr'	=> array ('russian' => 'Ссылка на категорию'),
+								'descr' => array ('russian' => 'Ссылка на категорию'),
 						)
 					);
 					
@@ -1753,7 +1753,7 @@ function url()
 										'page' => array('matchRegex' => '\d{1,4}', 'descr' => array('russian' => 'Постраничная навигация')),
 										's' => array('matchRegex' => '.+?', 'descr' => array('russian' => 'Поиск слов в теме')),
 								),
-								'descr'	=> array ('russian' => 'Ссылка на тему'),
+								'descr' => array ('russian' => 'Ссылка на тему'),
 						)
 					);
 					

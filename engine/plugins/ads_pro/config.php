@@ -37,11 +37,11 @@ function main() {
 		'action'				=> __('ads_pro:button_general'),
 		's_news0'				=> ($s_news?'':' selected'),
 		's_news1'				=> ($s_news?' selected':''),
-		's_news_sort0'			=> ($s_news_sort?'':' selected'),
-		's_news_sort1'			=> ($s_news_sort?' selected':''),
-		'multidisplay_mode_0'	=> (($s_multidisplay == 0)?' selected':''),
-		'multidisplay_mode_1'	=> (($s_multidisplay == 1)?' selected':''),
-		'multidisplay_mode_2'	=> (($s_multidisplay == 2)?' selected':''),
+		's_news_sort0' => ($s_news_sort?'':' selected'),
+		's_news_sort1' => ($s_news_sort?' selected':''),
+		'multidisplay_mode_0' => (($s_multidisplay == 0)?' selected':''),
+		'multidisplay_mode_1' => (($s_multidisplay == 1)?' selected':''),
+		'multidisplay_mode_2' => (($s_multidisplay == 2)?' selected':''),
 		);
 
 	$xt = $twig->loadTemplate($tpath['conf.general'] . 'conf.general.tpl');

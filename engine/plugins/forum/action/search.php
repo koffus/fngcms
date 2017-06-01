@@ -97,8 +97,8 @@
 			//	array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array(), 'paginator' => array('page', 1, false));
 			
 			$paginationParams = checkLinkAvailable('forum', 'search')?
-				array('pluginName' => 'forum', 'pluginHandler' => 'search', 'params' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit'=> 'Отправить'), 'xparams' => array(), 'paginator' => array('page', 0, false)):
-				array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit'=> 'Отправить'), 'paginator' => array('page', 1, false));
+				array('pluginName' => 'forum', 'pluginHandler' => 'search', 'params' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit' => 'Отправить'), 'xparams' => array(), 'paginator' => array('page', 0, false)):
+				array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit' => 'Отправить'), 'paginator' => array('page', 1, false));
 			
 			$navigations = LoadVariables();
 			$pages = generatePagination($pageNo, 1, $countPages, 10, $paginationParams, $navigations);
@@ -165,8 +165,8 @@
 											"$1",
 											str_replace('%link%', 
 												checkLinkAvailable('forum', 'search')?
-												generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'search', 'params' => array('keywords' => $get_url?$get_url:'', 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit'=> 'Отправить'), 'xparams' => array(), 'paginator' => array('page', 0, false)), $prev = floor($limitStart / $limitCount)):
-												generatePageLink(array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array('keywords' => isset($get_url)?$get_url:'', 'forum_id' => isset($forum_id)?$forum_id:'', 'search_in' => isset($search_in)?$search_in:'', 'submit'=> 'Отправить'), 'paginator' => array('page', 1, false)), 
+												generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'search', 'params' => array('keywords' => $get_url?$get_url:'', 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit' => 'Отправить'), 'xparams' => array(), 'paginator' => array('page', 0, false)), $prev = floor($limitStart / $limitCount)):
+												generatePageLink(array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array('keywords' => isset($get_url)?$get_url:'', 'forum_id' => isset($forum_id)?$forum_id:'', 'search_in' => isset($search_in)?$search_in:'', 'submit' => 'Отправить'), 'paginator' => array('page', 1, false)), 
 													$prev = floor((isset($limitStart) && $limitStart)?$limitStart:10 / (isset($limitCount) && $limitCount)?$limitCount:'5')), 
 												isset($navigations['prevlink'])?$navigations['prevlink']:''
 											)
@@ -178,8 +178,8 @@
 											"$1",
 											str_replace('%link%', 
 												checkLinkAvailable('forum', 'search')?
-												generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'search', 'params' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit'=> 'Отправить'), 'xparams' => array(), 'paginator' => array('page', 0, false)), $prev+2):
-												generatePageLink(array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit'=> 'Отправить'), 'paginator' => array('page', 1, false)), $prev+2), 
+												generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'search', 'params' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit' => 'Отправить'), 'xparams' => array(), 'paginator' => array('page', 0, false)), $prev+2):
+												generatePageLink(array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'forum', 'handler' => 'search'), 'xparams' => array('keywords' => $get_url, 'forum_id' => $forum_id, 'search_in' => $search_in, 'submit' => 'Отправить'), 'paginator' => array('page', 1, false)), $prev+2), 
 												isset($navigations['nextlink'])?$navigations['nextlink']:''
 											)
 					),

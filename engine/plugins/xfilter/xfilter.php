@@ -39,7 +39,7 @@ function xfilter($params) {
 		}
 	}	
 	// generate the "select" list of the categories 
-	$tVars["catlist"]= makeCategoryList( array ('name' => 'catid', 'selected' => $_REQUEST['catid'], 'skip'=>$skipcat, 'doall' => $do, 'class' => 'mw_search_f'));
+	$tVars["catlist"]= makeCategoryList( array ('name' => 'catid', 'selected' => $_REQUEST['catid'], 'skip' =>$skipcat, 'doall' => $do, 'class' => 'mw_search_f'));
 
 	// if category is selected, then check it, use 'like' to check additional categories too
 	if ($_REQUEST['catid']) {

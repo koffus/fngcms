@@ -69,13 +69,13 @@ function plugin_voting_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'access'		=> 1,
-				'refresh'		=> 30,
-				'history'		=> 30,
-				'rate_limit'	=> 0,
-				'maxidle'		=> 0,
-				'maxwlen'		=> 40,
-				'maxlen'		=> 500,
+				'access' => 1,
+				'refresh' => 30,
+				'history' => 30,
+				'rate_limit' => 0,
+				'maxidle' => 0,
+				'maxwlen' => 40,
+				'maxlen' => 500,
 			);
 
 			foreach ($params as $k => $v) {

@@ -12,8 +12,8 @@ Lang::loadPlugin('feedback', 'config', '', '', ':');
 
 $db_update = array(
 	array(
-		'table'		=>	'feedback',
-		'action'	=>	'drop',
+		'table' => 'feedback',
+		'action' => 'drop',
 	),
 );
 

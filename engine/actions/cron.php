@@ -49,13 +49,13 @@ function cronCommit() {
 		if ( !$cron->checkList($v['dow'], 0, 6) )		return array(false, $k, 'dow');
 
 		$cronLines []= array(
-			'min'	=> $v['min'],
-			'hour'	=> $v['hour'],
-			'day'	=> $v['day'],
-			'month'	=> $v['month'],
-			'dow'	=> $v['dow'],
-			'plugin'	=> $v['plugin'],
-			'handler'	=> $v['handler'],
+			'min' => $v['min'],
+			'hour' => $v['hour'],
+			'day' => $v['day'],
+			'month' => $v['month'],
+			'dow' => $v['dow'],
+			'plugin' => $v['plugin'],
+			'handler' => $v['handler'],
 		);
 	}
 
@@ -86,8 +86,8 @@ function cronShowForm() {
 	$entries[] = array('id' => $rowNum);
 
 	$tVars = array(
-		'token'		=> genUToken('admin.extra-config'),
-		'entries'	=> $entries,
+		'token' => genUToken('admin.extra-config'),
+		'entries' => $entries,
 	);
 
 	$xt = $twig->loadTemplate('skins/default/tpl/cron.tpl');

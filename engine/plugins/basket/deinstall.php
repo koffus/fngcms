@@ -12,8 +12,8 @@ Lang::loadPlugin('basket', 'config', '', '', ':');
 
 $db_update = array(
 	array(
-		'table'		=>	'basket',
-		'action'	=>	'drop',
+		'table' => 'basket',
+		'action' => 'drop',
 	),
 );
 

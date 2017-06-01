@@ -85,7 +85,7 @@ class FinanceNewsFilter extends NewsFilter {
 			loadActionHandlers('fin_acceptors');
 			if ($enough) {
 			 	$tpl->template('enough',extras_dir.'/finance/tpl');
-			 	$tpl->vars('enough', array('vars'=>array('price' => $price, 'ubalance' => $ubalance, 'newsid' => $SQLnews['id'], 'backurl' => $_SERVER['REQUEST_URI'])));
+			 	$tpl->vars('enough', array('vars' =>array('price' => $price, 'ubalance' => $ubalance, 'newsid' => $SQLnews['id'], 'backurl' => $_SERVER['REQUEST_URI'])));
 			 	$text = $tpl->show('enough');
 			} else {
 				$needsum = $price - $ubalance;
@@ -100,12 +100,12 @@ class FinanceNewsFilter extends NewsFilter {
 					}
 				}
 			 	$tpl->template('notenough',extras_dir.'/finance/tpl');
-			 	$tpl->vars('notenough', array('vars'=>array('price' => $price, 'ubalance' => $ubalance, 'acceptors' => $aclist)));
+			 	$tpl->vars('notenough', array('vars' =>array('price' => $price, 'ubalance' => $ubalance, 'acceptors' => $aclist)));
 			 	$text = $tpl->show('notenough');
 			}
 		} else {
 			$tpl->template('needauth',extras_dir.'/finance/tpl');
-			$tpl->vars('needauth', array('vars'=>array('price' => $price)));
+			$tpl->vars('needauth', array('vars' =>array('price' => $price)));
 			$text = $tpl->show('needauth');
 		}
 

@@ -46,30 +46,30 @@ function admCategoryList($retMode = 0) {
 	// Prepare list of categories
 	$tEntries = array();
 	$tVars = array(
-		'token'		=>	genUToken('admin.categories'),
-		'php_self'	=>	$PHP_SELF,
-		'flags'		=> array(
-			'canView'		=> $permDetails,
-			'canModify'		=> $permModify,
+		'token' => genUToken('admin.categories'),
+		'php_self' => $PHP_SELF,
+		'flags' => array(
+			'canView' => $permDetails,
+			'canModify' => $permModify,
 		),
 	);
 
 	foreach ( $cList as $num => $row) {
 		// Prepare data for template
 		$tEntry = array(
-			'id'		=>	$row['id'],
-			'name'		=>	$row['name'],
-			'alt'		=>	$row['alt'],
-			'alt_url'	=>	$row['alt_url'],
-			'info'		=>	$row['info'],
-			'show_main'	=>	intval(substr($row['flags'],0,1)) ? ('<img src="'.skins_url.'/images/yes.png" alt="'.__('yesa').'" title="'.__('yesa').'"/>') : ('<img src="'.skins_url.'/images/no.png" alt="'.__('noa').'"/>'),
-			'template'	=> trim($row['tpl']) ? $row['tpl'] : '--',
-			'news'		=>	($row['posts']>0)?$row['posts'] : '--',
-			'linkView'	=> (checkLinkAvailable('news', 'by.category')?
+			'id' => $row['id'],
+			'name' => $row['name'],
+			'alt' => $row['alt'],
+			'alt_url' => $row['alt_url'],
+			'info' => $row['info'],
+			'show_main' => intval(substr($row['flags'],0,1)) ? ('<img src="'.skins_url.'/images/yes.png" alt="'.__('yesa').'" title="'.__('yesa').'"/>') : ('<img src="'.skins_url.'/images/no.png" alt="'.__('noa').'"/>'),
+			'template' => trim($row['tpl']) ? $row['tpl'] : '--',
+			'news' => ($row['posts']>0)?$row['posts'] : '--',
+			'linkView' => (checkLinkAvailable('news', 'by.category')?
 							generateLink('news', 'by.category', array('category' => $row['alt'], 'catid' => $row['id']), array(), false, true):
 							generateLink('core', 'plugin', array('plugin' => 'news', 'handler' => 'by.category'), array('category' => $row['alt'], 'catid' => $row['id']), false, true)),
-			'flags'		=> array(
-				'showMain'	=> intval(substr($row['flags'],0,1))?1:0,
+			'flags' => array(
+				'showMain' => intval(substr($row['flags'],0,1))?1:0,
 			),
 		);
 

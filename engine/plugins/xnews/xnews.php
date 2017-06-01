@@ -264,19 +264,19 @@ function xNewsShowBlock($params) {
 	// Retrieve data
 	$showResult = news_showlist(array(), array(), array(
 						'plugin'				=> 'xnews',
-						'extractEmbeddedItems'	=> $params['extractEmbeddedItems'],
-						'overrideSQLquery'		=> $requestQuery,
-						'extendedReturn'		=> true,
-						'extendedReturnData'	=> true,
-						'overrideTemplatePath'	=> $templateDir,
-						'overrideTemplateName'	=> 'entries',
+						'extractEmbeddedItems' => $params['extractEmbeddedItems'],
+						'overrideSQLquery' => $requestQuery,
+						'extendedReturn' => true,
+						'extendedReturnData' => true,
+						'overrideTemplatePath' => $templateDir,
+						'overrideTemplateName' => 'entries',
 						'twig'					=> true,
 				));
 
 	// Generate main block
 	$tVars = array(
-		'entries'		=> $showResult['data'],
-		'entriesCount'	=> $showResult['count'],
+		'entries' => $showResult['data'],
+		'entriesCount' => $showResult['count'],
 	);
 
 	$xt = $twig->loadTemplate($templateDir.'/xnews.tpl');

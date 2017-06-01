@@ -26,8 +26,8 @@ if (!defined('NGCMS')) die ('HAL');
 
 $db_update = array(
 	array(
-		'table'		=>	'users',
-		'action'	=>	'modify',
+		'table' => 'users',
+		'action' => 'modify',
 		'fields' => array(
 		 array('action' => 'drop', 'name' => 'loginza_id', 'type' => 'varchar(255)'),
 		)

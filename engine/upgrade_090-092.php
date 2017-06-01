@@ -142,32 +142,32 @@ if ($_REQUEST['update090_091']) {
 
 	// Перенос настроек в плагины
 	$p_vars_map = array(
-		'com_for_reg'		=> array(
-			'plugin'	=> 'comments',
-			'name'		=> 'regonly',
-			'type'		=> 'int',
-			'reverse'	=> false),
-		'reverse_comments'	=> array(
-			'plugin'	=> 'comments',
-			'name'		=> 'backorder',
-			'type'		=> 'int'),
-		'com_length'		=> array(
-			'plugin'	=> 'comments',
-			'name'		=> 'maxlen',
-			'type'		=> 'int'),
-		'com_wrap'			=> array(
-			'plugin'	=> 'comments',
-			'name'		=> 'maxwlen',
-			'type'		=> 'int'),
-		'block_many_com'	=> array(
-			'plugin'	=> 'comments',
-			'name'		=> 'multi',
-			'type'		=> 'int',
-			'reverse'	=> true),
+		'com_for_reg' => array(
+			'plugin' => 'comments',
+			'name' => 'regonly',
+			'type' => 'int',
+			'reverse' => false),
+		'reverse_comments' => array(
+			'plugin' => 'comments',
+			'name' => 'backorder',
+			'type' => 'int'),
+		'com_length' => array(
+			'plugin' => 'comments',
+			'name' => 'maxlen',
+			'type' => 'int'),
+		'com_wrap' => array(
+			'plugin' => 'comments',
+			'name' => 'maxwlen',
+			'type' => 'int'),
+		'block_many_com' => array(
+			'plugin' => 'comments',
+			'name' => 'multi',
+			'type' => 'int',
+			'reverse' => true),
 		'timestamp_comment' => array(
-			'plugin'	=> 'comments',
-			'name'		=> 'timestamp',
-			'type'		=> 'string'),
+			'plugin' => 'comments',
+			'name' => 'timestamp',
+			'type' => 'string'),
 	);
 
 	foreach ($p_vars_map as $old => $set) {

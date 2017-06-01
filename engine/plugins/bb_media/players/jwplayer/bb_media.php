@@ -73,8 +73,8 @@ function bbMediaProcess($content) {
 
 			// Check required keys
 			$kdefault = array(
-				'width'		=> array('sound' => 320, 'video' => 320, 'pdf' => '100%'),
-				'height'	=> array('sound' => 20, 'video' => 200, 'pdf' => '350')
+				'width' => array('sound' => 320, 'video' => 320, 'pdf' => '100%'),
+				'height' => array('sound' => 20, 'video' => 200, 'pdf' => '350')
 			);
 
 			foreach ($kdefault as $kscan => $kvalue) {

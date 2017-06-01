@@ -28,8 +28,8 @@ Lang::loadPlugin('pm', 'config', '', '', ':');
 
 $db_update = array(
 	array(
-		'table'		=>	'pm',
-		'action'	=>	'drop',
+		'table' => 'pm',
+		'action' => 'drop',
 	),
 	
 	array(

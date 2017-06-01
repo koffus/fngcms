@@ -27,8 +27,8 @@
 //		'overrideTemplatePath' => alternative path for searching of template
 //		'customCategoryTemplate' => automatically override custom category templates
 //		'setCurrentCategory' => update Current Category in system flags
-//		'setCurrentNews'	=> update Current News in system flags
-//		'addCanonicalLink'	=> if specified, rel="canonical" will be added into {htmlvars}
+//		'setCurrentNews' => update Current News in system flags
+//		'addCanonicalLink' => if specified, rel="canonical" will be added into {htmlvars}
 //		'validateCategoryID' => if specified, check if content represents correct category ID(s) for this news
 //		'validateCategoryAlt' => if specified, check if content represents correct category altname(s) for this news
 //		'extractEmbeddedItems'	- Extract embedded images/files from news body
@@ -161,13 +161,13 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 			$callingParams['linkedFiles']['ids'] []= $v['id'];
 			$callingParams['linkedFiles']['data'] []= $v;
 			$tvars['vars']['_files'] []= array(
-				'plugin'		=> $v['plugin'],
-				'pidentity'		=> $v['pidentity'],
-				'url'			=> ($v['storage']?$config['attach_url']:$config['files_url']).'/'.$v['folder'].'/'.$v['name'],
-				'name'			=> $v['name'],
-				'origName'		=> secure_html($v['orig_name']),
-				'description'	=> secure_html($v['description']),
-				'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['files_dir']).'/'.$v['folder'].'/'.$v['name'])),
+				'plugin' => $v['plugin'],
+				'pidentity' => $v['pidentity'],
+				'url' => ($v['storage']?$config['attach_url']:$config['files_url']).'/'.$v['folder'].'/'.$v['name'],
+				'name' => $v['name'],
+				'origName' => secure_html($v['orig_name']),
+				'description' => secure_html($v['description']),
+				'size' => FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['files_dir']).'/'.$v['folder'].'/'.$v['name'])),
 			);
 		}
 	}
@@ -179,20 +179,20 @@ function news_showone($newsID, $alt_name, $callingParams = array()) {
 			$callingParams['linkedImages']['ids'] []= $k;
 			$callingParams['linkedImages']['data'] []= $v;
 			$tvars['vars']['_images'] []= array(
-				'plugin'		=> $v['plugin'],
-				'pidentity'		=> $v['pidentity'],
-				'url'			=> ($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/'.$v['name'],
-				'purl'			=> $v['preview']?(($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/thumb/'.$v['name']):null,
-				'width'			=> $v['width'],
-				'height'		=> $v['height'],
-				'pwidth'		=> $v['p_width'],
-				'pheight'		=> $v['p_height'],
-				'name'			=> $v['name'],
-				'origName'		=> secure_html($v['orig_name']),
-				'description'	=> secure_html($v['description']),
-				'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['images_dir']).'/'.$v['folder'].'/'.$v['name'])),
-				'flags'		=> array(
-					'hasPreview'	=> $v['preview'],
+				'plugin' => $v['plugin'],
+				'pidentity' => $v['pidentity'],
+				'url' => ($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/'.$v['name'],
+				'purl' => $v['preview']?(($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/thumb/'.$v['name']):null,
+				'width' => $v['width'],
+				'height' => $v['height'],
+				'pwidth' => $v['p_width'],
+				'pheight' => $v['p_height'],
+				'name' => $v['name'],
+				'origName' => secure_html($v['orig_name']),
+				'description' => secure_html($v['description']),
+				'size' => FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['images_dir']).'/'.$v['folder'].'/'.$v['name'])),
+				'flags' => array(
+					'hasPreview' => $v['preview'],
 				),
 			);
 		}
@@ -447,7 +447,7 @@ function newsProcessFilter($conditions) {
 //			* short		- short new display
 //			* full		- full news display
 //			* export	- export data [ for plugins or so on. No counters are updated ]
-//		'twig'		=> [FLAG] Use TWIG template engine if set
+//		'twig' => [FLAG] Use TWIG template engine if set
 //		'plugin' => if is called from plugin - ID of plugin
 //		'overrideTemplateName' => alternative template for display [ this param overrides `customCategoryTemplate` field ]
 //		'overrideTemplatePath' => alternative path for searching of template
@@ -455,25 +455,25 @@ function newsProcessFilter($conditions) {
 //			* 0 - no
 //			* 1 - use template from master category of the news (1st category)
 //			* 2 - use template from current category
-//		'currentCategoryId'	=> ID of current category, required only for `customCategoryTemplate` == 2
+//		'currentCategoryId' => ID of current category, required only for `customCategoryTemplate` == 2
 //		'regenShortNews' =>
 //			'mode' 		=> If we should generate `on the fly` short news from long one
 //				* ''		- Leave short news as is [ default ]
 //				* 'auto'	- Generate ShortNews from long only if ShortNews is empty
 //				* 'force'	- Generate ShortNews from long in any case
 //			'len' 			=> Length in chars of part of LongNews that will be used for regeneration (in case if regeneration is active)
-//			'finisher'		=> chars that will be added into the end to indicate that this is truncated line ( default = '...' )
-//		'showNumber'	=> set number of news to show per page
-//		'newsOrder'		=> set news order
+//			'finisher' => chars that will be added into the end to indicate that this is truncated line ( default = '...' )
+//		'showNumber' => set number of news to show per page
+//		'newsOrder' => set news order
 //		'overrideSQLquery' => array - sets if PLUGIN wants to run it's own query
-//		'page'		=> page number to show
+//		'page' => page number to show
 //		'extendedReturn' => flag if we need to return an extended array:
 //			'count' - count of found news
 //			'data' - data to be showed
 //		'extendedReturnData' => flag if 'data' should be returned as array of separate entries
 //		'extendedReturnSQL' => flag if we need to return original SQL fetched data in extendedReturn answer as 'sql' field
 //		'entendedReturnPagination' => flag if pagination should be returned within extendedReturn array as a variable 'pagination'
-//		'searchFlag'	=> flag if we want to use non-mondatory template 'news.search.tpl' [!!only for style = 'short' !!]
+//		'searchFlag' => flag if we want to use non-mondatory template 'news.search.tpl' [!!only for style = 'short' !!]
 //		'pin'	-	Way of sorting for PINNED news
 //			0	-	`pinned` (for MainPage)
 //			1	-	`catpinned`	(for Categories page)
@@ -588,21 +588,21 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 	// = ids		- array with IDs of fetched news
 
 	$callingParams['query'] = array(
-		'count'			=> count($selectResult),
-		'result'		=> $selectResult,
-		'totalCount'	=> $newsCount,
-		'pagesCount'	=> $pages_count,
+		'count' => count($selectResult),
+		'result' => $selectResult,
+		'totalCount' => $newsCount,
+		'pagesCount' => $pages_count,
 	);
 
 	// Reference for LINKED images and files
 	$callingParams['linkedImages'] = array(
-		'ids'	=> array(),
-		'data'	=> array(),
+		'ids' => array(),
+		'data' => array(),
 	);
 
 	$callingParams['linkedFiles'] = array(
-		'ids'	=> array(),
-		'data'	=> array(),
+		'ids' => array(),
+		'data' => array(),
 	);
 
 	// List of news that have linked images
@@ -678,13 +678,13 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 					$callingParams['linkedFiles']['ids'] []= $v['id'];
 					$callingParams['linkedFiles']['data'] []= $v;
 					$tvars['vars']['_files'] []= array(
-						'plugin'		=> $v['plugin'],
-						'pidentity'		=> $v['pidentity'],
-						'url'			=> ($v['storage']?$config['attach_url']:$config['files_url']).'/'.$v['folder'].'/'.$v['name'],
-						'name'			=> $v['name'],
-						'origName'		=> secure_html($v['orig_name']),
-						'description'	=> secure_html($v['description']),
-						'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['files_dir']).'/'.$v['folder'].'/'.$v['name'])),
+						'plugin' => $v['plugin'],
+						'pidentity' => $v['pidentity'],
+						'url' => ($v['storage']?$config['attach_url']:$config['files_url']).'/'.$v['folder'].'/'.$v['name'],
+						'name' => $v['name'],
+						'origName' => secure_html($v['orig_name']),
+						'description' => secure_html($v['description']),
+						'size' => FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['files_dir']).'/'.$v['folder'].'/'.$v['name'])),
 					);
 				}
 			}
@@ -698,20 +698,20 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 					$callingParams['linkedImages']['ids'] []= $v['id'];
 					$callingParams['linkedImages']['data'] []= $v;
 					$tvars['vars']['_images'] []= array(
-						'plugin'		=> $v['plugin'],
-						'pidentity'		=> $v['pidentity'],
-						'url'			=> ($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/'.$v['name'],
-						'purl'			=> $v['preview']?(($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/thumb/'.$v['name']):null,
-						'width'			=> $v['width'],
-						'height'		=> $v['height'],
-						'pwidth'		=> $v['p_width'],
-						'pheight'		=> $v['p_height'],
-						'name'			=> $v['name'],
-						'origName'		=> secure_html($v['orig_name']),
-						'description'	=> secure_html($v['description']),
-						'size'	=> FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['images_dir']).'/'.$v['folder'].'/'.$v['name'])),
-						'flags'		=> array(
-							'hasPreview'	=> $v['preview'],
+						'plugin' => $v['plugin'],
+						'pidentity' => $v['pidentity'],
+						'url' => ($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/'.$v['name'],
+						'purl' => $v['preview']?(($v['storage']?$config['attach_url']:$config['images_url']).'/'.$v['folder'].'/thumb/'.$v['name']):null,
+						'width' => $v['width'],
+						'height' => $v['height'],
+						'pwidth' => $v['p_width'],
+						'pheight' => $v['p_height'],
+						'name' => $v['name'],
+						'origName' => secure_html($v['orig_name']),
+						'description' => secure_html($v['description']),
+						'size' => FormatSize(filesize(($v['storage']?$config['attach_dir']:$config['images_dir']).'/'.$v['folder'].'/'.$v['name'])),
+						'flags' => array(
+							'hasPreview' => $v['preview'],
 						),
 					);
 				}
@@ -897,9 +897,9 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 			'count' => $newsCount,
 			'data' => (isset($callingParams['extendedReturnData']) and $callingParams['extendedReturnData'])?$outputList:$output,
 			'pages' => array(
-				'current'	=> $cstart,
-				'total'		=> $pages_count,
-				'output'	=> $paginationOutput,
+				'current' => $cstart,
+				'total' => $pages_count,
+				'output' => $paginationOutput,
 			)
 		);
 

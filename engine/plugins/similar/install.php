@@ -35,10 +35,10 @@ function plugin_similar_install($action) {
 			)
 		),
 		array(
-			'table'		=>	'similar_index',
-			'action'	=>	'cmodify',
-			'key'		=>	'primary key(`id`), key `newsID` (`newsID`) ',
-			'fields'	=>	array(
+			'table' => 'similar_index',
+			'action' => 'cmodify',
+			'key' => 'primary key(`id`), key `newsID` (`newsID`) ',
+			'fields' => array(
 				array('action' => 'cmodify', 'name' => 'id', 'type' => 'int', 'params' => 'not null auto_increment'),
 				array('action' => 'cmodify', 'name' => 'dimension', 'type' => 'int', 'params' => 'default 0'),
 				array('action' => 'cmodify', 'name' => 'newsID', 'type' => 'int'),
@@ -65,8 +65,8 @@ function plugin_similar_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'count'			=> 5,
-				'samecat_count'	=> 5,
+				'count' => 5,
+				'samecat_count' => 5,
 			);
 
 			foreach ($params as $k => $v) {

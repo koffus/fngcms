@@ -27,7 +27,7 @@ function plugin_jchat_install($action) {
 		array(
 			'table' => 'jchat',
 			'action' => 'cmodify',
-			'charset'=> 'UTF8',
+			'charset' => 'UTF8',
 			'key' => 'primary key(id)',
 			'fields' => array(
 				array('action' => 'cmodify', 'name' => 'id', 'type' => 'int', 'params' => 'not null auto_increment'),
@@ -68,21 +68,21 @@ function plugin_jchat_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'access'		=> 1,
-				'rate_limit'		=> 0,
-				'maxwlen'		=> 40,
-				'maxlen'		=> 500,
-				'refresh'		=> 30,
-				'history'		=> 30,
-				'maxidle'		=> 0,
-				'order'			=> 0,
-				'win.refresh'		=> 30,
-				'win.history'		=> 30,
-				'win.maxidle'		=> 0,
-				'win.order'		=> 0,
-				'enable.panel'		=> 1,
-				'enable.win'		=> 0,
-				'localsource'		=> 0,
+				'access' => 1,
+				'rate_limit' => 0,
+				'maxwlen' => 40,
+				'maxlen' => 500,
+				'refresh' => 30,
+				'history' => 30,
+				'maxidle' => 0,
+				'order' => 0,
+				'win.refresh' => 30,
+				'win.history' => 30,
+				'win.maxidle' => 0,
+				'win.order' => 0,
+				'enable.panel' => 1,
+				'enable.win' => 0,
+				'localsource' => 0,
 			);
 
 			foreach ($params as $k => $v) {

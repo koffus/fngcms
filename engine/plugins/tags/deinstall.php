@@ -12,17 +12,17 @@ Lang::loadPlugin($plugin, 'main');
 
 $db_update = array(
 	array(
-		'table'		=>	'tags',
-		'action'	=>	'drop',
+		'table' => 'tags',
+		'action' => 'drop',
 	),
 	array(
-		'table'		=>	'tags_index',
-		'action'	=>	'drop',
+		'table' => 'tags_index',
+		'action' => 'drop',
 	),
 //	array(
-//		'table'		=>	'news',
-//		'action'	=>	'modify',
-//		'fields'	=>	array(
+//		'table' => 'news',
+//		'action' => 'modify',
+//		'fields' => array(
 //			array('action' => 'drop', 'name' => 'tags')
 //		)
 //	)

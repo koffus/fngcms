@@ -52,7 +52,7 @@ function plugin_comments_install($action) {
 	 array('action' => 'cmodify', 'name' => 'text', 'type' => 'text'),
 	 array('action' => 'cmodify', 'name' => 'answer', 'type' => 'text'),
 	 array('action' => 'cmodify', 'name' => 'ip', 'type' => 'char(15)', 'params' => "default ''"),
-	 array('action' => 'cmodify', 'name' => 'reg', 'type' => 'tinyint(1)', 'params'=> "default '0'"),
+	 array('action' => 'cmodify', 'name' => 'reg', 'type' => 'tinyint(1)', 'params' => "default '0'"),
 	 )
 	 ),
 	 array(
@@ -79,18 +79,18 @@ function plugin_comments_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'regonly'		=> 0,
-				'backorder'		=> 0,
-				'maxlen'		=> 500,
-				'maxwlen'		=> 50,
-				'multi'			=> 1,
-				'author_multi'	=> 1,
-				'timestamp'		=> 'j.m.Y - H:i',
-				'multipage'		=> 1,
-				'multi_mcount'	=> 10,
-				'multi_scount'	=> 10,
-				'inform_author'	=> 0,
-				'inform_admin'	=> 0,
+				'regonly' => 0,
+				'backorder' => 0,
+				'maxlen' => 500,
+				'maxwlen' => 50,
+				'multi' => 1,
+				'author_multi' => 1,
+				'timestamp' => 'j.m.Y - H:i',
+				'multipage' => 1,
+				'multi_mcount' => 10,
+				'multi_scount' => 10,
+				'inform_author' => 0,
+				'inform_admin' => 0,
 				'global_default' => 1,
 				'default_news' => 2,
 				'default_categories' => 2

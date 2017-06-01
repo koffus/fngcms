@@ -95,8 +95,8 @@ global $tpl, $mysql, $twig;
 	$xt = $twig->loadTemplate($tpath['config/general.from'].'config/general.from.tpl');
 	
 	$tVars = array(
-			'skins_url'		=>	skins_url,
-			'home'			=>	home,
+			'skins_url' => skins_url,
+			'home' => home,
 			'tpl_home' => admin_url,
 			
 			'vk_client_id' => $vk_client_id,

@@ -828,7 +828,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  'customdate.disabled' => (!$perm[$permGroupMode.'.customdate'])?true:false,
  'mainpage.disabled' => (!$perm[$permGroupMode.'.mainpage'])?true:false,
  'pinned.disabled' => (!$perm[$permGroupMode.'.pinned'])?true:false,
- 'catpinned.disabled'=> (!$perm[$permGroupMode.'.catpinned'])?true:false,
+ 'catpinned.disabled' => (!$perm[$permGroupMode.'.catpinned'])?true:false,
  'favorite.disabled' => (!$perm[$permGroupMode.'.favorite'])?true:false,
  'setviews.disabled' => (!$perm[$permGroupMode.'.setviews'])?true:false,
  'multicat.disabled' => (!$perm[$permGroupMode.'.multicat'])?true:false,

@@ -166,8 +166,8 @@ function InsertSmilies($insert_location, $break_location = false, $area = false)
 			$smile = trim($smile);
 
 			$tvars['vars'] = array(
-				'area'		=>	$area?$area:"''",
-				'smile'		=>	$smile
+				'area' => $area?$area:"''",
+				'smile' => $smile
 			);
 
 			$tpl -> template('smilies', $templateDir);
@@ -196,8 +196,8 @@ function QuickTags($area = false, $template = false) {
 	global $tpl, $PHP_SELF;
 
 	$tvars['vars'] = array(
-		'php_self'	=>	$PHP_SELF,
-		'area'		=>	$area?$area:"''"
+		'php_self' => $PHP_SELF,
+		'area' => $area?$area:"''"
 	);
 
 	if (!in_array($template, array('pmmes', 'editcom', 'news', 'static')))
@@ -215,8 +215,8 @@ function BBCodes($area = false) {
 
 	if ($config['use_bbcodes'] == "1") {
 		$tvars['vars'] = array(
-			'php_self'	=>	$PHP_SELF,
-			'area'		=>	$area
+			'php_self' => $PHP_SELF,
+			'area' => $area
 		);
 
 		$tpl -> template('bbcodes', tpl_site);
@@ -817,30 +817,30 @@ function makeCategoryInfo($ctext) {
 			$row = $catz[$catmap[$v]];
 			$url = generateLink('news', 'by.category', array('category' => $row['alt'], 'catid' => $row['id']));
 			$record = array(
-				'id'	=> $row['id'],
-				'level'	=> $row['poslevel'],
-				'alt'	=> $row['alt'],
-				'name'	=> $row['name'],
-				'info'	=> $row['info'],
-				'url'	=> $url,
-				'text'	=> '<a href="'.$url.'">'.$row['name'].'</a>',
+				'id' => $row['id'],
+				'level' => $row['poslevel'],
+				'alt' => $row['alt'],
+				'name' => $row['name'],
+				'info' => $row['info'],
+				'url' => $url,
+				'text' => '<a href="'.$url.'">'.$row['name'].'</a>',
 			);
 			if ($row['icon_id'] and $row['icon_folder']) {
 				$record['icon']	= array(
-					'url'			=> $config['attach_url'].'/'.$row['icon_folder'].'/'.$row['icon_name'],
-					'purl'			=> $row['icon_preview']?($config['attach_url'].'/'.$row['icon_folder'].'/thumb/'.$row['icon_name']):'',
-					'width'			=> $row['icon_width'],
-					'height'		=> $row['icon_height'],
-					'pwidth'		=> $row['icon_pwidth'],
-					'pheight'		=> $row['icon_pheight'],
-					'isExtended'	=> true,
-					'hasPreview'	=> $row['icon_preview']?true:false,
+					'url' => $config['attach_url'].'/'.$row['icon_folder'].'/'.$row['icon_name'],
+					'purl' => $row['icon_preview']?($config['attach_url'].'/'.$row['icon_folder'].'/thumb/'.$row['icon_name']):'',
+					'width' => $row['icon_width'],
+					'height' => $row['icon_height'],
+					'pwidth' => $row['icon_pwidth'],
+					'pheight' => $row['icon_pheight'],
+					'isExtended' => true,
+					'hasPreview' => $row['icon_preview']?true:false,
 				);
 			} else if ($row['icon']) {
 				$record['icon'] = array(
-					'url'			=> $row['icon'],
-					'isExtended'	=> false,
-					'hasPreview'	=> false,
+					'url' => $row['icon'],
+					'isExtended' => false,
+					'hasPreview' => false,
 				);
 			}
 
@@ -878,11 +878,11 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 		$tIDs	= array();
 
 		$treeSelector = array(
-			'defined'		=> false,
-			'id'			=> 0,
-			'skipDefined'	=> false,
-			'started'		=> false,
-			'level'			=> 0,
+			'defined' => false,
+			'id' => 0,
+			'skipDefined' => false,
+			'started' => false,
+			'level' => 0,
 		);
 
 		if (!is_null($treeMasterCategory) and preg_match('#^(\:){0,1}(\d+)$#', $treeMasterCategory, $m)) {
@@ -914,18 +914,18 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 			}
 
 			$tEntry = array(
-				'id'	=> $v['id'],
-				'cat'	=> $v['name'],
-				'link'		=>	($v['alt_url'] == '')?generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])):$v['alt_url'],
-				'mark'		=>	isset($markers['mark.level.'.$v['poslevel']])?$markers['mark.level.'.$v['poslevel']]:str_repeat($markers['mark.default'], $v['poslevel']),
-				'level'		=>	$v['poslevel'],
-				'info'		=>	$v['info'],
-				'counter'	=>	$v['posts'],
-				'icon'		=>	$v['icon'],
+				'id' => $v['id'],
+				'cat' => $v['name'],
+				'link' => ($v['alt_url'] == '')?generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])):$v['alt_url'],
+				'mark' => isset($markers['mark.level.'.$v['poslevel']])?$markers['mark.level.'.$v['poslevel']]:str_repeat($markers['mark.default'], $v['poslevel']),
+				'level' => $v['poslevel'],
+				'info' => $v['info'],
+				'counter' => $v['posts'],
+				'icon' => $v['icon'],
 
-				'flags'		=> array(
-					'active'	=>	(isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?true:false,
-					'counter'	=>	($config['category_counters'] and $v['posts'])?true:false,
+				'flags' => array(
+					'active' => (isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?true:false,
+					'counter' => ($config['category_counters'] and $v['posts'])?true:false,
 				)
 			);
 			$tEntries []= $tEntry;
@@ -961,14 +961,14 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 
 		// Prepare conversion maps
 		$conversionConfig = array(
-			'[entries]'			=> '{% for entry in entries %}',
-			'[/entries]'		=> '{% endfor %}',
-			'[flags.active]'	=> '{% if (entry.flags.active) %}',
-			'[/flags.active]'	=> '{% endif %}',
-			'[!flags.active]'	=> '{% if (not entry.flags.active) %}',
-			'[/!flags.active]'	=> '{% endif %}',
-			'[flags.counter]'	=> '{% if (entry.flags.counter) %}',
-			'[/flags.counter]'	=> '{% endif %}',
+			'[entries]' => '{% for entry in entries %}',
+			'[/entries]' => '{% endfor %}',
+			'[flags.active]' => '{% if (entry.flags.active) %}',
+			'[/flags.active]' => '{% endif %}',
+			'[!flags.active]' => '{% if (not entry.flags.active) %}',
+			'[/!flags.active]' => '{% endif %}',
+			'[flags.counter]' => '{% if (entry.flags.counter) %}',
+			'[/flags.counter]' => '{% endif %}',
 		);
 
 		$tVars['entries'] = $tEntries;
@@ -999,13 +999,13 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array()){
 		}
 
 		$tvars['vars'] = array(
-			'if_active'	=>	(isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?$markers['class.active']:$markers['class.inactive'],
-			'link'		=>	($v['alt_url'] == '')?generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])):$v['alt_url'],
-			'mark'		=>	isset($markers['mark.level.'.$v['poslevel']])?$markers['mark.level.'.$v['poslevel']]:str_repeat($markers['mark.default'], $v['poslevel']),
-			'level'		=>	$v['poslevel'],
-			'cat'		=>	$v['name'],
-			'counter'	=>	($config['category_counters'] and $v['posts'])?('['.$v['posts'].']'):'',
-			'icon'		=>	$v['icon'],
+			'if_active' => (isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id']))?$markers['class.active']:$markers['class.inactive'],
+			'link' => ($v['alt_url'] == '')?generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])):$v['alt_url'],
+			'mark' => isset($markers['mark.level.'.$v['poslevel']])?$markers['mark.level.'.$v['poslevel']]:str_repeat($markers['mark.default'], $v['poslevel']),
+			'level' => $v['poslevel'],
+			'cat' => $v['name'],
+			'counter' => ($config['category_counters'] and $v['posts'])?('['.$v['posts'].']'):'',
+			'icon' => $v['icon'],
 		);
 		$tvars['regx']['[\[icon\](.*)\[/icon\]]'] = trim($v['icon'])?'$1':'';
 		switch (intval(substr($v['flags'],1,1))) {
@@ -1317,8 +1317,8 @@ function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $
 
 	// [TWIG] news.url
 	$tvars['vars']['news']['url'] = array(
-		'full'		=> $nlink,
-		'print'		=> newsGenerateLink($row, true, $page),
+		'full' => $nlink,
+		'print' => newsGenerateLink($row, true, $page),
 	);
 
 	// [TWIG] news.flags.isPinned
@@ -1841,38 +1841,38 @@ function loadGroups() {
 	// Fill default groups if not specified
 	if (!isset($UGROUP[1])) {
 		$UGROUP[1] = array(
-			'identity'	=> 'admin',
-			'langName'	=> array(
-				'russian'	=> 'Администратор',
-				'english'	=> 'Administrator',
+			'identity' => 'admin',
+			'langName' => array(
+				'russian' => 'Администратор',
+				'english' => 'Administrator',
 			),
 		);
 		$UGROUP[2] = array(
-			'identity'	=> 'editor',
-			'langName'	=> array(
-				'russian'	=> 'Редактор',
-				'english'	=> 'Editor',
+			'identity' => 'editor',
+			'langName' => array(
+				'russian' => 'Редактор',
+				'english' => 'Editor',
 			),
 		);
 		$UGROUP[3] = array(
-			'identity'	=> 'journalist',
-			'langName'	=> array(
-				'russian'	=> 'Журналист',
-				'english'	=> 'Journalist',
+			'identity' => 'journalist',
+			'langName' => array(
+				'russian' => 'Журналист',
+				'english' => 'Journalist',
 			),
 		);
 		$UGROUP[4] = array(
-			'identity'	=> 'commentator',
-			'langName'	=> array(
-				'russian'	=> 'Комментатор',
-				'english'	=> 'Commentator',
+			'identity' => 'commentator',
+			'langName' => array(
+				'russian' => 'Комментатор',
+				'english' => 'Commentator',
 			),
 		);
 //		$UGROUP[5] = array(
-//			'identity'	=> 'tester',
-//			'langName'	=> array(
-//				'russian'	=> 'Тестировщик',
-//				'english'	=> 'Tester',
+//			'identity' => 'tester',
+//			'langName' => array(
+//				'russian' => 'Тестировщик',
+//				'english' => 'Tester',
 //			),
 //		);
 	}
@@ -1958,18 +1958,18 @@ function ngSYSLOG($identity, $action, $user, $status){
 		return false;
 
 	$sVars = array(
-		'dt'		=> 'now()',
-		'ip'		=> db_squote($ip),
-		'plugin'	=> db_squote($identity['plugin']),
-		'item'		=> db_squote($identity['item']),
-		'ds'		=> intval($identity['ds']),
-		'ds_id'		=> intval($identity['ds_id']),
-		'action'	=> db_squote($action['action']),
-		'alist'		=> db_squote(serialize($action['list'])),
-		'userid'	=> is_array($user)?intval($user['id']):(($user === NULL)?intval($userROW['id']):0),
-		'username'	=> is_array($user)?db_squote($user['name']):(($user === NULL)?db_squote($userROW['name']):db_squote($user)),
-		'status'	=> intval($status[0]),
-		'stext'		=> db_squote($status[1]),
+		'dt' => 'now()',
+		'ip' => db_squote($ip),
+		'plugin' => db_squote($identity['plugin']),
+		'item' => db_squote($identity['item']),
+		'ds' => intval($identity['ds']),
+		'ds_id' => intval($identity['ds_id']),
+		'action' => db_squote($action['action']),
+		'alist' => db_squote(serialize($action['list'])),
+		'userid' => is_array($user)?intval($user['id']):(($user === NULL)?intval($userROW['id']):0),
+		'username' => is_array($user)?db_squote($user['name']):(($user === NULL)?db_squote($userROW['name']):db_squote($user)),
+		'status' => intval($status[0]),
+		'stext' => db_squote($status[1]),
 	);
 	//print "<pre>".var_export($sVars, true)."</pre>";
 	$mysql->query("insert into ".prefix."_syslog (".join(",", array_keys($sVars)).") values (".join(",", array_values($sVars)).")");
@@ -2192,8 +2192,8 @@ function coreNormalTerminate($mode = 0) {
 	// DEBUG profiler
 	if ($config['load_profiler'] > time()) {
 		$trace = array(
-			'queries'	=> $mysql->query_list,
-			'events'	=> $timer->printEvents(1),
+			'queries' => $mysql->query_list,
+			'events' => $timer->printEvents(1),
 		);
 		$mysql->query("insert into ".prefix."_profiler (dt, userid, exectime, memusage, url, tracedata) values (now(), ".((isset($userROW) and is_array($userROW))?$userROW['id']:0).", ".$exectime.", ".sprintf("%7.3f", (memory_get_peak_usage()/1024/1024)).", ".db_squote($systemAccessURL).", ".db_squote(serialize($trace)).")");
 	}
@@ -2295,18 +2295,18 @@ function coreUserMenu() {
 
 	// Prepare conversion table
 	$conversionConfig = array(
-			'{avatar_url}'			=> '{{ avatar_url }}',
-			'{profile_link}'		=> '{{ profile_link }}',
-			'{addnews_link}'		=> '{{ addnews_link }}',
-			'{logout_link}'			=> '{{ logout_link }}',
-			'{phtumb_url}'			=> '{{ phtumb_url }}',
+			'{avatar_url}' => '{{ avatar_url }}',
+			'{profile_link}' => '{{ profile_link }}',
+			'{addnews_link}' => '{{ addnews_link }}',
+			'{logout_link}' => '{{ logout_link }}',
+			'{phtumb_url}' => '{{ phtumb_url }}',
 			'{name}'				=> '{{ name }}',
 			'{result}'				=> '{{ result }}',
-			'{home_url}'			=> '{{ home_url }}',
-			'{redirect}'			=> '{{ redirect }}',
-			'{reg_link}'			=> '{{ reg_link }}',
-			'{lost_link}'			=> '{{ lost_link }}',
-			'{form_action}'			=> '{{ form_action }}',
+			'{home_url}' => '{{ home_url }}',
+			'{redirect}' => '{{ redirect }}',
+			'{reg_link}' => '{{ reg_link }}',
+			'{lost_link}' => '{{ lost_link }}',
+			'{form_action}' => '{{ form_action }}',
 	);
 
 	// If not logged in

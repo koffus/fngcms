@@ -75,26 +75,26 @@ function plugin_ublog() {
 
 	// Prepare variables
 	$tVars = array(
-		'userRec'		=> $urow,
-		'user'			=> array(
-			'id'			=>	$urow['id'],
-			'name'			=>	$urow['name'],
-			'news'			=>	$urow['news'],
-			'com'			=>	$urow['com'],
-			'status'		=>	$status,
-			'last'			=>	($urow['last'] > 0) ? Lang::retDate("l, j F Y - H:i", $urow['last']) : __('no_last'),
-			'reg'			=>	Lang::retDate("j F Y", $urow['reg']),
-			'site'			=>	secure_html($urow['site']),
-			'icq'			=>	secure_html($urow['icq']),
-			'from'			=>	secure_html($urow['where_from']),
-			'info'			=>	secure_html($urow['info']),
-			'photo_thumb'	=>	$userPhoto[1],
-			'photo'			=>	$userPhoto[2],
-			'avatar'		=>	$userAvatar[1],
-			'flags'			=> array(
-				'hasPhoto'		=> $config['use_photos'] && $userPhoto[0],
-				'hasAvatar'		=> $config['use_avatars'] && $userAvatar[0],
-				'hasIcq'		=> is_numeric($urow['icq'])?1:0,
+		'userRec' => $urow,
+		'user' => array(
+			'id' => $urow['id'],
+			'name' => $urow['name'],
+			'news' => $urow['news'],
+			'com' => $urow['com'],
+			'status' => $status,
+			'last' => ($urow['last'] > 0) ? Lang::retDate("l, j F Y - H:i", $urow['last']) : __('no_last'),
+			'reg' => Lang::retDate("j F Y", $urow['reg']),
+			'site' => secure_html($urow['site']),
+			'icq' => secure_html($urow['icq']),
+			'from' => secure_html($urow['where_from']),
+			'info' => secure_html($urow['info']),
+			'photo_thumb' => $userPhoto[1],
+			'photo' => $userPhoto[2],
+			'avatar' => $userAvatar[1],
+			'flags' => array(
+				'hasPhoto' => $config['use_photos'] && $userPhoto[0],
+				'hasAvatar' => $config['use_avatars'] && $userAvatar[0],
+				'hasIcq' => is_numeric($urow['icq'])?1:0,
 			),
 		),
 
@@ -118,8 +118,8 @@ function plugin_ublog() {
 		'extendedReturnData' => true,
 		'extendedReturnPagination' => true,
 		'customCategoryTemplate' => false,
-		'showNumber'	=> $showNumber,
-		'page'	=> ((isset($_GET['page']) && (intval($_GET['page'])>0))?intval($_GET['page']):0),
+		'showNumber' => $showNumber,
+		'page' => ((isset($_GET['page']) && (intval($_GET['page'])>0))?intval($_GET['page']):0),
 	);
 
 	$paginationParams['params'] = $pparams;
@@ -131,8 +131,8 @@ function plugin_ublog() {
 	$newsResults = news_showlist($filter, $paginationParams, $callingParams);
 
 	$tVars['news'] = array(
-		'count'		=> $newsResults['count'],
-		'entries'	=> $newsResults['data'],
+		'count' => $newsResults['count'],
+		'entries' => $newsResults['data'],
 	);
 	$tVars['pages']	= $newsResults['pages'];
 

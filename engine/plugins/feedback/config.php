@@ -93,14 +93,14 @@ function saveForm() {
 				($_REQUEST['utf8']?'1':'0');
 
 	$params = array(
-		'name'			=> $name,
-		'title'			=> $_REQUEST['title'],
-		'template'		=> $_REQUEST['template'],
-		'emails'		=> $emails,
-		'description'	=> $_REQUEST['description'],
-		'active'		=> $_REQUEST['active'],
-		'flags'			=> $flags,
-		'subj'			=> $_REQUEST['subj'],
+		'name' => $name,
+		'title' => $_REQUEST['title'],
+		'template' => $_REQUEST['template'],
+		'emails' => $emails,
+		'description' => $_REQUEST['description'],
+		'active' => $_REQUEST['active'],
+		'flags' => $flags,
+		'subj' => $_REQUEST['subj'],
 	);
 
 	$sqlParams = array();
@@ -121,15 +121,15 @@ function showList(){
 
 	foreach ($mysql->select("select * from ".prefix."_feedback order by name") as $frow) {
 		$tForm = array(
-			'id'	=> $frow['id'],
-			'name'	=> $frow['name'],
-			'title'	=> $frow['title'],
-			'link_news'	=> intval(substr($frow['flags'], 3, 1)),
-			'flags'	=> array(
-				'active'	=> $frow['active'],
+			'id' => $frow['id'],
+			'name' => $frow['name'],
+			'title' => $frow['title'],
+			'link_news' => intval(substr($frow['flags'], 3, 1)),
+			'flags' => array(
+				'active' => $frow['active'],
 			),
-			'linkEdit'	=> '?mod=extra-config&plugin=feedback&action=form&id='.$frow['id'],
-			'linkDel'	=> '?mod=extra-config&plugin=feedback&action=delform&id='.$frow['id'],
+			'linkEdit' => '?mod=extra-config&plugin=feedback&action=form&id='.$frow['id'],
+			'linkDel' => '?mod=extra-config&plugin=feedback&action=delform&id='.$frow['id'],
 
 		);
 		$tForms[]= $tForm;
@@ -169,11 +169,11 @@ function showForm($edMode){
 	$tEntries = array();
 	foreach ($fData as $fName => $fInfo) {
 		$tEntry = array(
-			'name'		=> $fInfo['name'],
-			'title'		=> $fInfo['title'],
-			'type'		=> $fInfo['type'],
-			'auto'		=> intval($fInfo['auto']),
-			'block'		=> intval($fInfo['block']),
+			'name' => $fInfo['name'],
+			'title' => $fInfo['title'],
+			'type' => $fInfo['type'],
+			'auto' => intval($fInfo['auto']),
+			'block' => intval($fInfo['block']),
 		);
 		$tEntries[]= $tEntry;
 	}
@@ -188,9 +188,9 @@ function showForm($edMode){
 	$num = 1;
 	foreach ($elist as $erec) {
 		$tEGroup = array(
-			'num'		=> $erec[0],
-			'name'		=> $erec[1],
-			'value'		=> secure_html(join(', ', $erec[2])),
+			'num' => $erec[0],
+			'name' => $erec[1],
+			'value' => secure_html(join(', ', $erec[2])),
 		);
 		$tEGroups[]= $tEGroup;
 		$num++;
@@ -205,17 +205,17 @@ function showForm($edMode){
 	$tVars['url']				= generateLink('core', 'plugin', array('plugin' => 'feedback'), array('id' => $frow['id']), true, true);
 	$tVars['egroups']			= $tEGroups;
 	$tVars['link_news']			= array(
-		'options'	=> array(0,1,2),
-		'value'		=> intval(substr($frow['flags'], 3, 1)),
+		'options' => array(0,1,2),
+		'value' => intval(substr($frow['flags'], 3, 1)),
 	);
 	$tVars['flags']				= array(
-			'active'			=> intval($edMode?$_REQUEST['active']:$frow['active']),
-			'jcheck'			=> intval($edMode?$_REQUEST['jcheck']:intval(substr($frow['flags'],0,1))),
-			'captcha'			=> intval($edMode?$_REQUEST['captcha']:intval(substr($frow['flags'],1,1))),
+			'active' => intval($edMode?$_REQUEST['active']:$frow['active']),
+			'jcheck' => intval($edMode?$_REQUEST['jcheck']:intval(substr($frow['flags'],0,1))),
+			'captcha' => intval($edMode?$_REQUEST['captcha']:intval(substr($frow['flags'],1,1))),
 			'html'				=> intval($edMode?$_REQUEST['html']:intval(substr($frow['flags'],2,1))),
 			'subj'				=> intval(substr($frow['flags'], 4, 1)),
 			'utf8'				=> intval($edMode?$_REQUEST['utf8']:intval(substr($frow['flags'],5,1))),
-			'haveForm'			=> 1,
+			'haveForm' => 1,
 
 	);
 

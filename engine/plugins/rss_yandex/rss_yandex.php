@@ -218,9 +218,9 @@ function plugin_rss_yandex_mk_header($xcat) {
 
 	// Image
 	$imgInfo = array(
-		'url'	=> pluginGetVariable('rss_yandex','feed_image_url')?pluginGetVariable('rss_yandex','feed_image_url'):'http://ngcms.ru/templates/ngcms2/images/logo.png',
-		'title'	=> pluginGetVariable('rss_yandex','feed_image_title')?pluginGetVariable('rss_yandex','feed_image_title'):'Next generation CMS demo RSS feed',
-		'link'	=> pluginGetVariable('rss_yandex','feed_image_link')?pluginGetVariable('rss_yandex','feed_image_link'):'http://ngcms.ru/',
+		'url' => pluginGetVariable('rss_yandex','feed_image_url')?pluginGetVariable('rss_yandex','feed_image_url'):'http://ngcms.ru/templates/ngcms2/images/logo.png',
+		'title' => pluginGetVariable('rss_yandex','feed_image_title')?pluginGetVariable('rss_yandex','feed_image_title'):'Next generation CMS demo RSS feed',
+		'link' => pluginGetVariable('rss_yandex','feed_image_link')?pluginGetVariable('rss_yandex','feed_image_link'):'http://ngcms.ru/',
 	);
 
 	$line.= " <image>\n";

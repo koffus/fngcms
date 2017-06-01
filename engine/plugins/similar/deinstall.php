@@ -12,8 +12,8 @@ Lang::loadPlugin($plugin, 'main');
 
 $db_update = array(
 	array(
-		'table'		=>	'similar_index',
-		'action'	=>	'drop',
+		'table' => 'similar_index',
+		'action' => 'drop',
 	),
 );
 

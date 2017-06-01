@@ -43,7 +43,7 @@ function plugin_gmanager_install($action) {
 					)
 				),
 			),
-			'descr'	=> array ($config['default_lang'] => __('gmanager:ULIB_main_d')),
+			'descr' => array ($config['default_lang'] => __('gmanager:ULIB_main_d')),
 		)
 	);
 	$ULIB->registerCommand('gmanager', 'gallery',
@@ -67,7 +67,7 @@ function plugin_gmanager_install($action) {
 					)
 				),
 			),
-			'descr'	=> array ($config['default_lang'] => __('gmanager:ULIB_gallery_d')),
+			'descr' => array ($config['default_lang'] => __('gmanager:ULIB_gallery_d')),
 		)
 	);
 
@@ -84,16 +84,16 @@ function plugin_gmanager_install($action) {
 				return false;
 			}
 			$params = array(
-				'locate_tpl'	=> 1,
-				'if_auto_cash'	=> 0,
-				'if_description'=> 0,
-				'if_keywords'	=> 0,
-				'main_row'		=> 5,
-				'main_cell'		=> 5,
-				'main_page'		=> 1,
-				'one_row'		=> 5,
-				'one_cell'		=> 5,
-				'one_page'		=> 1
+				'locate_tpl' => 1,
+				'if_auto_cash' => 0,
+				'if_description' => 0,
+				'if_keywords' => 0,
+				'main_row' => 5,
+				'main_cell' => 5,
+				'main_page' => 1,
+				'one_row' => 5,
+				'one_cell' => 5,
+				'one_page' => 1
 			);
 
 			foreach ($params as $k => $v) {

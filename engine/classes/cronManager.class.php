@@ -81,13 +81,13 @@ class cronManager {
 		}
 
 		$this->config []= array(
-			'min'		=> $min,
-			'hour'		=> $hour,
-			'day'		=> $day,
-			'month'		=> $month,
-			'dow'		=> $dow,
-			'plugin'	=> $plugin,
-			'handler'	=> $handler,
+			'min' => $min,
+			'hour' => $hour,
+			'day' => $day,
+			'month' => $month,
+			'dow' => $dow,
+			'plugin' => $plugin,
+			'handler' => $handler,
 		);
 
 		return $this->saveConfig();

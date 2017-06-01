@@ -51,13 +51,13 @@ $jdata = array();
 foreach ( $UH->hList as $hId ) {
 	$jrow = array(
 			'id'				=> $recno,
-			'pluginName'		=> $hId['pluginName'],
-			'handlerName'		=> $hId['handlerName'],
+			'pluginName' => $hId['pluginName'],
+			'handlerName' => $hId['handlerName'],
 			'regex'				=> $hId['rstyle']['rcmd'],
-			'flagPrimary'		=> $hId['flagPrimary'],
-			'flagFailContinue'	=> $hId['flagFailContinue'],
-			'flagDisabled'		=> $hId['flagDisabled'],
-			'setVars'			=> $hId['rstyle']['setVars'],
+			'flagPrimary' => $hId['flagPrimary'],
+			'flagFailContinue' => $hId['flagFailContinue'],
+			'flagDisabled' => $hId['flagDisabled'],
+			'setVars' => $hId['rstyle']['setVars'],
 		);
 
 	// Fetch associated command
@@ -71,12 +71,12 @@ foreach ( $UH->hList as $hId ) {
 $xe = $twig->loadTemplate('skins/default/tpl/rewrite/entry.tpl');
 
 $tVars = array(
-		'json'		=> array(
-			'config'	=> json_encode($jconfig),
-			'data'		=> json_encode($jdata),
-			'template'	=> json_encode($xe->render(array())),
+		'json' => array(
+			'config' => json_encode($jconfig),
+			'data' => json_encode($jdata),
+			'template' => json_encode($xe->render(array())),
 		),
-		'token'			=> genUToken('admin.rewrite'),
+		'token' => genUToken('admin.rewrite'),
 );
 
 $xt = $twig->loadTemplate('skins/default/tpl/rewrite.tpl');

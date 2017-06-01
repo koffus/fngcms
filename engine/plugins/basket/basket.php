@@ -76,9 +76,9 @@ function plugin_basket_list(){
 	}
 
 	$tVars = array(
-		'recs'		=> count($recs),
-		'entries'	=> $recs,
-		'total'		=> sprintf('%9.2f', $total),
+		'recs' => count($recs),
+		'entries' => $recs,
+		'total' => sprintf('%9.2f', $total),
 		'form_url' => generatePluginLink('feedback', null, array(), array('id' => intval(pluginGetVariable('basket', 'feedback_form')))),
 	);
 
@@ -182,9 +182,9 @@ if (class_exists('XFieldsFilter') && class_exists('FeedbackFilter')) {
 			}
 
 			$tVars = array(
-				'recs'		=> count($recs),
-				'entries'	=> $recs,
-				'total'		=> sprintf('%9.2f', $total),
+				'recs' => count($recs),
+				'entries' => $recs,
+				'total' => sprintf('%9.2f', $total),
 			);
 
 			// Выводим шаблон
@@ -225,9 +225,9 @@ if (class_exists('XFieldsFilter') && class_exists('FeedbackFilter')) {
 			}
 
 			$bVars = array(
-				'recs'		=> count($recs),
-				'entries'	=> $recs,
-				'total'		=> sprintf('%9.2f', $total),
+				'recs' => count($recs),
+				'entries' => $recs,
+				'total' => sprintf('%9.2f', $total),
 			);
 
 			// Выводим шаблон

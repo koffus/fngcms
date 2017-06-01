@@ -55,9 +55,9 @@ function showStaticPage($params) {
 
 	$template['vars']['titles'] .= " : ".$row['title'];
 	$tvars['vars'] = array(
-		'title'		=> $row['title'],
-		'content'	=> $content,
-		'postdate'	=> ($row['postdate']> 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
+		'title' => $row['title'],
+		'content' => $content,
+		'postdate' => ($row['postdate']> 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
 	);
 
 	if (is_array($userROW) && ($userROW['status'] == 1 or $userROW['status'] == 2)) {

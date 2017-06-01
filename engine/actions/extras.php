@@ -36,14 +36,14 @@ function admGeneratePluginList() {
 		if (!isset($extra['author'])) { $extra['author'] = 'Unknown'; }
 
 		$tEntry = array(
-			'version'		=>	$extra['version'],
-			'description'	=>	isset($extra['description'])?$extra['description']:'',
-			'author_url'	=>	($extra['author_uri'])?('<a href="'.((strpos($extra['author_uri'], '@') !==FALSE)?'mailto:':'').$extra['author_uri'].'">'.$extra['author']."</a>"):$extra['author'],
-			'author'		=>	$extra['author'],
-			'id'			=>	$extra['id'],
-			'style'			=>	getPluginStatusActive($id)?'pluginEntryActive':'pluginEntryInactive',
-			'readme'		=>	file_exists(extras_dir.'/'.$id.'/readme')&&filesize(extras_dir.'/'.$id.'/readme')?('<a href="'.admin_url.'/includes/showinfo.php?mode=plugin&amp;item=readme&amp;plugin='.$id.'" target="_blank" title="'.__('entry.readme').'"><img src="'.skins_url.'/images/readme.png" width=16 height=16/></a>'):'',
-			'history'		=>	file_exists(extras_dir.'/'.$id.'/history')&&filesize(extras_dir.'/'.$id.'/history')?('<a href="'.admin_url.'/includes/showinfo.php?mode=plugin&amp;item=history&amp;plugin='.$id.'" target="_blank" title="'.__('entry.history').'"><img src="'.skins_url.'/images/history.png" width=16 height=16/></a>'):''
+			'version' => $extra['version'],
+			'description' => isset($extra['description'])?$extra['description']:'',
+			'author_url' => ($extra['author_uri'])?('<a href="'.((strpos($extra['author_uri'], '@') !==FALSE)?'mailto:':'').$extra['author_uri'].'">'.$extra['author']."</a>"):$extra['author'],
+			'author' => $extra['author'],
+			'id' => $extra['id'],
+			'style' => getPluginStatusActive($id)?'pluginEntryActive':'pluginEntryInactive',
+			'readme' => file_exists(extras_dir.'/'.$id.'/readme')&&filesize(extras_dir.'/'.$id.'/readme')?('<a href="'.admin_url.'/includes/showinfo.php?mode=plugin&amp;item=readme&amp;plugin='.$id.'" target="_blank" title="'.__('entry.readme').'"><img src="'.skins_url.'/images/readme.png" width=16 height=16/></a>'):'',
+			'history' => file_exists(extras_dir.'/'.$id.'/history')&&filesize(extras_dir.'/'.$id.'/history')?('<a href="'.admin_url.'/includes/showinfo.php?mode=plugin&amp;item=history&amp;plugin='.$id.'" target="_blank" title="'.__('entry.history').'"><img src="'.skins_url.'/images/history.png" width=16 height=16/></a>'):''
 		);
 
 		if (isset($repoPluginInfo[$extra['id']]) && ($repoPluginInfo[$extra['id']][1] > $extra['version'])) {
@@ -96,12 +96,12 @@ function admGeneratePluginList() {
 	}
 
 	$tVars = array (
-		'entries'			=> $tEntries,
+		'entries' => $tEntries,
 		'token'				=> genUToken('admin.extras'),
-		'cntAll'			=> $pCount[0],
-		'cntActive'			=> $pCount[1],
-		'cntInactive'		=> $pCount[2],
-		'cntUninstalled'	=> $pCount[3]
+		'cntAll' => $pCount[0],
+		'cntActive' => $pCount[1],
+		'cntInactive' => $pCount[2],
+		'cntUninstalled' => $pCount[3]
 	);
 	$xt = $twig->loadTemplate(tpl_actions.'extras/table.tpl');
 	echo $xt->render($tVars);
@@ -164,8 +164,8 @@ if (isset($_REQUEST['manageConfig']) && $_REQUEST['manageConfig']) {
 	$confLine = jsonFormatter($confLine);
 
 	$tVars = array(
-		'config'	=> $confLine,
-		'token'		=> genUToken('admin.extras'),
+		'config' => $confLine,
+		'token' => genUToken('admin.extras'),
 	);
 	$xt = $twig->loadTemplate('skins/default/tpl/extras/manage_config.tpl');
 	echo $xt->render($tVars);

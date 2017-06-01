@@ -192,9 +192,9 @@ class TagsNewsfilter extends NewsFilter {
 						generateLink('core', 'plugin', array('plugin' => 'tags', 'handler' => 'tag'), array('tag' => $tag));
 			$tagValue = str_replace(array('{url}', '{tag}'), array($link, $tag), $this->displayParams['news.tag']);
 			$twigTags []= array(
-				'name'	=> $tag,
-				'link'	=> $link,
-				'value'	=> $tagValue,
+				'name' => $tag,
+				'link' => $link,
+				'value' => $tagValue,
 			);
 			$tags[] = $tagValue;
 		}

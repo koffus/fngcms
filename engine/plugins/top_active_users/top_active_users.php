@@ -88,16 +88,16 @@ function plugin_top_active_users($number, $mode, $overrideTemplateName, $cacheEx
 		}
 		
 		$tEntries [] = array(
-			'name'			=>	$row['name'],
-			'link'			=>	$alink,
+			'name' => $row['name'],
+			'link' => $alink,
 			'ulink' 		=> $ublog_link,
-			'avatar_url'	=>	$avatars,
-			'mail'			=> $row['mail'],
-			'last'			=> $row['last'],
-			'reg'			=> $row['reg'],
+			'avatar_url' => $avatars,
+			'mail' => $row['mail'],
+			'last' => $row['last'],
+			'reg' => $row['reg'],
 			'use_avatars' 		=> 	$use_avatars,
-			'news' 		=>	$row['news'],
-			'com' 		=>	$row['com'],
+			'news' 		=> $row['news'],
+			'com' 		=> $row['com'],
 		);
 
 	}

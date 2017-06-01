@@ -11,12 +11,12 @@ pluginsLoadConfig();
 
 $db_update = array(
 	array(
-		'table'		=>	'subscribe_comments',
-		'action'	=>	'drop',
+		'table' => 'subscribe_comments',
+		'action' => 'drop',
 	),
 	array(
-		'table'		=>	'subscribe_comments_temp',
-		'action'	=>	'drop',
+		'table' => 'subscribe_comments_temp',
+		'action' => 'drop',
 	),
 );
 

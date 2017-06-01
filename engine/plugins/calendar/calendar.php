@@ -108,13 +108,13 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 						generateLink('core', 'plugin', array('plugin' => 'news', 'handler' => 'by.day'), array('year' => $year, 'month' => $month, 'day' => $dayno));
 
 				$tDays[$j] = array(
-					'dayNo'		=> $dayno,
-					'countNews'	=> isset($counters[$dayno])?$counters[$dayno]:0,
-					'link'		=> $day_link,
-					'className'	=> __('calendar:class_'.(($flagCurrentMonth && ($localTime[3] == $dayno))?'today_':'').'week'.(($j<6)?'day':'end')),
-					'isToday'	=> ($localTime[3] == $dayno)?true:false,
-					'isWeekDay'	=> ($j<6)?true:false,
-					'isWeekEnd'	=> ($j == 7)?true:false,
+					'dayNo' => $dayno,
+					'countNews' => isset($counters[$dayno])?$counters[$dayno]:0,
+					'link' => $day_link,
+					'className' => __('calendar:class_'.(($flagCurrentMonth && ($localTime[3] == $dayno))?'today_':'').'week'.(($j<6)?'day':'end')),
+					'isToday' => ($localTime[3] == $dayno)?true:false,
+					'isWeekDay' => ($j<6)?true:false,
+					'isWeekEnd' => ($j == 7)?true:false,
 				);
 			}
 		}
@@ -137,15 +137,15 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 				generateLink('core', 'plugin', array('plugin' => 'news', 'handler' => 'by.month'), array('year' => ($next_cd['tm_year']+1900), 'month' => sprintf('%02u', ($next_cd['tm_mon']+1))));
 
 	$tVars['currentMonth'] = array(
-		'name'		=> Lang::$months[$month-1],
-		'link'		=> $month_link,
+		'name' => Lang::$months[$month-1],
+		'link' => $month_link,
 	);
 
 	$tVars['currentEntry'] = array(
-		'month'		=> $month,
-		'year'		=> $year,
-		'template'	=> $overrideTemplateName,
-		'categories'	=> join(",", $categoryList),
+		'month' => $month,
+		'year' => $year,
+		'template' => $overrideTemplateName,
+		'categories' => join(",", $categoryList),
 	);
 
 	// If cache is activated - calculate MIN and MAX dates for news
@@ -183,9 +183,9 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 
 	// Prepare conversion table
 	$conversionConfig = array(
-		'{entries}'			=> '{% for week in weeks %}{% include localPath(0) ~ "entries.tpl" %}{% endfor %}',
-		'{current_link}'	=> '<a href="{{ currentMonth.link }}">{{ currentMonth.name }}</a>',
-		'{tpl_url}'			=> '{{ tpl_url }}',
+		'{entries}' => '{% for week in weeks %}{% include localPath(0) ~ "entries.tpl" %}{% endfor %}',
+		'{current_link}' => '<a href="{{ currentMonth.link }}">{{ currentMonth.name }}</a>',
+		'{tpl_url}' => '{{ tpl_url }}',
 	);
 
 	$conversionConfigRegex = array(

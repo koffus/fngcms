@@ -297,35 +297,35 @@ $tVars = array (
 	'all' => $num_guest+$num_user+$num_admin+$num_bot,
 	'entries_admin' => array(
 		'true' => empty($activ_adm)?0:1,
-		'print'=> $activ_adm
+		'print' => $activ_adm
 	),
 	'entries_comm' => array(
 		'true' => empty($activ_com)?0:1,
-		'print'=> $activ_com
+		'print' => $activ_com
 	),
 	'entries_red' => array(
 		'true' => empty($activ_red)?0:1,
-		'print'=> $activ_red
+		'print' => $activ_red
 	),
 	'entries_pub' => array(
 		'true' => empty($activ_pub)?0:1,
-		'print'=> $activ_pub
+		'print' => $activ_pub
 	),
 	'entries_team' => array(
 		'true' => empty($activ_team)?0:1,
-		'print'=> $activ_team
+		'print' => $activ_team
 	),
 	'entries_user' => array(
 		'true' => empty($activ_user)?0:1,
-		'print'=> $activ_user
+		'print' => $activ_user
 	),
 	'entries_bot' => array(
 		'true' => empty($activ_bot)?0:1,
-		'print'=> $activ_bot
+		'print' => $activ_bot
 	),
 	'today' => array(
 		'true' => empty($was_now)?0:1,
-		'print'=> $was_now
+		'print' => $was_now
 	),
 );
 

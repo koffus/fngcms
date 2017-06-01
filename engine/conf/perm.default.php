@@ -2,45 +2,45 @@
 // Default PERMISSIONS
 $confPerm = array(
 // Administrator
-'1'	=>	array(
-	'nsm'		=> array(
-		''		=> array(
+'1' => array(
+	'nsm' => array(
+		'' => array(
 			'add'						=> true,
 			'list'						=> true,
 			'view'						=> true,
 			'view.draft'				=> true,
-			'view.unpublished'			=> true,
-			'view.published'			=> true,
+			'view.unpublished' => true,
+			'view.published' => true,
 			'modify.draft'				=> true,
-			'modify.unpublished'		=> true,
-			'modify.published'			=> true,
+			'modify.unpublished' => true,
+			'modify.published' => true,
 			'delete.draft'				=> true,
-			'delete.unpublished'		=> true,
-			'delete.published'			=> true,
+			'delete.unpublished' => true,
+			'delete.published' => true,
 		),
 	),
-	'#admin'	=> array(
-		'system'		=> array(
-			'admpanel.view'		=> true,
-			'lockedsite.view'	=> true,
+	'#admin' => array(
+		'system' => array(
+			'admpanel.view' => true,
+			'lockedsite.view' => true,
 			'*'					=> true,
 		),
-		'configuration'	=> array(
-			'details'		=> true ,
-			'modify'		=> true,
+		'configuration' => array(
+			'details' => true ,
+			'modify' => true,
 			'*'				=> true,
 		),
-		'cron'	=> array(
-			'details'		=> true,
-			'modify'		=> true,
+		'cron' => array(
+			'details' => true,
+			'modify' => true,
 			'*'				=> true,
 		),
-		'rewrite'	=> array(
-			'details'		=> true,
-			'modify'		=> true,
+		'rewrite' => array(
+			'details' => true,
+			'modify' => true,
 			'*'				=> true,
 		),
-		'news'		=> array(
+		'news' => array(
 			'view'						=> true,
 			'add'						=> true,
 			'add.mainpage'				=> true,
@@ -51,39 +51,39 @@ $confPerm = array(
 			'add.raw'					=> false,
 			'personal.list'				=> true,
 			'personal.view'				=> true,
-			'personal.modify'			=> true,
-			'personal.modify.published'	=> true,
-			'personal.publish'			=> true,
-			'personal.unpublish'		=> true,
-			'personal.delete'			=> true,
-			'personal.delete.published'	=> true,
+			'personal.modify' => true,
+			'personal.modify.published' => true,
+			'personal.publish' => true,
+			'personal.unpublish' => true,
+			'personal.delete' => true,
+			'personal.delete.published' => true,
 			'personal.html'				=> true,
-			'personal.mainpage'			=> true,
-			'personal.pinned'			=> true,
-			'personal.catpinned'		=> true,
-			'personal.favorite'			=> true,
-			'personal.setviews'			=> true,
-			'personal.multicat'			=> true,
-			'personal.nocat'			=> true,
-			'personal.customdate'		=> true,
-			'personal.altname'			=> true,
+			'personal.mainpage' => true,
+			'personal.pinned' => true,
+			'personal.catpinned' => true,
+			'personal.favorite' => true,
+			'personal.setviews' => true,
+			'personal.multicat' => true,
+			'personal.nocat' => true,
+			'personal.customdate' => true,
+			'personal.altname' => true,
 			'other.list'				=> true,
 			'other.view'				=> true,
 			'other.modify'				=> true,
 			'other.publish'				=> true,
-			'other.unpublish'			=> true,
-			'other.modify.published'	=> true,
+			'other.unpublish' => true,
+			'other.modify.published' => true,
 			'other.delete'				=> true,
-			'other.delete.published'	=> true,
+			'other.delete.published' => true,
 			'other.html'				=> true,
-			'other.mainpage'			=> true,
+			'other.mainpage' => true,
 			'other.pinned'				=> true,
-			'other.catpinned'			=> true,
-			'other.favorite'			=> true,
-			'other.setviews'			=> true,
-			'other.multicat'			=> true,
+			'other.catpinned' => true,
+			'other.favorite' => true,
+			'other.setviews' => true,
+			'other.multicat' => true,
 			'other.nocat'				=> true,
-			'other.customdate'			=> true,
+			'other.customdate' => true,
 			'other.altname'				=> true,
 			'*'							=> true,
 		),
@@ -97,35 +97,35 @@ $confPerm = array(
 			'details' => true,
 			'modify' => true,
 		),
-		'categories'	=> array(
+		'categories' => array(
 			'view'						=> true,
 			'modify'					=> true,
 			'details'					=> true,
 		),
-		'ipban'	=> array(
+		'ipban' => array(
 			'view'						=> true,
 			'modify'					=> true,
 		),
-		'templates'	=> array(
-			'details'		=> true,
-			'modify'		=> true,
+		'templates' => array(
+			'details' => true,
+			'modify' => true,
 			'*'				=> true,
 		),
-		'*'			=> array(
-			'*'			=> true,
+		'*' => array(
+			'*' => true,
 		),
 	),
-	'*'	=> array(
-		'*'		=> array(
-			'*'		=> true,
+	'*' => array(
+		'*' => array(
+			'*' => true,
 		),
 	),
 ),
 
 // Editor
-'2'	=> array(
-	'#admin'	=> array(
-		'news'		=> array(
+'2' => array(
+	'#admin' => array(
+		'news' => array(
 			'view'						=> true,
 			'add'						=> true,
 			'add.mainpage'				=> true,
@@ -136,39 +136,39 @@ $confPerm = array(
 			'add.html'					=> false,
 			'personal.list'				=> true,
 			'personal.view'				=> true,
-			'personal.modify'			=> true,
-			'personal.modify.published'	=> true,
-			'personal.publish'			=> true,
-			'personal.unpublish'		=> true,
-			'personal.delete'			=> true,
-			'personal.delete.published'	=> true,
+			'personal.modify' => true,
+			'personal.modify.published' => true,
+			'personal.publish' => true,
+			'personal.unpublish' => true,
+			'personal.delete' => true,
+			'personal.delete.published' => true,
 			'personal.html'				=> false,
-			'personal.mainpage'			=> true,
-			'personal.pinned'			=> true,
-			'personal.catpinned'		=> true,
-			'personal.favorite'			=> true,
-			'personal.setviews'			=> true,
-			'personal.nocat'			=> true,
-			'personal.multicat'			=> true,
-			'personal.customdate'		=> true,
-			'personal.altname'			=> true,
+			'personal.mainpage' => true,
+			'personal.pinned' => true,
+			'personal.catpinned' => true,
+			'personal.favorite' => true,
+			'personal.setviews' => true,
+			'personal.nocat' => true,
+			'personal.multicat' => true,
+			'personal.customdate' => true,
+			'personal.altname' => true,
 			'other.list'				=> true,
 			'other.view'				=> true,
 			'other.modify'				=> true,
 			'other.publish'				=> true,
-			'other.unpublish'			=> true,
-			'other.modify.published'	=> true,
+			'other.unpublish' => true,
+			'other.modify.published' => true,
 			'other.delete'				=> true,
-			'other.delete.published'	=> true,
+			'other.delete.published' => true,
 			'other.html'				=> false,
-			'other.mainpage'			=> true,
+			'other.mainpage' => true,
 			'other.pinned'				=> true,
-			'other.catpinned'			=> true,
-			'other.favorite'			=> true,
-			'other.setviews'			=> true,
-			'other.multicat'			=> true,
+			'other.catpinned' => true,
+			'other.favorite' => true,
+			'other.setviews' => true,
+			'other.multicat' => true,
 			'other.nocat'				=> true,
-			'other.customdate'			=> true,
+			'other.customdate' => true,
 			'other.altname'				=> true,
 			'*'							=> false,
 		),
@@ -177,12 +177,12 @@ $confPerm = array(
 			'details' => false,
 			'modify' => false,
 		),
-		'categories'	=> array(
+		'categories' => array(
 			'view'						=> true,
 			'modify'					=> true,
 			'details'					=> true,
 		),
-		'ipban'	=> array(
+		'ipban' => array(
 			'view'						=> true,
 			'modify'					=> true,
 		),
@@ -190,9 +190,9 @@ $confPerm = array(
 ),
 
 // Journalist
-'3'	=> array(
-	'#admin'	=> array(
-		'news'		=> array(
+'3' => array(
+	'#admin' => array(
+		'news' => array(
 			'view'						=> true,
 			'add'						=> true,
 			'add.mainpage'				=> false,
@@ -203,30 +203,30 @@ $confPerm = array(
 			'add.html'					=> false,
 			'personal.list'				=> true,
 			'personal.view'				=> true,
-			'personal.modify'			=> true,
-			'personal.modify.published'	=> true,
-			'personal.publish'			=> false,
-			'personal.unpublish'		=> true,
-			'personal.delete'			=> true,
-			'personal.delete.published'	=> true,
+			'personal.modify' => true,
+			'personal.modify.published' => true,
+			'personal.publish' => false,
+			'personal.unpublish' => true,
+			'personal.delete' => true,
+			'personal.delete.published' => true,
 			'personal.html'				=> false,
-			'personal.mainpage'			=> false,
-			'personal.pinned'			=> false,
-			'personal.catpinned'		=> false,
-			'personal.favorite'			=> false,
-			'personal.setviews'			=> false,
-			'personal.nocat'			=> true,
-			'personal.multicat'			=> true,
-			'personal.customdate'		=> false,
-			'personal.altname'			=> true,
+			'personal.mainpage' => false,
+			'personal.pinned' => false,
+			'personal.catpinned' => false,
+			'personal.favorite' => false,
+			'personal.setviews' => false,
+			'personal.nocat' => true,
+			'personal.multicat' => true,
+			'personal.customdate' => false,
+			'personal.altname' => true,
 			'*'							=> false,
 		),
-		'categories'	=> array(
+		'categories' => array(
 			'view'						=> true,
 			'modify'					=> false,
 			'details'					=> false,
 		),
-		'ipban'	=> array(
+		'ipban' => array(
 			'view'						=> false,
 			'modify'					=> false,
 		),
@@ -234,9 +234,9 @@ $confPerm = array(
 ),
 
 // Commentor
-'4'	=> array(
-	'#admin'	=> array(
-		'news'		=> array(
+'4' => array(
+	'#admin' => array(
+		'news' => array(
 			'*'							=> false,
 		),
 

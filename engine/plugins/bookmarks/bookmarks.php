@@ -263,7 +263,7 @@ function bookmarks_view(){
 			$title = secure_html($row['title']);
 		}
 		
-		$result[] = array('link'	=>	newsGenerateLink($row), 'title' => $title);
+		$result[] = array('link' => newsGenerateLink($row), 'title' => $title);
 	}
 
 	# action on "hide empty"

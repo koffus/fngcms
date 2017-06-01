@@ -14,9 +14,9 @@ array_push($cfg, array('descr' => __('xfl:description')));
 
 $cfgX = array();
 array_push($cfgX, array(
-				'name'	=> "{$currentVar}_skipcat", 
+				'name' => "{$currentVar}_skipcat", 
 				'title' => __('xfl:skipcat'), 
-				'type'	=> 'input',
+				'type' => 'input',
 				'value' => pluginGetVariable($plugin, "{$currentVar}_skipcat"))
 );
 
@@ -29,12 +29,12 @@ array_push($cfgX, array(
 );
 
 $orderby = array(
-			'id_desc'		=> __('xfl:orderby_iddesc'), 
-			'id_asc'		=> __('xfl:orderby_idasc'), 
+			'id_desc' => __('xfl:orderby_iddesc'), 
+			'id_asc' => __('xfl:orderby_idasc'), 
 			'postdate_desc' => __('xfl:orderby_postdatedesc'), 
-			'postdate_asc'	=> __('xfl:orderby_postdateasc'), 
-			'title_desc'	=> __('xfl:orderby_titledesc'), 
-			'title_asc'		=> __('xfl:orderby_titleasc')
+			'postdate_asc' => __('xfl:orderby_postdateasc'), 
+			'title_desc' => __('xfl:orderby_titledesc'), 
+			'title_asc' => __('xfl:orderby_titleasc')
 );
 
 array_push($cfgX, array(

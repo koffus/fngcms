@@ -6,97 +6,97 @@ function plugin_forum_install($action) {
 	$install = true;
 	$db_update = array(
 	array(
-		'table'		=> 'forum_complaints',
-		'action'	=> 'cmodify',
-		'engine'	=> 'MyISAM',
-		'key'		=> 'primary key(id)',
-		'fields'	=> array(
-			array('action'	=> 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
-			array('action'	=> 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'who_author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'who_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'message', 'type' => 'text', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'viewed', 'type' => 'tinyint(1)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+		'table' => 'forum_complaints',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
+		'key' => 'primary key(id)',
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
+			array('action' => 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'who_author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'who_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'message', 'type' => 'text', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'viewed', 'type' => 'tinyint(1)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
 		)
 	),
 	array(
-		'table'		=> 'forum_attach',
-		'action'	=> 'cmodify',
-		'engine'	=> 'MyISAM',
-		'key'		=> 'primary key(id), KEY (tid), KEY (pid)',
-		'fields'	=> array(
-			array('action'	=> 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
-			array('action'	=> 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'file', 'type' => 'varchar(100)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'size', 'type' => 'varchar(10)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'downloads', 'type' => 'INT(10)', 'params' => 'NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'location', 'type' => 'varchar(25)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+		'table' => 'forum_attach',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
+		'key' => 'primary key(id), KEY (tid), KEY (pid)',
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
+			array('action' => 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'file', 'type' => 'varchar(100)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'size', 'type' => 'varchar(10)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'downloads', 'type' => 'INT(10)', 'params' => 'NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'location', 'type' => 'varchar(25)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
 		)
 	),
 	array(
-		'table'		=> 'forum_thank',
-		'action'	=> 'cmodify',
-		'engine'	=> 'MyISAM',
-		'key'		=> 'primary key(id), KEY(`tid`), KEY(`pid`), KEY(`to_author_id`)',
-		'fields'	=> array(
-			array('action'	=> 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
-			array('action'	=> 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'message', 'type' => 'TEXT', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'to_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+		'table' => 'forum_thank',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
+		'key' => 'primary key(id), KEY(`tid`), KEY(`pid`), KEY(`to_author_id`)',
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
+			array('action' => 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'message', 'type' => 'TEXT', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'to_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
 		)
 	),
 	array(
-		'table'		=> 'forum_news',
-		'action'	=> 'cmodify',
-		'engine'	=> 'MyISAM',
-		'key'		=> 'primary key(id), KEY(c_data)',
-		'fields'	=> array(
-			array('action'	=> 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
-			array('action'	=> 'cmodify', 'name' => 'title', 'type' => 'varchar(80)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'content', 'type' => 'TEXT', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+		'table' => 'forum_news',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
+		'key' => 'primary key(id), KEY(c_data)',
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
+			array('action' => 'cmodify', 'name' => 'title', 'type' => 'varchar(80)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'content', 'type' => 'TEXT', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
 		)
 	),
 	array(
-		'table'		=> 'forum_forums',
-		'action'	=> 'cmodify',
-		'engine'	=> 'MyISAM',
-		'key'		=> 'primary key(id), KEY `count` (`int_topic`, `int_post`), KEY (position)',
-		'fields'	=> array(
-			array('action'	=> 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
-			array('action'	=> 'cmodify', 'name' => 'parent', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'title', 'type' => 'varchar(80)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'description', 'type' => 'TEXT', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'keywords', 'type' => 'TEXT', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'lock_passwd', 'type' => 'varchar(30)', 'params' => 'NOT NULL DEFAULT ""'),
-			array('action'	=> 'cmodify', 'name' => 'redirect_url', 'type' => 'varchar(100)', 'params' => 'NULL'),
-			array('action'	=> 'cmodify', 'name' => 'moderators', 'type' => 'TEXT', 'params' => 'NULL'),
-			array('action'	=> 'cmodify', 'name' => 'int_topic', 'type' => 'mediumINT(8)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'int_post', 'type' => 'mediumINT(8)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'l_post', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'l_date', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'l_topic_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'l_topic_title', 'type' => 'varchar(200)', 'params' => 'NOT NULL DEFAULT ""'),
-			array('action'	=> 'cmodify', 'name' => 'l_author', 'type' => 'varchar(30)', 'params' => 'NOT NULL DEFAULT ""'),
-			array('action'	=> 'cmodify', 'name' => 'l_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
-			array('action'	=> 'cmodify', 'name' => 'position', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+		'table' => 'forum_forums',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
+		'key' => 'primary key(id), KEY `count` (`int_topic`, `int_post`), KEY (position)',
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
+			array('action' => 'cmodify', 'name' => 'parent', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'title', 'type' => 'varchar(80)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'description', 'type' => 'TEXT', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'keywords', 'type' => 'TEXT', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'lock_passwd', 'type' => 'varchar(30)', 'params' => 'NOT NULL DEFAULT ""'),
+			array('action' => 'cmodify', 'name' => 'redirect_url', 'type' => 'varchar(100)', 'params' => 'NULL'),
+			array('action' => 'cmodify', 'name' => 'moderators', 'type' => 'TEXT', 'params' => 'NULL'),
+			array('action' => 'cmodify', 'name' => 'int_topic', 'type' => 'mediumINT(8)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'int_post', 'type' => 'mediumINT(8)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'l_post', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'l_date', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'l_topic_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'l_topic_title', 'type' => 'varchar(200)', 'params' => 'NOT NULL DEFAULT ""'),
+			array('action' => 'cmodify', 'name' => 'l_author', 'type' => 'varchar(30)', 'params' => 'NOT NULL DEFAULT ""'),
+			array('action' => 'cmodify', 'name' => 'l_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
+			array('action' => 'cmodify', 'name' => 'position', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
 		)
 	),
 	array(
 		'table' => 'forum_topics',
 		'action' => 'cmodify',
-		'engine'	=> 'MyISAM',
+		'engine' => 'MyISAM',
 		'key' => 'primary key(id), KEY (l_date), KEY (fid), KEY `showforum`(`fid`,`l_date`), KEY `int_post`(`fid`,`int_post`), FULLTEXT (title)',
 		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
@@ -120,7 +120,7 @@ function plugin_forum_install($action) {
 	array(
 		'table' => 'forum_posts',
 		'action' => 'cmodify',
-		'engine'	=> 'MyISAM',
+		'engine' => 'MyISAM',
 		'key' => 'primary key(id), KEY(tid), KEY `showtopic` (`tid`, `c_data`), KEY `delpost` (`tid`, `author_id`), FULLTEXT (message)',
 		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
@@ -135,10 +135,10 @@ function plugin_forum_install($action) {
 		)
 	),
 	array(
-		'table'		=>	'forum_online',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
-		'fields'	=>	array(
+		'table' => 'forum_online',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
+		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'sess_id', 'type' => 'char(255)', 'params' => 'DEFAULT \'\''),
 			array('action' => 'cmodify', 'name' => 'last_time', 'type' => 'char(255)', 'params' => 'DEFAULT \'0\''),
 			array('action' => 'cmodify', 'name' => 'ip', 'type' => 'varchar(15)', 'params' => 'DEFAULT 0'),
@@ -148,11 +148,11 @@ function plugin_forum_install($action) {
 		)
 	),
 	array(
-		'table'		=>	'forum_group',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
+		'table' => 'forum_group',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
 		'key' => 'primary key(id)',
-		'fields'	=>	array(
+		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
 			array('action' => 'cmodify', 'name' => 'group_id', 'type' => 'int(11)', 'params' => 'UNSIGNED NOT NULL'),
 			array('action' => 'cmodify', 'name' => 'group_name', 'type' => 'varchar(100)', 'params' => 'NOT NULL'),
@@ -164,11 +164,11 @@ function plugin_forum_install($action) {
 		)
 	),
 	array(
-		'table'		=>	'forum_moderators',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
+		'table' => 'forum_moderators',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
 		'key' => 'primary key(id), UNIQUE(m_forum_id)',
-		'fields'	=>	array(
+		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
 			array('action' => 'cmodify', 'name' => 'm_forum_id', 'type' => 'int(11)', 'params' => 'NOT NULL'),
 			array('action' => 'cmodify', 'name' => 'm_topic_send', 'type' => 'tinyint(1)', 'params' => 'DEFAULT 0'),
@@ -181,11 +181,11 @@ function plugin_forum_install($action) {
 		)
 	),
 	array(
-		'table'		=>	'forum_permission',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
+		'table' => 'forum_permission',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
 		'key' => 'primary key(id)',
-		'fields'	=>	array(
+		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
 			array('action' => 'cmodify', 'name' => 'group_id', 'type' => 'int(11)', 'params' => 'UNSIGNED NOT NULL'),
 			array('action' => 'cmodify', 'name' => 'forum_id', 'type' => 'int(11)', 'params' => 'UNSIGNED NOT NULL'),
@@ -206,38 +206,38 @@ function plugin_forum_install($action) {
 		)
 	),
 	array(
-		'table'		=>	'forum_subscriptions',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
+		'table' => 'forum_subscriptions',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
 		'key' => 'KEY `search` (`uid`, `tid`)',
-		'fields'	=>	array(
+		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'uid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
 			array('action' => 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
 		)
 	),
 	array(
-		'table'		=>	'forum_reputation',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
+		'table' => 'forum_reputation',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
 		'key' => 'primary key(id), KEY(to_author_id)',
-		'fields'	=>	array(
-			array('action'	=> 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
-			array('action'	=> 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'plus', 'type' => 'TINYINT(1)', 'params' => 'UNSIGNED NOT NULL DEFAULT 0'),
-			array('action'	=> 'cmodify', 'name' => 'minus', 'type' => 'TINYINT(1)', 'params' => 'UNSIGNED NOT NULL DEFAULT 0'),
-			array('action'	=> 'cmodify', 'name' => 'message', 'type' => 'TEXT', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'to_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
-			array('action'	=> 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
+			array('action' => 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'pid', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'c_data', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'plus', 'type' => 'TINYINT(1)', 'params' => 'UNSIGNED NOT NULL DEFAULT 0'),
+			array('action' => 'cmodify', 'name' => 'minus', 'type' => 'TINYINT(1)', 'params' => 'UNSIGNED NOT NULL DEFAULT 0'),
+			array('action' => 'cmodify', 'name' => 'message', 'type' => 'TEXT', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'to_author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author', 'type' => 'varchar(30)', 'params' => 'NOT NULL'),
+			array('action' => 'cmodify', 'name' => 'author_id', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL'),
 		)
 	),
 	
 	array(
 		'table' => 'pm',
 		'action' => 'cmodify',
-		'engine'	=> 'MyISAM',
+		'engine' => 'MyISAM',
 		'key' => 'primary key (`id`), KEY `count_pm` (`to_id`, `viewed`, `folder`)',
 		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'id', 'type' => 'int(10)', 'params' => 'UNSIGNED NOT NULL AUTO_INCREMENT'),
@@ -252,10 +252,10 @@ function plugin_forum_install($action) {
 	),
 	
 	array(
-		'table'		=>	'users',
-		'action'	=>	'cmodify',
+		'table' => 'users',
+		'action' => 'cmodify',
 		'key' => 'KEY(reg), KEY (int_post), KEY (l_post)',
-		'fields'	=>	array(
+		'fields' => array(
 			array('action' => 'cmodify', 'name' => 'timezone', 'type' => 'float', 'params' => 'NOT NULL DEFAULT "0"'),
 			array('action' => 'cmodify', 'name' => 'signature', 'type' => 'text'),
 			array('action' => 'cmodify', 'name' => 'int_post', 'type' => 'INT(10)', 'params' => 'UNSIGNED NOT NULL DEFAULT "0"'),
@@ -266,12 +266,12 @@ function plugin_forum_install($action) {
 	),
 	
 	array(
-		'table'		=>	'news',
-		'action'	=>	'cmodify',
-		'engine'	=> 'MyISAM',
+		'table' => 'news',
+		'action' => 'cmodify',
+		'engine' => 'MyISAM',
 		'key' => '',
-		'fields'	=>	array(
-			array('action'	=> 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED DEFAULT "0"'),
+		'fields' => array(
+			array('action' => 'cmodify', 'name' => 'tid', 'type' => 'INT(10)', 'params' => 'UNSIGNED DEFAULT "0"'),
 		)
 	),
 );

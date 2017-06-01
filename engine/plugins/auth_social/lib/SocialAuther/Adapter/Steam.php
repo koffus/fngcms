@@ -97,7 +97,7 @@ class Steam extends AbstractAdapter
 				'openid.mode' => 'checkid_setup',
 				'openid.return_to' => $this->redirectUri,
 				'openid.realm' => (!empty($_SERVER['HTTPS']) ? 'https' : 'http') . '://' . $_SERVER['HTTP_HOST'],
-				'openid.ns.sreg'	=>	'http://openid.net/extensions/sreg/1.1',
+				'openid.ns.sreg' => 'http://openid.net/extensions/sreg/1.1',
 				'openid.claimed_id' => 'http://specs.openid.net/auth/2.0/identifier_select',
 				'openid.identity' => 'http://specs.openid.net/auth/2.0/identifier_select',
  )

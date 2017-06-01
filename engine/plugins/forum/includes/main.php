@@ -369,7 +369,7 @@ function show_news_forum()
 	foreach ($mysql->select('SELECT * FROM '.prefix.'_forum_news ORDER BY c_data DESC LIMIT 5') as $row){
 		$i++;
 		$list_news[] = array(
-			'num'=> $i,
+			'num' => $i,
 			'news_id' => $row['id'],
 			'create_data' => $row['c_data'],
 			'title' => $row['title'],
@@ -397,7 +397,7 @@ function recent_events_forum()
 	$i=1;
 	foreach ($mysql->select('SELECT t.l_post, t.title as Ttitle, t.l_author_id , t.l_author, t.int_views, t.int_post, t.c_data, f.id as fid, f.title as Ftitle FROM '.prefix.'_forum_topics AS t LEFT JOIN '.prefix.'_forum_forums AS f ON t.fid = f.id ORDER BY t.l_date DESC LIMIT 10') as $row){
 		$last_topic[] = array(
-			'num'=>$i++,
+			'num' =>$i++,
 			'topic_link' => link_topic($row['l_post'], 'pid').'#'.$row['l_post'],
 			'topic_date' => $row['c_data'],
 			'forum_link' => link_forum($row['fid']),
@@ -419,7 +419,7 @@ function recent_events_forum()
 			default: $color_start = ''; $color_end = '';
 		}
 		$new_user[] = array(
-			'num'=>$i++,
+			'num' =>$i++,
 			'profile_link' => link_profile($row['id'], '', $row['name']),
 			'profile' => $row['name'],
 			'num_post' => $row['int_post'],
@@ -439,7 +439,7 @@ function recent_events_forum()
 		}
 		
 		$active_user[] = array(
-			'num'=>$i++,
+			'num' =>$i++,
 			'profile_link' => link_profile($row['id'], '', $row['name']),
 			'profile' => $row['name'],
 			'num_post' => $row['int_post'],

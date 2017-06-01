@@ -90,13 +90,13 @@
 				'signature' => bb_codes($row['signature']),
 				'send_pm' => link_send_pm($row['uid']),
 				'active' => ($users_online[$row['uid']])?1:0,
-				'pmid'		=>	$row['pid'],
-				'pmdate'	=>	$row['pmdate'],
-				'pmdate2'	=>	$row['pmdate'],
-				'title'		=>	$row['title'],
-				'link_pm_reply'		=>	link_send_pm($row['uid'], $row['pid']),
-				'link_pm_quote'		=>	link_send_pm($row['uid'], '', $row['pid']),
-				'link_del_pm'		=>	link_del_pm($row['pid'], $io),
+				'pmid' => $row['pid'],
+				'pmdate' => $row['pmdate'],
+				'pmdate2' => $row['pmdate'],
+				'title' => $row['title'],
+				'link_pm_reply' => link_send_pm($row['uid'], $row['pid']),
+				'link_pm_quote' => link_send_pm($row['uid'], '', $row['pid']),
+				'link_del_pm' => link_del_pm($row['pid'], $io),
 				'profile_link' => link_profile($row['uid'], '', $row['uname']),
 				'profile' => $row['uname'],
 			);
@@ -134,13 +134,13 @@
 		WHERE pm.'.$show_id.' = '.securemysql($userROW['id']).' AND folder=\''.$io.'\'
 		ORDER BY pm.id DESC LIMIT '.$limitStart.', '.$limitCount) as $row){
 		$tEntry[] = array(
-			'pmid'			=>	$row['pid'],
-			'pmdate'		=>	$row['pmdate'],
-			'title'			=>	$row['title'],
-			'link_pm'		=>	link_list_pm($row['pid'], $pageNo, $io),
-			'profile_link'	=>	link_profile($row['uid'], '', $row['uname']),
-			'profile'		=>	$row['uname'],
-			'viewed'		=>	$row['viewed']
+			'pmid' => $row['pid'],
+			'pmdate' => $row['pmdate'],
+			'title' => $row['title'],
+			'link_pm' => link_list_pm($row['pid'], $pageNo, $io),
+			'profile_link' => link_profile($row['uid'], '', $row['uname']),
+			'profile' => $row['uname'],
+			'viewed' => $row['viewed']
 		);
 	}
 	

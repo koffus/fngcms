@@ -37,13 +37,13 @@ function admRPCFilesUpload($params){
 	$dir = $fmanager->dname;
 
 	$ures = $fmanager->file_upload(array(
-		'rpc'		=> 1,
-		'dsn'		=> 0,
-		'category'	=> ($_REQUEST['category'] == '')?'default':$_REQUEST['category'],
-		'type'		=> $uploadType,
-		'replace'	=> $_REQUEST['replace'],
-		'randprefix'=> $_REQUEST['rand'],
-		'http_var'	=> 'Filedata',
+		'rpc' => 1,
+		'dsn' => 0,
+		'category' => ($_REQUEST['category'] == '')?'default':$_REQUEST['category'],
+		'type' => $uploadType,
+		'replace' => $_REQUEST['replace'],
+		'randprefix' => $_REQUEST['rand'],
+		'http_var' => 'Filedata',
 	));
 
 	// Return if this is a file or we have upload error

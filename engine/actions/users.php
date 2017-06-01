@@ -50,23 +50,23 @@ function userEditForm(){
 
 	//	Обрабатываем необходимые переменные для шаблона
 	$tVars = array(
-		'php_self'		=>	$PHP_SELF,
-		'name'			=>	secure_html($row['name']),
-		'regdate'		=>	Lang::retDate("l, j F Y - H:i", $row['reg']),
-		'com'			=>	$row['com'],
-		'news'			=>	$row['news'],
-		'status'		=>	$status,
-		'mail'			=>	secure_html($row['mail']),
-		'site'			=>	secure_html($row['site']),
-		'icq'			=>	secure_html($row['icq']),
-		'where_from'	=>	secure_html($row['where_from']),
-		'info'			=>	secure_html($row['info']),
-		'id'			=>	$id,
-		'last'			=>	(empty($row['last'])) ? __('no_last') : Lang::retDate('l, j F Y - H:i', $row['last']),
-		'ip'			=>	$row['ip'],
-		'token'			=> genUToken('admin.users'),
-		'perm'			=> array(
-			'modify'	=> $perm['modify']?1:0,
+		'php_self' => $PHP_SELF,
+		'name' => secure_html($row['name']),
+		'regdate' => Lang::retDate("l, j F Y - H:i", $row['reg']),
+		'com' => $row['com'],
+		'news' => $row['news'],
+		'status' => $status,
+		'mail' => secure_html($row['mail']),
+		'site' => secure_html($row['site']),
+		'icq' => secure_html($row['icq']),
+		'where_from' => secure_html($row['where_from']),
+		'info' => secure_html($row['info']),
+		'id' => $id,
+		'last' => (empty($row['last'])) ? __('no_last') : Lang::retDate('l, j F Y - H:i', $row['last']),
+		'ip' => $row['ip'],
+		'token' => genUToken('admin.users'),
+		'perm' => array(
+			'modify' => $perm['modify']?1:0,
 		),
 	);
 
@@ -352,18 +352,18 @@ function userList(){
 
 	// Sorting parameters
 	$sortOrderMap = array(
-		'i'		=> 'id',
-		'id'	=> 'id desc',
-		'n'		=> 'name',
-		'nd'	=> 'name desc',
-		'r'		=> 'reg',
-		'rd'	=> 'reg desc',
-		'l'		=> 'last',
-		'ld'	=> 'last desc',
-		'p'		=> 'news',
-		'pd'	=> 'news desc',
-		'g'		=> 'status',
-		'gd'	=> 'status desc',
+		'i' => 'id',
+		'id' => 'id desc',
+		'n' => 'name',
+		'nd' => 'name desc',
+		'r' => 'reg',
+		'rd' => 'reg desc',
+		'l' => 'last',
+		'ld' => 'last desc',
+		'p' => 'news',
+		'pd' => 'news desc',
+		'g' => 'status',
+		'gd' => 'status desc',
 	);
 
 	$inSort = (isset($_REQUEST['sort']) and (isset($sortOrderMap[$_REQUEST['sort']])))?$_REQUEST['sort']:'i';
@@ -423,16 +423,16 @@ function userList(){
 		$status = isset($UGROUP[$row['status']])?$UGROUP[$row['status']]['name']:('Unknown ['.$row['status'].']');
 
 		$tEntry = array(
-			'id'			=>	$row['id'],
-			'name'			=>	$row['name'],
-			'groupID'		=>	$row['status'],
-			'groupName'		=>	$status,
-			'cntNews'		=>	$row['news'],
-			'cntComments'	=>	$row['com'],
-			'regdate'		=>	Lang::retDate('j F Y - H:i', $row['reg']),
-			'lastdate'		=>	(empty($row['last'])) ? __('no_last') : Lang::retDate('j F Y - H:i', $row['last']),
-			'flags'			=>	array(
-				'isActive'		=> (!$row['activation']  or  $row['activation'] == "")?1:0,
+			'id' => $row['id'],
+			'name' => $row['name'],
+			'groupID' => $row['status'],
+			'groupName' => $status,
+			'cntNews' => $row['news'],
+			'cntComments' => $row['com'],
+			'regdate' => Lang::retDate('j F Y - H:i', $row['reg']),
+			'lastdate' => (empty($row['last'])) ? __('no_last') : Lang::retDate('j F Y - H:i', $row['last']),
+			'flags' => array(
+				'isActive' => (!$row['activation']  or  $row['activation'] == "")?1:0,
 			),
 		);
 
@@ -459,29 +459,29 @@ function userList(){
 	$tUgroup = array();
 	foreach ($UGROUP as $id => $grp) {
 		$tUge		= array(
-			'id'		=> $id,
-			'identity'	=> $grp['identity'],
-			'name'		=> $grp['name'],
+			'id' => $id,
+			'identity' => $grp['identity'],
+			'name' => $grp['name'],
 		);
 
 		$tUgroup []= $tUge;
 	}
 
 	$tVars	= array(
-		'php_self'		=> $PHP_SELF,
-		'rpp'			=> $fRPP,
-		'name'			=> (isset($_REQUEST['name']) and $_REQUEST['name'])?htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'',
-		'token'			=> genUToken('admin.users'),
-		'pagination'	=> $pagination,
-		'ugroup'		=> $tUgroup,
-		'entries'		=> $tEntries,
-		'group'			=> isset($_REQUEST['group'])?intval($_REQUEST['group']):0,
-		'sortLink'		=> $sortLinkMap,
-		'flags'		=> 	array(
-			'canModify'	=> $permModify?1:0,
-			'canView'	=> $permDetails?1:0,
-			'canMassAction'	=> $permMassAction?1:0,
-			'haveComments'	=> getPluginStatusInstalled('comments')?1:0,
+		'php_self' => $PHP_SELF,
+		'rpp' => $fRPP,
+		'name' => (isset($_REQUEST['name']) and $_REQUEST['name'])?htmlspecialchars($_REQUEST['name'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'',
+		'token' => genUToken('admin.users'),
+		'pagination' => $pagination,
+		'ugroup' => $tUgroup,
+		'entries' => $tEntries,
+		'group' => isset($_REQUEST['group'])?intval($_REQUEST['group']):0,
+		'sortLink' => $sortLinkMap,
+		'flags' => 	array(
+			'canModify' => $permModify?1:0,
+			'canView' => $permDetails?1:0,
+			'canMassAction' => $permMassAction?1:0,
+			'haveComments' => getPluginStatusInstalled('comments')?1:0,
 		),
 
 	);

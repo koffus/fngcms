@@ -72,8 +72,8 @@ function pm_list () {
 	}
 
 	$tVars = array(
-		'php_self'	=>	$PHP_SELF,
-		'entries'	=>	$entries
+		'php_self' => $PHP_SELF,
+		'entries' => $entries
 	);
 	executeActionHandler('pm');
 	$xt = $twig->loadTemplate(tpl_actions.$mod.'/table.tpl');
@@ -86,11 +86,11 @@ function pm_read() {
 	$pmid = $_REQUEST['pmid'];
 	if ($row = $mysql->record("select * from ".uprefix."_users_pm where pmid = ".db_squote($pmid)."and (to_id = ".db_squote($userROW['id'])." or from_id=".db_squote($userROW['id']).")")) {
 		$tVars = array(
-			'php_self'		=>	$PHP_SELF,
-			'pmid'			=>	$row['pmid'],
-			'title'			=>	$row['title'],
-			'from'			=>	$row['from'],
-			'content'		=>	$parse->htmlformatter($parse->smilies($parse->bbcodes($row['content'])))
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['pmid'],
+			'title' => $row['title'],
+			'from' => $row['from'],
+			'content' => $parse->htmlformatter($parse->smilies($parse->bbcodes($row['content'])))
 		);
 		executeActionHandler('pm_read');
 		$xt = $twig->loadTemplate(tpl_actions.$mod.'/read.tpl');

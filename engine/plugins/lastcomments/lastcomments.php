@@ -165,23 +165,23 @@ function lastcomments($mode = 0) {
 		}
 
 		$data[] = array(
-			'link'			=>	newsGenerateLink(array('id' => $row['nid'], 'alt_name' => $row['alt_name'], 'catid' => $row['catid'], 'postdate' => $row['npostdate'])),
-			'date'			=>	Lang::retDate('d.m.Y', $row['postdate']),
-			'dateStamp'			=>	$row['postdate'],
-			'author'		=>	str_replace('<', '&lt;', $row['author']),
-			'author_id'		=>	$row['author_id'],
-			'title'			=>	str_replace('<', '&lt;', $row['title']),
-			'text'			=>	$text,
-			'category_link'	=>	GetCategories($row['catid']),
-			'comnum'		=>	$comm_num,
-			'author_link' 	=>	$author_link,
-			'avatar' 		=>	$avatar,
-			'avatar_url'	=>	$avatar_url,
-			'answer'		=> $answer,
-			'name'			=> $name,
-			'alternating'	=> ($comnum%2)?"lastcomments_even":"lastcomments_odd",
-			'rsslink'		=> home."?id=".$row['nid'],
-			'rssdate'		=> 	gmstrftime('%a, %d %b %Y %H:%M:%S GMT',$row['postdate']),
+			'link' => newsGenerateLink(array('id' => $row['nid'], 'alt_name' => $row['alt_name'], 'catid' => $row['catid'], 'postdate' => $row['npostdate'])),
+			'date' => Lang::retDate('d.m.Y', $row['postdate']),
+			'dateStamp' => $row['postdate'],
+			'author' => str_replace('<', '&lt;', $row['author']),
+			'author_id' => $row['author_id'],
+			'title' => str_replace('<', '&lt;', $row['title']),
+			'text' => $text,
+			'category_link' => GetCategories($row['catid']),
+			'comnum' => $comm_num,
+			'author_link' 	=> $author_link,
+			'avatar' 		=> $avatar,
+			'avatar_url' => $avatar_url,
+			'answer' => $answer,
+			'name' => $name,
+			'alternating' => ($comnum%2)?"lastcomments_even":"lastcomments_odd",
+			'rsslink' => home."?id=".$row['nid'],
+			'rssdate' => 	gmstrftime('%a, %d %b %Y %H:%M:%S GMT',$row['postdate']),
 			);
 	}
 
@@ -191,9 +191,9 @@ function lastcomments($mode = 0) {
 	$tVars = array(
 		'comnum' 		=> $comm_num,
 		'entries' 		=> $data,
-		'home_title'	=> $config['home_title'],
-		'home_url'		=> $config['home_url'],
-		'description'	=> $config['description'],
+		'home_title' => $config['home_title'],
+		'home_url' => $config['home_url'],
+		'description' => $config['description'],
 		'generator' => 'Plugin Lastcomments ('.lastcomments_version.') // Next Generation CMS ('.engineName.' '.engineVersion.')',
 	);
 

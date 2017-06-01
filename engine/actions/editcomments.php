@@ -83,15 +83,15 @@ function editcomment() {
 		$row['answer']	= str_replace("<br />", "\r\n", $row['answer']);
 
 		$tvars = array(
-			'php_self'	=>	$PHP_SELF,
-			'quicktags'	=>	QuickTags(false, "editcom"),
-			'ip'		=>	$row['ip'],
-			'author'	=>	$row['author'],
-			'mail'		=>	$row['mail'],
-			'text'		=>	$row['text'],
-			'answer'	=>	$row['answer'],
-			'newsid'	=>	$newsid,
-			'comid'		=>	$comid
+			'php_self' => $PHP_SELF,
+			'quicktags' => QuickTags(false, "editcom"),
+			'ip' => $row['ip'],
+			'author' => $row['author'],
+			'mail' => $row['mail'],
+			'text' => $row['text'],
+			'answer' => $row['answer'],
+			'newsid' => $newsid,
+			'comid' => $comid
 		);
 		$tvars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('content', 5) : '';
 		$tvars['comdate'] = Lang::retDate(pluginGetVariable('comments', 'timestamp'), $row['postdate']);

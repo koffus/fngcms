@@ -270,7 +270,7 @@ function suser_show($params) {
  'sort_dir_'.$sort_dir => 1,
  'entries' => isset($tEntry)?$tEntry:'', 
  'sort' => $sort_b,
- 'xflist'=> get_xflist(), 
+ 'xflist' => get_xflist(), 
  'pages' => array(
  'true' => (isset($pages) && $pages)?1:0,
  'print' => isset($pages)?$pages:''

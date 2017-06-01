@@ -33,19 +33,19 @@ for ($i = 1; $i <= $count; $i++) {
 	);
 
 	array_push($cfgX, array(
-						'name'		=> "{$currentVar}_template",
-						'title'		=> 'Используемый шаблон',
-						'type'		=> 'input',
-//						'values'	=> $templateDirectories,
-						'value'		=> pluginGetVariable($plugin, "{$currentVar}_template"))
+						'name' => "{$currentVar}_template",
+						'title' => 'Используемый шаблон',
+						'type' => 'input',
+//						'values' => $templateDirectories,
+						'value' => pluginGetVariable($plugin, "{$currentVar}_template"))
 	);
 
 	array_push($cfgX, array(
-						'name'		=> "{$currentVar}_visibilityMode",
-						'title'		=> 'Область видимости<br/><small>Укажите на каких страницах будет отображаться данный блок</small>',
-						'type'		=> 'select',
-						'values'	=> array('0' => 'Везде', 1 => 'На странице категорий', 2 => 'На странице новостей', 3 => 'Страница категорий + новостей'),
-						'value'		=> pluginGetVariable($plugin, "{$currentVar}_visibilityMode"))
+						'name' => "{$currentVar}_visibilityMode",
+						'title' => 'Область видимости<br/><small>Укажите на каких страницах будет отображаться данный блок</small>',
+						'type' => 'select',
+						'values' => array('0' => 'Везде', 1 => 'На странице категорий', 2 => 'На странице новостей', 3 => 'Страница категорий + новостей'),
+						'value' => pluginGetVariable($plugin, "{$currentVar}_visibilityMode"))
 	);
 
 	array_push($cfgX, array(
@@ -56,11 +56,11 @@ for ($i = 1; $i <= $count; $i++) {
 	);
 
 	array_push($cfgX, array(
-						'name'		=> "{$currentVar}_categoryMode",
-						'title'		=> 'Из каких категорий генерируется лента новостей',
-						'type'		=> 'select',
-						'values'	=> array('0' => 'Список категорий', 1 => 'Текущая категория', 2 => 'Список + текущая'),
-						'value'		=> pluginGetVariable($plugin, "{$currentVar}_categoryMode"))
+						'name' => "{$currentVar}_categoryMode",
+						'title' => 'Из каких категорий генерируется лента новостей',
+						'type' => 'select',
+						'values' => array('0' => 'Список категорий', 1 => 'Текущая категория', 2 => 'Список + текущая'),
+						'value' => pluginGetVariable($plugin, "{$currentVar}_categoryMode"))
 	);
 
 	array_push($cfgX, array(

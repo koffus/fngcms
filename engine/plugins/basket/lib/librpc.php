@@ -31,7 +31,7 @@ function basket_add_item($linked_ds, $linked_id, $title, $price, $count, $xfld =
 	$tVars = array(
 		'count' 		=> $tCount,
 		'price' 		=> $tPrice,
-		'ajaxUpdate'	=> 1,
+		'ajaxUpdate' => 1,
 	);
 
 	// Выводим шаблон с общим итогом

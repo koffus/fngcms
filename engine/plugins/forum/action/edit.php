@@ -116,10 +116,10 @@
 		foreach ($mysql->select('SELECT * FROM '.prefix.'_forum_attach WHERE pid = '.securemysql($id).' ORDER BY id') as $row_4){
 			$list_attach[] = array(
 				'file_id' => $row_4['id'],
-				'file'=> $row_4['file'],
-				'file_link'=> link_downloads($row_4['id']),
-				'size'=> round($row_4['size']/1024, 2),
-				'int_file'=> $row_4['downloads'],
+				'file' => $row_4['file'],
+				'file_link' => link_downloads($row_4['id']),
+				'size' => round($row_4['size']/1024, 2),
+				'int_file' => $row_4['downloads'],
 			);
 		}
 		

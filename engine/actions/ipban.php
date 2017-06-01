@@ -149,26 +149,26 @@ function ipban_list() {
 		}
 
 		$xEntry = array(
-			'php_self'	=>	$PHP_SELF,
-			'id'		=>	$row['id'],
-			'ip'		=>	$row['addr'],
-			'whoisip'	=>	array_shift(explode('/', $row['addr'])),
-			'atype'		=>	($row['atype']?' /net':''),
-			'mode'		=>	'',
-			'descr'		=>	$row['reason']==''?'-':$row['reason'],
-			'type'		=>	$accessLine,
-			'hitcount'	=>	($row['hitcount']),
+			'php_self' => $PHP_SELF,
+			'id' => $row['id'],
+			'ip' => $row['addr'],
+			'whoisip' => array_shift(explode('/', $row['addr'])),
+			'atype' => ($row['atype']?' /net':''),
+			'mode' => '',
+			'descr' => $row['reason']==''?'-':$row['reason'],
+			'type' => $accessLine,
+			'hitcount' => ($row['hitcount']),
 		);
 
 		$xEntries [] = $xEntry;
 	}
 
 	$tVars = array(
-		'php_self'	=> $PHP_SELF,
-		'entries'	=> $xEntries,
-		'iplock'	=> (isset($_REQUEST['iplock']) && $_REQUEST['iplock'])?$_REQUEST['iplock']:0,
-		'token'		=>	genUToken('admin.ipban'),
-		'flags'		=>	array(
+		'php_self' => $PHP_SELF,
+		'entries' => $xEntries,
+		'iplock' => (isset($_REQUEST['iplock']) && $_REQUEST['iplock'])?$_REQUEST['iplock']:0,
+		'token' => genUToken('admin.ipban'),
+		'flags' => array(
 			'permModify' => checkPermission(array('plugin' => '#admin', 'item' => 'ipban'), null, 'modify')?true:false,
 		),
 	);

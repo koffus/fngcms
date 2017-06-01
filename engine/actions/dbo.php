@@ -375,10 +375,10 @@ function systemDboForm() {
 		$info		= $mysql->record("SHOW TABLE STATUS LIKE '".$table[0]."'");
 
 		$tableInfo = array(
-			'table'		=> $info['Name'],
-			'rows'		=> $info['Rows'],
-			'data'		=> Formatsize($info['Data_length'] + $info['Index_length'] + $info['Data_free']),
-			'overhead'	=> ($info['Data_free'] > 0) ? '<span style="color:red;">'.Formatsize($info['Data_free']).'</span>' : 0,
+			'table' => $info['Name'],
+			'rows' => $info['Rows'],
+			'data' => Formatsize($info['Data_length'] + $info['Index_length'] + $info['Data_free']),
+			'overhead' => ($info['Data_free'] > 0) ? '<span style="color:red;">'.Formatsize($info['Data_free']).'</span>' : 0,
 		);
 
 		$tableList []= $tableInfo;
@@ -386,10 +386,10 @@ function systemDboForm() {
 	}
 
 	$tVars = array(
-		'php_self'	=> $PHP_SELF,
-		'tables'	=> $tableList,
-		'restore'	=> MakeDropDown(ListFiles(root . 'backups', 'gz'), 'filename', ''),
-		'token'		=> genUToken('admin.dbo'),
+		'php_self' => $PHP_SELF,
+		'tables' => $tableList,
+		'restore' => MakeDropDown(ListFiles(root . 'backups', 'gz'), 'filename', ''),
+		'token' => genUToken('admin.dbo'),
 	);
 
 	$xt = $twig->loadTemplate('skins/default/tpl/dbo.tpl');

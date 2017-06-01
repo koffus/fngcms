@@ -136,7 +136,7 @@ function plugin_finance_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'syscurrency'	=> 'RUR',
+				'syscurrency' => 'RUR',
 			);
 
 			foreach ($params as $k => $v) {

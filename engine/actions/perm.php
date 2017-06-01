@@ -41,10 +41,10 @@ function showList($grp) {
 	foreach ($pManager->getList() as $kb => $vb) {
 		$nl1++;
 		$dBlock = array(
-			'id'			=> $kb,
-			'title'			=> (isset($vb['title']) && $vb['title'])?$vb['title']:'',
-			'description'	=> (isset($vb['description']) && $vb['description'])?$vb['description']:'',
-			'items'		=> array(),
+			'id' => $kb,
+			'title' => (isset($vb['title']) && $vb['title'])?$vb['title']:'',
+			'description' => (isset($vb['description']) && $vb['description'])?$vb['description']:'',
+			'items' => array(),
 		);
 
 		if (is_array($vb['items'])) {
@@ -52,10 +52,10 @@ function showList($grp) {
 			foreach ($vb['items'] as $ka => $va) {
 				$nl2++;
 				$dArea = array(
-					'id'			=> $ka,
-					'title'			=> (isset($va['title']) && $va['title'])?$va['title']:'',
-					'description'	=> (isset($va['description']) && $va['description'])?$va['description']:'',
-					'items'		=> array(),
+					'id' => $ka,
+					'title' => (isset($va['title']) && $va['title'])?$va['title']:'',
+					'description' => (isset($va['description']) && $va['description'])?$va['description']:'',
+					'items' => array(),
 				);
 
 				if (is_array($va['items'])) {
@@ -72,23 +72,23 @@ function showList($grp) {
 							$dEntry	= array(
 								'id'				=> $ke,
 								'title'				=> (isset($ve['title']) && $ve['title'])?$ve['title']:'',
-								'description'		=> (isset($ve['description']) && $ve['description'])?$ve['description']:'',
+								'description' => (isset($ve['description']) && $ve['description'])?$ve['description']:'',
 								'type'				=> 'listCategoriesSelector',
 								'name'				=> str_replace('.', ':', $kb.'|'.$ka.'|'.$ke),
-								'generatedOptions'	=> makeCategoryList(array('skipDisabled' => true, 'noHeader' => true, 'doall' => true, 'allmarker' => '*', 'returnOptArray' => true)),
-								'uniqId'			=> 'id'.$nl1.'_'.$nl2.'_'.$nl3,
+								'generatedOptions' => makeCategoryList(array('skipDisabled' => true, 'noHeader' => true, 'doall' => true, 'allmarker' => '*', 'returnOptArray' => true)),
+								'uniqId' => 'id'.$nl1.'_'.$nl2.'_'.$nl3,
 							);
 							//$dArea['items'] []= $dEntry;
 							//continue;
 						} else {
 							// [[ NORMAL SELECT ]]
 							$dEntry = array(
-								'id'			=> $ke,
-								'title'			=> (isset($ve['title']) && $ve['title'])?$ve['title']:'',
-								'description'	=> (isset($ve['description']) && $ve['description'])?$ve['description']:'',
-								'perm'			=> array(),
-								'name'			=> $kb.'|'.$ka.'|'.$ke,
-								'type'			=> '',
+								'id' => $ke,
+								'title' => (isset($ve['title']) && $ve['title'])?$ve['title']:'',
+								'description' => (isset($ve['description']) && $ve['description'])?$ve['description']:'',
+								'perm' => array(),
+								'name' => $kb.'|'.$ka.'|'.$ke,
+								'type' => '',
 							);
 						}
 
@@ -133,8 +133,8 @@ function showList($grp) {
 		'PERM' => $PERM,
 		'GRP' => $grp,
 		'DEFAULT_JSON' => json_encode($dvalue),
-		'DEFAULT'	=> $dvalue,
-		'token'		=> genUToken('admin.perm'),
+		'DEFAULT' => $dvalue,
+		'token' => genUToken('admin.perm'),
 		)
 	);
 }
@@ -213,14 +213,14 @@ function updateConfig() {
 			if ($markValue != $v) {
 				// Save information about updates
 				$updateList [] = array(
-					'id'		=> $m[1] .' &#8594; '.$m[2].' &#8594; '.$m[3],
-					'group'		=> $m[4],
-					'title'		=> $pList[$m[1]]['items'][$m[2]]['items'][$m[3]]['title'],
-					'type'		=> $itemType,
-					'old'		=> $markValue,
-					'new'		=> $v,
-					'displayNew'	=> displayPermValue($v, $itemType),
-					'displayOld'	=> displayPermValue($markValue, $itemType),
+					'id' => $m[1] .' &#8594; '.$m[2].' &#8594; '.$m[3],
+					'group' => $m[4],
+					'title' => $pList[$m[1]]['items'][$m[2]]['items'][$m[3]]['title'],
+					'type' => $itemType,
+					'old' => $markValue,
+					'new' => $v,
+					'displayNew' => displayPermValue($v, $itemType),
+					'displayOld' => displayPermValue($markValue, $itemType),
 				);
 
 				//print "> $k: ".$markValue.' => '.$v."<br/>";
@@ -255,8 +255,8 @@ function updateConfig() {
 	$xt = $twig->loadTemplate('skins/default/tpl/perm/result.tpl');
 	print $xt->render(array(
 		'updateList' => $updateList,
-		'GRP'	=> $grp,
-		'execResult'	=> $execResult,
+		'GRP' => $grp,
+		'execResult' => $execResult,
 		)
 	);
 

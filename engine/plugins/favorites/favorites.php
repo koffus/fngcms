@@ -32,8 +32,8 @@ function plugin_favorites() {
 
 	foreach ($mysql->select("select alt_name, postdate, title, views, catid from ".prefix."_news where favorite = '1' and approve = '1' limit 0,$number") as $row) {
 		$tvars['vars'] = array(
-			'link'		=>	newsGenerateLink($row),
-			'views'		=>	($counter) ? ' [ '.$row['views'].' ]' : ''
+			'link' => newsGenerateLink($row),
+			'views' => ($counter) ? ' [ '.$row['views'].' ]' : ''
 		);
 		if (mb_strlen($row['title'], 'UTF-8') > $maxlength) {
 			$tvars['vars']['title'] = substr(secure_html($row['title']), 0, $maxlength)."...";

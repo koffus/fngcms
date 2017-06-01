@@ -8,8 +8,8 @@ pluginsLoadConfig();
 
 $db_update = array(
 	array(
-		'table'		=>	'bookmarks',
-		'action'	=>	'drop',
+		'table' => 'bookmarks',
+		'action' => 'drop',
 	),
 );
 

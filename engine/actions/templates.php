@@ -53,8 +53,8 @@ function loadTemplateVersions() {
 //
 
 $tVars = array(
-	'home_url'	=> home,
-	'token'		=> genUToken('admin.templates'),
+	'home_url' => home,
+	'token' => genUToken('admin.templates'),
 );
 
 $tVars['siteTemplates'] = array();

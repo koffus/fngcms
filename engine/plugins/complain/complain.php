@@ -73,7 +73,7 @@ function plugin_complain_screen() {
  'title' => $crow['n_title'],
  'link' => newsGenerateLink(array('catid' => $crow['n_catid'], 'alt_name' => $crow['n_alt_name'], 'id' => $crow['n_id'], 'postdate' => $crow['n_postdate']), false, 0, true),
  'publisher_name' => $crow['publisher_id']?$crow['publisher_name']:'',
- 'publisher_ip'	=> $crow['publisher_ip'],
+ 'publisher_ip' => $crow['publisher_ip'],
  'author_name' => $crow['author_name'],
  'owner_name' => $crow['owner_id']?'<b>'.$crow['owner_name'].'</b>':__('complain:noowner'),
  'status' => $lang['complain:status.'.$crow['status']],

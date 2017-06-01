@@ -115,20 +115,20 @@ function pm_inbox (){
 		}
 
 		$tEntries [] = array(
-			'php_self'	=>	$PHP_SELF,
-			'pmid'		=>	$row['id'],
-			'pmdate'	=>	$row['date'],
-			'subject'	=>	$row['subject'],
-			'link'		=>	$author,
-			'viewed'	=>	$row['viewed'],
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['id'],
+			'pmdate' => $row['date'],
+			'subject' => $row['subject'],
+			'link' => $author,
+			'viewed' => $row['viewed'],
 		);
 		
 	}
 
 	$tVars = array(
-		'php_self'	=>	$PHP_SELF,
-		'entries'	=>	$tEntries,
-		'tpl_url'	=>	tpl_url,
+		'php_self' => $PHP_SELF,
+		'entries' => $tEntries,
+		'tpl_url' => tpl_url,
 	);
 	
 	$pages_count = ceil($countMsg / $msg_per_page);
@@ -178,19 +178,19 @@ function pm_outbox (){
 		}
 
 		$tEntries [] = array(
-			'php_self'	=>	$PHP_SELF,
-			'pmid'		=>	$row['id'],
-			'pmdate'	=>	$row['date'],
-			'subject'	=>	$row['subject'],
-			'link'		=>	$author
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['id'],
+			'pmdate' => $row['date'],
+			'subject' => $row['subject'],
+			'link' => $author
 		);
 
 	} 
 
 	$tVars = array(
-		'php_self'	=>	$PHP_SELF,
-		'entries'	=>	$tEntries,
-		'tpl_url'	=>	tpl_url,
+		'php_self' => $PHP_SELF,
+		'entries' => $tEntries,
+		'tpl_url' => tpl_url,
 	);
 	
 	$pages_count = ceil($countMsg / $msg_per_page);
@@ -219,12 +219,12 @@ function pm_read(){
 	{
 		
 		$tVars = array(
-			'php_self'		=>	$PHP_SELF,
-			'pmid'			=>	$row['id'],
-			'subject'		=>	$row['subject'],
-			'location'		=>	$row['folder'],
-			'pmdate'		=>	$row['date'],
-			'content'		=>	$parse->htmlformatter($parse->smilies($parse->bbcodes($row['message'])))
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['id'],
+			'subject' => $row['subject'],
+			'location' => $row['folder'],
+			'pmdate' => $row['date'],
+			'content' => $parse->htmlformatter($parse->smilies($parse->bbcodes($row['message'])))
 		);
 
 		$author = '';
@@ -307,9 +307,9 @@ function pm_write(){
 	$tpath = locatePluginTemplates(array('write'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
 
 	$tVars = array(
-		'php_self'	=>	$PHP_SELF,
-		'username'	=>	trim($_REQUEST['name']),
-		'quicktags'	=>	BBCodes('pm_content')
+		'php_self' => $PHP_SELF,
+		'username' => trim($_REQUEST['name']),
+		'quicktags' => BBCodes('pm_content')
 	);
 	
 	$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, "'pm_content'") : '';
@@ -398,11 +398,11 @@ function pm_reply(){
 		}
 
 		$tVars = array(
-			'php_self'		=>	$PHP_SELF,
-			'pmid'			=>	$row['id'],
-			'title'			=>	'Re:'.$row['subject'],
-			'to_username'	=>	$row['from_id'],
-			'quicktags'		=>	BBCodes('pm_content')
+			'php_self' => $PHP_SELF,
+			'pmid' => $row['id'],
+			'title' => 'Re:'.$row['subject'],
+			'to_username' => $row['from_id'],
+			'quicktags' => BBCodes('pm_content')
 		);
 
 		$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, "'pm_content'") : '';
@@ -435,8 +435,8 @@ function pm_set(){
 	$tpath = locatePluginTemplates(array('set'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
 	
 	$tVars = array(
-		'php_self'	=>	$PHP_SELF,
-		'checked'	=> $checked ? 'checked="checked"' : ''
+		'php_self' => $PHP_SELF,
+		'checked' => $checked ? 'checked="checked"' : ''
 	);
 
 		

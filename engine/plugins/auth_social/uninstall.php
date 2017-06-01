@@ -5,8 +5,8 @@ if (!defined('NGCMS')) die ('HAL');
 
 $db_update = array(
 	array(
-		'table'		=>	'users',
-		'action'	=>	'modify',
+		'table' => 'users',
+		'action' => 'modify',
 		'fields' => array(
  array('action' => 'drop', 'name' => 'provider', 'type' => 'varchar(255)', 'params' => 'DEFAULT \'\''),
  array('action' => 'drop', 'name' => 'social_id', 'type' => 'text', 'params' => 'DEFAULT \'\''),

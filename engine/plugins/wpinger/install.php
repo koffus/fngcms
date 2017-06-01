@@ -25,8 +25,8 @@ function plugin_wpinger_install($action) {
 		case 'apply':
 			// Now we need to set some default params
 			$params = array(
-				'proxy'		=> 1,
-				'urls'		=> "http://ping.blogs.yandex.ru/RPC2\nhttp://blogsearch.google.ru/ping/RPC2",
+				'proxy' => 1,
+				'urls' => "http://ping.blogs.yandex.ru/RPC2\nhttp://blogsearch.google.ru/ping/RPC2",
 			);
 
 			foreach ($params as $k => $v) {

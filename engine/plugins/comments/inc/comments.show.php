@@ -22,7 +22,7 @@ if (!defined('NGCMS')) die ('HAL');
 //		'limitStart' => order comment no to start (for pagination)
 //		'limitCount' => number of comments to show (for pagination)
 //		'outprint'	 => flag: if set, output will be returned, elsewhere - will be added to mainblock
-//		'total'		=> total number of comments in this news
+//		'total' => total number of comments in this news
 function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams = array()){
 	global $mysql, $tpl, $template, $config, $userROW, $parse, $PFILTERS, $TemplateCache;
 
@@ -218,9 +218,9 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
 // $callingParams
 //		'plugin' => if is called from plugin - ID of plugin
-//		'overrideTemplateName'	=> alternative template for display
-//		'overrideTemplatePath'	=> alternative path for searching of template
-//		'noajax'		=> DISABLE AJAX mode
+//		'overrideTemplateName' => alternative template for display
+//		'overrideTemplatePath' => alternative path for searching of template
+//		'noajax' => DISABLE AJAX mode
 //		'outprint'	 	=> flag: if set, output will be returned, elsewhere - will be added to mainblock
 function comments_showform($newsID, $callingParams = array()){
 	global $mysql, $config, $template, $tpl, $userROW, $PFILTERS;

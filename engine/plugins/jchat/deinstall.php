@@ -10,12 +10,12 @@ Lang::loadPlugin('jchat', 'config', '', '', ':');
 
 $db_update = array(
 	array(
-		'table'		=>	'jchat',
-		'action'	=>	'drop',
+		'table' => 'jchat',
+		'action' => 'drop',
 	),
 	array(
-		'table'		=>	'jchat_events',
-		'action'	=>	'drop',
+		'table' => 'jchat_events',
+		'action' => 'drop',
 	),
 );
 

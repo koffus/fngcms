@@ -46,7 +46,7 @@ function plugin_faq_addForm($tpl_name, $info = array()) {
 
 
 	$tVars = array(
-		'info'		=> $info,
+		'info' => $info,
 	);
 
 	$tpath = locatePluginTemplates(array($tpl_name), 'faq', pluginGetVariable('faq', 'localsource'));

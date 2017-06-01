@@ -66,14 +66,14 @@ $SYSTEM_FLAGS['info']['title']['header'] = home_title;
 
 // Initialize main template array
 $template = array(
-	'vars'	=> array(
-		'what'			=>	engineName,
-		'version'		=>	engineVersion,
-		'home'			=>	home,
-		'titles'		=>	home_title,
-		'home_title'	=>	home_title,
-		'mainblock'	=>	'',
-		'htmlvars'	=>	 '',
+	'vars' => array(
+		'what' => engineName,
+		'version' => engineVersion,
+		'home' => home,
+		'titles' => home_title,
+		'home_title' => home_title,
+		'mainblock' => '',
+		'htmlvars' =>  '',
 	),
 );
 
@@ -177,7 +177,7 @@ foreach ($EXTRA_CSS as $css => $null)
 	$EXTRA_HTML_VARS[] = array('type' => 'css', 'data' => $css);
 
 // Generate metatags
-array_unshift($EXTRA_HTML_VARS, array('type' => 'plain', 'data' => GetMetatags())); //$EXTRA_HTML_VARS[]=array('type'=>'plain','data'=>GetMetatags());
+array_unshift($EXTRA_HTML_VARS, array('type' => 'plain', 'data' => GetMetatags())); //$EXTRA_HTML_VARS[]=array('type' =>'plain','data' =>GetMetatags());
 
 // Fill additional HTML vars
 $htmlrow = array();

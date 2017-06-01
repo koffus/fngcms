@@ -134,7 +134,7 @@ function generate_reg_page($params, $values = array(), $msg = '') {
 
 	$tVars = array(
 		'entries' => array(),
-		'flags'	=> array(),
+		'flags' => array(),
 	);
 
 	if ($msg) { msg(array('message' => $msg)); }
@@ -142,17 +142,17 @@ function generate_reg_page($params, $values = array(), $msg = '') {
 	// prepare variable list
 	foreach($params as $param) {
 		$tRow = array(
-			'name'		=> $param['name'],
-			'title'		=> $param['title'],
-			'descr'		=> $param['descr'],
-			'error'		=> '',
-			'input'		=> '',
-			'flags'		=> array(),
-			'type'		=> $param['type'],
-			'html_flags'	=> $param['html_flags'],
-			'value'		=> $param['value'],
-			'values'	=> $param['values'],
-			'manual'	=> $param['manual'],
+			'name' => $param['name'],
+			'title' => $param['title'],
+			'descr' => $param['descr'],
+			'error' => '',
+			'input' => '',
+			'flags' => array(),
+			'type' => $param['type'],
+			'html_flags' => $param['html_flags'],
+			'value' => $param['value'],
+			'values' => $param['values'],
+			'manual' => $param['manual'],
 		);
 
 		if (isset($param['id']) && $param['id'])
@@ -214,15 +214,15 @@ function generate_reg_page($params, $values = array(), $msg = '') {
 	);
 
 	$conversionConfig = array(
-		'{form_action}'		=> '{{ form_action }}',
+		'{form_action}' => '{{ form_action }}',
 	);
 
 	$conversionConfigEntries = array(
-		'{name}'		=> '{{ entry.name }}',
-		'{title}'		=> '{{ entry.title }}',
-		'{descr}'		=> '{{ entry.descr }}',
-		'{error}'		=> '{{ entry.error }}',
-		'{input}'		=> '{{ entry.input }}',
+		'{name}' => '{{ entry.name }}',
+		'{title}' => '{{ entry.title }}',
+		'{descr}' => '{{ entry.descr }}',
+		'{error}' => '{{ entry.error }}',
+		'{input}' => '{{ entry.input }}',
 	);
 
 	$twigLoader->setConversion('registration.tpl', $conversionConfig, $conversionConfigRegex);
@@ -322,7 +322,7 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
 
 	foreach($params as $param) {
 		$tvars['vars'] = array(
-			'name'	=> $param['name'],
+			'name' => $param['name'],
 			'title' => $param['title'],
 			'descr' => $param['descr'],
 			'error' => '',

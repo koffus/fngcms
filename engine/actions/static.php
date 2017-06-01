@@ -51,11 +51,11 @@ function listStatic() {
 		$nCount++;
 
 		$tEntry = array(
-			'home'		=>	home,
-			'id'		=>	$row['id'],
-			'alt_name'	=>	$row['alt_name'],
-			'template'	=>	($row['template']=='')?'--':$row['template'],
-			'date'		=> 	($row['postdate']> 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
+			'home' => home,
+			'id' => $row['id'],
+			'alt_name' => $row['alt_name'],
+			'template' => ($row['template']=='')?'--':$row['template'],
+			'date' => 	($row['postdate']> 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
 		);
 
 		if (mb_strlen($row['title'], 'UTF-8') > 70) {
@@ -74,13 +74,13 @@ function listStatic() {
 	}
 
 	$tVars = array (
-		'php_self'		=>	$PHP_SELF,
-		'per_page'		=>	$per_page,
-		'entries'		=>	$tEntries,
-		'token'			=> genUToken('admin.static'),
-		'perm'			=> array(
-			'details'		=> $permDetails,
-			'modify'		=> $permModify,
+		'php_self' => $PHP_SELF,
+		'per_page' => $per_page,
+		'entries' => $tEntries,
+		'token' => genUToken('admin.static'),
+		'perm' => array(
+			'details' => $permDetails,
+			'modify' => $permModify,
 		)
 	);
 
@@ -247,39 +247,39 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 
 	// Fill basic variables
 	$tVars = array(
-		'php_self'			=>	$PHP_SELF,
-		'quicktags'			=>	QuickTags('currentInputAreaID', 'static'),
+		'php_self' => $PHP_SELF,
+		'quicktags' => QuickTags('currentInputAreaID', 'static'),
 		'token'				=> genUToken('admin.static'),
-		'smilies'			=> $config['use_smilies']?InsertSmilies('content', 20):'',
-		'templateList'		=> staticTemplateList(),
+		'smilies' => $config['use_smilies']?InsertSmilies('content', 20):'',
+		'templateList' => staticTemplateList(),
 		'flags'				=> array(
-			'editMode'			=> $editMode,
-			'canAdd'			=> $perm['add'],
-			'canModify'			=> $perm['modify'],
-			'canPublish'		=> $perm['publish'],
-			'canUnpublish'		=> $perm['unpublish'],
-			'canHTML'			=> $perm['html'],
-			'canTemplate'		=> $perm['template'],
-			'canTemplateMain'	=> $perm['template.main'],
+			'editMode' => $editMode,
+			'canAdd' => $perm['add'],
+			'canModify' => $perm['modify'],
+			'canPublish' => $perm['publish'],
+			'canUnpublish' => $perm['unpublish'],
+			'canHTML' => $perm['html'],
+			'canTemplate' => $perm['template'],
+			'canTemplateMain' => $perm['template.main'],
 			'meta'				=> $config['meta'],
 			'html'				=> $perm['html'],
-			'isPublished'		=> ($editMode && ($origRow['approve']))?1:0,
+			'isPublished' => ($editMode && ($origRow['approve']))?1:0,
 		)
 	);
 	// Fill data entry
 	$tVars['data']			= array(
-			'id'				=>	$row['id'],
-			'title'				=>	secure_html(getIsSet($row['title'])),
-			'content'			=>	secure_html(getIsSet($row['content'])),
-			'alt_name'			=>	getIsSet($row['alt_name']),
-			'template'			=>	getIsSet($row['template']),
-			'description'		=>	getIsSet($row['description']),
-			'keywords'			=>	getIsSet($row['keywords']),
+			'id'				=> $row['id'],
+			'title'				=> secure_html(getIsSet($row['title'])),
+			'content' => secure_html(getIsSet($row['content'])),
+			'alt_name' => getIsSet($row['alt_name']),
+			'template' => getIsSet($row['template']),
+			'description' => getIsSet($row['description']),
+			'keywords' => getIsSet($row['keywords']),
 			'cdate'				=> !empty($row['postdate'])?date('d.m.Y H:i', $row['postdate']):"",
-			'flag_published'		=> getIsSet($row['approve']) ? $row['approve'] : 1,
+			'flag_published' => getIsSet($row['approve']) ? $row['approve'] : 1,
 			'flag_raw'				=> (getIsSet($row['flags']) % 2)?1:0,
 			'flag_html'				=> ((getIsSet($row['flags'])/2) % 2)?1:0,
-			'flag_template_main'	=> ((getIsSet($row['flags'])/4) % 2)?1:0,
+			'flag_template_main' => ((getIsSet($row['flags'])/4) % 2)?1:0,
 		);
 
 	if ($editMode && ($origRow['approve'])) {

@@ -545,9 +545,9 @@ class parse {
 						$fsize = (file_exists($fname) && ($fsize = @filesize($fname)))?Formatsize($fsize):'n/a';
 
 						$params = array(
-							'url'	=> ($rec['storage']?$config['attach_url']:$config['files_url']).'/'.$rec['folder'].'/'.$rec['name'],
-							'title'	=> ($title=='')?$rec['orig_name']:$title,
-							'size'	=> $fsize
+							'url' => ($rec['storage']?$config['attach_url']:$config['files_url']).'/'.$rec['folder'].'/'.$rec['name'],
+							'title' => ($title=='')?$rec['orig_name']:$title,
+							'size' => $fsize
 						);
 						array_push($rdest, str_replace(array('{url}', '{title}', '{size}'), array($params['url'], $params['title'], $params['size']), $templateVariables['bbcodes']['attach.format']));
 					} else {

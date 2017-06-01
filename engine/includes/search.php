@@ -137,9 +137,9 @@ function search_news() {
 	$tableVars['searchSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? '  checked="checked"' : '';
 	$tableVars['pagination'] = $tableVars['pages']['output'];
 	$tableVars['flags'] = array(
-		'found'			=> (count($search_array) and $tableVars['count']) ? 1 : 0,
-		'notfound'	=> (count($search_array) and !$tableVars['count']) ? 1 : 0,
-		'error'	=> ( ($submit and $search and !count($search_array)) or ($submit and empty($search)) ) ? 1 : 0,
+		'found' => (count($search_array) and $tableVars['count']) ? 1 : 0,
+		'notfound' => (count($search_array) and !$tableVars['count']) ? 1 : 0,
+		'error' => ( ($submit and $search and !count($search_array)) or ($submit and empty($search)) ) ? 1 : 0,
 		);
 
 	// Make category list

@@ -11,8 +11,8 @@ Lang::loadPlugin('complain', 'config', '', '', ':');
 
 $db_update = array(
 	array(
-		'table'		=>	'complain',
-		'action'	=>	'drop',
+		'table' => 'complain',
+		'action' => 'drop',
 	),
 );
 

@@ -12,13 +12,13 @@ Lang::loadPlugin($plugin, 'main');
 
 $db_update = array(
 	array(
-		'table'		=>	'tracker_magnets',
-		'action'	=>	'drop',
+		'table' => 'tracker_magnets',
+		'action' => 'drop',
 	),
 	array(
-		'table'		=>	'news',
-		'action'	=>	'modify',
-		'fields'	=>	array(
+		'table' => 'news',
+		'action' => 'modify',
+		'fields' => array(
 			array('action' => 'drop', 'name' => 'tracker_fileid'),
 			array('action' => 'drop', 'name' => 'tracker_magnetid'),
 			array('action' => 'drop', 'name' => 'tracker_infohash'),

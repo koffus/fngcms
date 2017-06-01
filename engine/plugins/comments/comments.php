@@ -38,14 +38,14 @@ class CommentsNewsFilter extends NewsFilter {
 			if ($config['use_smilies'])			{ $text = $parse -> smilies($text); }
 
 			$txvars['vars'] = array(
-				'php_self'		=>	$PHP_SELF,
-				'com_author'	=>	$crow['author'],
-				'com_post'		=>	$crow['post'],
-				'com_url'		=>	($crow['url']) ? $crow['url'] : $PHP_SELF.'?mod=users&action=edituser&id='.$crow['author_id'],
-				'com_id'		=>	$crow['id'],
-				'com_ip'		=>	$crow['ip'],
-				'com_time'		=>	Lang::retDate(pluginGetVariable('comments','timestamp'), $crow['postdate']),
-				'com_part'		=>	$text
+				'php_self' => $PHP_SELF,
+				'com_author' => $crow['author'],
+				'com_post' => $crow['post'],
+				'com_url' => ($crow['url']) ? $crow['url'] : $PHP_SELF.'?mod=users&action=edituser&id='.$crow['author_id'],
+				'com_id' => $crow['id'],
+				'com_ip' => $crow['ip'],
+				'com_time' => Lang::retDate(pluginGetVariable('comments','timestamp'), $crow['postdate']),
+				'com_part' => $text
 			);
 
 			if ($crow['reg']) {
@@ -282,9 +282,9 @@ function plugin_comments_add() {
 				$callingCommentsParams['overrideTemplatePath'] = $templatePath.'/ncustom/'.$ctname;
 		}
 		$output = array(
-			'status'	=> 1,
-			'rev'		=> intval(pluginGetVariable('comments', 'backorder')),
-			'data'		=> comments_show($SQLnews['id'], $commentId, $SQLnews['com']+1, $callingCommentsParams)
+			'status' => 1,
+			'rev' => intval(pluginGetVariable('comments', 'backorder')),
+			'data' => comments_show($SQLnews['id'], $commentId, $SQLnews['com']+1, $callingCommentsParams)
 			);
 
 		print json_encode($output);
@@ -305,10 +305,10 @@ function plugin_comments_add() {
 		} else {
 			// NON-AJAX MODE
 			$tavars = array( 'vars' => array(
-				'title'		=> __('comments:err.redir.title'),
-				'message'	=> $template['vars']['mainblock'],
-				'link'		=> secure_html(($_REQUEST['referer'])?$_REQUEST['referer']:'/'),
-				'linktext'	=> __('comments:err.redir.url'),
+				'title' => __('comments:err.redir.title'),
+				'message' => $template['vars']['mainblock'],
+				'link' => secure_html(($_REQUEST['referer'])?$_REQUEST['referer']:'/'),
+				'linktext' => __('comments:err.redir.url'),
 			));
 			$tpl -> template('redirect', tpl_site);
 			$tpl -> vars('redirect', $tavars);
@@ -473,8 +473,8 @@ function plugin_comments_delete(){
 		}
 
 		$tavars = array( 'vars' => array(
-			'message'	=> $output['data'],
-			'link'		=> $url,
+			'message' => $output['data'],
+			'link' => $url,
 		));
 
 		// If ok - redirect to news

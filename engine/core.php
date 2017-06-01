@@ -72,15 +72,15 @@ $SUPRESS_MAINBLOCK_SHOW = 0;
 $CurrentHandler			= array();
 $TemplateCache			= array();
 $SYSTEM_FLAGS			= array(
-	'actions.disabled'	=> array(),
-	'http.headers'		=> array(
-		'content-type'		=> 'text/html; charset=UTF-8',
-		'cache-control'		=> 'private',
+	'actions.disabled' => array(),
+	'http.headers' => array(
+		'content-type' => 'text/html; charset=UTF-8',
+		'cache-control' => 'private',
 	)
 );
 
 $twigGlobal = array(
-	'flags'	=> array(
+	'flags' => array(
 		'isLogged' => 0,
 	),
 );
@@ -88,21 +88,21 @@ $twigGlobal = array(
 // List of DataSources
 $DSlist = array(
 	'news' 				=> 1,
-	'categories'		=> 2,
-	'comments'			=> 3,
+	'categories' => 2,
+	'comments' => 3,
 	'users'				=> 4,
 	'files'				=> 10,
-	'images'			=> 11,
-	'#xfields:tdata'	=> 51,
+	'images' => 11,
+	'#xfields:tdata' => 51,
 );
 
 $PLUGINS	= array(
-	'active'		=> array(),
-	'active:loaded'	=> 0,
-	'loaded'		=> array(),
-	'loaded:files'	=> array(),
-	'config'		=> array(),
-	'config:loaded'	=> 0,
+	'active' => array(),
+	'active:loaded' => 0,
+	'loaded' => array(),
+	'loaded:files' => array(),
+	'config' => array(),
+	'config:loaded' => 0,
 );
 
 // ===========================================================

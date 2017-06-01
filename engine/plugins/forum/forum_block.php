@@ -31,7 +31,7 @@ function forum_show_topics($params) {
 	$i=1;
 	foreach ($mysql->select('SELECT t.id as tid, t.title as Ttitle, t.l_author_id , t.l_author, t.int_views, t.int_post, t.c_data, f.id as fid, f.title as Ftitle FROM '.prefix.'_forum_topics AS t LEFT JOIN '.prefix.'_forum_forums AS f ON t.fid = f.id ORDER BY t.l_date DESC LIMIT '.$limit) as $row){
 		$last_topic[] = array(
-			'num'=>$i++,
+			'num' =>$i++,
 			'topic_link' => link_topic($row['tid'], 'last'),
 			'topic_date' => $row['c_data'],
 			'forum_link' => link_forum($row['fid']),
@@ -63,7 +63,7 @@ function forum_show_topics_top($params) {
 	foreach ($mysql->select('SELECT * FROM '.prefix.'_forum_topics ORDER BY int_views DESC LIMIT '.$limit) as $row){
 		
 		$entries[] = array(
-			'num'=>$i++,
+			'num' =>$i++,
 			'topic_link' => link_topic($row['id'], 'last'),
 			'subject' => $row['title'],
 			'profile_link' => link_profile($row['l_author_id'], '',$row['l_author'] ),
@@ -125,7 +125,7 @@ function forum_show_news($params)
 	foreach ($mysql->select('SELECT * FROM '.prefix.'_forum_news ORDER BY c_data LIMIT '.$limit) as $row){
 		$i++;
 		$entries[] = array(
-			'num'=> $i,
+			'num' => $i,
 			'news_id' => $row['id'],
 			'create_data' => $row['c_data'],
 			'title' => $row['title'],

@@ -91,14 +91,14 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 					$up = $fmanager->file_upload(
 						array(
 							'dsn' => true,
-							'linked_ds'		=> $dsID,
-							'linked_id'		=> $newsID,
-							'type'			=> 'image',
-							'http_var'		=> 'xfields_'.$id,
-							'http_varnum'	=> $iId,
-							'plugin'		=> 'xfields',
-							'pidentity'		=> $id,
-							'description'	=> (isset($_REQUEST['xfields_'.$id.'_adscr']) && is_array($_REQUEST['xfields_'.$id.'_adscr']) && isset($_REQUEST['xfields_'.$id.'_adscr'][$iId]))?($_REQUEST['xfields_'.$id.'_adscr'][$iId]):'',
+							'linked_ds' => $dsID,
+							'linked_id' => $newsID,
+							'type' => 'image',
+							'http_var' => 'xfields_'.$id,
+							'http_varnum' => $iId,
+							'plugin' => 'xfields',
+							'pidentity' => $id,
+							'description' => (isset($_REQUEST['xfields_'.$id.'_adscr']) && is_array($_REQUEST['xfields_'.$id.'_adscr']) && isset($_REQUEST['xfields_'.$id.'_adscr'][$iId]))?($_REQUEST['xfields_'.$id.'_adscr'][$iId]):'',
 						)
 					);
 
@@ -206,14 +206,14 @@ class XFieldsNewsFilter extends NewsFilter {
 					continue;
 
 				$xfEntry = array(
-					'title'		=>	$data['title'],
-					'id'		=>	$id,
-					'value'		=>	$xdata[$id],
-					'secure_value'	=> secure_html($xdata[$id]),
-					'data'		=> $data,
-					'required'	=>	$lang['xfields_fld_'.($data['required']?'required':'optional')],
-					'flags'		=>	array(
-						'required'	=>	$data['required']?true:false,
+					'title' => $data['title'],
+					'id' => $id,
+					'value' => $xdata[$id],
+					'secure_value' => secure_html($xdata[$id]),
+					'data' => $data,
+					'required' => $lang['xfields_fld_'.($data['required']?'required':'optional')],
+					'flags' => array(
+						'required' => $data['required']?true:false,
 					),
 				);
 
@@ -253,10 +253,10 @@ class XFieldsNewsFilter extends NewsFilter {
 						// Show entries for allowed number of attaches
 						for ($i = $iCount+1; $i <= intval($data['maxCount']); $i++) {
 							$tImage = array(
-								'number'	=>	$i,
-								'id'		=>	$id,
-								'flags'		=> array(
-									'exist'		=> false,
+								'number' => $i,
+								'id' => $id,
+								'flags' => array(
+									'exist' => false,
 								),
 							);
 							$tVars['images'][] = $tImage;
@@ -296,14 +296,14 @@ class XFieldsNewsFilter extends NewsFilter {
 				$flagTData = true;
 
 				$tclist[$fId] = array(
-					'title'		=> $fData['title'],
-					'required'	=> $fData['required'],
-					'type'		=> $fData['type'],
-					'default'	=> $fData['default'],
+					'title' => $fData['title'],
+					'required' => $fData['required'],
+					'type' => $fData['type'],
+					'default' => $fData['default'],
 				);
 				$thlist [] = array(
-					'id'	=> $fId,
-					'title'	=> $fData['title'],
+					'id' => $fId,
+					'title' => $fData['title'],
 				);
 				if ($fData['type'] == 'select') {
 					$tclist[$fId]['storekeys']	= $fData['storekeys'];
@@ -314,16 +314,16 @@ class XFieldsNewsFilter extends NewsFilter {
 		}
 
 		$tVars = array(
-		//	'entries'	=>	$xfEntries,
-			'xfGC'		=>	json_encode($xf['grp.news']),
-			'xfCat'		=>	json_encode($xfCategories),
-			'xfList'	=>	json_encode(array_keys($xf['news'])),
-			'xtableConf'	=>	json_encode($tclist),
-			'xtableVal'		=>	isset($_POST['xftable'])?$_POST['xftable']:json_encode($tlist),
-			'xtableHdr'		=>	$thlist,
-			'xtablecnt'		=>	count($thlist),
-			'flags'			=> array(
-				'tdata'			=> $flagTData,
+		//	'entries' => $xfEntries,
+			'xfGC' => json_encode($xf['grp.news']),
+			'xfCat' => json_encode($xfCategories),
+			'xfList' => json_encode(array_keys($xf['news'])),
+			'xtableConf' => json_encode($tclist),
+			'xtableVal' => isset($_POST['xftable'])?$_POST['xftable']:json_encode($tlist),
+			'xtableHdr' => $thlist,
+			'xtablecnt' => count($thlist),
+			'flags' => array(
+				'tdata' => $flagTData,
 			),
 		);
 
@@ -490,11 +490,11 @@ class XFieldsNewsFilter extends NewsFilter {
 				continue;
 
 			$xfEntry = array(
-				'title'		=>	$data['title'],
-				'id'		=>	$id,
-				'required'	=>	$lang['xfields_fld_'.($data['required']?'required':'optional')],
-				'flags'		=>	array(
-					'required'	=>	$data['required']?true:false,
+				'title' => $data['title'],
+				'id' => $id,
+				'required' => $lang['xfields_fld_'.($data['required']?'required':'optional')],
+				'flags' => array(
+					'required' => $data['required']?true:false,
 				),
 			);
 			switch ($data['type']) {
@@ -549,25 +549,25 @@ class XFieldsNewsFilter extends NewsFilter {
 							$iCount++;
 
 							$tImage = array(
-								'number'	=>	$iCount,
-								'id'		=>	$id,
-								'preview'	=>	array(
-									'width'		=>	$irow['p_width'],
-									'height'	=>	$irow['p_height'],
-									'url' 		=>	$config['attach_url'].'/'.$irow['folder'].'/thumb/'.$irow['name'],
+								'number' => $iCount,
+								'id' => $id,
+								'preview' => array(
+									'width' => $irow['p_width'],
+									'height' => $irow['p_height'],
+									'url' 		=> $config['attach_url'].'/'.$irow['folder'].'/thumb/'.$irow['name'],
 								),
-								'image'		=>	array(
-									'id'		=> $irow['id'],
-									'number'	=> $iCount,
-									'url'		=> $config['attach_url'].'/'.$irow['folder'].'/'.$irow['name'],
-									'width'		=> $irow['width'],
-									'height'	=> $irow['height'],
+								'image' => array(
+									'id' => $irow['id'],
+									'number' => $iCount,
+									'url' => $config['attach_url'].'/'.$irow['folder'].'/'.$irow['name'],
+									'width' => $irow['width'],
+									'height' => $irow['height'],
 								),
-								'flags'		=> array(
-									'preview'	=> $irow['preview']?true:false,
-									'exist'		=> true,
+								'flags' => array(
+									'preview' => $irow['preview']?true:false,
+									'exist' => true,
 								),
-								'description'	=> secure_html($irow['description']),
+								'description' => secure_html($irow['description']),
 							);
 							$tVars['images'][] = $tImage;
 						}
@@ -576,10 +576,10 @@ class XFieldsNewsFilter extends NewsFilter {
 					// Second - show entries for allowed number of attaches
 					for ($i = $iCount+1; $i <= intval($data['maxCount']); $i++) {
 						$tImage = array(
-							'number'	=>	$i,
-							'id'		=>	$id,
-							'flags'		=> array(
-								'exist'		=> false,
+							'number' => $i,
+							'id' => $id,
+							'flags' => array(
+								'exist' => false,
 							),
 						);
 						$tVars['images'][] = $tImage;
@@ -629,14 +629,14 @@ class XFieldsNewsFilter extends NewsFilter {
 				$flagTData = true;
 
 				$tclist[$fId] = array(
-					'title'		=> $fData['title'],
-					'required'	=> $fData['required'],
-					'type'		=> $fData['type'],
-					'default'	=> $fData['default'],
+					'title' => $fData['title'],
+					'required' => $fData['required'],
+					'type' => $fData['type'],
+					'default' => $fData['default'],
 				);
 				$thlist [] = array(
-					'id'	=> $fId,
-					'title'	=> $fData['title'],
+					'id' => $fId,
+					'title' => $fData['title'],
 				);
 				if ($fData['type'] == 'select') {
 					$tclist[$fId]['storekeys']	= $fData['storekeys'];
@@ -648,16 +648,16 @@ class XFieldsNewsFilter extends NewsFilter {
 
 		// Prepare personal [group] variables
 		$tVars = array(
-		//	'entries'		=>	$xfEntries[0],
-			'xfGC'			=>	json_encode($xf['grp.news']),
-			'xfCat'			=>	json_encode($xfCategories),
-			'xfList'		=>	json_encode(array_keys($xf['news'])),
-			'xtableConf'	=>	json_encode($tclist),
-			'xtableVal'		=>	json_encode($tlist),
-			'xtableHdr'		=>	$thlist,
-			'xtablecnt'		=>	count($thlist),
-			'flags'			=> array(
-				'tdata'		=> $flagTData,
+		//	'entries' => $xfEntries[0],
+			'xfGC' => json_encode($xf['grp.news']),
+			'xfCat' => json_encode($xfCategories),
+			'xfList' => json_encode(array_keys($xf['news'])),
+			'xtableConf' => json_encode($tclist),
+			'xtableVal' => json_encode($tlist),
+			'xtableHdr' => $thlist,
+			'xtablecnt' => count($thlist),
+			'flags' => array(
+				'tdata' => $flagTData,
 			),
 		);
 
@@ -922,27 +922,27 @@ class XFieldsNewsFilter extends NewsFilter {
 
 						// Scan for images and prepare data for template show
 						$tiVars = array(
-							'fieldName'		=> $k,
-							'fieldTitle'	=> secure_html($v['title']),
-							'fieldType'		=> $v['type'],
-							'entriesCount'	=> count($imglist),
-							'entries'		=> array(),
-							'execStyle'		=> $mode['style'],
-							'execPlugin'	=> $mode['plugin'],
+							'fieldName' => $k,
+							'fieldTitle' => secure_html($v['title']),
+							'fieldType' => $v['type'],
+							'entriesCount' => count($imglist),
+							'entries' => array(),
+							'execStyle' => $mode['style'],
+							'execPlugin' => $mode['plugin'],
 						);
 						foreach ($imglist as $imgInfo) {
 							$tiEntry = array(
-								'url'			=> ($imgInfo['storage']?$config['attach_url']:$config['images_url']).'/'.$imgInfo['folder'].'/'.$imgInfo['name'],
-								'width'			=> $imgInfo['width'],
-								'height'		=> $imgInfo['height'],
-								'pwidth'		=> $imgInfo['p_width'],
-								'pheight'		=> $imgInfo['p_height'],
-								'name'			=> $imgInfo['name'],
-								'origName'		=> secure_html($imgInfo['orig_name']),
-								'description'	=> secure_html($imgInfo['description']),
+								'url' => ($imgInfo['storage']?$config['attach_url']:$config['images_url']).'/'.$imgInfo['folder'].'/'.$imgInfo['name'],
+								'width' => $imgInfo['width'],
+								'height' => $imgInfo['height'],
+								'pwidth' => $imgInfo['p_width'],
+								'pheight' => $imgInfo['p_height'],
+								'name' => $imgInfo['name'],
+								'origName' => secure_html($imgInfo['orig_name']),
+								'description' => secure_html($imgInfo['description']),
 
-								'flags'		=> array(
-									'hasPreview'	=> $imgInfo['preview'],
+								'flags' => array(
+									'hasPreview' => $imgInfo['preview'],
 								),
 							);
 
@@ -1010,9 +1010,9 @@ class XFieldsNewsFilter extends NewsFilter {
 			$npp = 1;
 			foreach ($mysql->select("select * from ".prefix."_xfields where (linked_ds = 1) and (linked_id = ".db_squote($newsID).") order by id", 1) as $trec) {
 				$xrec = array(
-					'num'	=> ($npp++),
-					'id'	=> $trec['id'],
-					'flags'	=> array(),
+					'num' => ($npp++),
+					'id' => $trec['id'],
+					'flags' => array(),
 				);
 
 				foreach ($xf['tdata'] as $tid => $tval) {
@@ -1086,14 +1086,14 @@ if (getPluginStatusActive('uprofile')) {
 
 				//print "FLD: [$id]<br>\n";
 				$xfEntry = array(
-					'title'		=>	$data['title'],
-					'id'		=>	$id,
-					'value'		=>	$xdata[$id],
-					'secure_value'	=>	secure_html($xdata[$id]),
-					'data'		=>	$data,
-					'required'	=>	$lang['xfields_fld_'.($data['required']?'required':'optional')],
-					'flags'		=>	array(
-						'required'	=>	$data['required']?true:false,
+					'title' => $data['title'],
+					'id' => $id,
+					'value' => $xdata[$id],
+					'secure_value' => secure_html($xdata[$id]),
+					'data' => $data,
+					'required' => $lang['xfields_fld_'.($data['required']?'required':'optional')],
+					'flags' => array(
+						'required' => $data['required']?true:false,
 					),
 				);
 				switch ($data['type']) {
@@ -1131,23 +1131,23 @@ if (getPluginStatusActive('uprofile')) {
 								$iCount++;
 
 								$tImage = array(
-									'number'	=>	$iCount,
-									'id'		=>	$id,
-									'preview'	=>	array(
-										'width'		=>	$irow['p_width'],
-										'height'	=>	$irow['p_height'],
-										'url' 		=>	$config['attach_url'].'/'.$irow['folder'].'/thumb/'.$irow['name'],
+									'number' => $iCount,
+									'id' => $id,
+									'preview' => array(
+										'width' => $irow['p_width'],
+										'height' => $irow['p_height'],
+										'url' 		=> $config['attach_url'].'/'.$irow['folder'].'/thumb/'.$irow['name'],
 									),
-									'image'		=>	array(
-										'id'		=> $irow['id'],
-										'number'	=> $iCount,
-										'url'		=> $config['attach_url'].'/'.$irow['folder'].'/'.$irow['name'],
-										'width'		=> $irow['width'],
-										'height'	=> $irow['height'],
+									'image' => array(
+										'id' => $irow['id'],
+										'number' => $iCount,
+										'url' => $config['attach_url'].'/'.$irow['folder'].'/'.$irow['name'],
+										'width' => $irow['width'],
+										'height' => $irow['height'],
 									),
-									'flags'		=> array(
-										'preview'	=> $irow['preview']?true:false,
-										'exist'		=> true,
+									'flags' => array(
+										'preview' => $irow['preview']?true:false,
+										'exist' => true,
 									),
 								);
 								$tVars['images'][] = $tImage;
@@ -1157,10 +1157,10 @@ if (getPluginStatusActive('uprofile')) {
 						// Second - show entries for allowed number of attaches
 						for ($i = $iCount+1; $i <= intval($data['maxCount']); $i++) {
 							$tImage = array(
-								'number'	=>	$i,
-								'id'		=>	$id,
-								'flags'		=> array(
-									'exist'		=> false,
+								'number' => $i,
+								'id' => $id,
+								'flags' => array(
+									'exist' => false,
 								),
 							);
 							$tVars['images'][] = $tImage;
@@ -1348,27 +1348,27 @@ if (getPluginStatusActive('uprofile')) {
 
 							// Scan for images and prepare data for template show
 							$tiVars = array(
-								'fieldName'		=> $k,
-								'fieldTitle'	=> secure_html($v['title']),
-								'fieldType'		=> $v['type'],
-								'entriesCount'	=> count($imglist),
-								'entries'		=> array(),
-								'execStyle'		=> $mode['style'],
-								'execPlugin'	=> $mode['plugin'],
+								'fieldName' => $k,
+								'fieldTitle' => secure_html($v['title']),
+								'fieldType' => $v['type'],
+								'entriesCount' => count($imglist),
+								'entries' => array(),
+								'execStyle' => $mode['style'],
+								'execPlugin' => $mode['plugin'],
 							);
 							foreach ($imglist as $imgInfo) {
 								$tiEntry = array(
-									'url'			=> ($imgInfo['storage']?$config['attach_url']:$config['images_url']).'/'.$imgInfo['folder'].'/'.$imgInfo['name'],
-									'width'			=> $imgInfo['width'],
-									'height'		=> $imgInfo['height'],
-									'pwidth'		=> $imgInfo['p_width'],
-									'pheight'		=> $imgInfo['p_height'],
-									'name'			=> $imgInfo['name'],
-									'origName'		=> secure_html($imgInfo['orig_name']),
-									'description'	=> secure_html($imgInfo['description']),
+									'url' => ($imgInfo['storage']?$config['attach_url']:$config['images_url']).'/'.$imgInfo['folder'].'/'.$imgInfo['name'],
+									'width' => $imgInfo['width'],
+									'height' => $imgInfo['height'],
+									'pwidth' => $imgInfo['p_width'],
+									'pheight' => $imgInfo['p_height'],
+									'name' => $imgInfo['name'],
+									'origName' => secure_html($imgInfo['orig_name']),
+									'description' => secure_html($imgInfo['description']),
 
-									'flags'		=> array(
-										'hasPreview'	=> $imgInfo['preview'],
+									'flags' => array(
+										'hasPreview' => $imgInfo['preview'],
 									),
 								);
 
@@ -1489,8 +1489,8 @@ class XFieldsCoreFilter extends CoreFilter {
 			if ($v['regpage'] && !$v['disabled']) {
 				//print "$k: <pre>".var_export($v, true)."</pre>";
 				$tEntry = array(
-					'name'	=> 'xfield_'.$k,
-					'title'	=> $v['title'],
+					'name' => 'xfield_'.$k,
+					'title' => $v['title'],
 				);
 				switch ($v['type']) {
 					case 'text':

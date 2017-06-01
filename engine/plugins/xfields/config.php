@@ -95,20 +95,20 @@ function showFieldList(){
 		}
 
 		$xEntry = array(
-			'name'		=> $id,
-			'title'		=> $data['title'],
-			'type'		=> __('xfconfig')['type_'.$data['type']].$storage,
-			'default'	=> (($data['type']=="checkbox")?($data['default']?__('yesa'):__('noa')):($data['default'])),
-			'link'		=> '?mod=extra-config&plugin=xfields&action=edit&section='.$sectionID.'&field='.$id,
-			'linkup'	=> '?mod=extra-config&plugin=xfields&action=update&subaction=up&section='.$sectionID.'&field='.$id,
-			'linkdown'	=> '?mod=extra-config&plugin=xfields&action=update&subaction=down&section='.$sectionID.'&field='.$id,
-			'linkdel'	=> '?mod=extra-config&plugin=xfields&action=update&subaction=del&section='.$sectionID.'&field='.$id,
-			'area'		=> (intval($data['area'])>0)?intval($data['area']):'',
-			'flags'		=> array(
-				'required'	=> $data['required']?true:false,
-				'default'	=> (($data['default'] != '') or ($data['type']=="checkbox"))?true:false,
-				'disabled'	=> $data['disabled']?true:false,
-				'regpage'	=> $data['regpage']?true:false,
+			'name' => $id,
+			'title' => $data['title'],
+			'type' => __('xfconfig')['type_'.$data['type']].$storage,
+			'default' => (($data['type']=="checkbox")?($data['default']?__('yesa'):__('noa')):($data['default'])),
+			'link' => '?mod=extra-config&plugin=xfields&action=edit&section='.$sectionID.'&field='.$id,
+			'linkup' => '?mod=extra-config&plugin=xfields&action=update&subaction=up&section='.$sectionID.'&field='.$id,
+			'linkdown' => '?mod=extra-config&plugin=xfields&action=update&subaction=down&section='.$sectionID.'&field='.$id,
+			'linkdel' => '?mod=extra-config&plugin=xfields&action=update&subaction=del&section='.$sectionID.'&field='.$id,
+			'area' => (intval($data['area'])>0)?intval($data['area']):'',
+			'flags' => array(
+				'required' => $data['required']?true:false,
+				'default' => (($data['default'] != '') or ($data['type']=="checkbox"))?true:false,
+				'disabled' => $data['disabled']?true:false,
+				'regpage' => $data['regpage']?true:false,
 			),
 		);
 
@@ -126,9 +126,9 @@ function showFieldList(){
 		$output = __('xfconfig')['nof'];
 
 	$tVars = array(
-		'entries'		=> $xEntries,
-		'section_name'	=> __('xfconfig')['section.'.$sectionID],
-		'sectionID'		=> $sectionID,
+		'entries' => $xEntries,
+		'section_name' => __('xfconfig')['section.'.$sectionID],
+		'sectionID' => $sectionID,
 	);
 
 	foreach (array('news', 'grp.news', 'users', 'grp.users', 'tdata') as $cID)
@@ -160,16 +160,16 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$tVars['flags']['disabled'] = $data['disabled']?true:false;
 		$tVars['flags']['regpage'] = $data['regpage']?true:false;
 		$tVars = $tVars + array(
-			'id'			=>	$field,
-			'title'			=>	$data['title'],
-			'type'			=>	$data['type'],
-			'storage'		=>	intval($data['storage']),
-			'db_type'		=>	$data['db.type'],
-			'db_len'		=>	(intval($data['db.len'])>0)?intval($data['db.len']):'',
-			'area'			=>	(intval($data['area'])>0)?intval($data['area']):'',
-			'bb_support'	=> $data['bb_support']?'checked="checked"':'',
-			'html_support'	=> $data['html_support']?'checked="checked"':'',
-			'noformat'		=> $data['noformat']?'checked="checked"':'',
+			'id' => $field,
+			'title' => $data['title'],
+			'type' => $data['type'],
+			'storage' => intval($data['storage']),
+			'db_type' => $data['db.type'],
+			'db_len' => (intval($data['db.len'])>0)?intval($data['db.len']):'',
+			'area' => (intval($data['area'])>0)?intval($data['area']):'',
+			'bb_support' => $data['bb_support']?'checked="checked"':'',
+			'html_support' => $data['html_support']?'checked="checked"':'',
+			'noformat' => $data['noformat']?'checked="checked"':'',
 		);
 
 		$xsel = '';
@@ -245,15 +245,15 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		}
 
 		$tVars = $tVars + array(
-			'sOpts'		=> implode("\n", $sOpts),
- 'm_sOpts'		=> implode("\n", $m_sOpts),
-			'type_opts'	=> $xsel,
-			'storekeys_opts'	=> '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1"'.(($data['storekeys'])?' selected':'').'>'.__('xfconfig')['tselect_store_key'].'</option>',
-			'required_opts'		=> '<option value="0">'.__('noa').'</option><option value="1"'.(($data['required'])?' selected':'').'>'.__('yesa').'</option>',
-			'images'	=> array(
-				'maxCount'	=> intval($data['maxCount']),
-				'thumbWidth'	=> intval($data['thumbWidth']),
-				'thumbHeight'=> intval($data['thumbHeight']),
+			'sOpts' => implode("\n", $sOpts),
+ 'm_sOpts' => implode("\n", $m_sOpts),
+			'type_opts' => $xsel,
+			'storekeys_opts' => '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1"'.(($data['storekeys'])?' selected':'').'>'.__('xfconfig')['tselect_store_key'].'</option>',
+			'required_opts' => '<option value="0">'.__('noa').'</option><option value="1"'.(($data['required'])?' selected':'').'>'.__('yesa').'</option>',
+			'images' => array(
+				'maxCount' => intval($data['maxCount']),
+				'thumbWidth' => intval($data['thumbWidth']),
+				'thumbHeight' => intval($data['thumbHeight']),
 			),
 		);
 
@@ -291,14 +291,14 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$tVars['flags']['editmode'] = 0;
 		$tVars['flags']['disabled'] = false;
 		$tVars = $tVars + array(
-			'sOpts'		=> implode("\n", $sOpts),
- 'm_sOpts'		=> implode("\n", $m_sOpts),
-			'id'		=> '',
-			'title'		=> '',
-			'type'		=> 'text',
-			'storage'	=> '0',
-			'db_type'	=> '',
-			'db_len'	=> '',
+			'sOpts' => implode("\n", $sOpts),
+ 'm_sOpts' => implode("\n", $m_sOpts),
+			'id' => '',
+			'title' => '',
+			'type' => 'text',
+			'storage' => '0',
+			'db_type' => '',
+			'db_len' => '',
 		);
 
 		$xsel = '';
@@ -308,15 +308,15 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		}
 
 		$tVars = $tVars + array(
-			'type_opts'			=> $xsel,
-			'storekeys_opts'	=> '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1">'.__('xfconfig')['tselect_store_key'].'</option>',
-			'required_opts'		=> '<option value="0">'.__('noa').'</option><option value="1">'.__('yesa').'</option>',
-			'select_options'	=> '',
+			'type_opts' => $xsel,
+			'storekeys_opts' => '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1">'.__('xfconfig')['tselect_store_key'].'</option>',
+			'required_opts' => '<option value="0">'.__('noa').'</option><option value="1">'.__('yesa').'</option>',
+			'select_options' => '',
 
-			'images'			=> array(
-				'maxCount'	=> '1',
-				'thumbWidth'	=> '150',
-				'thumbHeight'=> '150',
+			'images' => array(
+				'maxCount' => '1',
+				'thumbWidth' => '150',
+				'thumbHeight' => '150',
 			),
 		);
 
@@ -623,10 +623,10 @@ function doAddEdit() {
 	}
 
 	$tVars = array (
-		'id'		=>	$field,
-		'sectionID'	=>	$sectionID,
-		'flags'		=>	array (
-			'editMode'	=> $editMode?true:false,
+		'id' => $field,
+		'sectionID' => $sectionID,
+		'flags' => array (
+			'editMode' => $editMode?true:false,
 		),
 	);
 

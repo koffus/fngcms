@@ -34,13 +34,13 @@ function ugroupList(){
 	$tEntries = array();
 	foreach ($UGROUP as $id => $grp) {
 		$tEntry		= array(
-			'id'		=> $id,
-			'identity'	=> $grp['identity'],
-			'name'		=> $grp['name'],
-			'count'		=> (isset($uCount[$id])&& $uCount[$id])?intval($uCount[$id]):0,
-			'flags'		=> array(
-				'canEdit'	=> $permDetails,
-				'canDelete'	=> (isset($uCount[$id]) and ($uCount[$id] < 1) and $permModify)?true:false,
+			'id' => $id,
+			'identity' => $grp['identity'],
+			'name' => $grp['name'],
+			'count' => (isset($uCount[$id])&& $uCount[$id])?intval($uCount[$id]):0,
+			'flags' => array(
+				'canEdit' => $permDetails,
+				'canDelete' => (isset($uCount[$id]) and ($uCount[$id] < 1) and $permModify)?true:false,
 			),
 		);
 
@@ -48,10 +48,10 @@ function ugroupList(){
 	}
 
 	$tVars = array(
-		'token'		=> genUToken('admin.ugroup'),
-		'entries'	=> $tEntries,
-		'flags'		=> array(
-			'canAdd'	=> $permModify,
+		'token' => genUToken('admin.ugroup'),
+		'entries' => $tEntries,
+		'flags' => array(
+			'canAdd' => $permModify,
 		),
 	);
 
@@ -88,7 +88,7 @@ function ugroupForm(){
 	}
 
 	$tVars = array(
-		'token'			=> genUToken('admin.ugroup'),
+		'token' => genUToken('admin.ugroup'),
 	);
 	if ($editMode) {
 		$eGroup = $UGROUP[$id];
@@ -110,8 +110,8 @@ function ugroupForm(){
 	}
 
 	$tVars['flags'] = array(
-		'editMode'	=> $editMode,
-		'canModify'	=> $permModify,
+		'editMode' => $editMode,
+		'canModify' => $permModify,
 	);
 
 	$xt = $twig->loadTemplate('skins/default/tpl/ugroup/addEdit.tpl');
@@ -198,8 +198,8 @@ function ugroupCommit(){
 	// ** PROCESS ADD **
 	if ($addMode) {
 		$newGroup = array(
-			'identity'	=> trim($_REQUEST['identity']),
-			'langName'	=> array(),
+			'identity' => trim($_REQUEST['identity']),
+			'langName' => array(),
 		);
 		if (is_array($_REQUEST['langname'])) {
 			foreach ($_REQUEST['langname'] as $lk => $lv) {

@@ -105,15 +105,15 @@ function feedback_locateTemplateFiles($tName, $flagHTML){
 	}
 
 	return array(
-		'site'	=> array(
-			'path'		=> $tpDisplayPath,
-			'file'		=> $tpDisplay,
-			'isFound'	=> $tpDisplayFound,
+		'site' => array(
+			'path' => $tpDisplayPath,
+			'file' => $tpDisplay,
+			'isFound' => $tpDisplayFound,
 		),
-		'mail'	=> array(
-			'path'		=> $tpMailPath,
-			'file'		=> $tpMail,
-			'isFound'	=> $tpMailFound,
+		'mail' => array(
+			'path' => $tpMailPath,
+			'file' => $tpMail,
+			'isFound' => $tpMailFound,
 		),
 	);
 }

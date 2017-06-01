@@ -53,14 +53,14 @@ function admCategoryAddForm(){
 	}
 
 	$tVars = array(
-		'php_self'	=>	$PHP_SELF,
-		'parent'	=>	makeCategoryList(array('name' => 'parent', 'doempty' => 1, 'resync' => ($_REQUEST['action']?1:0))),
-		'orderlist'	=>	OrderList(''),
-		'token'		=> genUToken('admin.categories'),
-		'tpl_list'	=> $tpl_list,
-		'template_mode'		=> $templateMode,
-		'flags'		=> array(
-			'haveMeta'	=> $config['meta']?1:0,
+		'php_self' => $PHP_SELF,
+		'parent' => makeCategoryList(array('name' => 'parent', 'doempty' => 1, 'resync' => ($_REQUEST['action']?1:0))),
+		'orderlist' => OrderList(''),
+		'token' => genUToken('admin.categories'),
+		'tpl_list' => $tpl_list,
+		'template_mode' => $templateMode,
+		'flags' => array(
+			'haveMeta' => $config['meta']?1:0,
 		),
 	);
 
@@ -81,22 +81,22 @@ function admCategoryAddForm(){
 function admCategoryAdd() {
 	global $mysql, $mod, $parse, $config, $AFILTERS;
 
-	$SQL			= array();
-	$SQL['name']	= secure_html($_REQUEST['name']);
-	$SQL['info']	= $_REQUEST['info'];
-	$SQL['alt']		= trim($_REQUEST['alt']);
-	$SQL['parent']	= intval($_REQUEST['parent']);
-	$SQL['icon']	= $_REQUEST['icon'];
-	$SQL['alt_url']	= $_REQUEST['alt_url'];
-	$SQL['orderby']	= $_REQUEST['orderby'];
-	$SQL['tpl']		= $_REQUEST['tpl'];
-	$SQL['number']	= intval($_REQUEST['number']);
+	$SQL = array();
+	$SQL['name'] = secure_html($_REQUEST['name']);
+	$SQL['info'] = $_REQUEST['info'];
+	$SQL['alt'] = trim($_REQUEST['alt']);
+	$SQL['parent'] = intval($_REQUEST['parent']);
+	$SQL['icon'] = $_REQUEST['icon'];
+	$SQL['alt_url'] = $_REQUEST['alt_url'];
+	$SQL['orderby'] = $_REQUEST['orderby'];
+	$SQL['tpl'] = $_REQUEST['tpl'];
+	$SQL['number'] = intval($_REQUEST['number']);
 
-	$SQL['flags']	= intval($_REQUEST['cat_show'])?'1':'0';
+	$SQL['flags'] = intval($_REQUEST['cat_show'])?'1':'0';
 	$SQL['flags'] .= (string) (abs(intval($_REQUEST['show_link'])<=2)?abs(intval($_REQUEST['show_link'])):'0');
 	$SQL['flags'] .= (string) (abs(intval($_REQUEST['template_mode'])<=2)?abs(intval($_REQUEST['template_mode'])):'0');
 
-	$category		= intval($_REQUEST['category']);
+	$category = intval($_REQUEST['category']);
 
 	// Check for permissions
 	if (!checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'modify')) {
@@ -131,7 +131,7 @@ function admCategoryAdd() {
 		}
 	} else {
 		// alt name was not set, generate new alt name in automatic mode
-		$SQL['alt']		= strtolower($parse->translit($SQL['name']));
+		$SQL['alt'] = strtolower($parse->translit($SQL['name']));
 
 		$i = '';
 		while ( is_array($mysql->record("select id from ".prefix."_category where alt = ".db_squote($SQL['alt'].$i)." limit 1")) ) {
@@ -141,8 +141,8 @@ function admCategoryAdd() {
 	}
 
 	if ($config['meta']) {
-		$SQL['description']	= $_REQUEST['description'] ? secure_html($_REQUEST['description']) : '';
-		$SQL['keywords']	= $_REQUEST['keywords'] ? secure_html($_REQUEST['keywords']) : '';
+		$SQL['description'] = $_REQUEST['description'] ? secure_html($_REQUEST['description']) : '';
+		$SQL['keywords'] = $_REQUEST['keywords'] ? secure_html($_REQUEST['keywords']) : '';
 	}
 
 	$pluginNoError = 1;
@@ -223,8 +223,8 @@ function admCategoryEditForm(){
 	global $mysql, $mod, $config, $twig, $AFILTERS, $PHP_SELF;
 
 	// Check for permissions
-	$permModify		= checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'modify');
-	$permDetails	= checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'details');
+	$permModify = checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'modify');
+	$permDetails = checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'details');
 
 	if (!$permModify && !$permDetails) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
@@ -253,28 +253,28 @@ function admCategoryEditForm(){
 	}
 
 	$tVars = array(
-		'php_self'		=>	$PHP_SELF,
-		'parent'		=> makeCategoryList(array('name' => 'parent', 'selected' => $row['parent'], 'skip' => $row['id'], 'doempty' => 1)),
-		'catid'			=>	$row['id'],
-		'name'			=>	$row['name'],
-		'alt'			=>	secure_html($row['alt']),
-		'alt_url'		=>	secure_html($row['alt_url']),
-		'orderlist'		=>	OrderList($row['orderby'], true),
-		'description'	=>	$row['description'],
-		'keywords'		=>	$row['keywords'],
-		'icon'			=>	secure_html($row['icon']),
-		'tpl_value'		=>	secure_html($row['tpl']),
-		'number'		=>	$row['number'],
-		'show_link'		=> $showLink,
-		'template_mode'	=> $templateMode,
-		'tpl_list'		=>	$tpl_list,
-		'info'			=>	secure_html($row['info']),
-		'token'			=> genUToken('admin.categories'),
-		'flags'		=> array(
-			'haveMeta'		=> $config['meta']?1:0,
-			'canModify'		=> $permModify?1:0,
-			'showInMenu'	=> (substr($row['flags'],0, 1))?1:0,
-			'haveAttach'	=> $row['icon_id'],
+		'php_self' => $PHP_SELF,
+		'parent' => makeCategoryList(array('name' => 'parent', 'selected' => $row['parent'], 'skip' => $row['id'], 'doempty' => 1)),
+		'catid' => $row['id'],
+		'name' => $row['name'],
+		'alt' => secure_html($row['alt']),
+		'alt_url' => secure_html($row['alt_url']),
+		'orderlist' => OrderList($row['orderby'], true),
+		'description' => $row['description'],
+		'keywords' => $row['keywords'],
+		'icon' => secure_html($row['icon']),
+		'tpl_value' => secure_html($row['tpl']),
+		'number' => $row['number'],
+		'show_link' => $showLink,
+		'template_mode' => $templateMode,
+		'tpl_list' => $tpl_list,
+		'info' => secure_html($row['info']),
+		'token' => genUToken('admin.categories'),
+		'flags' => array(
+			'haveMeta' => $config['meta']?1:0,
+			'canModify' => $permModify?1:0,
+			'showInMenu' => (substr($row['flags'],0, 1))?1:0,
+			'haveAttach' => $row['icon_id'],
 		),
 	);
 

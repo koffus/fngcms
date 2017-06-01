@@ -57,17 +57,17 @@ function plugin_complain_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'localsource'	=> 1,
-				'extform'		=> 1,
-				'errlist'		=> "1|Неверная ссылка\n2|Ссылка удалена\n3|Другая ошибка",
-				'inform_author'	=> 1,
-				'inform_admin'	=> 2,
-				'author_multi'	=> 1,
-				'inform_reporter'		=> 1,
-				'allow_unreg'			=> 1,
-				'allow_unreg_inform'	=> 0,
-				'allow_text'	=> 1,
-				'inform_admins'	=> 1,
+				'localsource' => 1,
+				'extform' => 1,
+				'errlist' => "1|Неверная ссылка\n2|Ссылка удалена\n3|Другая ошибка",
+				'inform_author' => 1,
+				'inform_admin' => 2,
+				'author_multi' => 1,
+				'inform_reporter' => 1,
+				'allow_unreg' => 1,
+				'allow_unreg_inform' => 0,
+				'allow_text' => 1,
+				'inform_admins' => 1,
 			);
 
 			foreach ($params as $k => $v) {

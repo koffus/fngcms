@@ -110,24 +110,24 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 */
 	$xt = $twig->loadTemplate($tFile['site']['file']);
 	$tVars = array(
-		'ptpl_url'		=> $tFile['site']['path'],
-		'title'			=> $frow['title'],
-		'name'			=> $frow['name'],
-		'description'	=> $frow['description'],
-		'id'			=> $frow['id'],
-		'form_url'		=> generateLink('core', 'plugin', array('plugin' => 'feedback', 'handler' => 'post'), array()),
-		'errorText'	=> $errorText,
-		'flags'			=> array(
-				'error'		=> ($errorText)?1:0,
-				'link_news'	=> $link_news,
+		'ptpl_url' => $tFile['site']['path'],
+		'title' => $frow['title'],
+		'name' => $frow['name'],
+		'description' => $frow['description'],
+		'id' => $frow['id'],
+		'form_url' => generateLink('core', 'plugin', array('plugin' => 'feedback', 'handler' => 'post'), array()),
+		'errorText' => $errorText,
+		'flags' => array(
+				'error' => ($errorText)?1:0,
+				'link_news' => $link_news,
 		),
 	);
 
 	if ($link_news) {
 		$tVars['news'] = array(
-			'id'		=> $nrow['id'],
-			'title'		=> $nrow['title'],
-			'url'		=> newsGenerateLink($nrow),
+			'id' => $nrow['id'],
+			'title' => $nrow['title'],
+			'url' => newsGenerateLink($nrow),
 
 		);
 	}
@@ -137,9 +137,9 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 	$FBF_DATA = array();
 	foreach ($fData as $fName => $fInfo) {
 		$tEntry = array(
-			'name'		=> 'fld_'.$fInfo['name'],
-			'title'		=> $fInfo['title'],
-			'type'		=> $fInfo['type'],
+			'name' => 'fld_'.$fInfo['name'],
+			'title' => $fInfo['title'],
+			'type' => $fInfo['type'],
 		);
 
 		$FBF_DATA[$fName] = array($fInfo['type'], intval($fInfo['required']), $fInfo['title']);
@@ -213,11 +213,11 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 		}
 
 		$tEntry['flags'] = array(
-			'is_text'		=> ($fInfo['type'] == 'text' )?1:0,
-			'is_textarea'	=> ($fInfo['type'] == 'textarea')?1:0,
-			'is_select'		=> ($fInfo['type'] == 'select')?1:0,
-			'is_date'		=> ($fInfo['type'] == 'date')?1:0,
-			'required'		=> $fInfo['required']?1:0,
+			'is_text' => ($fInfo['type'] == 'text' )?1:0,
+			'is_textarea' => ($fInfo['type'] == 'textarea')?1:0,
+			'is_select' => ($fInfo['type'] == 'select')?1:0,
+			'is_date' => ($fInfo['type'] == 'date')?1:0,
+			'required' => $fInfo['required']?1:0,
 		);
 
 		$tEntries []= $tEntry;
@@ -354,20 +354,20 @@ function plugin_feedback_post() {
 			'link_news' => ($linked_id>0)?1:0,
 		),
 		'form' => array(
-			'id'			=> $frow['id'],
-			'title'			=> $frow['title'],
-			'description'	=> $frow['description'],
+			'id' => $frow['id'],
+			'title' => $frow['title'],
+			'description' => $frow['description'],
 
 		),
-		'values'	=> array(),
-		'entries'	=> array(),
+		'values' => array(),
+		'entries' => array(),
 	);
 
 	if ($linked_id > 0) {
 		$tVars['news'] = array(
-			'id'		=> $nrow['id'],
-			'title'		=> $nrow['title'],
-			'url'		=> newsGenerateLink($nrow, false, 0, true),
+			'id' => $nrow['id'],
+			'title' => $nrow['title'],
+			'url' => newsGenerateLink($nrow, false, 0, true),
 		);
 	}
 
@@ -462,10 +462,10 @@ function plugin_feedback_post() {
 
 	// Prepare plugin NOTIFICATION structure
 	$eNotify = array(
-		'recipient'		=> $elist,
-		'subject'		=> $mailSubject,
-		'body'			=> $mailBody,
-		'contentType'	=> 'text/'.($flagHTML?'html':'plain'),
+		'recipient' => $elist,
+		'subject' => $mailSubject,
+		'body' => $mailBody,
+		'contentType' => 'text/'.($flagHTML?'html':'plain'),
 	);
 
 	// Try to SEND via PLUGIN
@@ -552,9 +552,9 @@ function plugin_feedback_post() {
 		'title' => $frow['title'],
 		'ptpl_url' => $ptpl_url,
 		'entries' => $notifyMessage,
-		'usermail'	=> array(
-			'count'		=> count($eSendList),
-			'list'		=> $eSendList,
+		'usermail' => array(
+			'count' => count($eSendList),
+			'list' => $eSendList,
 		),
 	);
 

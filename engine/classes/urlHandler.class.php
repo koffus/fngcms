@@ -247,18 +247,18 @@ class urlHandler {
 
 		// Prepare outgoing structure
 		$dcfg = array(
-			'pluginName'	=> $data['pluginName'],
-			'handlerName'	=> $data['handlerName'],
-			'flagPrimary'	=> $data['flagPrimary']?true:false,
-			'flagFailContinue'	=> $data['flagFailContinue']?true:false,
-			'flagDisabled'	=> $data['flagDisabled']?true:false,
-			'rstyle'		=> array(
-				'rcmd'		=> $rcmd,
-				'regex'		=> $regex,
-				'regexMap'	=> $regexMAP,
-				'reqCheck'	=> array(),
-				'setVars'	=> array(),
-				'genrMAP'	=> $genmap,
+			'pluginName' => $data['pluginName'],
+			'handlerName' => $data['handlerName'],
+			'flagPrimary' => $data['flagPrimary']?true:false,
+			'flagFailContinue' => $data['flagFailContinue']?true:false,
+			'flagDisabled' => $data['flagDisabled']?true:false,
+			'rstyle' => array(
+				'rcmd' => $rcmd,
+				'regex' => $regex,
+				'regexMap' => $regexMAP,
+				'reqCheck' => array(),
+				'setVars' => array(),
+				'genrMAP' => $genmap,
 			),
 		);
 

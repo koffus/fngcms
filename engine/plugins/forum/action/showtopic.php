@@ -64,9 +64,9 @@
 		if( mb_strlen($s, 'UTF-8') < 3 )
 			return $output = information('Слишком короткое слово', $title = 'Информация', true);
 		$search = 'AND MATCH (p.message) AGAINST (\''.$mysql->db_quote($s).'\')';
-		$search_p = array('id' => $id, 's'=> $s);
+		$search_p = array('id' => $id, 's' => $s);
 		if(checkLinkAvailable('forum', 'showtopic')){
-			$link_topic_curent = generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'showtopic', 'params' => array('id' => $id, 's'=> $s), 'xparams' => array(), 'paginator' => array('page', 0, false)), 0);
+			$link_topic_curent = generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'showtopic', 'params' => array('id' => $id, 's' => $s), 'xparams' => array(), 'paginator' => array('page', 0, false)), 0);
 			if(!$CurrentHandler['params']['s'])
 				redirect_forum($link_topic_curent);
 		}
@@ -167,10 +167,10 @@
 	
 	foreach ($mysql->select('SELECT * FROM '.prefix.'_forum_attach WHERE tid = '.securemysql($id).' ORDER BY NULL') as $row){
 		$list_attach[$row['pid']][] = array(
-			'file'=> $row['file'],
-			'file_link'=> link_downloads($row['id']),
-			'size'=> round($row['size']/1024, 2),
-			'int_file'=> $row['downloads'],
+			'file' => $row['file'],
+			'file_link' => link_downloads($row['id']),
+			'size' => round($row['size']/1024, 2),
+			'int_file' => $row['downloads'],
 		);
 	}
 	
@@ -306,8 +306,8 @@
 											)
 					),
 		),
-		'tid'=>$result['tid'],
-		'num_page'=>$pageNo,
+		'tid' =>$result['tid'],
+		'num_page' =>$pageNo,
 		'link_topic_s' => $link_topic_s,
 		'state' => $result['state'],
 		'addpost' => link_new_post($id),
