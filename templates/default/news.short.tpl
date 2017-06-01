@@ -23,13 +23,13 @@
 			</div>
 		</div>
 		<h3 class="small-title"><a href="{{ news.url.full }}">{{ news.title }}</a></h3>
+		<h4>{{ news.categories.masterText }}</h4>
 		<p>{{ news.short|truncateHTML(200,' ...')|striptags }}</p>
 		<div class="article-one-footer">
 			<span class="mr-auto"><i class="fa fa-calendar"></i> {{ news.dateStamp | cdate  }}</span>
 			{% if (news.flags.isUpdated) %}<span class="mr-auto"><i class="fa fa-refresh"></i> {{ news.updateStamp | cdate }}</span>{% endif %}
 			
 			<span><i class="fa fa-eye"></i> {{ news.views }}</span>
-			{{ news.categories.masterText }}
 		</div>
 	</div>
 </article>

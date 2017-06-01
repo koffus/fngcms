@@ -151,11 +151,17 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
     font-size: 18px;
     line-height: 30px;
 }
-.article-item-text h3 a {
+.article-item-text h3 a,
+.article-item-text h4 a {
     color: #555;
+	font-weight: 400;
 }
-.article-item-text h3 a:hover {
+.article-item-text h3 a:hover,
+.article-item-text h4 a:hover {
     color: #0275d8;
+}
+.article-item-text h4 {
+    font-size: 16px;
 }
 .article-item-text .article-one-footer {
     padding: 10px 0px 0px;
