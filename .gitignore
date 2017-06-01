@@ -14,7 +14,8 @@ uploads/*.*
 uploads/**/*.*
 uploads/**/**/*.*
 !uploads/avatars/noavatar.png
-!uploads/files/
+!uploads/images/default/.htaccess
+!uploads/files/default/.htaccess
 !uploads/photos/nophoto.gif
 templates/vlad-stroi
 templates/vlad-stroi/version
