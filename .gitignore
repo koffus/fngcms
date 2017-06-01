@@ -13,6 +13,9 @@ engine/trash/*.inc.txt
 uploads/*.*
 uploads/**/*.*
 uploads/**/**/*.*
+!uploads/avatars/noavatar.png
+!uploads/files/
+!uploads/photos/nophoto.gif
 templates/vlad-stroi
 templates/vlad-stroi/version
 templates/vlad-stroi/*
