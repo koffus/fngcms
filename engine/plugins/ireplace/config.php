@@ -1,65 +1,90 @@
 <?php
 
+//
+// Configuration file for plugin
+//
+
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
+// Preload config file
 pluginsLoadConfig();
-Lang::loadPlugin('ireplace', 'main', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
-$cfg = array();
-array_push($cfg, array('descr' => __('ireplace:descr')));
-array_push($cfg, array('name' => 'area', 'title' => __('ireplace:area'), 'descr' => __('ireplace:area.descr'), 'type' => 'select', 'values' => array ( '' => __('ireplace:area.choose'), 'news' => __('ireplace:area.news'), 'static' => __('ireplace:area.static'), 'comments' => __('ireplace:area.comments'))));
-array_push($cfg, array('name' => 'src', 'title' => __('ireplace:source'), 'type' => 'input', 'html_flags' => 'size=40', 'value' => ''));
-array_push($cfg, array('name' => 'dest', 'title' => __('ireplace:destination'),'type' => 'input', 'html_flags' => 'size=40', 'value' => ''));
+// Fill configuration parameters
+$cfg = array('description' => __($plugin . ':description'));
 
+array_push($cfg, array(
+	'name' => 'area',
+	'title' => __($plugin.':area'),
+	'descr' => __($plugin.':area.descr'),
+	'type' => 'select',
+	'values' => array (
+		'' => __($plugin.':area.choose'),
+		'news' => __($plugin.':area.news'),
+		'static' => __($plugin.':area.static'),
+		'comments' => __($plugin.':area.comments'),
+		),
+	));
+array_push($cfg, array(
+	'name' => 'src',
+	'title' => __($plugin.':source'),
+	'type' => 'input',
+	'value' => '',
+	));
+array_push($cfg, array(
+	'name' => 'dest',
+	'title' => __($plugin.':destination'),
+	'type' => 'input',
+	'value' => '',
+	));
+
+// RUN
 if ($_REQUEST['action'] == 'commit') {
+
 	// Perform a replace
 	$query = '';
 
 	do {
-		// Check src/dest values
-		$src	= $_REQUEST['src'];
-		$dest	= $_REQUEST['dest'];
 
-		if (!mb_strlen($src, 'UTF-8') or !mb_strlen($dest, 'UTF-8')) {
+		// Check src/dest values
+		$src = $_REQUEST['src'];
+		$dest = $_REQUEST['dest'];
+		$area = $_REQUEST['area'];
+
+		if ( empty($src) or empty($dest) ) {
 			// No src/dest text
-			msg(array('type' => 'danger', 'message' => __('ireplace:error.notext')));
+			msg(array('type' => 'danger', 'message' => __($plugin.':error.notext')));
+			break;
+		}
+
+		if ( empty($area) ) {
+			// No area selected
+			msg(array('type' => 'danger', 'message' => __($plugin.':error.noarea')));
 			break;
 		}
 
 		// Check area
-		switch ($_REQUEST['area']) {
-			case 'news':
-				$query = "update ".prefix."_news set content = replace(content, ".db_squote($src).", ".db_squote($dest).")";
-				break;
-			case 'static':
-				$query = "update ".prefix."_static set content = replace(content, ".db_squote($src).", ".db_squote($dest).")";
-				break;
-			case 'comments':
-				$query = "update ".prefix."_comments set text = replace(text, ".db_squote($src).", ".db_squote($dest).")";
-				break;
+		switch ( $area ) {
+			case 'news': $query = "update ".prefix."_news set content = replace(content, ".db_squote($src).", ".db_squote($dest).")"; break;
+			case 'static': $query = "update ".prefix."_static set content = replace(content, ".db_squote($src).", ".db_squote($dest).")"; break;
+			case 'comments': $query = "update ".prefix."_comments set text = replace(text, ".db_squote($src).", ".db_squote($dest).")"; break;
 		}
 
-		if (!$query) {
-			// No area selected
-			msg(array('type' => 'danger', 'message' => __('ireplace:error.noarea')));
-			break;
-		}
 	} while (0);
 
 	// Check if we should make replacement
-	if ($query) {
-		// Yeah !!
+	if ( $query ) {
 		$result = $mysql->select($query);
 		$count = $mysql->affected_rows($mysql->connect);
-		if ($count) {
-			msg(array('type' => 'info', 'message' => str_replace('{count}', $count, __('ireplace:info.done'))));
+		if ( $count ) {
+			msg(array('type' => 'info', 'message' => str_replace('{count}', $count, __($plugin.':info.done'))));
 		} else {
-			msg(array('type' => 'info', 'message' => __('ireplace:info.nochange')));
+			msg(array('type' => 'info', 'message' => __($plugin.':info.nochange')));
 		}
 	}
-	print_commit_complete($plugin, $cfg);
 
-} else {
-	generate_config_page($plugin, $cfg);
 }
+
+// This plugin always generated config page
+generate_config_page($plugin, $cfg);
