@@ -20,7 +20,7 @@ pluginsLoadConfig();
 function plugin_jchat_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin($plugin, 'config', '', '', ':');
+		Lang::loadPlugin('jchat', 'config', '', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(
@@ -56,12 +56,12 @@ function plugin_jchat_install($action) {
 	// Apply requested action
 	switch ($action) {
 		case 'confirm':
-			generate_install_page($plugin, __($plugin.':desc_install'));
+			generate_install_page('jchat', __('jchat:desc_install'));
 			break;
 		case 'autoapply':
 		case 'apply':
-			if (fixdb_plugin_install($plugin, $db_update, 'install', ($action=='autoapply') ? true : false)) {
-				plugin_mark_installed($plugin);
+			if (fixdb_plugin_install('jchat', $db_update, 'install', ($action=='autoapply') ? true : false)) {
+				plugin_mark_installed('jchat');
 			} else {
 				return false;
 			}
