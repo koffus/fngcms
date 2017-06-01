@@ -195,6 +195,8 @@ function phphighlight($content = '') {
 function QuickTags($area = false, $template = false) {
 	global $tpl, $PHP_SELF;
 
+	Lang::load('bbcodes');
+
 	$tvars['vars'] = array(
 		'php_self' => $PHP_SELF,
 		'area' => $area?$area:"''"
@@ -425,8 +427,8 @@ function msg($params, $mode = 0, $disp = -1) {
 	$tmvars = array( 'vars' => array(
 		'id' => rand(8, 88),
 		'type' => $type,
-		'title' => $title,
-		'message' => $message,
+		'title' => addslashes($title),
+		'message' => addslashes($message),
 	));
 	$message = $tpl->vars($TemplateCache[$mode?'admin':'site']['#variables']['messages']['msg'], $tmvars, array('inline' => true));
 	

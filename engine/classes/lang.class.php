@@ -59,6 +59,8 @@ class Lang {
 			
 			//return;
 
+		} else {
+			msg(array('type' => 'danger', 'message' => 'Unable to load file <code>' . $toinc . '</code>'));
 		}
 
 	}
@@ -149,7 +151,7 @@ class Lang {
 		if ( !empty($default_value) )
 			return $default_value;
 		
-		msg(array('type' => 'danger', 'message' => 'Не задана языковая переменная <code>' . $key . '</code>'));
+		msg(array('type' => 'danger', 'message' => 'Language variable not set <code>' . $key . '</code>'));
 		//var_dump(debug_backtrace());
 
 	}
