@@ -410,9 +410,13 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 		'entries' => $entries,
 		'plugin' => $module,
 		'php_self' => $PHP_SELF,
+		'token' => genUToken('admin.extras'),
 		'mode_text' => ($mode=='install')?__('install_text'):__('deinstall_text'),
-		'msg' => ($mode=='install'?($publish_error?__('ibdc_ifail'):__('idbc_iok')):($publish_error?__('dbdc_ifail'):__('ddbc_iok')))
+		'msg' => ($mode=='install'?($publish_error?__('ibdc_ifail'):__('idbc_iok')):($publish_error?__('dbdc_ifail'):__('ddbc_iok'))),
 	);
+
+	$tvars['regx']['#\[enable\](.+?)\[/enable\]#is'] = ($publish_error) ? '' : ($mode =='install'?'$1':'');
+
 	$tpl -> vars('install-process', $tvars);
 	if (!$silent) {
 		print $tpl -> show('install-process');

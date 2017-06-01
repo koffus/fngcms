@@ -8,7 +8,8 @@
 <!-- Info content -->
 <div class="page-main">
 	<form action="admin.php?mod=extras" method="post">
-		<input type="hidden" name="mod" value="extras" />
+		<input type="hidden" name="token" value="{token}" />
+		<input type="hidden" name="enable" value="{plugin}" />
 		
 		<div class="panel panel-default panel-table">
 			<div class="panel-heading">
@@ -19,9 +20,14 @@
 					{entries}
 				</table>
 			</div>
-			<div class="panel-footer text-center">
-				<input type="submit" value="{msg}" class="btn btn-success" />
+			<div class="panel-footer">
+				<h4>{msg}</h4>
 			</div>
 		</div>
+		[enable]
+		<div class="well text-center">
+			<button type="submit" class="btn btn-success">Включить плагин</button>
+		</div>
+		[/enable]
 	</form>
 </div>
