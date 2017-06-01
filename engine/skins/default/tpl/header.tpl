@@ -6,7 +6,6 @@
 	<meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
 	<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 	<link href="{{ skins_url }}/assets/css/fontawesome.css" rel="stylesheet">
-	<link href="{{ skins_url }}/assets/css/perfect-scrollbar.css" rel="stylesheet">
 	<link href="{{ skin }}" rel="stylesheet">
 	<link href="{{ skins_url }}/css/style.css" rel="stylesheet">
 
