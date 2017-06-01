@@ -31,7 +31,7 @@ date_default_timezone_set('UTC');
 // Configure error display mode
 error_reporting (E_ALL);
 ini_set('display_errors', 0);
-ini_set('error_log', 'errorPHP.txt');
+ini_set('error_log', 'errorPHP.log');
 ini_set('log_errors', 1);
 
 // Чтобы было, хоть и не работает

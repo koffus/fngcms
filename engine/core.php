@@ -7,15 +7,13 @@
 // Author: NGCMS project team
 //
 
-// Check for minimum supported PHP version
-if (version_compare(PHP_VERSION, '5.4.0') < 0) {
-	print "<html><head><title>NGCMS required PHP version 5.4+ / Необходима версия PHP 5.4 или выше</title></head><body><div style='font: 24px verdana; background-color: #EEEEEE; border: #ABCDEF 1px solid; margin: 1px; padding: 3px;'><span style='color: red;'>FATAL ERROR / Фатальная ошибка</span><br/><br/><span style=\"font: 16px arial;\"> NGCMS requires PHP version <b>5.4+</b><br/>Please ask your hosting provider to upgrade your account</span><br/><hr/><span style=\"font: 16px arial;\"> Для работы NGCMS требуется PHP версии <b>5.4</b> или выше.<br/>Обратитесь к вашему хостинг провайдеру для обновления версии</span></div></body></html>";
-	exit;
-}
-
 // Define global constants "root", "site_root"
 @define('root', dirname(__FILE__).'/');
 @define('site_root', dirname(dirname(__FILE__)).'/');
+
+// Check for minimum supported PHP version
+if ( version_compare(PHP_VERSION, '5.4.0') < 0 )
+	@require (root . '/data/errors/core_php_version.php');
 
 if ( !function_exists('__') ) {
 	function __ ($key, $default_value = '') {
@@ -26,7 +24,7 @@ if ( !function_exists('__') ) {
 // Автозагрузка классов
 spl_autoload_register(function($className) {
 	$file = root . 'classes/' . $className. '.class.php';
-	
+
 	if (file_exists($file)) {
 		require_once($file); // !!! require once !!!
 		return;
@@ -53,23 +51,23 @@ global $twigGlobal, $twig, $twigLoader, $twigStringLoader;
 // ============================================================================
 // Initialize global variables
 // ============================================================================
-$EXTRA_HTML_VARS		= array();		// a list of added HTML vars in <head> block
-$EXTRA_CSS				= array();
+$EXTRA_HTML_VARS = array(); // a list of added HTML vars in <head> block
+$EXTRA_CSS = array();
 
-$AUTH_METHOD			= array();
-$AUTH_CAPABILITIES		= array();
+$AUTH_METHOD = array();
+$AUTH_CAPABILITIES = array();
 
-$PPAGES					= array();		// plugin's pages
-$PFILTERS				= array();		// filtering plugins
-$RPCFUNC				= array();		// RPC functions
-$TWIGFUNC				= array();		// TWIG defined functions
-$RPCADMFUNC				= array();		// RPC admin functions
+$PPAGES = array(); // plugin's pages
+$PFILTERS = array(); // filtering plugins
+$RPCFUNC = array(); // RPC functions
+$TWIGFUNC = array(); // TWIG defined functions
+$RPCADMFUNC = array(); // RPC admin functions
 
-$PERM					= array();		// PERMISSIONS
-$UGROUP					= array();		// USER GROUPS
+$PERM = array();		// PERMISSIONS
+$UGROUP = array();		// USER GROUPS
 
-$SUPRESS_TEMPLATE_SHOW	= 0;
-$SUPRESS_MAINBLOCK_SHOW	= 0;
+$SUPRESS_TEMPLATE_SHOW = 0;
+$SUPRESS_MAINBLOCK_SHOW = 0;
 
 $CurrentHandler			= array();
 $TemplateCache			= array();
@@ -110,34 +108,31 @@ $PLUGINS	= array(
 // ===========================================================
 // Check for support of mondatory modules
 // ===========================================================
-{
-	foreach (array('sql' => array('mysql' => 'mysql_connect', 'mysqli' => 'mysqli_connect'), 'zlib' => 'ob_gzhandler', 'GD' => 'imagecreatefromjpeg') as $pModule => $pFunction) {
-		$is_error = false;
-		if(is_array($pFunction)){
-			foreach($pFunction as $kModule => $vFunction){
-				if (extension_loaded($kModule) && function_exists($vFunction)) break;
-				if(!next($pFunction)) $is_error = true;
-			}
-		} else if (!extension_loaded($pModule) or !function_exists($pFunction)) {
-			$kModule = $pModule;
-			$vFunction = $pFunction;
-			$is_error = true;
+foreach (array('sql' => array('mysql' => 'mysql_connect', 'mysqli' => 'mysqli_connect'), 'zlib' => 'ob_gzhandler', 'GD' => 'imagecreatefromjpeg') as $pModule => $pFunction) {
+	$is_error = false;
+	if(is_array($pFunction)){
+		foreach($pFunction as $kModule => $vFunction){
+			if (extension_loaded($kModule) and function_exists($vFunction))
+				break;
+			if(!next($pFunction))
+				$is_error = true;
 		}
-		
-		if($is_error){
-			print "<html>\n<head><title>FATAL EXECUTION ERROR</title></head>\n<body>\n<div style='font: 24px verdana; background-color: #EEEEEE; border: #ABCDEF 1px solid; margin: 1px; padding: 3px;'><span style='color: red;'>FATAL ERROR</span><br/><span style=\"font: 16px arial;\"> Cannot load file CORE libraries of <a href=\"http://ngcms.ru/\">NGCMS</a> (<b>engine/core.php</b>), PHP extension [".$kModule."] with function [".$vFunction."] is not loaded!</span></div>\n</body>\n</html>\n";
-			//print str_replace(array('{extension}', '{function}'), array($kModule, $vFunction), __('fatal.lostlib'));
-			die();
-		}
+	} elseif (!extension_loaded($pModule) or !function_exists($pFunction)) {
+		$kModule = $pModule;
+		$vFunction = $pFunction;
+		$is_error = true;
 	}
+
+	if($is_error)
+		@require (root . '/data/errors/core_fatal_error.php');
 }
 
 // Define domain name for cookies
-$ngCookieDomain = preg_match('#^www\.(.+)$#', $_SERVER['HTTP_HOST'], $mHost)?$mHost[1]:$_SERVER['HTTP_HOST'];
+$ngCookieDomain = preg_match('#^www\.(.+)$#', $_SERVER['HTTP_HOST'], $mHost) ? $mHost[1] : $_SERVER['HTTP_HOST'];
 
 // Manage trackID cookie - can be used for plugins that don't require authentication,
 // but need to track user according to his ID
-if (!isset($_COOKIE['ngTrackID'])) {
+if ( !isset($_COOKIE['ngTrackID']) ) {
 	$ngTrackID = md5(md5(uniqid(rand(),1)));
 	@setcookie('ngTrackID', $ngTrackID, time()+86400*365, '/', $ngCookieDomain, 0, 1);
 } else {
@@ -148,13 +143,13 @@ if (!isset($_COOKIE['ngTrackID'])) {
 $confArray = array (
 	// Pre-defined init values
 	'predefined' => array(
-		'HTTP_REFERER'	=> isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'',
-		'PHP_SELF'		=> isset($_SERVER['PHP_SELF'])?$_SERVER['PHP_SELF']:'',
-		'REQUEST_URI'	=> isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'',
-		'config'	=> array(),
-		'catz'		=> array(),
-		'catmap'	=> array(),
-		'is_logged'	=> false,
+		'HTTP_REFERER' => isset($_SERVER['HTTP_REFERER'])?$_SERVER['HTTP_REFERER']:'',
+		'PHP_SELF' => isset($_SERVER['PHP_SELF'])?$_SERVER['PHP_SELF']:'',
+		'REQUEST_URI' => isset($_SERVER['REQUEST_URI'])?$_SERVER['REQUEST_URI']:'',
+		'config' => array(),
+		'catz' => array(),
+		'catmap' => array(),
+		'is_logged' => false,
 	)
 );
 
@@ -172,9 +167,8 @@ foreach ($confArray['predefined'] as $key => $value) {
 
 // Prepare variable with access URL
 $systemAccessURL = $_SERVER['REQUEST_URI'];
-if ( ($tmp_pos = strpos($systemAccessURL, '?')) !== FALSE ) {
+if ( ($tmp_pos = strpos($systemAccessURL, '?')) !== FALSE )
 	$systemAccessURL = substr($systemAccessURL, 0, $tmp_pos);
-}
 
 // ============================================================================
 // Initialize system libraries
@@ -186,7 +180,7 @@ $timer->start();
 // ** Multisite engine
 @include_once root.'includes/inc/multimaster.php';
 multi_multisites();
-@define('confroot',root.'conf/'.($multiDomainName && $multimaster && ($multiDomainName != $multimaster)?'multi/'.$multiDomainName.'/':''));
+@define('confroot',root.'conf/'.($multiDomainName and $multimaster and ($multiDomainName != $multimaster)?'multi/'.$multiDomainName.'/':''));
 
 // ** Load system config
 @include_once confroot.'config.php';
@@ -219,13 +213,13 @@ $UHANDLER = new urlHandler();
 $UHANDLER->loadConfig();
 
 // ** Other libraries
-$parse	= new parse;
-$tpl	= new tpl;
-$ip		= checkIP();
+$parse = new parse;
+$tpl = new tpl;
+$ip = checkIP();
 
 // ** Load configuration file
 if ( (!file_exists(confroot.'config.php')) or (filesize(confroot.'config.php')<10) ) {
-	if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
+	if ( preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms) ) {
 		@header("Location: ".$ms[1]."/engine/install.php");
 	} else {
 		@header("Location: ".adminDirName."/install.php");
@@ -246,10 +240,9 @@ set_exception_handler('ngExceptionHandler');
 set_error_handler('ngErrorHandler');
 register_shutdown_function('ngShutdownHandler');
 
-//
 // *** Initialize TWIG engine
-$twigLoader			= new Twig_Loader_NGCMS(root);
-$twigStringLoader	= new Twig_Loader_String();
+$twigLoader = new Twig_Loader_NGCMS(root);
+$twigStringLoader = new Twig_Loader_String();
 
 // - Configure environment and general parameters
 $twig = new Twig_Environment($twigLoader, array(
@@ -263,35 +256,35 @@ $twig = new Twig_Environment($twigLoader, array(
 $twig->addExtension(new Twig_Extension_StringLoader());
 
 // - Global variables [by REFERENCE]
-$twig->addGlobalRef('handler',	$CurrentHandler);
-$twig->addGlobalRef('global',	$twigGlobal);
+$twig->addGlobalRef('handler', $CurrentHandler);
+$twig->addGlobalRef('global', $twigGlobal);
 $twig->addGlobalRef('system_flags', $SYSTEM_FLAGS);
 
 // - Global variables [by VALUE]
-$twig->addGlobal('skins_url',	skins_url);
-$twig->addGlobal('admin_url',	admin_url);
-$twig->addGlobal('home',	home);
-$twig->addGlobal('currentURL',	$systemAccessURL);
+$twig->addGlobal('skins_url', skins_url);
+$twig->addGlobal('admin_url', admin_url);
+$twig->addGlobal('home', home);
+$twig->addGlobal('currentURL', $systemAccessURL);
 
 // - Define functions
-$twig->addFunction('pluginIsActive',	new Twig_Function_Function('getPluginStatusActive'));
-$twig->addFunction('localPath', 	new Twig_Function_Function('twigLocalPath', array('needs_context' => true)));
-$twig->addFunction('getLang', 		new Twig_Function_Function('twigGetLang'));
-$twig->addFunction('isLang', 		new Twig_Function_Function('twigIsLang'));
-$twig->addFunction('isHandler',		new Twig_Function_Function('twigIsHandler'));
-$twig->addFunction('isCategory',	new Twig_Function_Function('twigIsCategory'));
-$twig->addFunction('isNews',		new Twig_Function_Function('twigIsNews'));
-$twig->addFunction('isPerm',		new Twig_Function_Function('twigIsPerm'));
-$twig->addFunction('callPlugin', 	new Twig_Function_Function('twigCallPlugin'));
-$twig->addFunction('isSet',			new Twig_Function_Function('twigIsSet', array('needs_context' => true)));
-$twig->addFunction('debugContext',	new Twig_Function_Function('twigDebugContext', array('needs_context' => true)));
-$twig->addFunction('debugValue',	new Twig_Function_Function('twigDebugValue'));
-$twig->addFunction('getCategoryTree', 	new Twig_Function_Function('twigGetCategoryTree'));
-$twig->addFunction('engineMSG', 	new Twig_Function_Function('twigEngineMSG'));
+$twig->addFunction('pluginIsActive', new Twig_Function_Function('getPluginStatusActive'));
+$twig->addFunction('localPath', new Twig_Function_Function('twigLocalPath', array('needs_context' => true)));
+$twig->addFunction('getLang', new Twig_Function_Function('twigGetLang'));
+$twig->addFunction('isLang', new Twig_Function_Function('twigIsLang'));
+$twig->addFunction('isHandler', new Twig_Function_Function('twigIsHandler'));
+$twig->addFunction('isCategory', new Twig_Function_Function('twigIsCategory'));
+$twig->addFunction('isNews', new Twig_Function_Function('twigIsNews'));
+$twig->addFunction('isPerm', new Twig_Function_Function('twigIsPerm'));
+$twig->addFunction('callPlugin', new Twig_Function_Function('twigCallPlugin'));
+$twig->addFunction('isSet', new Twig_Function_Function('twigIsSet', array('needs_context' => true)));
+$twig->addFunction('debugContext', new Twig_Function_Function('twigDebugContext', array('needs_context' => true)));
+$twig->addFunction('debugValue', new Twig_Function_Function('twigDebugValue'));
+$twig->addFunction('getCategoryTree', new Twig_Function_Function('twigGetCategoryTree'));
+$twig->addFunction('engineMSG', new Twig_Function_Function('twigEngineMSG'));
 
 // - Define filters
-$twig->addFilter('truncateHTML',	new Twig_Filter_Function('twigTruncateHTML'));
-$twig->addFilter('cdate',			new Twig_Filter_Function('cdate'));
+$twig->addFilter('truncateHTML', new Twig_Filter_Function('twigTruncateHTML'));
+$twig->addFilter('cdate', new Twig_Filter_Function('cdate'));
 
 // [[MARKER]] TWIG template engine is loaded
 $timer->registerEvent('Template engine is activated');
@@ -322,9 +315,8 @@ if ( $config['libcompat'] ) {
 	compatRedirector();
 }
 
-//
 // Special way to pass authentication cookie via POST params
-if (!isset($_COOKIE['zz_auth']) && isset($_POST['ngAuthCookie']))
+if ( !isset($_COOKIE['zz_auth']) and isset($_POST['ngAuthCookie']) )
 	$_COOKIE['zz_auth'] = $_POST['ngAuthCookie'];
 
 // [[MARKER]] Ready to load auth plugins
@@ -338,13 +330,15 @@ loadPermissions();
 // Initialize system libraries
 // ============================================================================
 // System protection
-if (!$AUTH_CAPABILITIES[$config['auth_module']]['login']) { $config['auth_module'] = 'basic'; }
-if (!$AUTH_CAPABILITIES[$config['auth_db']]['db']) { $config['auth_db'] = 'basic'; }
+if (!$AUTH_CAPABILITIES[$config['auth_module']]['login'])
+	$config['auth_module'] = 'basic';
+if (!$AUTH_CAPABILITIES[$config['auth_db']]['db'])
+	$config['auth_db'] = 'basic';
 
-if ( (is_object($AUTH_METHOD[$config['auth_module']])) && (is_object($AUTH_METHOD[$config['auth_db']])) ) {
+if ( (is_object($AUTH_METHOD[$config['auth_module']])) and (is_object($AUTH_METHOD[$config['auth_db']])) ) {
 	// Auth subsystem is activated
 	// * choose default or user defined auth module
-	if (isset($_REQUEST['auth_module']) && $AUTH_CAPABILITIES[$_REQUEST['auth_module']]['login'] && is_object($AUTH_METHOD[$_REQUEST['auth_module']])) {
+	if ( isset($_REQUEST['auth_module']) and $AUTH_CAPABILITIES[$_REQUEST['auth_module']]['login'] and is_object($AUTH_METHOD[$_REQUEST['auth_module']]) ) {
 		$auth = &$AUTH_METHOD[$_REQUEST['auth_module']];
 	} else {
 		$auth = &$AUTH_METHOD[$config['auth_module']];
@@ -354,12 +348,12 @@ if ( (is_object($AUTH_METHOD[$config['auth_module']])) && (is_object($AUTH_METHO
 	$xrow = $auth_db->check_auth();
 	$CURRENT_USER = $xrow;
 
-	if (isset($xrow['name']) && $xrow['name']) {
+	if ( isset($xrow['name']) and $xrow['name'] ) {
 		$is_logged_cookie	= true;
 		$is_logged			= true;
 		$username			= $xrow['name'];
 		$userROW			= $xrow;
-		if ($config['x_ng_headers']) {
+		if ( $config['x_ng_headers'] ) {
 			header("X-NG-UserID: ".intval($userROW['id']));
 			header("X-NG-Login: ".htmlentities($username));
 		}
@@ -376,9 +370,8 @@ if ( (is_object($AUTH_METHOD[$config['auth_module']])) && (is_object($AUTH_METHO
 // [[MARKER]] Authentification process is complete
 $timer->registerEvent('Auth procedure is finished');
 
-if ($is_logged) {
+if ( $is_logged )
 	@define('name', $userROW['name']);
-}
 
 // Init internal cron module
 $cron = new cronManager();

@@ -26,10 +26,8 @@ if (function_exists('mb_http_output'))
 	mb_http_output('UTF-8');
 
 // Check for minimum supported PHP version
-if (version_compare(PHP_VERSION, '5.4.0') < 0) {
-	print "<html><head><title>NGCMS required PHP version 5.4+ / Необходима версия PHP 5.4 или выше</title></head><body><div style='font: 24px verdana; background-color: #EEEEEE; border: #ABCDEF 1px solid; margin: 1px; padding: 3px;'><span style='color: red;'>FATAL ERROR / Фатальная ошибка</span><br/><br/><span style=\"font: 16px arial;\"> NGCMS requires PHP version <b>5.4+</b><br/>Please ask your hosting provider to upgrade your account</span><br/><hr/><span style=\"font: 16px arial;\"> Для работы NGCMS требуется PHP версии <b>5.4</b> или выше.<br/>Обратитесь к вашему хостинг провайдеру для обновления версии</span></div></body></html>";
-	exit;
-}
+if ( version_compare(PHP_VERSION, '5.4.0') < 0 )
+	@require ('data/errors/core_php_version.php');
 
 // Назначение дефолтной временной зоны
 date_default_timezone_set('UTC');
