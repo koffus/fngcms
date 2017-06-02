@@ -80,7 +80,7 @@ $cfgX = array();
 		'type' => 'select',
 		'values' => array('1' => __('yesa'), '0' => __('noa')),
 		'value' => intval(pluginGetVariable($plugin, 'cache'))
-	));
+		));
 	array_push($cfgX, array(
 		'name' => 'cacheExpire',
 		'title' => __($plugin . ':cacheExpire'),
