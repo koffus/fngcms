@@ -138,18 +138,6 @@
 							</div>
 						</div>
 						{% endif %}
-						{% if (pluginIsActive('comments')) %}
-						<div class="form-group">
-							<label class="col-sm-3 control-label">{{ lang['comments:mode.header'] }}</label>
-							<div class="col-sm-9">
-								<select name="allow_com" class="form-control">
-									<option value="0"{{ plugin.comments['acom:0'] }}>{{ lang['comments:mode.disallow'] }}
-									<option value="1"{{ plugin.comments['acom:1'] }}>{{ lang['comments:mode.allow'] }}
-									<option value="2"{{ plugin.comments['acom:2'] }}>{{ lang['comments:mode.default'] }}
-								</select>
-							</div>
-						</div>
-						{% endif %}
 						{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
 					</div>
 					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
@@ -184,7 +172,9 @@
 							</div>
 						</div>
 					</div>
-					
+
+					{% if (pluginIsActive('xfields')) %}<!-- XFields [GENERAL] -->{{ plugin.xfields.general }}<!-- /XFields [GENERAL] -->{% endif %}
+
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
@@ -211,6 +201,28 @@
 									</tbody>
 								</table>
 							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- SUBMIT Form -->
+				<div class="well panel-fixed-bottom">
+					<div class="row">
+						<div class="col col-xs-6">
+							<select name="approve" class="form-control">
+								{% if flags['can_publish'] %}
+									<option value="1">{{ lang.addnews['publish'] }}</option>
+								{% endif %}
+								<option value="0">{{ lang.addnews['send_moderation'] }}</option>
+								<option value="-1">{{ lang.addnews['save_draft'] }}</option>
+							</select>
+						</div>
+						<div class="col col-xs-6 text-right">
+							<button type="submit" title="Ctrl+S {{ lang.addnews['publish'] }}" class="btn btn-success">
+								<span class="visible-sm-block visible-xs-block"><i class="fa fa-floppy-o"></i></span>
+								<span class="hidden-sm hidden-xs">{{ lang['add'] }}</span>
+							</button>
+							<button type="button" title="{{ lang.addnews['preview'] }}" onclick="return preview();" class="btn btn-primary"><i class="fa fa-eye"></i></button>
 						</div>
 					</div>
 				</div>
@@ -279,43 +291,18 @@
 					</div>
 				</div>
 				{% endif %}
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col col-sm-12">
-				{% if (pluginIsActive('xfields') and plugin.xfields.general) %}
-				<!-- XFields [GENERAL] -->
-				<table class="table table-condensed">
-					{{ plugin.xfields.general }}
-				</table>
-				<!-- /XFields [GENERAL] -->
-				{% endif %}
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col col-sm-8">
-				<div class="well panel-fixed-bottom">
-					<div class="row">
-						<div class="col col-xs-6">
-							<select name="approve" class="form-control">
-								{% if flags['can_publish'] %}
-									<option value="1">{{ lang.addnews['publish'] }}</option>
-								{% endif %}
-								<option value="0">{{ lang.addnews['send_moderation'] }}</option>
-								<option value="-1">{{ lang.addnews['save_draft'] }}</option>
-							</select>
-						</div>
-						<div class="col col-xs-6 text-right">
-							<button type="submit" title="Ctrl+S {{ lang.addnews['publish'] }}" class="btn btn-success">
-								<span class="visible-sm-block visible-xs-block"><i class="fa fa-floppy-o"></i></span>
-								<span class="hidden-sm hidden-xs">{{ lang['add'] }}</span>
-							</button>
-							<button type="button" title="{{ lang.addnews['preview'] }}" onclick="return preview();" class="btn btn-primary"><i class="fa fa-eye"></i></button>
-						</div>
+				{% if (pluginIsActive('comments')) %}
+				<div class="panel panel-default">
+					<div class="panel-heading">{{ lang['comments:mode.header'] }}</div>
+					<div class="panel-body">
+						<select name="allow_com" class="form-control">
+							<option value="0"{{ plugin.comments['acom:0'] }}>{{ lang['comments:mode.disallow'] }}
+							<option value="1"{{ plugin.comments['acom:1'] }}>{{ lang['comments:mode.allow'] }}
+							<option value="2"{{ plugin.comments['acom:2'] }}>{{ lang['comments:mode.default'] }}
+						</select>
 					</div>
 				</div>
+				{% endif %}
 			</div>
 		</div>
 	</form>

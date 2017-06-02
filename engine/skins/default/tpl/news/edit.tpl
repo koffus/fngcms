@@ -148,30 +148,7 @@
 							</div>
 						</div>
 						{% endif %}
-						{% if (pluginIsActive('comments')) %}
-						<div class="form-group">
-							<label class="col-sm-3 control-label">{{ lang['comments:mode.header'] }}</label>
-							<div class="col-sm-9">
-								<select name="allow_com" class="form-control">
-									<option value="0"{{ plugin.comments['acom:0'] }}>{{ lang['comments:mode.disallow'] }}
-									<option value="1"{{ plugin.comments['acom:1'] }}>{{ lang['comments:mode.allow'] }}
-									<option value="2"{{ plugin.comments['acom:2'] }}>{{ lang['comments:mode.default'] }}
-								</select>
-							</div>
-						</div>
-						{% endif %}
 						{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
-						<div class="form-group">
-							<div class="col-sm-3 col-sm-offset-3">
-								<div class="input-group">
-									<span class="input-group-addon">
-										<input type="checkbox" name="setViews" value="1" id="setViews" {% if (flags['setviews.disabled']) %}disabled{% endif %} />
-									</span>
-									<input type="text" name="views" value="{{ views }}" {% if (flags['setviews.disabled']) %}disabled{% endif %}class="form-control" />
-								</div>
-							</div>
-							<label class="col-sm-6 control-label">{{ lang.editnews['set_views'] }}</label>
-						</div>
 					</div>
 					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
 					<!-- XFields -->
@@ -181,7 +158,7 @@
 					<!-- /XFields -->
 					{% endif %}
 				</div>
-				
+
 				<div class="panel-group" id="accordion">
 					<!-- ADDITIONAL -->
 					<div class="panel panel-default panel-table">
@@ -205,7 +182,9 @@
 							</div>
 						</div>
 					</div>
-					
+
+					{% if (pluginIsActive('xfields')) %}<!-- XFields [GENERAL] -->{{ plugin.xfields.general }}<!-- /XFields [GENERAL] -->{% endif %}
+
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
@@ -253,6 +232,8 @@
 						</div>
 					</div>
 				</div>
+
+				<!-- SUBMIT Form -->
 				{% if flags['params.lost'] %}
 				<div class="panel panel-danger">
 					<div class="panel-heading">
@@ -272,6 +253,35 @@
 					</div>
 				</div>
 				{% endif %}
+				<div class="well panel-fixed-bottom">
+					<div class="row">
+						<div class="col col-xs-6">
+							<select name="approve" id="approve" class="form-control">
+								{% if flags.can_publish %}
+									<option value="1" {% if (approve == 1) %}selected="selected"{% endif %}>{{ lang.addnews['publish'] }}</option>
+								{% endif %}
+								{% if flags.can_unpublish %}
+									<option value="0" {% if (approve == 0) %}selected="selected"{% endif %}>{{ lang.addnews['send_moderation'] }}</option>
+								{% endif %}
+								{% if flags.can_draft %}
+									<option value="-1" {% if (approve == -1) %}selected="selected"{% endif %}>{{ lang.addnews['save_draft'] }}</option>
+								{% endif %}
+							</select>
+						</div>
+						<div class="col col-xs-6 text-right">
+							{% if flags.editable %}
+								<button type="submit" title="Ctrl+S {{ lang.editnews['do_editnews'] }}" class="btn btn-success">
+									<span class="visible-sm-block visible-xs-block"><i class="fa fa-floppy-o"></i></span>
+									<span class="hidden-sm hidden-xs">{{ lang.editnews['do_editnews'] }}</span>
+								</button>
+							{% endif %}
+							<button type="button" onClick="return preview();" title="{{ lang.editnews['preview'] }}" class="btn btn-primary"><i class="fa fa-eye"></i></button>
+							{% if flags.deleteable %}
+								<button type="button" onClick="confirmIt('admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;selected_news[]={{ id }}&amp;token={{ token }}', '{{ lang.editnews['sure_del'] }}')" title="{{ lang.editnews['delete'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+							{% endif %}
+						</div>
+					</div>
+				</div>
 			</div>
 			
 			<!-- Right edit column -->
@@ -333,9 +343,6 @@
 						<label><input type="checkbox" name="favorite" value="1" {% if (flags.favorite) %}checked="checked"{% endif %} id="favorite" {% if (flags['favorite.disabled']) %}disabled{% endif %} /> {{ lang.editnews['add_favorite'] }}</label><br />
 						<label><input name="flag_HTML" type="checkbox" id="flag_HTML" value="1" {% if (flags.html) %}checked="checked"{% endif %} {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.editnews['flag_html'] }}</label><br />
 						<label><input type="checkbox" name="flag_RAW" value="1" {% if (flags.raw) %}checked="checked"{% endif %} id="flag_RAW" {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.editnews['flag_raw'] }}</label> {% if (flags['raw.disabled']) %}[<font color=red>{{ lang.editnews['flags_lost'] }}</font>]{% endif %}
-						
-						
-						
 					</div>
 				</div>
 				
@@ -359,57 +366,35 @@
 					</div>
 				</div>
 				{% endif %}
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col col-sm-12">
-				{% if (pluginIsActive('xfields')) %}
-				<!-- XFields [GENERAL] -->
-				<table class="table table-condensed">
-					{{ plugin.xfields.general }}
-				</table>
-				<!-- /XFields [GENERAL] -->
-				{% endif %}
-			</div>
-		</div>
-		
-		<div class="row">
-			<div class="col col-sm-8">
-				<div class="well panel-fixed-bottom">
-					<div class="row">
-						<div class="col col-xs-6">
-							<select name="approve" id="approve" class="form-control">
-								{% if flags.can_publish %}
-									<option value="1" {% if (approve == 1) %}selected="selected"{% endif %}>{{ lang.addnews['publish'] }}</option>
-								{% endif %}
-								{% if flags.can_unpublish %}
-									<option value="0" {% if (approve == 0) %}selected="selected"{% endif %}>{{ lang.addnews['send_moderation'] }}</option>
-								{% endif %}
-								{% if flags.can_draft %}
-									<option value="-1" {% if (approve == -1) %}selected="selected"{% endif %}>{{ lang.addnews['save_draft'] }}</option>
-								{% endif %}
-							</select>
-						</div>
-						<div class="col col-xs-6 text-right">
-							{% if flags.editable %}
-								<button type="submit" title="Ctrl+S {{ lang.editnews['do_editnews'] }}" class="btn btn-success">
-									<span class="visible-sm-block visible-xs-block"><i class="fa fa-floppy-o"></i></span>
-									<span class="hidden-sm hidden-xs">{{ lang.editnews['do_editnews'] }}</span>
-								</button>
-							{% endif %}
-							<button type="button" onClick="return preview();" title="{{ lang.editnews['preview'] }}" class="btn btn-primary"><i class="fa fa-eye"></i></button>
-							{% if flags.deleteable %}
-								<button type="button" onClick="confirmIt('admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;selected_news[]={{ id }}&amp;token={{ token }}', '{{ lang.editnews['sure_del'] }}')" title="{{ lang.editnews['delete'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
-							{% endif %}
+				<div class="panel panel-default">
+					<div class="panel-heading">{{ lang.editnews['set_views'] }}</div>
+					<div class="panel-body">
+						<div class="input-group">
+							<span class="input-group-addon">
+								<input type="checkbox" name="setViews" value="1" id="setViews" {% if (flags['setviews.disabled']) %}disabled{% endif %} />
+							</span>
+							<input type="text" name="views" value="{{ views }}" {% if (flags['setviews.disabled']) %}disabled{% endif %}class="form-control" />
 						</div>
 					</div>
 				</div>
+				{% if (pluginIsActive('comments')) %}
+				<div class="panel panel-default">
+					<div class="panel-heading">{{ lang['comments:mode.header'] }}</div>
+					<div class="panel-body">
+						<select name="allow_com" class="form-control">
+							<option value="0"{{ plugin.comments['acom:0'] }}>{{ lang['comments:mode.disallow'] }}
+							<option value="1"{{ plugin.comments['acom:1'] }}>{{ lang['comments:mode.allow'] }}
+							<option value="2"{{ plugin.comments['acom:2'] }}>{{ lang['comments:mode.default'] }}
+						</select>
+					</div>
+				</div>
+				{% endif %}
 			</div>
 		</div>
 	</form>
 	
 	<!-- COMMENTS -->
+	{% if (pluginIsActive('comments')) %}
 	<form name="commentsForm" id="commentsForm" action="admin.php?mod=news" method="post">
 		<input type="hidden" name="token" value="{{ token }}" />
 		<input type="hidden" name="action" value="edit" />
@@ -421,9 +406,9 @@
 				<!-- MAIN CONTENT -->
 				<div id="comments" class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title"><i class="fa fa-th-list"></i> {{ lang.editnews['bar.comments'] }} ({{ plugin.comments.count }})</h4>
+						<h4 class="panel-title"><i class="fa fa-th-list"></i> {{ lang.editnews['bar.comments'] }} ({% if plugin.comments.count > 0 %}{{ plugin.comments.count }}{% else %}{{ lang['noa'] }}{% endif %})</h4>
 					</div>
-					{% if plugin.comments.count>0 %}
+					{% if plugin.comments.count > 0 %}
 					<table class="table table-">
 					<tbody>
 						<tr>
@@ -440,6 +425,7 @@
 			</div>
 		</div>
 	</form>
+	{% endif %}
 </div>
 
 <div id="iframediv"></div>
