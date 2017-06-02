@@ -248,7 +248,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 	// Fill basic variables
 	$tVars = array(
 		'php_self' => $PHP_SELF,
-		'quicktags' => QuickTags('currentInputAreaID', 'static'),
+		'bbcodes' => BBCodes('currentInputAreaID', 'static'),
 		'token'				=> genUToken('admin.static'),
 		'smilies' => $config['use_smilies']?InsertSmilies('content', 20):'',
 		'templateList' => staticTemplateList(),

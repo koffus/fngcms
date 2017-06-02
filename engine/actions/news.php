@@ -103,7 +103,7 @@ function editNewsForm() {
 									generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
 									generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['author'], 'id' => $row['author_id'])),
 		'smilies' => $config['use_smilies']?InsertSmilies('', 20, 'currentInputAreaID'):'',
-		'quicktags' => $config['use_bbcodes']?QuickTags('currentInputAreaID', 'news'):'',
+		'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
 		'approve' => $row['approve'],
 		'token'				=> genUToken('admin.news.edit'),
 		'flags'				=> array(
@@ -640,7 +640,7 @@ function addNewsForm($retry = ''){
 		'extcat' => makeCategoryList(array('nameval' => 0, 'checkarea' => 1)),
 		'JEV'				=> $retry?$retry:'{}',
 		'smilies' => ($config['use_smilies'])?InsertSmilies('', 20, 'currentInputAreaID'):'',
-		'quicktags' => ($config['use_bbcodes'])?QuickTags('currentInputAreaID', 'news'):'',
+		'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
 		'token'				=> genUToken('admin.news.add'),
 		'flags'				=> array(
 			'mainpage' => $perm['add.mainpage'] && $perm['personal.mainpage'],

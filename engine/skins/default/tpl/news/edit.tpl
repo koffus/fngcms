@@ -61,7 +61,7 @@
 						<div class="form-group" id="fullwidth">
 							<div class="col-sm-12">
 								{% if (not isBBCode) %}
-									{{ quicktags }}
+									{{ bbcodes }}
 									<!-- SMILES -->
 									<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
 										<div class="modal-dialog modal-sm" role="document">

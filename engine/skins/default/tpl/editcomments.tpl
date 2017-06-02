@@ -31,7 +31,7 @@
 							<div class="form-group" id="fullwidth">
 								<label class="col-sm-3">{{ lang['answer'] }}</label>
 								<div class="col-sm-9">
-									{{ quicktags }}
+									{{ bbcodes }}
 									<div class="btn-group btn-group-justified smiles" data-toggle="buttons">
 										{{ smilies }}
 									</div>

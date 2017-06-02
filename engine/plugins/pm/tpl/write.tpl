@@ -27,7 +27,7 @@
 				</div>
 			</div>
 			<div class="form-group">
-				{{ quicktags }}
+				{{ bbcodes }}
 				<!-- SMILES -->
 				<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
 					<div class="modal-dialog modal-sm" role="document">

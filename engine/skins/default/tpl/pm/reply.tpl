@@ -20,7 +20,7 @@
 						<h4>{{ lang['write'] }}</h4>
 					</div>
 					<div class="modal-body">
-						{{ quicktags }}
+						{{ bbcodes }}
 						<div class="btn-group btn-group-justified smiles" data-toggle="buttons">
 							{{ smilies }}
 						</div>

@@ -309,7 +309,7 @@ function pm_write(){
 	$tVars = array(
 		'php_self' => $PHP_SELF,
 		'username' => trim($_REQUEST['name']),
-		'quicktags' => BBCodes('pm_content')
+		'bbcodes' => BBCodes('pm_content')
 	);
 	
 	$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, "'pm_content'") : '';
@@ -402,7 +402,7 @@ function pm_reply(){
 			'pmid' => $row['id'],
 			'title' => 'Re:'.$row['subject'],
 			'to_username' => $row['from_id'],
-			'quicktags' => BBCodes('pm_content')
+			'bbcodes' => BBCodes('pm_content')
 		);
 
 		$tVars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('', 10, "'pm_content'") : '';

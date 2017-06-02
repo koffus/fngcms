@@ -118,7 +118,7 @@ function pm_reply() {
 			'pmid' => $row['pmid'],
 			'title' => 'Re:'.$row['title'],
 			'sendto' => $row['from_id'],
-			'quicktags' => QuickTags(false, 'pmmes'),
+			'bbcodes' => BBCodes(false, 'pmmes'),
 			'smilies' => ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '',
 		);
 		executeActionHandler('pm_reply');
@@ -134,7 +134,7 @@ function pm_write() {
 
 	$tVars = array(
 		'php_self' => $PHP_SELF,
-		'quicktags' => QuickTags(false, 'pmmes'),
+		'bbcodes' => BBCodes(false, 'pmmes'),
 		'smilies' => ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '',
 	);
 	executeActionHandler('pm_write');

@@ -12,7 +12,6 @@ if (!defined('NGCMS')) die ('HAL');
 
 //
 // SQL security string escape
-//
 function db_squote($string) {
 	global $mysql;
 	if (is_array($string)) { return false; }
@@ -58,6 +57,91 @@ function Formatsize($bytes) {
 		return $bytes;
 }
 
+function DirSize($directory) {
+
+	if (!is_dir($directory))
+		return -1;
+	
+	$size = 0;
+
+	if ($dir = opendir($directory)) {
+		while (($dirfile = readdir($dir)) !== false) {
+			if (is_link($directory . '/' . $dirfile) or $dirfile == '.' or $dirfile == '..') {
+				continue;
+			}
+			if (is_file($directory . '/' . $dirfile)) {
+				$size += filesize($directory . '/' . $dirfile);
+			} elseif (is_dir($directory . '/' . $dirfile)) {
+				$dirSize = dirsize($directory . '/' . $dirfile);
+				if ($dirSize >= 0) {
+					$size += $dirSize;
+				} else {
+					return -1;
+				}
+			}
+		}
+		closedir($dir);
+	}
+	return $size;
+}
+
+// Scans directory and returns it's size and file count
+// Return array with size, count
+function directoryWalk($dir, $blackmask = null, $whitemask = null, $returnFiles = true, $execTimeLimit = 0) {
+	$tStart = microtime(true);
+	if (!is_dir($dir)) return array( -1, -1);
+
+	$size = 0;
+	$count = 0;
+	$flag = 0;
+	$path = array($dir);
+	$wpath = array();
+	$files = array();
+	$od = array();
+	$dfile = array();
+	$od[1] = opendir($dir);
+
+	while (count($path)) {
+		if (($count % 100) == 0) {
+			$tNow = microtime(true);
+			if (($execTimeLimit > 0) and (($tNow-$tStart) >= $execTimeLimit)) {
+				return array($size, $count, $files, true);
+
+			}
+		}
+
+		$level = count($path);
+		$sd = join("/", $path );
+		$wsd = join("/", $wpath);
+		while (($dfile[$level] = readdir($od[$level])) !== false) {
+			if (is_link($sd . '/' . $dfile[$level]) or $dfile[$level] == '.' or $dfile[$level] == '..')
+				continue;
+
+			if (is_file($sd . '/' . $dfile[$level])) {
+				// Check for black list
+
+				$size += filesize($sd . '/' . $dfile[$level]);
+				if ($returnFiles)
+					$files []= ($wsd?$wsd.'/':'').$dfile[$level];
+				$count ++;
+			} elseif (is_dir($sd . '/' . $dfile[$level])) {
+				array_push($path, $dfile[$level]);
+				array_push($wpath, $dfile[$level]);
+				$od[$level+1] = opendir(join("/", $path));
+				$flag = 1;
+				break;
+			}
+		}
+		if ($flag) {
+			$flag = 0;
+			continue;
+		}
+		array_pop($path);
+		array_pop($wpath);
+	}
+	return array($size, $count, $files, false);
+}
+
 function checkIP() {
 	if (getenv('REMOTE_ADDR')) {
 		return getenv('REMOTE_ADDR');
@@ -72,79 +156,6 @@ function initGZipHandler() {
 
 	if ($config['use_gzip'] == "1" and extension_loaded('zlib') and function_exists('ob_gzhandler')) {
 		@ob_start('ob_gzhandler');
-	}
-}
-
-// Generate BACKUP of DB
-// * $delayed - flag if call should be delayed for 30 mins (for cases of SYSCRON / normal calls)
-function AutoBackup($delayed = false, $force = false) {
-	global $config;
-
-	$backupFlagFile		= root."cache/last_backup.tmp";
-	$backupMarkerFile	= root."cache/last_backup_marker.tmp";
-
-	// Load `Last Backup Date` from $backupFlagFile
-	$last_backup	= intval(@file_get_contents($backupFlagFile));
-	$time_now		= time();
-
-	// Force backup if requested
-	if ($force) {
-		$last_backup = 0;
-	}
-
-	// Check if last backup was too much time ago
-	if ($time_now > ($last_backup + $config['auto_backup_time'] * 3600 + ($delayed?30*60:0))) {
-		// Yep, we need a backup.
-		// ** Manage marker file
-		$flagDoProcess = false;
-
-		// -> Try to create marker
-		if (($fm = fopen($backupMarkerFile, 'x')) !== FALSE) {
-			// Created, write CALL time
-			fwrite($fm, $time_now);
-			fclose($fm);
-
-			$flagDoProcess = true;
-		} else {
-			// Marker already exists, check creation time
-			$markerTime	= intval(@file_get_contents($backupMarkerFile));
-
-			// TTL for marker is 5 min
-			if ($time_now > ($markerTime + 180)) {
-				// Delete OLD marker, create ours
-				if (unlink($backupMarkerFile) and (($fm = fopen($backupMarkerFile, 'x')) !== FALSE)) {
-					// Created, write CALL time
-					fwrite($fm, $time_now);
-					fclose($fm);
-
-					$flagDoProcess = true;
-				}
-			}
-		}
-
-		// Do not run if another session is running
-		if (!$flagDoProcess) {
-			return;
-		}
-
-		// Try to open temp file for writing
-		$fx = is_file($backupFlagFile)?@fopen($backupFlagFile,"r+"):@fopen($backupFlagFile,"w+");
-		if ($fx) {
-			$filename	= root."backups/backup_".date("Y_m_d_H_i", $time_now).".gz";
-
- 	// Load library
-	 require_once(root.'/includes/inc/lib_admin.php');
-
-			// We need to create file with backup
-	 	dbBackup($filename, 1);
-
-			rewind($fx);
-			fwrite($fx, $time_now);
-			ftruncate($fx,ftell($fx));
-		}
-
-		// Delete marker
-		@unlink($backupMarkerFile);
 	}
 }
 
@@ -192,39 +203,30 @@ function phphighlight($content = '') {
 	return $content;
 }
 
-function QuickTags($area = false, $template = false) {
-	global $tpl, $PHP_SELF;
+function BBCodes( $area = false, $template = false ) {
+	global $config, $tpl, $mod;
 
-	Lang::load('bbcodes');
+	if ($config['use_bbcodes']) {
 
-	$tvars['vars'] = array(
-		'php_self' => $PHP_SELF,
-		'area' => $area?$area:"''"
-	);
+		Lang::load('bbcodes');
 
-	if (!in_array($template, array('pmmes', 'editcom', 'news', 'static')))
-		return false;
-
-	$tplname = 'qt_'.$template;
-
-	$tpl->template($tplname, tpl_actions);
-	$tpl->vars($tplname, $tvars);
-	return $tpl->show($tplname);
-}
-
-function BBCodes($area = false) {
-	global $config, $tpl, $PHP_SELF;
-
-	if ($config['use_bbcodes'] == "1") {
 		$tvars['vars'] = array(
-			'php_self' => $PHP_SELF,
-			'area' => $area
-		);
+			'area' => $area ? $area : "''",
+			);
 
-		$tpl -> template('bbcodes', tpl_site);
-		$tpl -> vars('bbcodes', $tvars);
+		if ( defined('ADMIN') ) {
+			if ( $template and !in_array($template, array('pmmes', 'editcom', 'news', 'static')) )
+				return false;
+			$tvars['regx']['#\[news\](.+?)\[/news\]#is'] = ($mod == 'news') ? '$1' : '';
+			$tvars['regx']['#\[perm\](.+?)\[/perm\]#is'] = ($mod == 'static' or $mod == 'news') ? '$1' : '';
+			$tplDir = tpl_actions;
+		} else {
+			$tplDir = tpl_site;
+		}
 
-		return $tpl -> show('bbcodes');
+		$tpl->template('bbcodes', $tplDir);
+		$tpl->vars('bbcodes', $tvars);
+		return $tpl->show('bbcodes');
 	}
 }
 
@@ -453,91 +455,6 @@ function TwigEngineMSG($type, $text, $info = '') {
 	if ($info)
 		$cfg['info']	= $info;
 	return msg($cfg, 0, 2);
-}
-
-function DirSize($directory) {
-
-	if (!is_dir($directory))
-		return -1;
-	
-	$size = 0;
-
-	if ($dir = opendir($directory)) {
-		while (($dirfile = readdir($dir)) !== false) {
-			if (is_link($directory . '/' . $dirfile) or $dirfile == '.' or $dirfile == '..') {
-				continue;
-			}
-			if (is_file($directory . '/' . $dirfile)) {
-				$size += filesize($directory . '/' . $dirfile);
-			} elseif (is_dir($directory . '/' . $dirfile)) {
-				$dirSize = dirsize($directory . '/' . $dirfile);
-				if ($dirSize >= 0) {
-					$size += $dirSize;
-				} else {
-					return -1;
-				}
-			}
-		}
-		closedir($dir);
-	}
-	return $size;
-}
-
-// Scans directory and returns it's size and file count
-// Return array with size, count
-function directoryWalk($dir, $blackmask = null, $whitemask = null, $returnFiles = true, $execTimeLimit = 0) {
-	$tStart = microtime(true);
-	if (!is_dir($dir)) return array( -1, -1);
-
-	$size = 0;
-	$count = 0;
-	$flag = 0;
-	$path = array($dir);
-	$wpath = array();
-	$files = array();
-	$od = array();
-	$dfile = array();
-	$od[1] = opendir($dir);
-
-	while (count($path)) {
-		if (($count % 100) == 0) {
-			$tNow = microtime(true);
-			if (($execTimeLimit > 0) and (($tNow-$tStart) >= $execTimeLimit)) {
-				return array($size, $count, $files, true);
-
-			}
-		}
-
-		$level = count($path);
-		$sd = join("/", $path );
-		$wsd = join("/", $wpath);
-		while (($dfile[$level] = readdir($od[$level])) !== false) {
-			if (is_link($sd . '/' . $dfile[$level]) or $dfile[$level] == '.' or $dfile[$level] == '..')
-				continue;
-
-			if (is_file($sd . '/' . $dfile[$level])) {
-				// Check for black list
-
-				$size += filesize($sd . '/' . $dfile[$level]);
-				if ($returnFiles)
-					$files []= ($wsd?$wsd.'/':'').$dfile[$level];
-				$count ++;
-			} elseif (is_dir($sd . '/' . $dfile[$level])) {
-				array_push($path, $dfile[$level]);
-				array_push($wpath, $dfile[$level]);
-				$od[$level+1] = opendir(join("/", $path));
-				$flag = 1;
-				break;
-			}
-		}
-		if ($flag) {
-			$flag = 0;
-			continue;
-		}
-		array_pop($path);
-		array_pop($wpath);
-	}
-	return array($size, $count, $files, false);
 }
 
 // makeCategoryList - make <SELECT> list of categories
@@ -1472,7 +1389,7 @@ function ngSitePagination($currentPage, $totalPages, $paginationParams, $navigat
 		$no_prev = true;
 	}
 
-	$maxNavigations 		= $config['newsNavigationsCount'];
+	$maxNavigations = $config['newsNavigationsCount'];
 	if ($navigationsCount < 1)
 		$navigationsCount = ($config['newsNavigationsCount'] > 2)?$config['newsNavigationsCount']:10;
 
@@ -1494,7 +1411,6 @@ function ngSitePagination($currentPage, $totalPages, $paginationParams, $navigat
 
 //
 // Return user record by login
-//
 function locateUser($login) {
 	global $mysql;
 	if ($row = $mysql->record("select * from ".uprefix."_users where name = ".db_squote($login))) {
@@ -1522,61 +1438,49 @@ function GetCategoryById($id) {
 	return array();
 }
 
-if (!function_exists('json_encode'))
-{
- function utf8_to_html ($data) {
- return preg_replace("/([\\xC0-\\xF7]{1,1}[\\x80-\\xBF]+)/e", '_utf8_to_html("\\1")', $data);
- }
+if ( !function_exists('json_encode') ) {
 
- function _utf8_to_html ($data) {
- $ret = 0;
- foreach((str_split(strrev(chr((ord($data{0}) % 252 % 248 % 240 % 224 % 192) + 128) . substr($data, 1)))) as $k => $v)
- $ret += (ord($v) % 128) * pow(64, $k);
- // return "&#$ret;";
- return sprintf("\u%04x", $ret);
- }
- function json_encode($a=false)
- {
- if (is_null($a)) return 'null';
- if ($a === false) return 'false';
- if ($a === true) return 'true';
- if (is_scalar($a))
- {
- if (is_float($a))
- {
- // Always use "." for floats.
- return floatval(str_replace(",", ".", strval($a)));
- }
+	function utf8_to_html ($data) {
+		return preg_replace("/([\\xC0-\\xF7]{1,1}[\\x80-\\xBF]+)/e", '_utf8_to_html("\\1")', $data);
+	}
 
- if (is_string($a))
- {
- static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
- return '"' . utf8_to_html(str_replace($jsonReplaces[0], $jsonReplaces[1], $a)) . '"';
- }
- else
- return $a;
- }
- $isList = true;
- for ($i = 0, reset($a); $i < count($a); $i++, next($a))
- {
- if (key($a) !== $i)
- {
- $isList = false;
- break;
- }
- }
- $result = array();
- if ($isList)
- {
- foreach ($a as $v) $result[] = json_encode($v);
- return '[' . join(',', $result) . ']';
- }
- else
- {
- foreach ($a as $k => $v) $result[] = json_encode($k).':'.json_encode($v);
- return '{' . join(',', $result) . '}';
- }
- }
+	function _utf8_to_html ($data) {
+		$ret = 0;
+		foreach( (str_split(strrev(chr((ord($data{0}) % 252 % 248 % 240 % 224 % 192) + 128) . substr($data, 1)))) as $k => $v )
+			$ret += (ord($v) % 128) * pow(64, $k);
+		// return "&#$ret;";
+		return sprintf("\u%04x", $ret);
+	}
+	function json_encode($a=false) {
+		if (is_null($a)) return 'null';
+		if ($a === false) return 'false';
+		if ($a === true) return 'true';
+		if (is_scalar($a)) {
+			if (is_float($a)) {
+				// Always use "." for floats.
+				return floatval(str_replace(",", ".", strval($a)));
+			}
+
+			if (is_string($a)) {
+				static $jsonReplaces = array(array("\\", "/", "\n", "\t", "\r", "\b", "\f", '"'), array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
+				return '"' . utf8_to_html(str_replace($jsonReplaces[0], $jsonReplaces[1], $a)) . '"';
+			} else return $a;
+		}
+		$isList = true;
+		for ($i = 0, reset($a); $i < count($a); $i++, next($a)) {
+			if (key($a) !== $i) {
+				$isList = false; break;
+			}
+		}
+		$result = array();
+		if ($isList) {
+			foreach ($a as $v) $result[] = json_encode($v);
+			return '[' . join(',', $result) . ']';
+		} else {
+			foreach ($a as $k => $v) $result[] = json_encode($k).':'.json_encode($v);
+			return '{' . join(',', $result) . '}';
+		}
+	}
 }
 
 //
@@ -2251,7 +2155,8 @@ function core_cron($isSysCron, $handler) {
 	global $config;
 
 	// Execute DB backup if automatic backup is enabled
-	if (($handler == 'db_backup') and (isset($config['auto_backup'])) and $config['auto_backup']) {
+	if ( ($handler == 'db_backup') and (isset($config['auto_backup'])) and $config['auto_backup'] ) {
+		require_once root.'fnc/AutoBackup.php';
 		AutoBackup($isSysCron, false);
 	}
 

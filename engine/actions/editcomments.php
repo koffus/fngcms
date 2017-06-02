@@ -84,7 +84,7 @@ function editcomment() {
 
 		$tvars = array(
 			'php_self' => $PHP_SELF,
-			'quicktags' => QuickTags(false, "editcom"),
+			'bbcodes' => BBCodes(false, 'editcom'),
 			'ip' => $row['ip'],
 			'author' => $row['author'],
 			'mail' => $row['mail'],

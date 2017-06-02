@@ -60,7 +60,10 @@ class Lang {
 			//return;
 
 		} else {
-			msg(array('type' => 'danger', 'message' => 'Unable to load file <code>' . $toinc . '</code>'));
+			// only the administrator can see alerts
+			global $userROW;
+			if ( $userROW['status'] == 1 )
+				msg(array('type' => 'danger', 'message' => 'Unable to load file <code>' . $toinc . '</code>'));
 		}
 
 	}
@@ -143,15 +146,18 @@ class Lang {
 
 		if ( isset(self::$data[$key]) and !empty(self::$data[$key]) )
 			return self::$data[$key];
-		
+
 		// this need to global, admin.panel
 		if ( !$key )
 			return self::$data;
-		
+
 		if ( !empty($default_value) )
 			return $default_value;
-		
-		msg(array('type' => 'danger', 'message' => 'Language variable not set <code>' . $key . '</code>'));
+
+		// only the administrator can see alerts
+		global $userROW;
+		if ( $userROW['status'] == 1 )
+			msg(array('type' => 'danger', 'message' => 'Language variable not set <code>' . $key . '</code>'));
 		//var_dump(debug_backtrace());
 
 	}
@@ -162,7 +168,7 @@ class Lang {
 		$short_weekdays = self::$short_weekdays;
 		$months = self::$months;
 		$short_months = self::$short_months;
-		
+
 		foreach ($weekdays as $name => $value)
 			$weekdays[$name] = preg_replace("/./", "\\\\\\0", $value);
 
