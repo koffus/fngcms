@@ -105,7 +105,7 @@
 
 class urlHandler {
 	// constructor
-	function urlHandler($options = array()) {
+	function __construct($options = array()) {
 		global $config;
 
 		$this->hList		= array();

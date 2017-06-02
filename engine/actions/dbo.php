@@ -269,7 +269,7 @@ function systemDboModify() {
 		$mysqli->query("ALTER DATABASE $db DEFAULT CHARACTER SET 'utf8';");
 		if ($mysqli->errno) {
 			$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
-			break;
+			return;
 		} else {
 			$slist [] = "<br>Converted database <b>$db</b> to <b>utf8</b>: " . sprintf("%.4f", (microtime(true) - $time3)). ' sec.';
 		}
