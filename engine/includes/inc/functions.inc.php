@@ -429,8 +429,8 @@ function msg($params, $mode = 0, $disp = -1) {
 	$tmvars = array( 'vars' => array(
 		'id' => rand(8, 88),
 		'type' => $type,
-		'title' => addslashes($title),
-		'message' => addslashes($message),
+		'title' => $title,
+		'message' => $message,
 	));
 	$message = $tpl->vars($TemplateCache[$mode?'admin':'site']['#variables']['messages']['msg'], $tmvars, array('inline' => true));
 	

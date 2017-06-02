@@ -76,9 +76,9 @@
 								{{ categories }}
 							</div>
 						</li>
-						<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.forum }}</a></li>
+						<li class="nav-item"><a href="{{ home }}/plugin/forum/" class="nav-link">{{ lang.theme.forum }}</a></li>
 						<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.article }}</a></li>
-						<li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.about }}</a></li>
+						<li class="nav-item"><a href="{{ home }}/static/about.html" class="nav-link">{{ lang.theme.about }}</a></li>
 					</ul>
 					{{ personal_menu }}
 				</div>
