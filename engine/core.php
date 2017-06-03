@@ -309,12 +309,6 @@ ngLoadCategories();
 // [[MARKER]] Categories are loaded
 $timer->registerEvent('DB category list is loaded');
 
-// ** Load compatibility engine [ rewrite old links ]
-if ( $config['libcompat'] ) {
-	include_once root.'includes/inc/libcompat.php';
-	compatRedirector();
-}
-
 // Special way to pass authentication cookie via POST params
 if ( !isset($_COOKIE['zz_auth']) and isset($_POST['ngAuthCookie']) )
 	$_COOKIE['zz_auth'] = $_POST['ngAuthCookie'];

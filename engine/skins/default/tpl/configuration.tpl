@@ -222,10 +222,6 @@
 						<div class="col-md-7">{{ mkSelect({'name' : 'save_con[404_mode]', 'value' : config['404_mode'], 'values' : { 0 : lang['404.int'], 1 : lang['404.ext'], 2 : lang['404.http'] } }) }}</div>
 					</div>
 					<div class="form-group">
-						<div class="col-md-5">{{ lang['libcompat'] }} <span class="help-block">{{ lang['libcompat_desc'] }}</span></div>
-						<div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[libcompat]', 'value' : config['libcompat'] }) }}</div>
-					</div>
-					<div class="form-group">
 						<div class="col-md-5">{{ lang['url_external_nofollow'] }} <span class="help-block">{{ lang['url_external_nofollow_desc'] }}</span></div>
 						<div class="col-md-7">{{ mkSelectNY({'name' : 'save_con[url_external_nofollow]', 'value' : config['url_external_nofollow'] }) }}</div>
 					</div>
