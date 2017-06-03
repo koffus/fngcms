@@ -104,7 +104,8 @@
 */
 
 class urlHandler {
-	// constructor
+
+	// Constructor
 	function __construct($options = array()) {
 		global $config;
 

@@ -24,8 +24,9 @@
 
 */
 class urlLibrary {
+
 	// Constructor
-	function urlLibrary(){
+	function __construct() {
 		global $config;
 
 		$this->CMD = array();

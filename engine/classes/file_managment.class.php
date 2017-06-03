@@ -9,8 +9,8 @@
 
 class file_managment {
 
-	// CONSTRUCTOR
-	function file_managment(){
+	// Constructor
+	function __construct() {
 		// Load additional LANG file
 		Lang::load('files');
 

@@ -11,7 +11,9 @@
 // Image managment class //
 // ======================================================================= //
 class image_managment{
-	function image_managment(){
+
+	// Constructor
+	function __construct() {
 		return;
 	}
 

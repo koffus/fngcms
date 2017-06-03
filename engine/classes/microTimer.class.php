@@ -9,7 +9,7 @@
 
 class microTimer {
 
-	// CONSTRUCTOR
+	// Constructor
 	function __construct() {
 		$this->events = array();
 	}
