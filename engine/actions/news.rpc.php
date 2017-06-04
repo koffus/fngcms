@@ -77,18 +77,6 @@ function admNewsRPCdouble($params) {
 		return array('status' => 1, 'errorCode' => 0, 'info' => __('msgi_no_dubl'));
 	}
 
-	/*switch ($params['mode']) {
-		// Delete category
-		case 'del':
-			foreach($mysql->select("select * from ".prefix."_category order by posorder", 1) as $v){
-				$ncat[$v['id']] = $v;
-				$tree[$v['id']] = array('children' => array(), 'parent' => $v['parent'], 'poslevel' => $v['poslevel']);
-			}
-
-			return (array('status' => 1, 'errorCode' => 0, 'errorText' => 'Ok', 'infoCode' => 1, 'infoText' => 'Category was deleted', 'content' => $data));
-
-	}*/
-
 	return array('status' => 0, 'errorCode' => 999, 'errorText' => 'Params: '.secure_html($params['title']));
 }
 
