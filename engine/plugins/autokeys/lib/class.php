@@ -38,11 +38,13 @@ class autokeyword {
 	}
 
 	function replace_chars($content) {
+		$parse = new parse();
 		$content = mb_strtolower($content, 'UTF-8');
+		$content = $parse->bbcodes($content);
+		if( $this->wordB )
+			$content = preg_replace('/<b>(.*)<\/b>/si','$1 $1',$content);
 		$content = strip_tags($content);
 		$content = preg_replace( '/\d+/', ' ', $content );
-		if( $this->wordB )
-			$content = preg_replace('/([|<)b(]|>)(.*)([|<)\/b(]|>)/si','$1 $1',$content);
 		$punctuations = array(',', '.', '…', ')', '(', "'", '"', '<', '>', ';', '!', '?', '/', '-', '—', '_',
 		'[', ']', ':', '+', '=', '#', '$', '&quot;', '&copy;', '&gt;', '&lt;', chr(10), chr(13), chr(9));
 		$content = str_replace($punctuations, ' ', $content);
