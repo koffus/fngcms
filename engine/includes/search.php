@@ -67,7 +67,7 @@ function search_news() {
 		}
 
 		if ( count($search_array) > 1 ) {
-			array_unshift($search_array, 'AND');
+			array_unshift($search_array, 'OR');
 		}
 		if ( count($search_array) == 1 ) {
 			$search_array = $search_array[0];
