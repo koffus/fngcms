@@ -59,10 +59,11 @@ function admNewsRPCdouble($params) {
 	if ( !count($search_array) ) {
 		return array( 'status' => 0, 'errorCode' => 4, 'errorText' => __('wrong_params_type') );
 	}
+	$SQL['search'] = "(". join(" OR ", $search_array).")";
 	if ( intval(secure_html($params['news_id'])) )
-		array_push( $search_array, "id !=".$mysql->db_quote(intval($params['news_id'])) );
+		$SQL['search'] .= " AND id !=".$mysql->db_quote(intval($params['news_id']))."";
 
-	$selectResult = $mysql->select( "SELECT id, title, catid, alt_name FROM ".prefix."_news WHERE ".join(" AND ", $search_array), 1 );
+	$selectResult = $mysql->select( "SELECT id, title, catid, alt_name FROM ".prefix."_news WHERE ".$SQL['search'], 1 );
 
 	foreach ($selectResult as $row) {
 		$data[] = array(

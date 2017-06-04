@@ -414,7 +414,7 @@ var searchDouble = function() {
 		} else {
 			var txt = '';
 			$.each(resTX['data'],function(index, value) {
-				txt += '<a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a><br />';
+				txt += (index+1) + '. <a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a><br />';
 			});
 			showModal(txt, resTX['header']);
 		}
