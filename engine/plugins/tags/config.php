@@ -62,11 +62,8 @@ array_push($cfgX, array('name' => 'cache', 'title' => __('tags:cache.use'), 'des
 array_push($cfgX, array('name' => 'cacheExpire', 'title' => __('tags:cache.expire'), 'descr' => __('tags:cache.expire#desc'), 'type' => 'input', 'value' => intval(pluginGetVariable($plugin,'cacheExpire'))?pluginGetVariable($plugin,'cacheExpire'):'60'));
 array_push($cfg, array('mode' => 'group', 'title' => __('tags:block.cache'), 'entries' => $cfgX));
 
-
-if (!$_REQUEST['action']) {
-	generate_config_page($plugin, $cfg);
-}
-elseif ($_REQUEST['action'] == 'commit') {
+// RUN
+if ($_REQUEST['action'] == 'commit') {
 	if ($_REQUEST['rebuild']) {
 		// Rebuild index table
 		// * Truncate index
@@ -79,12 +76,10 @@ elseif ($_REQUEST['action'] == 'commit') {
 		$tags = array();
 		$tagIndexSQL = $mysql->select("select id, tags from ".prefix."_news where (tags is not NULL) and (tags <> '') and (approve = 1)");
 		foreach ($tagIndexSQL as $row) {
-			$ntags = preg_split("/, */", trim($row['tags']));
+			$ntags = mb_split(',', trim($row['tags']));
 			foreach ($ntags as $ntag) {
-				$ntag = trim($ntag);
-				if (!mb_strlen($tag, 'UTF-8'))
-					continue;
-				$tags[$ntag] = $tags[$ntag] + 1;
+				if ( $ntag = trim($ntag) )
+					$tags[$ntag] = $tags[$ntag] + 1;
 			}
 		}
 
@@ -95,13 +90,11 @@ elseif ($_REQUEST['action'] == 'commit') {
 
 		// * Regenerate counters
 		foreach ($tagIndexSQL as $row) {
-			$ntags = preg_split("/, */", trim($row['tags']));
+			$ntags = mb_split(',', trim($row['tags']));
 			$ntagsQ = array();
 			foreach ($ntags as $tag) {
-				$tag = trim($tag);
-				if (!mb_strlen($tag, 'UTF-8'))
-					continue;
-				$ntagsQ[] = db_squote($tag);
+				if ( $tag = trim($tag) )
+					$ntagsQ[] = db_squote($tag);
 			}
 			if (sizeof($ntagsQ))
 				$mysql->query("insert into ".prefix."_tags_index (newsID, tagID) select ".db_squote($row['id']).", id from ".prefix."_tags where tag in (".join(",",$ntagsQ).")");
@@ -113,6 +106,10 @@ elseif ($_REQUEST['action'] == 'commit') {
 		$mysql->query("unlock tables");
 		msg(array('message' => __('tags:cmd.rebuild.done')));
 	}
+
+	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);
+} else {
+	generate_config_page($plugin, $cfg);
 }
