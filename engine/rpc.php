@@ -29,7 +29,7 @@ loadActionHandlers('rpc:'.(is_array($userROW)?'active':'inactive'));
 
 // Function to preload ADMIN rpc funcs
 function loadAdminRPC($mod) {
-	if (in_array($mod, array('categories', 'extras', 'files', 'templates', 'configuration'))) {
+	if (in_array($mod, array('categories', 'news', 'extras', 'files', 'templates', 'configuration'))) {
 		@include_once('./actions/'.$mod.'.rpc.php');
 		return true;
 	}
@@ -47,7 +47,7 @@ function rpcRegisterAdminFunction($name, $instance, $permanent = false) {
 // We support two types of RPC calls: HTTP/JSON-RPC and XML-RPC
 //
 
-if (isset($_REQUEST['json'])||isset($_GET['methodName'])) {
+if (isset($_REQUEST['json']) or isset($_GET['methodName'])) {
 	processJSON();
 } else {
 	print "200: Method is not supported.";

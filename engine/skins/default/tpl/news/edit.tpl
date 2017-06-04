@@ -17,7 +17,7 @@
 		<input type="hidden" name="action" value="edit" />
 		<input type="hidden" name="subaction" value="submit" />
 		<input type="hidden" name="id" value="{{ id }}" />
-		
+
 		<div class="row">
 			<div class="col col-sm-8">
 				<!-- MAIN CONTENT -->
@@ -29,7 +29,12 @@
 						<div class="form-group">
 							<label class="col-sm-3 control-label">{{ lang.addnews['title'] }}</label>
 							<div class="col-sm-9">
-								<input type="text" name="title" id="newsTitle" value="{{ title }}" tabindex="1" class="form-control"/>
+								<div class="input-group">
+									<input type="text" name="title" id="newsTitle" value="{{ title }}" tabindex="1" class="form-control"/>
+									<span class="input-group-btn">
+										<button type="button" onclick="searchDouble();" class="btn btn-default"><i class="fa fa-files-o" title="Поиск дубликатов"></i></button>
+									</span>
+								</div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -66,7 +71,7 @@
 									<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
 										<div class="modal-dialog modal-sm" role="document">
 											<div class="modal-content">
-												
+
 												<div class="modal-header">
 													<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 													<h4>Вставить смайл</h4>
@@ -135,7 +140,7 @@
 					<!-- ADDITIONAL -->
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
-							<h4 class="panel-title"><i class="fa fa-th-list"></i> 
+							<h4 class="panel-title"><i class="fa fa-th-list"></i>
 								<a href="#additional" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">{{ lang.editnews['bar.additional'] }}</a>
 							</h4>
 						</div>
@@ -160,7 +165,7 @@
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
-							<h4 class="panel-title"><i class="fa fa-th-list"></i> 
+							<h4 class="panel-title"><i class="fa fa-th-list"></i>
 								<a href="#attaches" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">{{ lang.editnews['bar.attaches'] }} ({% if (attachCount>0) %}{{ attachCount }}{% else %}{{ lang['noa'] }}{% endif %})</a>
 							</h4>
 						</div>
@@ -255,7 +260,7 @@
 					</div>
 				</div>
 			</div>
-			
+
 			<!-- Right edit column -->
 			<div id="rightBar" class="col col-sm-4">
 				<div class="panel panel-default">
@@ -317,7 +322,7 @@
 						<label><input type="checkbox" name="flag_RAW" value="1" {% if (flags.raw) %}checked="checked"{% endif %} id="flag_RAW" {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.editnews['flag_raw'] }}</label> {% if (flags['raw.disabled']) %}[<font color=red>{{ lang.editnews['flags_lost'] }}</font>]{% endif %}
 					</div>
 				</div>
-				
+
 				{% if not flags['customdate.disabled'] %}
 				<div class="panel panel-default">
 					<div class="panel-heading">{{ lang.editnews['date.manage'] }}</div>
@@ -364,7 +369,7 @@
 			</div>
 		</div>
 	</form>
-	
+
 	<!-- COMMENTS -->
 	{% if (pluginIsActive('comments')) %}
 	<form name="commentsForm" id="commentsForm" action="admin.php?mod=news" method="post">
@@ -372,7 +377,7 @@
 		<input type="hidden" name="action" value="edit" />
 		<input type="hidden" name="subaction" value="mass_com_delete" />
 		<input type="hidden" name="id" value="{{ id }}" />
-		
+
 		<div class="row">
 			<div class="col col-sm-8">
 				<!-- MAIN CONTENT -->
@@ -439,12 +444,12 @@ var currentInputAreaID = 'ng_news_content{% if (flags.edit_split) %}_short{% end
 var form = document.getElementById('postForm');
 
 function preview(){
-	
+
 	if (form.ng_news_content{% if (flags.edit_split) %}_short{% endif %}.value == '' || form.title.value == '') {
 		$.notify({message: '{{ lang.addnews['msge_preview'] }}'},{type: 'danger'});
 		return false;
 	}
-	
+
 	form['mod'].value = "preview";
 	form.target = "_blank";
 	form.submit();
@@ -479,6 +484,45 @@ document.onkeydown = function(e) {
 	}
 }
 
+</script>
+
+<script>
+
+var searchDouble = function() {
+
+	$.ajax({
+		type: 'POST',
+		url: '{{ admin_url }}/rpc.php',
+		dataType: 'text',
+		data: {
+			json: 1,
+			rndval: new Date().getTime(),
+			methodName : 'admin.news.double',
+			params: json_encode({
+					'token': '{{ token }}',
+					'title': $('#newsTitle').val(),
+					'news_id': '{{ id }}',
+					'mode': 'edit',
+				}),
+		},
+		beforeSend: function() {ngShowLoading();},
+		error: function() {ngHideLoading();$.notify({message: "{{ lang['rpc_httpError'] }}"},{type: 'danger'});},
+	}).done(function( data ) {
+		ngHideLoading();
+		try {var resTX = eval('('+data+')');} catch (err) {$.notify({message:"{{ lang['rpc_jsonError'] }} "+data},{type: 'danger'});}
+		if (!resTX['status']) {
+			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
+		} else if (resTX['info']) {
+			$.notify({message:"{{ lang['info'] }}<br/>"+resTX['info']},{type: 'info'});
+		} else {
+			var txt = '';
+			$.each(resTX['data'],function(index, value) {
+				txt += '<a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a><br />';
+			});
+			showModal(txt, resTX['header']);
+		}
+	});
+};
 </script>
 
 {{ includ_bb }}

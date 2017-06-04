@@ -558,11 +558,11 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 	// Call `SELECT` query
 	// * Check if we need to override query
 	if (isset($callingParams['overrideSQLquery']) and ($callingParams['overrideSQLquery'] != '')) {
-		$query['result']	= $callingParams['overrideSQLquery'];
+		$query['result'] = $callingParams['overrideSQLquery'];
 		// ** FORCE TO DISABLE PAGINATION !!
 		$callingParams['disablePagination'] = true;
 	} else {
-		$query['result']	= "SELECT * FROM ".prefix."_news WHERE ".$query['filter'].$query['orderby'];
+		$query['result'] = "SELECT * FROM ".prefix."_news WHERE ".$query['filter'].$query['orderby'];
 	}
 
 	$selectResult = $mysql->select($query['result'], 1);
