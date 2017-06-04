@@ -289,7 +289,7 @@ registerActionHandler('index', 'plugin_tags_cloudblock');
 //
 // Show tags cloud
 function plugin_tags_cloud(){
-	global $tpl, $template, $mysql, $SYSTEM_FLAGS;
+	//global $tpl, $template, $mysql, $SYSTEM_FLAGS;
 
 	plugin_tags_generatecloud(1, '', intval(pluginGetVariable('tags', 'age')));
 }
