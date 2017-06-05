@@ -48,15 +48,8 @@ class Lang {
 		if ( file_exists($toinc) ) {
 			$content = parse_ini_file($toinc, true);
 
-			if ( !is_array(self::$data) )
-				self::$data = array();
+			self::set($content, $area);
 
-			if ($area) {
-				self::$data[$area] = $content;
-			} else {
-				self::$data = array_merge(self::$data, $content);
-			}
-			
 			//return;
 
 		} else {
@@ -117,14 +110,14 @@ class Lang {
 			// Delimiter = '#' - special delimiter, make a separate array
 			if ($delimiter == '#') {
 				//$lang[$prefix] = $plugin_lang;
-				Lang::set($plugin_lang, $prefix);
+				self::set($plugin_lang, $prefix);
 			} else if (($delimiter == '')&&($prefix == '')) {
 				//$lang = $lang + $plugin_lang;
-				Lang::set($plugin_lang);
+				self::set($plugin_lang);
 			} else {
 				foreach ($plugin_lang as $p => $v) {
 					//$lang[$prefix.$delimiter.$p] = $v;
-					Lang::set(array($prefix.$delimiter.$p => $v));
+					self::set(array($prefix.$delimiter.$p => $v));
 				}
 			}
 		}
@@ -134,7 +127,10 @@ class Lang {
 
 	public static function set( $content, $area = false ) {
 
-		if ( $area ) {
+		if ( !is_array(self::$data) )
+			self::$data = array();
+
+		if ($area) {
 			self::$data[$area] = $content;
 		} else {
 			self::$data = array_merge(self::$data, $content);
