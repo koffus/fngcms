@@ -138,16 +138,16 @@ class Lang {
 
 	}
 
-	public static function get( $key, $default_value = '' ) {
+	public static function get( $key, $default_value = false ) {
 
 		if ( isset(self::$data[$key]) and !empty(self::$data[$key]) )
 			return self::$data[$key];
 
 		// this need to global, admin.panel
-		if ( !$key )
+		if ( trim($key) )
 			return self::$data;
 
-		if ( !empty($default_value) )
+		if ( $default_value )
 			return $default_value;
 
 		// only the administrator can see alerts
