@@ -144,7 +144,7 @@ class Lang {
 			return self::$data[$key];
 
 		// this need to global, admin.panel
-		if ( trim($key) )
+		if ( empty($key) )
 			return self::$data;
 
 		if ( $default_value )
