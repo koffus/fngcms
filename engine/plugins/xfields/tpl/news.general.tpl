@@ -3,12 +3,12 @@
 <script>
 <!--
 // XFields configuration profile mapping
-var xfGroupConfig	= {{ xfGC }};
-var xfCategories	= {{ xfCat }};
-var xfList		= {{ xfList }};
+var xfGroupConfig = {{ xfGC }};
+var xfCategories = {{ xfCat }};
+var xfList = {{ xfList }};
 
-var tblConfig		= {{ xtableConf }};
-var tblData		= {{ xtableVal }};
+var tblConfig = {{ xtableConf }};
+var tblData = {{ xtableVal }};
 
 
 function tblLoadData(initMode) {
@@ -40,13 +40,13 @@ function tblLoadData(initMode) {
 			// ** TEXT ELEMENT **
 			if (tblConfig[cfgRow]['type'] == 'text') {
 				var t = $("<td>").appendTo(trow);
-				$("<input>").val(irows[dataRow][cfgRow]).appendTo(t);
+				$("<input>").attr('class', ' form-control').val(irows[dataRow][cfgRow]).appendTo(t);
 			}
 
 			// ** SELECT ELEMENT **
 			if (tblConfig[cfgRow]['type'] == 'select') {
 				var t = $("<td>").appendTo(trow);
-				var s = $("<select>").appendTo(t);
+				var s = $("<select>").attr('class', ' form-control').appendTo(t);
 
 				for (var opt in tblConfig[cfgRow]['options']) {
 					$("<option>").val((tblConfig[cfgRow]['storekeys'])?opt:tblConfig[cfgRow]['options'][opt]).html(tblConfig[cfgRow]['options'][opt]).appendTo(s);
@@ -111,7 +111,7 @@ function xf_update_visibility(cid) {
 	if ((xfCategories[cid] != null)){
 		if ((xfGroupConfig[xfCategories[cid]])) {
 			var xfGrp = xfGroupConfig[xfCategories[cid]];
-			$("#xf_profile").text("[ "+xfCategories[cid]+" :: "+xfGroupConfig[xfCategories[cid]]['title']+" ]");
+			$("#xf_profile").text("Группа доп. полей [ "+xfCategories[cid]+" :: "+xfGroupConfig[xfCategories[cid]]['title']+" ]");
 		} else {
 			$("#xf_profile").text("");
 		}
@@ -121,12 +121,12 @@ function xf_update_visibility(cid) {
 	//alert('XF update fieldList :: cat: '+cid+'; profile: '+xfCategories[cid]+'; list: '+xfGroupConfig[xfCategories[cid]]['entries']);
 	for (var xfid in xfList) {
 		var xf = xfList[xfid];
-		//alert('check field: '+xf);
+		//alert('check field: '+xf + '-' + xfGroupConfig[xfCategories[cid]]['entries']);
 
 		// Show only fields for this category profile
 		if ((xfCategories[cid] != null)){
 			if ((xfGroupConfig[xfCategories[cid]])) {
-				if (in_array(xf, xfGroupConfig[xfCategories[cid]]['entries'])) {
+				if ($.inArray(xf, xfGroupConfig[xfCategories[cid]]['entries']) >= 0) {
 					//alert('< in_array');
 					$("#xfl_"+xf).show();
 				} else {

@@ -44,33 +44,18 @@ $(document).ready(function(){
 
 	/* admGroup hide/show */
 	$('.adm-group-toggle').click(function() {
-		$(this).parents('fieldset').find('.adm-group-content').toggle();
+		if ($(this).hasClass('expanded')) {
+			$(this).removeClass('expanded');
+			$(this).parents().next('.adm-group-content').slideUp('slow');
+		} else {
+			$(this).addClass('expanded');
+			$(this).parents().next('.adm-group-content').slideDown('slow');
+		}
 		return false;
 	});
 
 	$('code').click(function() {
-		var e = this;
-		if(window.getSelection) {
-			var s = window.getSelection();
-			if(s.setBaseAndExtent) {
-				s.setBaseAndExtent(e,0,e,e.innerText.length-1);
-			} else {
-				var r = document.createRange();
-				r.selectNodeContents(e);
-				s.removeAllRanges();
-				s.addRange(r);
-			}
-		} else if(document.getSelection) {
-			var s = document.getSelection();
-			var r = document.createRange();
-			r.selectNodeContents(e);
-			s.removeAllRanges();
-			s.addRange(r);
-		} else if(document.selection) {
-			var r = document.body.createTextRange();
-			r.moveToElementText(e);
-			r.select();
-		}
+		select(this);
 	});
 
 	/*****************************
@@ -116,6 +101,24 @@ $(document).ready(function(){
 	});
 
 });
+
+function select(elem) {
+	var rng, sel;
+	if (document.createRange) {
+		rng = document.createRange();
+		rng.selectNode(elem);
+		sel = window.getSelection();
+		var strSel = '' + sel;
+		if (!strSel.length) {
+			sel.removeAllRanges();
+			sel.addRange(rng);
+		}
+	} else {
+		var rng = document.body.createTextRange();
+		rng.moveToElementText(elem);
+		rng.select();
+	}
+}
 
 /* **************** Insert image ****************** */
 

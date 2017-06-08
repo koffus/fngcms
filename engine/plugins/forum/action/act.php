@@ -17,7 +17,7 @@
 	*/
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array('show_new'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('show_new'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['show_new'].'show_new.tpl');
 	
 	if(isset($params['s']))

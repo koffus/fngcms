@@ -121,7 +121,7 @@ function plugin_nsm(){
  $tVars['flags']['canAdd'] = (($permPlugin['add']) and ($perm['add']))?1:0;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('news.list'), 'nsm', pluginGetVariable('nsm', 'localsource'));
+ $tpath = locatePluginTemplates(array('news.list'), 'nsm', pluginGetVariable('nsm', 'localSource'));
 
  $xt = $twig->loadTemplate($tpath['news.list'].'news.list.tpl');
  $template['vars']['mainblock'] .= $xt->render($tVars);
@@ -463,7 +463,7 @@ function plugin_nsm_addForm($tpl_name = 'news.add', $retry = ''){
  'listURL' => generateLink('core', 'plugin', array('plugin' => 'nsm'), array()),
  'JEV' => $retry?$retry:'{}',
  'smilies' => ($config['use_smilies'])?InsertSmilies('', 20, 'currentInputAreaID'):'',
- 'quicktags' => ($config['use_bbcodes'])?QuickTags('currentInputAreaID', 'news'):'',
+ 'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
  'flags' => array(
  'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],
  'favorite' => $perm['add.favorite'] and $perm['personal.favorite'],
@@ -486,7 +486,7 @@ function plugin_nsm_addForm($tpl_name = 'news.add', $retry = ''){
  );
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array($tpl_name), 'nsm', pluginGetVariable('nsm', 'localsource'));
+ $tpath = locatePluginTemplates(array($tpl_name), 'nsm', pluginGetVariable('nsm', 'localSource'));
 
  $xt = $twig->loadTemplate($tpath[$tpl_name].$tpl_name.'.tpl');
 
@@ -800,7 +800,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
  generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['author'], 'id' => $row['author_id'])),
  'smilies' => $config['use_smilies']?InsertSmilies('', 20, 'currentInputAreaID'):'',
- 'quicktags' => $config['use_bbcodes']?QuickTags('currentInputAreaID', 'news'):'',
+ 'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
  'approve' => $row['approve'],
  'flags' => array(
  'edit_split' => $config['news.edit.split']?true:false,
@@ -866,7 +866,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  foreach ($PFILTERS['news'] as $k => $v) { $v->editNewsForm($id, $row, $tVars); }
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array($tpl_name), 'nsm', pluginGetVariable('nsm', 'localsource'));
+ $tpath = locatePluginTemplates(array($tpl_name), 'nsm', pluginGetVariable('nsm', 'localSource'));
 
  $xt = $twig->loadTemplate($tpath[$tpl_name].$tpl_name.'.tpl');
  $template['vars']['mainblock'] .= $xt->render($tVars);

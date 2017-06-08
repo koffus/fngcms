@@ -67,6 +67,7 @@ function admNewsRPCdouble($params) {
 
 	foreach ($selectResult as $row) {
 		$data[] = array(
+			'id' => intval($row['id']),
 			'url' => newsGenerateLink($row),
 			'title' => secure_html($row['title']),
 			);

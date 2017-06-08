@@ -165,7 +165,7 @@ class auth_vb {
 		$session_idhash = md5($_SERVER['HTTP_USER_AGENT'] . $this->fetch_substr_ip($this->fetch_alt_ip()));
 		$newsessionhash = md5(time().$session_idhash.$ip.rand(1,100000));
 
-		$params = array ( 'sessionhash' => db_squote($newsessionhash), 'userid' => db_squote($dbrow['vb_userid']), 'host' => db_squote($ip), 'idhash' => db_squote($session_idhash), 'lastactivity' => 'unix_timestamp(now())', 'languageid' => db_squote($this->vb_row['languageid']));
+		$params = array('sessionhash' => db_squote($newsessionhash), 'userid' => db_squote($dbrow['vb_userid']), 'host' => db_squote($ip), 'idhash' => db_squote($session_idhash), 'lastactivity' => 'unix_timestamp(now())', 'languageid' => db_squote($this->vb_row['languageid']));
 		$this->auth_db->query("insert into ".$dbprefix."session (".implode(", ",array_keys($params)).") values (".implode(", ",$params).")");
 
 		// =====================================================
@@ -263,7 +263,7 @@ class auth_vb {
 				$this->auth_db->query("delete from ".$dbprefix."session where sessionhash=".db_squote($sessionhash));
 
 			$newsessionhash = md5(time().$session_idhash.$ip.rand(1,100000));
-			$params = array ( 'sessionhash' => db_squote($newsessionhash), 'userid' => db_squote($cookie_userid), 'host' => db_squote($ip), 'idhash' => db_squote($session_idhash), 'lastactivity' => 'unix_timestamp(now())', 'languageid' => db_squote($userrec['languageid']));
+			$params = array('sessionhash' => db_squote($newsessionhash), 'userid' => db_squote($cookie_userid), 'host' => db_squote($ip), 'idhash' => db_squote($session_idhash), 'lastactivity' => 'unix_timestamp(now())', 'languageid' => db_squote($userrec['languageid']));
 			$this->auth_db->query("insert into ".$dbprefix."session (".implode(", ",array_keys($params)).") values (".implode(", ",$params).")");
 
 			// Set cookie

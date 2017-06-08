@@ -9,11 +9,13 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Preload config file
 pluginsLoadConfig();
+
+// Load lang files
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
-// Fill configuration parameters
+// Prepare configuration parameters
 $skList = array();
-if ($skDir = opendir(extras_dir.'/rating/tpl/skins')) {
+if ($skDir = opendir(extras_dir.'/'.$plugin.'/tpl/skins')) {
 	while ($skFile = readdir($skDir)) {
 		if (!preg_match('/^\./', $skFile)) {
 			$skList[$skFile] = $skFile;
@@ -23,43 +25,43 @@ if ($skDir = opendir(extras_dir.'/rating/tpl/skins')) {
 }
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin . ':description'));
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'regonly',
-		'title' => __($plugin . ':for_reg'),
-		'descr' => __($plugin . ':for_reg#desc'),
+		'title' => __($plugin.':for_reg'),
+		'descr' => __($plugin.':for_reg#desc'),
 		'type' => 'select',
 		'values' => array('0' => __('noa'), '1' => __('yesa')),
 		'value' => pluginGetVariable($plugin,'regonly'),
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin . ':group.config'),
+	'title' => __('group.config'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localsource',
-		'title' => __($plugin . ':localsource'),
-		'descr' => __($plugin . ':localsource#desc'),
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
 		'type' => 'select',
-		'values' => array('0' => __($plugin . ':localsource_0'), '1' => __($plugin . ':localsource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localsource'))
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
 		));
 	array_push($cfgX, array(
-		'name' => 'localskin',
-		'title' => __($plugin . ':localskin'),
-		'descr' => __($plugin . ':localskin#desc'),
+		'name' => 'localSkin',
+		'title' => __('localSkin'),
+		'descr' => __('localSkin#desc'),
 		'type' => 'select',
 		'values' => $skList,
-		'value' => pluginGetVariable($plugin,'localskin') ? pluginGetVariable($plugin,'localskin') : 'basic',
+		'value' => pluginGetVariable($plugin,'localSkin') ? pluginGetVariable($plugin,'localSkin') : 'basic',
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin . ':group.source'),
+	'title' => __('group.source'),
 	'entries' => $cfgX,
 	));
 

@@ -8,7 +8,7 @@ if (!defined('NGCMS')) die ('HAL');
 //
 
 pluginsLoadConfig();
-Lang::loadPlugin($plugin, 'main');
+Lang::loadPlugin($plugin, 'config');
 
 $db_update = array(
 	array(
@@ -24,5 +24,3 @@ if ($_REQUEST['action'] == 'commit') {
 } else {
 	generate_install_page($plugin, '', 'deinstall');
 }
-
-?>

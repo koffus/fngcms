@@ -185,7 +185,7 @@ function lastcomments($mode = 0) {
 			);
 	}
 
-	$tpath = locatePluginTemplates(array($tpl_prefix.'lastcomments'), 'lastcomments', pluginGetVariable('lastcomments', 'localsource'));
+	$tpath = locatePluginTemplates(array($tpl_prefix.'lastcomments'), 'lastcomments', pluginGetVariable('lastcomments', 'localSource'));
 
 	$xt = $twig->loadTemplate($tpath[$tpl_prefix.'lastcomments'].$tpl_prefix."lastcomments".'.tpl');
 	$tVars = array(

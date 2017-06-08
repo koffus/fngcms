@@ -1,23 +1,62 @@
 <?php
 
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
+// Preload config file
 pluginsLoadConfig();
 
-$cfg = array();
-$cfgX = array();
-array_push($cfg, array('descr' => 'Замена слов на адрес страниц'));
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
+// Fill configuration parameters
+$cfg = array('description' => 'Замена слов на адрес страниц');
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'p_count', 'title' => "Количество замен одной ссылке в одной новости", 'type' => 'input', 'value' => intval(pluginGetVariable($plugin,'p_count'))));
-array_push($cfgX, array('name' => 'c_replace', 'title' => "Режим поиска", 'type' => 'select', 'values' => array ( '0' => 'Не точное совпадение', '1' => 'Точное совпадени без учета регистра', '2' => 'Точное совпадение с учетом регистра'), 'value' => intval(pluginGetVariable($plugin,'c_replace'))));
-array_push($cfgX, array('name' => 'replace', 'title' => "Списки<br><br><i>Укажите слова через разделить | и переводом строк</i><br />Пример:<br />test|http://test|2<br />test2|http://test2<br>Шаблон: Что_искать|На_что_заменить|Количество_в_одной_новости",'type' => 'text', 'html_flags' => 'rows=20 cols=130', 'value' => pluginGetVariable($plugin,'replace')));
-array_push($cfgX, array('name' => 'str_url', 'title' => "Шаблон подмены<br /><small>Ключи:<br /><b>%search%</b> - Искомое слово<br /><b>%replace%</b> - Заменяемое слово<br /><b>%scriptLibrary%</b> - Путь до библиотек http://site/lib<br /><b>%home%</b> - Адрес сайта http://ngcms<br /></small><br />Пример: <pre><a href='%replace%'>%search%</a></pre>", 'type' => 'input', 'html_flags' =>'size="80"', 'value' => pluginGetVariable($plugin,'str_url')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки плагина</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'p_count',
+		'title' => "Количество замен одной ссылке в одной новости",
+		'type' => 'input',
+		'value' => intval(pluginGetVariable($plugin,'p_count')),
+		));
+	array_push($cfgX, array(
+		'name' => 'c_replace',
+		'title' => "Режим поиска",
+		'type' => 'select',
+		'values' => array('0' => 'Не точное совпадение', '1' => 'Точное совпадени без учета регистра', '2' => 'Точное совпадение с учетом регистра'),
+		'value' => intval(pluginGetVariable($plugin,'c_replace')),
+		));
+	array_push($cfgX, array(
+		'name' => 'replace',
+		'title' => 'Списки',
+		'descr' => 'Укажите слова через разделить <code>|</code> и переводом строк<br />Шаблон:<br /><code>Что_искать|На_что_заменить|Количество_в_одной_новости</code><br />Примеры:<br /><code>test|http://test|2<br />test2|http://test2</code>',
+		'type' => 'text',
+		'html_flags' => 'rows="8"',
+		'value' => pluginGetVariable($plugin,'replace'),
+		));
+	array_push($cfgX, array(
+		'name' => 'str_url',
+		'title' => 'Шаблон подмены',
+		'descr' => 'Ключи:<br /><code>%search%</code> - искомое слово<br /><code>%replace%</code> - заменяемое слово<br /><code>%scriptLibrary%</code> - путь до библиотек http://site/lib<br /><code>%home%</code> - адрес сайта http://ngcms<br />Пример:<br /><code>&lt;a href="%replace%"&gt;%search%&lt;/a&gt;</code>',
+		'type' => 'input',
+		'value' => pluginGetVariable($plugin,'str_url'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
 
+// RUN
 if ($_REQUEST['action'] == 'commit') {
-	commit_plugin_config_changes('text_replace', $cfg);
+	// If submit requested, do config save
+	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);
 } else {
-	generate_config_page('text_replace', $cfg);
+	generate_config_page($plugin, $cfg);
 }
+

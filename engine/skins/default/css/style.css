@@ -20,6 +20,7 @@ body {
 /*
  * Немного стилизации
  */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {font-family: inherit;}
 ul{list-style:circle inside}
 table{width:100%;max-width:100%;margin-bottom:0;vertical-align:middle}
 table.table tr>td,table.table tr>th{vertical-align:middle}
@@ -297,19 +298,26 @@ margin-left: 240px;
 /**
 *
 **/
+.panel-body .form-group {
+	margin-bottom: 0;
+}
+.panel-body .form-group:not(:first-child) {
+	margin-top: 15px;
+}
 .panel-table {
 	margin-bottom: 30px;
 }
-.panel-table .table{
- margin: 0;
-}
-.panel-table .panel-heading {
-	padding: 15px;
+.panel-heading {
+    font-size: 16px;
 }
 .panel h3,
 .panel h4 {
 	margin-top: 0;
 	margin-bottom: 0;
+}
+
+.panel-table .table{
+ margin: 0;
 }
 .panel-table .panel-body {
  padding: 0;
@@ -531,6 +539,10 @@ a.small-box:hover {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
+textarea[id^="ng_news_content"] {
+	font-size: 16px;
+	color: #000;
+}
 .bfauthor:focus {
 	border-bottom-left-radius: 0;
 	border-bottom-right-radius: 0;
@@ -742,7 +754,7 @@ body::-webkit-scrollbar {
 }
 /* Let's get this party started */
 ::-webkit-scrollbar {
-	width: 6px;
+	width: 8px;
 }
 /* Track */
 ::-webkit-scrollbar-track {

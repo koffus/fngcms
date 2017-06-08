@@ -1,18 +1,15 @@
-<div class="form-group">
-	<div class="col-sm-9 col-sm-offset-3">
-		<div class="input-group">
-			<span class="input-group-addon">
-				<input type="checkbox" id="autokeys_generate" name="autokeys_generate" value="1" {% if (flags.checked) %} checked="checked" {% endif %}class="check" />
-			</span>
-			<input type="text" id="autokeysArea" class="form-control" placeholder="Автоматическая генерация ключевых слов" readonly />
-			<span class="input-group-btn">
-				<button type="button" id="autokeysArea" class="btn btn-default " onclick="autokeysAjaxUpdate();" title="Генерировать keywords и теги"><i class="fa fa-refresh"></i></button>
-			</span>
-		</div>
-	</div>
-</div>
-
 <script>
+$(function() {
+	$('#newsKeywords').replaceWith('\
+			<div class="input-group">\
+				<input type="text" name="keywords" id="newsKeywords" value="'+$('#newsKeywords').val()+'" tabindex="7" class="form-control" maxlength="255" />\
+				<span class="input-group-btn">\
+					<button type="button" id="autokeysArea" class="btn btn-default " onclick="autokeysAjaxUpdate();" title="Генерировать ключевые слова"><i class="fa fa-refresh"></i></button>\
+				</span>\
+			</div>\
+			<label class="control-label help-block"><input type="checkbox" id="autokeys_generate" name="autokeys_generate" value="1" {% if (flags.checked) %} checked="checked" {% endif %}class="check" /> Автоматическая генерация ключевых слов при сохранении новости</label>');
+});
+
 var autokeysAjaxUpdate = function() {
 	$.ajax({
 		type: 'POST',

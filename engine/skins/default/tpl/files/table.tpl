@@ -67,9 +67,11 @@
 	<!-- List of files: BEGIN -->
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading text-right">
-			<a href="#" data-toggle="modal" data-target="#categories" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-			<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-primary"><i class="fa fa-cog"></i></button>
-			<a href="#" title="{l_uploadnew}" class="btn btn-success" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-plus"></i></a>
+			<div class="btn-group">
+				<a href="#" data-toggle="modal" data-target="#categories" class="btn btn-default btn-secondary"><i class="fa fa-folder-open-o"></i></a>
+				<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-default btn-secondary"><i class="fa fa-cog"></i></button>
+				<a href="#" title="{l_uploadnew}" class="btn btn-success" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-plus"></i></a>
+			</div>
 		</div>
 		<form name="imagedelete" id="delform" action="admin.php?mod=files" method="post">
 			<input type="hidden" name="area" value="{area}">

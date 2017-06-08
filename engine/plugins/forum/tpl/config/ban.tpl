@@ -16,7 +16,7 @@
 <table width="100%" border="0" class="content">
 <tr>
 <td class="contentEntry1" valign=top>Выберите каталог из которого плагин будет брать шаблоны для отображения<br /></td>
-<td class="contentEntry2" valign=top>{{ localsource }}</td>
+<td class="contentEntry2" valign=top>{{ localSource }}</td>
 
 </tr><tr>
 <td class="contentEntry1" valign=top>Выберите вид отображения форума<br /></td>
@@ -44,7 +44,7 @@
 <td class="contentEntry2" valign=top><input name="forum_keywords" type="text" title="Ключевые слова" value="{{ forum_keywords }}" /></td>
 </tr><tr>
 <td class="contentEntry1" valign=top>Выберите активный шаблон<br /><small>Выбранный скин будет использоваться при установке <b>Плагин</b> в предыдущем поле</small><br /></td>
-<td class="contentEntry2" valign=top>{{ localskin }}</td>
+<td class="contentEntry2" valign=top>{{ localSkin }}</td>
 </tr>
 <tr>
 <td class="contentEntry1" valign=top>Укажите время в течении которого можно редактировать и удалять сообщения<br /><small></small><br /></td>

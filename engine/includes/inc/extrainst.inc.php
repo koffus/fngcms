@@ -39,6 +39,7 @@ function generate_config_page($module, $params, $values = array()) {
 	function mkParamLine($param) {
 
 		if ($param['type'] == 'flat') {
+			$tvars['type'] = 'flat';
 			$tvars['input'] = $param['input'];
 			return $tvars;
 			
@@ -51,8 +52,8 @@ function generate_config_page($module, $params, $values = array()) {
 			'error' => str_replace('%error%', $param['error'], __('param_error')),
 			'input' => '',
 			'flags' => array(
-					'descr' => $param['descr'] ? true : false,
-					'error' => $param['error'] ? true : false
+				'descr' => $param['descr'] ? true : false,
+				'error' => $param['error'] ? true : false
 				)
 			);
 		
@@ -92,17 +93,17 @@ function generate_config_page($module, $params, $values = array()) {
 	foreach($params as $param) {
 		if ( $param['mode'] == 'group' ) {
 			// Lets' group parameters into one block
-			if ( $param['title'] ) {
-				$entries[] = array(
-					'groupTitle' => $param['title'],
-					'flags' => array(
-						'group' => isset($param['title']) ? true : false,
-					));
-				unset( $param['title'] );
-			}
+			$subentries = array();
 			foreach ( $param['entries'] as $entr ) {
-				$entries[] = mkParamLine($entr);
+				$subentries[] = mkParamLine($entr);
 			}
+			$entries[] = array(
+				'groupTitle' => $param['title'],
+				'subentries' => $subentries,
+				'flags' => array(
+					'group' => isset($param['title']) ? true : false,
+					'toggle' =>(isset($param['toggle']) and ($param['toggle'] == 'hide')) ? true : false,
+				));
 		} else {
 			$entries[] = mkParamLine($param);
 		}

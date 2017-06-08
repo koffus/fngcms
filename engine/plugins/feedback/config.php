@@ -11,30 +11,20 @@ include_once(root."/plugins/feedback/lib/common.php");
 
 // Switch action
 switch ($_REQUEST['action']) {
-	case 'addform' : addForm();
-					 showList();
-					 break;
-	case 'saveform': saveForm();
-					 break;
-	case 'form'		: showForm(0);
-					 break;
-	case 'row'		: showFormRow();
-					 break;
-	case 'editrow'	: editFormRow();
-					 break;
-	case 'update'	: if (doUpdate()) {
-					 	showForm();
-					}
-					 break;
-	case 'delform'	: delForm();
-					 showList();
-					 break;
-	default			: showList();
+	case 'addform': addForm(); showList(); break;
+	case 'saveform': saveForm(); break;
+	case 'form': showForm(0); break;
+	case 'row': showFormRow(); break;
+	case 'editrow': editFormRow(); break;
+	case 'update': if (doUpdate()) showForm(); break;
+	case 'delform': delForm(); showList(); break;
+	default: showList();
 }
 
 // Simply create new form
 function addForm(){
 	global $mysql;
+
 	$mysql->query("insert into ".prefix."_feedback (name, title) values ('newform', 'New form')");
 }
 
@@ -101,7 +91,7 @@ function saveForm() {
 		'active' => $_REQUEST['active'],
 		'flags' => $flags,
 		'subj' => $_REQUEST['subj'],
-	);
+		);
 
 	$sqlParams = array();
 	foreach ($params as $k => $v) {
@@ -174,7 +164,7 @@ function showForm($edMode){
 			'type' => $fInfo['type'],
 			'auto' => intval($fInfo['auto']),
 			'block' => intval($fInfo['block']),
-		);
+			);
 		$tEntries[]= $tEntry;
 	}
 
@@ -191,7 +181,7 @@ function showForm($edMode){
 			'num' => $erec[0],
 			'name' => $erec[1],
 			'value' => secure_html(join(', ', $erec[2])),
-		);
+			);
 		$tEGroups[]= $tEGroup;
 		$num++;
 	}
@@ -348,11 +338,11 @@ function editFormRow(){
 			break;
 		}
 
- // Check if row id is not valid
- if ( is_numeric(substr($fRowId, 0, 1)) or (!preg_match("/^[a-zA-Z\d]+$/", $fRowId)) or (strlen($fRowId) < 3) ) {
- $tVars['content'] = "Необходимо соблюдать правила формирования ID!";
- break;
- }
+		// Check if row id is not valid
+		if ( is_numeric(substr($fRowId, 0, 1)) or (!preg_match("/^[a-zA-Z\d]+$/", $fRowId)) or (strlen($fRowId) < 3) ) {
+			$tVars['content'] = "Необходимо соблюдать правила формирования ID!";
+			break;
+		}
 		$tVars['flags']['haveForm']	= 1;
 		$tVars['formID']			= $frow['id'];
 		$tVars['formName']			= $frow['name'];
@@ -474,9 +464,9 @@ function doUpdate() {
 			break;
 		}
 
-		$tVars['flags']['haveForm']	= 1;
-		$tVars['formID']			= $frow['id'];
-		$tVars['formName']			= $frow['name'];
+		$tVars['flags']['haveForm'] = 1;
+		$tVars['formID'] = $frow['id'];
+		$tVars['formName'] = $frow['name'];
 
 		// Unpack form data
 		$fData = unserialize($frow['struct']);
@@ -501,12 +491,9 @@ function doUpdate() {
 	// Now make an action
 
 	switch ($_REQUEST['subaction']) {
-		case 'del': unset($fData[$fRowId]);
-						break;
-		case 'up': array_key_move($fData, $fRowId, -1);
-						break;
-		case 'down':	array_key_move($fData, $fRowId, 1);
-						break;
+		case 'del': unset($fData[$fRowId]); break;
+		case 'up': array_key_move($fData, $fRowId, -1); break;
+		case 'down': array_key_move($fData, $fRowId, 1); break;
 	}
 
 	$mysql->query("update ".prefix."_feedback set struct = ".db_squote(serialize($fData))." where id = ".$frow['id']);
@@ -521,21 +508,21 @@ function delForm() {
 }
 
 function array_key_move(&$arr, $key, $offset) {
- $keys = array_keys($arr);
- $index = -1;
- foreach ($keys as $k => $v) if ($v == $key) { $index = $k; break; }
- if ($index == -1) return 0;
- $index2 = $index + $offset;
- if ($index2 < 0) $index2 = 0;
- if ($index2 > (count($arr)-1)) $index2 = count($arr)-1;
- if ($index == $index2)	return 1;
+	$keys = array_keys($arr);
+	$index = -1;
+	foreach ($keys as $k => $v) if ($v == $key) { $index = $k; break; }
+	if ($index == -1) return 0;
+	$index2 = $index + $offset;
+	if ($index2 < 0) $index2 = 0;
+	if ($index2 > (count($arr)-1)) $index2 = count($arr)-1;
+	if ($index == $index2)	return 1;
 
- $a = min($index, $index2);
- $b = max($index, $index2);
+	$a = min($index, $index2);
+	$b = max($index, $index2);
 
- $arr = array_slice($arr, 0, $a) +
- 	array_slice($arr, $b, 1) +
- 	array_slice($arr, $a+1, $b-$a) +
- 	array_slice($arr, $a, 1) +
- 	array_slice($arr, $b, count($arr) - $b);
+	$arr = array_slice($arr, 0, $a) +
+	array_slice($arr, $b, 1) +
+	array_slice($arr, $a+1, $b-$a) +
+	array_slice($arr, $a, 1) +
+	array_slice($arr, $b, count($arr) - $b);
 }

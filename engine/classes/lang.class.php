@@ -150,11 +150,7 @@ class Lang {
 		if ( $default_value )
 			return $default_value;
 
-		// only the administrator can see alerts
-		global $userROW;
-		if ( $userROW['status'] == 1 )
-			msg(array('type' => 'danger', 'message' => 'Language variable not set <code>' . $key . '</code>'));
-		//var_dump(debug_backtrace());
+		return '<code class="alert-danger">[LANG_LOST: ' . $key .']</code>';
 
 	}
 

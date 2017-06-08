@@ -92,12 +92,13 @@
 	<!-- List of news: BEGIN -->
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading text-right">
-			<button type="button" class="btn btn-primary" onclick="printElem($('form .panel-body').html());"><i class="fa fa-print"></i></button>
-			
-			<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-primary"><i class="fa fa-cog"></i></button>
-			{% if flags.allow_modify %}
-				<a href="admin.php?mod=news&action=add" title="{{ lang['add_news'] }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
-			{% endif %}
+			<div class="btn-group">
+				<button type="button" class="btn btn-default" onclick="printElem($('form .panel-body').html());"><i class="fa fa-print"></i></button>
+				<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-default"><i class="fa fa-cog"></i></button>
+				{% if flags.allow_modify %}
+					<a href="admin.php?mod=news&action=add" title="{{ lang['add_news'] }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+				{% endif %}
+			</div>
 		</div>
 		<form name="editnews" action="admin.php?mod=news" method="post">
 			<input type="hidden" name="token" value="{{ token }}">

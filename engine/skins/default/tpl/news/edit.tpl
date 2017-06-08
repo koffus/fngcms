@@ -5,9 +5,6 @@
 	<li class="active">{{ lang.editnews['editnews_title'] }} <b>{{ title }}</b></li>
 </ul>
 
-<script src="{{ home }}/lib/ajax.js"></script>
-<script src="{{ home }}/lib/libsuggest.js"></script>
-
 <!-- Info content -->
 <div class="page-main">
 	<!-- Main content form -->
@@ -23,7 +20,7 @@
 				<!-- MAIN CONTENT -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title"><i class="fa fa-th-list"></i> {{ lang['maincontent'] }}</h4>
+						<h4 class="panel-title"> {{ lang['maincontent'] }}</h4>
 					</div>
 					<div id="maincontent" class="panel-body">
 						<div class="form-group">
@@ -32,9 +29,10 @@
 								<div class="input-group">
 									<input type="text" name="title" id="newsTitle" value="{{ title }}" tabindex="1" class="form-control"/>
 									<span class="input-group-btn">
-										<button type="button" onclick="searchDouble();" class="btn btn-default"><i class="fa fa-files-o" title="Поиск дубликатов"></i></button>
+										<button type="button" onclick="searchDouble();" class="btn btn-default" title="Поиск дубликатов"><i class="fa fa-files-o"></i></button>
 									</span>
 								</div>
+								<div id="searchDouble"></div>
 							</div>
 						</div>
 						<div class="form-group">
@@ -49,8 +47,8 @@
 							<div class="col-sm-9">
 								<div class="input-group">
 									<input type="text" value="{{ link }}" tabindex="3" class="form-control" readonly />
-									<span class="input-group-addon">
-										<a href="{{ link }}" target="_blank"><i class="fa fa-external-link"></i></a>
+									<span class="input-group-btn">
+										<a href="{{ link }}" target="_blank" class="btn btn-default"><i class="fa fa-external-link"></i></a>
 									</span>
 								</div>
 							</div>
@@ -117,18 +115,23 @@
 								<textarea name="description" class="form-control" rows="4" tabindex="6">{{ description }}</textarea>
 							</div>
 						</div>
-						<div class="form-group">
+						<div id="form-keywords" class="form-group">
 							<label class="col-sm-3 control-label">{{ lang.addnews['keywords'] }}</label>
 							<div class="col-sm-9">
 								<input type="text" name="keywords" id="newsKeywords" value="{{ keywords }}" tabindex="7" class="form-control" maxlength="255" />
 							</div>
 						</div>
 						{% endif %}
-						{% if (pluginIsActive('tags')) %}{{ plugin.tags }}{% endif %}
-						{% if (pluginIsActive('autokeys')) %}{{ plugin.autokeys }}{% endif %}
+						{% if (extends.block.main) %}
+							{% for entry in extends.block.main %}
+								<!--{% if (entry.header_title) %}<legend>{{ entry.header_title }}</legend>{% endif %}-->
+								{{ entry.body }}
+							{% endfor %}
+						{% endif %}
+						
 					</div>
 					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
-					<!-- XFields -->
+					<!-- XFields [1] -->
 					<table class="table table-condensed">
 						{{ plugin.xfields[1] }}
 					</table>
@@ -136,40 +139,51 @@
 					{% endif %}
 				</div>
 
-				<div class="panel-group" id="accordion">
-					<!-- ADDITIONAL -->
-					<div class="panel panel-default panel-table">
-						<div class="panel-heading">
-							<h4 class="panel-title"><i class="fa fa-th-list"></i>
-								<a href="#additional" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">{{ lang.editnews['bar.additional'] }}</a>
-							</h4>
-						</div>
-						<div id="additional" class="panel-collapse collapse" aria-expanded="false">
-							<div class="panel-body">
-								<table class="table table-condensed">
-									<tbody>
-										<tr>
-										{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}{{ plugin.xfields[0] }}{% endif %}
+										<!-- XFields [0] -->{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}{{ plugin.xfields[0] }}{% endif %}<!-- /XFields -->
 										{% if (pluginIsActive('nsched')) %}{{ plugin.nsched }}{% endif %}
 										{% if (pluginIsActive('finance')) %}{{ plugin.finance }}{% endif %}
 										{% if (pluginIsActive('tracker')) %}{{ plugin.tracker }}{% endif %}
-										</tr>
-									</tbody>
-								</table>
+										{{ plugin.xfields[2] }}
+				<div class="panel-group" id="accordion">
+					<!-- PLUGIN IN ADDITIONAL BLOCK -->
+					{% if (extends.block.additional) %}
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.additional'] }}</a></h4>
+						</div>
+						<div id="additional" class="panel-collapse collapse">
+							<div class="panel-body">
+								{% for entry in extends.block.additional %}
+									<legend>{{ entry.header_title }}</legend>
+									{{ entry.body }}
+								{% endfor %}
 							</div>
 						</div>
 					</div>
+					{% endif %}
+
+					<!-- PLUGIN WITH OWNER BLOCK -->
+					{% if (extends.block.owner) %}
+						{% for entry in extends.block.owner %}
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title"><a href="#panel-owner-{{ loop.index }}" data-toggle="collapse" data-parent="#accordion">{{ entry.header_title }}</a></h4>
+							</div>
+							<div id="panel-owner-{{ loop.index }}" class="panel-collapse collapse"><div class="panel-body">{{ entry.body }}</div></div>
+						</div>
+						{% endfor %}
+					{% endif %}
 
 					{% if (pluginIsActive('xfields')) %}<!-- XFields [GENERAL] -->{{ plugin.xfields.general }}<!-- /XFields [GENERAL] -->{% endif %}
 
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
-							<h4 class="panel-title"><i class="fa fa-th-list"></i>
-								<a href="#attaches" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">{{ lang.editnews['bar.attaches'] }} ({% if (attachCount>0) %}{{ attachCount }}{% else %}{{ lang['noa'] }}{% endif %})</a>
+							<h4 class="panel-title">
+								<a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.attaches'] }} ({% if (attachCount>0) %}{{ attachCount }}{% else %}{{ lang['noa'] }}{% endif %})</a>
 							</h4>
 						</div>
-						<div id="attaches" class="panel-collapse collapse" aria-expanded="false">
+						<div id="attaches" class="panel-collapse collapse">
 							<div class="panel-body">
 								<table id="attachFilelist_edit" class="table table-condensed">
 									<thead>
@@ -383,7 +397,7 @@
 				<!-- MAIN CONTENT -->
 				<div id="comments" class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title"><i class="fa fa-th-list"></i> {{ lang.editnews['bar.comments'] }} ({% if plugin.comments.count > 0 %}{{ plugin.comments.count }}{% else %}{{ lang['noa'] }}{% endif %})</h4>
+						<h4 class="panel-title"> {{ lang.editnews['bar.comments'] }} ({% if plugin.comments.count > 0 %}{{ plugin.comments.count }}{% else %}{{ lang['noa'] }}{% endif %})</h4>
 					</div>
 					{% if plugin.comments.count > 0 %}
 					<table class="table table-">
@@ -405,12 +419,24 @@
 	{% endif %}
 </div>
 
-<div id="iframediv"></div>
-
 <!-- Hidden SUGGEST div -->
-<div id="suggestWindow" class="suggestWindow"><table id="suggestBlock" cellspacing="0" cellpadding="0" width="100%"></table><a href="#" align="right" id="suggestClose">close</a></div>
+<div id="suggestWindow" class="suggestWindow"><table id="suggestBlock" cellspacing="0" cellpadding="0" width="100%"></table><a href="#" align="right" id="suggestClose">{{ lang['close'] }}</a></div>
 
 <form name="DATA_tmp_storage" action="" id="DATA_tmp_storage"><input type="hidden" name="area" value="" /></form>
+
+{% if (extends.block.css) %}
+	{% for entry in extends.block.css %}
+		{{ entry.body }}
+	{% endfor %}
+{% endif %}
+{% if (extends.block.js) %}
+	{% for entry in extends.block.js %}
+		{{ entry.body }}
+	{% endfor %}
+{% endif %}
+
+<script src="{{ home }}/lib/ajax.js"></script>
+<script src="{{ home }}/lib/libsuggest.js"></script>
 
 <link href="{{ skins_url }}/assets/css/datetimepicker.css" rel="stylesheet">
 <script src="{{ skins_url }}/assets/js/moment.js"></script>
@@ -515,14 +541,15 @@ var searchDouble = function() {
 		} else if (resTX['info']) {
 			$.notify({message:"{{ lang['info'] }}<br/>"+resTX['info']},{type: 'info'});
 		} else {
-			var txt = '';
+			var txt = '<br/><ul class="alert alert-info list-unstyled alert-dismissible"><button type="button" class="close" data-dismiss="alert" >&times;</button>';
 			$.each(resTX['data'],function(index, value) {
-				txt += (index+1) + '. <a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a><br />';
+				txt += '<li>#' +value.id+ ' &#9;&#9;<a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a></li>';
 			});
-			showModal(txt, resTX['header']);
+			$('#searchDouble').html(txt+'</ul>');
 		}
 	});
 };
+
 </script>
 
 {{ includ_bb }}

@@ -18,7 +18,7 @@
 
 if (!defined('NGCMS')) die ('HAL');
 
-$tpath = locatePluginTemplates(array('show_moderate', 'entries', ':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'), 'moderate');
+$tpath = locatePluginTemplates(array('show_moderate', 'entries', ':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'), 'moderate');
 
 if(isset($params['tid']))
 	$tid = isset($params['tid'])?intval($params['tid']):0;

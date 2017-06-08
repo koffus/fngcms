@@ -10,15 +10,18 @@ if (!defined('NGCMS')) die ('HAL');
 // Preload config file
 pluginsLoadConfig();
 
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин отображает "календарь" - данные о новостях по выбранному месяцу подсвечивая дни когда были размещены новости. При клике на день будут отображаться новости за этот день');
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'mode',
-		'title' => 'В каком режиме генерируется вывод плагина<br /><small><code>Автоматически</code> - при включении плагина автоматически генерируется блок {plugin_comments}<br /><code>TWIG</code> - вывод плагина генерируется только через TWIG функцию <code>callPlugin()</code></small>',
+		'title' => 'В каком режиме генерируется вывод плагина<br /><small><code>Автоматически</code> - при включении плагина автоматически генерируется блок {{ plugin_calendar }}<br /><code>TWIG</code> - вывод плагина генерируется только через TWIG функцию <code>callPlugin()</code></small>',
 		'type' => 'select',
-		'values' => array ( '0' => 'Автоматически', '1' => 'TWIG'),
+		'values' => array('0' => 'Автоматически', '1' => 'TWIG'),
 		'value' => intval(pluginGetVariable($plugin,'mode')),
 		));
 array_push($cfg, array(
@@ -29,35 +32,38 @@ array_push($cfg, array(
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localsource',
-		'title' => 'Выберите каталог из которого плагин будет брать шаблоны для отображения<br /><small><code>Шаблон сайта</code> - плагин будет пытаться взять шаблоны из общего шаблона сайта; в случае недоступности - шаблоны будут взяты из собственного каталога плагина<br /><code>Плагин</code> - шаблоны будут браться из собственного каталога плагина</small>',
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
 		'type' => 'select',
-		'values' => array ( '0' => 'Шаблон сайта', '1' => 'Плагин'),
-		'value' => intval(pluginGetVariable($plugin,'localsource')),
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => 'Настройки отображения',
+	'title' => __('group.source'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'cache',
-		'title' => "Использовать кеширование данных<br /><small><code>Да</code> - кеширование используется<br /><code>Нет</code> - кеширование не используется</small>",
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
 		'type' => 'select',
-		'values' => array ( '1' => 'Да', '0' => 'Нет'),
-		'value' => intval(pluginGetVariable($plugin,'cache')),
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
 		));
 	array_push($cfgX, array(
 		'name' => 'cacheExpire',
-		'title' => "Период обновления кеша<br /><small>(через сколько секунд происходит обновление кеша. Значение по умолчанию: <code>60</code>)</small>",
+		'title' => __('cacheExpire'),
+		'descr' => __('cacheExpire#desc'),
 		'type' => 'input',
-		'value' => intval(pluginGetVariable($plugin,'cacheExpire'))?pluginGetVariable($plugin,'cacheExpire'):'60',
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => 'Настройки кеширования',
+	'title' => __('group.cache'),
 	'entries' => $cfgX,
 	));
 

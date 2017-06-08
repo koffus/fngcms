@@ -394,7 +394,7 @@ function addStatic(){
 	
 	msg(array(
 		'title' => __('msg.added'),
-		'message' => sprintf(__('msg.added#descr'), 'admin.php?mod=static&action=editForm&id=' . $id, 'admin.php?mod=static')
+		'message' => sprintf(__('msg.added#desc'), 'admin.php?mod=static&action=editForm&id=' . $id, 'admin.php?mod=static')
 		));
 	
 	return $id;
@@ -478,7 +478,7 @@ function editStatic(){
 
 	msg(array(
 		'title' => __('msg.edited'),
-		'message' => sprintf(__('msg.added#descr'), 'admin.php?mod=static&action=editForm&id=' . $id, 'admin.php?mod=static')
+		'message' => sprintf(__('msg.added#desc'), 'admin.php?mod=static&action=editForm&id=' . $id, 'admin.php?mod=static')
 		));
 	
 	// Return ID

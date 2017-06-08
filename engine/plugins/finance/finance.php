@@ -25,24 +25,61 @@ Lang::loadPlugin('finance', 'main', '', '', ':');
 // Фильтр новостей (для управления ценой)
 //
 class FinanceNewsFilter extends NewsFilter {
+
+	function __construct() {
+		// не загружать здесь языки !!! При просмотре новости не нужны языки настроек плагина из админ.панели !!!
+	}
+
 	function addNewsForm(&$tvars) {
-		$tvars['plugin']['finance'] = '<tr><td width="100%" class="contentHead"><img src="'.admin_url.'/skins/default/images/nav.gif" hspace="8" alt="" />Платный доступ к новости</td></tr>';
-		$tvars['plugin']['finance'] .= '<tr><td width="100%" class="contentEntry1"><table><tr><td>Стоимость доступа:</td><td><input name="fin_price" /> <small>( в формате <b>xxx.xx</b>, если не указано, то доступ к новости бесплатен)</small></td></tr></table></td></tr>';
+		global $twig;
+
+		Lang::loadPlugin('finance', 'config', '', '', ':');
+
+		$ttvars = array(
+			'fin_price' => '',
+			);
+
+		$extends = pluginGetVariable('finance','extends') ? pluginGetVariable('finance','extends') : 'owner';
+		$tpath = locatePluginTemplates(array('news'), 'finance', 1, 0, 'admin');
+		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tvars['extends']['block'][$extends][] = array(
+			'header_title' => __('finance:header_title'),
+			'body' => $xt->render($ttvars),
+			);
+
 		return 1;
 	}
+
 	function addNews(&$tvars, &$SQL) {
-	 $SQL['fin_price'] = $_REQUEST['fin_price'];
+		$SQL['fin_price'] = $_REQUEST['fin_price'];
 		return 1;
 	}
+
 	function editNewsForm($newsID, $SQLold, &$tvars) {
-		$tvars['plugin']['finance'] = '<tr><td width="100%" class="contentHead"><img src="'.admin_url.'/skins/default/images/nav.gif" hspace="8" alt="" />Платный доступ к новости</td></tr>';
-		$tvars['plugin']['finance'] .= '<tr><td width="100%" class="contentEntry1"><table><tr><td>Стоимость доступа:</td><td><input name="fin_price" value="'.$SQLold['fin_price'].'" /> <small>( в формате <b>xxx.xx</b>, если не указано, то доступ к новости бесплатен)</small></td></tr></table></td></tr>';
+		global $twig;
+
+		Lang::loadPlugin('finance', 'config', '', '', ':');
+
+		$ttvars = array(
+			'fin_price' => $SQLold['fin_price'],
+			);
+
+		$extends = pluginGetVariable('finance','extends') ? pluginGetVariable('finance','extends') : 'owner';
+		$tpath = locatePluginTemplates(array('news'), 'finance', 1, 0, 'admin');
+		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tvars['extends']['block'][$extends][] = array(
+			'header_title' => __('finance:header_title'),
+			'body' => $xt->render($ttvars),
+			);
+
 		return 1;
 	}
+
 	function editNews($newsID, $SQLold, &$SQLnew, &$tvars) {
-	 $SQLnew['fin_price'] = $_REQUEST['fin_price'];
+		$SQLnew['fin_price'] = $_REQUEST['fin_price'];
 		return 1;
 	}
+
 	function showNews($newsID, $SQLnews, &$tvars, $mode = array()) {
 		global $tpl, $mysql, $userROW, $FINANCE_MONEY_ACCEPTORS;
 
@@ -201,24 +238,24 @@ global $template, $tpl, $userROW, $username, $FINANCE_MONEY_ACCEPTORS;
 	}
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('screen', 'screen.entries'), 'finance', pluginGetVariable('finance', 'localsource'));
+	$tpath = locatePluginTemplates(array('screen', 'screen.entries'), 'finance', pluginGetVariable('finance', 'localSource'));
 
 	$entries = '';
-	$tpl -> template('screen.entries', $tpath['screen.entries']);
+	$tpl->template('screen.entries', $tpath['screen.entries']);
 
 	$ubalance = sprintf('%5.2f',finance_check_money($username)/100);
 	foreach ($FINANCE_MONEY_ACCEPTORS as $acceptor) {
 		if ($acceptor->active) {
 			$tvars = array( 'vars' => array( 'link' => generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => $acceptor->id)), 'name' => $acceptor->name));
-			$tpl -> vars('screen.entries', $tvars);
-			$entries .= $tpl -> show('screen.entries');
+			$tpl->vars('screen.entries', $tvars);
+			$entries .= $tpl->show('screen.entries');
 		}
 	}
 
 	$tvars = array( 'vars' => array( 'ubalance' => $ubalance, 'currency' => pluginGetVariable('finance', 'syscurrency'),'entries' => $entries));
-	$tpl -> template('screen', $tpath['screen.entries']);
-	$tpl -> vars('screen', $tvars);
-	$template['vars']['mainblock'] .= $tpl -> show('screen');
+	$tpl->template('screen', $tpath['screen.entries']);
+	$tpl->vars('screen', $tvars);
+	$template['vars']['mainblock'] .= $tpl->show('screen');
 
 }
 

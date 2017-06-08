@@ -233,13 +233,3 @@ function makeVARList($params = array()){
 
 	return $out;
 }
-
-function redirect_xsyslog($url)
-{
-	if (headers_sent()) {
-		echo "<script>document.location.href='{$url}';</script>\n";
-	} else {
-		header('HTTP/1.1 302 Moved Permanently');
-		header("Location: {$url}");
-	}
-}

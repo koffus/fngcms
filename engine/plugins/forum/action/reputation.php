@@ -17,7 +17,7 @@
 	*/
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array('reputation'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('reputation'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['reputation'].'reputation.tpl');
 	
 	

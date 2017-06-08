@@ -69,7 +69,7 @@ function plugin_tags_install($action) {
 				'orderby' => 4,
 				'ppage_limit' => 0,
 				'ppage_orderby' => 1,
-				'localsource' => 0,
+				'localSource' => 0,
 				'cache' => 1,
 				'cacheExpire' => 120,
 			);

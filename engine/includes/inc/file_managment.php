@@ -257,12 +257,12 @@ function manage_showlist($type) {
 		if ($type == 'image') {
 			list($html_thumb, $html_file, $html_preview) = str_replace(
 									array ('{file_url}', '{thumb_url}', '{file_name}', '{fsize}', '{image_height}', '{image_width}'),
-									array ( $fileurl, $thumburl, $row['name'], $fsize, $row['height'], $row['width']),
+									array($fileurl, $thumburl, $row['name'], $fsize, $row['height'], $row['width']),
 									array(__('insert_thumb'), __('insert_file'), __('insert_preview')));
 		} else {
 			list($html_thumb, $html_file, $html_preview) = str_replace(
 									array ('{file_url}', '{thumb_url}', '{file_name}', '{fsize}', '{image_height}', '{image_width}'),
-									array ( $fileurl, $thumburl, $row['name'], $fsize, $row['height'], $row['width']),
+									array($fileurl, $thumburl, $row['name'], $fsize, $row['height'], $row['width']),
 									array(__('insert_file')));
 		}
 

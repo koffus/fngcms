@@ -32,7 +32,7 @@
  <td colspan="2">
  <b>Вводная часть материала:</b> (Обязательно!)
  <div>
- <div>{{ quicktags }}<br /> {{ smilies }}<br /><br /></div>
+ <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
  <textarea onclick="changeActive('short');" onfocus="changeActive('short');" name="ng_news_content_short" id="ng_news_content_short" style="width:98%; height: 200px;" class="textarea"></textarea>
  </div>
  </td>
@@ -47,7 +47,7 @@
  <td colspan="2">
  <b>Материал полностью:</b> (Необязательно)
  <div>
- <div>{{ quicktags }}<br /> {{ smilies }}<br /><br /></div>
+ <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
  <textarea onclick="changeActive('full');" onfocus="changeActive('full');" name="ng_news_content_full" id="ng_news_content_full" style="width:98%; height: 200px;" class="textarea"></textarea>
  </div>
  </td>
@@ -56,7 +56,7 @@
  <tr>
  <td colspan="2">
  <div>
- <div>{{ quicktags }}<br /> {{ smilies }}<br /><br /></div>
+ <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
  <textarea name="ng_news_content" id="ng_news_content" style="width:98%; height: 400px;" class="textarea"></textarea>
  </div>
  </td>

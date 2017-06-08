@@ -3,7 +3,7 @@
 ;
 
 ID: ublog
-Name: User's blog
+Name: User blog
 Version: 0.03
 Acts: ppages, action.ppages.uprofile
 File: ublog.php

@@ -59,7 +59,7 @@ function plugin_block_zgallery($number, $mode, $cat, $overrideTemplateName, $cac
  }
  
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array($templateName), 'zgallery', pluginGetVariable('zgallery', 'localsource'));
+ $tpath = locatePluginTemplates(array($templateName), 'zgallery', pluginGetVariable('zgallery', 'localSource'));
  
  // Preload template configuration variables
  @templateLoadVariables();

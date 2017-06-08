@@ -22,7 +22,7 @@
 			return redirect_forum(link_login());
 	}
 	
-	$tpath = locatePluginTemplates(array('login'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('login'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['login'].'login.tpl');
 	
 	$time = time() + ($config['date_adjust'] * 60);

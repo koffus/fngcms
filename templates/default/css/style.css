@@ -410,11 +410,8 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
-.comment-list .comment {
-	border-color: #eaeaea;
-	border-bottom-width: 1px;
-	border-bottom-style: solid;
-	padding-bottom: 36px;
+.comments-list .comment {
+	
 }
 .comments-list .comment-content {
 	position: relative;

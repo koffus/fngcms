@@ -20,65 +20,91 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  */
- 
-# protect against hack attempts
+
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-# preload config file
-PluginsLoadConfig();
+// Preload config file
+pluginsLoadConfig();
 
-# fill configuration parameters
-$cfg = array();
-array_push($cfg, array('name' => 'rebuild', 
-					 'title' => "<font color='red'><b>Восстановить индексные таблицы</b></font>", 
-					 'descr' => "Данная операция требуется в следующих случаях:<br/>1. Вы обновляете плагин с предыдущей версии<br/>2. Вы проводили ручное изменение таблицы сообщений<br/>3. У вас есть подозрение на неверное отображение счетчиков",
-					 'type' => 'select', 
-					 'value' => 0, 
-					 'values' => array ( 0 => 'нет', 1 => 'да'), 
-					 'nosave' => 1
-					 ));
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
+// Fill configuration parameters
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'msg_per_page', 
-						'title' => "Количество сообщений на странице<br /><small>По умолчанию: <b>10</b></small>", 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, 'msg_per_page') ? intval(pluginGetVariable($plugin, 'msg_per_page')) : 10)
-						));
-array_push($cfgX, array('name' => 'title_length', 
-						'title' => "Максимальная длина темы сообщения<br /><small>По умолчанию: <b>50</b></small>", 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, 'title_length') ? intval(pluginGetVariable($plugin, 'title_length')) : 50)
-						));
-array_push($cfgX, array('name' => 'message_length', 
-						'title' => "Максимальная длина сообщения<br /><small>По умолчанию: <b>3000</b></small>", 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, 'message_length') ? intval(pluginGetVariable($plugin, 'message_length')) : 3000)
-						));
-array_push($cfg, array('mode' => 'group', 
-						'title' => '<b>Общие настройки</b>', 
-						'entries' => $cfgX
-						));
-			
+	array_push($cfgX, array(
+		'name' => 'msg_per_page', 
+		'title' => "Количество сообщений на странице<br /><small>По умолчанию: <code>10</code></small>", 
+		'type' => 'input', 
+		'value' => intval(pluginGetVariable($plugin, 'msg_per_page') ? intval(pluginGetVariable($plugin, 'msg_per_page')) : 10)
+		));
+	array_push($cfgX, array(
+		'name' => 'title_length', 
+		'title' => "Максимальная длина темы сообщения<br /><small>По умолчанию: <code>50</code></small>", 
+		'type' => 'input', 
+		'value' => intval(pluginGetVariable($plugin, 'title_length') ? intval(pluginGetVariable($plugin, 'title_length')) : 50)
+		));
+	array_push($cfgX, array(
+		'name' => 'message_length', 
+		'title' => "Максимальная длина сообщения<br /><small>По умолчанию: <code>3000</code></small>", 
+		'type' => 'input', 
+		'value' => intval(pluginGetVariable($plugin, 'message_length') ? intval(pluginGetVariable($plugin, 'message_length')) : 3000)
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
+
 $cfgX = array();
-array_push($cfgX, array('name' => 'localsource', 
-						'title' => "Выберите каталог из которого плагин будет брать шаблоны для отображения<br /><small><b>Шаблон сайта</b> - плагин будет пытаться взять шаблоны из общего шаблона сайта; в случае недоступности - шаблоны будут взяты из собственного каталога плагина<br /><b>Плагин</b> - шаблоны будут браться из собственного каталога плагина</small>", 
-						'type' => 'select', 
-						'values' => array ( '0' => 'Шаблон сайта', '1' => 'Плагин'), 
-						'value' => intval(pluginGetVariable($plugin, 'localsource'))
-						));
-array_push($cfg, array('mode' => 'group', 
-						'title' => '<b>Настройки отображения</b>', 
-						'entries' => $cfgX
-						));
+	array_push($cfgX, array(
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.source'),
+	'entries' => $cfgX,
+	));
+
+$cfgX = array();
+array_push($cfgX, array(
+	'name' => 'rebuild', 
+	'title' => __('rebuild'),
+	'descr' => __('rebuild#desc'),
+	'type' => 'select', 
+	'value' => 0, 
+	'values' => array('1' => __('yesa'), '0' => __('noa')),
+	'nosave' => 1
+	));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.rebuild'),
+	'entries' => $cfgX,
+	));
 
 // RUN
 if ($_REQUEST['action'] == 'commit') {
+	// Rebuild index table
 	if ($_REQUEST['rebuild']) {
-		$mysql->query('UPDATE '.prefix.'_users SET `pm_sync` = 0');
+		if($mysql->query('UPDATE '.prefix.'_users SET `pm_sync` = 0'))
+			msg(array('message' => __('rebuild.done')));
+		generate_config_page($plugin, $cfg);
+	} else {
+		// If submit requested, do config save
+		commit_plugin_config_changes($plugin, $cfg);
+		print_commit_complete($plugin, $cfg);
 	}
-	// If submit requested, do config save
-	commit_plugin_config_changes($plugin, $cfg);
-	print_commit_complete($plugin, $cfg);
 } else {
 	generate_config_page($plugin, $cfg);
 }

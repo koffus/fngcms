@@ -50,7 +50,7 @@
 		} else $error_text['error_passwd'] = true;
 	}
 	
-	$tpath = locatePluginTemplates(array('lock_passwd'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('lock_passwd'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['lock_passwd'].'lock_passwd.tpl');
 	
 	$tVars = array(

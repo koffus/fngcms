@@ -21,7 +21,7 @@ function plugin_faq_install($action) {
 	);
 	switch ($action) {
 		case 'confirm':
-			generate_install_page('faq', 'Всё готово к установке.');
+			generate_install_page('faq', 'Всё готово к установке плагина Вопросы и ответы (FAQ).');
 			break;
 		case 'apply':
 			if ($install) {

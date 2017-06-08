@@ -56,7 +56,7 @@ global $tpl, $mysql, $twig;
 
 		pluginsSaveConfig();
 		
-		redirect_auth_social('?mod=extra-config&plugin=auth_social');
+		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=auth_social');
 	}
 	
 	$vk_client_id = pluginGetVariable('auth_social', 'vk_client_id');
@@ -144,14 +144,3 @@ global $tpl, $mysql, $twig;
 	print $xg->render($tVars);
 
 }
-
-function redirect_auth_social($url)
-{
-	if (headers_sent()) {
-		echo "<script>document.location.href='{$url}';</script>\n";
-	} else {
-		header('HTTP/1.1 302 Moved Permanently');
-		header("Location: {$url}");
-	}
-}
-

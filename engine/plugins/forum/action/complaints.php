@@ -17,7 +17,7 @@
 	*/
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array('complaints'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('complaints'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['complaints'].'complaints.tpl');
 	
 	if(isset($params['id']))

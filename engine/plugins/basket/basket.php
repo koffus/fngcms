@@ -39,7 +39,7 @@ function plugin_basket_total() {
 	);
 
 	// Выводим шаблон
-	$tpath = locatePluginTemplates(array('total'), 'basket', pluginGetVariable('basket', 'localsource'));
+	$tpath = locatePluginTemplates(array('total'), 'basket', pluginGetVariable('basket', 'localSource'));
 
 	$xt = $twig->loadTemplate($tpath['total'].'/total.tpl');
 	$template['vars']['plugin_basket'] = $xt->render($tVars);
@@ -116,7 +116,7 @@ function plugin_basket_update() {
 
 	// Redirect to basket page
 	$SUPRESS_TEMPLATE_SHOW = true;
-	@header("Location: ".generatePluginLink('basket', null, array(), array(), false, true));
+	coreRedirectAndTerminate(generatePluginLink('basket', null, array(), array(), false, true);
 }
 
 

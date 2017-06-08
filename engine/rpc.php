@@ -68,9 +68,9 @@ function processJSON(){
 
 	$methodName = (isset($_POST['methodName']))?$_POST['methodName']:(isset($_GET['methodName'])?$_GET['methodName']:'');
 	switch ($methodName) {
-		case 'admin.rewrite.submit': 	$out = rpcRewriteSubmit($params); break;
-		case 'core.users.search': 		$out = rpcAdminUsersSearch($params); break;
-		case 'core.registration.checkParams': 	$out = coreCheckRegParams($params);break;
+		case 'admin.rewrite.submit': $out = rpcRewriteSubmit($params); break;
+		case 'core.users.search': $out = rpcAdminUsersSearch($params); break;
+		case 'core.registration.checkParams': $out = coreCheckRegParams($params);break;
 		default:
 			if (isset($RPCFUNC[$methodName])) {
 				$out = call_user_func($RPCFUNC[$methodName], $params);

@@ -25,7 +25,7 @@
 	if(is_array($userROW))
 		return $output = information('Авторизированные не могут регистрироваться', $title = 'Информация');
 	
-	$tpath = locatePluginTemplates(array('register', 'captcha'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('register', 'captcha'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['register'].'register.tpl');
 	
 	$time = time() + ($config['date_adjust'] * 60);

@@ -67,32 +67,32 @@
 
  example:
 * setVars => array (
- 'action' => array ( 0, 'plugin' ),
-	'plugin' => array ( 0, 'sync' ),
-	'pcmd' => array ( 1, 'name' ),
+ 'action' => array(0, 'plugin' ),
+	'plugin' => array(0, 'sync' ),
+	'pcmd' => array(1, 'name' ),
  )
 
 ## genrMAP - array of concatinated values:
-	row: array ( TYPE, VALUE )
+	row: array(TYPE, VALUE )
 	 TYPE = 0, VALUE = static text
 	 TYPE = 1, VALUE = name of variable
 
  example:
 * genrMAP => array (
- array ( 0, 'sync/' ),
-	array ( 1, 'name' )
+ array(0, 'sync/' ),
+	array(1, 'name' )
  )
  // will generate URL like 'sync/HERE_IS_A_NAME'
 
 ## genoMAP - array of params to set
- varName => array ( TYPE, VALUE )
+ varName => array(TYPE, VALUE )
 	 TYPE = 0, VALUE = static text
 	 TYPE = 1, VALUE = name of variable
 
  example:
 * genrMAP => array (
- 'action' => array ( 0, 'sync' ),
-	'name' => array ( 1, 'name' )
+ 'action' => array(0, 'sync' ),
+	'name' => array(1, 'name' )
  )
  // will generate URL like '?action=sync&name=HERE_IS_A_NAME'
 

@@ -17,7 +17,7 @@
 	*/
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array('topic_modify'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('topic_modify'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['topic_modify'].'topic_modify.tpl');
 	
 	if(isset($params['id']))

@@ -17,7 +17,7 @@
 	*/
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array('thank'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('thank'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['thank'].'thank.tpl');
 	
 	

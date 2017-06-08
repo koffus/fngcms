@@ -136,7 +136,7 @@ function plugin_ublog() {
 	);
 	$tVars['pages']	= $newsResults['pages'];
 
-	$tpath = locatePluginTemplates(array('ublog'), 'ublog', pluginGetVariable('calendar', 'localsource'));
+	$tpath = locatePluginTemplates(array('ublog'), 'ublog', pluginGetVariable('calendar', 'localSource'));
 	$xt = $twig->loadTemplate($tpath['ublog'].'ublog.tpl');
 	$output = $xt->render($tVars);
 

@@ -17,7 +17,7 @@
 			<tbody></tbody>
 			<tfoot>
 				<tr>
-					<td colspan="{{ (xtablecnt+2) }}"><input type="button" value="добавить строки.." onclick="tblLoadData(0);" class="form-control" /></td>
+					<td colspan="{{ (xtablecnt+2) }}" class="text-right"><input type="button" value="добавить строки.." onclick="tblLoadData(0);" class="btn btn-default" /></td>
 				</tr>
 			</tfoot>
 		</table>

@@ -26,7 +26,7 @@ function k_online()
 
 $time = time() + ($config['date_adjust'] * 60);
 $last_time = $time - 500;
-$tpath = locatePluginTemplates(array('k_online'), 'k_online', pluginGetVariable('k_online', 'localsource'));
+$tpath = locatePluginTemplates(array('k_online'), 'k_online', pluginGetVariable('k_online', 'localSource'));
 $xt = $twig->loadTemplate($tpath['k_online'].'k_online.tpl');
 
 $bot = filter_bots($_SERVER['HTTP_USER_AGENT']);

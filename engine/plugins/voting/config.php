@@ -1,19 +1,21 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
 // Preload config file
 pluginsLoadConfig();
-Lang::loadPlugin('voting', 'config', '', '', ':');
 
-// Fill configuration parameters
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
+// Prepare configuration parameters
 $skList = array();
-if ($skDir = opendir(extras_dir.'/voting/tpl/skins')) {
+if ($skDir = opendir(extras_dir.'/'.$plugin.'/tpl/skins')) {
 	while ($skFile = readdir($skDir)) {
 		if (!preg_match('/^\./', $skFile)) {
 			$skList[$skFile] = $skFile;
@@ -22,15 +24,42 @@ if ($skDir = opendir(extras_dir.'/voting/tpl/skins')) {
 	closedir($skDir);
 }
 
-$cfg = array();
-array_push($cfg, array('descr' => __('voting:desc')));
-array_push($cfg, array('name' => 'rotate', 'title' => __('voting:rotate'), 'descr' => __('voting:rotate#desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('voting','rotate')));
-array_push($cfg, array('name' => 'active', 'title' => __('voting:active'), 'descr' => __('voting:active#desc'), 'type' => 'select', 'values' => (array('0' => ' -- ') + mkVoteList()), 'value' => pluginGetVariable('voting','active')));
-array_push($cfg, array('name' => 'secure', 'title' => __('voting:secure'), 'descr' => __('voting:secure#desc'), 'type' => 'select', 'values' => array ( '1' => 'БД', '0' => 'Cookie'), 'value' => pluginGetVariable('voting','secure')));
-array_push($cfg, array('name' => 'localsource', 'title' => __('voting:localsource'), 'descr' => __('voting:localsource#desc'), 'type' => 'select', 'values' => array ( '0' => __('voting:lsrc.site'), '1' => __('voting:lsrc.plugin')), 'value' => intval(pluginGetVariable($plugin,'localsource'))));
-array_push($cfg, array('name' => 'skin', 'title' => __('voting:skin'), 'descr' => __('voting:skin#desc'), 'type' => 'select', 'values' => $skList, 'value' => pluginGetVariable('voting','skin')));
-array_push($cfg, array('name' => 'vpp', 'title' => __('voting:vpp'), 'descr' => __('voting:vpp#desc'), 'type' => 'input', 'value' => intval(pluginGetVariable('voting','vpp'))));
+// Fill configuration parameters
+$cfg = array('description' => __($plugin.':description'));
 
+$cfgX = array();
+	array_push($cfgX, array('name' => 'rotate', 'title' => __('voting:rotate'), 'descr' => __('voting:rotate#desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('voting','rotate')));
+	array_push($cfgX, array('name' => 'active', 'title' => __('voting:active'), 'descr' => __('voting:active#desc'), 'type' => 'select', 'values' => (array('0' => ' -- ') + mkVoteList()), 'value' => pluginGetVariable('voting','active')));
+	array_push($cfgX, array('name' => 'secure', 'title' => __('voting:secure'), 'descr' => __('voting:secure#desc'), 'type' => 'select', 'values' => array('1' => 'БД', '0' => 'Cookie'), 'value' => pluginGetVariable('voting','secure')));
+	array_push($cfgX, array('name' => 'vpp', 'title' => __('voting:vpp'), 'descr' => __('voting:vpp#desc'), 'type' => 'input', 'value' => intval(pluginGetVariable('voting','vpp'))));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
+
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+		));
+	array_push($cfgX, array(
+		'name' => 'localSkin',
+		'title' => __('localSkin'),
+		'descr' => __('localSkin#desc'),
+		'type' => 'select',
+		'values' => $skList,
+		'value' => pluginGetVariable($plugin,'localSkin') ? pluginGetVariable($plugin,'localSkin') : 'basic',
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.source'),
+	'entries' => $cfgX,
+	));
 function mkVoteList() {
 	global $mysql;
 	$res = array();

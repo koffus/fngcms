@@ -300,10 +300,9 @@
 		</div>
 	</div>
 </div>
-</body>
-</html>
-
 {% if (global.user['status'] == 1 and debug == true ) %}
 {{ debug_queries }}
 {{ debug_profiler }}
 {% endif %}
+</body>
+</html>

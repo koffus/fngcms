@@ -1,32 +1,62 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
 // Preload config file
 pluginsLoadConfig();
 
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
+// Prepare configuration parameters
 $personalCount = intval(pluginGetVariable($plugin,'personalCount'));
 if (($personalCount < 2)||($personalCount > 100))
 	$personalCount = 10;
 
 // Fill configuration parameters
-$cfg = array();
-$cfgX = array();
-array_push($cfg, array('descr' => 'Плагин показывает новости конкретного пользователя'));
+$cfg = array('description' => 'Плагин показывает новости конкретного пользователя');
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'replaceCount', 'title' => "Заменять значение переменной {news} на активную ссылку на блог пользователя?<br /><small><b>Да</b> - Будет заменяться значение переменной<br /><b>Нет</b> - значение переменной заменяться не будет</small>", 'type' => 'select', 'values' => array ( '0' => __('noa'), '1' => __('yesa')), 'value' => intval(pluginGetVariable($plugin,'replaceCount'))));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Страница просмотра профиля пользователя</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'replaceCount',
+		'title' => 'Заменять значение переменной {news} на активную ссылку на блог пользователя',
+		'descr' => '<code>Да</code> - будет заменяться значение переменной<br /><code>Нет</code> - значение переменной заменяться не будет',
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin,'replaceCount')),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Страница просмотра профиля пользователя',
+	'entries' => $cfgX,
+	));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'personalPages', 'title' => "Включить персональную ленту для новостей пользователей<br /><small><b>Да</b> - По адресу /plugin/ublog/?id=<b>ID_пользователя</b> будет доступен список его новостей<br /><b>Нет</b> - список новостей пользователя выводиться не будет</small>", 'type' => 'select', 'values' => array ( '0' => __('noa'), '1' => __('yesa')), 'value' => intval(pluginGetVariable($plugin,'personalPages'))));
-array_push($cfgX, array('name' => 'personalCount', 'title' => "Кол-во новостей, отображаемых на странице<br/><small>Значение по умолчанию: <b>10</b></small>", 'type' => 'input', 'value' => $personalCount));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Собственная страница с лентой новостей пользователя</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'personalPages',
+		'title' => 'Включить персональную ленту для новостей пользователей',
+		'descr' => '<code>Да</code> - по адресу <code>/plugin/ublog/?id=ID_пользователя</code> будет доступен список его новостей<br /><code>Нет</code> - список новостей пользователя выводиться не будет',
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin,'personalPages')),
+		));
+	array_push($cfgX, array(
+		'name' => 'personalCount',
+		'title' => 'Кол-во новостей, отображаемых на странице',
+		'descr' => 'Значение по умолчанию: <code>10</code>',
+		'type' => 'input',
+		'value' => $personalCount,
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Собственная страница с лентой новостей пользователя',
+	'entries' => $cfgX,
+	));
 
 // RUN
 if ($_REQUEST['action'] == 'commit') {
@@ -36,4 +66,3 @@ if ($_REQUEST['action'] == 'commit') {
 } else {
 	generate_config_page($plugin, $cfg);
 }
-

@@ -62,7 +62,7 @@ function plugin_switcher_menu(){
 
 	Lang::loadPlugin('switcher', 'main','','switcher');
 
-	$tpath = locatePluginTemplates(array('switcher'), 'switcher', pluginGetVariable('switcher', 'localsource'));
+	$tpath = locatePluginTemplates(array('switcher'), 'switcher', pluginGetVariable('switcher', 'localSource'));
 	$tpl->template('switcher',$tpath['switcher']);
 
 	$tvars['vars']['list'] = $list;
@@ -92,5 +92,5 @@ function switcher_redirector(){
 	// Redirect user:
 	// if `redirect` is set - to specified URL
 	// if `redirect` is not set - to root directory of the site
-	@header("Location: ".(pluginGetVariable('switcher', 'profile'.$i.'_redirect')?pluginGetVariable('switcher', 'profile'.$i.'_redirect'):home));
+	coreRedirectAndTerminate((pluginGetVariable('switcher', 'profile'.$i.'_redirect')?pluginGetVariable('switcher', 'profile'.$i.'_redirect'):home));
 }

@@ -9,28 +9,22 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Preload config file
 pluginsLoadConfig();
-Lang::loadPlugin($plugin, 'config', '', '', '#');
 
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
+// Prepare configuration parameters
 switch ($_REQUEST['action']) {
-	case 'list_faq':
-		show_faq();
-		break;
-	case 'add_faq':
-		show_add_faq();
-		break;
-	case 'edit_faq':
-		show_edit_faq();
-		break;
-	case 'modify':
-		modify();
-		show_faq();
-		break;
-	default:
-		show_faq();
+	case 'list_faq': show_faq(); break;
+	case 'add_faq': show_add_faq(); break;
+	case 'edit_faq': show_edit_faq(); break;
+	case 'modify': modify(); show_faq(); break;
+	default: show_faq();
 }
-function show_add_faq() {
 
-	global $tpl, $mysql, $lang, $twig;
+function show_add_faq() {
+	global $mysql, $twig;
+
 	$tpath = locatePluginTemplates(array('main', 'add_faq'), 'faq', 1);
 	if (isset($_REQUEST['submit'])) {
 		$question = $_REQUEST['question'];
@@ -48,7 +42,7 @@ function show_add_faq() {
 						' . db_squote($active) . '
 					)
 				');
-			redirect_faq('?mod=extra-config&plugin=faq&action=list_faq');
+			coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=faq&action=list_faq');
 		}
 	}
 	if (!empty($error_text)) {
@@ -80,8 +74,8 @@ function show_add_faq() {
 }
 
 function show_edit_faq() {
+	global $mysql, $twig;
 
-	global $tpl, $mysql, $lang, $twig;
 	$tpath = locatePluginTemplates(array('main', 'edit_faq'), 'faq', 1);
 	$id = intval($_REQUEST['id']);
 	if (!empty($id)) {
@@ -98,7 +92,7 @@ function show_edit_faq() {
 						answer = ' . db_squote($answer) . '
 						WHERE id = ' . intval($id) . ' ');
 				//var_dump($_REQUEST);
-				redirect_faq('?mod=extra-config&plugin=faq&action=list_faq');
+				coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=faq&action=list_faq');
 			}
 		}
 		if (!empty($error_text)) {
@@ -142,8 +136,8 @@ function show_edit_faq() {
 }
 
 function modify() {
-
 	global $mysql;
+
 	$selected_faq = $_REQUEST['selected_faq'];
 	$subaction = $_REQUEST['subaction'];
 	if (empty($selected_faq)) {
@@ -177,8 +171,8 @@ function modify() {
 }
 
 function show_faq() {
+	global $mysql, $twig;
 
-	global $tpl, $mysql, $lang, $twig;
 	$tpath = locatePluginTemplates(array('main', 'list_faq'), 'faq', 1);
 	$tVars = array();
 	// Records Per Page
@@ -241,14 +235,4 @@ function show_faq() {
 			),
 	);
 	print $xg->render($tVars);
-}
-
-function redirect_faq($url) {
-
-	if (headers_sent()) {
-		echo "<script>document.location.href='{$url}';</script>\n";
-	} else {
-		header('HTTP/1.1 302 Moved Permanently');
-		header("Location: {$url}");
-	}
 }

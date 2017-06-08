@@ -20,7 +20,7 @@
 	if(empty($GROUP_PS['group_pm']))
 		return $output = permissions_forum('У вас нет доступа к сообщениям');
 	
-	$tpath = locatePluginTemplates(array('send_pm'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('send_pm'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['send_pm'].'send_pm.tpl');
 	
 	if(!is_array($userROW))

@@ -20,7 +20,7 @@ function rss_import_block() {
 		$newslength = intval(pluginGetVariable('rss_import', $vv.'_newslength'));
 		
 		// Determine paths for all template files
-		if (intval(pluginGetVariable('rss_import', 'localsource')) == 1) $overrideTemplatePath = root.'/plugins/rss_import/tpl/'.$vv.'';
+		if (intval(pluginGetVariable('rss_import', 'localSource')) == 1) $overrideTemplatePath = root.'/plugins/rss_import/tpl/'.$vv.'';
 		else $overrideTemplatePath = tpl_site.'plugins/rss_import/'.$vv.'';
 		
 		$tpath = array('entries' => $overrideTemplatePath, 'rss' => $overrideTemplatePath);

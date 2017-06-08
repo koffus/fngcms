@@ -86,7 +86,7 @@ class PMCoreFilter extends CoreFilter {
 function pm_inbox (){
 	global $mysql, $config, $userROW, $tpl, $template, $TemplateCache, $twig;
 
-	$tpath = locatePluginTemplates(array('inbox'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+	$tpath = locatePluginTemplates(array('inbox'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 
 	# messages per page
 	$msg_per_page = intval(pluginGetVariable('pm', 'msg_per_page')) <= 0 ? 10 : intval(pluginGetVariable('pm', 'msg_per_page'));
@@ -149,7 +149,7 @@ function pm_inbox (){
 function pm_outbox (){
 	global $mysql, $userROW, $tpl, $template, $TemplateCache, $twig;
 
-	$tpath = locatePluginTemplates(array('outbox'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+	$tpath = locatePluginTemplates(array('outbox'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	# messages per page
 	$msg_per_page = intval(pluginGetVariable('pm', 'msg_per_page')) <= 0 ? 10 : intval(pluginGetVariable('pm', 'msg_per_page'));
@@ -211,7 +211,7 @@ function pm_outbox (){
 function pm_read(){
 	global $mysql, $config, $userROW, $tpl, $mod, $parse, $template, $twig;
 
-	$tpath = locatePluginTemplates(array('read'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+	$tpath = locatePluginTemplates(array('read'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	$pmid = intval($_REQUEST['pmid']);
 
@@ -304,7 +304,7 @@ function pm_delete(){
 function pm_write(){
 	global $config, $tpl, $template, $twig;
 	
-	$tpath = locatePluginTemplates(array('write'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+	$tpath = locatePluginTemplates(array('write'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 
 	$tVars = array(
 		'php_self' => $PHP_SELF,
@@ -380,7 +380,7 @@ function pm_send() {
 function pm_reply(){
 	global $mysql, $config, $userROW, $tpl, $parse, $template, $twig;
 
-	$tpath = locatePluginTemplates(array('reply'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+	$tpath = locatePluginTemplates(array('reply'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	$pmid = $_REQUEST['pmid'];
 	$save = $_REQUEST['saveoutbox'];
@@ -432,7 +432,7 @@ function pm_set(){
 		}
 	}
 	
-	$tpath = locatePluginTemplates(array('set'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+	$tpath = locatePluginTemplates(array('set'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	$tVars = array(
 		'php_self' => $PHP_SELF,
@@ -454,7 +454,7 @@ function pm(){
 		return 1;
 	}
 
- $tpath = locatePluginTemplates(array(':pm.css'), 'pm', intval(pluginGetVariable('pm', 'localsource')));
+ $tpath = locatePluginTemplates(array(':pm.css'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	register_stylesheet($tpath['url::pm.css'].'/pm.css'); 
 	
 	switch($_REQUEST['action']){

@@ -27,41 +27,38 @@ function db_dquote($string) {
 //
 // HTML & special symbols protection
 function secure_html($string) {
-	
+
 	if(is_string($string)) {
 		$string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
 		$string = str_replace(array('{', '<', '>', '"', "'"), array('&#123;', '&lt;', '&gt;', '&#34;', '&#039;'), $string);
 	} elseif (is_array($string)) {
 		$string = array_map('secure_html', $string);
 	}
-	
 	return trim($string);
 }
 
 function Formatsize($bytes) {
 
 	if ($bytes >= 1073741824) {
-			$bytes = number_format($bytes / 1073741824, 2) . ' GB';
-		} elseif ($bytes >= 1048576) {
-			$bytes = number_format($bytes / 1048576, 2) . ' MB';
-		} elseif ($bytes >= 1024) {
-			$bytes = number_format($bytes / 1024, 2) . ' kB';
-		} elseif ($bytes > 1) {
-			$bytes = $bytes . ' B';
-		} elseif ($bytes == 1) {
-			$bytes = $bytes . ' B';
-		} else {
-			$bytes = '0 B';
-		}
-
-		return $bytes;
+		$bytes = number_format($bytes / 1073741824, 2) . ' GB';
+	} elseif ($bytes >= 1048576) {
+		$bytes = number_format($bytes / 1048576, 2) . ' MB';
+	} elseif ($bytes >= 1024) {
+		$bytes = number_format($bytes / 1024, 2) . ' kB';
+	} elseif ($bytes > 1) {
+		$bytes = $bytes . ' B';
+	} elseif ($bytes == 1) {
+		$bytes = $bytes . ' B';
+	} else {
+		$bytes = '0 B';
+	}
+	return $bytes;
 }
 
 function DirSize($directory) {
 
 	if (!is_dir($directory))
 		return -1;
-	
 	$size = 0;
 
 	if ($dir = opendir($directory)) {
@@ -355,22 +352,21 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
 	// Select delivery transport
 	switch ($config['mail_mode']) {
 		default:
-		case 'mail': $mail->isMail();
-							break;
-		case 'sendmail':	$mail->isSendmail();
-							break;
-		case 'smtp': if (!$config['mail']['smtp']['host'] or !$config['mail']['smtp']['port']) {
-								$mail->isMail();
-								break;
-							}
-							$mail->isSMTP();
-							$mail->Host = $config['mail']['smtp']['host'];
-							$mail->Port = $config['mail']['smtp']['port'];
-							$mail->SMTPAuth = ($config['mail']['smtp']['auth'])?true:false;
-							$mail->Username = $config['mail']['smtp']['login'];
-							$mail->Password = $config['mail']['smtp']['pass'];
-							$mail->SMTPSecure = $config['mail']['smtp']['secure'];
-							break;
+		case 'mail': $mail->isMail(); break;
+		case 'sendmail': $mail->isSendmail(); break;
+		case 'smtp':
+			if (!$config['mail']['smtp']['host'] or !$config['mail']['smtp']['port']) {
+				$mail->isMail();
+				break;
+			}
+			$mail->isSMTP();
+			$mail->Host = $config['mail']['smtp']['host'];
+			$mail->Port = $config['mail']['smtp']['port'];
+			$mail->SMTPAuth = ($config['mail']['smtp']['auth'])?true:false;
+			$mail->Username = $config['mail']['smtp']['login'];
+			$mail->Password = $config['mail']['smtp']['pass'];
+			$mail->SMTPSecure = $config['mail']['smtp']['secure'];
+			break;
 	}
 
 	return $mail->Send();
@@ -378,7 +374,7 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
 
 //
 // Load variables from template
-// $die	- flag: generate die() in case when file is not found (else - return false)
+// $die - flag: generate die() in case when file is not found (else - return false)
 // $loadMode - flag:
 //			0 - use SITE template
 //			1 - use ADMIN PANEL template
@@ -599,15 +595,9 @@ function ListFiles($path, $ext, $showExt = 0, $silentError = 0, $returnNullOnErr
 function ListDirs($folder, $category = false, $alllink = true, $elementID = '') {
 
 	switch ($folder) {
-		case 'files':
-				$wdir = files_dir;
-				break;
-		case 'images':
-				$wdir = images_dir;
-				break;
-
-		default:
-				return fase;
+		case 'files': $wdir = files_dir; break;
+		case 'images': $wdir = images_dir; break;
+		default: return false;
 	}
 
 	$select = '<select '.($elementID?'id="'.$elementID.'" ':'').'name="category" class="form-control">'.($alllink?'<option value="">- '.__(all) .' -</option>':'');
@@ -680,11 +670,13 @@ function resolveCatNames($idList, $split = ', ') {
 
 function MakeRandomPassword() {
 	global $config;
+
 	return substr(md5($config['crypto_salt'].uniqid(rand(),1)),0,10);
 }
 
 function EncodePassword($pass) {
 	$pass = md5(md5($pass));
+
 	return $pass;
 }
 
@@ -1005,7 +997,6 @@ function newsGenerateLink($row, $flagPrint = false, $page = 0, $absoluteLink = f
 		$params['page'] = $page;
 
 	return generateLink('news', $flagPrint?'print':'news', $params, array(), false, $absoluteLink);
-
 }
 
 // Fill variables for news:
@@ -1413,6 +1404,7 @@ function ngSitePagination($currentPage, $totalPages, $paginationParams, $navigat
 // Return user record by login
 function locateUser($login) {
 	global $mysql;
+
 	if ($row = $mysql->record("select * from ".uprefix."_users where name = ".db_squote($login))) {
 		return $row;
 	}
@@ -1421,6 +1413,7 @@ function locateUser($login) {
 
 function locateUserById($id) {
 	global $mysql;
+
 	if ($row = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($id))) {
 		return $row;
 	}
@@ -1485,7 +1478,6 @@ if ( !function_exists('json_encode') ) {
 
 //
 // Add json_decode() support for PHP < 5.2.0
-//
 if (!function_exists('json_decode')) {
 	function json_decode($json, $assoc = false) {
 		include_once root.'includes/classes/json.php';
@@ -1644,6 +1636,7 @@ function genUToken($identity = ''){
 //			'' - default access via site
 function checkPermission($identity, $user = null, $mode = '', $way = '') {
 	global $userROW, $PERM;
+
 	//$xDEBUG = true;
 	$xDEBUG = false;
 
@@ -1917,7 +1910,7 @@ function ngFatalError($title, $description = '') {
 function twigIsLang($lang) {
 	global $config;
 
-	return ($config['default_lang']==$lang);
+	return ($config['default_lang'] == $lang);
 }
 
 function twigGetLang() {
@@ -1950,6 +1943,7 @@ function twigIsHandler($rules) {
 
 function twigIsCategory($list) {
 	global $currentCategory, $catz, $catmap, $config, $CurrentHandler;
+
 	//print "twigCall isCategory($list):<pre>".var_export($currentCategory, true)."</pre>";
 
 	// Return if user is not reading any news
@@ -1994,12 +1988,13 @@ function twigIsCategory($list) {
 
 function twigIsNews($rules) {
 	global $catz, $catmap, $CurrentHandler, $SYSTEM_FLAGS, $CurrentCategory;
+
 	//print "twigCall isNews($list):<pre>".var_export($SYSTEM_FLAGS['news'], true)."</pre>";
 
 	// Return if user is not in news
-	if ($CurrentHandler['pluginName'] != 'news')														return false;
-	if (($CurrentHandler['handlerName'] != 'news') and ($CurrentHandler['handlerName'] != 'print'))		return false;
-	if (!isset($SYSTEM_FLAGS['news']['db.id']))			return false;
+	if ($CurrentHandler['pluginName'] != 'news') return false;
+	if (($CurrentHandler['handlerName'] != 'news') and ($CurrentHandler['handlerName'] != 'print')) return false;
+	if (!isset($SYSTEM_FLAGS['news']['db.id'])) return false;
 
 	$ruleList = array('news' => array(), 'cat' => array(), 'mastercat' => array());
 	$ruleCatched = false;
@@ -2107,9 +2102,14 @@ function coreNormalTerminate($mode = 0) {
 
 // Generate user redirect call and terminate execution of CMS
 function coreRedirectAndTerminate($location) {
-	@header("Location: ".$location);
-	coreNormalTerminate();
-	exit;
+	if (headers_sent()) {
+		echo '<script>document.location.href='. $location .';</script>';
+	} else {
+		@header('HTTP/1.1 302 Moved Permanently');
+		@header("Location: ".$location);
+		coreNormalTerminate();
+		exit;
+	}
 }
 
 // Update delayed news counters
@@ -2384,8 +2384,7 @@ function ngLoadCategories() {
 }
 
 // Function for detection of UTF-8 charset
-function detectUTF8($string)
-{
+function detectUTF8($string) {
  return preg_match('%(?:
  [\xC2-\xDF][\x80-\xBF] # non-overlong 2-byte
  |\xE0[\xA0-\xBF][\x80-\xBF] # excluding overlongs
@@ -2399,8 +2398,8 @@ function detectUTF8($string)
 
 // Collect backtrace for debug analysis
 // $style:
-//		0 - print output in <pre>..</pre>
-//		1 - return array
+// * 0 - print output in <pre>..</pre>
+// * 1 - return array
 function ngCollectTrace($style = 0) {
 	$bt = debug_backtrace();
 	$list = array();

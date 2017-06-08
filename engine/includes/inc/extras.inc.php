@@ -295,7 +295,7 @@ function pluginsLoadConfig() {
 function plugins_load_version_file($filename) {
 
 	// config variables & function init
-	$config_params = array ( 'id', 'name', 'version', 'acts', 'file', 'config', 'install', 'deinstall', 'management', 'type', 'description', 'author', 'author_uri', 'permanent', 'library', 'actions' );
+	$config_params = array('id', 'name', 'version', 'acts', 'file', 'config', 'install', 'deinstall', 'management', 'type', 'description', 'author', 'author_uri', 'permanent', 'library', 'actions' );
 	$required_params = array ('id', 'name', 'version', 'type');
 	$list_params = array( 'library', 'actions' );
 	$ver = array();
@@ -595,7 +595,7 @@ function create_access_htaccess() {
 //				 that all files are in own plugin dir
 // $skin		- skin name in plugin dir ( plugins/PLUGIN/tpl/skin/ )
 // $block		- name of subdir within current template/block
-function locatePluginTemplates($tname, $plugin, $localsource = 0, $skin = '', $block = '') {
+function locatePluginTemplates($tname, $plugin, $localSource = 0, $skin = '', $block = '') {
 	global $config;
 
 	// Check if $tname is correct
@@ -615,10 +615,10 @@ function locatePluginTemplates($tname, $plugin, $localsource = 0, $skin = '', $b
 	$tpath = array();
 	foreach ($tname as $fn) {
 		$fnc = (substr($fn, 0, 1) == ':')?substr($fn,1):($fn.'.tpl');
-		if (!$localsource and is_readable(tpl_site.'plugins/'.$plugin.$tsb.'/'.$fnc)) {
+		if (!$localSource and is_readable(tpl_site.'plugins/'.$plugin.$tsb.'/'.$fnc)) {
 			$tpath[$fn] = tpl_site.'plugins/'.$plugin.$tsb.'/';
 			$tpath['url:'.$fn] = tpl_url.'/plugins/'.$plugin.$tsb;
-		} else	if (!$localsource and is_readable(tpl_site.'plugins/'.$plugin.($block?('/'.$block):'').'/'.$fnc)) {
+		} else if (!$localSource and is_readable(tpl_site.'plugins/'.$plugin.($block?('/'.$block):'').'/'.$fnc)) {
 			$tpath[$fn] = tpl_site.'plugins/'.$plugin.($block?('/'.$block):'').'/';
 			$tpath['url:'.$fn] = tpl_url.'/plugins/'.$plugin.($block?('/'.$block):'');
 		} else if (is_readable(extras_dir.'/'.$plugin.'/tpl'.$tsb.'/'.$fnc)) {

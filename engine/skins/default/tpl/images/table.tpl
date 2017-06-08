@@ -67,14 +67,16 @@
 	<!-- List of images: BEGIN -->
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading text-right">
-			<a href="#" data-toggle="modal" data-target="#categories" class="btn btn-default btn-secondary"><i class="fa fa-pencil"></i></a>
-			<div class="btn-group" data-toggle="buttons">
-				<label class="btn btn-primary" title="{l_show_preview}">
-				<input type="checkbox" id="show_preview" autocomplete="off" onchange="setCookie('img_preview',this.checked?1:0); document.location=document.location;" {box_preview}> <i class="fa fa-eye"></i>
-				</label>
+			<div class="btn-group">
+				<a href="#" data-toggle="modal" data-target="#categories" class="btn btn-default btn-secondary"><i class="fa fa-folder-open-o"></i></a>
+				<div class="btn-group" data-toggle="buttons">
+					<label class="btn btn-default btn-secondary" title="{l_show_preview}">
+					<input type="checkbox" id="show_preview" autocomplete="off" onchange="setCookie('img_preview',this.checked?1:0); document.location=document.location;" {box_preview}> <i class="fa fa-eye"></i>
+					</label>
+				</div>
+				<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-default btn-secondary"><i class="fa fa-cog"></i></button>
+				<a href="#" title="{l_uploadnew}" class="btn btn-success" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-plus"></i></a>
 			</div>
-			<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-primary"><i class="fa fa-cog"></i></button>
-			<a href="#" title="{l_uploadnew}" class="btn btn-success" data-toggle="modal" data-target="#modal-upload"><i class="fa fa-plus"></i></a>
 		</div>
 		<form name="imagedelete" id="delform" action="admin.php?mod=images" method="post">
 			<input type="hidden" name="area" value="{area}">

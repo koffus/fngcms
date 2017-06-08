@@ -28,7 +28,7 @@ function plugin_favorites() {
 	if (!$maxlength)	{ $maxlength = 100; }
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('entries', 'favorites'), 'favorites', pluginGetVariable('favorites', 'localsource'));
+	$tpath = locatePluginTemplates(array('entries', 'favorites'), 'favorites', pluginGetVariable('favorites', 'localSource'));
 
 	foreach ($mysql->select("select alt_name, postdate, title, views, catid from ".prefix."_news where favorite = '1' and approve = '1' limit 0,$number") as $row) {
 		$tvars['vars'] = array(
@@ -47,7 +47,7 @@ function plugin_favorites() {
 	}
 
 	unset($tvars);
-	$tvars['vars'] = array ( 'tpl_url' => tpl_url, 'favourite' => $result);
+	$tvars['vars'] = array('tpl_url' => tpl_url, 'favourite' => $result);
 
 	$tpl -> template('favorites', $tpath['favorites']);
 	$tpl -> vars('favorites', $tvars);

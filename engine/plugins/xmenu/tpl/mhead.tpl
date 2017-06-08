@@ -1,52 +1,28 @@
-<style>
-.xmenu {
-font-size: 22px;
-padding: 5px;
-padding-bottom: 10px;
-}
 
-.xmenu span {
-width: 60px;
-border: 1px solid #616161;
-padding-left: 20px;
-padding-right: 20px;
-cursor: pointer;
-}
-
-.active {
-background-color: #EEEEEE;
-}
-
-.passive {
-background-color: #FFFFFF;
-width: 60px;
-border: 1px solid #616161;
-padding-left: 20px;
-padding-right: 20px;
-}
-{activity}
-</style>
 <script>
 function xmenu_click(id) {
- var i;
- for (i=0; i<=9; i++) {
- 	document.getElementById('go_'+i).className = (i==id)?'active':'passive';
- 	document.getElementById('menu_'+i).style.display = (i==id)?'block':'none';
-// 	alert(document.getElementById('menu_'+i).style.display);
- }	
+	var i;
+	for (i=0; i<=9; i++) {
+		document.getElementById('go_'+i).className = (i==id)?'active':'passive';
+		document.getElementById('menu_'+i).style.display = (i==id)?'block':'none';
+	}
 }
+$('nav-tabs a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
 </script>
 <tr><td width="100%">
-<div class="xmenu">
-<span id="go_0" class="active" onclick="xmenu_click(0);">Категории</span>
-<span id="go_1" onclick="xmenu_click(1);">1</span>
-<span id="go_2" onclick="xmenu_click(2);">2</span>
-<span id="go_3" onclick="xmenu_click(3);">3</span>
-<span id="go_4" onclick="xmenu_click(4);">4</span>
-<span id="go_5" onclick="xmenu_click(5);">5</span>
-<span id="go_6" onclick="xmenu_click(6);">6</span>
-<span id="go_7" onclick="xmenu_click(7);">7</span>
-<span id="go_8" onclick="xmenu_click(8);">8</span>
-<span id="go_9" onclick="xmenu_click(9);">9</span>
-</div>
+<ul class="nav nav-tabs nav-justified">
+<li id="go_0" class="active"><a href="#" onclick="xmenu_click(0);">Категории</a></li>
+<li id="go_1"><a href="#" onclick="xmenu_click(1);">1</a></li>
+<li id="go_2"><a href="#" onclick="xmenu_click(2);">2</a></li>
+<li id="go_3"><a href="#" onclick="xmenu_click(3);">3</a></li>
+<li id="go_4"><a href="#" onclick="xmenu_click(4);">4</a></li>
+<li id="go_5"><a href="#" onclick="xmenu_click(5);">5</a></li>
+<li id="go_6"><a href="#" onclick="xmenu_click(6);">6</a></li>
+<li id="go_7"><a href="#" onclick="xmenu_click(7);">7</a></li>
+<li id="go_8"><a href="#" onclick="xmenu_click(8);">8</a></li>
+<li id="go_9"><a href="#" onclick="xmenu_click(9);">9</a></li>
+</ul>
 </td></tr>

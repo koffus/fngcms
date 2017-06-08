@@ -10,6 +10,24 @@
 		</tr>
 	</thead>
 	<tbody>
-		{{ entries }}
+		{% for entry in entries %}
+		<tr>
+			<td>{{ entry.name }}</td>
+			<td>{{ entry.description }}</td>
+			<td>{{ entry.type }}</td>
+			<td>{{ entry.state }}</td>
+			<td>{{ entry.online }}</td>
+			<td class="text-right">
+				<div class="btn-group">
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=edit&id={{ entry.id }}" title="{{ lang['ads_pro:button_edit'] }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=move_up&id={{ entry.id }}" title="{{ lang['ads_pro:button_up'] }}" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=move_down&id={{ entry.id }}" title="{{ lang['ads_pro:button_down'] }}" class="btn btn-default"><i class="fa fa-arrow-down"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=dell&id={{ entry.id }}" title="{{ lang['ads_pro:button_dell'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+				</div>
+			</td>
+		</tr>
+		{% else %}
+		<tr><td colspan="6"><p>{{ lang['not_found'] }}</p></td></tr>
+		{% endfor %}
 	</tbody>
 </table>

@@ -138,7 +138,7 @@ $bookmarks_script = '
 	
 register_htmlvar('plain', $bookmarks_script);
 
-$tpath = locatePluginTemplates(array(':bookmarks.css'), 'bookmarks', intval(pluginGetVariable('bookmarks', 'localsource')));
+$tpath = locatePluginTemplates(array(':bookmarks.css'), 'bookmarks', intval(pluginGetVariable('bookmarks', 'localSource')));
 register_stylesheet($tpath['url::bookmarks.css'].'/bookmarks.css'); 
 
 /* declare variables to be global
@@ -157,7 +157,7 @@ class BookmarksNewsFilter extends NewsFilter {
 		global $bookmarksLoaded, $bookmarksList, $userROW, $tpl, $mysql, $twig;
 
 		# determine paths for template files
-		$tpath = locatePluginTemplates(array('add.remove.links.style', 'not.logged.links'), 'bookmarks', pluginGetVariable('bookmarks', 'localsource'));
+		$tpath = locatePluginTemplates(array('add.remove.links.style', 'not.logged.links'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
 		
 		# exit if user is not logged in
 		if (!is_array($userROW)) {
@@ -240,7 +240,7 @@ function bookmarks_view(){
 	}
 
 	# determine paths for all template files
-	$tpath = locatePluginTemplates(array('entries', 'bookmarks'), 'bookmarks', pluginGetVariable('bookmarks', 'localsource'));
+	$tpath = locatePluginTemplates(array('entries', 'bookmarks'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
 
 	$maxlength = intval(pluginGetVariable('bookmarks','maxlength'));
 	if (!$maxlength)	{ $maxlength = 100; }
@@ -317,7 +317,7 @@ function bookmarks_t(){
 	if (!is_array($userROW)) {
 		if($ajax) die('notlogged');
 		# Redirect UNREG users far away :)
-		header('Location: '.$config['home_url'].'');
+		coreRedirectAndTerminate($config['home_url'].'');
 		return;
 	}
 	
@@ -336,7 +336,7 @@ function bookmarks_t(){
 		 if($ajax) die("limit");
 		 else { 
 			# determine paths for template files
-			$tpath = locatePluginTemplates(array('bookmarks.page'), 'bookmarks', pluginGetVariable('bookmarks', 'localsource'));
+			$tpath = locatePluginTemplates(array('bookmarks.page'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
 
 			$tvars['vars']['all_bookmarks'] = '';
 			$tvars['vars']['no_bookmarks'] = __('bookmarks:err_add_limit');
@@ -370,7 +370,7 @@ function bookmarks_t(){
 
 	# make redirection back if not-ajax mode
 	if(!$ajax){
-		header("Location: ".($HTTP_REFERER ? $HTTP_REFERER : $config['home_url']));
+		coreRedirectAndTerminate(($HTTP_REFERER ? $HTTP_REFERER : $config['home_url']));
 		return;
 	}
 
@@ -381,7 +381,7 @@ function bookmarks_t(){
 	$url = generatePluginLink('bookmarks', 'modify');
 		
 	# determine paths for template files
-	$tpath = locatePluginTemplates(array('ajax.add.remove.links.style'), 'bookmarks', pluginGetVariable('bookmarks', 'localsource'));
+	$tpath = locatePluginTemplates(array('ajax.add.remove.links.style'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
 		
 	$tVars = array('news' => $newsID, 'action' => $action, 'link' => $link, 'text' => ($action == 'delete' ? __('bookmarks:act_delete') : __('bookmarks:act_add')), 'url' => $url, 'link_title' => ($action == 'delete' ? __('bookmarks:title_delete') : __('bookmarks:title_add')));
 	
@@ -407,7 +407,7 @@ function bookmarksPage(){
 	# process bookmarks only for logged in users
 	if (!is_array($userROW)) {
 		# Redirect UNREG users far away :)
-		header('Location: '.$config['home_url'].'');
+		coreRedirectAndTerminate($config['home_url'].'');
 		return;
 	}
 
@@ -416,7 +416,7 @@ function bookmarksPage(){
 		bookmarks_sql();
 		
 	# determine paths for template files
-	$tpath = locatePluginTemplates(array('bookmarks.page', 'news.short'), 'bookmarks', pluginGetVariable('bookmarks', 'localsource'));
+	$tpath = locatePluginTemplates(array('bookmarks.page', 'news.short'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
 	
 	$SYSTEM_FLAGS['info']['title']['group'] = __('bookmarks:pp_title');
 

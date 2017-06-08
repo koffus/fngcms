@@ -1,9 +1,19 @@
 <?php
-if(!defined('NGCMS')) exit('HAL');
 
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
 pluginsLoadConfig();
-Lang::loadPlugin('gmanager', 'config', '', '', ':');
 
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
+// Prepare configuration parameters
 switch ($_REQUEST['action']) {
 	case 'list': showlist(); break;
 	case 'update': update(); showlist(); break;

@@ -18,7 +18,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 function bb_codes($text){
-	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	$text = split_text($text, 200);	 
 	
@@ -299,7 +299,7 @@ function forum_code_tag($code, $text){
 }
 
 /* function print_bbtags(){global $twig;
-	$tpath = locatePluginTemplates(array('bb_tags', ':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('bb_tags', ':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['bb_tags'].'bb_tags.tpl');
 	
 	$tVars = array(

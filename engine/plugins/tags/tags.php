@@ -4,13 +4,28 @@
 if (!defined('NGCMS')) die ('HAL');
 
 class TagsNewsfilter extends NewsFilter {
-	function addNewsForm(&$tvars) {
-	 global $tpl;
-		$tpath = locatePluginTemplates(array('tags_addnews'), 'tags', pluginGetVariable('tags', 'localsource'), pluginGetVariable('tags', 'skin')?pluginGetVariable('tags', 'skin'):'default');
 
-		$tpl -> template('tags_addnews', $tpath['tags_addnews']);
-		$tpl -> vars('tags_addnews', array ( 'vars' => array ('localPrefix' => localPrefix)));
-		$tvars['plugin']['tags'] = $tpl -> show('tags_addnews');
+	function __construct() {
+		// не загружать здесь языки !!! При просмотре новости не нужны языки настроек плагина из админ.панели !!!
+	}
+
+	function addNewsForm(&$tvars) {
+		global $twig;
+
+		Lang::loadPlugin('tags', 'config', '', '', ':');
+
+		$ttvars = array(
+			'localPrefix' => localPrefix,
+			'tags' => '',
+			);
+
+		$extends = pluginGetVariable('tags','extends') ? pluginGetVariable('tags','extends') : 'owner';
+		$tpath = locatePluginTemplates(array('news'), 'tags', 1, 0, 'admin');
+		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tvars['extends']['block'][$extends][] = array(
+			'header_title' => __('tags:header_title'),
+			'body' => $xt->render($ttvars),
+			);
 
 		return 1;
 	}
@@ -20,10 +35,9 @@ class TagsNewsfilter extends NewsFilter {
 		$tags = array();
 
 		foreach (explode(',', $_REQUEST['tags']) as $tag) {
-			$tag = trim($tag);
-			if (!mb_strlen($tag, 'UTF-8'))
-				continue;
-			$tags[$tag] = 1;
+			if ( $tag = trim($tag) ) {
+				$tags[$tag] = 1;
+			}
 		}
 
 		// Make a resulting line
@@ -46,11 +60,10 @@ class TagsNewsfilter extends NewsFilter {
 		$tagsNew = array();
 		$tagsNewQ = array();
 		foreach (explode(',', $SQL['tags']) as $tag) {
-			$tag = trim($tag);
-			if (!mb_strlen($tag, 'UTF-8'))
-				continue;
-			$tagsNew[] = $tag;
-			$tagsNewQ[] = db_squote($tag);
+			if ( $tag = trim($tag) ) {
+				$tagsNew[] = $tag;
+				$tagsNewQ[] = db_squote($tag);
+			}
 		}
 
 		// Update counters for TAGS - add
@@ -66,12 +79,22 @@ class TagsNewsfilter extends NewsFilter {
 	}
 
 	function editNewsForm($newsID, $SQLold, &$tvars) {
-	 global $tpl;
-		$tpath = locatePluginTemplates(array('tags_editnews'), 'tags', pluginGetVariable('tags', 'localsource'), pluginGetVariable('tags', 'skin')?pluginGetVariable('tags', 'skin'):'default');
+		global $twig;
 
-		$tpl -> template('tags_editnews', $tpath['tags_editnews']);
-		$tpl -> vars('tags_editnews', array ( 'vars' => array ( 'tags' => secure_html($SQLold['tags']), 'localPrefix' => localPrefix)));
-		$tvars['plugin']['tags'] = $tpl -> show('tags_editnews');
+		Lang::loadPlugin('tags', 'config', '', '', ':');
+
+		$ttvars = array(
+			'localPrefix' => localPrefix,
+			'tags' => secure_html($SQLold['tags']),
+			);
+
+		$extends = pluginGetVariable('tags','extends') ? pluginGetVariable('tags','extends') : 'owner';
+		$tpath = locatePluginTemplates(array('news'), 'tags', 1, 0, 'admin');
+		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tvars['extends']['block'][$extends][] = array(
+			'header_title' => __('tags:header_title'),
+			'body' => $xt->render($ttvars),
+			);
 
 		return 1;
 	}
@@ -87,10 +110,9 @@ class TagsNewsfilter extends NewsFilter {
 		}
 
 		foreach (explode(',', $_REQUEST['tags']) as $tag) {
-			$tag = trim($tag);
-			if (!mb_strlen($tag, 'UTF-8'))
-				continue;
-			$tags[$tag] = 1;
+			if ( $tag = trim($tag) ) {
+				$tags[$tag] = 1;
+			}
 		}
 
 		// Make a resulting line
@@ -113,11 +135,10 @@ class TagsNewsfilter extends NewsFilter {
 		// Mark OLD tags only if news was published before
 		if ($SQLnews['approve'])
 			foreach (explode(',', $SQLnews['tags']) as $tag) {
-				$tag = trim($tag);
-				if (!mb_strlen($tag, 'UTF-8'))
-					continue;
-				$tagsOld[] = $tag;
-				$tagsOldQ[] = db_squote($tag);
+				if ( $tag = trim($tag) ) {
+					$tagsOld[] = $tag;
+					$tagsOldQ[] = db_squote($tag);
+				}
 			}
 
 		// New Tags
@@ -127,11 +148,10 @@ class TagsNewsfilter extends NewsFilter {
 		// Mark NEW tags only if news will stay/become published
 		if ($SQLnew['approve'])
 			foreach (explode(',', $SQLnew['tags']) as $tag) {
-				$tag = trim($tag);
-				if (!mb_strlen($tag, 'UTF-8'))
-					continue;
-				$tagsNew[] = $tag;
-				$tagsNewQ[] = db_squote($tag);
+				if ( $tag = trim($tag) ) {
+					$tagsNew[] = $tag;
+					$tagsNewQ[] = db_squote($tag);
+				}
 			}
 
 		// List of deleted tags
@@ -175,7 +195,7 @@ class TagsNewsfilter extends NewsFilter {
 
 		// Load params for display (if needed)
 		if (!isset($this->displayParams) or !is_array($this->displayParams)) {
-			$tpath = locatePluginTemplates(array(':params.ini'), 'tags', pluginGetVariable('tags', 'localsource'), pluginGetVariable('tags', 'skin')?pluginGetVariable('tags', 'skin'):'default');
+			$tpath = locatePluginTemplates(array(':params.ini'), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin')?pluginGetVariable('tags', 'localSkin'):'default');
 			$this->displayParams = parse_ini_file($tpath[':params.ini'].'params.ini');
 		}
 
@@ -254,10 +274,10 @@ class TagsNewsfilter extends NewsFilter {
 				$tagsNew = array();
 				$tagsNewQ = array();
 				foreach (explode(',', $SQL['tags']) as $tag) {
-					$tag = trim($tag);
-					if (!$tag) continue;
-					$tagsNew[] = $tag;
-					$tagsNewQ[] = db_squote($tag);
+					if ( $tag = trim($tag) ) {
+						$tagsNew[] = $tag;
+						$tagsNewQ[] = db_squote($tag);
+					}
 				}
 
 				// Update counters for TAGS - add
@@ -281,16 +301,9 @@ class TagsNewsfilter extends NewsFilter {
 	}
 }
 
-pluginRegisterFilter('news','tags', new TagsNewsFilter);
-register_plugin_page('tags','','plugin_tags_cloud');
-register_plugin_page('tags','tag','plugin_tags_tag');
-registerActionHandler('index', 'plugin_tags_cloudblock');
-
 //
 // Show tags cloud
 function plugin_tags_cloud(){
-	//global $tpl, $template, $mysql, $SYSTEM_FLAGS;
-
 	plugin_tags_generatecloud(1, '', intval(pluginGetVariable('tags', 'age')));
 }
 
@@ -352,7 +365,7 @@ function plugin_tags_tag($params = array()) {
 	Lang::loadPlugin('tags', 'main', '', '', ':');
 
 	$SYSTEM_FLAGS['info']['title']['group']		= __('tags:header.tag.title');
-	$tpath = locatePluginTemplates(array('cloud', 'cloud.tag', 'pages', 'cloud.tag.entry'), 'tags', pluginGetVariable('tags', 'localsource'), pluginGetVariable('tags', 'skin')?pluginGetVariable('tags', 'skin'):'default');
+	$tpath = locatePluginTemplates(array('cloud', 'cloud.tag', 'pages', 'cloud.tag.entry'), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin')?pluginGetVariable('tags', 'localSkin'):'default');
 
 	include_once root.'includes/news.php';
 	// Search for tag in tags table
@@ -389,9 +402,9 @@ function plugin_tags_tag($params = array()) {
 			$tvars['regx']["'\[next-link\](.*?)\[/next-link\]'si"] = ($pageNo < $pagesCount)?str_replace('%page%',"$1",str_replace('%link%',generatePageLink($paginationParams, $pageNo + 1), $navigations['nextlink'])):'';
 			$tvars['vars']['pages'] = generatePagination($pageNo, 1, $pagesCount, 10, $paginationParams, $navigations);
 
-			$tpl -> template('pages', $tpath['pages']);
-			$tpl -> vars('pages', $tvars);
-			$pages = $tpl -> show('pages');
+			$tpl->template('pages', $tpath['pages']);
+			$tpl->vars('pages', $tvars);
+			$pages = $tpl->show('pages');
 
 		} else {
 			$limit = 'limit '.$perPage;
@@ -402,14 +415,14 @@ function plugin_tags_tag($params = array()) {
 			$entries .= news_showone(0, '', array('overrideTemplateName' => 'cloud.tag.entry', 'overrideTemplatePath' => $tpath['cloud.tag.entry'], 'emulate' => $row, 'style' => 'export', 'plugin' => 'tags'));
 		}
 	}
-	$tvars = array ( 'vars' => array ( 'entries' => $entries, 'tag' => $tag, 'pages' => $pages));
+	$tvars = array('vars' => array('entries' => $entries, 'tag' => $tag, 'pages' => $pages));
 	$tvars['regx']['#\[paginator\](.*?)\[\/paginator\]#is'] = ($pagesCount > 1)?'$1':'';
 
 	// Check if we have template `tag`
 	$tplName = isset($tpath['cloud.tag'])?'cloud.tag':'cloud';
-	$tpl -> template($tplName, $tpath[$tplName]);
-	$tpl -> vars($tplName, $tvars);
-	$template['vars']['mainblock'] = $tpl -> show($tplName);
+	$tpl->template($tplName, $tpath[$tplName]);
+	$tpl->vars($tplName, $tvars);
+	$template['vars']['mainblock'] = $tpl->show($tplName);
 
 }
 
@@ -424,7 +437,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	Lang::loadPlugin('tags', 'main', '', '', ':');
 
 	if ($ppage)
-		$SYSTEM_FLAGS['info']['title']['group']		= __('tags:header.tags.title');
+		$SYSTEM_FLAGS['info']['title']['group'] = __('tags:header.tags.title');
 
 	$masterTPL = $ppage?'cloud':'sidebar';
 
@@ -449,7 +462,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	}
 
 	// Load params for display (if needed)
-	$tpath = locatePluginTemplates(array(':params.ini', 'pages', $masterTPL), 'tags', pluginGetVariable('tags', 'localsource'), pluginGetVariable('tags', 'skin')?pluginGetVariable('tags', 'skin'):'default');
+	$tpath = locatePluginTemplates(array(':params.ini', 'pages', $masterTPL), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin')?pluginGetVariable('tags', 'localSkin'):'default');
 	$displayParams = parse_ini_file($tpath[':params.ini'].'params.ini');
 
 	$tags = array();
@@ -466,7 +479,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	// Set page display limit
 	$perPage = intval(pluginGetVariable('tags', ($ppage?'ppage_':'').'limit'));
 	if (($perPage < 1) or ($perPage > 1000))
-		$perPage = 1000;
+		$perPage = 50;
 
 	if ($ppage) {
 		if (pluginGetVariable('tags', 'ppage_paginator')) {
@@ -498,10 +511,10 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	// Prepare style definition
 	$wlist = array();
 	if ($manualstyle = intval(pluginGetVariable('tags', 'manualstyle'))) {
-	 foreach (explode("\n",pluginGetVariable('tags', 'styles_weight')) as $wrow) {
-	 if (preg_match('#^ *(\d+) *\| *(\d+) *\|(.+?) *$#', trim($wrow), $m))
-	 	array_push($wlist, array($m[1], $m[2], $m[3]));
-	 }
+		foreach (explode("\n",pluginGetVariable('tags', 'styles_weight')) as $wrow) {
+			if (preg_match('#^ *(\d+) *\| *(\d+) *\|(.+?) *$#', trim($wrow), $m))
+				array_push($wlist, array($m[1], $m[2], $m[3]));
+		}
 
 		$stylelist = preg_split("/\, */", trim(pluginGetVariable('tags', 'styles')));
 
@@ -511,8 +524,10 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	// Calculate min/max if we have any rows
 	$min = -1; $max = 0;
 	foreach ($rows as $row) {
-		if ($row['posts'] > $max) $max = $row['posts'];
-		if (($min == -1)||($row['posts'] < $min)) $min = $row['posts'];
+		if ($row['posts'] > $max)
+			$max = $row['posts'];
+		if (($min == -1) or ($row['posts'] < $min))
+			$min = $row['posts'];
 	}
 
 	// Init variables for 3D cloud
@@ -522,15 +537,16 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	if ($cloudMax == $cloudMin) { $cloudMin = 10; $cloudMax = 18; }
 
 	$cloudStep = abs(round(($max - $min)/($cloudMax-$cloudMin), 2));
-	if ($cloudStep < 0.01) $cloudStep = 1;
+	if ($cloudStep < 0.01)
+		$cloudStep = 1;
 
 	// Prepare output rows
 	$tagCount = 0;
 	foreach ($rows as $row) {
 		$tagCount++;
-	 $link = checkLinkAvailable('tags', 'tag')?
-					generateLink('tags', 'tag', array('tag' => $row['tag'])):
-					generateLink('core', 'plugin', array('plugin' => 'tags', 'handler' => 'tag'), array('tag' => $row['tag']));
+		$link = checkLinkAvailable('tags', 'tag')?
+				generateLink('tags', 'tag', array('tag' => $row['tag'])):
+				generateLink('core', 'plugin', array('plugin' => 'tags', 'handler' => 'tag'), array('tag' => $row['tag']));
 
 		$cloud3d[] = '<a href="' . $link . '" style="font-size: '.(round(($row['posts']-$min)/$cloudStep)+$cloudMin).'pt">'. $row['tag'] . '</a>';
 		if ($manualstyle) {
@@ -561,29 +577,33 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 
 		$paginationParams = array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'tags'), 'xparams' => array(), 'paginator' => array('page', 1, false));
 
-		//
 		$tvars = array();
 		$tvars['regx']["'\[prev-link\](.*?)\[/prev-link\]'si"] = ($pageNo > 1)?str_replace('%page%',"$1",str_replace('%link%',generatePageLink($paginationParams, $pageNo - 1), $navigations['prevlink'])):'';
 		$tvars['regx']["'\[next-link\](.*?)\[/next-link\]'si"] = ($pageNo < $pagesCount)?str_replace('%page%',"$1",str_replace('%link%',generatePageLink($paginationParams, $pageNo + 1), $navigations['nextlink'])):'';
 		$tvars['vars']['pages'] = generatePagination($pageNo, 1, $pagesCount, 10, $paginationParams, $navigations);
 
-		$tpl -> template('pages', $tpath['pages']);
-		$tpl -> vars('pages', $tvars);
-		$pages = $tpl -> show('pages');
+		$tpl->template('pages', $tpath['pages']);
+		$tpl->vars('pages', $tvars);
+		$pages = $tpl->show('pages');
 	} else {
 		$pages = '';
 	}
 
-	$tvars = array ( 'vars' => array ( 'entries' => $tagList, 'tag' => __('tags:taglist'), 'pages' => $pages));
+	$tvars = array('vars' => array('entries' => $tagList, 'tag' => __('tags:taglist'), 'pages' => $pages));
 	if (pluginGetVariable('tags', 'cloud3d'))
 		$tvars['vars']['cloud3d'] = urlencode('<tags>'.join(' ', $cloud3d).'</tags>');
 	$tvars['regx']['#\[paginator\](.*?)\[\/paginator\]#is'] = ($pages != '')?'$1':'';
 
-	$tpl -> template($masterTPL, $tpath[$masterTPL]);
-	$tpl -> vars($masterTPL, $tvars);
-	$output = $tpl -> show($masterTPL);
+	$tpl->template($masterTPL, $tpath[$masterTPL]);
+	$tpl->vars($masterTPL, $tvars);
+	$output = $tpl->show($masterTPL);
 	$template['vars'][$ppage?'mainblock':'plugin_tags'] = $output;
 
 	if (pluginGetVariable('tags','cache'))
 		cacheStoreFile($cacheFileName, $output, 'tags');
 }
+
+pluginRegisterFilter('news','tags', new TagsNewsFilter);
+register_plugin_page('tags','','plugin_tags_cloud');
+register_plugin_page('tags','tag','plugin_tags_tag');
+registerActionHandler('index', 'plugin_tags_cloudblock');

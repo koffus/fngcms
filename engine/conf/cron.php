@@ -30,4 +30,14 @@ return array (
     'plugin' => 'core',
     'handler' => 'load_truncate',
   ),
+  3 => 
+  array (
+    'min' => '0',
+    'hour' => '0',
+    'day' => '*',
+    'month' => '*',
+    'dow' => '*',
+    'plugin' => 'nsched',
+    'handler' => 'run',
+  ),
 );

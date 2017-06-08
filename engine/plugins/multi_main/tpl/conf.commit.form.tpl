@@ -6,8 +6,8 @@
 <tr><td width="100%" colspan="2">&nbsp;</td></tr>
 <tr>
 <td width="100%" colspan="2" class="contentEdit" align="center">
-<input type="submit" value="{l_multi_main:button_cancel}" class="button" />&#160;
-<input type="submit" onclick="document.forms['commit_delete'].elements['commit'].value='yes'; return true;" value="{l_multi_main:button_dell}" class="button" />
+<input type="submit" value="{l_multi_main:button_cancel}" class="btn btn-default" />&#160;
+<input type="submit" onclick="document.forms['commit_delete'].elements['commit'].value='yes'; return true;" value="{l_multi_main:button_dell}" class="btn btn-danger" />
 </td>
 </tr>
 </table>

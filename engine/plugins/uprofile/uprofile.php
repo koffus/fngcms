@@ -40,7 +40,7 @@ function uprofile_showProfile($params) {
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->showProfilePre($urow['id'], $urow); }
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('users'), 'uprofile', pluginGetVariable('uprofile', 'localsource'));
+	$tpath = locatePluginTemplates(array('users'), 'uprofile', pluginGetVariable('uprofile', 'localSource'));
 
 	// Make page title
 	$SYSTEM_FLAGS['info']['title']['group']	= __('uprofile')['header.view'];
@@ -128,7 +128,7 @@ function uprofile_applyProfile() {
 
 	// Redirect back if we do not have any messages
 	if (!$template['vars']['mainblock']) {
-		@header("Location: ".generateLink('uprofile', 'edit', array(), array('editComplete' => 1)));
+		coreRedirectAndTerminate(generateLink('uprofile', 'edit', array(), array('editComplete' => 1)));
 		exit;
 	} else {
 		// We have some messages. Don't affect it, print editForm.
@@ -173,7 +173,7 @@ function uprofile_editForm($ajaxMode = false){
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileFormPre($urow['id'], $urow); }
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('profile'), 'uprofile', pluginGetVariable('uprofile', 'localsource'));
+	$tpath = locatePluginTemplates(array('profile'), 'uprofile', pluginGetVariable('uprofile', 'localSource'));
 
 	$status = ((($urow['status'] >= 1)&&($urow['status'] <= 4))?__('uprofile')['st_'.$urow['status']]:__('uprofile')['st_unknown']);
 

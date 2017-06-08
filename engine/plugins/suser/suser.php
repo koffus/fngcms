@@ -102,7 +102,7 @@ function xfields_fill($row, $tEntry) {
 function suser_search($params){ 
  global $catz, $twig, $catmap, $mysql, $config, $userROW, $tpl, $parse, $template, $PFILTERS, $SYSTEM_FLAGS, $CurrentHandler;
  
- $tpath = locatePluginTemplates(array('suser','usersearch'), 'suser', pluginGetVariable('suser', 'localsource'));
+ $tpath = locatePluginTemplates(array('suser','usersearch'), 'suser', pluginGetVariable('suser', 'localSource'));
  $xt = $twig->loadTemplate($tpath['usersearch'].'usersearch.tpl');
  
  // search by xfields
@@ -169,7 +169,7 @@ function suser_search($params){
  $tVars['searched'] = true;
  } 
  if(isset($_REQUEST['reset'])){
- redirect_link_suser(generateLink('suser', 'search')); 
+ coreRedirectAndTerminate(generateLink('suser', 'search')); 
  } 
  
  $tVars['entries'] = isset($tEntry) ? $tEntry : ''; 
@@ -180,7 +180,7 @@ function suser_search($params){
 function suser_show($params) {
  global $catz, $twig, $catmap, $mysql, $config, $userROW, $tpl, $parse, $template, $PFILTERS, $SYSTEM_FLAGS, $CurrentHandler, $xmod;
 
- $tpath = locatePluginTemplates(array('suser','userlist'), 'suser', pluginGetVariable('suser', 'localsource'));
+ $tpath = locatePluginTemplates(array('suser','userlist'), 'suser', pluginGetVariable('suser', 'localSource'));
  $xt = $twig->loadTemplate($tpath['userlist'].'userlist.tpl');
  
  $pageNo = isset($_REQUEST['page'])?intval($_REQUEST['page']):0;
@@ -209,7 +209,7 @@ function suser_show($params) {
  $show_group = '';
  $sort_by = '';
  $sort_dir = '';
- redirect_link_suser(generateLink('suser')); 
+ coreRedirectAndTerminate(generateLink('suser')); 
  }
  
  switch($sort_dir){
@@ -329,7 +329,7 @@ function securenum_suser($value) {
 }
 
 function LoadVariables_suser(){
- $tpath = locatePluginTemplates(array(':'), 'suser', pluginGetVariable('suser', 'localsource'));
+ $tpath = locatePluginTemplates(array(':'), 'suser', pluginGetVariable('suser', 'localSource'));
  return parse_ini_file($tpath[':'].'/variables.ini', true);
 }
 
@@ -346,17 +346,6 @@ function link_profile_suser($id, $act = '', $name) {
  return $url;
 }
 
-function redirect_link_suser($url) {
- if (headers_sent()) {
- echo "<script>document.location.href='{$url}';</script>\n";
- exit;
- } else {
- header("HTTP/1.1 301 Moved Permanently");
- header("Location: {$url}");
- exit;
- }
-}
-
 function information_suser($info, $title = 'Информация', $error_404 = false) {
  global $twig, $SYSTEM_FLAGS, $CurrentHandler, $template;
  
@@ -365,7 +354,7 @@ function information_suser($info, $title = 'Информация', $error_404 = 
  if($error_404)
  header($_SERVER['SERVER_PROTOCOL']. ' 404 Not Found');
 
- $tpath = locatePluginTemplates(array('suser','information'), 'suser', pluginGetVariable('suser', 'localsource'));
+ $tpath = locatePluginTemplates(array('suser','information'), 'suser', pluginGetVariable('suser', 'localSource'));
  $xt = $twig->loadTemplate($tpath['information'].'information.tpl');
  
  $tVars = array(

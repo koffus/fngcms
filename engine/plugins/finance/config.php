@@ -1,45 +1,102 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
+
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
 
 // Preload config file
 pluginsLoadConfig();
 
 // Load lang files
-Lang::loadPlugin('finance', 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Fill configuration parameters
-$cfg = array();
-array_push($cfg, array('descr' => __('finance:description')));
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'syscurrency', 'title' => __('finance:syscurrency'), 'descr' => __('finance:syscurrency.descr'), 'type' => 'select', 'values' => array('RUR' => 'RUR', 'EUR' => 'EUR', 'USD' => 'USD'), value => pluginGetVariable('finance','syscurrency')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Общие настройки</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'syscurrency',
+		'title' => __('finance:syscurrency'),
+		'descr' => __('finance:syscurrency.descr'),
+		'type' => 'select',
+		'values' => array('RUR' => 'RUR', 'EUR' => 'EUR', 'USD' => 'USD'),
+		'value' => pluginGetVariable('finance','syscurrency'),
+		));
+array_push($cfg, array('mode' => 'group', 'title' => 'Общие настройки', 'entries' => $cfgX));
 
 $b = array();
-
-foreach ($mysql->select("select * from ".prefix."_balance_manager order by id") as $row) {
- $b[$row['id']] = array('monetary' => $row['monetary'], 'type' => $row['type'], 'description' => $row['description']);
+$select = $mysql->select("select * from ".prefix."_balance_manager order by id");
+foreach ($select as $row) {
+	$b[$row['id']] = array('monetary' => $row['monetary'], 'type' => $row['type'], 'description' => $row['description']);
 }
 
 for ($i = 1; $i < 5; $i++) {
 	$cfgX = array();
-	//array_push($cfgX, array('title' => '== <b>Настройки баланса №'.$i.'</b> =='));
-	array_push($cfgX, array('nosave' => 1, 'name' => 'balance'.$i.'_monetary', 'title' => __('finance:balance.monetary'), 'descr' => __('finance:balance.monetary.descr'),'type' => 'select', 'values' => array ( '1' => 'Да', '0' => 'Нет'), value => $b[$i]['monetary']));
-	array_push($cfgX, array('nosave' => 1, 'name' => 'balance'.$i.'_type', 'title' => __('finance:balance.type'), 'descr' => __('finance:balance.type.descr'), 'type' => 'input', value => $b[$i]['type']));
-	array_push($cfgX, array('nosave' => 1, 'name' => 'balance'.$i.'_description', 'title' => __('finance:balance.descr'), 'descr' => __('finance:balance.descr.descr'),'type' => 'input', 'value' => $b[$i]['description']));
-	array_push($cfg, array('mode' => 'group', 'title' => '<b>'.__('finance:balance.header').$i.'</b>', 'entries' => $cfgX));
+		//array_push($cfgX, array('title' => '== <b>Настройки баланса №'.$i.'</b> =='));
+		array_push($cfgX, array(
+			'nosave' => 1,
+			'name' => 'balance'.$i.'_monetary',
+			'title' => __('finance:balance.monetary'),
+			'descr' => __('finance:balance.monetary.descr'),
+			'type' => 'select',
+			'values' => array('1' => 'Да', '0' => 'Нет'),
+			'value' => $b[$i]['monetary'],
+			));
+		array_push($cfgX, array(
+			'nosave' => 1,
+			'name' => 'balance'.$i.'_type',
+			'title' => __('finance:balance.type'),
+			'descr' => __('finance:balance.type.descr'),
+			'type' => 'input',
+			'value' => $b[$i]['type'],
+			));
+		array_push($cfgX, array(
+			'nosave' => 1,
+			'name' => 'balance'.$i.'_description',
+			'title' => __('finance:balance.descr'),
+			'descr' => __('finance:balance.descr.descr'),
+			'type' => 'input',
+			'value' => $b[$i]['description'],
+			));
+	array_push($cfg, array(
+		'mode' => 'group',
+		'title' => __('finance:balance.header').$i,
+		'entries' => $cfgX,
+		));
 }
 
-if ($_REQUEST['action'] == 'commit') {
- $params = load_commit_params($cfg, $params);
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'localSource',
+		'title' => __($plugin.':localSource'),
+		'descr' => __($plugin.':localSource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __($plugin.':localSource_0'), '1' => __($plugin.':localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource'))
+		));
+	array_push($cfgX, array(
+		'name' => 'extends',
+		'title' => 'Расположение блока',
+		'descr' => 'Расположение блока в админ. панели при добавлении/редактировании новости',
+		'type' => 'select',
+		'values' => array (
+			'main' => 'Основное содержание',
+			'additional' => 'Дополнительно',
+			'owner' => 'Собственный отдельный блок',
+			),
+		'value' => intval(pluginGetVariable($plugin,'extends')),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __($plugin.':group.source'),
+	'entries' => $cfgX,
+	));
 
-	commit_plugin_config_changes('finance', $cfg);
+// RUN
+if ($_REQUEST['action'] == 'commit') {
 
 	//
 	// Save changes into DB
@@ -52,9 +109,9 @@ if ($_REQUEST['action'] == 'commit') {
 		$mysql->query($query);
 	}
 
+	// If submit requested, do config save
+	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);
 } else {
-	generate_config_page('finance', $cfg);
+	generate_config_page($plugin, $cfg);
 }
-
-?>

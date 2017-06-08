@@ -311,7 +311,7 @@ function guestbook_list($params = array())
  array('pluginName' => 'guestbook', 'pluginHandler' => '', 'params' => array(), 'xparams' => array(), 'paginator' => array('page', 0, false)) :
  array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'guestbook'), 'xparams' => array(), 'paginator' => array('page', 1, false));
 
- $tpath = locatePluginTemplates(array(':'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+ $tpath = locatePluginTemplates(array(':'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
  $navigations = parse_ini_file($tpath[':'] . '/variables.ini', true);
 
  $order = pluginGetVariable('guestbook', 'order');
@@ -347,7 +347,7 @@ function guestbook_list($params = array())
  'fields' => $tEntries
  );
 
- $tpath = locatePluginTemplates(array('guestbook.list'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+ $tpath = locatePluginTemplates(array('guestbook.list'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
  $xt = $twig->loadTemplate($tpath['guestbook.list'] . 'guestbook.list.tpl');
  $template['vars']['mainblock'] = $xt->render($tVars);
 
@@ -441,7 +441,7 @@ function guestbook_edit()
 
  $id = intval(isset($CurrentHandler['params']['id']) ? $CurrentHandler['params']['id'] : (isset($_REQUEST['id']) ? secure_html(convert($_REQUEST['id'])) : ''));
 
- $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+ $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
  $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');
 
  // admin permission is required to edit messages
@@ -513,7 +513,7 @@ function guestbook_block($params)
  'entries' => _guestbook_records('DESC', 0, $count),
  );
 
- $tpath = locatePluginTemplates(array('guestbook.block'), 'guestbook', pluginGetVariable('guestbook', 'localsource'));
+ $tpath = locatePluginTemplates(array('guestbook.block'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
  $xt = $twig->loadTemplate($tpath['guestbook.block'] . 'guestbook.block.tpl');
 
  return $xt->render($tVars);

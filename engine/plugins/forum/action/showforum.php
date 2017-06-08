@@ -34,7 +34,7 @@
 			return redirect_forum(generatePageLink(array('pluginName' => 'forum', 'pluginHandler' => 'showforum', 'params' => array('id' => $id), 'xparams' => array(), 'paginator' => array('page', 0, false)), intval($pageNo)));
 	}
 	
-	$tpath = locatePluginTemplates(array('show_forum', ':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('show_forum', ':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['show_forum'].'show_forum.tpl');
 	
 	$forum = $mysql->record('SELECT `title`, `description`, `keywords`, `int_topic`, `moderators`, `lock_passwd`, `redirect_url` FROM `'.prefix.'_forum_forums` WHERE `id` = '.securemysql($id).' LIMIT 1');

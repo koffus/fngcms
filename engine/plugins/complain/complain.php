@@ -27,7 +27,7 @@ function plugin_complain_screen() {
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('list.entry', 'list.header', 'infoblock'), 'complain', pluginGetVariable('complain', 'localsource'));
+ $tpath = locatePluginTemplates(array('list.entry', 'list.header', 'infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
 
  // No access for unregistered users
  if (!is_array($userROW)) {
@@ -116,7 +116,7 @@ function plugin_complain_add() {
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('ext.form', 'infoblock'), 'complain', pluginGetVariable('complain', 'localsource'));
+ $tpath = locatePluginTemplates(array('ext.form', 'infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
 
  // Check if we shouldn't show block for unregs
  if ((!is_array($userROW)) && (!pluginGetVariable('complain', 'allow_unreg'))) {
@@ -135,7 +135,7 @@ function plugin_complain_add() {
  }
 
  $txvars = array();
- $txvars['vars'] = array ( 'ds_id' => intval($_REQUEST['ds_id']), 'entry_id' => intval($_REQUEST['entry_id']), 'errorlist' => $err );
+ $txvars['vars'] = array('ds_id' => intval($_REQUEST['ds_id']), 'entry_id' => intval($_REQUEST['entry_id']), 'errorlist' => $err );
  $txvars['regx']['#\[notify\](.*?)\[/notify\]#is'] = ((is_array($userROW)) &&(pluginGetVariable('complain', 'inform_reporter') == 2))?'$1':'';
  $txvars['regx']['#\[email\](.*?)\[/email\]#is'] = ((!is_array($userROW)) && pluginGetVariable('complain', 'allow_unreg_inform'))?'$1':'';
  $txvars['regx']['#\[text\](.*?)\[/text\]#is'] = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text')==1)) or (pluginGetVariable('complain', 'allow_text') == 2))?'$1':'';
@@ -155,7 +155,7 @@ function plugin_complain_post() {
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('ext.form', 'infoblock', 'error.noentry', 'form.confirm'), 'complain', pluginGetVariable('complain', 'localsource'));
+ $tpath = locatePluginTemplates(array('ext.form', 'infoblock', 'error.noentry', 'form.confirm'), 'complain', pluginGetVariable('complain', 'localSource'));
 
  // Check if we shouldn't show block for unregs
  if ((!is_array($userROW)) && (!pluginGetVariable('complain', 'allow_unreg'))) {
@@ -278,7 +278,7 @@ function plugin_complain_update() {
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('infoblock'), 'complain', pluginGetVariable('complain', 'localsource'));
+ $tpath = locatePluginTemplates(array('infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
 
  $link_admin = str_replace('{link}', generateLink('core', 'plugin', array('plugin' => 'complain')), __('complain:link.admin'));
 
@@ -383,7 +383,7 @@ class ComplainNewsFilter extends NewsFilter {
 		}
 
 		// Determine paths for all template files
-		$tpath = locatePluginTemplates(array('int.form', 'int.link'), 'complain', pluginGetVariable('complain', 'localsource'));
+		$tpath = locatePluginTemplates(array('int.form', 'int.link'), 'complain', pluginGetVariable('complain', 'localSource'));
 
 		// Check displayed information type - FORM or simple LINK
 		if (pluginGetVariable('complain', 'extform')) {
@@ -391,7 +391,7 @@ class ComplainNewsFilter extends NewsFilter {
 			$link = generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'add'), array('ds_id' => '1', 'entry_id' => $newsID));
 
 			$txvars = array();
-			$txvars['vars'] = array ( 'link' => $link );
+			$txvars['vars'] = array('link' => $link );
 
 			$tpl->template('int.link', $tpath['int.link']);
 			$tpl->vars('int.link', $txvars);
@@ -408,7 +408,7 @@ class ComplainNewsFilter extends NewsFilter {
 		}
 
 		$txvars = array();
-		$txvars['vars'] = array ( 'ds_id' => 1, 'entry_id' => $newsID, 'errorlist' => $err, 'form_url' => generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'post')) );
+		$txvars['vars'] = array('ds_id' => 1, 'entry_id' => $newsID, 'errorlist' => $err, 'form_url' => generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'post')) );
 
 		$tpl->template('int.form', $tpath['int.form']);
 		$tpl->vars('int.form', $txvars);

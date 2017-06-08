@@ -25,7 +25,7 @@ function forum_show_topics($params) {
 	
 	$limit = $params['limit']?$params['limit']:5;
 	$templates = $params['temp']?$params['temp']:'show_topics';
-	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'), 'block');
+	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'), 'block');
 	$xt = $twig->loadTemplate($tpath[$templates].$templates.'.tpl');
 	
 	$i=1;
@@ -56,7 +56,7 @@ function forum_show_topics_top($params) {
 	
 	$limit = $params['limit']?$params['limit']:5;
 	$templates = $params['temp']?$params['temp']:'show_topics_top';
-	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'), 'block');
+	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'), 'block');
 	$xt = $twig->loadTemplate($tpath[$templates].$templates.'.tpl');
 	
 	$i=1;
@@ -85,7 +85,7 @@ function forum_show_a_users($params) {
 	
 	$limit = $params['limit']?$params['limit']:5;
 	$templates = $params['temp']?$params['temp']:'show_a_users';
-	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'), 'block');
+	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'), 'block');
 	$xt = $twig->loadTemplate($tpath[$templates].$templates.'.tpl');
 	
 	$i=1;
@@ -118,7 +118,7 @@ function forum_show_news($params)
 	
 	$limit = $params['limit']?$params['limit']:5;
 	$templates = $params['temp']?$params['temp']:'show_news';
-	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'), 'block');
+	$tpath = locatePluginTemplates(array($templates), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'), 'block');
 	$xt = $twig->loadTemplate($tpath[$templates].$templates.'.tpl');
 	
 	$i=1;

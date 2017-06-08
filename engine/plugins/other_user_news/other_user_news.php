@@ -6,9 +6,6 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExpire) {
 	global $config, $mysql, $tpl, $template, $twig, $twigLoader, $TemplateCache, $CurrentHandler, $SYSTEM_FLAGS, $parse;
 
-	$lang = Lang::get();
-	$langMonths = Lang::$months;
-
 	// Prepare keys for cacheing
 	$cacheKeys = array();
 	$cacheDisabled = false;
@@ -47,7 +44,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
  }
 	
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'other_user_news', pluginGetVariable('other_user_news', 'localsource'));
+	$tpath = locatePluginTemplates(array($templateName), 'other_user_news', pluginGetVariable('other_user_news', 'localSource'));
 
 	$cacheKeys []= '|current_news_id='.$current_news_id;
  $cacheKeys []= '|current_author_id='.$current_author_id;
@@ -117,7 +114,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 function plugin_other_user_news_showTwig($params) {
 	global $CurrentHandler, $config;
 
-	return	plugin_other_user_news($params['number'], $params['mode'], $params['template'], isset($params['cacheExpire'])?$params['cacheExpire']:0);
+	return plugin_other_user_news($params['number'], $params['mode'], $params['template'], isset($params['cacheExpire'])?$params['cacheExpire']:0);
 }
 
 twigRegisterFunction('other_user_news', 'show', plugin_other_user_news_showTwig);

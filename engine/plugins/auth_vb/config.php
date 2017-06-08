@@ -16,7 +16,7 @@ $cfg = array();
 $cfgX = array();
 array_push($cfg, array('descr' => __('auth_description')));
 array_push($cfgX, array('descr' => __('auth_extdb_fulldesc')));
-array_push($cfgX, array('name' => 'extdb', 'title' => __('auth_extdb_extdb'), 'descr' => __('auth_extdb_extdb_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','extdb')));
+array_push($cfgX, array('name' => 'extdb', 'title' => __('auth_extdb_extdb'), 'descr' => __('auth_extdb_extdb_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','extdb')));
 array_push($cfgX, array('name' => 'dbhost', 'title' => __('auth_extdb_dbhost'), 'type' => 'input', value => pluginGetVariable('auth_vb','dbhost')));
 array_push($cfgX, array('name' => 'dbname', 'title' => __('auth_extdb_dbname'), 'type' => 'input', value => pluginGetVariable('auth_vb','dbname')));
 array_push($cfgX, array('name' => 'dblogin', 'title' => __('auth_extdb_dblogin'), 'type' => 'input', value => pluginGetVariable('auth_vb','dblogin')));
@@ -29,12 +29,12 @@ array_push($cfgX, array('name' => 'ipcheck', 'title' => 'Параметр &quot;
 array_push($cfgX, array('name' => 'cookietimeout', 'title' => 'Параметр &quot;<b>cookietimeout</b>&quot; - время жизни для сессии в cookie', 'descr' => 'Этот параметр необходимо взять из настроек форума.<br/><b>*</b> Раздел: "Опции vBulletin" => "Настройки сервера и параметры оптимизации"','type' => 'input', value => pluginGetVariable('auth_vb','cookietimeout')));
 array_push($cfgX, array('name' => 'cookie_security_hash', 'title' => 'Значение переменной &quot;<b>cookie_security_hash</b>&quot; - параметр шифрации Cookie', 'descr' => 'Этот параметр необходимо взять из файла-конфигурации форума includes/config.php<br/><b>*</b>Значение по умолчанию <u>отсутствует</u>','type' => 'input', value => pluginGetVariable('auth_vb','cookie_security_hash')));
 array_push($cfgX, array('name' => 'cookie_domain', 'title' => __('auth_params_domain'), 'descr' => __('auth_params_domain_desc'),'type' => 'input', value => pluginGetVariable('auth_vb','cookie_domain')));
-array_push($cfgX, array('name' => 'setremember', 'title' => __('auth_setremember'), 'descr' => __('auth_setremember_desc'), 'type' => 'select', 'values' => array ( '0' => __('auth_mauto'), '1' => __('yesa'), '2' => __('noa')), 'value' => pluginGetVariable('auth_vb','setremember')));
+array_push($cfgX, array('name' => 'setremember', 'title' => __('auth_setremember'), 'descr' => __('auth_setremember_desc'), 'type' => 'select', 'values' => array('0' => __('auth_mauto'), '1' => __('yesa'), '2' => __('noa')), 'value' => pluginGetVariable('auth_vb','setremember')));
 array_push($cfg, array('mode' => 'group', 'title' => __('auth_params'), 'entries' => $cfgX));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'userjoin', 'title' => __('auth_auto_join'), 'descr' => __('auth_auto_join_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','userjoin')));
-array_push($cfgX, array('name' => 'autocreate_ng', 'title' => __('auth_auto_ng'), 'descr' => __('auth_auto_ng_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','autocreate_ng')));
+array_push($cfgX, array('name' => 'userjoin', 'title' => __('auth_auto_join'), 'descr' => __('auth_auto_join_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','userjoin')));
+array_push($cfgX, array('name' => 'autocreate_ng', 'title' => __('auth_auto_ng'), 'descr' => __('auth_auto_ng_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','autocreate_ng')));
 array_push($cfg, array('mode' => 'group', 'title' => __('auth_auto'), 'entries' => $cfgX));
 
 // RUN 

@@ -19,7 +19,7 @@ pluginsLoadConfig();
 function plugin_similar_install($action) {
 
 	if ($action != 'autoapply')
-			Lang::loadPlugin('similar', 'main', '', '', ':');
+			Lang::loadPlugin('similar', 'config', '', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(

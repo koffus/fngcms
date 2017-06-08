@@ -143,7 +143,7 @@ function plugin_jchat_index() {
 	}
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat'), 'jchat', pluginGetVariable('jchat', 'localsource'));
+	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat'), 'jchat', pluginGetVariable('jchat', 'localSource'));
 	register_stylesheet($tpath['url::jchat.css'].'/jchat.css');
 
 	$tvars = array();
@@ -350,7 +350,7 @@ function plugin_jchat_win() {
 	$tvars = array();
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat.main', 'jchat.self'), 'jchat', pluginGetVariable('jchat', 'localsource'));
+	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat.main', 'jchat.self'), 'jchat', pluginGetVariable('jchat', 'localSource'));
 	register_stylesheet($tpath['url::jchat.css'].'/jchat.css');
 
 	if ( intval(pluginGetVariable('jchat', 'win_mode')) ) {

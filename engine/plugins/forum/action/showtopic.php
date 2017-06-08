@@ -17,7 +17,7 @@
 */
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array('show_topic', ':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('show_topic', ':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	if(isset($params['id']))
 		$id = isset($params['id'])?intval($params['id']):0;

@@ -38,7 +38,7 @@
 		
 		<div class="templates-explorer">
 			<div class="row">
-				<div class="col col-sm-5 col-md-3 ">
+				<div class="col col-sm-5 col-md-3">
 					<div id="fileTreeSelector" class="navbar navbar-inverse">TEST CONTENT</div>
 				</div>
 				<div class="col col-sm-7 col-md-9">

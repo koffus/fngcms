@@ -24,5 +24,3 @@ if ($_REQUEST['action'] == 'commit') {
 } else {
  generate_install_page($plugin, "Удаление NSM", 'deinstall');
 }
-
-?>

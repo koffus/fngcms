@@ -1,17 +1,38 @@
 <?php
 
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
 pluginsLoadConfig();
-Lang::loadPlugin('messaging', 'messaging', '', 'mes');
 
-$cfg = array();
-array_push($cfg, array('descr' => __('mes_descr')));
-array_push($cfg, array('name' => 'subject', 'title' => __('mes_subject'), 'type' => 'input', 'html_flags' => 'size=70', 'value' => ''));
-array_push($cfg, array('name' => 'content', 'title' => __('mes_content'), 'type' => 'text', 'html_flags' => 'rows=10 cols=110 name=content id=content', 'value' => ''));
+// Load lang files
+Lang::loadPlugin($plugin, $plugin, '', '', ':');
 
+// Fill configuration parameters
+$cfg = array('description' => __($plugin.':description'));
+array_push($cfg, array(
+	'name' => 'subject',
+	'title' => __($plugin.':subject'),
+	'type' => 'input',
+	'value' => '',
+	));
+array_push($cfg, array(
+	'name' => 'content',
+	'title' => __($plugin.':content'),
+	'type' => 'text',
+	'html_flags' => 'rows="10" name="content" id="content"',
+	'value' => '',
+	));
+
+// RUN
 if ($_REQUEST['action'] == 'commit') {
- messaging($_REQUEST['subject'], $_REQUEST['content']);
+	// If submit requested, do
+	messaging($_REQUEST['subject'], $_REQUEST['content']);
 } else {
- generate_config_page('messaging', $cfg);
+	generate_config_page('messaging', $cfg);
 }
-
-?>

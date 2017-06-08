@@ -21,7 +21,7 @@ if (!defined('NGCMS')) die ('HAL');
 function header_show()
 {global $CurrentHandler, $SYSTEM_FLAGS, $SUPRESS_TEMPLATE_SHOW, $template, $twig, $titles;
 	
-	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	$SYSTEM_FLAGS['info']['title']['group'] = pluginGetVariable('forum', 'forum_title');
 	
@@ -259,7 +259,7 @@ function show_main_page($a_stat = false, $output = '', $welcome = false, $event 
 	if(is_array($userROW) && $GROUP_PS['group_news'])
 		$int_pm = $mysql->result('SELECT COUNT(*) FROM `'.prefix.'_pm` WHERE to_id = '.securemysql($userROW['id']).' AND viewed = \'0\' AND folder=\'inbox\'');
 	
-	$tpath = locatePluginTemplates(array('main_page', ':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('main_page', ':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['main_page'].'main_page.tpl');
 	
 	$tVars = array(
@@ -519,7 +519,7 @@ function statistics_forum() {
 
 function announcement_forum($message, $url, $banned = 0, $referer = false)
 {global $SYSTEM_FLAGS, $confArray, $CurrentHandler, $show_main, $twig;
-	$tpath = locatePluginTemplates(array('redirect', ':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('redirect', ':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['redirect'].'redirect.tpl');
 	
 	suppress_show();
@@ -561,7 +561,7 @@ function information($info, $title = 'Информация', $error_404 = false)
 	if($error_404)
 		header($_SERVER['SERVER_PROTOCOL']. ' 404 Not Found');
 	
-	$tpath = locatePluginTemplates(array('information'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('information'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	$xt = $twig->loadTemplate($tpath['information'].'information.tpl');
 	
@@ -578,7 +578,7 @@ function permissions_forum($info, $title = 'Информация')
 	
 	$CurrentHandler['handlerName'] = 'perm';
 	
-	$tpath = locatePluginTemplates(array('permissions'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('permissions'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	$xt = $twig->loadTemplate($tpath['permissions'].'permissions.tpl');
 	

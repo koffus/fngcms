@@ -9,6 +9,8 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Preload config file
 pluginsLoadConfig();
+
+// Load lang files
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Fill configuration parameters
@@ -22,25 +24,24 @@ $cfgX = array();
 		'values' => array ('0' => __('noa'), '1' => __('yesa')),
 		'value' => intval(pluginGetVariable($plugin, 'block_full_path')),
 		));
-
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin.':group.config'),
+	'title' => __('group.config'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'template_source',
-		'title' => __($plugin.':template_source_title'),
-		'descr' => __($plugin.':template_source_title#desc'),
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
 		'type' => 'select',
-		'values' => array ('0' => __($plugin.':template_source_site'), '1' => __($plugin.':template_source_plugin')),
-		'value' => intval(pluginGetVariable($plugin, 'template_source')),
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin.':template_source'),
+	'title' => __('group.source'),
 	'entries' => $cfgX,
 	));
 

@@ -156,18 +156,30 @@ function plugin_tracker_updnews($newsID, $SQLnews) {
 }
 
 class TrackerNewsFilter extends NewsFilter {
+
+	function __construct() {
+		// не загружать здесь языки !!! При просмотре новости не нужны языки настроек плагина из админ.панели !!!
+	}
+
 	function addNewsForm(&$tvars) {
-		global $tpl;
+		global $twig;
 
-		if (!pluginGetVariable('tracker', 'smagnet')) {
-			$tvars['vars']['plugin_tracker'] = '';
-			return 1;
+		if (pluginGetVariable('tracker', 'smagnet')) {
+
+			Lang::loadPlugin('tracker', 'config', '', '', ':');
+
+			$ttvars = array(
+				'tracker_magnet' => '',
+				);
+
+			$extends = pluginGetVariable('tracker','extends') ? pluginGetVariable('tracker','extends') : 'owner';
+			$tpath = locatePluginTemplates(array('news'), 'tracker', 1, 0, 'admin');
+			$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+			$tvars['extends']['block'][$extends][] = array(
+				'header_title' => __('tracker:header_title'),
+				'body' => $xt->render($ttvars),
+				);
 		}
-
-		$tpath = locatePluginTemplates(array('news.add'), 'tracker', pluginGetVariable('tracker', 'localsource'));
-		$tpl -> template('news.add', $tpath['news.add']);
-		$tpl -> vars('news.add', array ( 'vars' => []));
-		$tvars['plugin']['tracker'] = $tpl -> show('news.add');
 
 		return 1;
 	}
@@ -194,24 +206,30 @@ class TrackerNewsFilter extends NewsFilter {
 	}
 
 	function editNewsForm($newsID, $SQLold, &$tvars) {
-		global $tpl,$mysql;
+		global $twig, $mysql;
 
-		if (!pluginGetVariable('tracker', 'smagnet')) {
-			$tvars['vars']['plugin_tracker'] = '';
-			return 1;
+		if (pluginGetVariable('tracker', 'smagnet')) {
+
+			Lang::loadPlugin('tracker', 'config', '', '', ':');
+
+			// Check if we have joined magnet link
+			$tracker_magnet = '';
+			if ($SQLold['tracker_magnetid']) {
+				$tracker_magnet = $mysql->result("select magnet from ".prefix."_tracker_magnets where id = ".db_squote($SQLold['tracker_magnetid']));
+			}
+
+			$ttvars = array(
+				'tracker_magnet' => secure_html($tracker_magnet),
+				);
+
+			$extends = pluginGetVariable('tracker','extends') ? pluginGetVariable('tracker','extends') : 'owner';
+			$tpath = locatePluginTemplates(array('news'), 'tracker', 1, 0, 'admin');
+			$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+			$tvars['extends']['block'][$extends][] = array(
+				'header_title' => __('tracker:header_title'),
+				'body' => $xt->render($ttvars),
+				);
 		}
-
-		$tpath = locatePluginTemplates(array('news.edit'), 'tracker', pluginGetVariable('tracker', 'localsource'));
-
-		// Check if we have joined magnet link
-		$magnetLink = '';
-		if ($SQLold['tracker_magnetid']) {
-			$magnetLink = $mysql->result("select magnet from ".prefix."_tracker_magnets where id = ".db_squote($SQLold['tracker_magnetid']));
-		}
-
-		$tpl -> template('news.edit', $tpath['news.edit']);
-		$tpl -> vars('news.edit', array ( 'vars' => array ( 'tracker_magnet' => secure_html($magnetLink))));
-		$tvars['plugin']['tracker'] = $tpl -> show('news.edit');
 
 		return 1;
 	}
@@ -275,7 +293,7 @@ class TrackerNewsFilter extends NewsFilter {
 			return;
 
 		// Determine paths for all template files
-		$tpath = locatePluginTemplates(array('news.full'), 'tracker', pluginGetVariable('tracker', 'localsource'));
+		$tpath = locatePluginTemplates(array('news.full'), 'tracker', pluginGetVariable('tracker', 'localSource'));
 		$tdata = array();
 
 		// Check if we have MAGNET link in this news

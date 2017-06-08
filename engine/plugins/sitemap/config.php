@@ -1,23 +1,77 @@
 <?php
 
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
 pluginsLoadConfig();
 
-Lang::loadPlugin('sitemap', 'config', '', '', ':');
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
-$cfg = array();
+// Fill configuration parameters
+$cfg = array('description' => __($plugin.':description'));
 
-array_push($cfg, array('name' => 's_cache', 'title' => __('sitemap:cache'), 'type' => 'select', 'values' => array ( '1' => __('sitemap:label_yes'), '0' => __('sitemap:label_no')), 'value' => intval(pluginGetVariable('sitemap','s_cache'))));
-array_push($cfg, array('name' => 's_cacheExpire', 'title' => __('sitemap:period_cache'), 'type' => 'input', 'value' => intval(pluginGetVariable('sitemap','s_cacheExpire'))?pluginGetVariable('sitemap','s_cacheExpire'):'86400'));
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'news_per_page',
+		'title' => __($plugin.':news_per_page'),
+		'descr' => __($plugin.':news_per_page#desc'),
+		'type' => 'input',
+		'value' => pluginGetVariable('sitemap', 'news_per_page'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
 
-array_push($cfg, array('name' => 'news_per_page', 'title' => __('sitemap:news_per_page'),'type' => 'input', 'html_flags' => 'style="width: 370px;"', 'value' => pluginGetVariable('sitemap', 'news_per_page')));
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.source'),
+	'entries' => $cfgX,
+	));
 
-array_push($cfg, array('name' => 'localsource', 'title' => __('sitemap:localsource'), 'type' => 'select', 'values' => array ( '0' => __('sitemap:tpl_site'), '1' => __('sitemap:tpl_plugin')), 'value' => intval(pluginGetVariable($plugin,'localsource'))));
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'cache',
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
+		));
+	array_push($cfgX, array(
+		'name' => 'cacheExpire',
+		'title' => __('cacheExpire'),
+		'descr' => __($plugin.':cacheExpire#desc'),
+		'type' => 'input',
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 86400,
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.cache'),
+	'entries' => $cfgX,
+	));
 
 // RUN
 if ($_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
-	commit_plugin_config_changes('sitemap', $cfg);
+	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);
 } else {
-	generate_config_page('sitemap', $cfg);
+	generate_config_page($plugin, $cfg);
 }

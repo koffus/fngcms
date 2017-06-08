@@ -23,8 +23,8 @@ function tagsSuggest($params){
 	$searchTag = $params;
 	$output = array();
 
-	foreach ($mysql->select("select * from ".prefix."_tags where tag like ".db_squote($searchTag.'%')." order by posts desc limit 20") as $row) {
-			$output[] = array($row['tag'], $row['posts'] . ' постов');
+	foreach ($mysql->select("select * from ".prefix."_tags where tag like ".db_squote($searchTag.'%')." order by posts desc limit 10") as $row) {
+		$output[] = array($row['tag'], $row['posts'] . ' ' . Padeg($row['posts'], __('news.counter_case')));
 	}
 
 	return array('status' => 1, 'errorCode' => 0, 'data' => array($params, $output));

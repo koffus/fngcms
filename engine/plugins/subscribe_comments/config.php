@@ -231,7 +231,7 @@ else{
 		pluginSetVariable('subscribe_comments', 'delayed_send', intval($_REQUEST['delayed_send']));
 		pluginsSaveConfig();
 		
-		redirect_subscribe_comments('?mod=extra-config&plugin=subscribe_comments');
+		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=subscribe_comments');
 	}
 	
 
@@ -258,15 +258,6 @@ else{
 	print $tpl->show('main');
 }
 
-function redirect_subscribe_comments($url)
-{
-	if (headers_sent()) {
-		echo "<script>document.location.href='{$url}';</script>\n";
-	} else {
-		header('HTTP/1.1 302 Moved Permanently');
-		header("Location: {$url}");
-	}
-}
 
 function input_filter_rev($text)
 {

@@ -9,19 +9,21 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Preload config file
 pluginsLoadConfig();
+
+// Load lang files
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 switch ($_REQUEST['action']) {
-	case 'list': showlist();		break;
-	case 'add': 	add();			break;
-	case 'edit': add();			break;
-	case 'add_submit':	add_submit();	break;
-	case 'edit_submit':	add_submit();	break;
-	case 'move_up': move('up');		break;
-	case 'move_down':	move('down');	break;
-	case 'dell': delete();		break;
-	case 'main_submit':	main_submit();	break;
-	case 'clear_cash':	clear_cash();
+	case 'list': showlist(); break;
+	case 'add': add(); break;
+	case 'edit': add(); break;
+	case 'add_submit': add_submit(); break;
+	case 'edit_submit': add_submit(); break;
+	case 'move_up': move('up'); break;
+	case 'move_down': move('down'); break;
+	case 'dell': delete(); break;
+	case 'main_submit': main_submit(); break;
+	case 'clear_cash': clear_cash();
 	default: main();
 }
 
@@ -35,10 +37,10 @@ function main() {
 
 	$ttvars = array (
 		'action'				=> __('ads_pro:button_general'),
-		's_news0'				=> ($s_news?'':' selected'),
-		's_news1'				=> ($s_news?' selected':''),
-		's_news_sort0' => ($s_news_sort?'':' selected'),
-		's_news_sort1' => ($s_news_sort?' selected':''),
+		's_news_0'				=> ($s_news?'':' selected'),
+		's_news_1'				=> ($s_news?' selected':''),
+		's_news_sort_0' => ($s_news_sort?'':' selected'),
+		's_news_sort_1' => ($s_news_sort?' selected':''),
 		'multidisplay_mode_0' => (($s_multidisplay == 0)?' selected':''),
 		'multidisplay_mode_1' => (($s_multidisplay == 1)?' selected':''),
 		'multidisplay_mode_2' => (($s_multidisplay == 2)?' selected':''),
@@ -48,6 +50,11 @@ function main() {
 
 	$tVars['entries'] = $xt->render($ttvars);
 	$tVars['action'] = __('ads_pro:button_general');
+	$tVars['class'] = array(
+		'general' => 'active',
+		'list' => '',
+		'add_edit' => '',
+		);
 
 	$xt = $twig->loadTemplate($tpath['conf.main'] . 'conf.main.tpl');
 	echo $xt->render($tVars);
@@ -75,13 +82,10 @@ function main_submit() {
 		pluginSetVariable('ads_pro', 'multidisplay_mode', $nm);
 		$chg++;
 	}
-
 	if ($chg) {
 		pluginsSaveConfig();
 	}
-
 	msg(array('message' => __('commited')));
-
 	main();
 }
 
@@ -98,28 +102,31 @@ function showlist() {
 	$t_type = array(0 => __('ads_pro:html'), 1 => __('ads_pro:php'), 2 => __('ads_pro:text'));
 	foreach ($var as $k => $v) {
 		foreach ($v as $kk => $vv) {
-			$pvars['name'] = $k ? $k : __('ads_pro:error_name');
-			$pvars['id'] = $kk;
-			$pvars['description'] = $vv['description'];
 			$if_view = $vv['state'] ? true : false;
 			if ($vv['start_view'] && $vv['start_view'] > $t_time)
 				$if_view = false;
 			if ($vv['end_view'] && $vv['end_view'] <= $t_time)
 				$if_view = false;
-			$pvars['online'] = ($if_view or $vv['state'] == 1) ? __('ads_pro:online_on') : __('ads_pro:online_off');
-			$pvars['state'] = $t_state[$vv['state']];
-			$pvars['type'] = $t_type[$vv['type']];
 
-			$xt = $twig->loadTemplate($tpath['conf.list.row'] . 'conf.list.row.tpl');
-			$output .= $xt->render($pvars);
+			$ttvars['entries'][] = array(
+				'name' => $k ? $k : __('ads_pro:error_name'),
+				'id' => $kk,
+				'description' => $vv['description'],
+				'online' => ($if_view or $vv['state'] == 1) ? __('ads_pro:online_on') : __('ads_pro:online_off'),
+				'state' => $t_state[$vv['state']],
+				'type' => $t_type[$vv['type']],
+				);
 		}
 	}
-	$ttvars['entries'] = $output;
 
 	$xt = $twig->loadTemplate($tpath['conf.list'] . 'conf.list.tpl');
 	$tvars['entries'] = $xt->render($ttvars);
-
 	$tvars['action'] = __('ads_pro:button_list');
+	$tvars['class'] = array(
+		'general' => '',
+		'list' => 'active',
+		'add_edit' => '',
+		);
 
 	$xt = $twig->loadTemplate($tpath['conf.main'] . 'conf.main.tpl');
 	echo $xt->render($tvars);
@@ -244,16 +251,25 @@ function add() {
 	$ttvars['flags']['edit'] = empty($id)?false:true;
 
 	$xt = $twig->loadTemplate($tpath['conf.add_edit.form'] . 'conf.add_edit.form.tpl');
-	$tvars['entries'] = $xt->render($ttvars);
-
-	$tvars['action'] = $id ? __('ads_pro:button_edit') : __('ads_pro:button_add');
+	$tvars = array(
+		'id' => $id,
+		'entries' => $xt->render($ttvars),
+		'action' => $id ? __('ads_pro:button_edit') : __('ads_pro:button_add'),
+		'class' => array(
+			'general' => '',
+			'list' => '',
+			'add_edit' => 'active',
+			),
+		'flags' => array(
+			'edit' => empty($id)?false:true,
+			),
+		);
 
 	$xt = $twig->loadTemplate($tpath['conf.main'] . 'conf.main.tpl');
 	echo $xt->render($tvars);
 }
 
-function add_submit()
-{
+function add_submit() {
 	global $mysql, $parse;
 
 	$id = isset($_REQUEST['id'])?intval($_REQUEST['id']):0;
@@ -358,6 +374,7 @@ function move($action) {
 	}
 	pluginSetVariable('ads_pro', 'data', $var);
 	pluginsSaveConfig();
+	msg(array('message' => __('commited')));
 	showlist();
 }
 
@@ -415,7 +432,7 @@ function delete() {
 	if (!count($var[$name])) unset($var[$name]);
 	pluginSetVariable('ads_pro', 'data', $var);
 	pluginsSaveConfig();
-	msg(array('type' => 'info', 'message' => sprintf(__('ads_pro:info_delete') ,$title)));
+	msg(array('type' => 'success', 'message' => sprintf(__('ads_pro:info_delete') ,$title)));
 	clear_cash();
 	showlist();
 }
@@ -429,7 +446,12 @@ function clear_cash() {
 				unlink ($dir.$file);
 			}
 			closedir($handle);
-			msg(array('type' => 'info', 'message' => __('commited')));
+			if ( isset($_REQUEST['action']) and $_REQUEST['action'] == 'clear_cash' ) {
+				msg(array('type' => 'info', 'message' => __('ads_pro:msg.clear_cash')));
+			} else {
+				msg(array('message' => __('commited')));
+			}
+			
 		}
 	}
 }

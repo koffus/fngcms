@@ -79,7 +79,7 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 	}
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('entries', 'calendar'), 'calendar', pluginGetVariable('calendar', 'localsource'));
+	$tpath = locatePluginTemplates(array('entries', 'calendar'), 'calendar', pluginGetVariable('calendar', 'localSource'));
 
 	$dt	= mktime(0,0,0,$month , 1, $year);
 	$prevdt	= mktime(0,0,0,$month-1, 1, $year);

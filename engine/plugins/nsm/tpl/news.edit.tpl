@@ -42,7 +42,7 @@
 		{% endif %}
 		<div class="form-group row" id="fullwidth">
 				<div class="col-sm-12">
-				{{ quicktags }}
+				{{ bbcodes }}
 				<!-- SMILES -->
 				<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
 					<div class="modal-dialog modal-sm" role="document">
@@ -74,40 +74,40 @@
 			</div>
 		</div>
 		{% if not flags['mainpage.disabled'] %}
-		<div class="form-group row">
+		<div class="row">
 			<label class="col-sm-8 offset-sm-4">
 				<input type="checkbox" name="mainpage" value="1" id="mainpage" {% if (flags.mainpage) %}checked="checked" {% endif %}{% if flags['mainpage.disabled'] %}disabled {% endif %} /> {{ lang.editnews['mainpage'] }}
 			</label>
 		</div>
 		{% endif %}
 		{% if not flags['pinned.disabled'] %}
-		<div class="form-group row">
+		<div class="row">
 			<label class="col-sm-8 offset-sm-4">
 				<input type="checkbox" name="pinned" value="1" id="pinned" {% if (flags.pinned) %}checked="checked" {% endif %}{% if flags['pinned.disabled'] %}disabled {% endif %} /> {{ lang.editnews['add_pinned'] }}
 			</label>
 		</div>
 		{% endif %}
 		{% if not flags['catpinned.disabled'] %}
-		<div class="form-group row">
+		<div class="row">
 			<label class="col-sm-8 offset-sm-4">
 				<input type="checkbox" name="catpinned" value="1" id="catpinned" {% if (flags.catpinned) %}checked="checked" {% endif %}{% if flags['catpinned.disabled'] %}disabled {% endif %} /> {{ lang.editnews['add_catpinned'] }}
 			</label>
 		</div>
 		{% endif %}
 		{% if not flags['favorite.disabled'] %}
-		<div class="form-group row">
+		<div class="row">
 			<label class="col-sm-8 offset-sm-4">
 				<input type="checkbox" name="favorite" value="1" id="favorite" {% if (flags.favorite) %}checked="checked" {% endif %}{% if flags['favorite.disabled'] %}disabled {% endif %} /> {{ lang.editnews['add_favorite'] }}
 			</label>
 		</div>
 		{% endif %}
 		{% if not flags['html.disabled'] %}
-		<div class="form-group row">
+		<div class="row">
 			<label class="col-sm-8 offset-sm-4">
 				<input name="flag_HTML" type="checkbox" id="flag_HTML" value="1" {% if (flags['html.disabled']) %}disabled {% endif %}{% if flags['html'] %}checked="checked"{% endif %} /> {{ lang.editnews['flag_html'] }}
 			</label>
 		</div>
-		<div class="form-group row">
+		<div class="row">
 			<label class="col-sm-8 offset-sm-4">
 				<input type="checkbox" name="flag_RAW" value="1" id="flag_RAW" {% if (flags['html.disabled']) %}disabled {% endif %}{% if flags['html'] %}checked="checked"{% endif %} /> {{ lang.editnews['flag_raw'] }}
 			</label>
@@ -625,7 +625,57 @@ $(document).on('submit', '#upload-files', function(e){
 	overflow: auto;
 	max-height: 150px;
 }
+/*
+ * BBCODES && SMILES
+*/
 
+.bbcodes .btn {
+	border: 0;
+	font-size: 1em;
+	padding: 8px 1px;
+}
+.bbcodes {
+	border: 1px solid #ccc;
+	border-radius: 4px 4px 0 0;
+	border-bottom: none;
+}
+.bbcodes .btn:last-child:not(:first-child) {
+	border-bottom-right-radius: 0;
+}
+.bbcodes .btn:first-child {
+	border-bottom-left-radius: 0;
+}
+.smiles .btn {
+	border: 1px solid transparent;
+	background: none
+	}
+.smiles .btn:hover {
+	border: 1px solid #e7e7e7;
+	}
+.smiles .btn {
+ margin: 1px;
+	}
+/* SPOILERs */
+.spoiler {
+ margin: 10px 0;
+ padding: 0px;
+ clear: both;
+}
+.sp-head {
+ border: 1px solid #ccc;
+ background: #eee;
+ padding: 2px 4px;
+ cursor: pointer;
+ color: #888;
+}
+.spoiler .sp-head b {}
+.spoiler .sp-head b.expanded {}
+.sp-body {
+ display: none;
+ border: 1px solid #ccc;
+ border-top: 0;
+ padding: 4px 8px;
+}
 /*
  * Checkbox and radio
  */

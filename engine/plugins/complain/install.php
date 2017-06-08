@@ -57,7 +57,7 @@ function plugin_complain_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'localsource' => 1,
+				'localSource' => 1,
 				'extform' => 1,
 				'errlist' => "1|Неверная ссылка\n2|Ссылка удалена\n3|Другая ошибка",
 				'inform_author' => 1,

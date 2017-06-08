@@ -41,7 +41,7 @@ function loginzaAuth(){
 		$url = 'http://loginza.ru/api/authinfo?token='.$_POST['token'];
 		
 		# determine paths for all template files
-		$tpath = LocatePluginTemplates(array('register', 'append.account.success', 'append.account.error'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localsource'));
+		$tpath = LocatePluginTemplates(array('register', 'append.account.success', 'append.account.error'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
 		
 		if ( function_exists('curl_init') ) {
 			$curl = curl_init($url);
@@ -136,7 +136,7 @@ function loginzaRegister(){
 	}
 	$values['email'] = $_POST['email'] ? $_POST['email'] : 'noreply@digitalplace.ru';
 	
-	$tpath = LocatePluginTemplates(array('register.error', 'register.success'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localsource'));
+	$tpath = LocatePluginTemplates(array('register.error', 'register.success'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
 	
 	# register, activate and authorize user
 	if($auth->register($params, $values, $msg)){
@@ -164,7 +164,7 @@ function loginzaDelete() {
 	
 	$mysql->query("UPDATE `".uprefix."_users` SET `loginza_id` = '' WHERE id = ".db_squote($userROW['id']));
 	
-	$tpath = LocatePluginTemplates(array('account.delete'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localsource'));
+	$tpath = LocatePluginTemplates(array('account.delete'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
 	
 	$tpl -> template('account.delete', $tpath['account.delete']);
 	$tpl -> vars('account.delete', array('vars' => array()));
@@ -189,7 +189,7 @@ class loginzaFilterComments extends FilterComments {
 		}		
 
 		# format: facebook.com	= facebook.png
-		$tpath = LocatePluginTemplates(array(':providers.ini'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localsource'));
+		$tpath = LocatePluginTemplates(array(':providers.ini'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
 		
 		if(!isset($TemplateCache['plugin']['auth_loginza']['#providers']))
 			$TemplateCache['plugin']['auth_loginza'] = parse_ini_file($tpath[':providers.ini'].'providers.ini', true);

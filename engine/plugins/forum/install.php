@@ -413,14 +413,14 @@ function plugin_forum_install($action) {
 				} else return false;
 			} else return false;
  			$params = array(
-				'localsource' => 1,
+				'localSource' => 1,
 				'online' => 1,
 				'online_time' => 900,
 				'redirect_time' => 5,
 				'forum_title' => 'Название форума',
 				'forum_description' => 'Описание форума',
 				'forum_keywords' => 'Ключевые слова',
-				'localskin' => 'flux',
+				'localSkin' => 'flux',
 				'edit_del_time' => 5,
 				'display_main' => 1,
 				

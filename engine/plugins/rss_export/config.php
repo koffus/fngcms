@@ -1,17 +1,22 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
 // Preload config file
 pluginsLoadConfig();
 
-$xfEnclosureValues = array( '' => '');
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
 //
+// Prepare configuration parameters
+$xfEnclosureValues = array( '' => '');
+
 // IF plugin 'XFIELDS' is enabled - load it to prepare `enclosure` integration
 if (getPluginStatusActive('xfields')) {
 	include_once(root."/plugins/xfields/xfields.php");
@@ -34,29 +39,103 @@ foreach ($catz as $scanCat) {
 }
 
 // Fill configuration parameters
-$cfg = array();
+$cfg = array('description' => 'Плагин экспорта новостей в формате RSS<br>Полная лента новостей доступна по адресу: <b>'.generatePluginLink('rss_export', '', array(), array(), true, true).(($demoCategory != '')?'</b><br/>Лента новостей для категории <i>'.$catz[$demoCategory]['name'].'</i>: <b>'.generatePluginLink('rss_export', 'category', array('category' => $demoCategory), array(), true, true).'</b>':''));
 
 $cfgX = array();
-array_push($cfg, array('descr' => '<b>Плагин экспорта новостей в формате RSS</b><br>Полная лента новостей доступна по адресу: <b>'.generatePluginLink('rss_export', '', array(), array(), true, true).(($demoCategory != '')?'<br/>Лента новостей для категории <i>'.$catz[$demoCategory]['name'].'</i>: '.generatePluginLink('rss_export', 'category', array('category' => $demoCategory), array(), true, true):'')));
-array_push($cfgX, array('type' => 'select','name' => 'feed_title_format', 'title' => 'Формат заголовка ленты новостей', 'descr' => '<b>Сайт</b> - использовать заголовок сайта<br><b>Сайт+Категория</b> - использовать заголовок сайта+название категории (при выводе новостей из конкретной категории)<br><b>Ручной</b> - заголовок определяется Вами', 'values' => array ( 'site' => 'Сайт', 'site_title' => 'Сайт+Категория', 'handy' => 'Ручной'), value => pluginGetVariable('rss_export','feed_title_format')));
-array_push($cfgX, array('type' => 'input', 'name' => 'feed_title_value', 'title' => 'Ваш заголовок ленты новостей', 'descr' => 'Заголовок используется в случае выбора формата <b>"ручной"</b> в качестве заголовка ленты', 'html_flags' => 'style="width: 250px;"', 'value' => pluginGetVariable('rss_export','feed_title_value')));
-array_push($cfgX, array('type' => 'select','name' => 'news_title', 'title' => 'Формат заголовка новости', 'descr' => '<b>Название</b> - в заголовке указывается только название новости<br><b>Категория :: Название</b> - В заголовке указывается как категория так и название новости', 'values' => array ( '0' => 'Название', '1' => 'Категория :: Название'), value => pluginGetVariable('rss_export','news_title')));
-array_push($cfgX, array('type' => 'input', 'name' => 'news_count', 'title' => 'Кол-во новостей для публикации в ленте', value => pluginGetVariable('rss_export','news_count')));
-array_push($cfgX, array('type' => 'select','name' => 'use_hide', 'title' => 'Обрабатывать тег <b>[hide] ... [/hide]</b>', 'descr' => '<b>Да</b> - текст отмеченный тегом <b>hide</b> не отображается<br><b>Нет</b> - текст отмеченный тегом <b>hide</b> отображается', 'values' => array ( '0' => 'Нет', '1' => 'Да'), value => pluginGetVariable('rss_export','use_hide')));
-array_push($cfgX, array('type' => 'select','name' => 'content_show', 'title' => 'Вид отображения новости', 'descr' => 'Вам необходимо указать какая именно информация будет отображаться внутри новости, экспортируемой через RSS', 'values' => array ( '0' => 'короткая+длинная', '1' => 'только короткая', '2' => 'только длинная'), value => pluginGetVariable('rss_export','content_show')));
-array_push($cfgX, array('type' => 'input','name' => 'truncate', 'title' => 'Обрезать выводимую информацию', 'descr' => 'Кол-во символов до которых будет обрезаться выводимая в ленте информация.<br/>Значение по умолчанию: <b>0</b> - не обрезать', value => intval(pluginGetVariable('rss_export','truncate'))));
-array_push($cfgX, array('type' => 'input', 'name' => 'delay', 'title' => 'Отсрочка вывода новостей в ленту', 'descr' => 'Вы можете задать время (<b>в минутах</b>) на которое будет откладываться вывод новостей в RSS ленту',value => pluginGetVariable('rss_export','delay')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Общие настройки</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'feed_title_format',
+		'title' => 'Формат заголовка ленты новостей',
+		'descr' => '<code>Сайт</code> - использовать заголовок сайта<br><code>Сайт+Категория</code> - использовать заголовок сайта+название категории (при выводе новостей из конкретной категории)<br><code>Ручной</code> - заголовок определяется Вами',
+		'type' => 'select',
+		'values' => array('site' => 'Сайт', 'site_title' => 'Сайт+Категория', 'handy' => 'Ручной'),
+		'value' => pluginGetVariable('rss_export','feed_title_format'),
+		));
+	array_push($cfgX, array(
+		'name' => 'feed_title_value',
+		'title' => 'Ваш заголовок ленты новостей',
+		'descr' => 'Заголовок используется в случае выбора формата <b>"ручной"</b> в качестве заголовка ленты','type' => 'input',  'value' => pluginGetVariable('rss_export','feed_title_value'),
+		));
+	array_push($cfgX, array(
+		'name' => 'news_title',
+		'title' => 'Формат заголовка новости',
+		'descr' => '<code>Название</code> - в заголовке указывается только название новости<br><code>Категория :: Название</code> - В заголовке указывается как категория так и название новости','type' => 'select',
+		'values' => array('0' => 'Название', '1' => 'Категория :: Название'), value => pluginGetVariable('rss_export','news_title'),
+		));
+	array_push($cfgX, array(
+		'name' => 'news_count',
+		'title' => 'Кол-во новостей для публикации в ленте','type' => 'input', value => pluginGetVariable('rss_export','news_count'),
+		));
+	array_push($cfgX, array(
+		'name' => 'use_hide',
+		'title' => 'Обрабатывать тег <b>[hide] ... [/hide]</b>',
+		'descr' => '<code>Да</code> - текст отмеченный тегом <b>hide</b> не отображается<br><code>Нет</code> - текст отмеченный тегом <b>hide</b> отображается',
+		'type' => 'select',
+		'values' => array('0' => 'Нет', '1' => 'Да'), value => pluginGetVariable('rss_export','use_hide'),
+		));
+	array_push($cfgX, array(
+		'name' => 'content_show',
+		'title' => 'Вид отображения новости',
+		'descr' => 'Вам необходимо указать какая именно информация будет отображаться внутри новости, экспортируемой через RSS','type' => 'select',
+		'values' => array('0' => 'короткая+длинная', '1' => 'только короткая', '2' => 'только длинная'), value => pluginGetVariable('rss_export','content_show'),
+		));
+	array_push($cfgX, array(
+		'name' => 'truncate',
+		'title' => 'Обрезать выводимую информацию',
+		'descr' => 'Кол-во символов до которых будет обрезаться выводимая в ленте информация.<br/>Значение по умолчанию: <code>0</code> - не обрезать','type' => 'input', 'value' => intval(pluginGetVariable('rss_export','truncate')),
+		));
+	array_push($cfgX, array(
+		'name' => 'delay',
+		'title' => 'Отсрочка вывода новостей в ленту',
+		'descr' => 'Вы можете задать время (<code>в минутах</code>) на которое будет откладываться вывод новостей в RSS ленту','type' => 'input', value => pluginGetVariable('rss_export','delay'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'xfEnclosureEnabled', 'title' => "Генерация поля 'Enclosure' используя данные плагина xfields", 'descr' => "<b>Да</b> - включить генерацию<br /><b>Нет</b> - отключить генерацию</small>", 'type' => 'select', 'values' => array ( '1' => 'Да', '0' => 'Нет'), 'value' => intval(pluginGetVariable($plugin,'xfEnclosureEnabled'))));
-array_push($cfgX, array('name' => 'xfEnclosure', 'title' => "ID поля плагина <b>xfields</b>, которое будет использоваться для генерации поля <b>Enclosure</b>", 'type' => 'select', 'values' => $xfEnclosureValues, 'value' => pluginGetVariable($plugin,'xfEnclosure')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Генерация поля <b>enclosure</b></b>', 'entries' => $cfgX));
+array_push($cfgX, array(
+		'name' => 'xfEnclosureEnabled',
+		'title' => "Генерация поля 'Enclosure' используя данные плагина xfields",
+		'descr' => "<code>Да</code> - включить генерацию<br /><code>Нет</code> - отключить генерацию</small>",
+		'type' => 'select',
+		'values' => array('1' => 'Да', '0' => 'Нет'),
+		'value' => intval(pluginGetVariable($plugin,'xfEnclosureEnabled')),
+		));
+array_push($cfgX, array(
+		'name' => 'xfEnclosure',
+		'title' => "ID поля плагина <b>xfields</b>, которое будет использоваться для генерации поля <b>Enclosure</b>",
+		'type' => 'select',
+		'values' => $xfEnclosureValues,
+		'value' => pluginGetVariable($plugin,'xfEnclosure'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Генерация поля <b>enclosure</b>',
+	'entries' => $cfgX));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'cache', 'title' => "Использовать кеширование данных<br /><small><b>Да</b> - кеширование используется<br /><b>Нет</b> - кеширование не используется</small>", 'type' => 'select', 'values' => array ( '1' => 'Да', '0' => 'Нет'), 'value' => intval(pluginGetVariable($plugin,'cache'))));
-array_push($cfgX, array('name' => 'cacheExpire', 'title' => "Период обновления кеша<br /><small>(через сколько секунд происходит обновление кеша. Значение по умолчанию: <b>60</b>)</small>", 'type' => 'input', 'value' => intval(pluginGetVariable($plugin,'cacheExpire'))?pluginGetVariable($plugin,'cacheExpire'):'60'));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки кеширования</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'cache',
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
+		));
+	array_push($cfgX, array(
+		'name' => 'cacheExpire',
+		'title' => __('cacheExpire'),
+		'descr' => __('cacheExpire#desc'),
+		'type' => 'input',
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.cache'),
+	'entries' => $cfgX,
+	));
 
 // RUN
 if ($_REQUEST['action'] == 'commit') {
@@ -66,5 +145,3 @@ if ($_REQUEST['action'] == 'commit') {
 } else {
 	generate_config_page($plugin, $cfg);
 }
-
-?>

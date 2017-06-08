@@ -68,7 +68,7 @@ function top_news(){
 		}
 		
 		# determine paths for all template files
-		$tpath = LocatePluginTemplates(array('entries', 'top_news'), 'top_news', pluginGetVariable('top_news', 'localsource'), '', $blockName);
+		$tpath = LocatePluginTemplates(array('entries', 'top_news'), 'top_news', pluginGetVariable('top_news', 'localSource'), '', $blockName);
 		
 		# load some config
 		$newslength = intval(pluginGetVariable('top_news', "{$currentVar}_newslength"));
@@ -186,7 +186,7 @@ function top_news(){
 		
 		unset($tvars);
 		
-	 $tvars['vars'] = array ( 'tpl_url' => tpl_url, 'top_news' => $result);
+	 $tvars['vars'] = array('tpl_url' => tpl_url, 'top_news' => $result);
 
 		$tpl -> template('top_news', $tpath['top_news']);
 		$tpl -> vars('top_news', $tvars);

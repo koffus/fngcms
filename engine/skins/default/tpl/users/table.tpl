@@ -57,11 +57,13 @@
 	
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading text-right">
-			<a href="admin.php?mod=ugroup&action=addForm" data-toggle="modal" data-target="#categories" class="btn btn-default add_form"><i class="fa fa-pencil"></i></a>
-			<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-primary"><i class="fa fa-cog"></i></button>
-			{% if flags.canModify %}
-				<a href="#" title="{{ lang['adduser'] }}" class="btn btn-success add_form"><i class="fa fa-plus"></i></a>
-			{% endif %}
+			<div class="btn-group">
+				<a href="admin.php?mod=ugroup&action=addForm" data-toggle="modal" data-target="#categories" class="btn btn-default add_form"><i class="fa fa-users"></i></a>
+				<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-default"><i class="fa fa-cog"></i></button>
+				{% if flags.canModify %}
+					<a href="#" title="{{ lang['adduser'] }}" class="btn btn-success add_form"><i class="fa fa-plus"></i></a>
+				{% endif %}
+			</div>
 		</div>
 		<!-- Mass actions form: BEGIN -->
 		<form name="form_users" id="form_users" action="admin.php" method="GET">

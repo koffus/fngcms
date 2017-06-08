@@ -14,7 +14,7 @@ Lang::loadPlugin('breadcrumbs', 'main', '', 'bc', ':');
 function breadcrumbs() {
 	global $catz, $catmap, $CurrentHandler, $config, $SYSTEM_FLAGS, $systemAccessURL, $twig;
 
-	$tpath = locatePluginTemplates( array('breadcrumbs'), 'breadcrumbs', pluginGetVariable('breadcrumbs', 'template_source') );
+	$tpath = locatePluginTemplates( array('breadcrumbs'), 'breadcrumbs', pluginGetVariable('breadcrumbs', 'localSource') );
 
 	$location = array();
 	$location_last = '';

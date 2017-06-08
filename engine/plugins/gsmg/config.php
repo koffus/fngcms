@@ -1,47 +1,153 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
 //
 // Configuration file for plugin
 //
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
 // Preload config file
 pluginsLoadConfig();
 
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
+
 // Fill configuration parameters
-$cfg = array();
-$cfgX = array();
-array_push($cfg, array('descr' => 'Плагин генерации XML карты сайта для поисковой системы Google'));
-array_push($cfgX, array('name' => 'main', 'title' => "Добавлять головную страницу в карту сайта", 'descr' => "<b>Да</b> - страница будет добавляться в карту сайта<br /><b>Нет</b> - страница не будет добавляться в карту сайта", 'type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => intval(pluginGetVariable($plugin,'main'))));
-array_push($cfgX, array('name' => 'main_pr', 'title' => "Приоритет головной страницы", 'descr' => 'значение от <b>0.0</b> до <b>1.0</b>', 'type' => 'input', 'value' => (pluginGetVariable($plugin,'main_pr') == '')?'1.0':pluginGetVariable($plugin,'main_pr')));
-array_push($cfgX, array('name' => 'mainp', 'title' => "Добавлять постраничку головной страницы в карту сайта", 'descr' => "<b>Да</b> - страница будет добавляться в карту сайта<br /><b>Нет</b> - страница не будет добавляться в карту сайта", 'type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => intval(pluginGetVariable($plugin,'mainp'))));
-array_push($cfgX, array('name' => 'mainp_pr', 'title' => "Приоритет постранички головной страницы", 'descr' => 'значение от <b>0.0</b> до <b>1.0</b>', 'type' => 'input', 'value' => (pluginGetVariable($plugin,'mainp_pr') == '')?'0.5':pluginGetVariable($plugin,'mainp_pr')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки для головной страницы сайта</b>', 'entries' => $cfgX));
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'cat', 'title' => "Добавлять страницы категорий в карту сайта", 'type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => intval(pluginGetVariable($plugin,'cat'))));
-array_push($cfgX, array('name' => 'cat_pr', 'title' => "Приоритет страниц категорий", 'type' => 'input', 'value' => (pluginGetVariable($plugin,'cat_pr') == '')?'0.5':pluginGetVariable($plugin,'cat_pr')));
-array_push($cfgX, array('name' => 'catp', 'title' => "Добавлять постраничку страниц категорий в карту сайта", 'type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => intval(pluginGetVariable($plugin,'catp'))));
-array_push($cfgX, array('name' => 'catp_pr', 'title' => "Приоритет постранички категорий", 'type' => 'input', 'value' => (pluginGetVariable($plugin,'catp_pr') == '')?'0.5':pluginGetVariable($plugin,'catp_pr')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки для страниц категорий</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'main',
+		'title' => "Добавлять головную страницу в карту сайта",
+		'descr' => "<code>Да</code> - страница будет добавляться в карту сайта<br /><code>Нет</code> - страница не будет добавляться в карту сайта",
+		'type' => 'select',
+		'values' => array(0 => __('noa'), 1 => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin,'main')),
+		));
+	array_push($cfgX, array(
+		'name' => 'main_pr',
+		'title' => "Приоритет головной страницы",
+		'descr' => 'значение от <b>0.0</b> до <b>1.0</b>',
+		'type' => 'input',
+		'value' => (pluginGetVariable($plugin,'main_pr') == '')?'1.0':pluginGetVariable($plugin,'main_pr'),
+		));
+	array_push($cfgX, array(
+		'name' => 'mainp',
+		'title' => "Добавлять постраничку головной страницы в карту сайта",
+		'descr' => "<code>Да</code> - страница будет добавляться в карту сайта<br /><code>Нет</code> - страница не будет добавляться в карту сайта",
+		'type' => 'select',
+		'values' => array(0 => __('noa'), 1 => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin,'mainp')),
+		));
+	array_push($cfgX, array(
+		'name' => 'mainp_pr',
+		'title' => "Приоритет постранички головной страницы",
+		'descr' => 'значение от <b>0.0</b> до <b>1.0</b>',
+		'type' => 'input',
+		'value' => (pluginGetVariable($plugin,'mainp_pr') == '')?'0.5':pluginGetVariable($plugin,'mainp_pr'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Настройки для головной страницы сайта',
+	'entries' => $cfgX,
+	));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'news', 'title' => "Добавлять страницы новостей в карту сайта", 'type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => intval(pluginGetVariable($plugin,'news'))));
-array_push($cfgX, array('name' => 'news_pr', 'title' => "Приоритет страниц новостей", 'type' => 'input', 'value' => (pluginGetVariable($plugin,'news_pr') == '')?'0.3':pluginGetVariable($plugin,'news_pr')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки для страниц новостей</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'cat',
+		'title' => "Добавлять страницы категорий в карту сайта",
+		'type' => 'select',
+		'values' => array(0 => __('noa'), 1 => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin,'cat')),
+		));
+	array_push($cfgX, array(
+		'name' => 'cat_pr',
+		'title' => "Приоритет страниц категорий",
+		'type' => 'input',
+		'value' => (pluginGetVariable($plugin,'cat_pr') == '')?'0.5':pluginGetVariable($plugin,'cat_pr'),
+		));
+	array_push($cfgX, array(
+		'name' => 'catp',
+		'title' => "Добавлять постраничку страниц категорий в карту сайта",
+		'type' => 'select',
+		'values' => array(0 => __('noa'), 1 => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin,'catp')),
+		));
+	array_push($cfgX, array(
+		'name' => 'catp_pr',
+		'title' => "Приоритет постранички категорий",
+		'type' => 'input',
+		'value' => (pluginGetVariable($plugin,'catp_pr') == '')?'0.5':pluginGetVariable($plugin,'catp_pr'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Настройки для страниц категорий',
+	'entries' => $cfgX,
+	));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'static', 'title' => "Добавлять статические страницы в карту сайта", 'type' => 'select', 'values' => array ( '0' => 'Нет', '1' => 'Да'), 'value' => intval(pluginGetVariable($plugin,'static'))));
-array_push($cfgX, array('name' => 'static_pr', 'title' => "Приоритет статических страниц", 'type' => 'input', 'value' => (pluginGetVariable($plugin,'static_pr') == '')?'0.3':pluginGetVariable($plugin,'static_pr')));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки для статических страниц</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'news',
+		'title' => "Добавлять страницы новостей в карту сайта",
+		'type' => 'select',
+		'values' => array(0 => __('noa'), 1 => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin,'news')),
+		));
+	array_push($cfgX, array(
+		'name' => 'news_pr',
+		'title' => "Приоритет страниц новостей",
+		'type' => 'input',
+		'value' => (pluginGetVariable($plugin,'news_pr') == '')?'0.3':pluginGetVariable($plugin,'news_pr'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Настройки для страниц новостей',
+	'entries' => $cfgX,
+	));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'cache', 'title' => "Использовать кеширование карты сайта<br /><small><b>Да</b> - кеширование используется<br /><b>Нет</b> - кеширование не используется</small>", 'type' => 'select', 'values' => array ( '1' => 'Да', '0' => 'Нет'), 'value' => intval(pluginGetVariable($plugin,'cache'))));
-array_push($cfgX, array('name' => 'cacheExpire', 'title' => 'Период обновления кеша (в секундах)<br /><small>(через сколько секунд происходит обновление кеша. Значение по умолчанию: <b>10800</b>, т.е. 3 часа)', 'type' => 'input', 'value' => intval(pluginGetVariable($plugin,'cacheExpire'))?pluginGetVariable($plugin,'cacheExpire'):'10800'));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки кеширования</b>', 'entries' => $cfgX));
+	array_push($cfgX, array(
+		'name' => 'static',
+		'title' => "Добавлять статические страницы в карту сайта",
+		'type' => 'select',
+		'values' => array(0 => __('noa'), 1 => __('yesa')),
+		'value' => intval(pluginGetVariable($plugin,'static')),
+		));
+	array_push($cfgX, array(
+		'name' => 'static_pr',
+		'title' => "Приоритет статических страниц",
+		'type' => 'input',
+		'value' => (pluginGetVariable($plugin,'static_pr') == '')?'0.3':pluginGetVariable($plugin,'static_pr'),
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => 'Настройки для статических страниц',
+	'entries' => $cfgX,
+	));
 
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'cache',
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
+		));
+	array_push($cfgX, array(
+		'name' => 'cacheExpire',
+		'title' => __('cacheExpire'),
+		'descr' => __($plugin.':cacheExpire#desc'),
+		'type' => 'input',
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 10800,
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.cache'),
+	'entries' => $cfgX,
+	));
+	
 // RUN 
 if ($_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
@@ -50,5 +156,3 @@ if ($_REQUEST['action'] == 'commit') {
 } else {
 	generate_config_page($plugin, $cfg);
 }
-
-?>

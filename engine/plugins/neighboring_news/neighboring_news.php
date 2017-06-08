@@ -31,7 +31,7 @@ class NeighboringNewsFilter extends NewsFilter
  global $mysql, $config, $tpl, $catz, $catmap, $CurrentHandler;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('neighboring_news', 'next_news', 'previous_news'), 'neighboring_news', pluginGetVariable('neighboring_news', 'localsource'));
+ $tpath = locatePluginTemplates(array('neighboring_news', 'next_news', 'previous_news'), 'neighboring_news', pluginGetVariable('neighboring_news', 'localSource'));
 
  // full_mode
  if (pluginGetVariable('neighboring_news', 'full_mode') && $mode['style'] == 'full') {
@@ -238,5 +238,3 @@ class NeighboringNewsFilter extends NewsFilter
  }// showNews end
 }// class end
 pluginRegisterFilter('news', 'neighboring_news', new NeighboringNewsFilter);
-
-?>

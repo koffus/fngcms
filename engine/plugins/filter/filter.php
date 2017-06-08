@@ -8,8 +8,8 @@ loadPluginLibrary('comments', 'lib');
 
 // Filter class
 class clFilterComments extends FilterComments {
+
 	function addComments($userRec, $newsRec, &$tvars, &$SQL) {
-		
 
 		// Manage filtering
 		$flagUpdated = false;
@@ -26,9 +26,8 @@ class clFilterComments extends FilterComments {
 		// Manage blocking
 		foreach (explode("\n",pluginGetVariable('filter','block')) as $line) {
 			if ($line && stripos(' '.$c,trim($line))) {
-				Lang::loadPlugin('filter', 'filter', '', '', ':');
-				msg(array('type' => 'danger', 'message' => str_replace('%lock%', trim($line), __('filter:block'))));
-				return 0;
+				Lang::loadPlugin('filter', 'main', '', '', ':');
+				return array('result' => 0, 'errorText' => str_replace('%lock%', trim($line), __('filter:block')));
 			}
 		}
 
@@ -41,4 +40,3 @@ class clFilterComments extends FilterComments {
 
 // Activate interceptor
 pluginRegisterFilter('comments','filter', new clFilterComments);
-

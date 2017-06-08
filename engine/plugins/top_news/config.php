@@ -1,187 +1,179 @@
 <?php
 
-/*
- * top_news for NextGeneration CMS (http://ngcms.ru/)
- * Copyright (C) 2010-2011 Alexey N. Zhukov (http://digitalplace.ru)
- * http://digitalplace.ru
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or (at
- * your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
- */
- 
-# protect against hack attempts
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-# preload config file
+// Preload config file
 pluginsLoadConfig();
 
-Lang::loadPlugin('top_news', 'config', '', 'tn', ':');
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
+// Prepare configuration parameters
 $count = intval(pluginGetVariable($plugin, 'count'));
 if ($count < 1 or $count > 50)
 	$count = 1;
 
-# fill configuration parameters
-$cfg = array();
-array_push($cfg, array('descr' => __('tn:description')));
-array_push($cfg, array('name' => 'count', 
- 'title' => __('tn:count_title'), 
- 'type' => 'input', 
- 'value' => $count));
+// Fill configuration parameters
+$cfg = array('description' => __($plugin.':description'));
+
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'count', 
+		'title' => __($plugin.':count_title'), 
+		'type' => 'input', 
+		'value' => $count));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
 
 for ($i = 1; $i <= $count; $i++) {
-	$cfgX = array(); 
-	
+
 	$currentVar = "top_news{$i}";
-	
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_number", 
-						'title' => __('tn:number_title'), 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, "{$currentVar}_number")) ? pluginGetVariable($plugin, "{$currentVar}_number") : '10')
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_maxlength", 
-						'title' => __('tn:maxlength'), 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, "{$currentVar}_maxlength")) ? pluginGetVariable($plugin , "{$currentVar}_maxlength") : '100')
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_newslength", 
-						'title' => __('tn:newslength'), 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, "{$currentVar}_newslength")) ? pluginGetVariable($plugin , "{$currentVar}_newslength") : '100')
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_offset", 
-						'title' => __('tn:offset'), 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, "{$currentVar}_offset")) ? pluginGetVariable($plugin , "{$currentVar}_offset") : '1')
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_date", 
-						'title' => __('tn:date'), 
-						'type' => 'input', 
-						'value' => intval(pluginGetVariable($plugin, "{$currentVar}_date")))
-	);
-	
-	$orderby = array(
-				'views' => __('tn:orderby_views'), 
-				'comments' => __('tn:orderby_comments'), 
-				'random' => __('tn:orderby_random'), 
-				'last' => __('tn:orderby_last')
-	);
-	
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_orderby", 
-						'type' => 'select', 
-						'title' => __('tn:orderby_title'), 
-						'values' => $orderby, 
-						'value' => pluginGetVariable($plugin, "{$currentVar}_orderby"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_categories", 
-						'title' => __('tn:categories'), 
-						'type' => 'input',
-						'value' => pluginGetVariable($plugin, "{$currentVar}_categories"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_ifcategory", 
-						'title' => __('tn:ifcategory'), 
-						'type' => 'checkbox', 
-						'value' => pluginGetVariable($plugin, "{$currentVar}_ifcategory"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_content",
-						'title' => __('tn:content'),
-						'type' => 'checkbox',
-						'value' => pluginGetVariable($plugin ,"{$currentVar}_content"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_mainpage",
-						'title' => __('tn:mainpage'), 
-						'type' => 'checkbox', 
-						'value' => pluginGetVariable($plugin, "{$currentVar}_mainpage"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_img", 
-						'title' => __('tn:img'), 
-						'type' => 'checkbox', 
-						'value' => pluginGetVariable('top_news',"{$currentVar}_img"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_name", 
-						'title' => str_replace('currentVar', $currentVar, __('tn:name')), 
-						'type' => 'input', 
-						'value' => pluginGetVariable($plugin, "{$currentVar}_name"))
-	);
-	array_push($cfgX, array(
-						'name' => "{$currentVar}_dateformat", 
-						'title' => __('tn:dateformat'), 
-						'descr' => __('tn:dateformat_descr'), 
-						'type' => 'input', 
-						'value' => pluginGetVariable($plugin, "{$currentVar}_dateformat"))
-	);
-	
 	$blockName = pluginGetVariable($plugin, "{$currentVar}_name") ? 'top_news_'.pluginGetVariable('top_news', "{$currentVar}_name") : $currentVar;
+	$orderby = array(
+		'views' => __($plugin.':orderby_views'), 
+		'comments' => __($plugin.':orderby_comments'), 
+		'random' => __($plugin.':orderby_random'), 
+		'last' => __($plugin.':orderby_last')
+		);
+
+	$cfgX = array(); 
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_number", 
+			'title' => __($plugin.':number_title'), 
+			'type' => 'input', 
+			'value' => intval(pluginGetVariable($plugin, "{$currentVar}_number")) ? pluginGetVariable($plugin, "{$currentVar}_number") : 10)
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_maxlength", 
+			'title' => __($plugin.':maxlength'), 
+			'type' => 'input', 
+			'value' => intval(pluginGetVariable($plugin, "{$currentVar}_maxlength")) ? pluginGetVariable($plugin , "{$currentVar}_maxlength") : 100)
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_newslength", 
+			'title' => __($plugin.':newslength'), 
+			'type' => 'input', 
+			'value' => intval(pluginGetVariable($plugin, "{$currentVar}_newslength")) ? pluginGetVariable($plugin , "{$currentVar}_newslength") : 100)
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_offset", 
+			'title' => __($plugin.':offset'), 
+			'type' => 'input', 
+			'value' => intval(pluginGetVariable($plugin, "{$currentVar}_offset")) ? pluginGetVariable($plugin , "{$currentVar}_offset") : 1)
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_date", 
+			'title' => __($plugin.':date'), 
+			'type' => 'input', 
+			'value' => intval(pluginGetVariable($plugin, "{$currentVar}_date")))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_orderby", 
+			'type' => 'select', 
+			'title' => __($plugin.':orderby_title'), 
+			'values' => $orderby, 
+			'value' => pluginGetVariable($plugin, "{$currentVar}_orderby"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_categories", 
+			'title' => __($plugin.':categories'), 
+			'type' => 'input',
+			'value' => pluginGetVariable($plugin, "{$currentVar}_categories"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_ifcategory", 
+			'title' => __($plugin.':ifcategory'), 
+			'type' => 'checkbox', 
+			'value' => pluginGetVariable($plugin, "{$currentVar}_ifcategory"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_content",
+			'title' => __($plugin.':content'),
+			'type' => 'checkbox',
+			'value' => pluginGetVariable($plugin ,"{$currentVar}_content"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_mainpage",
+			'title' => __($plugin.':mainpage'), 
+			'type' => 'checkbox', 
+			'value' => pluginGetVariable($plugin, "{$currentVar}_mainpage"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_img", 
+			'title' => __($plugin.':img'), 
+			'type' => 'checkbox', 
+			'value' => pluginGetVariable('top_news',"{$currentVar}_img"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_name", 
+			'title' => str_replace('currentVar', $currentVar, __($plugin.':name')),
+			'type' => 'input', 
+			'value' => pluginGetVariable($plugin, "{$currentVar}_name"))
+			);
+		array_push($cfgX, array(
+			'name' => "{$currentVar}_dateformat", 
+			'title' => __($plugin.':dateformat'), 
+			'descr' => __($plugin.':dateformat_descr'), 
+			'type' => 'input', 
+			'value' => pluginGetVariable($plugin, "{$currentVar}_dateformat"))
+			);
 	array_push($cfg, array(
-					'mode' => 'group', 
-					'title' => __('tn:group').$blockName,
-					'toggle' => '1', 
-					'toggle.mode' => 'hide', 
-					'entries' => $cfgX)
+		'mode' => 'group', 
+		'title' => __($plugin.':group').$blockName,
+		'toggle' => 'hide', 
+		'entries' => $cfgX,
+		)
 	);
 }
 
 $cfgX = array();
-array_push($cfgX, array(
-					'name' => 'localsource', 
-					'title' => __('tn:localsource'), 
-					'type' => 'select', 
-					'values' => array ( '0' => __('tn:localsource_0'), '1' => __('tn:localsource_1')), 
-					'value' => intval(pluginGetVariable($plugin, 'localsource')))
-);
+	array_push($cfgX, array(
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+		));
 array_push($cfg, array(
-					'mode' => 'group', 
-					'title' => __('tn:group_2'), 
-					'entries' => $cfgX)
-);
+	'mode' => 'group',
+	'title' => __('group.source'),
+	'entries' => $cfgX,
+	));
 
 $cfgX = array();
-array_push($cfgX, array(
-					'name' => 'cache', 
-					'title' => __('tn:cache'), 
-					'type' => 'select', 
-					'values' => array ( '1' => __('yesa'), '0' => __('noa')), 
-					'value' => intval(pluginGetVariable($plugin, 'cache')))
-);
-array_push($cfgX, array(
-					'name' => 'cacheExpire', 
-					'title' => __('tn:cacheExpire'), 
-					'type' => 'input', 
-					'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? pluginGetVariable($plugin, 'cacheExpire') :'60')
-);
+	array_push($cfgX, array(
+		'name' => 'cache',
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
+		));
+	array_push($cfgX, array(
+		'name' => 'cacheExpire',
+		'title' => __('cacheExpire'),
+		'descr' => __('cacheExpire#desc'),
+		'type' => 'input',
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
+		));
 array_push($cfg, array(
-					'mode' => 'group', 
-					'title' => __('tn:group_3'), 
-					'entries' => $cfgX)
-);
+	'mode' => 'group',
+	'title' => __('group.cache'),
+	'entries' => $cfgX,
+	));
 
-# RUN 
+// RUN 
 if ($_REQUEST['action'] == 'commit') {
-	# if submit requested, do config save
+	// if submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);
 } else {

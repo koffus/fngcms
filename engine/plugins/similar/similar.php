@@ -44,7 +44,7 @@ class SimilarNewsfilter extends NewsFilter {
 		$langShortMonths = Lang::$short_months;
 		$langMonths = Lang::$months;
 
-		$tpath = locatePluginTemplates(array('similar', 'similar_entry'), 'similar', pluginGetVariable('similar', 'localsource'));
+		$tpath = locatePluginTemplates(array('similar', 'similar_entry'), 'similar', pluginGetVariable('similar', 'localSource'));
 
 		// Show similar news only in full mode
 		if ($mode['style'] == 'full') {
@@ -117,7 +117,7 @@ class SimilarNewsfilter extends NewsFilter {
 				}
 
 				$tpl -> template('similar', $tpath['similar']);
-				$tpl -> vars('similar', array ( 'vars' => array ('entries' => $result[0])));
+				$tpl -> vars('similar', array('vars' => array ('entries' => $result[0])));
 				$tvars['vars']['plugin_similar_tags'] = $tpl -> show('similar');
 			} else {
 				$tvars['vars']['plugin_similar_tags'] = '';

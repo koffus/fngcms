@@ -2180,7 +2180,7 @@ function general()
 {global $twig, $plugin;
 	
 	if (isset($_REQUEST['submit'])){
-		pluginSetVariable('forum', 'localsource', (int)$_REQUEST['localsource']);
+		pluginSetVariable('forum', 'localSource', (int)$_REQUEST['localSource']);
 		pluginSetVariable('forum', 'redirect_time', (int)$_REQUEST['redirect_time']);
 		pluginSetVariable('forum', 'online_time', (int)$_REQUEST['online_time']);
 		pluginSetVariable('forum', 'online', (int)$_REQUEST['online']);
@@ -2188,7 +2188,7 @@ function general()
 		pluginSetVariable('forum', 'forum_description', secure_html($_REQUEST['forum_description']));
 		pluginSetVariable('forum', 'forum_keywords', secure_html($_REQUEST['forum_keywords']));
 		pluginSetVariable('forum', 'edit_del_time', (int)($_REQUEST['edit_del_time']));
-		pluginSetVariable('forum', 'localskin', secure_html($_REQUEST['localskin']));
+		pluginSetVariable('forum', 'localSkin', secure_html($_REQUEST['localSkin']));
 		
 		pluginSetVariable('forum', 'topic_per_page', (int)($_REQUEST['topic_per_page']));
 		pluginSetVariable('forum', 'search_per_page', (int)($_REQUEST['search_per_page']));
@@ -2210,26 +2210,26 @@ function general()
 	$tpath = locatePluginTemplates(array('general'), 'forum', 1, '', 'config');
 	$xg = $twig->loadTemplate($tpath['general'].'general.tpl');
 	
-	if(pluginGetVariable($plugin,'localsource'))
-		$localskin = extras_dir.'/'.$plugin.'/tpl/skins/';
+	if(pluginGetVariable($plugin,'localSource'))
+		$localSkin = extras_dir.'/'.$plugin.'/tpl/skins/';
 	else {
 		if(file_exists(tpl_site.'plugins/'.$plugin.'/skins/'))
-			$localskin = tpl_site.'plugins/'.$plugin.'/skins/';
+			$localSkin = tpl_site.'plugins/'.$plugin.'/skins/';
 		else {
-			$localskin = extras_dir.'/'.$plugin.'/tpl/skins/';
+			$localSkin = extras_dir.'/'.$plugin.'/tpl/skins/';
 			$_SESSION['forum']['info'][] = 'Ошибка с выбором шаблона. Выбран шаблон: '.extras_dir.'/'.$plugin.'/tpl/skins/';
 		}
 	}
 	
 	$tVars = array(
-		'localsource' => MakeDropDown(array(0 => 'Шаблон сайта', 1 => 'Плагина'), 'localsource', (int)pluginGetVariable($plugin,'localsource')),
+		'localSource' => MakeDropDown(array(0 => 'Шаблон сайта', 1 => 'Плагина'), 'localSource', (int)pluginGetVariable($plugin,'localSource')),
 		'online' => MakeDropDown(array(0 => 'Нет', 1 => 'Да'), 'online', (int)pluginGetVariable($plugin,'online')),
 		'redirect_time' => (int)pluginGetVariable($plugin,'redirect_time'),
 		'online_time' => (int)pluginGetVariable($plugin,'online_time'),
 		'forum_title' => secure_html(pluginGetVariable($plugin,'forum_title')),
 		'forum_description' => secure_html(pluginGetVariable($plugin,'forum_description')),
 		'forum_keywords' => secure_html(pluginGetVariable($plugin,'forum_keywords')),
-		'localskin' => MakeDropDown(ListFiles($localskin, ''), 'localskin', pluginGetVariable($plugin,'localskin')),
+		'localSkin' => MakeDropDown(ListFiles($localSkin, ''), 'localSkin', pluginGetVariable($plugin,'localSkin')),
 		'edit_del_time' => (int)pluginGetVariable($plugin,'edit_del_time'),
 		'display_main' => MakeDropDown(array(0 => 'Основной шаблон', 1 => 'Отдельная страница'), 'display_main', (int)pluginGetVariable($plugin,'display_main')),
 		

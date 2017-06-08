@@ -30,7 +30,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 	$ptpl_url = admin_url.'/plugins/feedback/tpl';
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('site.form', 'site.notify'), 'feedback', pluginGetVariable('feedback', 'localsource'));
+	$tpath = locatePluginTemplates(array('site.form', 'site.notify'), 'feedback', pluginGetVariable('feedback', 'localSource'));
 
 	$SYSTEM_FLAGS['info']['title']['group']		= __('feedback:header.title');
 
@@ -279,7 +279,7 @@ function plugin_feedback_post() {
 	global $template, $mysql, $userROW, $SYSTEM_FLAGS, $PFILTERS, $twig, $SUPRESS_TEMPLATE_SHOW, $SUPRESS_MAINBLOCK_SHOW;
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('site.form', 'site.notify', 'mail.html', 'mail.text'), 'feedback', pluginGetVariable('feedback', 'localsource'));
+	$tpath = locatePluginTemplates(array('site.form', 'site.notify', 'mail.html', 'mail.text'), 'feedback', pluginGetVariable('feedback', 'localSource'));
 	$ptpl_url = admin_url.'/plugins/feedback/tpl';
 
 	$form_id = intval($_REQUEST['id']);
@@ -527,7 +527,7 @@ function plugin_feedback_post() {
 		if ($tResult['redirect']) {
 			$SUPRESS_TEMPLATE_SHOW = true;
 			$SUPRESS_MAINBLOCK_SHOW = true;
-			header('Location: '.$tResult['redirect']);
+			coreRedirectAndTerminate($tResult['redirect']);
 			return;
 		}
 

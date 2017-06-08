@@ -36,9 +36,9 @@ function plugin_rating_update(){
 	$mysql->query("update ".prefix."_news set rating=rating+".$rating.", votes=votes+1 where id = ".db_squote($post_id));
 	$data = $mysql->record("select rating, votes from ".prefix."_news where id = ".db_squote($post_id));
 
-	$localskin = pluginGetVariable('rating', 'localskin');
-	if (!$localskin) $localskin='basic';
-	$tpath = locatePluginTemplates(array('rating', ':rating.css'), 'rating', pluginGetVariable('rating', 'localsource'), $localskin);
+	$localSkin = pluginGetVariable('rating', 'localSkin');
+	if (!$localSkin) $localSkin='basic';
+	$tpath = locatePluginTemplates(array('rating', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
 	register_stylesheet($tpath['url::rating.css'].'/rating.css'); 
 
 	$tVars = array(
@@ -57,10 +57,10 @@ function rating_show($newsID, $rating, $votes){
 	global $twig, $userROW;
 
 	Lang::loadPlugin('rating', 'site');
-	$localskin = pluginGetVariable('rating', 'localskin');
-	if (!$localskin) $localskin='basic';
+	$localSkin = pluginGetVariable('rating', 'localSkin');
+	if (!$localSkin) $localSkin='basic';
 
-	$tpath = locatePluginTemplates(array('rating', 'rating.form', ':rating.css'), 'rating', pluginGetVariable('rating', 'localsource'), $localskin);
+	$tpath = locatePluginTemplates(array('rating', 'rating.form', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
 	register_stylesheet($tpath['url::rating.css'].'/rating.css'); 
 	
 	$tVars = array(

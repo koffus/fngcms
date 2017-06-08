@@ -77,9 +77,12 @@
 					<tr id="oldpass" style="display:none;">
 						<td><label class="control-label">{{ lang.uprofile['oldpass'] }}</label></td>
 						<td><input type="password" name="oldpass" value="" class="form-control input-sm" />
-						<span class="help-block">{{ lang.uprofile['oldpass#desc'] }}</span></td>
+						<span class="help-block">{{ lang.uprofile['oldpass#desc'] }}</span</td>
 					</tr>
 					{% if (pluginIsActive('xfields')) %}
+						{% if (p.xfields.fields) %}
+							<tr><td colspan="2"><legend>{{ lang['xfields:group_title'] }}</legend></td></tr>
+						{% endif %}
 						{% for field in p.xfields.fields %}
 							{% if (field.data['type'] == 'images') %}
 								<tr><td colspan="2"><legend>{{field.title}}{% if field.flags.required %} <b>*</b>{% endif %}</legend>{{field.input}}</td></tr>

@@ -1,8 +1,17 @@
 <?php
-if(!defined('NGCMS')) exit('HAL');
 
+//
+// Configuration file for plugin
+//
+
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
 pluginsLoadConfig();
-Lang::loadPlugin('category_access', 'config', '', '', ':');
+
+// Load lang files
+Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 switch ($_REQUEST['action']) {
 	case 'list_user': show_list_user(); break;

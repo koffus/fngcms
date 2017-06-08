@@ -1,8 +1,16 @@
 <?php
 
-// Protect against hack attempts
-if(!defined('NGCMS')) exit('HAL');
+//
+// Configuration file for plugin
+//
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
+
+// Preload config file
+pluginsLoadConfig();
+
+// Load lang files
 Lang::load('users', 'admin');
 Lang::loadPlugin('clear_config', 'config', '', 'с_с', ':');
 

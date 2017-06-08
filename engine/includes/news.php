@@ -112,7 +112,7 @@ function showNews($handlerName, $params) {
 
 		$tableVars = array();
 
-		$ntTemplateName		= 'news.table.tpl';
+		$ntTemplateName = 'news.table.tpl';
 
 		$callingParams['extendedReturn'] = true;
 		$callingParams['extendedReturnData'] = true;
@@ -167,9 +167,9 @@ function showNews($handlerName, $params) {
 				$currentCategory = $catz[$catmap[$category]];
 
 				// Save current category identifier
-				$SYSTEM_FLAGS['news']['currentCategory.alt']	= $currentCategory['alt'];
-				$SYSTEM_FLAGS['news']['currentCategory.id']		= $currentCategory['id'];
-				$SYSTEM_FLAGS['news']['currentCategory.name']	= $currentCategory['name'];
+				$SYSTEM_FLAGS['news']['currentCategory.alt'] = $currentCategory['alt'];
+				$SYSTEM_FLAGS['news']['currentCategory.id'] = $currentCategory['id'];
+				$SYSTEM_FLAGS['news']['currentCategory.name'] = $currentCategory['name'];
 
 				// Set title
 				$SYSTEM_FLAGS['info']['title']['group'] = $currentCategory['name'];
@@ -202,7 +202,7 @@ function showNews($handlerName, $params) {
 					// Заменяем пробелы на запятые
 					$currentCategory['keywords'] = preg_replace('#[\s]#iu', ',', $currentCategory['keywords']);
 					// Выводим для леньтяев
-					$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $currentCategory['keywords']);
+					$SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(trim(home_title . ',' . $currentCategory['keywords'], ','));
 				}
 
 				// Set number of `news per page` if this parameter is filled in category

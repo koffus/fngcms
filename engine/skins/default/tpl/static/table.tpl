@@ -45,10 +45,12 @@
 	
 	<div class="panel panel-default panel-table">
 		<div class="panel-heading text-right">
-			<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-primary"><i class="fa fa-cog"></i></button>
-			{% if (perm.modify) %}
-				<a href="admin.php?mod=static&action=addForm" title="{{ lang['addstatic'] }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
-			{% endif %}
+			<div class="btn-group">
+				<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="false" aria-controls="filter" class="btn btn-default"><i class="fa fa-cog"></i></button>
+				{% if (perm.modify) %}
+					<a href="admin.php?mod=static&action=addForm" title="{{ lang['addstatic'] }}" class="btn btn-success"><i class="fa fa-plus"></i></a>
+				{% endif %}
+			</div>
 		</div>
 		<form action="admin.php?mod=static" method="post" name="static">
 			<input type="hidden" name="token" value="{{ token }}" />

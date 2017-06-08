@@ -27,7 +27,7 @@
 <table width="100%" border="0" class="content">
 <tr>
 <td class="contentEntry1" valign=top>Выберите каталог из которого плагин будет брать шаблоны для отображения<br /><small><b>Шаблон сайта</b> - плагин будет пытаться взять шаблоны из общего шаблона сайта; в случае недоступности - шаблоны будут взяты из собственного каталога плагина<br /><b>Плагин</b> - шаблоны будут браться из собственного каталога плагина</small><br /></td>
-<td class="contentEntry2" valign=top><select name="localsource" >{localsource}</select></td>
+<td class="contentEntry2" valign=top><select name="localSource" >{localSource}</select></td>
 </tr>
 
 </table>

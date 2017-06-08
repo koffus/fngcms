@@ -19,7 +19,7 @@ $cfg = array();
 $cfgX = array();
 array_push($cfg, array('descr' => __('auth_description')));
 array_push($cfgX, array('descr' => __('auth_extdb_fulldesc')));
-array_push($cfgX, array('name' => 'extdb', 'title' => __('auth_extdb_extdb'), 'descr' => __('auth_extdb_extdb_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','extdb')));
+array_push($cfgX, array('name' => 'extdb', 'title' => __('auth_extdb_extdb'), 'descr' => __('auth_extdb_extdb_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','extdb')));
 array_push($cfgX, array('name' => 'dbhost', 'title' => __('auth_extdb_dbhost'), 'type' => 'input', value => pluginGetVariable('auth_punbb','dbhost')));
 array_push($cfgX, array('name' => 'dbname', 'title' => __('auth_extdb_dbname'), 'type' => 'input', value => pluginGetVariable('auth_punbb','dbname')));
 array_push($cfgX, array('name' => 'dblogin', 'title' => __('auth_extdb_dblogin'), 'type' => 'input', value => pluginGetVariable('auth_punbb','dblogin')));
@@ -39,9 +39,9 @@ array_push($cfgX, array('name' => 'reg_style', 'title' => __('auth_reg_style'), 
 array_push($cfg, array('mode' => 'group', 'title' => __('auth_reg'), 'entries' => $cfgX));
 
 $cfgX = array();
-array_push($cfgX, array('name' => 'userjoin', 'title' => __('auth_auto_join'), 'descr' => __('auth_auto_join_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','userjoin')));
-array_push($cfgX, array('name' => 'autocreate_ng', 'title' => __('auth_auto_ng'), 'descr' => __('auth_auto_ng_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','autocreate_ng')));
-array_push($cfgX, array('name' => 'autocreate_punbb', 'title' => __('auth_auto_punbb'), 'descr' => __('auth_auto_punbb_desc'), 'type' => 'select', 'values' => array ( '1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','autocreate_punbb')));
+array_push($cfgX, array('name' => 'userjoin', 'title' => __('auth_auto_join'), 'descr' => __('auth_auto_join_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','userjoin')));
+array_push($cfgX, array('name' => 'autocreate_ng', 'title' => __('auth_auto_ng'), 'descr' => __('auth_auto_ng_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','autocreate_ng')));
+array_push($cfgX, array('name' => 'autocreate_punbb', 'title' => __('auth_auto_punbb'), 'descr' => __('auth_auto_punbb_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','autocreate_punbb')));
 array_push($cfg, array('mode' => 'group', 'title' => __('auth_auto'), 'entries' => $cfgX));
 
 // RUN 

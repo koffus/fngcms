@@ -69,7 +69,7 @@ function clear_cache()
 	
 	$_SESSION['simple_title_pro']['info'] = $userROW['name'].' Кэш очишен';
 	
-	redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro');
+	coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro');
 }
 
 function list_news()
@@ -284,7 +284,7 @@ function send_title()
 							'.db_squote($id).'
 						)
 					');
-					redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro&action=list_cat');
+					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_cat');
 				}else if(empty($error_text) && !empty($_REQUEST['edit'])){
 					$cacheFileName = md5('block_directory_sites_cat'.$frow['cat_id'].$config['default_lang']).'.txt';
 					
@@ -295,7 +295,7 @@ function send_title()
 						WHERE id = \''.intval($_REQUEST['edit']).'\'
 					');
 					
-					redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro&action=list_cat');
+					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_cat');
 				}
 			}
 		break;
@@ -328,7 +328,7 @@ function send_title()
 							'.db_squote($id).'
 						)
 					');
-					redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro&action=list_news');
+					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_news');
 				}else if(empty($error_text) && !empty($_REQUEST['edit'])){
 					$cacheFileName = md5('block_directory_sites_news'.$frow['news_id'].$config['default_lang']).'.txt';
 					
@@ -339,7 +339,7 @@ function send_title()
 						WHERE id = \''.intval($_REQUEST['edit']).'\'
 					');
 					
-					redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro&action=list_news');
+					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_news');
 				}
 			}
 		break;
@@ -373,7 +373,7 @@ function send_title()
 							'.db_squote($id).'
 						)
 					');
-					redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro&action=list_static');
+					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_static');
 				}else if(empty($error_text) && !empty($_REQUEST['edit'])){
 					$cacheFileName = md5('block_directory_sites_static'.$frow['static_id'].$config['default_lang']).'.txt';
 					
@@ -383,11 +383,11 @@ function send_title()
 						static_id = '.db_squote($id).'
 						WHERE id = \''.intval($_REQUEST['edit']).'\'
 					');
-					redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro&action=list_static');
+					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_static');
 				}
 			}
 		break;
-		default: redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro');
+		default: coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro');
 	}
 	
 	if(!empty($error_text)){
@@ -505,7 +505,7 @@ function main()
 		pluginSetVariable('simple_title_pro', 'p_title', secure_html($_REQUEST['p_title']));
 		pluginSetVariable('simple_title_pro', 'cache', secure_html($_REQUEST['cache']));
 		pluginsSaveConfig();
-		redirect_simple_title_pro('?mod=extra-config&plugin=simple_title_pro');
+		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro');
 	}
 	
 	$c_title = pluginGetVariable('simple_title_pro', 'c_title');
@@ -640,15 +640,4 @@ function del_static()
 	
 	$mysql->query("delete from ".prefix."_simple_title_pro where id = {$id} LIMIT 1");
 	msg(array('message' => 'Запись удалена'));
-}
-
-function redirect_simple_title_pro($url){
-	if (headers_sent()){
-		echo "<script>document.location.href='{$url}';</script>\n";
-		exit;
-	} else {
-		header('HTTP/1.1 302 Moved Permanently');
-		header("Location: {$url}");
-		exit;
-	}
 }

@@ -5,10 +5,10 @@ if (!defined('NGCMS')) die ('HAL');
 include root.'includes/news.php';
 registerActionHandler('index', 'xfilter');
 
-Lang::loadPlugin('xfilter', 'config', '', 'xfl', ':');
+Lang::loadPlugin('xfilter', 'main', '', 'xfl', ':');
 
 function xfilter($params) {
-	global $twig, $template, $mysql, $tpl, $CurrentHandler;
+	global $twig, $template, $mysql, $CurrentHandler;
 
 	$filter = array(); 
 	$tVars = array();
@@ -77,7 +77,7 @@ function xfilter($params) {
 
 		$xpaginparams = array("catid" => $_REQUEST["catid"], "xfields_$id" => $_REQUEST["xfields_$id"]);
 
-		$tpath = LocatePluginTemplates(array('xfilter', 'xfilter_form'), 'xfilter', pluginGetVariable('xfilter', 'localsource'));
+		$tpath = LocatePluginTemplates(array('xfilter', 'xfilter_form'), 'xfilter', pluginGetVariable('xfilter', 'localSource'));
 
 		$xf = $twig->loadTemplate($tpath['xfilter_form'].'xfilter_form.tpl');
 		$template['vars']['xfilter'] = $xf->render($tVars);	

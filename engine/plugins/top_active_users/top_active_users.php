@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 function plugin_top_active_users($number, $mode, $overrideTemplateName, $cacheExpire) {
-	global $config, $mysql, $tpl, $template, $twig, $twigLoader, $TemplateCache;
+	global $config, $mysql, $template, $twig, $twigLoader, $TemplateCache;
 
 	// Prepare keys for cacheing
 	$cacheKeys = array();
@@ -36,7 +36,7 @@ function plugin_top_active_users($number, $mode, $overrideTemplateName, $cacheEx
  }
 	
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'top_active_users', pluginGetVariable('top_active_users', 'localsource'));
+	$tpath = locatePluginTemplates(array($templateName), 'top_active_users', pluginGetVariable('top_active_users', 'localSource'));
 
 	
 	// Preload template configuration variables

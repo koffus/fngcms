@@ -23,7 +23,7 @@ function plugin_voting() {
 	$voteid = intval(pluginGetVariable('voting','active'));
 	$rand = pluginGetVariable('voting','rotate');
 	$voted = isset($_COOKIE['ngcms_voting'])?explode(',',$_COOKIE['ngcms_voting'].''):array();
-	$skin = pluginGetVariable('voting','skin');
+	$skin = pluginGetVariable('voting','localSkin');
 	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin))||(!$skin)) { $skin = 'basic'; }
 
 	$template['vars']['voting'] = plugin_showvote($skin, 4, $voteid, $rand, $voted);
@@ -49,7 +49,7 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 
 	$result = '';
 
-	$tpath = locatePluginTemplates(array('shls_vote', 'edls_vote', 'shls_vline', 'edls_vline', 'lshdr', 'sh_vote', 'ed_vote', 'sh_vline', 'ed_vline'), 'voting', pluginGetVariable('voting', 'localsource'), $tpl_skin);
+	$tpath = locatePluginTemplates(array('shls_vote', 'edls_vote', 'shls_vline', 'edls_vline', 'lshdr', 'sh_vote', 'ed_vote', 'sh_vline', 'ed_vline'), 'voting', pluginGetVariable('voting', 'localSource'), $tpl_skin);
 	// Preload templates
 	if ($mode<4) {
 		$post_url = generateLink('core', 'plugin', array('plugin' => 'voting'), array());
@@ -194,7 +194,7 @@ function plugin_voting_screen($flagPanel = false) {
 	$votedList = explode(',',$_COOKIE['ngcms_voting']);
 
 	// Get current skin
-	$skin = pluginGetVariable('voting','skin');
+	$skin = pluginGetVariable('voting','localSkin');
 	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin))||(!$skin)) { $skin = 'basic'; }
 
 	// ========================================

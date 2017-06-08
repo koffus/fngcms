@@ -12,7 +12,7 @@ pluginsLoadConfig();
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin . ':description'));
+$cfg = array('description' => __($plugin.':description'));
 
 array_push($cfg, array(
 	'name' => 'area',

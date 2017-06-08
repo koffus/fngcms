@@ -21,7 +21,7 @@ function plugin_archive($params) {
 	$counter = isset($params['counter']) ? $params['counter'] : pluginGetVariable('archive', 'counter');
 	$tcounter = isset($params['tcounter']) ? $params['tcounter'] : pluginGetVariable('archive', 'tcounter');
 	$overrideTemplateName = isset($params['template']) ? $params['template'] : false;
-	$localsource = pluginGetVariable('archive', 'localsource');
+	$localSource = pluginGetVariable('archive', 'localSource');
 	$cache = isset($params['cache']) ? $params['cache'] : pluginGetVariable('archive', 'cache');
 	$cacheExpire = isset($params['cacheExpire']) ? $params['cacheExpire'] : pluginGetVariable('archive', 'cacheExpire');
 
@@ -45,7 +45,7 @@ function plugin_archive($params) {
 		$maxnum = 12;
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'archive', $localsource);
+	$tpath = locatePluginTemplates(array($templateName), 'archive', $localSource);
 
 	// Load list
 	foreach ($mysql->select("

@@ -34,6 +34,6 @@ class FilterComments {
 	// Each array antry is a name of table for joining [ currenly only `users` is supported ] with value of configuration sub array
 	// Sub array should contain configuration parameters:
 	//		fields - list of fields to join
-	// example: array ( 'users' => array ( 'fields' => array ( 'avatar' )))
+	// example: array('users' => array('fields' => array('avatar' )))
 	function commentsJoinFilter(){ return array(); }
 }

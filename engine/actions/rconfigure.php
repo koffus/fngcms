@@ -127,7 +127,7 @@ $ULIB->registerCommand('news', 'by.year',
 );
 
 $ULIB->registerCommand('news', 'by.month',
-		array ( 'vars' =>
+		array('vars' =>
 			array(	'year' => array('matchRegex' => '\d{4}', 'descr' => array ('russian' => 'Год')),
 					'month' => array('matchRegex' => '\d{2}', 'descr' => array ('russian' => 'Месяц')),
 					'page' => array('matchRegex' => '\d+', 'descr' => array('russian' => 'Страница')),
@@ -137,7 +137,7 @@ $ULIB->registerCommand('news', 'by.month',
 );
 
 $ULIB->registerCommand('news', 'by.day',
-		array ( 'vars' =>
+		array('vars' =>
 			array(	'year' => array('matchRegex' => '\d{4}', 'descr' => array ('russian' => 'Год')),
 					'month' => array('matchRegex' => '\d{2}', 'descr' => array ('russian' => 'Месяц')),
 					'day' => array('matchRegex' => '\d{2}', 'descr' => array ('russian' => 'День')),

@@ -18,7 +18,7 @@
 	
 	if (!defined('NGCMS')) die ('HAL');
 	
-	$tpath = locatePluginTemplates(array( 'news_feed'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array( 'news_feed'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	if(empty($GROUP_PS['group_news']))
 		return $output = permissions_forum('Доступ в новости запрещен');

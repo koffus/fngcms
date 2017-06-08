@@ -11,8 +11,8 @@
 				</div>
 				<div class="col-sm-4">
 					<select name="support_news" class="form-control">
-						<option value="0" {{ s_news0 }}>{{ lang['noa'] }}</option>
-						<option value="1" {{ s_news1 }}>{{ lang['yesa'] }}</option>
+						<option value="0" {{ s_news_0 }}>{{ lang['noa'] }}</option>
+						<option value="1" {{ s_news_1 }}>{{ lang['yesa'] }}</option>
 					</select>
 				</div>
 			</div>
@@ -24,7 +24,10 @@
 					<span class="help-block">{{ lang['ads_pro:news_cfg_sort#desc'] }}</span>
 				</div>
 				<div class="col-sm-4">
-					<select name="news_cfg_sort" class="form-control"><option value="0" {{ s_news_sort0 }}>{{ lang['ads_pro:news_cfg_sort_id'] }}<option value="1" {{ s_news_sort1 }}>{{ lang['ads_pro:news_cfg_sort_title'] }}</select>
+					<select name="news_cfg_sort" class="form-control">
+						<option value="0" {{ s_news_sort_0 }}>{{ lang['ads_pro:news_cfg_sort_id'] }}</option>
+						<option value="1" {{ s_news_sort_1 }}>{{ lang['ads_pro:news_cfg_sort_title'] }}</option>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -35,7 +38,11 @@
 					<span class="help-block">{{ lang['ads_pro:multidisplay_mode#desc'] }}</span>
 				</div>
 				<div class="col-sm-4">
-					<select name="multidisplay_mode" class="form-control"><option value="0" {{ multidisplay_mode_0 }}>{{ lang['ads_pro:multidisplay_mode0'] }}<option value="1" {{ multidisplay_mode_1 }}>{{ lang['ads_pro:multidisplay_mode1'] }}<option value="2" {{ multidisplay_mode_2 }}>{{ lang['ads_pro:multidisplay_mode2'] }}</select>
+					<select name="multidisplay_mode" class="form-control">
+						<option value="0" {{ multidisplay_mode_0 }}>{{ lang['ads_pro:multidisplay_mode0'] }}</option>
+						<option value="1" {{ multidisplay_mode_1 }}>{{ lang['ads_pro:multidisplay_mode1'] }}</option>
+						<option value="2" {{ multidisplay_mode_2 }}>{{ lang['ads_pro:multidisplay_mode2'] }}</option>
+					</select>
 				</div>
 			</div>
 		</div>

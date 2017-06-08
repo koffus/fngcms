@@ -208,7 +208,7 @@ function send_subscribe($topic_id, $last_post_id, $name_topic, $message)
 	
 	$link_pos = link_post($last_post_id);
 	
-	$tpath = locatePluginTemplates(array('htmail'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('htmail'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['htmail'].'htmail.tpl');
 	
 	foreach ($mysql->select('SELECT u.id, u.mail, u.name FROM '.prefix.'_users AS u LEFT JOIN '.prefix.'_forum_subscriptions AS s ON s.uid = u.id WHERE s.tid = '.securemysql($topic_id).' and s.uid != '.securemysql($userROW['id']).'', 1) as $row){
@@ -230,7 +230,7 @@ function send_subscribe($topic_id, $last_post_id, $name_topic, $message)
 }
 
 function LoadVariables(){
-	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	return parse_ini_file($tpath[':'].'/variables.ini', true);
 }
@@ -298,7 +298,7 @@ global $config, $mysql, $show_main, $twig;
 	
 	$show_main = true;
 	
-	$tpath = locatePluginTemplates(array('rss_feed'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('rss_feed'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	
 	$limitCount = intval(pluginGetVariable('forum', 'rss_per_page'));
 	
@@ -368,7 +368,7 @@ function banned_users()
 
 function lang_forum($lang){
 	global $config, $lang_forum, $twig;
-	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array(':'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$lang_forum = parse_ini_file($tpath[':'].'lang/'.$config['default_lang'].'/'.$lang.'.ini', true);
 	$twig->addGlobal('lang_forum', $lang_forum);
 }

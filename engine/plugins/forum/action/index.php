@@ -22,7 +22,7 @@
 			return redirect_forum(link_home());
 	}
 	
-	$tpath = locatePluginTemplates(array('show_index', 'entries'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'), 'show_index');
+	$tpath = locatePluginTemplates(array('show_index', 'entries'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'), 'show_index');
 	
 	generate_index_cache();
 	

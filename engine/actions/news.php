@@ -106,6 +106,16 @@ function editNewsForm() {
 		'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
 		'approve' => $row['approve'],
 		'token'				=> genUToken('admin.news.edit'),
+		'extends' => array(
+			'script' => '',
+			'style' => '',
+			'block' => array(
+				'main' => '',
+				'additional' => '',
+				'owner' => array(
+					),
+				),
+			),
 		'flags'				=> array(
 			'edit_split' => $config['news.edit.split']?true:false,
 			'meta'				=> $config['meta']?true:false,
@@ -138,7 +148,7 @@ function editNewsForm() {
 			'multicat.disabled' => (!$perm[$permGroupMode.'.multicat'])?true:false,
 			'altname.disabled' => (!$perm[$permGroupMode.'.altname'])?true:false,
 			'mondatory_cat' => (!$perm[$permGroupMode.'.nocat'])?true:false,
-		)
+		),
 	);
 
 	// Generate link for published news
@@ -203,6 +213,7 @@ function editNewsForm() {
 	}
 	$tVars['attachEntries'] = $attachEntries;
 	$tVars['attachCount'] = $attachNumber;
+	$tVars['extends'] = '';
 
 	if(getIsSet($row['xfields']))
 		executeActionHandler('editnews_entry', $row['xfields'], '');
@@ -273,9 +284,9 @@ function massCommentDelete(){
 	}
 	//
 	if ($countRequested == $countDeleted) {
-		msg(array('title' => __('msg.comdel.ok'), 'message' => str_replace(array('{cnt_req}', '{edit_link}'), array($countRequested, $PHP_SELF.'?mod=news&action=edit&id='.$postid), __('msg.comdel.ok#descr'))));
+		msg(array('title' => __('msg.comdel.ok'), 'message' => str_replace(array('{cnt_req}', '{edit_link}'), array($countRequested, $PHP_SELF.'?mod=news&action=edit&id='.$postid), __('msg.comdel.ok#desc'))));
 	} else {
-		msg(array('title' => __('msg.comdel.fail'), 'message' => str_replace(array('{cnt_req}', '{cnt_deleted}', '{cnt_blocked}', '{cnt_lost}', '{edit_link}'), array($countRequested, $countDeleted, $countBlocked, $countLost, $PHP_SELF.'?mod=news&action=edit&id='.$postid), __('msg.comdel.fail#descr'))));
+		msg(array('title' => __('msg.comdel.fail'), 'message' => str_replace(array('{cnt_req}', '{cnt_deleted}', '{cnt_blocked}', '{cnt_lost}', '{edit_link}'), array($countRequested, $countDeleted, $countBlocked, $countLost, $PHP_SELF.'?mod=news&action=edit&id='.$postid), __('msg.comdel.fail#desc'))));
 	}
 }
 

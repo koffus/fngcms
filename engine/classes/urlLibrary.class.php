@@ -16,8 +16,8 @@
  Each plugin may register a list of it's supported commands with specified params
 
  params = array with supported params
-		'vars' => array ( <VARIABLES> )
-			'<NAME>' => array ( <PARAMS> )
+		'vars' => array(<VARIABLES> )
+			'<NAME>' => array(<PARAMS> )
 				'matchRegex'	= matching REGEX
 				'descr'			= description
 		'descr'			= description

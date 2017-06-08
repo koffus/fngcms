@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 function AddBlok() {
 	var tbl = document.getElementById('blokup');
 	var lastRow = tbl.rows.length;
@@ -91,29 +91,29 @@ function createNamedElement(type, name) {
 	<fieldset>
 		<legend>{{ lang['ads_pro:general'] }}</legend>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:name'] }}
 				<span class="help-block">{{ lang['ads_pro:name#desc'] }}</span>
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-4">
 				<input type="text" name="name"{% if flags.edit %} value="{{ name }}"{% endif %} class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:description'] }}
 				<span class="help-block">{{ lang['ads_pro:description#desc'] }}</span>
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-4">
 				<input type="text" name="description"{% if flags.edit %} value="{{ description }}"{% endif %} class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:type'] }}
 				<span class="help-block">{{ lang['ads_pro:type#desc'] }}</span>
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-4">
 				{{ type_list }}
 			</div>
 		</div>
@@ -122,43 +122,45 @@ function createNamedElement(type, name) {
 	<fieldset>
 		<legend>{{ lang['ads_pro:state'] }}</legend>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:state#desc'] }}
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-4">
 				{{ state_list }}
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:location'] }}
 				<span class="help-block">{{ lang['ads_pro:location#desc'] }}</span>
 			</div>
-			<div class="col-sm-7">
-				<input type="button" class="btn btn-default" value="{{ lang['ads_pro:location_add'] }}" onClick="AddBlok();return false;" />
-				<input type="button" class="btn btn-default" value="{{ lang['ads_pro:location_dell'] }}" onClick="RemoveBlok();return false;" />
+			<div class="col-sm-4">
+				<div class="btn-group btn-group-justified">
+				<a href="#" class="btn btn-default" onClick="AddBlok();return false;">{{ lang['ads_pro:location_add'] }}</a>
+				<a href="#" class="btn btn-default" onClick="RemoveBlok();return false;">{{ lang['ads_pro:location_dell'] }}</a>
+				</div>
 			</div>
 		</div>
-		<table id="blokup" class="well table table-condensed">{% if flags.edit %}{{ location_list }}{% endif %}</table>
+		<table id="blokup" class="well table table-condensed"><tbody>{% if flags.edit %}{{ location_list }}{% endif %}</tbody></table>
 	</fieldset>
 
 	<fieldset>
 		<legend>{{ lang['ads_pro:sched_legend'] }}</legend>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:start_view'] }}
 				<span class="help-block">{{ lang['ads_pro:start_view#desc'] }}</span>
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-4">
 				<input type="text" name="start_view"{% if flags.edit %} value="{{ start_view }}"{% endif %} class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-sm-5">
+			<div class="col-sm-8">
 				{{ lang['ads_pro:end_view'] }}
 				<span class="help-block">{{ lang['ads_pro:end_view#desc'] }}</span>
 			</div>
-			<div class="col-sm-7">
+			<div class="col-sm-4">
 				<input type="text" name="end_view"{% if flags.edit %} value="{{ end_view }}"{% endif %} class="form-control" />
 			</div>
 		</div>

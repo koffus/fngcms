@@ -13,60 +13,83 @@
 if (!defined('NGCMS')) die ('HAL');
 
 class NSchedNewsFilter extends NewsFilter {
+
+	function __construct() {
+		// не загружать здесь языки !!! При просмотре новости не нужны языки настроек плагина из админ.панели !!!
+	}
+
 	function addNewsForm(&$tvars) {
+		global $twig;
+
+		Lang::loadPlugin('nsched', 'config', '', '', ':');
+
 		$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
 
-		$tvars['plugin']['nsched'] = '';
-		if ($perm['personal.publish'] or $perm['personal.unpublish']) {
-			$tvars['plugin']['nsched'] .= '<tr><td width="100%" class="contentHead"><img src="'.admin_url.'/skins/default/images/nav.gif" hspace="8" alt="" />Управление публикацией новостей</td></tr><tr><td width="100%" class="contentEntry1"><table>';
-			if ($perm['personal.publish']) {
-				$tvars['plugin']['nsched'] .= '<tr><td>Дата включения:</td><td><input id="nsched_activate" name="nsched_activate" /> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
-			}
-			if ($perm['personal.unpublish']) {
-				$tvars['plugin']['nsched'] .= '<tr><td>Дата отключения:</td><td><input id="nsched_deactivate" name="nsched_deactivate"/> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
-			}
-			$tvars['plugin']['nsched'] .= '</table></td></tr><script type="text/javascript">'."$('#nsched_activate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm'});$('#nsched_deactivate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm'});</script>";
+		$ttvars = array(
+			'nactivate' => '',
+			'ndeactivate' => '',
+			'flags' => array(
+				'permPublish' => $perm['personal.publish'] ? true : false,
+				'permUnPublish' => $perm['personal.unpublish'] ? true : false,
+				),
+			);
 
-		}
+		$extends = pluginGetVariable('nsched','extends') ? pluginGetVariable('nsched','extends') : 'owner';
+		$tpath = locatePluginTemplates(array('news'), 'nsched', 1, 0, 'admin');
+		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tvars['extends']['block'][$extends][] = array(
+			'header_title' => __('nsched:header_title'),
+			'body' => ($perm['personal.publish'] or $perm['personal.unpublish']) ? $xt->render($ttvars) : '',
+			);
 
 		return 1;
 	}
+
 	function addNews(&$tvars, &$SQL) {
+
 		$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
 		if ($perm['personal.publish'])
 			$SQL['nsched_activate'] = $_REQUEST['nsched_activate'];
 
 		if ($perm['personal.unpublish'])
 			$SQL['nsched_deactivate'] = $_REQUEST['nsched_deactivate'];
+
 		return 1;
 	}
+
 	function editNewsForm($newsID, $SQLold, &$tvars) {
-		global $userROW;
+		global $userROW, $twig;
+
+		Lang::loadPlugin('nsched', 'config', '', '', ':');
 
 		$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
-		$isOwn = ($SQLold['author_id'] == $userROW['id'])?1:0;
-		$permGroupMode = $isOwn?'personal':'other';
-
+		$isOwn = ($SQLold['author_id'] == $userROW['id']) ? 1 : 0;
+		$permGroupMode = $isOwn ? 'personal' : 'other';
 		$ndeactivate = $SQLold['nsched_deactivate'];
 		$nactivate = $SQLold['nsched_activate'];
-		if ($nactivate == '0000-00-00 00:00') { $nactivate = ''; }
-		if ($ndeactivate == '0000-00-00 00:00') { $ndeactivate = ''; }
+		if ( !intval($nactivate) ) { $nactivate = ''; }
+		if ( !intval($ndeactivate) ) { $ndeactivate = ''; }
 
-		$tvars['plugin']['nsched'] = '';
-		if ($perm[$permGroupMode.'.publish'] or $perm[$permGroupMode.'.unpublish']) {
-			$tvars['plugin']['nsched'] .= '<tr><td width="100%" class="contentHead"><img src="'.admin_url.'/skins/default/images/nav.gif" hspace="8" alt="" />Управление публикацией новостей</td></tr><tr><td width="100%" class="contentEntry1"><table>';
+		$ttvars = array(
+			'nactivate' => $nactivate,
+			'ndeactivate' => $ndeactivate,
+			'flags' => array(
+				'permPublish' => $perm[$permGroupMode.'.publish'] ? true : false,
+				'permUnPublish' => $perm[$permGroupMode.'.unpublish'] ? true : false,
+				),
+			);
 
-			if ($perm[$permGroupMode.'.publish']) {
-				$tvars['plugin']['nsched'] .= '<tr><td>Дата включения:</td><td><input name="nsched_activate" id="nsched_activate" value="'.$nactivate.'" /> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
-			}
+		$extends = pluginGetVariable('nsched','extends') ? pluginGetVariable('nsched','extends') : 'owner';
+		$tpath = locatePluginTemplates(array('news'), 'nsched', 1, 0, 'admin');
+		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tvars['extends']['block'][$extends][] = array(
+			'header_title' => __('nsched:header_title'),
+			'body' => ($perm[$permGroupMode.'.publish'] or $perm[$permGroupMode.'.unpublish']) ? $xt->render($ttvars) : '',
+			);
 
-			if ($perm[$permGroupMode.'.unpublish']) {
-				$tvars['plugin']['nsched'] .= '<tr><td>Дата отключения:</td><td><input name="nsched_deactivate" id="nsched_deactivate" value="'.$ndeactivate.'" /> <small>( в формате ГГГГ-ММ-ДД ЧЧ:ММ )</small></td></tr>';
-			}
-			$tvars['plugin']['nsched'] .= '</table></td></tr><script type="text/javascript">'."$('#nsched_activate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm', currentText: '".$nactivate."'});$('#nsched_deactivate').datetimepicker({ dateFormat: 'yy-mm-dd', timeFormat: 'hh:mm', currentText: '".$ndeactivate."'});</script>";
-		}
 		return 1;
 	}
+
 	function editNews($newsID, $SQLold, &$SQLnew, &$tvars) {
 		global $userROW;
 
@@ -91,16 +114,15 @@ pluginRegisterFilter('news','nsched', new NSchedNewsFilter);
 
 //
 // Функция вызываемая по крону
-//
 function plugin_nsched_cron() {
 	global $mysql, $catz, $catmap;
 
 	// Список новостей для (де)активации
 	$listActivate = array();
-	$dataActivate	= array();
+	$dataActivate = array();
 
 	$listDeactivate = array();
-	$dataDeactivate	= array();
+	$dataDeactivate = array();
 
 	// Выбираем новости для которых сработал флаг "опубликовать по дате"
 	foreach ($mysql->select("select * from ".prefix."_news where (nsched_activate>0) and (nsched_activate <= now())") as $row) {
@@ -130,8 +152,6 @@ function plugin_nsched_cron() {
 		}
 		if (count($listDeactivate)) {
 			massModifyNews(array('data' => $dataDeactivate), array('approve' => 0, 'nsched_deactivate' => ''), false);
-
 		}
 	}
 }
-

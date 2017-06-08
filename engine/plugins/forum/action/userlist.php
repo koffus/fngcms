@@ -19,7 +19,7 @@
 	
 	//checkLinkAvailable('forum', 'userlist')
 	
-	$tpath = locatePluginTemplates(array('userlist'), 'forum', pluginGetVariable('forum', 'localsource'), pluginGetVariable('forum','localskin'));
+	$tpath = locatePluginTemplates(array('userlist'), 'forum', pluginGetVariable('forum', 'localSource'), pluginGetVariable('forum','localSkin'));
 	$xt = $twig->loadTemplate($tpath['userlist'].'userlist.tpl');
 	
 	if(isset($params['page']))

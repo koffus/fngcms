@@ -12,8 +12,8 @@ function comments_add(){
 	// Check membership
 	// If login/pass is entered (either logged or not)
 	if ($_POST['name'] && $_POST['password']) {
-		$auth	= $AUTH_METHOD[$config['auth_module']];
-		$user	= $auth->login(0, $_POST['name'], $_POST['password']);
+		$auth = $AUTH_METHOD[$config['auth_module']];
+		$user = $auth->login(0, $_POST['name'], $_POST['password']);
 		if (!is_array($user)) {
 			msg(array('type' => 'danger', 'message' => __('comments:err.password')));
 			return;
@@ -23,22 +23,22 @@ function comments_add(){
 	// Entered data have higher priority then login data
 	$memberRec = null;
 	if (is_array($user)) {
-		$SQL['author']			= $user['name'];
-		$SQL['author_id']		= $user['id'];
-		$SQL['mail']			= $user['mail'];
-		$is_member				= 1;
-		$memberRec				= $user;
+		$SQL['author'] = $user['name'];
+		$SQL['author_id'] = $user['id'];
+		$SQL['mail'] = $user['mail'];
+		$is_member = 1;
+		$memberRec = $user;
 	} else if (is_array($userROW)) {
-		$SQL['author']			= $userROW['name'];
-		$SQL['author_id']		= $userROW['id'];
-		$SQL['mail']			= $userROW['mail'];
-		$is_member				= 1;
-		$memberRec				= $userROW;
+		$SQL['author'] = $userROW['name'];
+		$SQL['author_id'] = $userROW['id'];
+		$SQL['mail'] = $userROW['mail'];
+		$is_member = 1;
+		$memberRec = $userROW;
 	} else {
-		$SQL['author']			= secure_html($_POST['name']);
-		$SQL['author_id']		= 0;
-		$SQL['mail']			= secure_html($_POST['mail']);
-		$is_member				= 0;
+		$SQL['author'] = secure_html($_POST['name']);
+		$SQL['author_id'] = 0;
+		$SQL['mail'] = secure_html($_POST['mail']);
+		$is_member = 0;
 	}
 
 	// CSRF protection variables
@@ -178,7 +178,7 @@ function comments_add(){
 				}
 			} else {
 				//print "Last post: ".$lpost['id']."<br>\n";
-				if (($lpost['author'] == $SQL['author'])||($lpost['mail'] == $SQL['mail'])) {
+				if (($lpost['author'] == $SQL['author']) or ($lpost['mail'] == $SQL['mail'])) {
 					msg(array('type' => 'danger', 'message' => __('comments:err.multilock')));
 					return;
 				}
@@ -205,10 +205,10 @@ function comments_add(){
 	if (is_array($PFILTERS['comments']))
 		foreach ($PFILTERS['comments'] as $k => $v) {
 			$pluginResult = $v->addComments($memberRec, $news_row, $tvars, $SQL);
-			if ((is_array($pluginResult) && ($pluginResult['result']))||(!is_array($pluginResult) && $pluginResult))
+			if ((is_array($pluginResult) && ($pluginResult['result'])) or (!is_array($pluginResult) && $pluginResult))
 				continue;
 
-			msg(array('type' => 'danger', 'message' => str_replace(array('{plugin}', '{errorText}'), array($k, (is_array($pluginResult) && isset($pluginResult['errorText'])?$pluginResult['errorText']:'')), $lang['comments:err.'.((is_array($pluginResult) && isset($pluginResult['errorText']))?'e':'').'pluginlock'])));
+			msg(array('type' => 'danger', 'message' => str_replace(array('{plugin}', '{errorText}'), array($k, (is_array($pluginResult) && isset($pluginResult['errorText'])?$pluginResult['errorText']:'')), __('comments:err.'.((is_array($pluginResult) && isset($pluginResult['errorText']))?'e':'').'pluginlock'))));
 			return 0;
 		}
 

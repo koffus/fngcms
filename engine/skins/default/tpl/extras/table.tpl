@@ -20,7 +20,8 @@
 		<li data-filter="pluginEntryUninstalled"><a href="#">{{ lang['list.needinstall'] }} <span class="badge">{{ cntUninstalled }}</span></a></li>
 	</ul>
 	<!-- Filter form: END -->
-	
+	<br/>
+
 	<!-- List of plugins: BEGIN -->
 	<div class="table-responsive">
 		<table id="maincontent" class="table table-hover table-condensed table-extras">

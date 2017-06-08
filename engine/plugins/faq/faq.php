@@ -49,7 +49,7 @@ function plugin_faq_addForm($tpl_name, $info = array()) {
 		'info' => $info,
 	);
 
-	$tpath = locatePluginTemplates(array($tpl_name), 'faq', pluginGetVariable('faq', 'localsource'));
+	$tpath = locatePluginTemplates(array($tpl_name), 'faq', pluginGetVariable('faq', 'localSource'));
 	$xt = $twig->loadTemplate($tpath[$tpl_name] . $tpl_name . '.tpl');
 	$template['vars']['mainblock'] .= $xt->render($tVars);
 }
@@ -109,7 +109,7 @@ function plug_faq($maxnum, $overrideTemplateName, $order, $cacheExpire) {
 	$tVars['entries'] = $tEntries;
 	$tVars['tpl_url'] = tpl_url;
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'faq', pluginGetVariable('faq', 'localsource'));
+	$tpath = locatePluginTemplates(array($templateName), 'faq', pluginGetVariable('faq', 'localSource'));
 	$xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
 	$output = $xt->render($tVars);
 	if ($cacheExpire > 0) {

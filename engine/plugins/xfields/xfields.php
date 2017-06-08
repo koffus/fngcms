@@ -10,7 +10,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin('xfields', 'config');
+Lang::loadPlugin('xfields', 'config', '', '', ':');
 LoadPluginLibrary('xfields', 'common');
 
 //
@@ -188,6 +188,11 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 
 // Perform replacements while showing news
 class XFieldsNewsFilter extends NewsFilter {
+
+	function __construct() {
+		Lang::loadPlugin('xfields', 'config', '', '', ':');
+	}
+
 	function addNewsForm(&$tvars) {
 		global $twig, $catz;
 
@@ -211,7 +216,7 @@ class XFieldsNewsFilter extends NewsFilter {
 					'value' => $xdata[$id],
 					'secure_value' => secure_html($xdata[$id]),
 					'data' => $data,
-					'required' => $lang['xfields_fld_'.($data['required']?'required':'optional')],
+					'required' => __('xfields:fld_'.($data['required']?'required':'optional')),
 					'flags' => array(
 						'required' => $data['required']?true:false,
 					),
@@ -356,8 +361,10 @@ class XFieldsNewsFilter extends NewsFilter {
 		$tvars['plugin']['xfields']['fields'] = $xfList;
 		return 1;
 	}
+
 	function addNews(&$tvars, &$SQL) {
 		global $twig, $twigLoader;
+
 		// Load config
 		$xf = xf_configLoad();
 		if (!is_array($xf))
@@ -376,7 +383,7 @@ class XFieldsNewsFilter extends NewsFilter {
 			if ($rcall[$id] != '') {
 				$xdata[$id] = $rcall[$id];
 			} else if ($data['required']) {
-				msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields_msge_emptyrequired'))));
+				msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields:msge_emptyrequired'))));
 				return 0;
 			}
 			// Check if we should save data into separate SQL field
@@ -389,6 +396,7 @@ class XFieldsNewsFilter extends NewsFilter {
 	 $SQL['xfields'] = xf_encode($xdata);
 		return 1;
 	}
+
 	function addNewsNotify(&$tvars, $SQL, $newsID) {
 		global $mysql;
 
@@ -471,7 +479,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
 	function editNewsForm($newsID, $SQLold, &$tvars) {
 		global $catz, $mysql, $config, $twig, $twigLoader;
-		//print "<pre>".var_export($lang, true)."</pre>";
+
 		// Load config
 		$xf = xf_configLoad();
 		if (!is_array($xf))
@@ -492,7 +500,7 @@ class XFieldsNewsFilter extends NewsFilter {
 			$xfEntry = array(
 				'title' => $data['title'],
 				'id' => $id,
-				'required' => $lang['xfields_fld_'.($data['required']?'required':'optional')],
+				'required' => __('xfields:fld_'.($data['required']?'required':'optional')),
 				'flags' => array(
 					'required' => $data['required']?true:false,
 				),
@@ -678,6 +686,10 @@ class XFieldsNewsFilter extends NewsFilter {
 			$tVars['flags']['tdata']	= (!$k)?$flagTData:0;
 
 			// Render block
+			/*$tvars['extends']['block']['owner'][] = array(
+				'header_title' => __('tags:header.title'),
+				'body' => $tpl -> show('tags_editnews'),
+				);*/
 			$tvars['plugin']['xfields'][$k] .= $xt->render($tVars);
 		}
 
@@ -690,6 +702,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
 		return 1;
 	}
+
 	function editNews($newsID, $SQLold, &$SQLnew, &$tvars) {
 		global $config, $mysql;
 
@@ -752,7 +765,7 @@ class XFieldsNewsFilter extends NewsFilter {
 			if ($rcall[$id] != '') {
 				$xdata[$id] = $rcall[$id];
 			} else if ($data['required']) {
-				msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields_msge_emptyrequired'))));
+				msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields:msge_emptyrequired'))));
 				return 0;
 			}
 			// Check if we should save data into separate SQL field
@@ -860,6 +873,7 @@ class XFieldsNewsFilter extends NewsFilter {
 	// Show news call :: processor (call after all processing is finished and before show)
 	function showNews($newsID, $SQLnews, &$tvars, $mode = array()) {
 		global $mysql, $config, $twigLoader, $twig, $PFILTERS, $parse;
+
 		// Try to load config. Stop processing if config was not loaded
 		if (($xf = xf_configLoad()) === false) return;
 
@@ -1062,10 +1076,14 @@ if (getPluginStatusActive('uprofile')) {
 	loadPluginLibrary('uprofile', 'lib');
 
 	class XFieldsUPrifileFilter extends p_uprofileFilter {
+
+		function __construct() {
+			Lang::loadPlugin('xfields', 'config', '', '', ':');
+		}
+
 		function editProfileForm($userID, $SQLrow, &$tvars) {
 			global $catz, $mysql, $config, $twig, $twigLoader;
 
-			//print "<pre>".var_export($lang, true)."</pre>";
 			// Load config
 			$xf = xf_configLoad();
 			if (!is_array($xf))
@@ -1091,7 +1109,7 @@ if (getPluginStatusActive('uprofile')) {
 					'value' => $xdata[$id],
 					'secure_value' => secure_html($xdata[$id]),
 					'data' => $data,
-					'required' => $lang['xfields_fld_'.($data['required']?'required':'optional')],
+					'required' => __('xfields:fld_'.($data['required']?'required':'optional')),
 					'flags' => array(
 						'required' => $data['required']?true:false,
 					),
@@ -1284,7 +1302,7 @@ if (getPluginStatusActive('uprofile')) {
 				if ($rcall[$id] != '') {
 					$xdata[$id] = $rcall[$id];
 				} else if ($data['required']) {
-					msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields_msge_emptyrequired'))));
+					msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields:msge_emptyrequired'))));
 					return 0;
 				}
 				// Check if we should save data into separate SQL field
@@ -1427,15 +1445,18 @@ if (getPluginStatusActive('uprofile')) {
 	pluginRegisterFilter('plugin.uprofile','xfields', new XFieldsUPrifileFilter);
 }
 
-class XFieldsFilterAdminCategories extends FilterAdminCategories{
+class XFieldsFilterAdminCategories extends FilterAdminCategories {
+
+	function __construct() {
+		Lang::loadPlugin('xfields', 'config', '', '', ':');
+	}
+
 	function addCategory(&$tvars, &$SQL) {
 		$SQL['xf_group'] = $_REQUEST['xf_group'];
 		return 1;
 	}
 
 	function addCategoryForm(&$tvars) {
-		
-		Lang::loadPlugin('xfields', 'config', '', '', ':');
 
 		// Get config
 		$xf = xf_configLoad();
@@ -1454,8 +1475,6 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 	}
 
 	function editCategoryForm($categoryID, $SQL, &$tvars) {
-
-		Lang::loadPlugin('xfields', 'config', '', '', ':');
 
 		// Get config
 		$xf = xf_configLoad();
@@ -1479,6 +1498,11 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 }
 
 class XFieldsCoreFilter extends CoreFilter {
+
+	function __construct() {
+		Lang::loadPlugin('xfields', 'config', '', '', ':');
+	}
+
 	function registerUserForm(&$tvars) {
 		// Load config
 		$xf = xf_configLoad();

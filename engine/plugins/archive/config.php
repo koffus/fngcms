@@ -9,6 +9,8 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Preload config file
 pluginsLoadConfig();
+
+// Load lang files
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Set default values if values are not set [for new variables]
@@ -16,7 +18,7 @@ foreach (array(
 	'maxnum' => 12,
 	'counter' => 1,
 	'tcounter' => 1,
-	'localsource' => 0,
+	'localSource' => 0,
 	'cache' => 1,
 	'cacheExpire' => 60,
 	) as $k => $v) {
@@ -25,72 +27,72 @@ foreach (array(
 }
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin . ':description'));
+$cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'maxnum',
-		'title' => __($plugin . ':maxnum'),
-		'descr' => __($plugin . ':maxnum#desc'),
+		'title' => __($plugin.':maxnum'),
+		'descr' => __($plugin.':maxnum#desc'),
 		'type' => 'input',
 		'value' => intval(pluginGetVariable($plugin, 'maxnum'))
 		));
 	array_push($cfgX, array(
 		'name' => 'counter',
-		'title' => __($plugin . ':counter'),
-		'descr' => __($plugin . ':counter#desc'),
+		'title' => __($plugin.':counter'),
+		'descr' => __($plugin.':counter#desc'),
 		'type' => 'select',
 		'values' => array('0' => __('noa'), '1' => __('yesa')),
 		'value' => intval(pluginGetVariable($plugin, 'counter'))
 		));
 	array_push($cfgX, array(
 		'name' => 'tcounter',
-		'title' => __($plugin . ':tcounter'),
-		'descr' => __($plugin . ':tcounter#desc'),
+		'title' => __($plugin.':tcounter'),
+		'descr' => __($plugin.':tcounter#desc'),
 		'type' => 'select',
 		'values' => array('0' => __('noa'), '1' => __('yesa')),
 		'value' => intval(pluginGetVariable($plugin, 'tcounter'))
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin . ':group.config'),
+	'title' => __('group.config'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localsource',
-		'title' => __($plugin . ':localsource'),
-		'descr' => __($plugin . ':localsource#desc'),
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
 		'type' => 'select',
-		'values' => array('0' => __($plugin . ':localsource_0'), '1' => __($plugin . ':localsource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localsource'))
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin . ':group.source'),
+	'title' => __('group.source'),
 	'entries' => $cfgX,
 	));
 
 $cfgX = array();
 	array_push($cfgX, array(
 		'name' => 'cache',
-		'title' => __($plugin . ':cache'),
-		'descr' => __($plugin . ':cache#desc'),
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
 		'type' => 'select',
 		'values' => array('1' => __('yesa'), '0' => __('noa')),
-		'value' => intval(pluginGetVariable($plugin, 'cache'))
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
 		));
 	array_push($cfgX, array(
 		'name' => 'cacheExpire',
-		'title' => __($plugin . ':cacheExpire'),
-		'descr' => __($plugin . ':cacheExpire#desc'),
+		'title' => __('cacheExpire'),
+		'descr' => __('cacheExpire#desc'),
 		'type' => 'input',
-		'value' => intval(pluginGetVariable($plugin, 'cacheExpire'))
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
 		));
 array_push($cfg, array(
 	'mode' => 'group',
-	'title' => __($plugin . ':group.cache'),
+	'title' => __('group.cache'),
 	'entries' => $cfgX,
 	));
 

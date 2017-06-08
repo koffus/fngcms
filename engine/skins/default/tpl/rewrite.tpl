@@ -23,7 +23,7 @@
 							<th>{{ lang['hdr.description'] }}</th>
 							<th>URL</th>
 							<th>{{ lang['hdr.flags'] }}</th>
-							<th>{{ lang['action'] }}</th>
+							<th class="text-right">{{ lang['action'] }}</th>
 						</tr>
 					</thead>
 				<tbody id="cfg.body">
@@ -31,6 +31,7 @@
 				</tbody>
 				<!-- ROW FOR EDITING / ADDING -->
 
+				<tfoot>
 				<tr id="row.editRow" valign="top" class="bg-info">
 					
 					<td id="row.id" width="24px" >*</td>
@@ -38,7 +39,7 @@
 					<td id="row.cmd">&nbsp;</td>
 					<td id="row.description">&nbsp;</td>
 					<td id="row.url">
-						<input type="text" id="ed.regex"><br/>
+						<input type="text" id="ed.regex" class="form-control input-sm">
 						{{ lang['tbl.available_vars'] }}:<br/>
 						<span id="ed.varlist"></span>
 					</td>
@@ -47,12 +48,12 @@
 						<input id="ed.flagFailContinue" type="checkbox">&nbsp;
 						<input id="ed.flagDisabled" type="checkbox">
 					</td>
-					<td nowrap>
-						<button id="ed.button" type="button" class="btn btn-default" onclick="reSubmitEdit();"><i class="fa fa-plus"></i> Add</button>
-						<button id="ed.bcancel" type="button" class="btn btn-warning" onclick="reCancelEdit();"><i class="fa fa-ban"></i> Cancel</button>
+					<td nowrap class="text-right">
+						<button id="ed.button" type="button" class="btn btn-default btn-sm" onclick="reSubmitEdit();"><i class="fa fa-plus"></i> Add</button>
+						<button id="ed.bcancel" type="button" class="btn btn-warning btn-sm" onclick="reCancelEdit();"><i class="fa fa-ban"></i> Cancel</button>
 					</td>
 				</tr>
-				<tr id="row.editRow2" valign="top" class="bg-info">
+				<tr id="row.editRow2" valign="top">
 				<td colspan="4">&nbsp;</td>
 				<td colspan="2">
 				<!--
@@ -64,6 +65,7 @@
 				</td>
 				<td colspan="2">&nbsp;</td>
 				</tr>
+				</tfoot>
 
 
 			</table>
@@ -126,7 +128,7 @@ function populateCfg() {
 function reFillCmd(plugin) {
  var tmp, cmd;
 
- tmp = '<select name="ed.cmd" style="width: 120px;" id="ed.cmd" onchange="reUpdateDescr(document.getElementById(\'ed.pluginName\').value, this.value);">';
+ tmp = '<select name="ed.cmd" class="form-control input-sm" id="ed.cmd" onchange="reUpdateDescr(document.getElementById(\'ed.pluginName\').value, this.value);">';
  if (dConfig[plugin] != null) {
  for (cmd in dConfig[plugin]) {
  tmp = tmp + '<option value="'+cmd+'">'+cmd+'</option>';
@@ -373,7 +375,7 @@ function reSubmitEdit() {
  var pluginName;
  var tmp;
 
- tmp = '<select name="ed.pluginName" style="width: 100px;" id="ed.pluginName" onchange="reFillCmd(this.value);">';
+ tmp = '<select name="ed.pluginName" class="form-control input-sm" id="ed.pluginName" onchange="reFillCmd(this.value);">';
  for (pluginName in dConfig) {
  tmp = tmp + '<option value="'+pluginName+'">'+pluginName+'</option>';
  }
