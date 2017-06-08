@@ -16,78 +16,71 @@
 					<div class="col col-md-3 col-sm-6">
 						<div class="form-group">
 							<label>Пользователь</label>
-		<input name="an" id="an" type="text" value="{{an}}" autocomplete="off" class="bfauthor form-control" /> <span id="suggestLoader" style="width: 20px; visibility: hidden;"><img src="{{skins_url}}/images/loading.gif"/></span>
-		</div>
-		
-		<div class="form-group">
-		<label>Статус</label>
-		<select name="status" class="bfstatus form-control">
-			<option value="null" {% if fstatus == 'null' %}selected{% endif %}>- Все -</option>
-			<option value="0" {% if fstatus == '0' %}selected{% endif %}>0</option>
-			<option value="1" {% if fstatus == '1' %}selected{% endif %}>1</option>
-		</select>
+							<input name="an" id="an" type="text" value="{{an}}" autocomplete="off" class="bfauthor form-control" /> <span id="suggestLoader" style="width: 20px; visibility: hidden;"><img src="{{skins_url}}/images/loading.gif"/></span>
+						</div>
+						<div class="form-group">
+							<label>Статус</label>
+							<select name="status" class="bfstatus form-control">
+								<option value="null" {% if fstatus == 'null' %}selected{% endif %}>- Все -</option>
+								<option value="0" {% if fstatus == '0' %}selected{% endif %}>0</option>
+								<option value="1" {% if fstatus == '1' %}selected{% endif %}>1</option>
+							</select>
 						</div>
 					</div>
 					<!--/Block 1-->
 					<!--Block 2-->
 					<div class="col col-md-3 col-sm-6">
-					<div class="form-group">
-						<label class="left">Plugin</label>&nbsp;&nbsp;
-						{{catPlugins}}
+						<div class="form-group">
+							<label class="left">Plugin</label>&nbsp;&nbsp;
+							{{catPlugins}}
 						</div>
-		
-		<div class="form-group">
-						<label class="left">Item</label>&nbsp;&nbsp;
-		{{catItems}}
-					</div>
+						<div class="form-group">
+							<label class="left">Item</label>&nbsp;&nbsp;
+							{{catItems}}
+						</div>
 					</div>
 					<!--/Block 2-->
 					<!--Block 3-->
 					<div class="col col-md-3 col-sm-6">
-					<div class="form-group">
-						<label>Дата</label>
-						<div class="input-group">
-							<span class="input-group-addon">с&nbsp;&nbsp;&nbsp;</span>
-							<input type="text" id="dr1" name="dr1" value="{{fDateStart}}" class="bfdate form-control"/>
+						<div class="form-group">
+							<label>Дата</label>
+							<div class="input-group">
+								<span class="input-group-addon">с&nbsp;&nbsp;&nbsp;</span>
+								<input type="text" id="dr1" name="dr1" value="{{fDateStart}}" class="bfdate form-control"/>
+							</div>
 						</div>
-					</div>
-		
-		<div class="form-group">
-			<label>Дата</label>
-			<div class="input-group">
-				<span class="input-group-addon">по</span>
-				<input type="text" id="dr2" name="dr2" value="{{fDateEnd}}" class="bfdate form-control"/>
-			</div>
-			</div>
-		
-		
+						<div class="form-group">
+							<label>Дата</label>
+							<div class="input-group">
+								<span class="input-group-addon">по</span>
+								<input type="text" id="dr2" name="dr2" value="{{fDateEnd}}" class="bfdate form-control"/>
+							</div>
+						</div>
 					</div>
 					<!--/Block 3-->
 					<!--Block 4-->
 					<div class="col col-md-3 col-sm-6">
-					
-		<div class="form-group">
-		<label>На странице</label>
-		<input type="text" name="rpp" value="{{rpp}}" class="form-control" />
-					</div>
-		<div class="form-group">
-						<label for="">&nbsp;</label>
-						<button type="submit" class="filterbutton btn btn-primary form-control">Показать</button>
-					</div>
+						<div class="form-group">
+							<label>На странице</label>
+							<input type="text" name="rpp" value="{{rpp}}" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label for="">&nbsp;</label>
+							<button type="submit" class="filterbutton btn btn-primary form-control">Показать</button>
+						</div>
 					</div>
 					<!--Block 4-->
 				</div>
 			</div>
 		</div>
 		<!-- Filter form: END -->
-		
+
 		<div class="panel panel-default panel-table">
 			<div class="panel-heading text-right">
 				<div class="btn-group">
 					<button type="button" data-toggle="collapse" data-target="#filter" aria-expanded="true" aria-controls="filter" class="btn btn-default"><i class="fa fa-cog"></i></button>
 				</div>
 			</div>
-				
 			<div class="panel-body table-responsive">
 				<table class="table table-condensed">
 					<thead>
@@ -135,7 +128,7 @@
 			</div>
 			{% endif %}
 		</div>
-
+	</form>
 </div>
 
 <!-- Hidden SUGGEST div -->
