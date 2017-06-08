@@ -196,8 +196,7 @@ for ($i = 1; $i <= $count; $i++) {
 	array_push($cfg, array(
 		'mode' => 'group',
 		'title' => __($plugin.':group').$blockName,
-		'toggle' => '1',
-		'toggle.mode' => 'hide',
+		'toggle' => 'hide',
 		'entries' => $cfgX,
 		));
 }

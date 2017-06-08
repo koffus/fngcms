@@ -8,15 +8,12 @@ if(!defined('NGCMS'))
 pluginsLoadConfig();
 Lang::loadPlugin('xsyslog', 'config', '', '', '#');
 
-switch ($_REQUEST['action']) {
-	case 'list_xsyslog': show_xsyslog();		break;
-	default: show_xsyslog();
-}
+show_xsyslog();
 
 function show_xsyslog() {
-	global $tpl, $mysql, $twig, $confArray;
+	global $mysql, $twig, $confArray;
 	
-	$tpath = locatePluginTemplates(array('main', 'list_xsyslog', 'list_entries'), 'xsyslog', 1);
+	$tpath = locatePluginTemplates(array('main'), 'xsyslog', 1);
 	
 	$tVars = array();
 
@@ -99,9 +96,7 @@ function show_xsyslog() {
 	$count = $mysql->result($sqlQCount);
 	$countPages = ceil($count / $news_per_page);
 	
-	foreach ($mysql->select($sqlQ.' LIMIT '.$start_from.', '.$news_per_page) as $row)
-	{
-
+	foreach ($mysql->select($sqlQ.' LIMIT '.$start_from.', '.$news_per_page) as $row) {
 		$tEntry[] = array (
 			'id' => $row['id'],
 			'date' => $row['dt'],
@@ -119,25 +114,16 @@ function show_xsyslog() {
 		//var_export(unserialize($row['alist']));
 	}
 	
-	
-	$xt = $twig->loadTemplate($tpath['list_xsyslog'].'list_xsyslog.tpl');
-	
 	$paginator = new Paginator;
 	$pagesss = $paginator->get(array(
 								'current' => $pageNo,
 								'count' => $countPages,
 								'url' => admin_url.'/admin.php?mod=extra-config&plugin=xsyslog'.($news_per_page?'&rpp='.$news_per_page:'').($fAuthorName?'&an='.$fAuthorName:'').($fStatus?'&status='.$fStatus:'').($fPlugin?'&fplugins='.$fPlugin:'').($fItem?'&fitems='.$fItem:'').($fDateStart?'&dr1='.$fDateStart:'').($fDateEnd?'&dr2='.$fDateEnd:'').'&page=%page%'
 								));
-	
-	$tVars = array(
-		'pagesss' => $pagesss,
-		'entries' => isset($tEntry) ? $tEntry : '' 
-	);
-	
-	$xg = $twig->loadTemplate($tpath['main'].'main.tpl');
 
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => isset($tEntry) ? $tEntry : '',
+		'pagesss' => $pagesss,
 		'php_self' => $confArray['predefined']['PHP_SELF'],
 		'skins_url' => skins_url,
 		'home' => home,
@@ -148,9 +134,11 @@ function show_xsyslog() {
 		'catItems' => makeVARList(array('obj' => 'item', 'name' => 'fitems', 'selected' => $fItem, 'class' => 'bfsortlist', 'doempty' => 1)),
 		'fDateStart' => $fDateStart?$fDateStart:'',
 		'fDateEnd' => $fDateEnd?$fDateEnd:'',
+		'localPrefix' => localPrefix,
 	);
 	//var_export($tVars['fstatus']);
 	
+	$xg = $twig->loadTemplate($tpath['main'].'main.tpl');
 	print $xg->render($tVars);
 }
 
@@ -186,10 +174,10 @@ function makeVARList($params = array()){
 	$out = '';
 	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (!$params['noHeader']) {
-			$out = "<select name=\"$name\" id=\"plugmenu\"".
-				((isset($params['style']) && ($params['style'] != ''))?' style="'.$params['style'].'"':'').
-				((isset($params['class']) && ($params['class'] != ''))?' class="'.$params['class'].'"':'').
-				">\n";
+			$out = '<select name="$name\" id="plugmenu"'.
+				((isset($params['style']) && ($params['style'] != ''))?' style="'.$params['style'].' form-control"':' class="form-control"').
+				((isset($params['class']) && ($params['class'] != ''))?' class="'.$params['class'].' form-control"':' class="form-control"').
+				'>';
 		}
 	 if (isset($params['doempty']) && $params['doempty'])		{ $out.= "<option ".(((isset($params['greyempty']) && $params['greyempty']))?'style="background: #c41e3a;" ':'')."value=\"0\">".__('no_cat')."</option>\n"; $optList []= array('k' => 0, 'v' => __('nocat')); }
 	 if (isset($params['doall']) && $params['doall'])			{ $out.= "<option value=\"".(isset($params['allmarker'])?$params['allmarker']:'')."\">".__('sh_all')."</option>\n"; $optList []= array('k' => (isset($params['allmarker'])?$params['allmarker']:''), 'v' => __('sh_all')); }

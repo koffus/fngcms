@@ -7,10 +7,10 @@ function xmenu_click(id) {
 		document.getElementById('menu_'+i).style.display = (i==id)?'block':'none';
 	}
 }
-$('nav-tabs a').click(function (e) {
+/*$('nav-tabs a').click(function (e) {
   e.preventDefault()
   $(this).tab('show')
-})
+})*/
 </script>
 <tr><td width="100%">
 <ul class="nav nav-tabs nav-justified">
