@@ -28,10 +28,37 @@ if ($skDir = opendir(extras_dir.'/'.$plugin.'/tpl/skins')) {
 $cfg = array('description' => __($plugin.':description'));
 
 $cfgX = array();
-	array_push($cfgX, array('name' => 'rotate', 'title' => __('voting:rotate'), 'descr' => __('voting:rotate#desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('voting','rotate')));
-	array_push($cfgX, array('name' => 'active', 'title' => __('voting:active'), 'descr' => __('voting:active#desc'), 'type' => 'select', 'values' => (array('0' => ' -- ') + mkVoteList()), 'value' => pluginGetVariable('voting','active')));
-	array_push($cfgX, array('name' => 'secure', 'title' => __('voting:secure'), 'descr' => __('voting:secure#desc'), 'type' => 'select', 'values' => array('1' => 'БД', '0' => 'Cookie'), 'value' => pluginGetVariable('voting','secure')));
-	array_push($cfgX, array('name' => 'vpp', 'title' => __('voting:vpp'), 'descr' => __('voting:vpp#desc'), 'type' => 'input', 'value' => intval(pluginGetVariable('voting','vpp'))));
+	array_push($cfgX, array(
+		'name' => 'rotate',
+		'title' => __($plugin.':rotate'),
+		'descr' => __($plugin.':rotate#desc'),
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => pluginGetVariable('voting','rotate'),
+		));
+	array_push($cfgX, array(
+		'name' => 'active',
+		'title' => __($plugin.':active'),
+		'descr' => __($plugin.':active#desc'),
+		'type' => 'select',
+		'values' => (array('0' => ' -- ') + mkVoteList()),
+		'value' => pluginGetVariable('voting','active'),
+		));
+	array_push($cfgX, array(
+		'name' => 'secure',
+		'title' => __($plugin.':secure'),
+		'descr' => __($plugin.':secure#desc'),
+		'type' => 'select',
+		'values' => array('1' => 'БД', '0' => 'Cookie'),
+		'value' => pluginGetVariable('voting','secure'),
+		));
+	array_push($cfgX, array(
+		'name' => 'vpp',
+		'title' => __($plugin.':vpp'),
+		'descr' => __($plugin.':vpp#desc'),
+		'type' => 'input',
+		'value' => intval(pluginGetVariable('voting','vpp')),
+		));
 array_push($cfg, array(
 	'mode' => 'group',
 	'title' => __('group.config'),
@@ -60,6 +87,7 @@ array_push($cfg, array(
 	'title' => __('group.source'),
 	'entries' => $cfgX,
 	));
+
 function mkVoteList() {
 	global $mysql;
 	$res = array();
@@ -146,8 +174,8 @@ if ($_REQUEST['action'] == 'newvote') {
 	commit_plugin_config_changes($plugin, $cfg);
 	print_commit_complete($plugin, $cfg);
 } else {
-	array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #FFFF00;font : normal 14px verdana, sans-serif; padding: 4px;">'.__('voting:hdr.votelist').'</td></tr>'));
-	array_push($cfg, array('type' => 'flat', 'input' => '<tr><td align=left style="padding-left: 14px;"><input type=button value="'.__('voting:button.create').'" style="width:343px;" onclick="document.location='."'".$PHP_SELF."?mod=extra-config&plugin=voting&action=newvote'".';"/></td><td align=right style="padding-top: 8px; padding-bottom: 8px;"> <input type=button value="'.__('voting:button.show_all').'" style="width:170px;" onclick="showHide(1);"/> <input type=button value="'.__('voting:button.hide_all').'" style="width:170px;" onclick="showHide(0);"/>'));
+	array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #FFFF00;font : normal 14px verdana, sans-serif; padding: 4px;">'.__($plugin.':hdr.votelist').'</td></tr>'));
+	array_push($cfg, array('type' => 'flat', 'input' => '<tr><td align=left style="padding-left: 14px;"><input type=button value="'.__($plugin.':button.create').'" style="width:343px;" onclick="document.location='."'".$PHP_SELF."?mod=extra-config&plugin=voting&action=newvote'".';"/></td><td align=right style="padding-top: 8px; padding-bottom: 8px;"> <input type=button value="'.__($plugin.':button.show_all').'" style="width:170px;" onclick="showHide(1);"/> <input type=button value="'.__($plugin.':button.hide_all').'" style="width:170px;" onclick="showHide(0);"/>'));
 	$tpl->template('sheader',extras_dir.'/voting/tpl');
 	$tpl->vars('sheader', array());
 	array_push($cfg, array('type' => 'flat', 'input' => $tpl->show('sheader')));
@@ -164,16 +192,16 @@ if ($_REQUEST['action'] == 'newvote') {
 
 	 if (!$vrow['active'] && !$vrow['closed'] && !$flag_nonactive) {
 	 	$flag_nonactive = 1;
-			array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #AAAAAA;font : normal 10px verdana, sans-serif; padding: 4px;"><b>'.__('voting:hdr.inactive').'</b></td></tr>'));
+			array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #AAAAAA;font : normal 10px verdana, sans-serif; padding: 4px;"><b>'.__($plugin.':hdr.inactive').'</b></td></tr>'));
 	 }
 	 if ($vrow['active'] && !$vrow['closed'] && !$flag_active) {
 	 	$flag_active = 1;
-			array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #99BB88;font : normal 10px verdana, sans-serif; padding: 4px;"><b>'.__('voting:hdr.active').'</b></td></tr>'));
+			array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #99BB88;font : normal 10px verdana, sans-serif; padding: 4px;"><b>'.__($plugin.':hdr.active').'</b></td></tr>'));
 		}
 
 	 if ($vrow['active'] && $vrow['closed'] && !$flag_closed) {
 	 	$flag_closed = 1;
-			array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #77BB44;font : normal 10px verdana, sans-serif; padding: 4px;"><b>'.__('voting:hdr.closed').'</b></td></tr>'));
+			array_push($cfg, array('type' => 'flat', 'input' => '<tr><td colspan=2 style="background-color: #77BB44;font : normal 10px verdana, sans-serif; padding: 4px;"><b>'.__($plugin.':hdr.closed').'</b></td></tr>'));
 		}
 
 		$ll = '';
@@ -198,12 +226,12 @@ if ($_REQUEST['action'] == 'newvote') {
 			'vactive' => $vrow['active']?'checked':'',
 			'vclosed' => $vrow['closed']?'checked':'',
 			'vregonly' => $vrow['regonly']?'checked':'',
-			'fregonly' => $vrow['regonly']?'[<b>'.__('voting:hdr.regflag').'</b>]':'',
+			'fregonly' => $vrow['regonly']?'[<b>'.__($plugin.':hdr.regflag').'</b>]':'',
 			'php_self' => $PHP_SELF);
 		$tpl->vars('vote', $tvars);
 		array_push($cfgX, array('type' => 'flat', 'input' => $tpl->show('vote')));
-		array_push($cfg, array('mode' => 'group', 'title' => '[ '.__('voting:hdr.voting').': <b><font color=blue>'.$vrow['name'].'</font></b> ]', 'entries' => $cfgX));
+		array_push($cfg, array('mode' => 'group',
+		'title' => '[ '.__($plugin.':hdr.voting').': <b><font color=blue>'.$vrow['name'].'</font></b> ]', 'entries' => $cfgX));
 	}
-
 	generate_config_page($plugin, $cfg);
 }

@@ -15,9 +15,7 @@
 
 		{% for entry in entries %}
 			{% if entry.type == 'flat' %}
-
 				{{ entry.input }}
-
 			{% else %}
 				{% if entry.flags.group %}
 					<fieldset>

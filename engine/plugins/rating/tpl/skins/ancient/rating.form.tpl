@@ -8,7 +8,7 @@ function rating(rating, post_id){
 	ajax.method = 'GET';
 	ajax.element = 'ratingdiv_'+post_id;
 	ajax.runAJAX();
- }
+}
 </script>
 
 <div id="ratingdiv_{{ post_id }}">
