@@ -25,7 +25,7 @@ if (!defined('NGCMS')) die ('HAL');
 function admGeneratePluginList() {
 	global $twig, $repoPluginInfo, $PHP_SELF;
 
-	$extras	= pluginsGetList();
+	$extras = pluginsGetList();
 	ksort($extras);
 
 	$pCount = array (0 => 0, 1 => 0, 2 => 0, 3 => 0);
@@ -97,7 +97,7 @@ function admGeneratePluginList() {
 
 	$tVars = array (
 		'entries' => $tEntries,
-		'token'				=> genUToken('admin.extras'),
+		'token' => genUToken('admin.extras'),
 		'cntAll' => $pCount[0],
 		'cntActive' => $pCount[1],
 		'cntInactive' => $pCount[2],

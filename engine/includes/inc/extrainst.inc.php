@@ -34,7 +34,7 @@ params:
 */
 
 function generate_config_page($module, $params, $values = array()) {
-	global $tpl, $twig;
+	global $twig;
 
 	function mkParamLine($param) {
 
@@ -134,13 +134,13 @@ function commit_plugin_config_changes($module, $params) {
 		if ($param['mode'] == 'group') {
 	 	if (is_array($param['entries'])) {
 	 		foreach ($param['entries'] as $gparam) {
-					if ($gparam['name'] && (!$gparam['nosave'])) {
+					if ($gparam['name'] and (!$gparam['nosave'])) {
 						pluginSetVariable($module, $gparam['name'], $_POST[$gparam['name']].'');
 						$cfgUpdate[$gparam['name']] = $_POST[$gparam['name']].'';
 					}
 	 		}
 	 	}
-		} else if ($param['name'] && (!$param['nosave'])) {
+		} else if ($param['name'] and (!$param['nosave'])) {
 			pluginSetVariable($module, $param['name'], $_POST[$param['name']].'');
 		}
 	}
@@ -171,7 +171,7 @@ function print_commit_complete($plugin, $cfg) {
 
 // check if table exists
 function mysql_table_exists($table) {
-	global $config, $mysql;
+	global $mysql;
 
 	if (is_array($mysql->record("show tables like ".db_squote($table)))) {
 		return 1;
@@ -186,13 +186,13 @@ function get_mysql_field_type($table, $field) {
 	$result = $mysql->query("SELECT * FROM $table limit 0");
 	$fields = $mysql->num_fields($result);
 	for ($i=0; $i < $fields; $i++) {
-	 if ($mysql->field_name($result, $i) == $field) {
-	 	$ft = $mysql->field_type($result, $i);
-	 	$fl = $mysql->field_len($result, $i);
-	 	if ($ft == 'string') { $ft = 'char'; }
-	 	if ($ft == 'blob') { $ft = 'text'; $fl = ''; }
-	 	$res = $ft.($fl?' ('.$fl.')':'');
-	 	return $res;
+		if ($mysql->field_name($result, $i) == $field) {
+			$ft = $mysql->field_type($result, $i);
+			$fl = $mysql->field_len($result, $i);
+			if ($ft == 'string') { $ft = 'char'; }
+			if ($ft == 'blob') { $ft = 'text'; $fl = ''; }
+			$res = $ft.($fl?' ('.$fl.')':'');
+			return $res;
 		}
 	}
 	return '';
@@ -200,7 +200,7 @@ function get_mysql_field_type($table, $field) {
 
 // Database update during install
 function fixdb_plugin_install($module, $params, $mode='install', $silent = false) {
-	global $tpl, $mysql;
+	global $twig, $mysql;
 
 	// Load config
 	pluginsLoadConfig();
@@ -211,6 +211,7 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 	} else {
 		array_push($publish, array('title' => '<b>'.__('ddbc_process').'</b>', 'descr' => '', 'result' => ''));
 	}
+
 	// For each params do update DB
 	foreach($params as $table) {
 		$error = 0;
@@ -229,28 +230,28 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 
 		$chgTableName = (($table['table'] == 'users')?uprefix:prefix)."_".$table['table'];
 
-		if (($table['action'] != 'create')&&
-		 ($table['action'] != 'cmodify')&&
-		 ($table['action'] != 'modify')&&
-		 ($table['action'] != 'drop')) {
-		 $publish_title = 'Table operations';
+		if ( ($table['action'] != 'create')&&
+			 ($table['action'] != 'cmodify')&&
+			 ($table['action'] != 'modify')&&
+			 ($table['action'] != 'drop') ) {
+			$publish_title = 'Table operations';
 			$publish_result = 'Unknown action type specified ['.$table['action'].']';
 			$publish_error = 1;
-		 	break;
+			break;
 		}
 
-	if ($table['action'] == 'drop') {
+		if ($table['action'] == 'drop') {
 			$publish_title = __('idbc_tdrop');
 			$publish_title = str_replace('%table%', $table['table'], $publish_title);
 
 			if (!mysql_table_exists($chgTableName)) {
-		 $publish_result = __('idbc_tnoexists');
+				$publish_result = __('idbc_tnoexists');
 				$publish_error = 1;
 				break;
 			}
 
- 	$query = "drop table ".$chgTableName;
- 	$mysql->query($query);
+			$query = "drop table ".$chgTableName;
+			$mysql->query($query);
 
 			array_push($publish, array('title' => $publish_title, 'descr' => "SQL: [$query]", 'result' => ($publish_result?$publish_result:($error?__('idbc_fail'):__('idbc_ok')))));
 			continue;
@@ -262,12 +263,12 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 			break;
 		}
 
-	if ($table['action'] == 'modify') {
+		if ($table['action'] == 'modify') {
 			$publish_title = __('idbc_tmodify');
 			$publish_title = str_replace('%table%', $table['table'], $publish_title);
 
 			if (!mysql_table_exists($chgTableName)) {
-		 $publish_result = __('idbc_tnoexists');
+				$publish_result = __('idbc_tnoexists');
 				$publish_error = 1;
 				break;
 			}
@@ -278,7 +279,7 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 			$publish_title = str_replace('%table%', $table['table'], $publish_title);
 
 			if (mysql_table_exists($chgTableName)) {
-		 $publish_result = __('idbc_t_alreadyexists');
+				$publish_result = __('idbc_t_alreadyexists');
 				$publish_error = 1;
 				break;
 			}
@@ -384,7 +385,9 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 				}
 
 			}
-			if ($publish_error) { break; }
+			if ($publish_error) {
+				break;
+			}
 			$publish_title = '';
 
 		}
@@ -392,47 +395,53 @@ function fixdb_plugin_install($module, $params, $mode='install', $silent = false
 	}
 
 	// Scan for messages
-	if ($publish_title && $publish_error) {
-		array_push($publish, array('title' => $publish_title, 'descr' => $publish_descr, 'error' => $publish_error, 'result' => ($publish_result?$publish_result:($publish_error?__('idbc_fail'):__('idbc_ok')))));
+	if ( $publish_title and $publish_error ) {
+		array_push($publish, array(
+			'title' => $publish_title,
+			'descr' => $publish_descr,
+			'error' => $publish_error,
+			'result' => ($publish_result ? $publish_result : ($publish_error ? __('idbc_fail') : __('idbc_ok'))),
+			));
 	}
-
-	$tpl -> template('install-entries', tpl_actions.'extra-config');
 
 	// Write an info
 	foreach ($publish as $v) {
-		$tvars['vars'] = $v;
-		if ($tvars['vars']['error']) { $tvars['vars']['result'] = '<font color="red">'.$tvars['vars']['result'].'</font>'; }
-		$tpl -> vars('install-entries', $tvars);
-		$entries .= $tpl -> show('install-entries');
+		$entry = $v;
+		if ( $entry['error'] ) {
+			$entry['result'] = '<font color="red">'.$entry['result'].'</font>';
+		}
+		$entries[] = $entry;
 	}
 
-	$tpl -> template('install-process', tpl_actions.'extra-config');
-	$tvars['vars'] = array(
+	$tVars = array(
 		'entries' => $entries,
 		'plugin' => $module,
 		'php_self' => $PHP_SELF,
 		'token' => genUToken('admin.extras'),
-		'mode_text' => ($mode=='install')?__('install_text'):__('deinstall_text'),
-		'msg' => ($mode=='install'?($publish_error?__('ibdc_ifail'):__('idbc_iok')):($publish_error?__('dbdc_ifail'):__('ddbc_iok'))),
-	);
+		'mode_text' => ($mode=='install') ? __('install_text') : __('deinstall_text'),
+		'msg' => ( $mode=='install' ? ($publish_error ? __('ibdc_ifail') : __('idbc_iok')) : ($publish_error ? __('dbdc_ifail') : __('ddbc_iok')) ),
+		'flags' => array(
+			'enable' => ($publish_error) ? false : ($mode =='install' ? true : false),
+			),
+		);
 
-	$tvars['regx']['#\[enable\](.+?)\[/enable\]#is'] = ($publish_error) ? '' : ($mode =='install'?'$1':'');
+	$xt = $twig->loadTemplate(tpl_actions.'extra-config/install-process.tpl');
 
-	$tpl -> vars('install-process', $tvars);
 	if (!$silent) {
-		print $tpl -> show('install-process');
+		print $xt->render($tVars);
 	}
 
-	if ($publish_error) { return 0; }
+	if ($publish_error) {
+		return 0;
+	}
 	return 1;
 }
 
 // Create install page
 function generate_install_page($plugin, $text, $stype = 'install') {
-	global $tpl;
+	global $twig;
 
-	$tpl -> template('install', tpl_actions.'extra-config');
-	$tvars['vars'] = array(
+	$tVars = array(
 		'plugin' => $plugin,
 		'stype' => $stype,
 		'install_text' => $text,
@@ -440,8 +449,8 @@ function generate_install_page($plugin, $text, $stype = 'install') {
 		'mode_commit' => ($stype == 'install')?__('commit_install'):__('commit_deinstall'),
 		'php_self' => $PHP_SELF
 	);
-
-	$tpl -> vars('install', $tvars);
-	echo $tpl -> show('install');
+	
+	$xt = $twig->loadTemplate(tpl_actions.'extra-config/install.tpl');
+	echo $xt->render($tVars);
 
 }

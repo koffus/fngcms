@@ -8,8 +8,9 @@
 <!-- Info content -->
 <div class="page-main">
 
-	<form id="postForm" name="form" action="admin.php?mod=extra-config&plugin={{ plugin }}&action=commit" method="post">
+	<form id="postForm" name="form" action="admin.php?mod=extra-config&plugin={{ plugin }}" method="post">
 		<input type="hidden" name="token" value="{{ token }}" />
+		<input type="hidden" name="action" value="commit" />
 
 		<div class="well">{{ description }}</div>
 
