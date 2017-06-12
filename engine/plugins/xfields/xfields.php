@@ -1462,7 +1462,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories {
 		$xf = xf_configLoad();
 
 		// Prepare select
-		$ms = '<select name="xf_group" class="form-control"><option value="">** все поля **</option>';
+		$ms = '<select name="xf_group" class="form-control"><option value="">'.__('xfields:categories.all').'</option>';
 		if (isset($xf['grp.news'])) {
 			foreach ($xf['grp.news'] as $k => $v) {
 				$ms .= '<option value="'.$k.'">'.$k.' ('.$v['title'].')</option>';
@@ -1480,7 +1480,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories {
 		$xf = xf_configLoad();
 
 		// Prepare select
-		$ms = '<select name="xf_group" class="form-control"><option value="">** все поля **</option>';
+		$ms = '<select name="xf_group" class="form-control"><option value="">'.__('xfields:categories.all').'</option>';
 		foreach ($xf['grp.news'] as $k => $v) {
 			$ms .= '<option value="'.$k.'"'.(($SQL['xf_group'] == $k)?' selected="selected"':'').'>'.$k.' ('.$v['title'].')</option>';
 		}

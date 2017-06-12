@@ -10,10 +10,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Preload config file
 pluginsLoadConfig();
 
-// Load lang files
-Lang::loadPlugin('xfields', 'config');
-Lang::loadPlugin('xfields', 'config', '', 'xfconfig', '#');
-
 // need for xfields sort & search
 if ( xmode() and function_exists('xf_configLoad')) {
 	include_once root.'plugins/xfields/xfields.php';
@@ -65,7 +61,7 @@ function showSectionList(){
 	$output = '';
 
 	$tVars = array(
-		'section_name' => __('xfconfig')['section.'.$sectionID],
+		'section_name' => __('xfields:section.'.$sectionID),
 	);
 
 	// Prepare data
@@ -104,7 +100,7 @@ function showFieldList(){
 		$xEntry = array(
 			'name' => $id,
 			'title' => $data['title'],
-			'type' => __('xfconfig')['type_'.$data['type']].$storage,
+			'type' => __('xfields:type_'.$data['type']).$storage,
 			'default' => (($data['type']=="checkbox")?($data['default']?__('yesa'):__('noa')):($data['default'])),
 			'link' => '?mod=extra-config&plugin=xfields&action=edit&section='.$sectionID.'&field='.$id,
 			'linkup' => '?mod=extra-config&plugin=xfields&action=update&subaction=up&section='.$sectionID.'&field='.$id,
@@ -124,17 +120,17 @@ function showFieldList(){
 			foreach ($data['options'] as $k => $v)
 				$options .= (($data['storekeys'])?('<b>'.$k.'</b>: '.$v):('<b>'.$v.'</b>'))."<br>\n";
 		}
-		$xEntry['options']	= $options;
+		$xEntry['options'] = $options;
 
 		$xEntries []= $xEntry;
 	}
 
 	if (!count($xf[$sectionID]))
-		$output = __('xfconfig')['nof'];
+		$output = __('xfields:nof');
 
 	$tVars = array(
 		'entries' => $xEntries,
-		'section_name' => __('xfconfig')['section.'.$sectionID],
+		'section_name' => __('xfields:section.'.$sectionID),
 		'sectionID' => $sectionID,
 	);
 
@@ -182,7 +178,7 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$xsel = '';
 		foreach (array('text', 'textarea', 'select', 'multiselect', 'checkbox', 'images') as $ts) {
 			$tVars['defaults'][$ts] = ($data['type'] == $ts)?(($ts=="checkbox")?($data['default']?' checked="checked"':''):$data['default']):'';
-			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == $ts)?' selected':'').'>'.__('xfields_type_'.$ts).'</option>';
+			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == $ts)?' selected':'').'>'.__('xfields:type_'.$ts).'</option>';
 		}
 
 		$sOpts = array();
@@ -255,7 +251,7 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 			'sOpts' => implode("\n", $sOpts),
  'm_sOpts' => implode("\n", $m_sOpts),
 			'type_opts' => $xsel,
-			'storekeys_opts' => '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1"'.(($data['storekeys'])?' selected':'').'>'.__('xfconfig')['tselect_store_key'].'</option>',
+			'storekeys_opts' => '<option value="0">'.__('xfields:tselect_store_value').'</option><option value="1"'.(($data['storekeys'])?' selected':'').'>'.__('xfields:tselect_store_key').'</option>',
 			'required_opts' => '<option value="0">'.__('noa').'</option><option value="1"'.(($data['required'])?' selected':'').'>'.__('yesa').'</option>',
 			'images' => array(
 				'maxCount' => intval($data['maxCount']),
@@ -311,12 +307,12 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$xsel = '';
 		foreach (array('text', 'textarea', 'select', 'multiselect', 'checkbox', 'images') as $ts) {
 			$tVars['defaults'][$ts] = '';
-			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == 'text')?' selected':'').'>'.__('xfields_type_'.$ts).'</option>';
+			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == 'text')?' selected':'').'>'.__('xfields:type_'.$ts).'</option>';
 		}
 
 		$tVars = $tVars + array(
 			'type_opts' => $xsel,
-			'storekeys_opts' => '<option value="0">'.__('xfconfig')['tselect_store_value'].'</option><option value="1">'.__('xfconfig')['tselect_store_key'].'</option>',
+			'storekeys_opts' => '<option value="0">'.__('xfields:tselect_store_value').'</option><option value="1">'.__('xfields:tselect_store_key').'</option>',
 			'required_opts' => '<option value="0">'.__('noa').'</option><option value="1">'.__('yesa').'</option>',
 			'select_options' => '',
 
@@ -348,17 +344,17 @@ function doAddEdit() {
 
 	// Check if field exists or not [depends on mode]
 	if ($editMode && (!is_array($xf[$sectionID][$field]))) {
-		msg(array('type' => 'danger', 'message' => __('xfields_msge_noexists')));
+		msg(array('type' => 'danger', 'message' => __('xfields:msge_noexists')));
 		$error = 1;
 	} elseif (!$editMode && (is_array($xf[$sectionID][$field]))) {
-		msg(array('type' => 'danger', 'message' => __('xfields_msge_exists')));
+		msg(array('type' => 'danger', 'message' => __('xfields:msge_exists')));
 		$error = 1;
 	}
 
 	// Check if Field name fits our requirements
 	if (!$editMode) {
 		if (!preg_match('/^[a-z]{1}[a-z0-9]{2}[a-z0-9]*$/', $field)) {
-			msg(array('type' => 'danger', 'message' => __('xfields_msge_format')));
+			msg(array('type' => 'danger', 'message' => __('xfields:msge_format')));
 			$error = 1;
 		}
 	}
@@ -438,7 +434,7 @@ function doAddEdit() {
 					(( $data['storekeys']) && (!array_key_exists($data['default'], $optlist))) ||
 					((!$data['storekeys']) && (!in_array($data['default'], $optlist)))
 				 ) {
-					msg(array('type' => 'danger', 'message' => __('xfields_msge_errdefault')));
+					msg(array('type' => 'danger', 'message' => __('xfields:msge_errdefault')));
 					$error = 1;
 				}
 			}
@@ -492,7 +488,7 @@ function doAddEdit() {
 					(( $data['storekeys']) && (!array_key_exists($data['default'], $optlist))) ||
 					((!$data['storekeys']) && (!in_array($data['default'], $optlist)))
 				 ) {
-					msg(array('type' => 'danger', 'message' => __('xfields_msge_errdefault')));
+					msg(array('type' => 'danger', 'message' => __('xfields:msge_errdefault')));
 					$error = 1;
 				}
 			}
@@ -514,12 +510,12 @@ function doAddEdit() {
 	}
 
 	if (!$data['type']) {
-			msg(array('type' => 'danger', 'message' => __('xfields_msge_errtype')));
+			msg(array('type' => 'danger', 'message' => __('xfields:msge_errtype')));
 			$error = 1;
 	}
 
 	if (!$data['title']) {
-			msg(array('type' => 'danger', 'message' => __('xfields_msge_errtitle')));
+			msg(array('type' => 'danger', 'message' => __('xfields:msge_errtitle')));
 			$error = 1;
 	}
 
@@ -531,13 +527,13 @@ function doAddEdit() {
 	if ($data['storage']) {
 		// Check for correct DB type
 		if (!in_array($data['db.type'], array('int', 'decimal', 'char', 'datetime', 'text'))) {
-			msg(array('type' => 'danger', 'message' => __('xfields_error.db.type')));
+			msg(array('type' => 'danger', 'message' => __('xfields:error.db.type')));
 			$error = 1;
 		}
 
 		// Check for correct DB len (if applicable)
 		if (($data['db.type'] == 'char')&&((intval($data['db.len'])<1)||(intval($data['db.len'])>255))) {
-			msg(array('type' => 'danger', 'message' => __('xfields_error.db.len')));
+			msg(array('type' => 'danger', 'message' => __('xfields:error.db.len')));
 			$error = 1;
 		}
 	}
@@ -555,7 +551,7 @@ function doAddEdit() {
 
 	$XF[$sectionID][$field] = $data;
 	if (!xf_configSave()) {
-		msg(array('type' => 'danger', 'message' => __('xfields_msge_errcsave')));
+		msg(array('type' => 'danger', 'message' => __('xfields:msge_errcsave')));
 		showAddEditForm($data, $editMode, $field);
 		return;
 	}
@@ -653,7 +649,7 @@ function doUpdate() {
 
 	// Check if field exists or not [depends on mode]
 	if (!is_array($xf[$sectionID][$field])) {
-		msg(array('type' => 'danger', 'message' => __('xfields_msge_noexists'). '('.$sectionID.': '.$field.')'));
+		msg(array('type' => 'danger', 'message' => __('xfields:msge_noexists'). '('.$sectionID.': '.$field.')'));
 		$error = 1;
 	};
 
@@ -674,19 +670,19 @@ function doUpdate() {
 						}
 
 						unset($XF[$sectionID][$field]);
-						$notif = __('xfields_done_del');
+						$notif = __('xfields:done_del');
 						break;
 		case 'up': array_key_move($XF[$sectionID], $field, -1);
-						$notif = __('xfields_done_up');
+						$notif = __('xfields:done_up');
 						break;
 		case 'down':	array_key_move($XF[$sectionID], $field, 1);
-						$notif = __('xfields_done_down');
+						$notif = __('xfields:done_down');
 						break;
-		default: $notif = __('xfields_updateunk');
+		default: $notif = __('xfields:updateunk');
 	}
 
 	if (!xf_configSave()) {
-		msg(array('type' => 'danger', 'message' => __('xfields_msge_errcsave')));
+		msg(array('type' => 'danger', 'message' => __('xfields:msge_errcsave')));
 		return;
 	}
 

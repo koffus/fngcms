@@ -32,7 +32,7 @@
 			<tbody>
 				{% for entry in entries %}
 				<tr class="xListEntry{% if (entry.flags.disabled) %}Disabled{% endif %}">
-					<td><a href="{{ entry.link }}">{{ entry.name }}</a>{% if (sectionID == 'users') and (entry.flags.regpage )%} <span title="{{ lang.xfconfig['show_regpage'] }}">[<b><font color="red">R</font></b>]{% endif %}</span></td>
+					<td>{{ entry.name }} {% if (sectionID == 'users') and (entry.flags.regpage )%} <span title="{{ lang['xfields:show_regpage'] }}">[<b><font color="red">R</font></b>]{% endif %}</span></td>
 					<td>{{ entry.title }}</td>
 					<td>{{ entry.type }}</td>
 					<td>{{ entry.options }}</td>
@@ -41,20 +41,23 @@
 					{% if (sectionID != 'tdata') %}
 						<td>{{ entry.area }}</td>
 					{% endif %}
-					<td class="text-right td-nowrap">
-						<a href="{{ entry.linkup }}" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
-						<a href="{{ entry.linkdown }}" class="btn btn-default"><i class="fa fa-arrow-down"></i></a>
-						<a  href="{{ entry.linkdel }}" onclick="return confirm('{{ lang.xfconfig['suretest'] }}');" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+					<td class="text-right">
+						<div class="btn-group">
+							<a href="{{ entry.link }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+							<a href="{{ entry.linkup }}" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
+							<a href="{{ entry.linkdown }}" class="btn btn-default"><i class="fa fa-arrow-down"></i></a>
+							<a  href="{{ entry.linkdel }}" onclick="return confirm('{{ lang['sure_del'] }}');" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+						</div>
 					</td>
 				</tr>
 				{% else %}
-					{{ lang.xfconfig['nof'] }}
+					{{ lang['xfields:nof'] }}
 				{% endfor %}
 			</tbody>
 		</table>
 	
 		<div class="well text-center">
-			<input type="submit" value="{{ lang.xfconfig['add'] }}" class="btn btn-success" />
+			<input type="submit" value="{{ lang['xfields:add'] }}" class="btn btn-success" />
 		</div>
 	</form>
 

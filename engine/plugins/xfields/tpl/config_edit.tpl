@@ -2,8 +2,8 @@
 <ul class="breadcrumb">
 	<li><a href="admin.php">{{ lang['home'] }}</a></li>
 	<li><a href="admin.php?mod=extras">{{ lang['extras'] }}</a></li>
-	<li><a href="admin.php?mod=extra-config&plugin=xfields&section={{ sectionID }}">{{ lang.xfconfig['config_text'] }} xfields</a></li>
-	<li class="active">{% if (not flags.editMode) %}{{ lang.xfconfig['title_add'] }}{% else %}{{ lang.xfconfig['title_edit'] }} ({{ id }}){% endif %}</li>
+	<li><a href="admin.php?mod=extra-config&plugin=xfields&section={{ sectionID }}">{{ lang['xfields:config_text'] }} xfields</a></li>
+	<li class="active">{% if (not flags.editMode) %}{{ lang['xfields:title_add'] }}{% else %}{{ lang['xfields:title_edit'] }} ({{ id }}){% endif %}</li>
 </ul>
 
 <!-- Info content -->
@@ -14,22 +14,22 @@
 		<input type="hidden" name="edit" value="{% if (flags.editMode) %}1{% else %}0{% endif %}" />
 
 		<fieldset>
-			<div class="alert alert-info">{{ lang.xfconfig['id_desc'] }}</div>
+			<div class="alert alert-info">{{ lang['xfields:id_desc'] }}</div>
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang.xfconfig['id'] }}</div>
+				<div class="col-sm-5">{{ lang['xfields:id'] }}</div>
 				<div class="col-sm-7">
 					<input type="text" name="id" value="{{ id }}" {% if (flags.editMode) %}readonly{% endif %} class="form-control" />
-					{% if (flags.editMode) %}<span class="help-block">{{ lang.xfconfig['noeditid'] }}</span>{% endif %}
+					{% if (flags.editMode) %}<span class="help-block">{{ lang['xfields:noeditid'] }}</span>{% endif %}
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang.xfconfig['title'] }}</div>
+				<div class="col-sm-5">{{ lang['xfields:title'] }}</div>
 				<div class="col-sm-7">
 					<input type="text" name="title" value="{{ title }}" class="form-control" />
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang.xfconfig['type'] }}</div>
+				<div class="col-sm-5">{{ lang['xfields:type'] }}</div>
 				<div class="col-sm-7">
 					<select name="type" id="xfSelectType" onclick="clx(this.value);" onchange="clx(this.value);" class="form-control">
 						{{ type_opts }}
@@ -42,7 +42,7 @@
 		<fieldset id="type_text">
 			<div class="well">
 				<div class="form-group">
-					<label class="col-sm-5 control-label">{{ lang.xfconfig['default'] }}</label>
+					<label class="col-sm-5 control-label">{{ lang['xfields:default'] }}</label>
 					<div class="col-sm-7">
 						<input type="text" name="text_default" value="{{ defaults.text }}" class="form-control" />
 					</div>
@@ -52,7 +52,7 @@
 							<div class="checkbox">
 							<label>
 								<input type="checkbox" name="text_html_support" value="1" {{ html_support }} />
-								{{ lang.xfconfig['html_support'] }}
+								{{ lang['xfields:html_support'] }}
 							</label>
 						</div>
 					</div>
@@ -62,7 +62,7 @@
 							<div class="checkbox">
 							<label>
 								<input type="checkbox" name="text_bb_support" value="1" {{ bb_support }} />
-								{{ lang.xfconfig['bb_support'] }}
+								{{ lang['xfields:bb_support'] }}
 							</label>
 						</div>
 					</div>
@@ -74,7 +74,7 @@
 		<fieldset id="type_textarea">
 			<div class="well">
 				<div class="form-group">
-					<label class="col-sm-5 control-label">{{ lang.xfconfig['default'] }}</label>
+					<label class="col-sm-5 control-label">{{ lang['xfields:default'] }}</label>
 					<div class="col-sm-7">
 						<textarea name="textarea_default" rows="4" class="form-control">{{ defaults.textarea }}</textarea>
 					</div>
@@ -84,7 +84,7 @@
 							<div class="checkbox">
 							<label>
 								<input type="checkbox" name="textarea_html_support" value="1" {{ html_support }} />
-								{{ lang.xfconfig['html_support'] }}
+								{{ lang['xfields:html_support'] }}
 							</label>
 						</div>
 					</div>
@@ -94,7 +94,7 @@
 							<div class="checkbox">
 							<label>
 								<input type="checkbox" name="textarea_bb_support" value="1" {{ bb_support }} />
-								{{ lang.xfconfig['bb_support'] }}
+								{{ lang['xfields:bb_support'] }}
 							</label>
 						</div>
 					</div>
@@ -104,7 +104,7 @@
 							<div class="checkbox">
 							<label>
 								<input type="checkbox" name="textarea_noformat" value="1" {{ noformat }} />
-								{{ lang.xfconfig['noformat'] }}
+								{{ lang['xfields:noformat'] }}
 							</label>
 						</div>
 					</div>
@@ -117,8 +117,8 @@
 			<div class="well">
 				<div class="form-group">
 					<label class="col-sm-5 control-label">
-						{{ lang.xfconfig['tselect_default'] }}
-						<span class="help-block">{{ lang.xfconfig['tselect_default_desc'] }}</span>
+						{{ lang['xfields:tselect_default'] }}
+						<span class="help-block">{{ lang['xfields:tselect_default_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
 						<input type="text" name="select_default" value="{{ defaults.select }}" class="form-control" />
@@ -126,8 +126,8 @@
 				</div>
 				<div class="form-group">
 					<label class="col-sm-5 control-label">
-						{{ lang.xfconfig['tselect_storekeys'] }}
-						<span class="help-block">{{ lang.xfconfig['tselect_storekeys_desc'] }}</span>
+						{{ lang['xfields:tselect_storekeys'] }}
+						<span class="help-block">{{ lang['xfields:tselect_storekeys_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
 						<select name="select_storekeys" class="form-control">{{ storekeys_opts }}</select>
@@ -135,15 +135,15 @@
 				</div>
 				<div class="row">
 					<label class="col-sm-5 control-label">
-						{{ lang.xfconfig['tselect_options'] }}
-						<span class="help-block">{{ lang.xfconfig['tselect_options_desc'] }}</span>
+						{{ lang['xfields:tselect_options'] }}
+						<span class="help-block">{{ lang['xfields:tselect_options_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
 						<table id="xfSelectTable" class="table-condensed table-bordered">
 							<thead>
 								<tr>
-									<th>{{ lang.xfconfig['tselect_key'] }}</th>
-									<th>{{ lang.xfconfig['tselect_value'] }}</th>
+									<th>{{ lang['xfields:tselect_key'] }}</th>
+									<th>{{ lang['xfields:tselect_value'] }}</th>
 									<th class="text-center" width="10">{{ lang['action'] }}</th>
 								</tr>
 							</thead>
@@ -169,8 +169,8 @@
 			<div class="well">
 				<div class="form-group">
 					<label class="col-sm-5 control-label">
-						{{ lang.xfconfig['tselect_default'] }}
-						<span class="help-block">{{ lang.xfconfig['tselect_default_desc'] }}</span>
+						{{ lang['xfields:tselect_default'] }}
+						<span class="help-block">{{ lang['xfields:tselect_default_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
 						<input type="text" name="select_default_multi" value="{{ defaults.multiselect }}" class="form-control" />
@@ -178,8 +178,8 @@
 				</div>
 				<div class="form-group">
 					<label class="col-sm-5 control-label">
-						{{ lang.xfconfig['tselect_storekeys'] }}
-						<span class="help-block">{{ lang.xfconfig['tselect_storekeys_desc'] }}</span>
+						{{ lang['xfields:tselect_storekeys'] }}
+						<span class="help-block">{{ lang['xfields:tselect_storekeys_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
 						<select name="select_storekeys_multi" class="form-control">{{ storekeys_opts }}</select>
@@ -187,15 +187,15 @@
 				</div>
 				<div class="row">
 					<label class="col-sm-5 control-label">
-						{{ lang.xfconfig['tselect_options'] }}
-						<span class="help-block">{{ lang.xfconfig['tselect_options_desc'] }}</span>
+						{{ lang['xfields:tselect_options'] }}
+						<span class="help-block">{{ lang['xfields:tselect_options_desc'] }}</span>
 					</label>
 					<div class="col-sm-7">
 						<table id="xfSelectTable_multi" class="table-condensed table-bordered">
 							<thead>
 								<tr>
-									<th>{{ lang.xfconfig['tselect_key'] }}</th>
-									<th>{{ lang.xfconfig['tselect_value'] }}</th>
+									<th>{{ lang['xfields:tselect_key'] }}</th>
+									<th>{{ lang['xfields:tselect_value'] }}</th>
 									<th class="text-center" width="10">{{ lang['action'] }}</th>
 								</tr>
 							</thead>
@@ -220,7 +220,7 @@
 		<fieldset id="type_checkbox">
 			<div class="well">
 				<div class="row">
-					<label class="col-sm-5 control-label">{{ lang.xfconfig['default'] }}</label>
+					<label class="col-sm-5 control-label">{{ lang['xfields:default'] }}</label>
 					<div class="col-sm-7">
 						<div class="checkbox"><label><input type="checkbox" name="checkbox_default" value="1" {{ defaults.checkbox }} /></label></div>
 					</div>
@@ -232,7 +232,7 @@
 		<fieldset id="type_images">
 			<div class="well">
 				<div class="form-group">
-					<label class="col-sm-5 control-label">{{ lang.xfconfig['img_maxCount'] }}</label>
+					<label class="col-sm-5 control-label">{{ lang['xfields:img_maxCount'] }}</label>
 					<div class="col-sm-7">
 						<input type="text" size="3" name="images_maxCount" value="{{ images.maxCount }}" class="form-control" />
 					</div>
@@ -242,7 +242,7 @@
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" name="images_imgShadow" value="1" {{ images.imgShadow }} />
-								{{ lang.xfconfig['img_shadow'] }}
+								{{ lang['xfields:img_shadow'] }}
 							</label>
 						</div>
 					</div>
@@ -252,13 +252,13 @@
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" name="images_imgStamp" value="1" {{ images.imgStamp }} />
-								{{ lang.xfconfig['img_wmimage'] }}
+								{{ lang['xfields:img_wmimage'] }}
 							</label>
 						</div>
 					</div>
 				</div>
 				<div class="form-group">
-					<label class="col-sm-5 control-label">{{ lang.xfconfig['img_preview'] }}</label>
+					<label class="col-sm-5 control-label">{{ lang['xfields:img_preview'] }}</label>
 					<div class="col-sm-7">
 						<div class="input-group">
 							<span class=" input-group-addon">
@@ -276,7 +276,7 @@
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" name="images_thumbShadow" value="1" {{ images.thumbShadow }}/>
-								{{ lang.xfconfig['img_shadow'] }}
+								{{ lang['xfields:img_shadow'] }}
 							</label>
 						</div>
 					</div>
@@ -286,7 +286,7 @@
 						<div class="checkbox">
 							<label>
 								<input type="checkbox" name="images_thumbStamp" value="1" {{ images.thumbStamp }}/>
-								{{ lang.xfconfig['img_wmimage'] }}
+								{{ lang['xfields:img_wmimage'] }}
 							</label>
 						</div>
 					</div>
@@ -297,30 +297,30 @@
 
 		<fieldset>
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang.xfconfig['db_store'] }}</div>
+				<div class="col-sm-5">{{ lang['xfields:db_store'] }}</div>
 				<div class="col-sm-7">
 					<select name="storage" id="storage" value="{{ storage }}" onclick="storageMode(this.value);" onchange="storageMode(this.value);" class="form-control">
-						<option value="0">{{ lang.xfconfig['db_store_single'] }}</option>
-						<option value="1">{{ lang.xfconfig['db_store_personal'] }}</option>
+						<option value="0">{{ lang['xfields:db_store_single'] }}</option>
+						<option value="1">{{ lang['xfields:db_store_personal'] }}</option>
 					</select>
 				</div>
 			</div>
 			<div id="storageRow" aria-expanded="false" class="collapse">
 				<div class="well">
 					<div class="form-group">
-						<label class="col-sm-5 control-label">{{ lang.xfconfig['db_store_type'] }}</label>
+						<label class="col-sm-5 control-label">{{ lang['xfields:db_store_type'] }}</label>
 						<div class="col-sm-7">
 							<select name="db_type" value="{{ db_type }}" id="db.type" class="form-control">
-								<option value="int">{{ lang.xfconfig['db_store_type_int'] }}</option>
-								<option value="decimal">{{ lang.xfconfig['db_store_type_decimal'] }}</option>
-								<option value="char">{{ lang.xfconfig['db_store_type_char'] }}</option>
-								<option value="text">{{ lang.xfconfig['db_store_type_text'] }}</option>
-								<option value="datetime">{{ lang.xfconfig['db_store_type_datetime'] }}</option>
+								<option value="int">{{ lang['xfields:db_store_type_int'] }}</option>
+								<option value="decimal">{{ lang['xfields:db_store_type_decimal'] }}</option>
+								<option value="char">{{ lang['xfields:db_store_type_char'] }}</option>
+								<option value="text">{{ lang['xfields:db_store_type_text'] }}</option>
+								<option value="datetime">{{ lang['xfields:db_store_type_datetime'] }}</option>
 							</select>
 						</div>
 					</div>
 					<div class="form-group">
-						<label class="col-sm-5 control-label">{{ lang.xfconfig['db_store_length'] }}</label>
+						<label class="col-sm-5 control-label">{{ lang['xfields:db_store_length'] }}</label>
 						<div class="col-sm-7">
 							<input type="text" name="db_len" value="{{ db_len }}" id="db.len" maxlength="5" class="form-control" />
 						</div>
@@ -328,14 +328,14 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang.xfconfig['required'] }} <span class="help-block">{{ lang.xfconfig['required_desc'] }}</span></div>
+				<div class="col-sm-5">{{ lang['xfields:required'] }} <span class="help-block">{{ lang['xfields:required_desc'] }}</span></div>
 				<div class="col-sm-7">
 					<select name="required" class="form-control">{{ required_opts }}</select>
 				</div>
 			</div>
 			{% if (sectionID != 'tdata') %}
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang.xfconfig['location'] }}<span class="help-block">{{ lang.xfconfig['location_desc'] }}</span></div>
+				<div class="col-sm-5">{{ lang['xfields:location'] }}<span class="help-block">{{ lang['xfields:location_desc'] }}</span></div>
 				<div class="col-sm-7">
 					<input type="text" name="area" value="{{ area }}" class="form-control" />
 				</div>
@@ -346,7 +346,7 @@
 					<div class="checkbox">
 						<label>
 							<input type="checkbox" name="disabled" value="1"{% if (flags.disabled) %}checked="checked"{% endif %} />
-							{{ lang.xfconfig['disabled'] }}
+							{{ lang['xfields:disabled'] }}
 						</label>
 					</div>
 				</div>
@@ -357,7 +357,7 @@
 					<div class="checkbox">
 						<label>
 							<input type="checkbox" name="regpage" value="1"{% if (flags.regpage) %}checked="checked"{% endif %} />
-							{{ lang.xfconfig['regpage'] }}
+							{{ lang['xfields:regpage'] }}
 						</label>
 					</div>
 				</div>
@@ -369,7 +369,7 @@
 			<div class="well">
 				<div class="row">
 					<div class="col-sm-offset-5 col-sm-7">
-						<input type="submit" id="xfBtnSubmit" value="{% if (flags.editMode) %}{{ lang.xfconfig['edit'] }}{% else %}{{lang.xfconfig['save'] }}{% endif %}" class="btn btn-success" />
+						<input type="submit" id="xfBtnSubmit" value="{% if (flags.editMode) %}{{ lang['xfields:edit'] }}{% else %}{{ lang['xfields:save'] }}{% endif %}" class="btn btn-success" />
 					</div>
 				</div>
 			</div>

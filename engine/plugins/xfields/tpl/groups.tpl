@@ -1,7 +1,7 @@
 <!-- Navigation bar -->
 <ul class="breadcrumb">
-	<li><a href="admin.php">{l_home}</a></li>
-	<li><a href="admin.php?mod=extras" title="{l_extras}">{l_extras}</a></li>
+	<li><a href="admin.php">{{ lang['home'] }}</a></li>
+	<li><a href="admin.php?mod=extras">{{ lang['extras'] }}</a></li>
 	<li class="active">xfields</li>
 </ul>
 
