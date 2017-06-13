@@ -31,7 +31,7 @@
 	{% if pluginIsActive('rss_export') %}<link href="{{ home }}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />{% endif %}
 </head>
 <body>
-
+{% block body %}
 	<header>
 		<div class="header-top navbar-inverse bg-inverse">
 			<div class="container">
@@ -168,6 +168,7 @@
 	</footer>
 
 	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
+{% endblock %}
 </body>
 </html>
 [debug]{debug_queries}{debug_profiler}[/debug]
