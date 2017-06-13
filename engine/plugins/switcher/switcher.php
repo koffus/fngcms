@@ -3,44 +3,49 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
+// Load lang file
+Lang::loadPlugin('switcher', 'main', '', '', ':');
+
 registerActionHandler('core', 'plugin_switcher');
 registerActionHandler('index', 'plugin_switcher_menu');
-register_plugin_page('switcher','','switcher_redirector',0);
+register_plugin_page('switcher', '', 'switcher_redirector', 0);
 
 function plugin_switcher(){
 	global $config;
 
 	// Get chosen template
 	$sw_template = $_COOKIE['sw_template'];
-
-	$sw_count = intval(pluginGetVariable('switcher','count'));
-	if (!$sw_count) { $sw_count = 3; }
+	$sw_count = intval(pluginGetVariable('switcher', 'count'));
+	if ( empty($sw_count) ) $sw_count = 3;
 
 	// If template is not selected, we can show default value
-	if (!$sw_template) {
+	if ( empty($sw_template) ) {
 		// Check if we have default profile for this domain
 		for ($i = 0; $i <= $sw_count; $i++) {
-			$dlist = pluginGetVariable('switcher','profile'.$i.'_domains');
-			if (!$dlist) continue;
+			$dlist = pluginGetVariable('switcher', 'profile'.$i.'_domains');
+			if (empty($dlist)) continue;
 			if (!is_array($darr=explode("\n",$dlist))) continue;
 			$is_catched = 0;
 			foreach ($darr as $dname) {
 				$dname = trim($dname);
-				if (!$dname) continue;
+				if (empty($dname)) continue;
 				// Check if domain fits our domain
-				if (($_SERVER['SERVER_NAME'] == $dname)||($_SERVER['HTTP_HOST'] == $dname)) {
-				 $is_catched = 1;
+				if (($_SERVER['SERVER_NAME'] == $dname) or ($_SERVER['HTTP_HOST'] == $dname)) {
+					$is_catched = 1;
 				}
 			}
-			if ($is_catched) { $sw_template = $i; break; }
+			if ($is_catched) {
+				$sw_template = $i;
+				break;
+			}
 		}
 	}
 
-	if (($sw_template> 0) && ($sw_template <= $sw_count) && pluginGetVariable('switcher','profile'.$sw_template.'_active')) {
-	 if (pluginGetVariable('switcher','profile'.$sw_template.'_template')) {
+	if ( ($sw_template> 0) and ($sw_template <= $sw_count) and pluginGetVariable('switcher','profile'.$sw_template.'_active') ) {
+		if (pluginGetVariable('switcher','profile'.$sw_template.'_template')) {
 			$config['theme'] = pluginGetVariable('switcher','profile'.$sw_template.'_template');
 		}
-	 if (pluginGetVariable('switcher','profile'.$sw_template.'_lang')) {
+		if (pluginGetVariable('switcher','profile'.$sw_template.'_lang')) {
 			$config['default_lang'] = pluginGetVariable('switcher','profile'.$sw_template.'_lang');
 		}
 	}
@@ -48,26 +53,25 @@ function plugin_switcher(){
 }
 
 function plugin_switcher_menu(){
-	global $template, $tpl;
+	global $template, $twig;
 
 	$list = '';
 	$sw_count = intval(pluginGetVariable('switcher','count'));
-	if (!$sw_count) { $sw_count = 3; }
+	if ( empty($sw_count) ) $sw_count = 3;
 
-	for ($i=1; $i <= $sw_count ; $i++) {
-		if (pluginGetVariable('switcher', 'profile'.$i.'_active')) {
-			$list.="<option value='$i'>".pluginGetVariable('switcher', 'profile'.$i.'_name')."</option>\n";
+	for ( $i=1; $i <= $sw_count ; $i++ ) {
+		if ( pluginGetVariable('switcher', 'profile'.$i.'_active') ) {
+			$list .= '<option value='.$i.'>'.pluginGetVariable('switcher', 'profile'.$i.'_name').'</option>';
 		}
 	}
 
-	Lang::loadPlugin('switcher', 'main','','switcher');
+	$tVars = array(
+		'list' => $list,
+		);
 
 	$tpath = locatePluginTemplates(array('switcher'), 'switcher', pluginGetVariable('switcher', 'localSource'));
-	$tpl->template('switcher',$tpath['switcher']);
-
-	$tvars['vars']['list'] = $list;
-	$tpl->vars('switcher', $tvars);
-	$template['vars']['switcher'] = $tpl->show('switcher');
+	$xt = $twig->loadTemplate($tpath['switcher'] . 'switcher.tpl');
+	$template['vars']['plugin_switcher'] = $xt->render($tVars);
 
 }
 
@@ -76,11 +80,11 @@ function switcher_redirector(){
 
 	// Scan for template with this ID
 	$sw_count = intval(pluginGetVariable('switcher','count'));
-	if (!$sw_count) { $sw_count = 3; }
+	if ( empty($sw_count) ) $sw_count = 3;
 
 	$templateNum = 0;
-	for ($i=1; $i <= $sw_count ; $i++) {
-		if (pluginGetVariable('switcher','profile'.$i.'_id') == $templateID) {
+	for ( $i=1; $i <= $sw_count ; $i++ ) {
+		if ( pluginGetVariable('switcher','profile'.$i.'_id') == $templateID ) {
 			$templateNum = $i;
 			break;
 		}
@@ -92,5 +96,5 @@ function switcher_redirector(){
 	// Redirect user:
 	// if `redirect` is set - to specified URL
 	// if `redirect` is not set - to root directory of the site
-	coreRedirectAndTerminate((pluginGetVariable('switcher', 'profile'.$i.'_redirect')?pluginGetVariable('switcher', 'profile'.$i.'_redirect'):home));
+	coreRedirectAndTerminate((pluginGetVariable('switcher', 'profile'.$i.'_redirect') ? pluginGetVariable('switcher', 'profile'.$i.'_redirect') : home));
 }

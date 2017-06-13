@@ -56,7 +56,7 @@
 			{% endif %}
 
 			{% if pluginIsActive('switcher') %}
-				{{ switcher }}
+				{{ plugin_switcher }}
 			{% endif %}
 
 			{% if pluginIsActive('top_users') %}

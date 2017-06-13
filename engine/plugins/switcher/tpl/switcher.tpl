@@ -1,10 +1,11 @@
-<div>
-<script>
-function sw_update() {
- var x = document.getElementById('switcher_selector');
- document.cookie='sw_template='+x.value+'; expires=Mon,31-Jan-2017';
- document.location = document.location;
-}
-</script>
-{l_switcher_select}: <select id="switcher_selector" >{list}</select><input type=button onclick="sw_update();" value="Выбрать">
+<div class="widget widget-switcher">
+	<h4 class="widget-title">{{ lang['switcher:select'] }}</h4>
+	<select id="switcher_selector" onchange="sw_update();" class="form-control">{{ list }}</select>
+	<script>
+		function sw_update() {
+			var x = document.getElementById('switcher_selector');
+			document.cookie='sw_template='+x.value+'; expires=Mon,01-Jan-2017';
+			document.location = document.location;
+		}
+	</script>
 </div>
