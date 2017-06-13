@@ -3,13 +3,17 @@
 	<dl class="row">
 		{% for entry in entries %}
 			<dt class="col-sm-4">
-				{% if (entry.use_avatars) %}<img src="{{entry.avatar_url}}" alt="{{entry.name}}" class="img-thumbnail" />{% endif %}
+				{% if (entry.use_avatars) %}<img src="{{ entry.avatar_url }}" alt="{{ entry.name }}" class="img-thumbnail" />{% endif %}
 			</dt>
 			<dd class="col-sm-8">
-				<a href="{{entry.link}}" title="{{entry.name}}" class="text-uppercase">{{entry.name}}</a>
-				<p>{{ lang['comments'] }} <span class="pull-right">{{entry.com}}</span>
-				<br />
-				{{ lang['news'] }} <span class="pull-right">{{entry.news}}</span></p>
+				<a href="{{entry.link}}" title="{{ entry.name }}" class="text-uppercase">{{ entry.name }}</a>
+				<p>
+				{% if pluginIsActive('comments') %}
+					{{ lang['top_users:widget-com'] }} <span class="pull-right">{{ entry.com }}</span>
+					<br />
+				{% endif %}
+				{{ lang['top_users:widget-news'] }} <span class="pull-right">{{ entry.news}}</span>
+				</p>
 			</dd>
 		{% endfor %}
 	</dl>
