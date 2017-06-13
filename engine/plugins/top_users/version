@@ -1,8 +1,8 @@
-ID: top_active_users
-Name: Top active users
-Version: 0.4
+ID: top_users
+Name: Top users
+Version: 0.5
 Acts: index
-File: top_active_users.php
+File: top_users.php
 Config: config.php
 Type: plugin
 Description: Топ активных пользователей

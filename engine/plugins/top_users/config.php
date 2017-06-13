@@ -23,7 +23,7 @@ $cfgX = array();
 		'descr' => __('localSource#desc'),
 		'type' => 'select',
 		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
 		));
 array_push($cfg, array(
 	'mode' => 'group',

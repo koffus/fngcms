@@ -8,7 +8,7 @@
 		</main>
 
 		<aside class="col-lg-3 offset-lg-1">
-			
+
 			{% if pluginIsActive('archive') %}
 				{{ callPlugin('archive.show', {'maxnum' : 12, 'counter' : 1, 'tcounter' : 1, 'template': 'archive', 'cacheExpire': 60}) }}
 			{% endif %}
@@ -59,11 +59,8 @@
 				{{ switcher }}
 			{% endif %}
 
-			{% if pluginIsActive('top_active_users') %}
-			<div class="block popular-authors-block">
-				<h4 class="widget-title">{{ lang.theme.popular_authors }}</h4>
-				{{ callPlugin('top_active_users.show', {'number' : 12, 'mode' : 'news', 'template': 'top_active_users', 'cacheExpire': 60}) }}
-			</div>
+			{% if pluginIsActive('top_users') %}
+				{{ callPlugin('top_users.show', {'number' : 12, 'mode' : 'news', 'template': 'top_users', 'cacheExpire': 60}) }}
 			{% endif %}
 
 			<div class="widget widget-pages">
