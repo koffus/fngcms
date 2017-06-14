@@ -2,7 +2,7 @@
 <ul class="breadcrumb">
 	<li><a href="admin.php">{{ lang['home'] }}</a></li>
 	<li><a href="admin.php?mod=extras">{{ lang['extras'] }}</a></li>
-	<li><a href="admin.php?mod=extra-config&plugin=xfields&section={{ sectionID }}">{{ lang['xfields:config_text'] }} xfields</a></li>
+	<li><a href="admin.php?mod=extra-config&plugin=xfields&section={{ sectionID }}">xfields</a></li>
 	<li class="active">{% if (not flags.editMode) %}{{ lang['xfields:title_add'] }}{% else %}{{ lang['xfields:title_edit'] }} ({{ id }}){% endif %}</li>
 </ul>
 

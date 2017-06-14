@@ -131,8 +131,7 @@ function add(){
 		$tpll = $category[$cat];
 		$if_add = false;
 	}
-	if (isset($_POST['cat']) and isset($_POST['tpl']))
-	{
+	if (isset($_POST['cat']) and isset($_POST['tpl'])) {
 		$cat = $_POST['cat'];
 		$tpll = $_POST['tpl'];
 		$if_error = false;
@@ -178,8 +177,7 @@ function add(){
 	print $tpl->show('conf.main');
 }
 
-function delete()
-{
+function delete() {
 	global $tpl, $catz;
 	$category = pluginGetVariable('multi_main', 'category');
 

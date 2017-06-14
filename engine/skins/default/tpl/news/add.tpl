@@ -110,20 +110,24 @@
 							</div>
 						</div>
 						{% endif %}
+						<!-- PLUGIN IN MAIN BLOCK -->
 						{% if (extends.block.main) %}
 							{% for entry in extends.block.main %}
-								<!--{% if (entry.header_title) %}<legend>{{ entry.header_title }}</legend>{% endif %}-->
 								{{ entry.body }}
 							{% endfor %}
 						{% endif %}
 					</div>
-					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
-					<!-- XFields -->
-					<table class="table table-condensed">
-						{{ plugin.xfields[1] }}
-					</table>
-					<!-- /XFields -->
+					{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}
+						<table class="table table-condensed">
+							{{ plugin.xfields[0] }}
+						</table>
 					{% endif %}
+					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
+						<table class="table table-condensed">
+							{{ plugin.xfields[1] }}
+						</table>
+					{% endif %}
+					{% if (pluginIsActive('xfields')) %}{{ plugin.xfields.general }}{% endif %}
 				</div>
 
 				<div class="panel-group" id="accordion">
@@ -155,8 +159,6 @@
 						</div>
 						{% endfor %}
 					{% endif %}
-
-					{% if (pluginIsActive('xfields')) %}<!-- XFields [GENERAL] -->{{ plugin.xfields.general }}<!-- /XFields [GENERAL] -->{% endif %}
 
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">

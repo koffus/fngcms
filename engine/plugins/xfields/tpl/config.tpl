@@ -17,14 +17,14 @@
 		<table class="table table-condensed">
 			<thead>
 				<tr>
-					<th>ID поля</th>
-					<th>Название поля</th>
-					<th>Тип поля</th>
-					<th>Возможные значения</th>
-					<th>По умолчанию</th>
-					<th>Обязательно</th>
+					<th>{{ lang['xfields:field_name'] }}</th>
+					<th>{{ lang['xfields:field_title'] }}</th>
+					<th>{{ lang['xfields:field_type'] }}</th>
+					<th>{{ lang['xfields:field_options'] }}</th>
+					<th>{{ lang['xfields:field_default'] }}</th>
+					<th>{{ lang['xfields:field_required'] }}</th>
 					{% if (sectionID != 'tdata') %}
-						<th>Блок</th>
+						<th>{{ lang['xfields:field_area'] }}</th>
 					{% endif %}
 					<th class="text-right">{{ lang['action'] }}</th>
 				</tr>
@@ -36,7 +36,7 @@
 					<td>{{ entry.title }}</td>
 					<td>{{ entry.type }}</td>
 					<td>{{ entry.options }}</td>
-					<td>{% if (entry.flags.default) %}{{ entry.default }}{% else %}<font color="red">не задано</font>{% endif %}</td>
+					<td>{% if (entry.flags.default) %}{{ entry.default }}{% else %}<font color="red">{{ lang['xfields:field_def_no'] }}</font>{% endif %}</td>
 					<td>{% if (entry.flags.required) %}<font color="red"><b>{{ lang['yesa'] }}</b></font>{% else %}{{ lang['noa'] }}{% endif %}</td>
 					{% if (sectionID != 'tdata') %}
 						<td>{{ entry.area }}</td>
@@ -46,7 +46,7 @@
 							<a href="{{ entry.link }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
 							<a href="{{ entry.linkup }}" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
 							<a href="{{ entry.linkdown }}" class="btn btn-default"><i class="fa fa-arrow-down"></i></a>
-							<a  href="{{ entry.linkdel }}" onclick="return confirm('{{ lang['sure_del'] }}');" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+							<a href="{{ entry.linkdel }}" onclick="return confirm('{{ lang['sure_del'] }}');" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
 						</div>
 					</td>
 				</tr>

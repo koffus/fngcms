@@ -122,28 +122,26 @@
 							</div>
 						</div>
 						{% endif %}
+						<!-- PLUGIN IN MAIN BLOCK -->
 						{% if (extends.block.main) %}
 							{% for entry in extends.block.main %}
-								<!--{% if (entry.header_title) %}<legend>{{ entry.header_title }}</legend>{% endif %}-->
 								{{ entry.body }}
 							{% endfor %}
 						{% endif %}
-						
 					</div>
-					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
-					<!-- XFields [1] -->
-					<table class="table table-condensed">
-						{{ plugin.xfields[1] }}
-					</table>
-					<!-- /XFields -->
+					{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}
+						<table class="table table-condensed">
+							{{ plugin.xfields[0] }}
+						</table>
 					{% endif %}
+					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
+						<table class="table table-condensed">
+							{{ plugin.xfields[1] }}
+						</table>
+					{% endif %}
+					{% if (pluginIsActive('xfields')) %}{{ plugin.xfields.general }}{% endif %}
 				</div>
 
-										<!-- XFields [0] -->{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}{{ plugin.xfields[0] }}{% endif %}<!-- /XFields -->
-										{% if (pluginIsActive('nsched')) %}{{ plugin.nsched }}{% endif %}
-										{% if (pluginIsActive('finance')) %}{{ plugin.finance }}{% endif %}
-										{% if (pluginIsActive('tracker')) %}{{ plugin.tracker }}{% endif %}
-										{{ plugin.xfields[2] }}
 				<div class="panel-group" id="accordion">
 					<!-- PLUGIN IN ADDITIONAL BLOCK -->
 					{% if (extends.block.additional) %}
@@ -173,8 +171,6 @@
 						</div>
 						{% endfor %}
 					{% endif %}
-
-					{% if (pluginIsActive('xfields')) %}<!-- XFields [GENERAL] -->{{ plugin.xfields.general }}<!-- /XFields [GENERAL] -->{% endif %}
 
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">

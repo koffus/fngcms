@@ -272,8 +272,7 @@ class XFieldsNewsFilter extends NewsFilter {
 						$val = $xt->render($tVars);
 						$xfEntry['input'] = $val;
 						break;
-					default:
-						continue;
+					default: continue;
 				}
 				$xfEntries[intval($data['area'])][] = $xfEntry;
 				$xfList[$id] = $xfEntry;
@@ -341,12 +340,12 @@ class XFieldsNewsFilter extends NewsFilter {
 			$templateName = 'plugins/xfields/tpl/news.add.'.(file_exists(root.'plugins/xfields/tpl/news.add.'.$k.'.tpl')?$k:'0').'.tpl';
 
 			$xt = $twig->loadTemplate($templateName);
-			$tVars['entries']		= $v;
-			$tVars['entryCount']	= count($v);
-			$tVars['area']			= $k;
+			$tVars['entries'] = $v;
+			$tVars['entryCount'] = count($v);
+			$tVars['area'] = $k;
 
 			// Table data is available only for area 0
-			$tVars['flags']['tdata']	= (!$k)?$flagTData:0;
+			$tVars['flags']['tdata'] = (!$k)?$flagTData:0;
 
 			// Render block
 			$tvars['plugin']['xfields'][$k] .= $xt->render($tVars);
@@ -359,6 +358,7 @@ class XFieldsNewsFilter extends NewsFilter {
 		$xt = $twig->loadTemplate('plugins/xfields/tpl/news.general.tpl');
 		$tvars['plugin']['xfields']['general'] = $xt->render($tVars);
 		$tvars['plugin']['xfields']['fields'] = $xfList;
+
 		return 1;
 	}
 
@@ -1215,9 +1215,9 @@ if (getPluginStatusActive('uprofile')) {
 				$templateName = 'plugins/xfields/tpl/uprofile.edit.'.(file_exists(root.'plugins/xfields/tpl/uprofile.edit.'.$k.'.tpl')?$k:'0').'.tpl';
 
 				$xt = $twig->loadTemplate($templateName);
-				$tVars['entries']		= $v;
-				$tVars['entryCount']	= count($v);
-				$tVars['area']			= $k;
+				$tVars['entries'] = $v;
+				$tVars['entryCount'] = count($v);
+				$tVars['area'] = $k;
 
 				// Render block
 				$render = $xt->render($tVars);
