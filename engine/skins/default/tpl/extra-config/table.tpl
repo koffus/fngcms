@@ -23,18 +23,22 @@
 						<legend>{{ entry.groupTitle }}{% if entry.flags.toggle %} <a href="#" title="{{ lang['group.toggle'] }}" class="adm-group-toggle"><i class="fa fa-caret-square-o-down"></i></a>{% endif %}</legend>
 						<div class="adm-group-content"{% if entry.flags.toggle %} style="display:none;"{% endif %}>
 							{% for subentry in entry.subentries %}
-							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-8">
-										{{ subentry.title }}
-										{% if subentry.flags.descr %}<span class="help-block">{{ subentry.descr }}</span>{% endif %}
-										{% if subentry.flags.error %}<span class="help-block">{{ subentry.error }}</span>{% endif %}
-									</div>
-									<div class="col-sm-4">
-										{{ subentry.input }}
+								{% if subentry.type == 'flat' %}
+									{{ subentry.input }}
+								{% else %}
+								<div class="form-group">
+									<div class="row">
+										<div class="col-sm-8">
+											{{ subentry.title }}
+											{% if subentry.flags.descr %}<span class="help-block">{{ subentry.descr }}</span>{% endif %}
+											{% if subentry.flags.error %}<span class="help-block">{{ subentry.error }}</span>{% endif %}
+										</div>
+										<div class="col-sm-4">
+											{{ subentry.input }}
+										</div>
 									</div>
 								</div>
-							</div>
+								{% endif %}
 							{% endfor %}
 						</div>
 					</fieldset>

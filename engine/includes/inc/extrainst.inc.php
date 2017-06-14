@@ -66,6 +66,8 @@ function generate_config_page($module, $params, $values = array()) {
 
 		if ( $param['type'] == 'text' ) {
 			$tvars['input'] = '<textarea name="'.$param['name'].'" '.$param['html_flags'].' class="form-control">'.secure_html($param['value']).'</textarea>';
+		} elseif ( $param['type'] == 'button' ) {
+			$tvars['input'] = '<input type="button" name="'.$param['name'].'" '.$param['html_flags'].' value="'.secure_html($param['value']).'" class="btn btn-default" />';
 		} elseif ( $param['type'] == 'input' ) {
 			$tvars['input'] = '<input type="text" name="'.$param['name'].'" '.$param['html_flags'].' value="'.secure_html($param['value']).'" class="form-control" />';
 		} elseif ( $param['type'] == 'checkbox' ) {
