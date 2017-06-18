@@ -41,7 +41,6 @@ function coreActivateUser() {
 			}
 		} else {
 			// Already activated
-			print "ALREADY";
 			msg(array('title' => __('msge_activation'), 'message' => sprintf(__('msgi_activation'), admin_url)));
 		}
 	} else {
