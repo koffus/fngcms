@@ -52,7 +52,7 @@ function admNewsRPCdouble($params) {
 	$search_array = array();
 	foreach ($search_words as $s) {
 		if (mb_strlen($s, 'UTF-8') > 3) {
-			array_push($search_array, "(title Like '%".$mysql->db_quote($s)."%')");
+			array_push($search_array, "(title Like ".db_squote('%'.$s.'%').")");
 		}
 	}
 

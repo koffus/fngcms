@@ -58,8 +58,8 @@ function search_news() {
 			if ( mb_strlen($s, 'UTF-8') > 2 ) {
 				array_push($search_array,
 					array('OR',
-							array('DATA', 'title', 'like', '%'.$mysql->db_quote($s).'%'),
-							array('DATA', 'content', 'like', '%'.$mysql->db_quote($s).'%'),
+							array('DATA', 'title', 'like', '%'.$s.'%'),
+							array('DATA', 'content', 'like', '%'.$s.'%'),
 					));
 			} else {
 				unset($s);
