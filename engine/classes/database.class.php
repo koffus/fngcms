@@ -16,8 +16,7 @@ class Database
     private $dbname;
 
     protected $queries;
-    protected $query_list;
-    protected $table_list;
+    public $query_list;
     protected $error;
     protected $queryTimer;
 
@@ -36,7 +35,6 @@ class Database
 
         $this->queries = 0;
         $this->query_list = array();
-        $this->table_list = array();
         $this->error = 0;
         $this->queryTimer = (isset($timer) and (method_exists($timer, 'stop')));
 
@@ -95,7 +93,6 @@ class Database
             $tX = $timer->stop(4);
         }
 
-        $this->queries++;
         try {
             $query = $this->query($sql);
         } catch (\PDOException $e) {
@@ -128,7 +125,6 @@ class Database
         } else {
             $tX = '';
         }
-        array_push($this->query_list, $tX . $sql);
 
         return $result;
     }
@@ -140,7 +136,6 @@ class Database
             $tX = $timer->stop(4);
         }
 
-        $this->queries++;
         try {
             $query = $this->query($sql);
         } catch (\PDOException $e) {
@@ -170,7 +165,6 @@ class Database
         } else {
             $tX = '';
         }
-        array_push($this->query_list, $tX . $sql);
 
         return $item;
     }
@@ -182,7 +176,6 @@ class Database
             $tX = $timer->stop(4);
         }
 
-        $this->queries++;
         try {
             $query = $this->query($sql);
         } catch (\PDOException $e) {
@@ -195,7 +188,6 @@ class Database
         } else {
             $tX = '';
         }
-        array_push($this->query_list, $tX . $sql);
 
         if ($query) {
             $datarow = $query->fetch();

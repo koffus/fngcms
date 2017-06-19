@@ -300,14 +300,10 @@ if (preg_match('#^http\:\/\/([^\/])+(\/.+)#', $config['home_url'], $match))
 // ** Load DB
 $mysql = new Database;
 $mysql->connect($config['dbhost'], $config['dbuser'], $config['dbpasswd'], $config['dbname']);
-
-// [[MARKER]] MySQL connection is established
 $timer->registerEvent('DB connection established');
 
 // ** Load categories from DB
 ngLoadCategories();
-
-// [[MARKER]] Categories are loaded
 $timer->registerEvent('DB category list is loaded');
 
 // Special way to pass authentication cookie via POST params
