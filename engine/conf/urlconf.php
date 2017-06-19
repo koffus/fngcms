@@ -339,6 +339,55 @@ $urlLibrary = array (
       ),
     ),
   ),
+  'rss_export' => 
+  array (
+    '' => 
+    array (
+      'vars' => 
+      array (
+      ),
+      'descr' => 
+      array (
+        'russian' => 'Основной RSS поток',
+      ),
+    ),
+    'category' => 
+    array (
+      'vars' => 
+      array (
+        'category' => 
+        array (
+          'matchRegex' => '.+?',
+          'descr' => 
+          array (
+            'russian' => 'Альт. имя категории',
+          ),
+        ),
+        'catid' => 
+        array (
+          'matchRegex' => '\\d{1,4}(?:\\-[0-9\\-]+)?',
+          'descr' => 
+          array (
+            'russian' => 'ID категории',
+          ),
+        ),
+      ),
+      'descr' => 
+      array (
+        'russian' => 'RSS поток указанной категории',
+      ),
+    ),
+    'main' => 
+    array (
+      'vars' => 
+      array (
+      ),
+      'descr' => 
+      array (
+        'russian' => 'Основной RSS поток',
+      ),
+    ),
+  ),
   'core' => 
   array (
     'plugin' => 

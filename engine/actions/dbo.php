@@ -193,14 +193,11 @@ function systemDboModify() {
 		$host = $config['dbhost'];
 
 		$mysqli = new mysqli($host, $login, $passw, $db);
-		if ($mysqli->connect_error) {
-			$msg_error [] = secure_html('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error . ' - LINE '.__LINE__);
-		}
 
 		$mysqli->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
 		$rs = $mysqli->query("SHOW TABLES;");
-		if ($mysqli->errno) {
-			$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+		if ($mysqli->errorCode) {
+			$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 		}
 
 		while ( $row = mysqli_fetch_array($rs, MYSQLI_ASSOC) ) {
@@ -208,8 +205,8 @@ function systemDboModify() {
 			$time1 = microtime(true);
 			$table_name = $row['Tables_in_'.$db];
 			$row_create = $mysqli->query('SHOW CREATE TABLE '.$table_name);
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 			}
 
 			$row1 = mysqli_fetch_array($row_create, MYSQLI_ASSOC);
@@ -220,8 +217,8 @@ function systemDboModify() {
 
 			// RENAME TABLE;
 			$mysqli->query('RENAME TABLE '.$table_name.' TO '.$table_name.'_tmp_export');
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
@@ -230,33 +227,33 @@ function systemDboModify() {
 			$create_table_scheme = str_ireplace('ENGINE=MyISAM', 'ENGINE=InnoDB', $create_table_scheme);
 			$create_table_scheme .= ' COLLATE utf8_general_ci';
 			$mysqli->query($create_table_scheme);
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
 			$mysqli->query('ALTER TABLE '.$table_name.' DISABLE KEYS');
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
 			$mysqli->query('INSERT INTO '.$table_name.' SELECT * FROM '.$table_name.'_tmp_export');
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
 			$mysqli->query('DROP TABLE '.$table_name.'_tmp_export');
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
 			$time2 = microtime(true);
 			$mysqli->query('ALTER TABLE '.$table_name.' ENABLE KEYS');
-			if ($mysqli->errno) {
-				$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+			if ($mysqli->errorCode) {
+				$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 				break;
 			}
 
@@ -267,8 +264,8 @@ function systemDboModify() {
 
 		$time3 = microtime(true);
 		$mysqli->query("ALTER DATABASE $db DEFAULT CHARACTER SET 'utf8';");
-		if ($mysqli->errno) {
-			$msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error .' - LINE '.__LINE__);
+		if ($mysqli->errorCode) {
+			$msg_error [] = secure_html('Select Error (' . $mysqli->errorCode . ') ' . $mysqli->error .' - LINE '.__LINE__);
 			return;
 		} else {
 			$slist [] = "<br>Converted database <b>$db</b> to <b>utf8</b>: " . sprintf("%.4f", (microtime(true) - $time3)). ' sec.';

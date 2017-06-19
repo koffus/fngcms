@@ -26,9 +26,9 @@ class auth_vb {
 			$this->auth_db = new Database;
 			
 			$this->auth_db->connect(pluginGetVariable('auth_vb','dbhost'), pluginGetVariable('auth_vb','dblogin'), pluginGetVariable('auth_vb','dbpass'), pluginGetVariable('auth_vb','dbname'), 1);
-			if ($this->auth_db->error) {
+			if ($this->auth_db->errorCode) {
 				print "<br />Can't connect to SQL DB<br />\n";
-				$this->error = $this->auth_db->error;
+				$this->error = $this->auth_db->errorCode;
 			}
 		} else {
 			$this->auth_db = $mysql;

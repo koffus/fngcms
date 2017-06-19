@@ -15,7 +15,7 @@ if (!defined('NGCMS')) die ('HAL');
 function db_squote($string) {
 	global $mysql;
 	if (is_array($string)) { return false; }
-	return "'".$mysql->db_quote($string)."'";
+	return $mysql->db_quote($string);
 }
 
 function db_dquote($string) {

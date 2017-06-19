@@ -52,6 +52,7 @@
 										<table class="table table-condensed">
 											<tr><td>{l_perm.minreq.php}</td><td>{php_version}</td></tr>
 											<tr><td>{l_perm.minreq.mysql}</td><td>{sql_version}</td></tr>
+											<tr><td>{l_perm.minreq.pdo}</td><td>{pdo}</td></tr>
 											<tr><td>{l_perm.minreq.zlib}</td><td>{gzip}</td></tr>
 											<tr><td>{l_perm.minreq.xml}</td><td>{xml}</td></tr>
 											<tr><td>{l_perm.minreq.gd}</td><td>{gdlib}</td></tr>
