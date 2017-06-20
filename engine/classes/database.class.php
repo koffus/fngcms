@@ -54,12 +54,12 @@ class Database
         }
     }
 
-    function select_db($db)
+    public function select_db($db)
     {
         return (false == $this->query("SHOW DATABASES LIKE " . $this->dbh->quote($db))->fetchColumn(0)) ? 0 : 1;
     }
 
-    function query($sql)
+    public function query($sql)
     {
         global $timer;
 
@@ -86,7 +86,7 @@ class Database
         return $query;
     }
 
-    function select($sql, $assocMode = 1)
+    public function select($sql, $assocMode = 1)
     {
         global $timer;
         if ($this->queryTimer) {
@@ -129,7 +129,7 @@ class Database
         return $result;
     }
 
-    function record($sql, $assocMode = 1)
+    public function record($sql, $assocMode = 1)
     {
         global $timer;
         if ($this->queryTimer) {
@@ -169,7 +169,7 @@ class Database
         return $item;
     }
 
-    function result($sql)
+    public function result($sql)
     {
         global $timer;
         if ($this->queryTimer) {
@@ -195,28 +195,28 @@ class Database
         }
     }
 
-    function num_fields($query)
+    public function num_fields($query)
     {
         if (!$query) return false;
 
         return $query->columnCount();
     }
 
-    function field_name($query, $field_offset)
+    public function field_name($query, $field_offset)
     {
         if (!$query) return false;
 
         return $query->getColumnMeta($field_offset)['name'];
     }
 
-    function field_type($query, $field_offset)
+    public function field_type($query, $field_offset)
     {
         if (!$query) return false;
 
         return $query->getColumnMeta($field_offset)['native_type'];
     }
 
-    function field_len($query, $field_offset)
+    public function field_len($query, $field_offset)
     {
         if (!$query) return false;
 
@@ -225,14 +225,14 @@ class Database
         return $result;
     }
 
-    function num_rows($query)
+    public function num_rows($query)
     {
         if (!$query) return false;
 
         return $query->rowCount();
     }
 
-    function fetch_row($query)
+    public function fetch_row($query)
     {
         if (!$query) return array();
 
@@ -240,17 +240,17 @@ class Database
     }
 
     // check if table exists
-    function table_exists($table, $forceReload = 0)
+    public function table_exists($table, $forceReload = 0)
     {
         return (is_array($this->record("SHOW TABLES LIKE " . $this->dbh->quote($table)))) ? 1 : 0;
     }
 
-    function qcnt()
+    public function qcnt()
     {
         return $this->queries;
     }
 
-    function lastid($table = '')
+    public function lastid($table = '')
     {
         if (trim($table)) {
             $row = $this->record("SHOW TABLE STATUS LIKE '" . prefix . "_" . $table . "'");
@@ -260,22 +260,22 @@ class Database
         }
     }
 
-    function db_errno()
+    public function db_errno()
     {
         return $this->errorCode;
     }
 
-    function db_error()
+    public function db_error()
     {
         return $this->errorInfo;
     }
 
-    function db_quote($string)
+    public function db_quote($string)
     {
         return $this->dbh->quote($string);
     }
 
-    function mysql_version()
+    public function mysql_version()
     {
         return $this->dbh->getAttribute(PDO::ATTR_SERVER_VERSION);
     }
@@ -283,7 +283,7 @@ class Database
     // Report an SQL error
     // $type	- query type
     // $query	- text of the query
-    private function errorReport($type, $query, $e)
+    public private function errorReport($type, $query, $e)
     {
         global $userROW, $config;
 
@@ -300,7 +300,7 @@ class Database
         }
     }
 
-    function close()
+    public function close()
     {
         $this->dbh = NULL;
     }
