@@ -17,7 +17,7 @@ foreach ($mysql->select("select * from ".prefix."_subscribe_comments_temp s left
 
 //Email informer
 	$alink = ($irow['com_author_id']) ? generatePluginLink('uprofile', 'show', array('name' => $irow['com_author'], 'id' => $irow['com_author_id']), array(), false, true) : '';
-	$newsLink = newsGenerateLink($irow, false, 0, true);
+	$newsLink = News::generateLink($irow, false, 0, true);
 	$body = str_replace(
 			array(	'{username}',
 					'[userlink]',
@@ -132,11 +132,11 @@ else
 //$row = $mysql->record("select * from ".prefix."_news where id=".db_squote($newsRec['id']));
 // Рассылаем сразу
 
-$newsLink = newsGenerateLink($newsRec, false, 0, true);
+$newsLink = News::generateLink($newsRec, false, 0, true);
 foreach ($mysql->select("select * from ".prefix."_subscribe_comments where news_id='".$newsRec['id']."' and news_altname='".$newsRec['alt_name']."'") as $srow) {
 		
 		$alink = ($SQL['author_id']) ? generatePluginLink('uprofile', 'show', array('name' => $SQL['author'], 'id' => $SQL['author_id']), array(), false, true) : '';
-		$newsLink = newsGenerateLink($newsRec, false, 0, true);
+		$newsLink = News::generateLink($newsRec, false, 0, true);
 		$body = str_replace(
 			array(	'{username}',
 					'[userlink]',

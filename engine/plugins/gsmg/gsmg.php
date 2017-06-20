@@ -93,7 +93,7 @@ function plugin_gsmg_screen() {
  $query = "select id, postdate, author, author_id, alt_name, editdate, catid from ".prefix."_news where approve = 1 order by id desc";
 
  foreach ($mysql->select($query,1) as $rec) {
- $link = newsGenerateLink($rec, false, 0, true);
+ $link = News::generateLink($rec, false, 0, true);
  $output.= "<url>";
  $output.= "<loc>".$link."</loc>";
  $output.= "<priority>".floatval(pluginGetVariable('gsmg', 'news_pr'))."</priority>";

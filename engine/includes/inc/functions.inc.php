@@ -234,27 +234,22 @@ function Padeg($n, $s)
     $a = explode(',', $s);
     $l1 = $n - ((int)($n / 10)) * 10;
     $l2 = $n - ((int)($n / 100)) * 100;
-
     if ("11" <= $l2 and $l2 <= "14") {
         $e = $a[2];
     } else {
         if ($l1 == "1") {
             $e = $a[0];
         }
-
         if ("2" <= $l1 and $l1 <= "4") {
             $e = $a[1];
         }
-
         if (("5" <= $l1 and $l1 <= "9") or $l1 == "0") {
             $e = $a[2];
         }
     }
-
-    if ($e == "") {
+    if ($e == '') {
         $e = $a[0];
     }
-
     return ($e);
 }
 
@@ -380,7 +375,7 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
     } else if ($config['mailfrom']) {
         $mail->From = $config['mailfrom'];
     } else {
-        $mail->From = "mailbot@" . str_replace("www.", "", $_SERVER['SERVER_NAME']);
+        $mail->From = 'mailbot@' . str_replace('www.', '', $_SERVER['SERVER_NAME']);
     }
 
     $mail->Subject = $subject;
@@ -502,14 +497,14 @@ function OrderList($value, $showDefault = false)
 {
     global $catz;
 
-    $output = "<select name=\"orderby\" class=\"form-control\">\n";
+    $output = '<select name="orderby" class="form-control">';
     if ($showDefault)
         $output .= '<option value="">' . __('order_default') . '</option>' . "\n";
     foreach (array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc', 'rating desc', 'rating asc') as $v) {
         $vx = str_replace(' ', '_', $v);
         $output .= '<option value="' . $v . '"' . (($value == $v) ? ' selected="selected"' : '') . '>' . __('order_' . $vx) . '</option>' . "\n";
     }
-    $output .= "</select>\n";
+    $output .= '</select>';
     return $output;
 }
 
@@ -578,8 +573,8 @@ function ListDirs($folder, $category = false, $alllink = true, $elementID = '')
     if (($dir = @opendir($wdir)) === FALSE) {
         msg(array(
             'type' => 'error',
-            'text' => str_replace('{dirname}', $wdir, __('error.nodir')),
-            'info' => str_replace('{dirname}', $wdir, __('error.nodir#desc'))),
+            'title' => str_replace('{dirname}', $wdir, __('error.nodir#desc')),
+            'message' => str_replace('{dirname}', $wdir, __('error.nodir'))),
             1);
         return false;
     }
@@ -594,7 +589,7 @@ function ListDirs($folder, $category = false, $alllink = true, $elementID = '')
 
     foreach ($filelist as $file) {
         if (is_dir($wdir . "/" . $file) and $file != "." and $file != "..")
-            $select .= "<option value=\"" . $file . "\"" . ($category == $file ? ' selected="selected"' : '') . ">" . $file . "</option>\n";
+            $select .= '<option value="' . $file . '"' . ($category == $file ? ' selected' : '') . '>' . $file . '</option>';
     }
     $select .= '</select>';
 
@@ -682,15 +677,15 @@ function makeCategoryList($params = array())
                 '>';
         }
         if (isset($params['doempty']) and $params['doempty']) {
-            $out .= "<option " . (((isset($params['greyempty']) and $params['greyempty'])) ? 'style="background: #c41e3a;" ' : '') . "value=\"0\">" . __(no_cat) . "</option>\n";
+            $out .= '<option ' . (((isset($params['greyempty']) and $params['greyempty'])) ? 'style="background: #c41e3a;" ' : '') . 'value="0">' . __(no_cat) . '</option>';
             $optList [] = array('k' => 0, 'v' => __(no_cat));
         }
         if (isset($params['doall']) and $params['doall']) {
-            $out .= "<option value=\"" . (isset($params['allmarker']) ? $params['allmarker'] : '') . "\">" . __(sh_all) . "</option>\n";
+            $out .= '<option value="' . (isset($params['allmarker']) ? $params['allmarker'] : '') . '">' . __(sh_all) . '</option>';
             $optList [] = array('k' => (isset($params['allmarker']) ? $params['allmarker'] : ''), 'v' => __(sh_all));
         }
         if (isset($params['dowithout']) and $params['dowithout']) {
-            $out .= "<option value=\"0\"" . (((!is_null($params['selected'])) and ($params['selected'] == 0)) ? ' selected="selected"' : '') . ">" . __(sh_empty) . "</option>\n";
+            $out .= '<option value="0"' . (((!is_null($params['selected'])) and ($params['selected'] == 0)) ? ' selected' : '') . '>' . __(sh_empty) . '</option>';
             $optList [] = array('k' => 0, 'v' => __(sh_empty));
         }
     }
@@ -716,19 +711,19 @@ function makeCategoryList($params = array())
                 '_' .
                 $v['id'] .
                 '" value="1"' .
-                ((isset($params['selected']) and is_array($params['selected']) and in_array($v['id'], $params['selected'])) ? ' checked="checked"' : '') .
+                ((isset($params['selected']) and is_array($params['selected']) and in_array($v['id'], $params['selected'])) ? ' checked' : '') .
                 ((((trim($v['alt_url'])) or (isset($params['disabledarea']) and $params['disabledarea']))) ? ' disabled="disabled"' : '') .
                 '/> ' .
                 $v['name'] .
-                "</label><br/>\n";
+                '</label><br/>';
         } else {
-            $out .= "<option value=\"" . ((isset($params['nameval']) and $params['nameval']) ? $v['name'] : $v['id']) . "\"" . ((isset($params['selected']) and ($v['id'] == $params['selected'])) ? ' selected="selected"' : '') . (trim($v['alt_url']) ? ' disabled="disabled" style="background: #c41e3a;"' : '') . ">" . str_repeat('&#8212; ', $v['poslevel']) . $v['name'] . "</option>\n";
+            $out .= '<option value="' . ((isset($params['nameval']) and $params['nameval']) ? $v['name'] : $v['id']) . '"' . ((isset($params['selected']) and ($v['id'] == $params['selected'])) ? ' selected' : '') . (trim($v['alt_url']) ? ' disabled style="background: #c41e3a;"' : '') . '>' . str_repeat('&#8212; ', $v['poslevel']) . $v['name'] . '</option>';
             $optList [] = array('k' => ((isset($params['nameval']) and $params['nameval']) ? $v['name'] : $v['id']), 'v' => str_repeat('&#8212; ', $v['poslevel']) . $v['name']);
         }
     }
     if (!isset($params['checkarea']) or !$params['checkarea']) {
         if (empty($params['noHeader'])) {
-            $out .= "</select>";
+            $out .= '</select>';
         }
     }
 
@@ -764,7 +759,7 @@ function GetCategories($catid, $plain = false, $firstOnly = false)
     foreach ($cats as $v) {
         if (isset($catmap[$v])) {
             $row = $catz[$catmap[$v]];
-            $catline[] = ($plain) ? $row['name'] : "<a href=\"" . generateLink('news', 'by.category', array('category' => $row['alt'], 'catid' => $row['id'])) . "\">" . $row['name'] . "</a>";
+            $catline[] = ($plain) ? $row['name'] : '<a href="' . generateLink('news', 'by.category', array('category' => $row['alt'], 'catid' => $row['id'])) . "\">" . $row['name'] . '</a>';
         }
     }
 
@@ -836,98 +831,93 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array())
     if (!isset($markers['mark.default']))
         $markers['mark.default'] = '&#8212;';
 
-    // Determine working mode - old or new
-    // If template 'news.categories' exists - use `new way`, else - old
-    if (file_exists(tpl_site . 'news.categories.tpl') or (isset($flags['returnData']) and $flags['returnData'])) {
+    $tVars = array();
+    $tEntries = array();
+    $tIDs = array();
 
-        $tVars = array();
-        $tEntries = array();
-        $tIDs = array();
+    $treeSelector = array(
+        'defined' => false,
+        'id' => 0,
+        'skipDefined' => false,
+        'started' => false,
+        'level' => 0,
+    );
 
-        $treeSelector = array(
-            'defined' => false,
-            'id' => 0,
-            'skipDefined' => false,
-            'started' => false,
-            'level' => 0,
-        );
-
-        if (!is_null($treeMasterCategory) and preg_match('#^(\:){0,1}(\d+)$#', $treeMasterCategory, $m)) {
-            $treeSelector['defined'] = true;
-            $treeSelector['skipDefined'] = $m[1] ? true : false;
-            $treeSelector['id'] = intval($m[2]);
-        }
-
-        foreach ($catz as $k => $v) {
-            if (!substr($v['flags'], 0, 1)) continue;
-
-            // If tree selector is active - skip unwanted entries
-            if ($treeSelector['defined']) {
-                if ($treeSelector['started']) {
-                    if ($v['poslevel'] <= $treeSelector['level']) {
-                        break;
-                    }
-                } else {
-                    if ($v['id'] == $treeSelector['id']) {
-                        $treeSelector['started'] = true;
-                        $treeSelector['level'] = $v['poslevel'];
-
-                        if ($treeSelector['skipDefined'])
-                            continue;
-                    } else {
-                        continue;
-                    }
-                }
-            }
-
-            $tEntry = array(
-                'id' => $v['id'],
-                'cat' => $v['name'],
-                'link' => ($v['alt_url'] == '') ? generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])) : $v['alt_url'],
-                'mark' => isset($markers['mark.level.' . $v['poslevel']]) ? $markers['mark.level.' . $v['poslevel']] : str_repeat($markers['mark.default'], $v['poslevel']),
-                'level' => $v['poslevel'],
-                'info' => $v['info'],
-                'counter' => $v['posts'],
-                'icon' => $v['icon'],
-
-                'flags' => array(
-                    'active' => (isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id'])) ? true : false,
-                    'counter' => ($config['category_counters'] and $v['posts']) ? true : false,
-                )
-            );
-            $tEntries [] = $tEntry;
-            $tIDs [] = $v['id'];
-        }
-
-        // Update `hasChildren` and `closeLevel_X` flags for items
-        for ($i = 0; $i < count($tEntries); $i++) {
-            $tEntries[$i]['flags']['hasChildren'] = true;
-            if (($i == (count($tEntries) - 1)) or ($tEntries[$i]['level'] >= $tEntries[$i + 1]['level'])) {
-                // Mark that this is last item in this level
-                $tEntries[$i]['flags']['hasChildren'] = false;
-                // Mark all levels that are closed after this item
-                if ($i == (count($tEntries) - 1)) {
-                    for ($x = 0; $x <= $tEntries[$i]['level']; $x++) {
-                        $tEntries[$i]['flags']['closeLevel_' . $x] = true;
-                    }
-                } else {
-                    for ($x = $tEntries[$i + 1]['level']; $x <= $tEntries[$i]['level']; $x++) {
-                        $tEntries[$i]['flags']['closeLevel_' . $x] = true;
-                    }
-                }
-                if ($tEntries[$i]['level'] > $tEntries[$i + 1]['level'])
-                    $tEntries[$i]['closeToLevel'] = intval($tEntries[$i + 1]['level']);
-            }
-        }
-
-        if ($flags['returnData']) {
-            return $flags['onlyID'] ? $tIDs : $tEntries;
-        }
-
-        $tVars['entries'] = $tEntries;
-        $xt = $twig->loadTemplate('news.categories.tpl');
-        return $xt->render($tVars);
+    if (!is_null($treeMasterCategory) and preg_match('#^(\:){0,1}(\d+)$#', $treeMasterCategory, $m)) {
+        $treeSelector['defined'] = true;
+        $treeSelector['skipDefined'] = $m[1] ? true : false;
+        $treeSelector['id'] = intval($m[2]);
     }
+
+    foreach ($catz as $k => $v) {
+        if (!substr($v['flags'], 0, 1)) continue;
+
+        // If tree selector is active - skip unwanted entries
+        if ($treeSelector['defined']) {
+            if ($treeSelector['started']) {
+                if ($v['poslevel'] <= $treeSelector['level']) {
+                    break;
+                }
+            } else {
+                if ($v['id'] == $treeSelector['id']) {
+                    $treeSelector['started'] = true;
+                    $treeSelector['level'] = $v['poslevel'];
+
+                    if ($treeSelector['skipDefined'])
+                        continue;
+                } else {
+                    continue;
+                }
+            }
+        }
+
+        $tEntry = array(
+            'id' => $v['id'],
+            'cat' => $v['name'],
+            'link' => ($v['alt_url'] == '') ? generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])) : $v['alt_url'],
+            'mark' => isset($markers['mark.level.' . $v['poslevel']]) ? $markers['mark.level.' . $v['poslevel']] : str_repeat($markers['mark.default'], $v['poslevel']),
+            'level' => $v['poslevel'],
+            'info' => $v['info'],
+            'counter' => $v['posts'],
+            'icon' => $v['icon'],
+
+            'flags' => array(
+                'active' => (isset($SYSTEM_FLAGS['news']['currentCategory.id']) and ($v['id'] == $SYSTEM_FLAGS['news']['currentCategory.id'])) ? true : false,
+                'counter' => ($config['category_counters'] and $v['posts']) ? true : false,
+            )
+        );
+        $tEntries [] = $tEntry;
+        $tIDs [] = $v['id'];
+    }
+
+    // Update `hasChildren` and `closeLevel_X` flags for items
+    for ($i = 0; $i < count($tEntries); $i++) {
+        $tEntries[$i]['flags']['hasChildren'] = true;
+        if (($i == (count($tEntries) - 1)) or ($tEntries[$i]['level'] >= $tEntries[$i + 1]['level'])) {
+            // Mark that this is last item in this level
+            $tEntries[$i]['flags']['hasChildren'] = false;
+            // Mark all levels that are closed after this item
+            if ($i == (count($tEntries) - 1)) {
+                for ($x = 0; $x <= $tEntries[$i]['level']; $x++) {
+                    $tEntries[$i]['flags']['closeLevel_' . $x] = true;
+                }
+            } else {
+                for ($x = $tEntries[$i + 1]['level']; $x <= $tEntries[$i]['level']; $x++) {
+                    $tEntries[$i]['flags']['closeLevel_' . $x] = true;
+                }
+            }
+            if ($tEntries[$i]['level'] > $tEntries[$i + 1]['level'])
+                $tEntries[$i]['closeToLevel'] = intval($tEntries[$i + 1]['level']);
+        }
+    }
+
+    if ($flags['returnData']) {
+        return $flags['onlyID'] ? $tIDs : $tEntries;
+    }
+
+    $tVars['entries'] = $tEntries;
+    $xt = $twig->loadTemplate('news.categories.tpl');
+    return $xt->render($tVars);
 }
 
 // make an array for filtering from text line like 'abc-def,dfg'
@@ -953,334 +943,6 @@ function generateCategoryArray($categories)
 function generateCategoryFilter()
 {
 
-}
-
-// Generate link to news
-function newsGenerateLink($row, $flagPrint = false, $page = 0, $absoluteLink = false)
-{
-    global $catmap, $config;
-
-    // Prepare category listing
-    $clist = 'none';
-    $ilist = 0;
-    if ($row['catid']) {
-        $ccats = array();
-        $icats = array();
-        foreach (explode(',', $row['catid']) as $ccatid) {
-            if (trim($catmap[$ccatid])) {
-                $ccats[] = $catmap[$ccatid];
-                $icats[] = $ccatid;
-            }
-            if ($config['news_multicat_url'])
-                break;
-        }
-        $clist = implode("-", $ccats);
-        $ilist = implode("-", $icats);
-    }
-
-    // Get full news link
-    $params = array('category' => $clist, 'catid' => $ilist, 'altname' => $row['alt_name'], 'id' => $row['id'], 'zid' => sprintf('%04u', $row['id']), 'year' => date('Y', $row['postdate']), 'month' => date('m', $row['postdate']), 'day' => date('d', $row['postdate']));
-    if ($page)
-        $params['page'] = $page;
-
-    return generateLink('news', $flagPrint ? 'print' : 'news', $params, array(), false, $absoluteLink);
-}
-
-// Fill variables for news:
-// * $row		- SQL row
-// * $fullMode		- flag if desired mode is full
-// * $page		- page No to show in full mode
-// * $disablePagination	- flag if pagination should be disabled
-// * $regenShortNews	- array, describe what to do with `short news`
-//	mode:
-//		''	- no modifications
-//		'auto'	- generate short news from long news in case if short news is empty
-//		'force'	- generate short news from long news in any case
-//	len		- size in chars for part of long news to use
-//	finisher	- chars that will be added into the end to indicate that this is truncated line ( default = '...' )
-//function Prepare($row, $page) {
-function newsFillVariables($row, $fullMode, $page = 0, $disablePagination = 0, $regenShortNews = array())
-{
-    global $config, $parse, $catz, $catmap, $CurrentHandler, $currentCategory, $TemplateCache, $mysql, $PHP_SELF;
-
-    $tvars = array(
-        'vars' => array(
-            'news' => array('id' => $row['id']),
-            'pagination' => '',
-        ),
-        'flags' => array()
-    );
-
-    $alink = checkLinkAvailable('uprofile', 'show') ?
-        generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])) :
-        generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['author'], 'id' => $row['author_id']));
-
-    // [TWIG] news.author.*
-    $tvars['vars']['news']['author']['name'] = $row['author'];
-    $tvars['vars']['news']['author']['id'] = $row['author_id'];
-    $tvars['vars']['news']['author']['url'] = $alink;
-
-    // [TWIG] number of comments
-    if (getPluginStatusActive('comments'))
-        $tvars['vars']['p']['comments']['count'] = $row['com'];
-
-    $tvars['vars']['author'] = '<a href="' . $alink . '" target="_blank">' . $row['author'] . '</a>';
-    $tvars['vars']['author_link'] = $alink;
-    $tvars['vars']['author_name'] = $row['author'];
-
-    // [TWIG] news.flags.fullMode: if we're in full mode
-    $tvars['vars']['news']['flags']['isFullMode'] = $fullMode ? true : false;
-
-    $nlink = newsGenerateLink($row);
-
-    // Divide into short and full content
-    if ($config['extended_more']) {
-        if (preg_match('#^(.*?)\<\!--more(?:\="(.+?)"){0,1}--\>(.+)$#is', $row['content'], $pres)) {
-            $short = $pres[1];
-            $full = $pres[3];
-            $more = $pres[2];
-        } else {
-            $short = $row['content'];
-            $full = '';
-            $more = '';
-        }
-    } else {
-        list ($short, $full) = array_pad(explode('<!--more-->', $row['content']), 2, '');
-        $more = '';
-    }
-    // Default page number
-    $page = 1;
-
-    // Check if long part is divided into several pages
-    if ($full and (!$disablePagination) and (mb_strpos($full, '<!--nextpage-->', 0, 'UTF-8') !== false)) {
-        $page = intval(isset($CurrentHandler['params']['page']) ? $CurrentHandler['params']['page'] : (isset($_REQUEST['page']) ? $_REQUEST['page'] : 0));
-        if ($page < 1) $page = 1;
-
-        $pagination = '';
-        $pages = explode('<!--nextpage-->', $full);
-        $pcount = count($pages);
-
-        // [TWIG] news.pageCount, pageNumber
-        $tvars['vars']['news']['pageCount'] = count($pages);
-        $tvars['vars']['news']['pageNumber'] = $page;
-
-        $tvars['vars']['pageCount'] = count($pages);
-        $tvars['vars']['page'] = $page;
-
-        if ($pcount > 1) {
-            // Prepare VARS for pagination
-            $catid = intval(array_shift(explode(',', $row['catid'])));
-
-            $cname = 'none';
-            if ($catid and isset($catmap[$catid]))
-                $cname = $catmap[$catid];
-
-            // Generate pagination within news
-            $paginationParams = checkLinkAvailable('news', 'news') ?
-                array('pluginName' => 'news', 'pluginHandler' => 'news', 'params' => array('category' => $cname, 'catid' => $catid, 'altname' => $row['alt_name'], 'id' => $row['id']), 'xparams' => array(), 'paginator' => array('page', 0, false)) :
-                array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'news', 'handler' => 'news'), 'xparams' => array('category' => $cname, 'catid' => $catid, 'altname' => $row['alt_name'], 'id' => $row['id']), 'paginator' => array('page', 1, false));
-
-            templateLoadVariables(true);
-            $navigations = $TemplateCache['site']['#variables']['navigation'];
-
-            // Show pagination bar
-            $tvars['vars']['pagination'] = generatePagination($page, 1, $pcount, 10, $paginationParams, $navigations);
-
-            // [TWIG] news.pagination
-            $tvars['vars']['news']['pagination'] = $tvars['vars']['pagination'];
-
-            if ($page > 1) {
-                $tvars['vars']['short-story'] = '';
-            }
-            $full = $pages[$page - 1];
-            $tvars['vars']['[pagination]'] = '';
-            $tvars['vars']['[/pagination]'] = '';
-            $tvars['vars']['news']['flags']['hasPagination'] = true;
-        }
-    } else {
-        $tvars['regx']["'\[pagination\].*?\[/pagination\]'si"] = '';
-        $tvars['vars']['news']['flags']['hasPagination'] = false;
-    }
-
-    // Conditional blocks for full-page
-    if ($full) {
-        $tvars['regx']['#\[page-first\](.*?)\[\/page-first\]#si'] = ($page < 2) ? '$1' : '';
-        $tvars['regx']['#\[page-next\](.*?)\[\/page-next\]#si'] = ($page > 1) ? '$1' : '';
-    }
-
-    // Delete "<!--nextpage-->" if pagination is disabled
-    if ($disablePagination)
-        $full = str_replace('<!--nextpage-->', "\n", $full);
-
-    // If HTML code is not permitted - LOCK it
-    $title = $row['title'];
-
-    if (!($row['flags'] & 2)) {
-        $short = str_replace('<', '&lt;', $short);
-        $full = str_replace('<', '&lt;', $full);
-        $title = secure_html($title);
-    }
-    $tvars['vars']['title'] = $title;
-
-    // [TWIG] news.title
-    $tvars['vars']['news']['title'] = $row['title'];
-
-    // Make conversion
-    if ($config['blocks_for_reg']) {
-        $short = $parse->userblocks($short);
-        $full = $parse->userblocks($full);
-    }
-    if ($config['use_bbcodes']) {
-        $short = $parse->bbcodes($short);
-        $full = $parse->bbcodes($full);
-    }
-    if ($config['use_htmlformatter'] and (!($row['flags'] & 1))) {
-        $short = $parse->htmlformatter($short);
-        $full = $parse->htmlformatter($full);
-    }
-    if ($config['use_smilies']) {
-        $short = $parse->smilies($short);
-        $full = $parse->smilies($full);
-    }
-    if (1 and templateLoadVariables()) {
-
-        $short = $parse->parseBBAttach($short, $mysql, $TemplateCache['site']['#variables']);
-        $full = $parse->parseBBAttach($full, $mysql, $TemplateCache['site']['#variables']);
-    }
-
-    // Check if we need to regenerate short news
-    if (isset($regenShortNews['mode']) and (trim($regenShortNews['mode']))) {
-        if ((($regenShortNews['mode'] == 'force') or (trim($short) == '')) and (trim($full))) {
-            // REGEN
-            if (!isset($regenShortNews['len']) or (intval($regenShortNews['len']) < 0)) {
-                $regenShortNews['len'] = 50;
-            }
-            if (!isset($regenShortNews['finisher'])) {
-                $regenShortNews['finisher'] = '&nbsp;...';
-            }
-            $short = $parse->truncateHTML($full, $regenShortNews['len'], $regenShortNews['finisher']);
-        }
-
-    }
-
-    $tvars['vars']['short-story'] = $short;
-    $tvars['vars']['full-story'] = $full;
-
-    // [TWIG] news.short, news.full
-    $tvars['vars']['news']['short'] = $short;
-    $tvars['vars']['news']['full'] = $full;
-
-    // Activities for short mode
-    if (!$fullMode) {
-        // Make link for full news
-        $tvars['vars']['[full-link]'] = "<a href=\"" . $nlink . "\">";
-        $tvars['vars']['[/full-link]'] = "</a>";
-
-        $tvars['vars']['[link]'] = "<a href=\"" . $nlink . "\">";
-        $tvars['vars']['[/link]'] = "</a>";
-
-        $tvars['vars']['full-link'] = $nlink;
-
-        // Make blocks [fullnews] .. [/fullnews] and [nofullnews] .. [/nofullnews]
-        $tvars['vars']['news']['flags']['hasFullNews'] = mb_strlen($full, 'UTF-8') ? true : false;
-        if (mb_strlen($full, 'UTF-8')) {
-            // we have full news
-            $tvars['vars']['[fullnews]'] = '';
-            $tvars['vars']['[/fullnews]'] = '';
-
-            $tvars['regx']["'\[nofullnews\].*?\[/nofullnews\]'si"] = '';
-        } else {
-            // we have ONLY short news
-            $tvars['vars']['[nofullnews]'] = '';
-            $tvars['vars']['[/nofullnews]'] = '';
-
-            $tvars['regx']["'\[fullnews\].*?\[/fullnews\]'si"] = '';
-
-        }
-
-    } else {
-        $tvars['regx']["#\[full-link\].*?\[/full-link\]#si"] = '';
-        $tvars['regx']["#\[link\](.*?)\[/link\]#si"] = '$1';
-    }
-
-    $tvars['vars']['pinned'] = ($row['pinned']) ? "news_pinned" : "";
-
-    $tvars['vars']['category'] = @GetCategories($row['catid']);
-    $tvars['vars']['masterCategory'] = @GetCategories($row['catid'], false, true);
-
-    // [TWIG] news.categories.*
-    $tCList = makeCategoryInfo($row['catid']);
-    $tvars['vars']['news']['categories']['count'] = count($tCList);
-    $tvars['vars']['news']['categories']['list'] = $tCList;
-    $tvars['vars']['news']['categories']['masterText'] = count($tCList) > 0 ? $tCList[0]['text'] : '';
-
-    $tCTextList = array();
-    foreach ($tCList as $tV)
-        $tCTextList [] = $tV['text'];
-
-    $tvars['vars']['news']['categories']['text'] = join(", ", $tCTextList);
-
-
-    $tvars['vars']['[print-link]'] = "<a href=\"" . newsGenerateLink($row, true, $page) . "\">";
-    $tvars['vars']['print-link'] = newsGenerateLink($row, true, $page);
-    $tvars['vars']['print_link'] = newsGenerateLink($row, true, $page);
-    $tvars['vars']['[/print-link]'] = "</a>";
-    $tvars['vars']['news_link'] = $nlink;
-
-    // [TWIG] news.url
-    $tvars['vars']['news']['url'] = array(
-        'full' => $nlink,
-        'print' => newsGenerateLink($row, true, $page),
-    );
-
-    // [TWIG] news.flags.isPinned
-    $tvars['vars']['news']['flags']['isPinned'] = ($row['pinned']) ? true : false;
-
-    $tvars['vars']['news-id'] = $row['id'];
-    $tvars['vars']['news_id'] = $row['id'];
-    $tvars['vars']['php-self'] = $PHP_SELF;
-
-    $tvars['vars']['date'] = Lang::retDate(timestamp, $row['postdate']);
-    $tvars['vars']['views'] = $row['views'];
-
-    // [TWIG] news.date, news.dateStamp, news.views
-    $tvars['vars']['news']['date'] = Lang::retDate(timestamp, $row['postdate']);
-    $tvars['vars']['news']['dateStamp'] = $row['postdate'];
-    $tvars['vars']['news']['views'] = $row['views'];
-
-    if ($row['editdate'] > $row['postdate']) {
-        // [TWIG] news.flags.isUpdated, news.update, news.updateStamp
-        $tvars['vars']['news']['flags']['isUpdated'] = true;
-        $tvars['vars']['news']['update'] = Lang::retDate($config['timestamp_updated'], $row['editdate']);
-        $tvars['vars']['news']['updateStamp'] = $row['editdate'];
-
-        $tvars['regx']['[\[update\](.*)\[/update\]]'] = '$1';
-        $tvars['vars']['update'] = Lang::retDate($config['timestamp_updated'], $row['editdate']);
-        $tvars['vars']['updateStamp'] = $row['editdate'];
-    } else {
-        // [TWIG] news.flags.isUpdated, news.update, news.updateStamp
-        $tvars['vars']['news']['flags']['isUpdated'] = false;
-
-        $tvars['regx']['[\[update\](.*)\[/update\]]'] = '';
-        $tvars['vars']['update'] = '';
-    }
-
-    if ($more == '') {
-        // [TWIG] news.flags.hasPersonalMore
-        $tvars['vars']['news']['flags']['hasPersonalMore'] = false;
-
-        $tvars['vars']['[more]'] = '';
-        $tvars['vars']['[/more]'] = '';
-    } else {
-        // [TWIG] news.flags.hasPersonalMore, news.personalMore
-        $tvars['vars']['news']['flags']['hasPersonalMore'] = true;
-        $tvars['vars']['news']['personalMore'] = $more;
-
-        $tvars['vars']['personalMore'] = $more;
-        $tvars['regx']['#\[more\](.*?)\[/more\]#is'] = $more;
-    }
-
-    return $tvars;
 }
 
 // Fetch metatags rows
@@ -1915,7 +1577,9 @@ function twigDebugContext($context)
 // Notify kernel about script termination, used for statistics calculation
 function coreNormalTerminate($mode = 0)
 {
-    global $mysql, $timer, $config, $userROW, $systemAccessURL;
+    global $mysql, $config, $userROW, $systemAccessURL;
+
+    $timer = MicroTimer::instance();
 
     $exectime = $timer->stop();
     $now = localtime(time(), true);
@@ -2046,7 +1710,7 @@ function coreUserMenu()
         $tVars['addnews_link'] = $config['admin_url'] . '/admin.php?mod=news&amp;action=add';
         $tVars['logout_link'] = generateLink('core', 'logout');
         $tVars['name'] = $userROW['name'];
-        $tVars['phtumb_url'] = photos_url . '/' . (($userROW['photo'] != "") ? 'thumb/' . $userROW['photo'] : 'nophoto.gif');
+        $tVars['phtumb_url'] = photos_url . '/' . (($userROW['photo'] != '') ? 'thumb/' . $userROW['photo'] : 'nophoto.gif');
         $tVars['home_url'] = home;
 
         // Generate avatar link

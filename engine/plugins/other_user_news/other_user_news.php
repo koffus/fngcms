@@ -70,7 +70,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 
  foreach ($mysql->select($sql) as $row) {
  
- $news_link = newsGenerateLink($row);
+ $news_link = News::generateLink($row);
  $categories = GetCategories($row['catid']);
  
  $short_news = '';

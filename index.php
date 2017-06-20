@@ -121,7 +121,6 @@ $template['vars']["[/sitelock]"] = '';
 // You may modify variable $systemAccessURL here (for hacks) //
 // /////////////////////////////////////////////////////////// //
 
-// /////////////////////////////////////////////////////////// //
 $timer->registerEvent('Search route for URL "' . $systemAccessURL . '"');
 
 // Give domainName to URL handler engine for generating absolute links
@@ -177,7 +176,7 @@ foreach ($EXTRA_CSS as $css => $null)
     $EXTRA_HTML_VARS[] = array('type' => 'css', 'data' => $css);
 
 // Generate metatags
-array_unshift($EXTRA_HTML_VARS, array('type' => 'plain', 'data' => GetMetatags())); //$EXTRA_HTML_VARS[]=array('type' =>'plain','data' =>GetMetatags());
+array_unshift($EXTRA_HTML_VARS, array('type' => 'plain', 'data' => GetMetatags()));
 
 // Fill additional HTML vars
 $htmlrow = array();

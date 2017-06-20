@@ -44,7 +44,7 @@ global $PLUGINS, $EXTRA_HTML_VARS, $EXTRA_CSS;
 global $AUTH_METHOD, $AUTH_CAPABILITIES, $PPAGES, $PFILTERS, $RPCFUNC, $TWIGFUNC;
 global $RPCADMFUNC, $SUPRESS_TEMPLATE_SHOW, $SUPRESS_MAINBLOCK_SHOW, $SYSTEM_FLAGS;
 global $DSlist, $PERM, $confPerm, $confPermUser, $systemAccessURL, $cron;
-global $timer, $mysql, $ip, $parse, $tpl;
+global $mysql, $ip, $parse, $tpl;
 global $TemplateCache, $siteDomainName;
 global $currentHandler, $ngTrackID, $ngCookieDomain;
 global $twigGlobal, $twig, $twigLoader, $twigStringLoader;
@@ -175,7 +175,7 @@ if (($tmp_pos = strpos($systemAccessURL, '?')) !== FALSE)
 // Initialize system libraries
 // ============================================================================
 // ** Time measurement functions
-$timer = new microTimer;
+$timer = MicroTimer::instance();
 $timer->start();
 
 // ** Multisite engine
@@ -365,7 +365,7 @@ if ($is_logged)
     @define('name', $userROW['name']);
 
 // Init internal cron module
-$cron = new cronManager();
+$cron = new CronManager();
 
 // ** Load action handlers for action 'all'
 loadActionHandlers('all');

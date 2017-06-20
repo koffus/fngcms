@@ -147,7 +147,7 @@ function top_news(){
 			
 			$tvars['vars'] = array(
 				'short_news' => $short_news,
-				'link' => newsGenerateLink($row),
+				'link' => News::generateLink($row),
 				'views' => $row['views'],
 				'alt.news' => $row['alt_name'],
 				'alt.cat' => !strstr($row['catid'], ',') ? $catmap[$row['catid']] : '',
@@ -168,7 +168,7 @@ function top_news(){
 			# show edit news button
 			if (is_array($userROW) && ($row['author_id'] == $userROW['id'] or $userROW['status'] == "1" or $userROW['status'] == "2")){ 
 					$tvars['vars']['[edit-news]'] = "<a href='".admin_url."/admin.php?mod=news&amp;action=edit&amp;id={$row['id']}' target='_blank'>"; 
-					$tvars['vars']['[/edit-news]'] = "</a>";
+					$tvars['vars']['[/edit-news]'] = '</a>';
 			} 
 			else {
 					$tvars['regx']["#\[edit-news\].*?\[/edit-news\]#si"] = ""; 

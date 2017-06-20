@@ -61,14 +61,14 @@ function admNewsRPCdouble($params) {
 	}
 	$SQL['search'] = "(". join(" OR ", $search_array).")";
 	if ( intval(secure_html($params['news_id'])) )
-		$SQL['search'] .= " AND id !=".$mysql->db_quote(intval($params['news_id']))."";
+		$SQL['search'] .= " AND id !=".$mysql->db_quote(intval($params['news_id']));
 
 	$selectResult = $mysql->select( "SELECT id, title, catid, alt_name FROM ".prefix."_news WHERE ".$SQL['search'], 1 );
 
 	foreach ($selectResult as $row) {
 		$data[] = array(
 			'id' => intval($row['id']),
-			'url' => newsGenerateLink($row),
+			'url' => News::generateLink($row),
 			'title' => secure_html($row['title']),
 			);
 	}

@@ -71,7 +71,7 @@ function plugin_complain_screen() {
  'error' => $elist[$crow['error_code']].($crow['error_text']?' (<span style="cursor: pointer;" onclick="alert(ETEXT['.$crow['id'].']);">*</span>)':''),
  'ccount' => ($crow['ccount']>1)?('(<b>'.$crow['ccount'].'</b>)'):'',
  'title' => $crow['n_title'],
- 'link' => newsGenerateLink(array('catid' => $crow['n_catid'], 'alt_name' => $crow['n_alt_name'], 'id' => $crow['n_id'], 'postdate' => $crow['n_postdate']), false, 0, true),
+ 'link' => News::generateLink(array('catid' => $crow['n_catid'], 'alt_name' => $crow['n_alt_name'], 'id' => $crow['n_id'], 'postdate' => $crow['n_postdate']), false, 0, true),
  'publisher_name' => $crow['publisher_id']?$crow['publisher_name']:'',
  'publisher_ip' => $crow['publisher_ip'],
  'author_name' => $crow['author_name'],
@@ -173,7 +173,7 @@ function plugin_complain_post() {
  	 $cdata['ds_id'] = intval($_REQUEST['ds_id']);
  	 $cdata['id'] = $dse['id'];
  	 $cdata['title'] = $dse['title'];
- 	 $cdata['link'] = newsGenerateLink($dse, false, 0, true);
+ 	 $cdata['link'] = News::generateLink($dse, false, 0, true);
  	 $cdata['author'] = $dse['author'];
  	 $cdata['author_id'] = $dse['author_id'];
  	 $cdata['author_mail'] = $dse['mail'];
@@ -335,7 +335,7 @@ function plugin_complain_update() {
  	 $cdata['ds_id'] = intval($_REQUEST['ds_id']);
  	 $cdata['id'] = $dse['id'];
  	 $cdata['title'] = $dse['title'];
- 	 $cdata['link'] = newsGenerateLink($dse, false, 0, true);
+ 	 $cdata['link'] = News::generateLink($dse, false, 0, true);
  	 $cdata['author'] = $dse['author'];
  	 $cdata['author_id'] = $dse['author_id'];
  	 $cdata['author_mail'] = $dse['mail'];

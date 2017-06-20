@@ -185,7 +185,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 			$tvars['vars']['edit_link'] = $edit_link;
 			$tvars['regx']["'\[del-com\](.*?)\[/del-com\]'si"] = '$1';
 			$tvars['vars']['delete_link'] = $delete_link;
-			$tvars['vars']['ip'] = "<a href=\"http://www.nic.ru/whois/?ip=$row[ip]\" title=\"".__('whois')."\">".__('whois')."</a>";
+			$tvars['vars']['ip'] = "<a href=\"http://www.nic.ru/whois/?ip=$row[ip]\" title=\"".__('whois')."\">".__('whois').'</a>';
 			$tvars['vars']['[if-have-perm]'] = '';
 			$tvars['vars']['[/if-have-perm]'] = '';
 		} else {

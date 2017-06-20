@@ -105,7 +105,7 @@ class SimilarNewsfilter extends NewsFilter {
 					$txvars['vars']['date'] = str_replace(array('{day}', '{day0}', '{month}', '{month0}', '{year}', '{year2}', '{month_s}', '{month_l}'),
 							array(date('j',$similar['si_refNewsDate']), date('d',$similar['si_refNewsDate']), date('n',$similar['si_refNewsDate']), date('m',$similar['si_refNewsDate']), date('y',$similar['si_refNewsDate']), date('Y',$similar['si_refNewsDate']), $langShortMonths[date('n',$similar['si_refNewsDate'])-1], $langMonths[date('n',$similar['si_refNewsDate'])-1]), $dformat);
 					$txvars['vars']['title'] = $similar['si_refNewsTitle'];
-					$txvars['vars']['url'] = newsGenerateLink($similar);
+					$txvars['vars']['url'] = News::generateLink($similar);
 
 					// Execute filters [ if requested ]
 					if (pluginGetVariable('similar', 'pcall') && is_array($PFILTERS['news']))

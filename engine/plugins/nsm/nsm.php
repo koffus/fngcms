@@ -98,7 +98,7 @@ function plugin_nsm(){
  'cats' => $cats,
  'allcats' => resolveCatNames($cats).' &nbsp;',
  'title' => secure_html((mb_strlen($row['title'], 'UTF-8') > 70) ? mb_substr($row['title'],0,70, 'UTF-8')." ...":$row['title']),
- 'link' => newsGenerateLink($row, false, 0, true),
+ 'link' => News::generateLink($row, false, 0, true),
  'state' => $row['approve'],
  'editlink' => generatePluginLink('nsm', 'edit',array('id' => $row['id']), array('id' => $row['id'])),
  'editlink1' => generatePluginLink('nsm', 'edit1',array('id' => $row['id']), array('id' => $row['id'])),

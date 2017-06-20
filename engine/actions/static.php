@@ -67,7 +67,7 @@ function listStatic() {
 					generateLink('core', 'plugin', array('plugin' => 'static'), array('altname' => $row['alt_name'], 'id' => $row['id']), false, true);
 
 		$tEntry['url']		= $row['approve']?('<a href="'.$link.'" target="_blank">'.$link.'</a>'):'';
-		$tEntry['title']	= str_replace(array("'", "\""), array("&#039;", "&quot;"), $row['title']);
+		$tEntry['title']	= str_replace(array("'", '"'), array("&#039;", "&quot;"), $row['title']);
 		$tEntry['status']	= ($row['approve']) ? '<img src="'.skins_url.'/images/yes.png" alt="'.__('approved').'" />' : '<img src="'.skins_url.'/images/no.png" alt="'.__('unapproved').'" />';
 
 		$tEntries []= $tEntry;
@@ -275,7 +275,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 			'template' => getIsSet($row['template']),
 			'description' => getIsSet($row['description']),
 			'keywords' => getIsSet($row['keywords']),
-			'cdate'				=> !empty($row['postdate'])?date('d.m.Y H:i', $row['postdate']):"",
+			'cdate'				=> !empty($row['postdate'])?date('d.m.Y H:i', $row['postdate']):'',
 			'flag_published' => getIsSet($row['approve']) ? $row['approve'] : 1,
 			'flag_raw'				=> (getIsSet($row['flags']) % 2)?1:0,
 			'flag_html'				=> ((getIsSet($row['flags'])/2) % 2)?1:0,

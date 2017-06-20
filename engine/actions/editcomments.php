@@ -70,7 +70,7 @@ function editcomment() {
 
 			if ($content && $_REQUEST['send_notice'] && $mail) {
 				$row = $mysql->record("select * from ".prefix."_news where id=".db_squote($newsid));
-				$newsLink = newsGenerateLink($row, false, 0, true);
+				$newsLink = News::generateLink($row, false, 0, true);
 				sendEmailMessage($mail, __('comanswer'), sprintf(__('notice'), $userROW['name'], $content, $newsLink), 'html');
 			}
 

@@ -335,10 +335,10 @@ function manage_showlist($type) {
 	$authorlist = '';
 	if ($userROW['status'] == 4) {
 		// Just commentors. They will see only their files
-		$authorlist = "<option value=\"".$userROW['name']."\">".$userROW['name']."</option>";
+		$authorlist = '<option value="'.$userROW['name'].'">'.$userROW['name'].'</option>';
 	} else {
 		foreach ($mysql->select("select user, owner_id, count(id) cnt from ".prefix."_".$fmanager->tname." where (linked_ds = 0) and (linked_id = 0) group by owner_id order by user") as $row) {
-			$authorlist .= "<option value=\"".$row['user']."\"".($row['user']==$_REQUEST['author']?' selected':'').">".$row['user']."(".$row['cnt'].")</option>\n";
+			$authorlist .= '<option value="'.$row['user'].'"'.($row['user']==$_REQUEST['author']?' selected':'').'>'.$row['user'].'('.$row['cnt'].')</option>';
 		}
 	}
 

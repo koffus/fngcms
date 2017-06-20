@@ -26,7 +26,7 @@ class Database
 
     public function connect($host, $user, $pass, $db = '', $noerror = 0)
     {
-        global $timer;
+        $timer = MicroTimer::instance();
 
         $this->dbhost = $host;
         $this->dbuser = $user;
@@ -61,7 +61,7 @@ class Database
 
     public function query($sql)
     {
-        global $timer;
+        $timer = MicroTimer::instance();
 
         if ($this->queryTimer) {
             $tX = $timer->stop(4);
@@ -88,7 +88,8 @@ class Database
 
     public function select($sql, $assocMode = 1)
     {
-        global $timer;
+        $timer = MicroTimer::instance();
+
         if ($this->queryTimer) {
             $tX = $timer->stop(4);
         }
@@ -131,7 +132,8 @@ class Database
 
     public function record($sql, $assocMode = 1)
     {
-        global $timer;
+        $timer = MicroTimer::instance();
+
         if ($this->queryTimer) {
             $tX = $timer->stop(4);
         }
@@ -171,7 +173,8 @@ class Database
 
     public function result($sql)
     {
-        global $timer;
+        $timer = MicroTimer::instance();
+
         if ($this->queryTimer) {
             $tX = $timer->stop(4);
         }

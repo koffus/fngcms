@@ -21,13 +21,13 @@ class parse {
 	// Scan URL and normalize it to convert to absolute path
 	// Check for XSS
 	function normalize_url($url){
-		if (((substr($url,0,1) == "\"") && (substr($url,-1,1) == "\""))||
-			((substr($url,0,1) == "'") && (substr($url,-1,1) == "'" ))) {
+		if (((substr($url,0,1) == '"') and (substr($url,-1,1) == '"'))||
+			((substr($url,0,1) == "'") and (substr($url,-1,1) == "'" ))) {
 			$url = substr($url, 1, strlen($url)-2);
 		}
 
 		// Check for XSS attack
-		$urlXSS = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", "\"", ";"),'',$url);
+		$urlXSS = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", '"', ";"),'',$url);
 		if (preg_match('/^javascript:/is', $urlXSS)) {
 			return false;
 		}
@@ -86,7 +86,7 @@ class parse {
 						 else if ((($x >='A')&&($x <='Z'))||(($x >='a')&&($x <='z'))) { $state = 4; $keyValue = $x; }
 						 break;
 				case 4: if ((($quotes == 1)&&($x == "'"))||(($quotes == 2)&&($x == '"'))) { $quotes = 0; $state=5; }
-						 else if (!$quotes && (($x == ' ')||($x == chr(9)))) { $state = 5; }
+						 else if (!$quotes and (($x == ' ')||($x == chr(9)))) { $state = 5; }
 						 else { $keyValue .= $x; }
 						 break;
 			}
@@ -184,18 +184,18 @@ class parse {
 
 				// Check for possible error in case of using "]" within params/url
 				// Ex: [url="file[my][super].avi" target="_blank"]F[I]LE[/url] is parsed incorrectly
-				if ((strpos($alt, ']') !== false) && (strpos($alt, "\"") !== false)) {
+				if ((strpos($alt, ']') !== false) and (strpos($alt, '"') !== false)) {
 					// Possible bracket error. Make deep analysis
 					$jline = $paramLine.']'.$alt;
 					$brk = 0;
 					$jlen = strlen($jline);
 					for ($ji = 0; $ji < $jlen; $ji++) {
-						if ($jline[$ji] == "\"") {
+						if ($jline[$ji] == '"') {
 							$brk = !$brk;
 							continue;
 						}
 
-						if ((!$brk) && ($jline[$ji] == ']')) {
+						if ((!$brk) and ($jline[$ji] == ']')) {
 							// Found correct delimiter
 							$paramLine = substr($jline, 0, $ji);
 							$alt = substr($jline, $ji+1);
@@ -244,12 +244,12 @@ class parse {
 								$outkeys[] = $kn.'="'.strtolower($kv).'"';
 							break;
 						case 'class':
-							$v = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", "\"", ";", ":", '<', '>', '&', '[', ']'),'',$kv);
+							$v = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", '"', ";", ":", '<', '>', '&', '[', ']'),'',$kv);
 							$outkeys [] = $kn.'="'.$v.'"';
 							break;
 						case 'alt':
 						case 'title':
-							$v = str_replace(array("\"", '[', ']', ord(0), ord(9), ord(10), ord(13), ":", '<', '>', '&'),array("'",'%5b', '%5d', ''),$kv);
+							$v = str_replace(array('"', '[', ']', ord(0), ord(9), ord(10), ord(13), ":", '<', '>', '&'),array("'",'%5b', '%5d', ''),$kv);
 							$outkeys [] = $kn.'="'.$v.'"';
 							break;
 					}
@@ -285,18 +285,18 @@ class parse {
 
 				// Check for possible error in case of using "]" within params/url
 				// Ex: [url="file[my][super].avi" target="_blank"]F[I]LE[/url] is parsed incorrectly
-				if ((strpos($alt, ']') !== false) && (strpos($alt, "\"") !== false)) {
+				if ((strpos($alt, ']') !== false) and (strpos($alt, '"') !== false)) {
 					// Possible bracket error. Make deep analysis
 					$jline = $paramLine.']'.$alt;
 					$brk = 0;
 					$jlen = strlen($jline);
 					for ($ji = 0; $ji < $jlen; $ji++) {
-						if ($jline[$ji] == "\"") {
+						if ($jline[$ji] == '""') {
 							$brk = !$brk;
 							continue;
 						}
 
-						if ((!$brk) && ($jline[$ji] == ']')) {
+						if ((!$brk) and ($jline[$ji] == ']')) {
 							// Found correct delimiter
 							$paramLine = substr($jline, 0, $ji);
 							$alt = substr($jline, $ji+1);
@@ -338,15 +338,15 @@ class parse {
 				$flagExternalURL = false;
 
 				$dn = parse_url($urlREF);
-				if (strlen($dn['host']) && !in_array($dn['host'], $SYSTEM_FLAGS['mydomains'])) { $flagExternalURL = true; }
+				if (strlen($dn['host']) and !in_array($dn['host'], $SYSTEM_FLAGS['mydomains'])) { $flagExternalURL = true; }
 
 				// Check for rel=nofollow request for external links
 
-				if ($config['url_external_nofollow'] && $flagExternalURL) {
+				if ($config['url_external_nofollow'] and $flagExternalURL) {
 					$outkeys [] = 'rel="nofollow"';
 				}
 
-				if ($config['url_external_target_blank'] && $flagExternalURL && !isset($keys['target'])) {
+				if ($config['url_external_target_blank'] and $flagExternalURL and !isset($keys['target'])) {
 					$outkeys [] = 'target="_blank"';
 				}
 
@@ -355,11 +355,11 @@ class parse {
 					switch ($kn) {
 						case 'class':
 						case 'target':
-							$v = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", "\"", ";", ":", '<', '>', '&', '[', ']'),'',$kv);
+							$v = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", '"', ";", ":", '<', '>', '&', '[', ']'),'',$kv);
 							$outkeys [] = $kn.'="'.$v.'"';
 							break;
 						case 'title':
-							$v = str_replace(array("\"", '[', ']', ord(0), ord(9), ord(10), ord(13), ":", '<', '>', '&'),array("'",'%5b', '%5d', ''),$kv);
+							$v = str_replace(array('"', '[', ']', ord(0), ord(9), ord(10), ord(13), ":", '<', '>', '&'),array("'",'%5b', '%5d', ''),$kv);
 							$outkeys [] = $kn.'="'.$v.'"';
 							break;
 					}
@@ -437,7 +437,7 @@ class parse {
 		foreach ($smilies_arr as $null => $smile) {
 			$smile		= trim($smile);
 			$find[]		= "':$smile:'";
-			$replace[]	= "<img class=\"smilies\" alt=\"$smile\" src=\"".skins_url."/smilies/$smile.gif\" />";
+			$replace[]	= '<img class="smilies" alt="'.$smile.'" src="'.skins_url.'/smilies/'.$smile.'.gif" />';
 		}
 		return preg_replace($find, $replace, $content);
 	}
@@ -460,7 +460,7 @@ class parse {
 		$content = preg_replace("/\s+/ms", "-", $content);
 		$content = preg_replace("/[ ]+/", "-", $content);
 
-		$content = preg_replace("/[^a-z0-9_\-\.".($allowSlash?'\/':'')."]+/mi", "", $content);
+		$content = preg_replace("/[^a-z0-9_\-\.".($allowSlash?'\/':'')."]+/mi", '', $content);
 		$content = preg_replace("#-(-)+#", "-", $content);
 
 		return $content;
@@ -470,10 +470,10 @@ class parse {
 		$style = $arr['style'];
 		$text = $arr['text'];
 		$style = str_replace('&quot;', '', $style);
-		$style = preg_replace("/[&\(\)\.\%\[\]<>\'\"]/", "", preg_replace( "#^(.+?)(?:;|$)#", "$1", $style ));
-		$style = preg_replace("/[^\d\w\#\s]/s", "", $style);
+		$style = preg_replace("/[&\(\)\.\%\[\]<>\'\"]/", '', preg_replace( "#^(.+?)(?:;|$)#", "$1", $style ));
+		$style = preg_replace("/[^\d\w\#\s]/s", '', $style);
 
-		return "<span style=\"color:".$style."\">".$text."</span>";
+		return '<span style="color:'.$style.'">'.$text.'</span>';
 	}
 
 	// Functions for HTML truncator
@@ -542,7 +542,7 @@ class parse {
 					if (is_array($rec)) {
 						// Generate file ULR
 						$fname = ($rec['storage']?$config['attach_dir']:$config['files_dir']).$rec['folder'].'/'.$rec['name'];
-						$fsize = (file_exists($fname) && ($fsize = @filesize($fname)))?Formatsize($fsize):'n/a';
+						$fsize = (file_exists($fname) and ($fsize = @filesize($fname)))?Formatsize($fsize):'n/a';
 
 						$params = array(
 							'url' => ($rec['storage']?$config['attach_url']:$config['files_url']).'/'.$rec['folder'].'/'.$rec['name'],
@@ -585,7 +585,7 @@ class parse {
 									array_push($rdest, ($rec['storage']?$config['attach_url']:$config['files_url']).'/'.$rec['folder'].'/'.$rec['name']);
 								break;
 							case 'size':
-									array_push($rdest, (file_exists($fname) && ($fsize = @filesize($fname)))?Formatsize($fsize):'n/a');
+									array_push($rdest, (file_exists($fname) and ($fsize = @filesize($fname)))?Formatsize($fsize):'n/a');
 								break;
 							case 'name':
 									$dots = explode(".", $rec['orig_name']);

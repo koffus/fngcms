@@ -121,7 +121,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 		$tVars['news'] = array(
 			'id' => $nrow['id'],
 			'title' => $nrow['title'],
-			'url' => newsGenerateLink($nrow),
+			'url' => News::generateLink($nrow),
 
 		);
 	}
@@ -361,7 +361,7 @@ function plugin_feedback_post() {
 		$tVars['news'] = array(
 			'id' => $nrow['id'],
 			'title' => $nrow['title'],
-			'url' => newsGenerateLink($nrow, false, 0, true),
+			'url' => News::generateLink($nrow, false, 0, true),
 		);
 	}
 

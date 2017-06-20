@@ -432,7 +432,7 @@ function userList(){
 			'regdate' => Lang::retDate('j F Y - H:i', $row['reg']),
 			'lastdate' => (empty($row['last'])) ? __('no_last') : Lang::retDate('j F Y - H:i', $row['last']),
 			'flags' => array(
-				'isActive' => (!$row['activation']  or  $row['activation'] == "")?1:0,
+				'isActive' => (!$row['activation']  or  $row['activation'] == '')?1:0,
 			),
 		);
 

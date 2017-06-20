@@ -153,7 +153,7 @@ function editNewsForm() {
 
 	// Generate link for published news
 	if ($row['approve'] == 1) {
-		$tVars['link'] = newsGenerateLink($row, false, 0, true);
+		$tVars['link'] = News::generateLink($row, false, 0, true);
 	}
 
 	$tVars['flags']['can_publish']		= ((($row['approve'] == 1) && ($perm[$permGroupMode.'.modify.published'])) or (($row['approve'] < 1) && $perm[$permGroupMode.'.publish']))?1:0;
@@ -498,7 +498,7 @@ function listNewsForm() {
 			'itemdate' => date("d.m.Y",$row['postdate']),
 			'allcats' => resolveCatNames($cats).' &nbsp;',
 			'title' => secure_html((mb_strlen($row['title'], 'UTF-8') > 70) ? mb_substr($row['title'],0,70, 'UTF-8') . " ..." : $row['title']),
-			'link' => newsGenerateLink($row, false, 0, true),
+			'link' => News::generateLink($row, false, 0, true),
 			'state' => $row['approve'],
 			'flags' => array(
 				'comments' => getPluginStatusInstalled('comments')?true:false,

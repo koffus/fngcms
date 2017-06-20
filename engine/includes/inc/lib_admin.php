@@ -960,7 +960,7 @@ function editNews($mode = array()) {
 
 	// Fetch again news record and show it's link if news is published now
 	if (is_array($row = $mysql->record("select * from ".prefix."_news where id=".db_squote($id))) and ($row['approve'] > 0)) {
-		$nlink = newsGenerateLink($row, false, 0, true);
+		$nlink = News::generateLink($row, false, 0, true);
 		msg(array('title' => __('editnews')['msgo_edited'], 'message' => str_replace('{link}', $nlink, __('msgo_edited#link'))));
 	} else {
 		msg(array('message' => __('editnews')['msgo_edited']));

@@ -1,2 +1,4 @@
-<div class="block-title">{title}</div>
-{content}
+<article class="full-post">
+    <h1 class="section-title">{title}</h1>
+    {content}
+</article>

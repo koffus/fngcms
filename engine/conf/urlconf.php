@@ -607,4 +607,17 @@ $urlLibrary = array (
       ),
     ),
   ),
+  're_stat' => 
+  array (
+    'about' => 
+    array (
+      'vars' => 
+      array (
+      ),
+      'descr' => 
+      array (
+        'russian' => 'О нас',
+      ),
+    ),
+  ),
 );

@@ -165,7 +165,7 @@ function lastcomments($mode = 0) {
 		}
 
 		$data[] = array(
-			'link' => newsGenerateLink(array('id' => $row['nid'], 'alt_name' => $row['alt_name'], 'catid' => $row['catid'], 'postdate' => $row['npostdate'])),
+			'link' => News::generateLink(array('id' => $row['nid'], 'alt_name' => $row['alt_name'], 'catid' => $row['catid'], 'postdate' => $row['npostdate'])),
 			'date' => Lang::retDate('d.m.Y', $row['postdate']),
 			'dateStamp' => $row['postdate'],
 			'author' => str_replace('<', '&lt;', $row['author']),

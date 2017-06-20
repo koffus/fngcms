@@ -253,7 +253,7 @@ function comments_add(){
 					($SQL['author_id'])?'<a href="'.$alink.'">':'',
 					($SQL['author_id'])?'</a>':'',
 					$parse->bbcodes($parse->smilies(secure_html($SQL['text']))),
-					newsGenerateLink($news_row, false, 0, true),
+					News::generateLink($news_row, false, 0, true),
 					$news_row['title'],
 					),
 			__('notice')

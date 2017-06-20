@@ -29,10 +29,10 @@ function ParseQueries($sql)
 
             if (($unescaped_quotes % 2) == 0) {
                 $output[] = $queries[$i];
-                $queries[$i] = "";
+                $queries[$i] = '';
             } else {
                 $temp = $queries[$i] . ';';
-                $queries[$i] = "";
+                $queries[$i] = '';
                 $complete_stmt = false;
 
                 for ($j = $i + 1; (!$complete_stmt && ($j < $query_count)); $j++) {
@@ -42,13 +42,13 @@ function ParseQueries($sql)
 
                     if (($unescaped_quotes % 2) == 1) {
                         $output[] = $temp . $queries[$j];
-                        $queries[$j] = "";
-                        $temp = "";
+                        $queries[$j] = '';
+                        $temp = '';
                         $complete_stmt = true;
                         $i = $j;
                     } else {
                         $temp .= $queries[$j] . ';';
-                        $queries[$j] = "";
+                        $queries[$j] = '';
                     }
                 }
             }
@@ -122,7 +122,7 @@ function systemDboModify()
         }
 
         // Обновляем счетчик постов у юзеров
-        $mysql->query("update " . prefix . "_users set news = 0" . ($haveComments ? ", com = 0" : ""));
+        $mysql->query("update " . prefix . "_users set news = 0" . ($haveComments ? ", com = 0" : ''));
         foreach ($mysql->select("select author_id, count(*) as cnt from " . prefix . "_news group by author_id") as $row) {
             $mysql->query("update " . uprefix . "_users set news=" . $row['cnt'] . " where id = " . $row['author_id']);
         }

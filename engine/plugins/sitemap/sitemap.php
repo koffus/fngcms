@@ -77,7 +77,7 @@ function generateSitemap() {
 		$tEntry['news_'.$row['id']]['news_views'] = $row['views'];
 		$tEntry['news_'.$row['id']]['news_comms'] = $row['com'];
 		$tEntry['news_'.$row['id']]['news_cat'] = GetCategories($row['catid']);
-		$tEntry['news_'.$row['id']]['news_link'] = newsGenerateLink(array('catid' => $row['catid'], 'alt_name' => $row['alt_name'], 'id' => $row['id'], 'postdate' => $row['postdate']), false, 0, true);
+		$tEntry['news_'.$row['id']]['news_link'] = News::generateLink(array('catid' => $row['catid'], 'alt_name' => $row['alt_name'], 'id' => $row['id'], 'postdate' => $row['postdate']), false, 0, true);
 	}
 
 	$countStatic = $mysql->result("select COUNT(*) from ".prefix."_static ");

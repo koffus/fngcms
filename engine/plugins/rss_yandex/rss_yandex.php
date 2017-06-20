@@ -157,7 +157,7 @@ function plugin_rss_yandex_generate($catname = ''){
 
 		$output .= " <item>\n";
 		$output .= " <title><![CDATA[" . $twigString->render($newsTitleFormat, array('siteTitle' => $config['home_title'], 'newsTitle' => $row['title'], 'masterCategoryName' => $masterCategoryName)) . "]]></title>\n";
-		$output .= " <link><![CDATA[".newsGenerateLink($row, false, 0, true)."]]></link>\n";
+		$output .= " <link><![CDATA[".News::generateLink($row, false, 0, true)."]]></link>\n";
 		$output .= " <pubDate>".gmstrftime('%a, %d %b %Y %H:%M:%S GMT',$row['postdate'])."</pubDate>\n";
 
  $output .= " <yandex:full-text>".strip_tags((pluginGetVariable('rss_yandex','full_format')?$newsVars['short-story'].' ':'').$newsVars['full-story'])."</yandex:full-text>\n";
