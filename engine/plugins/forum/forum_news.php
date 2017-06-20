@@ -101,7 +101,7 @@ class CreateNewsFilter extends NewsFilter {
 					'.securemysql($id).'
 				)
 			');
-			$topic_id = $mysql->lastid('forum_topics');
+			$topic_id = $mysql->lastid(prefix . '_forum_topics');
 			
 			$mysql->query('insert into '.prefix.'_forum_posts (
 					author, 
@@ -120,7 +120,7 @@ class CreateNewsFilter extends NewsFilter {
 				)
 			');
 			
-			$post_id = $mysql->lastid('forum_posts');
+			$post_id = $mysql->lastid(prefix . '_forum_posts');
 			
 			$mysql->query('UPDATE '.prefix.'_news SET tid = '.intval($topic_id).' WHERE id = '.securemysql($newsid).' LIMIT 1');
 			update_forum($topic_id, $subject, 1,$time, $userROW['name'], $userROW['id'], $id);

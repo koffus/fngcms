@@ -229,16 +229,6 @@
 						<div class="col-md-5">{{ lang['url_external_target_blank'] }} <span class="help-block">{{ lang['url_external_target_blank_desc'] }}</span></div>
 						<div class="col-md-7">{{ mkSelectNY({'name' : 'save_con[url_external_target_blank]', 'value' : config['url_external_target_blank'] }) }}</div>
 					</div>
-					<div class="form-group">
-						<div class="col-md-5">{{ lang['timezone'] }} <span class="help-block">{{ lang['timezone#desc'] }}</span></div>
-						<div class="col-md-7">
-							<select name="save_con[timezone]" id="timezone" class="form-control">
-								{% for zone in list['timezoneList'] %}
-									<option value="{{ zone }}" {% if (config['timezone'] == zone) %}selected="selected"{% endif %}>{{ zone }}</option>
-								{% endfor %}
-							</select>
-						</div>
-					</div>
 				</fieldset>
 				<fieldset>
 					<legend>{{ lang['email_configuration'] }}</legend>

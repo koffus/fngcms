@@ -345,7 +345,7 @@ class auth_punbb {
 			$punbb_userid = $this->auth_db->record('select LAST_INSERT_ID() as id');
 
 			$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, punbb_userid) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", '4', '".$add_time."', '', ".db_squote($punbb_userid['id']).")");
-			zzMail($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $regusername, $newpassword), 'html');
+			sendEmailMessage($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $regusername, $newpassword));
 			msg(array('title' => __('msgo_registered'), 'message' => __('msgo_info2')));
 		}
 		if ($config['register_type'] == '2') {
@@ -359,7 +359,7 @@ class auth_punbb {
 			$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, activation, punbb_userid) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", '4', '".$add_time."', '', '".$actcode."', ".db_squote($punbb_userid['id']).")");
 			$userid			= $mysql->record('select LAST_INSERT_ID() as id');
 			$actlink		= ($config['mod_rewrite'] == "1") ? '<a href="'.home.'/activation/'.$userid['id'].'/'.$actcode.'">'.home.'/activation/'.$userid['id'].'/'.$actcode.'</a>' : '<a href="'.home.'/?action=activation&userid='.$userid['id'].'&code='.$actcode.'">'.home.'/?action=activation&userid='.$userid['id'].'&code='.$actcode.'</a>';
-			zzMail($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $values['login'], $newpassword).sprintf(__('activate'), $actlink), 'html');
+			sendEmailMessage($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $values['login'], $newpassword).sprintf(__('activate'), $actlink));
 			msg(array('title' => __('msgo_registered'), 'message' => __('msgo_info3')));
 		}
 		if ($config['register_type'] == '3') {
@@ -368,7 +368,7 @@ class auth_punbb {
 			$punbb_userid = $this->auth_db->record('select LAST_INSERT_ID() as id');
 
 			$mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, punbb_userid) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($values['password'])).", ".db_squote($values['email']).", '4', '".$add_time."', '', ".db_squote($punbb_userid['id']).")");
-			zzMail($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $values['login'], $values['password']), 'html');
+			sendEmailMessage($values['email'], __('letter_title'), sprintf(__('letter_text'), home, home).sprintf(__('your_info'), $values['login'], $values['password']));
 			msg(array('message' => __('msgo_registered')));
 		}
 		return 1;

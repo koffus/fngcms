@@ -12,7 +12,8 @@
 	<div id="filter" class="collapse">
 		<div class="well">
 			<form action="admin.php?mod=extra-config&plugin=feedback" method="post">
-		<input type="hidden" name="action" value="saveform" />
+                <input type="hidden" name="action" value="saveform" />
+                <input type="hidden" name="id" value="{{ id }}" />
 
 		<table border="0">
 		<tr align="left" valign="top"><td class="contentRow" width="230"><b>Код формы / URL страницы:</b></td><td><input style="width: 30px; background: white;" type="text" name="id" value="{{ id }}" disabled="disabled"/> [ <a href="{{ url }}" target="_blank">открыть</a> ]<br/> <input style="width: 420px; background: white;" type="text" value="{{ url }}" readonly="readonly" /></td><td rowspan="6" width="3" style="background-image: url({{ skins_url }}/images/delim.png); background-repeat: repeat-y;"></td><td><input type="checkbox" id="id_active" name="active" value="1" {{ flags.active ? 'checked="checked"' : '' }} /></td><td><label for="id_active"><b>Форма активна</b></label></td></tr>

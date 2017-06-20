@@ -29,7 +29,7 @@ if (function_exists('mb_http_output'))
 if (version_compare(PHP_VERSION, '5.4.0') < 0)
     @require('data/errors/core_php_version.php');
 
-// Назначение дефолтной временной зоны
+// Sets the default timezone
 date_default_timezone_set('UTC');
 
 // Configure error display mode

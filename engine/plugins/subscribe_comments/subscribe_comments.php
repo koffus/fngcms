@@ -53,7 +53,7 @@ $ends = str_replace(
 
 $prow = $prow.$ends;
 
-zzMail($ekey, __('subscribe_comments:msg.newcomment'), $prow, 'html');
+sendEmailMessage($ekey, __('subscribe_comments:msg.newcomment'), $prow);
 
 }
 
@@ -158,7 +158,7 @@ foreach ($mysql->select("select * from ".prefix."_subscribe_comments where news_
 			__('subscribe_comments:msg.notice_one')
 		);
 
-		zzMail($srow['user_email'], __('subscribe_comments:msg.newcomment'), $body, 'html');
+		sendEmailMessage($srow['user_email'], __('subscribe_comments:msg.newcomment'));
 }
 
 }

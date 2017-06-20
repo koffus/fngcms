@@ -225,7 +225,7 @@ function send_subscribe($topic_id, $last_post_id, $name_topic, $message)
 		);
 		
 		if( filter_var($row['mail'], FILTER_VALIDATE_EMAIL) )
-			zzMail($row['mail'], 'Новое сообщение на форуме', $xt->render($tVars), '', false, 'text/html');
+			sendEmailMessage($row['mail'], 'Новое сообщение на форуме', $xt->render($tVars));
 	}
 }
 

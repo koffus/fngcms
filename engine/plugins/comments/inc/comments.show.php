@@ -241,7 +241,7 @@ function comments_showform($newsID, $callingParams = array()){
 	$tpl -> template($templateName, $templatePath);
 
 	if($config['use_smilies']) {
-		$tvars['vars']['smilies'] = InsertSmilies('comments', 10);
+		$tvars['vars']['smilies'] = Smilies('comments', 10);
 	} else {
 		$tvars['vars']['smilies'] = "";
 	}

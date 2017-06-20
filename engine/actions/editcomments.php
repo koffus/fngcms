@@ -93,7 +93,7 @@ function editcomment() {
 			'newsid' => $newsid,
 			'comid' => $comid
 		);
-		$tvars['smilies'] = ($config['use_smilies'] == "1") ? InsertSmilies('content', 5) : '';
+		$tvars['smilies'] = ($config['use_smilies'] == "1") ? Smilies('content', 5) : '';
 		$tvars['comdate'] = Lang::retDate(pluginGetVariable('comments', 'timestamp'), $row['postdate']);
 
 		if ($userROW['status'] < "3"){

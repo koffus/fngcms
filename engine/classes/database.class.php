@@ -253,7 +253,7 @@ class Database
     public function lastid($table = '')
     {
         if (trim($table)) {
-            $row = $this->record("SHOW TABLE STATUS LIKE '" . prefix . "_" . $table . "'");
+            $row = $this->record("SHOW TABLE STATUS LIKE " . $this->dbh->quote(prefix . "_" . $table));
             return ($row['Auto_increment'] - 1);
         } else {
             return $this->dbh->lastInsertId();

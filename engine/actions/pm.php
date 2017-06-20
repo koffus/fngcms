@@ -119,7 +119,7 @@ function pm_reply() {
 			'title' => 'Re:'.$row['title'],
 			'sendto' => $row['from_id'],
 			'bbcodes' => BBCodes(false, 'pmmes'),
-			'smilies' => ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '',
+			'smilies' => ($config['use_smilies'] == "1") ? Smilies("content", 10) : '',
 		);
 		executeActionHandler('pm_reply');
 		$xt = $twig->loadTemplate(tpl_actions.$mod.'/reply.tpl');
@@ -135,7 +135,7 @@ function pm_write() {
 	$tVars = array(
 		'php_self' => $PHP_SELF,
 		'bbcodes' => BBCodes(false, 'pmmes'),
-		'smilies' => ($config['use_smilies'] == "1") ? InsertSmilies("content", 10) : '',
+		'smilies' => ($config['use_smilies'] == "1") ? Smilies("content", 10) : '',
 	);
 	executeActionHandler('pm_write');
 	$xt = $twig->loadTemplate(tpl_actions.$mod.'/write.tpl');

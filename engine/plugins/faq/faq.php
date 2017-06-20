@@ -34,7 +34,7 @@ function plugin_faq_add() {
 						),
 				__('faq:email_body')
 			);
-			zzMail($config['admin_mail'], 'Новый вопрос', $body, 'html');
+			sendEmailMessage($config['admin_mail'], 'Новый вопрос', $body);
 		}
 		plugin_faq_addForm($tpl_name, $info);
 	}

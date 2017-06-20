@@ -64,7 +64,7 @@ class CreatePostFilter extends FilterComments {
 							'.securemysql($newsRec['tid']).')
 						');
 						
-				$post_id = $mysql->lastid('forum_posts');
+				$post_id = $mysql->lastid(prefix . '_forum_posts');
 				$result = $mysql->record('SELECT fid, title FROM '.prefix.'_forum_topics WHERE id = '.securemysql($newsRec['tid']).' LIMIT 1');
 				update_users_mes();
 				update_topic($SQL['postdate'], $userROW['name'], $userROW['id'], $newsRec['tid']);

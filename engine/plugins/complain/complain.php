@@ -239,7 +239,7 @@ function plugin_complain_post() {
 
  // Inform author
  if (pluginGetVariable('complain', 'inform_author') && strlen($cdata['author_mail'])) {
- zzMail($cdata['author_mail'], __('complain:mail.open.subj'), $mail_text, 'text');
+ sendEmailMessage($cdata['author_mail'], __('complain:mail.open.subj'), $mail_text);
  }
 
  // Inform site admins
@@ -247,7 +247,7 @@ function plugin_complain_post() {
  // Send to all admins
  foreach ($mysql->select("select mail from ".uprefix."_users where status = 1") as $urow) {
  if (strlen($urow['mail'])) {
- zzMail($urow['mail'], __('complain:mail.open.subj'), $mail_text, 'text');
+ sendEmailMessage($urow['mail'], __('complain:mail.open.subj'), $mail_text);
  }
  }
  }
@@ -257,7 +257,7 @@ function plugin_complain_post() {
  	foreach (explode("\n", pluginGetVariable('complain', 'admins')) as $admin_name) {
 		if ($urow = $mysql->record("select mail from ".uprefix."_users where name = ".db_squote($admin_name))) {
 		 if (strlen($urow['mail'])) {
-		 zzMail($urow['mail'], __('complain:mail.open.subj'), $mail_text, 'text');
+		 sendEmailMessage($urow['mail'], __('complain:mail.open.subj'), $mail_text);
 		 }
 		}
 	 }
@@ -349,7 +349,7 @@ function plugin_complain_update() {
  array( "\n", $cdata['title'], $cdata['link'], __('complain:status.'.$newstatus), plugin_complain_resolve_error($irow['error_code']) ),
  __('complain:mail.status.body'));
 
- zzMail($irow['publisher_mail'], __('complain:mail.status.subj'), $mail_text, 'html');
+ sendEmailMessage($irow['publisher_mail'], __('complain:mail.status.subj'), $mail_text);
  }
 
  // Update report status

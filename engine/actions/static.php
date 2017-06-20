@@ -250,7 +250,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 		'php_self' => $PHP_SELF,
 		'bbcodes' => BBCodes('currentInputAreaID', 'static'),
 		'token'				=> genUToken('admin.static'),
-		'smilies' => $config['use_smilies']?InsertSmilies('content', 20):'',
+		'smilies' => $config['use_smilies']?Smilies('content', 20):'',
 		'templateList' => staticTemplateList(),
 		'flags'				=> array(
 			'editMode' => $editMode,

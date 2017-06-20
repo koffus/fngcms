@@ -262,12 +262,12 @@ function comments_add(){
 		if (pluginGetVariable('comments', 'inform_author')) {
 			// Determine author's email
 			if (is_array($umail=$mysql->record("select * from ".uprefix."_users where id = ".db_squote($news_row['author_id'])))) {
-				zzMail($umail['mail'], __('newcomment'), $body, 'html');
+				sendEmailMessage($umail['mail'], __('newcomment'), $body);
 			}
 		}
 
 		if (pluginGetVariable('comments', 'inform_admin'))
-			zzMail($config['admin_mail'], __('newcomment'), $body, 'html');
+			sendEmailMessage($config['admin_mail'], __('newcomment'), $body);
 
 	}
 

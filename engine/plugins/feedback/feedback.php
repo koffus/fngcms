@@ -57,13 +57,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 
 	// Resolve UTF-8 POST issue if data are sent in UTF-8 coding
 	$flagsUTF = substr($frow['flags'], 5, 1) ? true : false;
-	$isUTF = 0;
-	foreach ($_REQUEST as $k => $v) {
-		if (preg_match("#^fld_#", $k, $null) && detectUTF8($v)) {
-			$isUTF = 1;
-			break;
-		}
-	}
+
 	// Process link with news
 	$link_news = intval(substr($frow['flags'], 3, 1));
 	$nrow = '';
@@ -149,14 +143,14 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 
 		if ($mode && (!$fInfo['block'])) {
 			// FILLED EARLIER
-			$setValue = secure_html(($isUTF && $flagsUTF) ? $_REQUEST['fld_'.$fInfo['name']] : $_REQUEST['fld_'.$fInfo['name']]);
+			$setValue = secure_html(($flagsUTF) ? $_REQUEST['fld_'.$fInfo['name']] : $_REQUEST['fld_'.$fInfo['name']]);
 		} else {
 			// INITIAL SHOW
 			$setValue = secure_html($fInfo['default']);
 
 			// If 'by parameter' mode is set, check if this variable was passed in GET
 			if (($fInfo['auto'] == 1) && isset($_REQUEST['v_'.$fInfo['name']])) {
-				$setValue = secure_html(($isUTF && $flagsUTF) ? $_REQUEST['v_'.$fInfo['name']] :$_REQUEST['v_'.$fInfo['name']]);
+				$setValue = secure_html(($flagsUTF) ? $_REQUEST['v_'.$fInfo['name']] :$_REQUEST['v_'.$fInfo['name']]);
 			} else if ($fInfo['auto'] == 2) {
 				$setValue = secure_html($xfValues[$fInfo['name']]);
 			} else if ($fInfo['auto'] == 3) {
@@ -371,15 +365,6 @@ function plugin_feedback_post() {
 		);
 	}
 
-	// Resolve UTF-8 POST issue if data are sent in UTF-8 coding
-	$isUTF = 0;
-	foreach ($_REQUEST as $k => $v) {
-		if (preg_match("#^fld_#", $k, $null) && detectUTF8($v)) {
-			$isUTF = 1;
-			break;
-		}
-	}
-
 	$tEntries = array();
 	$fieldValues = array();
 
@@ -388,7 +373,7 @@ function plugin_feedback_post() {
 		switch ($fInfo['type']) {
 			case 'date':	$fieldValue = $_REQUEST['fld_'.$fName.':day'] . '.' . $_REQUEST['fld_'.$fName.':month'] . '.' . $_REQUEST['fld_'.$fName.':year'];
 		 					break;
-			default: if ($isUTF && $flagsUTF) {
+			default: if ($flagsUTF) {
 								$fieldValue = $_REQUEST['fld_'.$fName];
 							} else {
 								$fieldValue = $_REQUEST['fld_'.$fName];

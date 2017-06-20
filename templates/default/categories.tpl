@@ -1,1 +1,0 @@
-[if_link]<a class="dropdown-item" href="{link}">[/if_link]{mark} {cat} {counter}[if_link]</a>[/if_link]

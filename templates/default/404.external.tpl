@@ -1,6 +1,8 @@
+<!doctype html>
 <html>
 <head>
-<title>{l_404.title}</title>
+    <meta charset="UTF-8">
+    <title>{l_404.title}</title>
 </head>
 <body>
 {l_404.description}

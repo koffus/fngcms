@@ -462,7 +462,7 @@ function plugin_nsm_addForm($tpl_name = 'news.add', $retry = ''){
  'token' => genUToken('admin.news.add'),
  'listURL' => generateLink('core', 'plugin', array('plugin' => 'nsm'), array()),
  'JEV' => $retry?$retry:'{}',
- 'smilies' => ($config['use_smilies'])?InsertSmilies('', 20, 'currentInputAreaID'):'',
+ 'smilies' => ($config['use_smilies'])?Smilies('', 20, 'currentInputAreaID'):'',
  'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
  'flags' => array(
  'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],
@@ -799,7 +799,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  'author_page' => checkLinkAvailable('uprofile', 'show')?
  generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
  generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['author'], 'id' => $row['author_id'])),
- 'smilies' => $config['use_smilies']?InsertSmilies('', 20, 'currentInputAreaID'):'',
+ 'smilies' => $config['use_smilies']?Smilies('', 20, 'currentInputAreaID'):'',
  'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
  'approve' => $row['approve'],
  'flags' => array(

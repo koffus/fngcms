@@ -100,6 +100,7 @@ array_push($cfg, array(
 	'type' => 'text',
 	'html_flags' => 'rows="8"',
 	'value' => $stopText,
+    'nosave' => true,
 	));
 array_push($cfg, array(
 	'name' => 'good_y',
@@ -116,6 +117,7 @@ array_push($cfg, array(
 	'type' => 'text',
 	'html_flags' => 'rows="8"',
 	'value' => $allowText,
+    'nosave' => true,
 	));
 
 // RUN

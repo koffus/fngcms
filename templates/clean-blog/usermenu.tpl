@@ -1,10 +1,10 @@
 {% if (global.flags.isLogged) %}
 	{% if pluginIsActive('nsm') %}<a href="{{ home }}/plugin/nsm/" class="dropdown-item">Добавить новость</a>{% endif %}
-	[if-have-perm]<a href="{{ admin_url }}" target="_blank" class="dropdown-item"><b>{{ lang.admin_panel }}</b></a>
-	<a href="{{ addnews_link }}" class="dropdown-item">{{ lang.add_news }}</a>[/if-have-perm]
+	{% if (global.flags.isLogged and (global.user['status'] <= 3)) %}<a href="{{ admin_url }}" target="_blank" class="dropdown-item"><b>{{ lang.admin_panel }}</b></a>
+	<a href="{{ addnews_link }}" class="dropdown-item">{{ lang.add_news }}</a>{% endif %}
 	{% if pluginIsActive('uprofile') %}<a href="{{ profile_link }}" class="dropdown-item">{{ lang.edit_profile }}</a>{% endif %}
-	{% if pluginIsActive('pm') %}<a href="{{ p.pm.link }}" class="dropdown-item">{{ lang.private_messages }} ({{ p.pm.pm_unread }})</a>{% endif %}
-	<a href="{{ logout_link }}" class="dropdown-item">{{ lang.log_out }}</a>
+	{% if pluginIsActive('pm') %}<a href="{{ p.pm.link }}" class="dropdown-item">{{ lang['private_messages'] }} ({{ p.pm.pm_unread }})</a>{% endif %}
+	<a href="{{ logout_link }}" class="dropdown-item">{{ lang['log_out'] }}</a>
 {% else %}
 
 	<script>
