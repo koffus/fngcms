@@ -326,9 +326,9 @@ function zzMail($to, $subject, $message, $filename = false, $mail_from = false, 
 function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from = false, $ctype = 'text/html') {
 	global $config;
 
-	// Include new PHP mailer class
-	@include_once root.'includes/classes/phpmailer/PHPMailerAutoload.php';
-	$mail	= new phpmailer;
+	// Init $mail client
+    @include_once root . 'classes/phpmailer/PHPMailerAutoload.php';
+    $mail = new PHPMailer;
 
 	$mail->CharSet	= 'UTF-8';
 

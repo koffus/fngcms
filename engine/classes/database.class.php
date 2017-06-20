@@ -283,7 +283,7 @@ class Database
     // Report an SQL error
     // $type	- query type
     // $query	- text of the query
-    public private function errorReport($type, $query, $e)
+    private function errorReport($type, $query, $e)
     {
         global $userROW, $config;
 
