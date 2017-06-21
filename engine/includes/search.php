@@ -58,7 +58,7 @@ function search_news() {
 			if ( mb_strlen($s, 'UTF-8') > 2 ) {
 				array_push($search_array,
 					array('OR',
-							array('DATA', 'title', 'like', '%'.$s.'%'),
+							array('DATA', 'title', 'like', '%'.$s.'%'), // NOT db_squote('%'.$s.'%')
 							array('DATA', 'content', 'like', '%'.$s.'%'),
 					));
 			} else {

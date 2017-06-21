@@ -54,6 +54,22 @@ if (get_magic_quotes_gpc())
 ini_set('magic_quotes_gpc', 0);
 ini_set('magic_quotes_sybase', 0);
 
+
+// Автозагрузка классов
+spl_autoload_register(function ($className) {
+    $file = __DIR__ . '/classes/' . $className . '.class.php';
+
+    if (file_exists($file)) {
+        require_once($file); // !!! require once !!!
+        return;
+    } elseif (file_exists($file = __DIR__ . '/classes/' . strtolower($className) . '.class.php')) {
+        require_once($file); // !!! require once !!!
+        return;
+    } else {
+        return false;
+    }
+});
+
 function __($key, $default_value = '')
 {
     return Lang::get($key, $default_value = '');
@@ -91,7 +107,6 @@ define('NGCMS', 1);
 // Basic variables
 @define('root', dirname(__FILE__) . '/');
 @include_once root . 'includes/inc/multimaster.php';
-@include_once root . 'classes/database.class.php';
 
 multi_multisites();
 @define('confroot', root . 'conf/' . ($multiDomainName and $multimaster and ($multiDomainName != $multimaster) ? 'multi/' . $multiDomainName . '/' : ''));
@@ -120,11 +135,9 @@ if (!file_exists($toinc)) {
 }
 
 // Load language variables
-@include_once root . 'classes/lang.class.php';
 Lang::load('install');
 Lang::load('extra-config', 'admin');
 
-@include_once root . 'classes/tpl.class.php';
 $tpl = new tpl;
 
 // Determine current admin working directory

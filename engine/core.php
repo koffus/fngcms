@@ -109,7 +109,7 @@ $PLUGINS = array(
 // ===========================================================
 // Check for support of mondatory modules
 // ===========================================================
-foreach (array('sql' => array('pdo_mysql' => 'mysql_connect'), 'zlib' => 'ob_gzhandler', 'GD' => 'imagecreatefromjpeg') as $pModule => $pFunction) {
+foreach (array('pdo_mysql' => 'mysqli_get_client_stats', 'zlib' => 'ob_gzhandler', 'GD' => 'imagecreatefromjpeg') as $pModule => $pFunction) {
     $is_error = false;
     if (is_array($pFunction)) {
         foreach ($pFunction as $kModule => $vFunction) {
