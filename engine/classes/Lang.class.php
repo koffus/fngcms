@@ -99,12 +99,12 @@ class Lang
         $lfn = ($group ? $group . '/' : '') . $file . '.ini';
 
         // * Default language
-        if (is_dir($lang_dir . '/' . $config['default_lang']) && is_file($lang_dir . '/' . $config['default_lang'] . '/' . $lfn)) {
+        if (is_dir($lang_dir . '/' . $config['default_lang']) and is_file($lang_dir . '/' . $config['default_lang'] . '/' . $lfn)) {
             $lang_dir = $lang_dir . '/' . $config['default_lang'];
-        } else if (is_dir($lang_dir . '/english') && is_file($lang_dir . '/english/' . $lfn)) {
+        } else if (is_dir($lang_dir . '/english') and is_file($lang_dir . '/english/' . $lfn)) {
             //print "<b>LANG></b> No default lang file for `$plugin` (name: `$file`), using ENGLISH</br>\n";
             $lang_dir = $lang_dir . '/english';
-        } else if (is_dir($lang_dir . '/russian') && is_file($lang_dir . '/russian/' . $lfn)) {
+        } else if (is_dir($lang_dir . '/russian') and is_file($lang_dir . '/russian/' . $lfn)) {
             //print "<b>LANG></b> No default lang file for `$plugin` (name: `$file`), using RUSSIAN</br>\n";
             $lang_dir = $lang_dir . '/russian';
         } else {
@@ -121,7 +121,7 @@ class Lang
             if ($delimiter == '#') {
                 //$lang[$prefix] = $plugin_lang;
                 self::set($plugin_lang, $prefix);
-            } else if (($delimiter == '') && ($prefix == '')) {
+            } else if (($delimiter == '') and ($prefix == '')) {
                 //$lang = $lang + $plugin_lang;
                 self::set($plugin_lang);
             } else {

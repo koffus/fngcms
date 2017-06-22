@@ -135,9 +135,9 @@ $tVars = array(
 	'php_os' => PHP_OS,
 	'php_version' => phpversion(),
 	'mysql_version' => $mysql->mysql_version(),
-	'gd_version' => (isset($gd_version) && is_array($gd_version))?$gd_version["GD Version"]:'<font color="red"><b>NOT INSTALLED</b></font>',
+	'gd_version' => (isset($gd_version) and is_array($gd_version))?$gd_version["GD Version"]:'<font color="red"><b>NOT INSTALLED</b></font>',
 	'currentVersion' => $displayEngineVersion,
-	'versionNotifyURL' => 'http://ngcms.ru/sync/versionInfo.php?ver='.urlencode(engineVersion).'&type='.urlencode(engineVersionType).'&build='.urlencode(engineVersionBuild).'&uuid='.$config['UUID'].'&pdo='.((extension_loaded('PDO') && extension_loaded('pdo_mysql') && class_exists('PDO'))?'yes':'no'),
+	'versionNotifyURL' => 'http://ngcms.ru/sync/versionInfo.php?ver='.urlencode(engineVersion).'&type='.urlencode(engineVersionType).'&build='.urlencode(engineVersionBuild).'&uuid='.$config['UUID'].'&pdo='.((extension_loaded('PDO') and extension_loaded('pdo_mysql') and class_exists('PDO'))?'yes':'no'),
 	'mysql_size' => $mysql_size,
 	'allowed_size' => $df,
 	'avatars' => $avatars,
@@ -155,7 +155,7 @@ $tVars = array(
 	'files'				=> $mysql->result("SELECT count(id) FROM ".prefix."_files"),
 	'categories' => $mysql->result("SELECT count(id) FROM ".prefix."_category"),
 	'admin_note' => $note,
-	'pdo_support' => (extension_loaded('PDO') && extension_loaded('pdo_mysql') && class_exists('PDO'))?__('yesa'):('<font color="red">'.__('noa').'</font>'),
+	'pdo_support' => (extension_loaded('PDO') and extension_loaded('pdo_mysql') and class_exists('PDO'))?__('yesa'):('<font color="red">'.__('noa').'</font>'),
 );
 
 $tVars = $tVars + $STATS;

@@ -27,13 +27,13 @@ function plugin_rss_export_generate($catname = ''){
 	$SUPRESS_MAINBLOCK_SHOW = 1;
 
 	// Break if category specified & doesn't exist
-	if (($catname != '') && (!isset($catz[$catname]))) {
+	if (($catname != '') and (!isset($catz[$catname]))) {
 		header('HTTP/1.1 404 Not found');
 		exit;
 	}
 
 	// Generate header
-	$xcat = (($catname != '') && isset($catz[$catname]))?$catz[$catname]:'';
+	$xcat = (($catname != '') and isset($catz[$catname]))?$catz[$catname]:'';
 
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
 	// Take into account: FLAG: use_hide, check if user is logged in
@@ -57,14 +57,14 @@ function plugin_rss_export_generate($catname = ''){
 	$old_locale = setlocale(LC_TIME,0);
 	setlocale(LC_TIME,'en_EN');
 	if (is_array($xcat)) {
-		$orderBy = ($xcat['orderby'] && in_array($xcat['orderby'], array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc')))?$xcat['orderby']:'id desc';
+		$orderBy = ($xcat['orderby'] and in_array($xcat['orderby'], array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc')))?$xcat['orderby']:'id desc';
 		$query = "select * from ".prefix."_news where catid regexp '[[:<:]](".$xcat['id'].")[[:>:]]' and approve=1 ".(($delay>0)?(" and ((postdate + ".intval($delay*60).") < unix_timestamp(now())) "):'')."order by ".$orderBy;
 	} else {
 		$query = "select * from ".prefix."_news where approve=1".(($delay>0)?(" and ((postdate + ".intval($delay*60).") < unix_timestamp(now())) "):'')." order by id desc";
 	}
 
 	// Prepare hide template
-	if ($config['blocks_for_reg'] && pluginGetVariable('rss_export','use_hide')) {
+	if ($config['blocks_for_reg'] and pluginGetVariable('rss_export','use_hide')) {
 		Lang::loadPlugin('rss_export', 'main','','rexport');
 		$hide_template = @file_get_contents(root.'plugins/rss_export/templates/hide.tpl');
 		$hide_template = str_replace('{text}',__('rexport_hide'),$hide_template);
@@ -77,10 +77,10 @@ function plugin_rss_export_generate($catname = ''){
 	$xFList = array();
 	$encImages = array();
 	$enclosureIsImages = false;
-	if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') && getPluginStatusActive('xfields')) {
+	if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') and getPluginStatusActive('xfields')) {
 		$xFList = xf_configLoad();
 		$eFieldName = pluginGetVariable('rss_export','xfEnclosure');
-		if (isset($xFList['news'][$eFieldName]) && ($xFList['news'][$eFieldName]['type'] == 'images')) {
+		if (isset($xFList['news'][$eFieldName]) and ($xFList['news'][$eFieldName]['type'] == 'images')) {
 			$enclosureIsImages = true;
 
 			// Prepare list of news with attached images
@@ -120,11 +120,11 @@ function plugin_rss_export_generate($catname = ''){
 		$enclosure = '';
 
 		// Check if Enclosure `xfields` integration is activated
-		if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') && (true or getPluginStatusActive('xfields'))) {
+		if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') and (true or getPluginStatusActive('xfields'))) {
 			// Load (if needed XFIELDS plugin
 			include_once(root."/plugins/xfields/xfields.php");
 
-			if (is_array($xfd = xf_decode($row['xfields'])) && isset($xfd[pluginGetVariable('rss_export','xfEnclosure')])) {
+			if (is_array($xfd = xf_decode($row['xfields'])) and isset($xfd[pluginGetVariable('rss_export','xfEnclosure')])) {
 				// Check enclosure field type
 				if ($enclosureIsImages) {
 					// images
@@ -171,7 +171,7 @@ function plugin_rss_export_mk_header($xcat) {
  $line.= " <channel>\n";
  if (pluginGetVariable('rss_export','feed_title_format') == 'handy') {
 	$line.= " <title><![CDATA[".pluginGetVariable('rss_export', 'feed_title_value')."]]></title>\n";
- } else if ((pluginGetVariable('rss_export', 'feed_title_format') == 'site_title') && is_array($xcat)) {
+ } else if ((pluginGetVariable('rss_export', 'feed_title_format') == 'site_title') and is_array($xcat)) {
 	$line.= " <title><![CDATA[".$config['home_title'].(is_array($xcat)?' :: '.$xcat['name']:'')."]]></title>\n";
  } else {
 	$line.= " <title><![CDATA[".$config['home_title']."]]></title>\n";

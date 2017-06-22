@@ -758,18 +758,18 @@ function generatePageLink($paginationParams, $page, $intlink = false)
 {
     //print "generatePageLink(".var_export($paginationParams, true).", ".$intlink.";".$page.")<br/>\n";
     // Generate link
-    $lparams = $paginationParams['params'];
-    $lxparams = $paginationParams['xparams'];
-
+    $lparams = (isset($paginationParams['params']) and is_array($paginationParams['params'])) ? $paginationParams['params'] : array();
+    $lxparams = (isset($paginationParams['xparams']) and is_array($paginationParams['xparams'])) ? $paginationParams['xparams'] : array();
+    $pluginHandler = isset($paginationParams['pluginHandler']) ?: '';
+    
     if ($paginationParams['paginator'][2] or ($page > 1)) {
-        if ($paginationParams['paginator'][1]) {
+        if (isset($paginationParams['paginator'][1]) and isset($paginationParams['paginator'][0])) {
             $lxparams[$paginationParams['paginator'][0]] = $page;
         } else {
             $lparams[$paginationParams['paginator'][0]] = $page;
         }
     }
-    //return generateLink($paginationParams['pluginName'], $paginationParams['pluginHandler'], $lparams, $lxparams);
-    return generatePluginLink($paginationParams['pluginName'], $paginationParams['pluginHandler'], $lparams, $lxparams, $intlink);
+    return generatePluginLink($paginationParams['pluginName'], $pluginHandler, $lparams, $lxparams, $intlink);
 }
 
 //

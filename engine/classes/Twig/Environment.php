@@ -326,7 +326,7 @@ class Twig_Environment
  if (false === $cache = $this->getCacheFilename($name)) {
  eval('?>'.$this->compileSource($this->loader->getSource($name), $name));
  } else {
- if (!is_file($cache) or ($this->isAutoReload() && !$this->isTemplateFresh($name, filemtime($cache)))) {
+ if (!is_file($cache) or ($this->isAutoReload() and !$this->isTemplateFresh($name, filemtime($cache)))) {
  $this->writeCacheFile($cache, $this->compileSource($this->loader->getSource($name), $name));
  }
 
@@ -1090,7 +1090,7 @@ class Twig_Environment
  {
  $dir = dirname($file);
  if (!is_dir($dir)) {
- if (false === @mkdir($dir, 0777, true) && !is_dir($dir)) {
+ if (false === @mkdir($dir, 0777, true) and !is_dir($dir)) {
  throw new RuntimeException(sprintf("Unable to create the cache directory (%s).", $dir));
  }
  } elseif (!is_writable($dir)) {
@@ -1100,7 +1100,7 @@ class Twig_Environment
  $tmpFile = tempnam(dirname($file), basename($file));
  if (false !== @file_put_contents($tmpFile, $content)) {
  // rename does not work on Win32 before 5.2.6
- if (@rename($tmpFile, $file) or (@copy($tmpFile, $file) && unlink($tmpFile))) {
+ if (@rename($tmpFile, $file) or (@copy($tmpFile, $file) and unlink($tmpFile))) {
  @chmod($file, 0666 & ~umask());
 
  return;

@@ -52,7 +52,7 @@ class Hybrid_Provider_Model_OAuth2 extends Hybrid_Provider_Model {
 			503 => "Service Unavailable."
 		);
 
-		if (!$code && $this->api) {
+		if (!$code and $this->api) {
 			$code = $this->api->http_code;
 		}
 
@@ -70,7 +70,7 @@ class Hybrid_Provider_Model_OAuth2 extends Hybrid_Provider_Model {
 		}
 
 		// override requested scope
-		if (isset($this->config["scope"]) && !empty($this->config["scope"])) {
+		if (isset($this->config["scope"]) and !empty($this->config["scope"])) {
 			$this->scope = $this->config["scope"];
 		}
 
@@ -145,7 +145,7 @@ class Hybrid_Provider_Model_OAuth2 extends Hybrid_Provider_Model {
 		if ($this->api->access_token) {
 
 			// have to refresh?
-			if ($this->api->refresh_token && $this->api->access_token_expires_at) {
+			if ($this->api->refresh_token and $this->api->access_token_expires_at) {
 
 				// expired?
 				if ($this->api->access_token_expires_at <= time()) {

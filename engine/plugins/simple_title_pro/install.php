@@ -7,7 +7,7 @@ if (!defined('NGCMS'))
 function plugin_simple_title_pro_install($action) {
 	
 	$checkVer = explode('.', substr(engineVersion, 0,5));
-	if($checkVer['0'] == 0 && $checkVer['1'] == 9 && $checkVer['2'] = 3)
+	if($checkVer['0'] == 0 and $checkVer['1'] == 9 and $checkVer['2'] = 3)
 		$check = true;
 	else
 		$check = false;

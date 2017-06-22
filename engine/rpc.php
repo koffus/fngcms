@@ -63,10 +63,10 @@ function processJSON(){
 		default:
 			if (isset($RPCFUNC[$methodName])) {
 				$out = call_user_func($RPCFUNC[$methodName], $params);
-			} else if (preg_match('#^plugin\.(.+?)\.#', $methodName, $m) && loadPlugin($m[1], 'rpc') && isset($RPCFUNC[$methodName])) {
+			} else if (preg_match('#^plugin\.(.+?)\.#', $methodName, $m) and loadPlugin($m[1], 'rpc') and isset($RPCFUNC[$methodName])) {
 				// If method "plugin.NAME.something" is called, try to load action "rpc" for plugin "NAME"
 				$out = call_user_func($RPCFUNC[$methodName], $params);
-			} else if (preg_match('#^admin\.(.+?)\.#', $methodName, $m) && loadAdminRPC($m[1]) && isset($RPCADMFUNC[$methodName])) {
+			} else if (preg_match('#^admin\.(.+?)\.#', $methodName, $m) and loadAdminRPC($m[1]) and isset($RPCADMFUNC[$methodName])) {
 				// If method "plugin.NAME.something" is called, try to load action "rpc" for plugin "NAME"
 				$out = call_user_func($RPCADMFUNC[$methodName], $params);
 			} else {

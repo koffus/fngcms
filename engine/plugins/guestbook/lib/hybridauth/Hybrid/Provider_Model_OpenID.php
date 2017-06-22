@@ -121,11 +121,11 @@ class Hybrid_Provider_Model_OpenID extends Hybrid_Provider_Model {
 		$this->user->profile->birthMonth = (array_key_exists("birthDate/birthMonth", $response)) ? $response["birthDate/birthMonth"] : "";
 		$this->user->profile->birthYear = (array_key_exists("birthDate/birthDate", $response)) ? $response["birthDate/birthDate"] : "";
 
-		if (isset($response['namePerson/friendly']) && !empty($response['namePerson/friendly']) && !$this->user->profile->displayName) {
+		if (isset($response['namePerson/friendly']) and !empty($response['namePerson/friendly']) and !$this->user->profile->displayName) {
 			$this->user->profile->displayName = $response["namePerson/friendly"];
 		}
 
-		if (isset($response['birthDate']) && !empty($response['birthDate']) && !$this->user->profile->birthDay) {
+		if (isset($response['birthDate']) and !empty($response['birthDate']) and !$this->user->profile->birthDay) {
 			list( $birthday_year, $birthday_month, $birthday_day ) = $response['birthDate'];
 
 			$this->user->profile->birthDay = (int) $birthday_day;

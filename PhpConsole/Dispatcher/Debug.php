@@ -30,7 +30,7 @@ class Debug extends \PhpConsole\Dispatcher {
 			if($tags) {
 				$message->tags = explode('.', $tags);
 			}
-			if($this->detectTraceAndSource && $ignoreTraceCalls !== null) {
+			if($this->detectTraceAndSource and $ignoreTraceCalls !== null) {
 				$message->trace = $this->fetchTrace(debug_backtrace(), $message->file, $message->line, $ignoreTraceCalls);
 			}
 			$this->sendMessage($message);

@@ -318,7 +318,7 @@ class bt_decode
  if ($char === false) {
  throw new Exception('Unterminated list.', 1);
  }
- while ($char !== false && substr($this->source, $this->position, 1) != 'e') {
+ while ($char !== false and substr($this->source, $this->position, 1) != 'e') {
  $p1 = $this->position;
  $val = $this->bdecode();
  $p2 = $this->position;

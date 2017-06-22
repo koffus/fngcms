@@ -42,15 +42,15 @@ function ipban_add() {
 	$addr_stop	= 0;
 	$letlen		= 0;
 	$result = false;
-	if (preg_match('#^(\d+)\.(\d+)\.(\d+)\.(\d+)$#', $ip, $m) && ($m[1] < 256) && ($m[2] < 256) && ($m[3] < 256) && ($m[4] < 256)) {
+	if (preg_match('#^(\d+)\.(\d+)\.(\d+)\.(\d+)$#', $ip, $m) and ($m[1] < 256) and ($m[2] < 256) and ($m[3] < 256) and ($m[4] < 256)) {
 		$result = true;
 		$atype = 0;
 		$addr_start = ip2long($m[1].".".$m[2].".".$m[3].".".$m[4]);
 		$addr_stop = ip2long($m[1].".".$m[2].".".$m[3].".".$m[4]);
 		$letlen		= 0;
 	} else if (preg_match('#^(\d+)\.(\d+)\.(\d+)\.(\d+)\/(\d+)\.(\d+)\.(\d+)\.(\d+)$#', $ip, $m) &&
-			($m[1] < 256) && ($m[2] < 256) && ($m[3] < 256) && ($m[4] < 256) &&
-			($m[5] < 256) && ($m[6] < 256) && ($m[7] < 256) && ($m[8] < 256)) {
+			($m[1] < 256) and ($m[2] < 256) and ($m[3] < 256) and ($m[4] < 256) &&
+			($m[5] < 256) and ($m[6] < 256) and ($m[7] < 256) and ($m[8] < 256)) {
 		$result = true;
 		$atype = 1;
 		$laddr = ip2long($m[1].".".$m[2].".".$m[3].".".$m[4]);
@@ -166,7 +166,7 @@ function ipban_list() {
 	$tVars = array(
 		'php_self' => $PHP_SELF,
 		'entries' => $xEntries,
-		'iplock' => (isset($_REQUEST['iplock']) && $_REQUEST['iplock'])?$_REQUEST['iplock']:0,
+		'iplock' => (isset($_REQUEST['iplock']) and $_REQUEST['iplock'])?$_REQUEST['iplock']:0,
 		'token' => genUToken('admin.ipban'),
 		'flags' => array(
 			'permModify' => checkPermission(array('plugin' => '#admin', 'item' => 'ipban'), null, 'modify')?true:false,
@@ -179,7 +179,7 @@ function ipban_list() {
 
 //
 // Main loop
-if( isset($_REQUEST['action']) && $_REQUEST['action'] ) {
+if( isset($_REQUEST['action']) and $_REQUEST['action'] ) {
 	switch ($_REQUEST['action']) {
 		case 'add': ipban_add();
 						break;

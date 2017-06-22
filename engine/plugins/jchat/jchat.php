@@ -10,7 +10,7 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
 	global $userROW, $mysql, $tpl;
 
 	// Check permissions [ guests do not see chat ]
-	if (!pluginGetVariable('jchat', 'access') && !is_array($userROW))
+	if (!pluginGetVariable('jchat', 'access') and !is_array($userROW))
 		return false;
 
 	// Format of TIME/DATE generation
@@ -35,7 +35,7 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
 	$winMode = intval(isset($_REQUEST['win'])?$_REQUEST['win']:0);
 
 	$conf_maxidle = intval(pluginGetVariable('jchat', ($winMode?'win.':'').'maxidle'));
-	if (isset($_REQUEST['idle']) && ($conf_maxidle > 0) && (intval($_REQUEST['idle']) > $conf_maxidle)) {
+	if (isset($_REQUEST['idle']) and ($conf_maxidle > 0) and (intval($_REQUEST['idle']) > $conf_maxidle)) {
 		$bundle[0] []= array('stop');
 	}
 
@@ -52,13 +52,13 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
 
 	// Possible actions
 	// * 3 = RELOAD [ only if $lastEventID is set ]
-	if (($newEvents['type'] == 3) && ($lastEventID > 0)) {
+	if (($newEvents['type'] == 3) and ($lastEventID > 0)) {
 		$bundle[0] []= array('reload');
 		return $bundle;
 	}
 
 	// * 2 = There are deleted messages, return the whole list [ only if $lastEventID is set ]
-	if (($newEvents['type'] == 2) && ($lastEventID > 0)) {
+	if (($newEvents['type'] == 2) and ($lastEventID > 0)) {
 		$bundle[0] []= array('clear');
 		$query = "select id, postdate, author, author_id, text from ".prefix."_jchat order by id desc limit ".$limit;
 	}
@@ -98,11 +98,11 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
 	if (($conf_refresh < 5)||($conf_refresh > 1800))
 		$conf_refresh = 120;
 
-	//if (isset($_REQUEST['timer']) && ($conf_refresh >= 5) && (intval($_REQUEST['timer']) != $conf_refresh))
+	//if (isset($_REQUEST['timer']) and ($conf_refresh >= 5) and (intval($_REQUEST['timer']) != $conf_refresh))
 	//	$bundle[0] []= array('settimer', $conf_refresh);
 
 	// Add extra commands (if passed)
-	if (is_array($commands) && count($commands)) {
+	if (is_array($commands) and count($commands)) {
 		foreach ($commands as $cmd) {
 			$bundle[0] []= $cmd;
 		}
@@ -137,7 +137,7 @@ function plugin_jchat_index() {
 	}
 
 	// Check permissions [ guests do not see chat ]
-	if (!pluginGetVariable('jchat', 'access') && !is_array($userROW)) {
+	if (!pluginGetVariable('jchat', 'access') and !is_array($userROW)) {
 		$template['vars']['plugin_jchat'] = '';
 		return;
 	}
@@ -168,9 +168,9 @@ function plugin_jchat_index() {
 	$tvars['vars']['link_add'] = generateLink('core', 'plugin', array('plugin' => 'jchat', 'handler' => 'add'), array());
 	$tvars['vars']['link_del'] = generateLink('core', 'plugin', array('plugin' => 'jchat', 'handler' => 'del'), array());
 	$tvars['vars']['link_show'] = generateLink('core', 'plugin', array('plugin' => 'jchat', 'handler' => 'show'), array());
-	$tvars['regx']['#\[is\.admin\](.*?)\[\/is\.admin\]#is'] = (is_array($userROW) && ($userROW['status'] == 1))?'$1':'';
+	$tvars['regx']['#\[is\.admin\](.*?)\[\/is\.admin\]#is'] = (is_array($userROW) and ($userROW['status'] == 1))?'$1':'';
 	$tvars['regx']['#\[not-logged\](.*?)\[\/not-logged\]#is'] = is_array($userROW)?'':'$1';
-	$tvars['regx']['#\[post-enabled\](.*?)\[\/post-enabled\]#is'] = (!is_array($userROW) && (pluginGetVariable('jchat', 'access') < 2))?'':'$1';
+	$tvars['regx']['#\[post-enabled\](.*?)\[\/post-enabled\]#is'] = (!is_array($userROW) and (pluginGetVariable('jchat', 'access') < 2))?'':'$1';
 
 	$tvars['regx']['#\[selfwin\](.*?)\[\/selfwin\]#is'] = pluginGetVariable('jchat', 'enable_win') ? '$1' : '';
 	$tvars['vars']['link_selfwin'] = generatePluginLink('jchat', null);
@@ -213,7 +213,7 @@ function plugin_jchat_add() {
 	}
 
 	// If we're guest - check if we can make posts
-	if (!is_array($userROW) && (pluginGetVariable('jchat', 'access') < 2)) {
+	if (!is_array($userROW) and (pluginGetVariable('jchat', 'access') < 2)) {
 			print json_encode(array('status' => 0, 'error' => 'Guests are not allowed to post'));
 
 			// Terminate execution of script
@@ -338,7 +338,7 @@ function plugin_jchat_win() {
 		$SUPRESS_TEMPLATE_SHOW = 1;
 
 	// Check permissions [ guests receive an error ]
-	if (!pluginGetVariable('jchat', access) && !is_array($userROW)) {
+	if (!pluginGetVariable('jchat', access) and !is_array($userROW)) {
 		if (pluginGetVariable('jchat', 'win_mode')) {
 			$template['vars']['mainblock'] = __('jchat:win.regonly');
 		} else {
@@ -378,9 +378,9 @@ function plugin_jchat_win() {
 	$tvars['vars']['link_add'] = generateLink('core', 'plugin', array('plugin' => 'jchat', 'handler' => 'add'), array());
 	$tvars['vars']['link_show'] = generateLink('core', 'plugin', array('plugin' => 'jchat', 'handler' => 'show'), array());
 	$tvars['vars']['link_del'] = generateLink('core', 'plugin', array('plugin' => 'jchat', 'handler' => 'del'), array());
-	$tvars['regx']['#\[is\.admin\](.*?)\[\/is\.admin\]#is'] = (is_array($userROW) && ($userROW['status'] == 1))?'$1':'';
+	$tvars['regx']['#\[is\.admin\](.*?)\[\/is\.admin\]#is'] = (is_array($userROW) and ($userROW['status'] == 1))?'$1':'';
 	$tvars['regx']['#\[not-logged\](.*?)\[\/not-logged\]#is'] = is_array($userROW)?'':'$1';
-	$tvars['regx']['#\[post-enabled\](.*?)\[\/post-enabled\]#is'] = (!is_array($userROW) && (pluginGetVariable('jchat', 'access') < 2))?'':'$1';
+	$tvars['regx']['#\[post-enabled\](.*?)\[\/post-enabled\]#is'] = (!is_array($userROW) and (pluginGetVariable('jchat', 'access') < 2))?'':'$1';
 
 	$templateName = intval(pluginGetVariable('jchat', 'win_mode'))?'jchat.self':'jchat.main';
 

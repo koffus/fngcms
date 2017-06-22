@@ -55,7 +55,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
 	$cacheFileName = md5('other_user_news'.$config['theme'].$templateName.$config['default_lang'].join('', $cacheKeys)).'.txt';
 
-	if (!$cacheDisabled && ($cacheExpire > 0)) {
+	if (!$cacheDisabled and ($cacheExpire > 0)) {
 		$cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'other_user_news');
 		if ($cacheData != false) {
 			// We got data from cache. Return it and stop
@@ -97,7 +97,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 	$xt = $twig->loadTemplate($tpath[$templateName].$templateName.'.tpl');
 	$output = $xt->render($tVars);
 	
-	if (!$cacheDisabled && ($cacheExpire > 0)) {
+	if (!$cacheDisabled and ($cacheExpire > 0)) {
 		cacheStoreFile($cacheFileName, $output, 'other_user_news');
 	}
 	

@@ -49,7 +49,7 @@ class Auth {
 	public final function getServerAuthStatus(ClientAuth $clientAuth = null) {
 		$serverAuthStatus = new ServerAuthStatus();
 		$serverAuthStatus->publicKey = $this->getPublicKey();
-		$serverAuthStatus->isSuccess = $clientAuth && $this->isValidAuth($clientAuth);
+		$serverAuthStatus->isSuccess = $clientAuth and $this->isValidAuth($clientAuth);
 		return $serverAuthStatus;
 	}
 
@@ -59,7 +59,7 @@ class Auth {
 	 * @return bool
 	 */
 	public final function isValidAuth(ClientAuth $clientAuth) {
-		return $clientAuth->publicKey === $this->getPublicKey() && $clientAuth->token === $this->getToken();
+		return $clientAuth->publicKey === $this->getPublicKey() and $clientAuth->token === $this->getToken();
 	}
 
 	/**

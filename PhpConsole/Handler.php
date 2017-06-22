@@ -178,7 +178,7 @@ class Handler {
 		}
 		$this->onHandlingStart();
 		$this->connector->getErrorsDispatcher()->dispatchError($code, $text, $file, $line, is_numeric($ignoreTraceCalls) ? $ignoreTraceCalls + 1 : $ignoreTraceCalls);
-		if($this->oldErrorsHandler && $this->callOldHandlers) {
+		if($this->oldErrorsHandler and $this->callOldHandlers) {
 			call_user_func_array($this->oldErrorsHandler, array($code, $text, $file, $line, $context));
 		}
 		$this->onHandlingComplete();
@@ -217,7 +217,7 @@ class Handler {
 		try {
 			$this->onHandlingStart();
 			$this->connector->getErrorsDispatcher()->dispatchException($exception);
-			if($this->oldExceptionsHandler && $this->callOldHandlers) {
+			if($this->oldExceptionsHandler and $this->callOldHandlers) {
 				call_user_func($this->oldExceptionsHandler, $exception);
 			}
 		}

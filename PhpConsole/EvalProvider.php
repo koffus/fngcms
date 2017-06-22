@@ -113,7 +113,7 @@ class EvalProvider {
 		unset($sharedVars);
 
 		foreach(func_get_arg(1) as $var => $value) {
-			if(isset($GLOBALS[$var]) && $var[0] == '_') { // extract($this->sharedVars, EXTR_OVERWRITE) and $$var = $value do not overwrites global vars
+			if(isset($GLOBALS[$var]) and $var[0] == '_') { // extract($this->sharedVars, EXTR_OVERWRITE) and $$var = $value do not overwrites global vars
 				$GLOBALS[$var] = $value;
 			}
 			else {
@@ -175,7 +175,7 @@ class EvalProvider {
 	protected function forcePhpConsoleClassesAutoLoad() {
 		foreach(new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(__DIR__), \RecursiveIteratorIterator::LEAVES_ONLY) as $path) {
 			/** @var $path \SplFileInfo */
-			if($path->isFile() && $path->getExtension() == 'php' && $path->getFilename() !== 'PsrLogger.php') {
+			if($path->isFile() and $path->getExtension() == 'php' and $path->getFilename() !== 'PsrLogger.php') {
 				require_once($path->getPathname());
 			}
 		}

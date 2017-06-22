@@ -14,7 +14,7 @@ class CategoryAccessNewsFilter extends NewsFilter {
 	function GetParentCategory($cat, &$categorys){
 		global $catz, $catmap;
 		$par_cat = $catz[$catmap[$cat]]['parent'];
-		if ($par_cat && !in_array($par_cat, $categorys)){
+		if ($par_cat and !in_array($par_cat, $categorys)){
 			$categorys[] = $par_cat;
 			$this->GetParentCategory($par_cat, $categorys);
 		}
@@ -42,14 +42,14 @@ class CategoryAccessNewsFilter extends NewsFilter {
 				for ($i = 0; $i < $count; $i ++){
 					$this->GetParentCategory($cur_cats[$i], $cur_cats);
 				}
-				if (is_array($cats) && is_array($cur_cats) && count(array_intersect($cur_cats, $cats))){
+				if (is_array($cats) and is_array($cur_cats) and count(array_intersect($cur_cats, $cats))){
 					$if_view = true;
 					break;
 				}
 				$users = pluginGetVariable('category_access', 'users');
 				$user = '';
 				if (is_array($userROW)) $user = $userROW['name'];
-				if (is_array($users) && array_key_exists($user, $users) && in_array($users[$user], $cur_cats)) $if_view = true;
+				if (is_array($users) and array_key_exists($user, $users) and in_array($users[$user], $cur_cats)) $if_view = true;
 				break;
 			case 2:
 				$if_view = true;
@@ -70,13 +70,13 @@ class CategoryAccessNewsFilter extends NewsFilter {
 	
 	function onAfterShow($mode) { 
 		global $template;
-		if ($this->flag && !$this->flag2) $template['vars']['mainblock'] = pluginGetVariable('category_access', 'message');
+		if ($this->flag and !$this->flag2) $template['vars']['mainblock'] = pluginGetVariable('category_access', 'message');
 		return 1; 
 	}
 	
 	function onAfterNewsShow ($newsID, $SQLnews, $mode = array()) { 
 		global $template;
-		if ($this->flag && !$this->flag2) $template['vars']['mainblock'] = pluginGetVariable('category_access', 'message');
+		if ($this->flag and !$this->flag2) $template['vars']['mainblock'] = pluginGetVariable('category_access', 'message');
 		return 1; 
 	}
 }

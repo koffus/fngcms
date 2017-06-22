@@ -65,11 +65,11 @@ abstract class Dispatcher {
 		$ignoreByClassPrefixes = is_array($ignoreTraceCalls) ? array_merge($ignoreTraceCalls, array(__NAMESPACE__)) : null;
 
 		foreach($trace as $i => $call) {
-			if(!$file && $i == $ignoreTraceCalls && isset($call['file'])) {
+			if(!$file and $i == $ignoreTraceCalls and isset($call['file'])) {
 				$file = $call['file'];
 				$line = $call['line'];
 			}
-			if($ignoreByClassPrefixes && isset($call['class'])) {
+			if($ignoreByClassPrefixes and isset($call['class'])) {
 				foreach($ignoreByClassPrefixes as $classPrefix) {
 					if(strpos($call['class'], $classPrefix) !== false) {
 						unset($trace[$i]);
@@ -77,7 +77,7 @@ abstract class Dispatcher {
 					}
 				}
 			}
-			if($i < $ignoreByNumber or (isset($call['file']) && $call['file'] == $file && $call['line'] == $line)) {
+			if($i < $ignoreByNumber or (isset($call['file']) and $call['file'] == $file and $call['line'] == $line)) {
 				unset($trace[$i]);
 			}
 		}

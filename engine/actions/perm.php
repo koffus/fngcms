@@ -42,8 +42,8 @@ function showList($grp) {
 		$nl1++;
 		$dBlock = array(
 			'id' => $kb,
-			'title' => (isset($vb['title']) && $vb['title'])?$vb['title']:'',
-			'description' => (isset($vb['description']) && $vb['description'])?$vb['description']:'',
+			'title' => (isset($vb['title']) and $vb['title'])?$vb['title']:'',
+			'description' => (isset($vb['description']) and $vb['description'])?$vb['description']:'',
 			'items' => array(),
 		);
 
@@ -53,8 +53,8 @@ function showList($grp) {
 				$nl2++;
 				$dArea = array(
 					'id' => $ka,
-					'title' => (isset($va['title']) && $va['title'])?$va['title']:'',
-					'description' => (isset($va['description']) && $va['description'])?$va['description']:'',
+					'title' => (isset($va['title']) and $va['title'])?$va['title']:'',
+					'description' => (isset($va['description']) and $va['description'])?$va['description']:'',
 					'items' => array(),
 				);
 
@@ -65,14 +65,14 @@ function showList($grp) {
 
 						// Check for type = categories
 						$isCategories = false;
-						if (isset($ve['type']) && (preg_match('#^listCategoriesSelector#', $ve['type'], $match))) {
+						if (isset($ve['type']) and (preg_match('#^listCategoriesSelector#', $ve['type'], $match))) {
 							// [[ CATEGORIES ]]
 							$isCategories = true;
 
 							$dEntry	= array(
 								'id'				=> $ke,
-								'title'				=> (isset($ve['title']) && $ve['title'])?$ve['title']:'',
-								'description' => (isset($ve['description']) && $ve['description'])?$ve['description']:'',
+								'title'				=> (isset($ve['title']) and $ve['title'])?$ve['title']:'',
+								'description' => (isset($ve['description']) and $ve['description'])?$ve['description']:'',
 								'type'				=> 'listCategoriesSelector',
 								'name'				=> str_replace('.', ':', $kb.'|'.$ka.'|'.$ke),
 								'generatedOptions' => makeCategoryList(array('skipDisabled' => true, 'noHeader' => true, 'doall' => true, 'allmarker' => '*', 'returnOptArray' => true)),
@@ -84,8 +84,8 @@ function showList($grp) {
 							// [[ NORMAL SELECT ]]
 							$dEntry = array(
 								'id' => $ke,
-								'title' => (isset($ve['title']) && $ve['title'])?$ve['title']:'',
-								'description' => (isset($ve['description']) && $ve['description'])?$ve['description']:'',
+								'title' => (isset($ve['title']) and $ve['title'])?$ve['title']:'',
+								'description' => (isset($ve['description']) and $ve['description'])?$ve['description']:'',
 								'perm' => array(),
 								'name' => $kb.'|'.$ka.'|'.$ke,
 								'type' => '',
@@ -97,7 +97,7 @@ function showList($grp) {
 
 						if(is_array($grp))
 							foreach ($grp as $kg) {
-								if(isset($PERM[$kg['id']][$kb][$ka][$ke]) && $PERM[$kg['id']][$kb][$ka][$ke])
+								if(isset($PERM[$kg['id']][$kb][$ka][$ke]) and $PERM[$kg['id']][$kb][$ka][$ke])
 									$x = $PERM[$kg['id']][$kb][$ka][$ke];
 								else
 									$x = '';
@@ -228,9 +228,9 @@ function updateConfig() {
 				// Found changed record
 				// - check if new value is equal to default value
 				if (
-					(($v == -1) && !isset($confPerm[$m[4]][$m[1]][$m[2]][$m[3]])) ||
-					(($v == 1) && isset($confPerm[$m[4]][$m[1]][$m[2]][$m[3]]) && $confPerm[$m[4]][$m[1]][$m[2]][$m[3]]) ||
-					(($v == 0) && isset($confPerm[$m[4]][$m[1]][$m[2]][$m[3]]) && !$confPerm[$m[4]][$m[1]][$m[2]][$m[3]])
+					(($v == -1) and !isset($confPerm[$m[4]][$m[1]][$m[2]][$m[3]])) ||
+					(($v == 1) and isset($confPerm[$m[4]][$m[1]][$m[2]][$m[3]]) and $confPerm[$m[4]][$m[1]][$m[2]][$m[3]]) ||
+					(($v == 0) and isset($confPerm[$m[4]][$m[1]][$m[2]][$m[3]]) and !$confPerm[$m[4]][$m[1]][$m[2]][$m[3]])
 				) {
 					//print "DELETE OVERRIDEN $k<br/>\n";
 					unset($confPermUser[$m[4]][$m[1]][$m[2]][$m[3]]);
@@ -264,7 +264,7 @@ function updateConfig() {
 
 //
 //
-if (($_SERVER['REQUEST_METHOD'] == "POST") && isset($_POST['save']) && ($_POST['save'] == 1)) {
+if (($_SERVER['REQUEST_METHOD'] == "POST") and isset($_POST['save']) and ($_POST['save'] == 1)) {
 	updateConfig();
 } else {
 	showList($grp);

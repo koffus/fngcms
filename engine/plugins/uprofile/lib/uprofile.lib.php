@@ -34,7 +34,7 @@ function userGetAvatar($urow){
 	// Use default <noavatar> file
 	// - Check if noavatar is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noAvatarURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noAvatarImage']) && $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
+	$noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
 	// If avatar is set
 	if ($urow['avatar'] != '') {
@@ -64,7 +64,7 @@ function userGetPhoto($urow) {
 	// Use default <nophoto> file
 	// - Check if nophoto is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noPhotoURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noPhotoImage']) && $tplVars['configuration']['noPhotoImage'])?(tpl_url."/".$tplVars['configuration']['noPhotoImage']):(photos_url."/nophoto.gif");
+	$noPhotoURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noPhotoImage']) and $tplVars['configuration']['noPhotoImage'])?(tpl_url."/".$tplVars['configuration']['noPhotoImage']):(photos_url."/nophoto.gif");
 
 	// If photo is set
 	if ($urow['photo'] != '') {

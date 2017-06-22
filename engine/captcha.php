@@ -23,7 +23,7 @@ $cShowNumber = 'n/c';
 // Check if special block is requested
 if ( trim($blockName) ) {
 	// Check if captchaID is prepared for this block
-	if (isset($_SESSION['captcha.'.$blockName]) && ($_SESSION['captcha.'.$blockName])) {
+	if (isset($_SESSION['captcha.'.$blockName]) and ($_SESSION['captcha.'.$blockName])) {
 		$cShowNumber = $_SESSION['captcha.'.$blockName];
 	} else {
 		// No, captcha is not set. But we can generate it dynamically for ACTIVE plugins

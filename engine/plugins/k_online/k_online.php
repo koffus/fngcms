@@ -76,14 +76,14 @@ else
 
 if($result){
 	$user = array(); $sess = array(); $ipis = array(); $count = count($result);
-	if(isset($count) && ($count > 20000)){
+	if(isset($count) and ($count > 20000)){
 		if($db){
 			$mysql->query('DELETE FROM '.prefix.'_k_online WHERE users_id = 0 ORDER BY last_time ASC LIMIT 10000');
 		} else {
 			$x = 1;
 			while ($count >= 0){
 				$res = $result[$count];
-				if ((isset($res['users_id']) && ($res['users_id'] == 0)) && (isset($res['last_time']) && ($res['last_time'] < $last_time))){
+				if ((isset($res['users_id']) and ($res['users_id'] == 0)) and (isset($res['last_time']) and ($res['last_time'] < $last_time))){
 					array_splice($result, $count, 1);
 					if($x >= 10000) break;
 					$x++;
@@ -104,7 +104,7 @@ if($result){
 			if($user[$userROW['id']] < $last_time){
 				while ($count >= 0){
 					$res = $result[$count];
-					if (isset($res['users_id']) && ($res['users_id'] == $userROW['id'])){
+					if (isset($res['users_id']) and ($res['users_id'] == $userROW['id'])){
 						$result[$count] = array('sess_id' => $id, 'last_time' => $time, 'ip' => $ips, 'users' => $userROW['name'], 'users_id' => $userROW['id'], 'users_status' => $userROW['status']);
 						if($db)
 							$mysql->query('UPDATE '.prefix.'_k_online SET sess_id = '.db_squote($id).', last_time = '.db_squote($time).', ip = '.db_squote($ips).', users_status = '.db_squote($userROW['status']).' WHERE users_id = '.db_squote($userROW['id']).' LIMIT 1');
@@ -119,7 +119,7 @@ if($result){
 		}elseif($ipis[$ip]){
 				while ($count >= 0){
 					$res = $result[$count];
-					if (isset($res['ip']) && ($res['ip'] == $ip)){
+					if (isset($res['ip']) and ($res['ip'] == $ip)){
 						$result[$count] = array('sess_id' => $id, 'last_time' => $time, 'users' => $users, 'users_id' => $users_id, 'users_status' => $users_status, 'ip' => $ips); 
 						if($db)
 							$mysql->query('UPDATE '.prefix.'_k_online SET sess_id = '.db_squote($id).', last_time = '.intval($time).', users = '.db_squote($userROW['name']).', users_id = '.db_squote($userROW['id']).', users_status = '.db_squote($userROW['status']).', ip = '.db_squote($ips).' WHERE ip = '.db_squote($ip).' LIMIT 1');
@@ -143,7 +143,7 @@ if($result){
 			if($sess[$id] < $last_time)
 				while ($count >= 0){
 					$res = $result[$count];
-					if (isset($res['sess_id']) && ($res['sess_id'] == $id)){
+					if (isset($res['sess_id']) and ($res['sess_id'] == $id)){
 						$result[$count] = array('sess_id' => $id, 'last_time' => $time, 'ip' => $ips, 'users' => $users, 'users_id' => $users_id, 'users_status' => $users_status);
 						if($db)
 							$mysql->query('UPDATE '.prefix.'_k_online SET last_time = '.intval($time).', ip = '.db_squote($ips).' WHERE sess_id = '.db_squote($id).' LIMIT 1');
@@ -158,7 +158,7 @@ if($result){
 				if($ipis[$ip] < $last_time){
 					while ($count >= 0){
 						$res = $result[$count];
-						if (isset($res['ip']) && ($res['ip'] == $ip)){
+						if (isset($res['ip']) and ($res['ip'] == $ip)){
 							$result[$count] = array('sess_id' => $id, 'last_time' => $time, 'ip' => $ips, 'users' => $users, 'users_id' => $users_id, 'users_status' => $users_status); 
 							if($db)
 								$mysql->query('UPDATE '.prefix.'_k_online SET sess_id = '.db_squote($id).', last_time = '.intval($time).' WHERE ip = '.db_squote($ip).' LIMIT 1');

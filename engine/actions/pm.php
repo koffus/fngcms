@@ -30,7 +30,7 @@ function pm_send() {
 		return;
 	}
 
-	if ($sendto && ($torow = $mysql->record("select * from ".uprefix."_users where ".(is_numeric($sendto)?"id = ".db_squote($sendto):"name = ".db_squote($sendto))))) {
+	if ($sendto and ($torow = $mysql->record("select * from ".uprefix."_users where ".(is_numeric($sendto)?"id = ".db_squote($sendto):"name = ".db_squote($sendto))))) {
 		$content = secure_html($content);
 		executeActionHandler('pm_send');
 		$mysql->query("insert into ".uprefix."_users_pm (from_id, to_id, pmdate, title, content) VALUES (".db_squote($userROW['id']).", ".db_squote($torow['id']).", ".db_squote($time).", ".db_squote($title).", ".db_squote($content).")");
@@ -47,7 +47,7 @@ function pm_list () {
 	$entries = '';
 	foreach($mysql->select("select pm.*, u.id as uid, u.name as uname from ".uprefix."_users_pm pm left join ".uprefix."_users u on pm.from_id=u.id where pm.to_id = ".db_squote($userROW['id'])." order by pmid desc limit 0, 30") as $row) {
 		$author = '';
-		if ($row['from_id'] && $row['uid']) {
+		if ($row['from_id'] and $row['uid']) {
 			$alink = checkLinkAvailable('uprofile', 'show')?
 						generateLink('uprofile', 'show', array('name' => $row['uname'], 'id' => $row['uid'])):
 						generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['uname'], 'id' => $row['uid']));

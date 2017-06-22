@@ -124,7 +124,7 @@ class Connector {
 			ob_start();
 			$this->isActiveClient = true;
 			$this->registerFlushOnShutDown();
-			$this->setHeadersLimit(isset($_SERVER['SERVER_SOFTWARE']) && stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false
+			$this->setHeadersLimit(isset($_SERVER['SERVER_SOFTWARE']) and stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false
 				? 4096 // default headers limit for Nginx
 				: 8192 // default headers limit for all other web-servers
 			);
@@ -292,7 +292,7 @@ class Connector {
 		}
 		$this->isEvalListenerStarted = true;
 
-		if($this->isActiveClient() && $this->isAuthorized() && isset($_POST[Connector::POST_VAR_NAME]['eval'])) {
+		if($this->isActiveClient() and $this->isAuthorized() and isset($_POST[Connector::POST_VAR_NAME]['eval'])) {
 			$request = $_POST[Connector::POST_VAR_NAME]['eval'];
 			if(!isset($request['data']) or !isset($request['signature'])) {
 				throw new \Exception('Wrong PHP Console eval request');
@@ -343,7 +343,7 @@ class Connector {
 		$this->convertEncoding($password, self::CLIENT_ENCODING, $this->serverEncoding);
 		$this->auth = new Auth($password, $publicKeyByIp);
 		if($this->client) {
-			$this->isAuthorized = $this->client->auth && $this->auth->isValidAuth($this->client->auth);
+			$this->isAuthorized = $this->client->auth and $this->auth->isValidAuth($this->client->auth);
 		}
 	}
 
@@ -385,7 +385,7 @@ class Connector {
 	 * @throws \Exception
 	 */
 	protected function convertEncoding(&$string, $toEncoding, $fromEncoding) {
-		if($string && is_string($string) && $toEncoding != $fromEncoding) {
+		if($string and is_string($string) and $toEncoding != $fromEncoding) {
 			static $isMbString;
 			if($isMbString === null) {
 				$isMbString = extension_loaded('mbstring');
@@ -396,7 +396,7 @@ class Connector {
 			else {
 				$string = @iconv($fromEncoding, $toEncoding . '//IGNORE', $string) ? : $string;
 			}
-			if(!$string && $toEncoding == 'UTF-8') {
+			if(!$string and $toEncoding == 'UTF-8') {
 				$string = utf8_encode($string);
 			}
 		}
@@ -466,7 +466,7 @@ class Connector {
 	 * @return bool
 	 */
 	protected function isSsl() {
-		return (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') or (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT']) == 443);
+		return (isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS']) == 'on') or (isset($_SERVER['SERVER_PORT']) and ($_SERVER['SERVER_PORT']) == 443);
 	}
 
 	/**
@@ -487,7 +487,7 @@ class Connector {
 					$response->auth = $this->auth->getServerAuthStatus($this->client->auth);
 				}
 				if(!$this->auth or $this->isAuthorized()) {
-					$response->isLocal = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
+					$response->isLocal = isset($_SERVER['REMOTE_ADDR']) and $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
 					$response->docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : null;
 					$response->sourcesBasePath = $this->sourcesBasePath;
 					$response->isEvalEnabled = $this->isEvalListenerStarted;

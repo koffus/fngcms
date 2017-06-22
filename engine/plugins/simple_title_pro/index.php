@@ -48,7 +48,7 @@ function simple_title_pro()
 				$cacheFileName = md5('block_directory_sites_cat'.$SYSTEM_FLAGS['news']['currentCategory.id'].$config['default_lang']).'.txt';
 				if (false){
 					$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('simple_title_pro', 'cache') * 86400, 'simple_title_pro');
-					$cacheData = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) && $pageNo)?'\\1':'', $cacheData);
+					$cacheData = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) and $pageNo)?'\\1':'', $cacheData);
 					if ($cacheData != false){
 						$template ['vars'] ['titles'] = trim(str_replace(
 							array ('%cat%', '%home%', '%num%' ),
@@ -67,7 +67,7 @@ function simple_title_pro()
 					cacheStoreFile($cacheFileName, $title, 'simple_title_pro');
 				}
 				
-				$title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) && $pageNo)?'\\1':'', $title);
+				$title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) and $pageNo)?'\\1':'', $title);
 				
 				$template ['vars'] ['titles'] = trim(str_replace(
 					array ('%cat%', '%home%', '%num%' ),
@@ -92,7 +92,7 @@ function simple_title_pro()
 				$cacheFileName = md5('block_directory_sites_news'.$SYSTEM_FLAGS['news']['db.id'].$config['default_lang']).'.txt';
 				if (false){
 					$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('simple_title_pro', 'cache') * 86400, 'simple_title_pro');
-					$cacheData = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) && $pageNo)?'\\1':'', $cacheData);
+					$cacheData = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) and $pageNo)?'\\1':'', $cacheData);
 					if ($cacheData != false)
 					{
 						$template ['vars'] ['titles'] = trim(str_replace(
@@ -112,7 +112,7 @@ function simple_title_pro()
 					cacheStoreFile($cacheFileName, $title, 'simple_title_pro');
 				}
 				
-				$title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) && $pageNo)?'\\1':'', $title);
+				$title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) and $pageNo)?'\\1':'', $title);
 				
 				$template['vars']['titles'] = trim(str_replace(
 					array('%cat%','%title%','%home%', '%num%'),
@@ -121,7 +121,7 @@ function simple_title_pro()
 			}
 			
 			if ($CurrentHandler['handlerName'] == 'main'){
-				$m_title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) && $pageNo)?'\\1':'', pluginGetVariable('simple_title_pro', 'm_title'));
+				$m_title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) and $pageNo)?'\\1':'', pluginGetVariable('simple_title_pro', 'm_title'));
 				
 				$template ['vars'] ['titles'] = trim(str_replace(
 					array ('%home%', '%num%'),
@@ -164,9 +164,9 @@ function simple_title_pro()
 		default:
 			$list_plugin = array_map('trim', explode(',',pluginGetVariable('simple_title_pro', 'p_title')));
 			
-			if(isset($CurrentHandler['pluginName']) && $CurrentHandler['pluginName']){
+			if(isset($CurrentHandler['pluginName']) and $CurrentHandler['pluginName']){
 				if(!in_array($CurrentHandler['pluginName'], $list_plugin)){
-					$o_title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) && $pageNo)?'\\1':'', pluginGetVariable('simple_title_pro', 'o_title'));
+					$o_title = preg_replace('/\[([^\[\]]+)\]/' , (isset($pageNo) and $pageNo)?'\\1':'', pluginGetVariable('simple_title_pro', 'o_title'));
 					$template ['vars'] ['titles'] = trim(str_replace(
 						array ('%home%', '%other%', '%html%','%num%'),
 						array ($SYSTEM_FLAGS['info']['title']['header'], $SYSTEM_FLAGS['info']['title']['group'], $html, $pageNo ),

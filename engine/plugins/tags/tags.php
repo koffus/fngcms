@@ -125,7 +125,7 @@ class TagsNewsfilter extends NewsFilter {
 		global $mysql;
 
 		// If we edit unpublished news - no action
-		if ((!$SQLnews['approve']) && (!$SQLnew['approve']))
+		if ((!$SQLnews['approve']) and (!$SQLnew['approve']))
 			return 1;
 
 		// OLD Tags
@@ -186,7 +186,7 @@ class TagsNewsfilter extends NewsFilter {
 		global $mysql, $tpl;
 
 		// Check if we have tags in news
-		if (!$SQLnews['tags'] && !pluginGetVariable('tags', 'show_always')) {
+		if (!$SQLnews['tags'] and !pluginGetVariable('tags', 'show_always')) {
 			$tvars['vars']['p']['tags']['flags']['haveTags'] = false;
 			$tvars['regx']["'\[tags\](.*?)\[/tags\]'si"] = '';
 			$tvars['vars']['tags'] = '';
@@ -314,15 +314,15 @@ function plugin_tags_cloudblock() {
 
 	// Check if we need to limit list of categories with tags
 	$cl = '';
-	if (pluginGetVariable('tags', 'catfilter') && ($CurrentHandler['pluginName'] == 'news') && ($CurrentHandler['handlerName'] == 'by.category')) {
+	if (pluginGetVariable('tags', 'catfilter') and ($CurrentHandler['pluginName'] == 'news') and ($CurrentHandler['handlerName'] == 'by.category')) {
 		// Try to determine category ID
-		if (isset($CurrentHandler['params']['catid']) && isset($catmap[$CurrentHandler['params']['catid']])) {
+		if (isset($CurrentHandler['params']['catid']) and isset($catmap[$CurrentHandler['params']['catid']])) {
 			$cl = array(intval($CurrentHandler['params']['catid']));
-		} else if (isset($CurrentHandler['params']['category']) && isset($catz[$CurrentHandler['params']['category']])) {
+		} else if (isset($CurrentHandler['params']['category']) and isset($catz[$CurrentHandler['params']['category']])) {
 			$cl = array($catz[$CurrentHandler['params']['category']]['id']);
 		}
-	} else if (pluginGetVariable('tags', 'newsfilter') && ($CurrentHandler['pluginName'] == 'news') && ($CurrentHandler['handlerName'] == 'news')) {
-		if (is_array($SYSTEM_FLAGS['news']['db.categories']) && (count($SYSTEM_FLAGS['news']['db.categories'])>0)) {
+	} else if (pluginGetVariable('tags', 'newsfilter') and ($CurrentHandler['pluginName'] == 'news') and ($CurrentHandler['handlerName'] == 'news')) {
+		if (is_array($SYSTEM_FLAGS['news']['db.categories']) and (count($SYSTEM_FLAGS['news']['db.categories'])>0)) {
 			$cl = $SYSTEM_FLAGS['news']['db.categories'];
 		}
 	//	print "<pre>".var_export($CurrentHandler['params'], true)."</pre>";
@@ -532,8 +532,8 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 
 	// Init variables for 3D cloud
 	$cloud3d = array();
-	$cloudMin = (isset($displayParams['size3d.min']) && (intval($displayParams['size3d.min'])>0))?intval($displayParams['size3d.min']):10;
-	$cloudMax = (isset($displayParams['size3d.max']) && (intval($displayParams['size3d.max'])>0))?intval($displayParams['size3d.max']):18;
+	$cloudMin = (isset($displayParams['size3d.min']) and (intval($displayParams['size3d.min'])>0))?intval($displayParams['size3d.min']):10;
+	$cloudMax = (isset($displayParams['size3d.max']) and (intval($displayParams['size3d.max'])>0))?intval($displayParams['size3d.max']):18;
 	if ($cloudMax == $cloudMin) { $cloudMin = 10; $cloudMax = 18; }
 
 	$cloudStep = abs(round(($max - $min)/($cloudMax-$cloudMin), 2));
@@ -552,7 +552,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 		if ($manualstyle) {
 			$mmatch = 0;
 			foreach ($wlist as $wrow) {
-				if (($row['posts'] >= $wrow[0]) && ($row['posts'] <= $wrow[1])) {
+				if (($row['posts'] >= $wrow[0]) and ($row['posts'] <= $wrow[1])) {
 					$params = 'class ="'.$wrow[2].'"';
 					$mmatch = 1;
 					break;
@@ -570,7 +570,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	$tagList = $tagCount?(join($displayParams[($ppage?'cloud':'sidebar').'.tag.delimiter']."\n", $tags)):($displayParams[($ppage?'cloud':'sidebar').'.notags']);
 
 	// If we have more than 1 page or current page != 1, we should generate paginator
-	if ( $ppage && (($pagesCount > 1) or ($pageNo != 1))) {
+	if ( $ppage and (($pagesCount > 1) or ($pageNo != 1))) {
 		// Load navigation bar
 		templateLoadVariables(true);
 		$navigations = $TemplateCache['site']['#variables']['navigation'];

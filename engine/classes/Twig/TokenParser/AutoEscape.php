@@ -56,7 +56,7 @@ class Twig_TokenParser_AutoEscape extends Twig_TokenParser
  $value = 'html';
  }
 
- if ($compat && $stream->test(Twig_Token::NAME_TYPE)) {
+ if ($compat and $stream->test(Twig_Token::NAME_TYPE)) {
  if (false === $value) {
  throw new Twig_Error_Syntax('Unexpected escaping strategy as you set autoescaping to false.', $stream->getCurrent()->getLine(), $stream->getFilename());
  }

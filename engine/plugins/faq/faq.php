@@ -81,13 +81,13 @@ function plugin_faq() {
 function plug_faq($maxnum, $overrideTemplateName, $order, $cacheExpire) {
 
 	global $config, $mysql, $tpl, $template, $twig, $twigLoader, $langMonths, $lang;
-	if (($maxnum < 1) || ($maxnum > 50)) $maxnum = 12;
+	if (($maxnum < 1) or ($maxnum > 50)) $maxnum = 12;
 	if ($overrideTemplateName) {
 		$templateName = $overrideTemplateName;
 	} else {
 		$templateName = 'faq_block';
 	}
-	if ($order != 'ASC' && $order != 'DESC') {
+	if ($order != 'ASC' and $order != 'DESC') {
 		$order = 'DESC';
 	}
 	// Generate cache file name [ we should take into account SWITCHER plugin ]

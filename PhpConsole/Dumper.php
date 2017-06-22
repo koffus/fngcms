@@ -90,7 +90,7 @@ class Dumper {
 
 		if(is_array($data)) {
 
-			if($this->detectCallbacks && count($data) == 2 && is_callable($data)) {
+			if($this->detectCallbacks and count($data) == 2 and is_callable($data)) {
 				list($class, $method) = $data;
 				$data = '(callback ' . (is_object($class) ? get_class($class) : $class) . '::' . $method . ')';
 				$sizeLeft -= strlen($data) + 4;
@@ -100,7 +100,7 @@ class Dumper {
 			$i = 0;
 			$dataArray = array();
 			foreach($data as $k => &$v) {
-				if(($this->itemsCountLimit && $i >= $this->itemsCountLimit) or $sizeLeft <= 0) {
+				if(($this->itemsCountLimit and $i >= $this->itemsCountLimit) or $sizeLeft <= 0) {
 					break;
 				}
 				if(is_array($v) or is_object($v)) {
@@ -109,7 +109,7 @@ class Dumper {
 						$refQueue[] =& $v;
 						$levelsQueue[] = $levelLimit;
 					}
-					if(is_object($v) && !$v instanceof \Closure) {
+					if(is_object($v) and !$v instanceof \Closure) {
 						$k .= ':' . get_class($v);
 						$hash = spl_object_hash($v);
 						if(in_array($hash, $objectsHashes)) {
@@ -153,7 +153,7 @@ class Dumper {
 					$refData = $origData;
 				}
 			}
-			while(count($origQueue) && $sizeLeft >= 0);
+			while(count($origQueue) and $sizeLeft >= 0);
 
 			if($rootCall) {
 				$levelsQueue = $origQueue = $refQueue = $objectsHashes = array();
@@ -161,7 +161,7 @@ class Dumper {
 		}
 		// scalar or resource
 		else {
-			if(!is_scalar($data) && $data !== null) {
+			if(!is_scalar($data) and $data !== null) {
 				if(is_resource($data)) {
 					$data = '(' . strtolower((string)$data) . ' ' . get_resource_type($data) . ')';
 					$sizeLeft -= strlen($data);

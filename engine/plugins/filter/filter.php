@@ -17,7 +17,7 @@ class clFilterComments extends FilterComments {
 
 		foreach (explode("\n",pluginGetVariable('filter','replace')) as $line) {
 			list($rsrc, $rdest) = explode('|',$line);
-			if ($rsrc && $rdest) {
+			if ($rsrc and $rdest) {
 				$c = str_replace($rsrc, $rdest, $c);
 				$flagUpdated = true;
 			}
@@ -25,7 +25,7 @@ class clFilterComments extends FilterComments {
 
 		// Manage blocking
 		foreach (explode("\n",pluginGetVariable('filter','block')) as $line) {
-			if ($line && stripos(' '.$c,trim($line))) {
+			if ($line and stripos(' '.$c,trim($line))) {
 				Lang::loadPlugin('filter', 'main', '', '', ':');
 				return array('result' => 0, 'errorText' => str_replace('%lock%', trim($line), __('filter:block')));
 			}

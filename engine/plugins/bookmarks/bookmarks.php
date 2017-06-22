@@ -246,7 +246,7 @@ function bookmarks_view(){
 	if (!$maxlength)	{ $maxlength = 100; }
 
 	# preload user's bookmarks
-	if (!$bookmarksLoaded && pluginGetVariable('bookmarks', 'sidebar'))
+	if (!$bookmarksLoaded and pluginGetVariable('bookmarks', 'sidebar'))
 		bookmarks_sql();
 
 	$output = '';
@@ -267,7 +267,7 @@ function bookmarks_view(){
 	}
 
 	# action on "hide empty"
-	if ((!$count) && pluginGetVariable('bookmarks','hide_empty')) {
+	if ((!$count) and pluginGetVariable('bookmarks','hide_empty')) {
 		if (pluginGetVariable('bookmarks','cache')) {
 			cacheStoreFile($cacheFileName, ' ', 'bookmarks');
 		}
@@ -439,7 +439,7 @@ function bookmarksPage(){
 		
 		$callingParams = array('style' => 'short', 'plugin' => 'bookmarks', 'overrideTemplatePath' => (pluginGetVariable('bookmarks', 'news_short') ? $tpath['news.short'] : null));
 		
-		if (isset($_GET['page']) && (intval($_GET['page']) > 0)) {
+		if (isset($_GET['page']) and (intval($_GET['page']) > 0)) {
 			$callingParams['page'] = intval($_GET['page']);
 		}
 		else $callingParams['page'] = 1;

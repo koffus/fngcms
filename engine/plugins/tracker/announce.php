@@ -198,7 +198,7 @@ class TrackerNewsFilter extends NewsFilter
     {
         global $mysql;
 
-        if (pluginGetVariable('tracker', 'smagnet') && $_POST['tracker_magnet']) {
+        if (pluginGetVariable('tracker', 'smagnet') and $_POST['tracker_magnet']) {
             // Create a record in `tracker_magnets` table
             $mysql->query("insert into " . prefix . "_tracker_magnets (magnet, infohash) values (" . db_squote($_POST['tracker_magnet']) . ", '')");
             $SQL['tracker_magnetid'] = $mysql->lastid(prefix . '_tracker_magnets');
@@ -267,14 +267,14 @@ class TrackerNewsFilter extends NewsFilter
 
         // Decide what to do with magnet link
         // Delete old link
-        if (($_POST['tracker_magnet'] == '') && ($SQLold['tracker_magnetid'])) {
+        if (($_POST['tracker_magnet'] == '') and ($SQLold['tracker_magnetid'])) {
             $SQLnew['tracker_magnetid'] = 0;
             $SQLnew['tracker_infohash'] = $magnet_infohash;
             $mysql->query("delete from " . prefix . "_tracker_magnets where id = " . db_squote($SQLold['tracker_magnetid']));
         }
 
         // Add new link
-        if (($_POST['tracker_magnet'] != '') && (!$SQLold['tracker_magnetid'])) {
+        if (($_POST['tracker_magnet'] != '') and (!$SQLold['tracker_magnetid'])) {
             // Add new link
             $mysql->query("insert into " . prefix . "_tracker_magnets (magnet, infohash) values (" . db_squote($_POST['tracker_magnet']) . ", " . db_squote($magnet_infohash) . ")");
             $SQLnew['tracker_magnetid'] = $mysql->lastid(prefix . '_tracker_magnets');
@@ -282,7 +282,7 @@ class TrackerNewsFilter extends NewsFilter
         }
 
         // Update existed link
-        if (($_POST['tracker_magnet'] != '') && ($SQLold['tracker_magnetid'])) {
+        if (($_POST['tracker_magnet'] != '') and ($SQLold['tracker_magnetid'])) {
             // Add new link
             $mysql->query("update " . prefix . "_tracker_magnets set magnet = " . db_squote($_POST['tracker_magnet']) . ", infohash = " . db_squote($magnet_infohash) . " where id = " . db_squote($SQLold['tracker_magnetid']));
             $SQLnew['tracker_infohash'] = $magnet_infohash;
@@ -314,7 +314,7 @@ class TrackerNewsFilter extends NewsFilter
 
         // Check if we have MAGNET link in this news
         $haveMagnet = false;
-        if (pluginGetVariable('tracker', 'smagnet') && $SQLnews['tracker_magnetid']) {
+        if (pluginGetVariable('tracker', 'smagnet') and $SQLnews['tracker_magnetid']) {
             if ($magnetRow = $mysql->record("select * from " . prefix . "_tracker_magnets where id = " . db_squote($SQLnews['tracker_magnetid']))) {
                 $haveMagnet = true;
                 $tdata['regx']['#\[magnet\](.+?)\[\/magnet\]#is'] = '$1';
@@ -327,7 +327,7 @@ class TrackerNewsFilter extends NewsFilter
 
         // Check if we have TORRENT file attached
         $haveTorrent = false;
-        if (pluginGetVariable('tracker', 'storrent') && $SQLnews['tracker_fileid']) {
+        if (pluginGetVariable('tracker', 'storrent') and $SQLnews['tracker_fileid']) {
             if ($torrentRow = $mysql->record("select * from " . prefix . "_files where id = " . db_squote($SQLnews['tracker_fileid']))) {
                 $haveTorrent = true;
                 $tdata['regx']['#\[torrent\](.+?)\[\/torrent\]#is'] = '$1';

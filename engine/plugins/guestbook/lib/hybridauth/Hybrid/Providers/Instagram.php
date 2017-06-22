@@ -65,7 +65,7 @@ class Hybrid_Providers_Instagram extends Hybrid_Provider_Model_OAuth2
  }
  //
 
-		if ( isset( $response ) && $response->meta->code == 200 ) {
+		if ( isset( $response ) and $response->meta->code == 200 ) {
 			foreach ($response->data as $contact) {
  try {
  $contactInfo = $this->api->api( "users/".$contact->id );

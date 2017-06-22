@@ -32,7 +32,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	// Use default <noavatar> file
 	// - Check if noavatar is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noAvatarURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noAvatarImage']) && $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
+	$noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
 	// -> desired template path
 	$templatePath = ($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');
@@ -55,17 +55,17 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	}
 
 	// RUN interceptors
-	if (isset($PFILTERS['comments']) && is_array($PFILTERS['comments']))
+	if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
 		foreach ($PFILTERS['comments'] as $k => $v) {
 			$xcfg = $v->commentsJoinFilter();
-			if (is_array($xcfg) && isset($xcfg['users']) && isset($xcfg['users']['fields']) && is_array($xcfg['users']['fields'])) {
+			if (is_array($xcfg) and isset($xcfg['users']) and isset($xcfg['users']['fields']) and is_array($xcfg['users']['fields'])) {
 				$joinFilter['users']['fields'] = array_unique(array_merge($joinFilter['users']['fields'], $xcfg['users']['fields']));
 			}
 		}
 
 	//print "ARRAY CFG: <pre>".var_export($joinFilter, true)."</pre>";
 	function _cs_am($k){ return 'u.'.$k.' as `users_'.$k.'`';	}
-	if (isset($joinFilter['users']) && isset($joinFilter['users']['fields']) && is_array($joinFilter['users']['fields']) && (count($joinFilter['users']['fields']) > 0)) {
+	if (isset($joinFilter['users']) and isset($joinFilter['users']['fields']) and is_array($joinFilter['users']['fields']) and (count($joinFilter['users']['fields']) > 0)) {
 		$sql = "select c.*, ".
 			join(", ", array_map('_cs_am', $joinFilter['users']['fields'])).
 			' from '.prefix.'_comments c'.
@@ -99,7 +99,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 		$tvars['vars']['mail']		= $row['mail'];
 		$tvars['vars']['date']		= Lang::retDate($timestamp, $row['postdate']);
 
-		if ($row['reg'] && getPluginStatusActive('uprofile')) {
+		if ($row['reg'] and getPluginStatusActive('uprofile')) {
 			$tvars['vars']['profile_link'] = checkLinkAvailable('uprofile', 'show')?
 				generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
 				generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));
@@ -118,7 +118,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 		if ($config['use_smilies'])			{ $text = $parse -> smilies($text); }
 
 		/*
-		if (intval($config['com_wrap']) && (strlen($text) > $config['com_wrap'])) {
+		if (intval($config['com_wrap']) and (strlen($text) > $config['com_wrap'])) {
 			$tvars['vars']['comment-short']	= substr($text, 0, $config['com_wrap']);
 			$tvars['vars']['comment-full']	= substr($text, $config['com_wrap']);
 			$tvars['regx']["'\[comment_full\](.*?)\[/comment_full\]'si"] = '$1';
@@ -127,10 +127,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 			$tvars['vars']['comment-short'] = $text;
 			$tvars['regx']["'\[comment_full\](.*?)\[/comment_full\]'si"] = '';
 		/* } */
-		if ($commID && $commDisplayNum) {
+		if ($commID and $commDisplayNum) {
 			$tvars['vars']['comnum'] = $commDisplayNum;
 		} else {
-			if (pluginGetVariable('comments', 'backorder') && (intval($callingParams['total'])>0)) {
+			if (pluginGetVariable('comments', 'backorder') and (intval($callingParams['total'])>0)) {
 				$tvars['vars']['comnum'] = intval($callingParams['total']) - $comnum + 1;
 			} else {
 				$tvars['vars']['comnum'] = $comnum;
@@ -177,7 +177,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 			$tvars['regx']["'\[answer\](.*?)\[/answer\]'si"] = '';
 		}
 
-		if (is_array($userROW) && (($userROW['status'] == 1) or ($userROW['status'] == 2))) {
+		if (is_array($userROW) and (($userROW['status'] == 1) or ($userROW['status'] == 2))) {
 			$edit_link		= admin_url."/admin.php?mod=editcomments&amp;newsid=".$newsID."&amp;comid=".$row['id'];
 			$delete_link	= generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'delete'), array('id' => $row['id'], 'uT' => genUToken($row['id'])), true);
 
@@ -199,7 +199,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 		$tvars['regx']['#\[isnt-logged\](.+?)\[/isnt-logged\]#is']	= is_array($userROW)?'':'$1';
 
 		// RUN interceptors
-		if (isset($PFILTERS['comments']) && is_array($PFILTERS['comments']))
+		if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
 			foreach ($PFILTERS['comments'] as $k => $v)
 				$v->showComments($newsID, $row, $comnum, $tvars);
 
@@ -249,7 +249,7 @@ function comments_showform($newsID, $callingParams = array()){
 	// Lock AJAX calls if required
 	$tvars['regx']['#\[ajax\](.*?)\[\/ajax\]#is'] = $callingParams['noajax']?'':'$1';
 
-	if ($_COOKIE['com_username'] && trim($_COOKIE['com_username']) != "") {
+	if ($_COOKIE['com_username'] and trim($_COOKIE['com_username']) != "") {
 		$tvars['vars']['savedname'] = secure_html(urldecode($_COOKIE['com_username']));
 		$tvars['vars']['savedmail'] = secure_html(urldecode($_COOKIE['com_usermail']));
 	} else {
@@ -267,7 +267,7 @@ function comments_showform($newsID, $callingParams = array()){
 	$tvars['vars']['admin_url'] = admin_url;
 	$tvars['vars']['rand'] = rand(00000, 99999);
 
-	if ($config['use_captcha'] && (!is_array($userROW))) {
+	if ($config['use_captcha'] and (!is_array($userROW))) {
 		$_SESSION['captcha'] = rand(00000, 99999);
 		$tvars['regx']["'\[captcha\](.*?)\[/captcha\]'si"] = '$1';
 	} else {

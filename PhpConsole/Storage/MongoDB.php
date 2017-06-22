@@ -64,7 +64,7 @@ class MongoDB extends ExpiringKeyValue {
 	 */
 	protected function get($key) {
 		$record = $this->mongoCollection->findOne(array('key' => $key));
-		if($record && is_array($record) && array_key_exists('data', $record)) {
+		if($record and is_array($record) and array_key_exists('data', $record)) {
 			return $record['data'];
 		}
 	}

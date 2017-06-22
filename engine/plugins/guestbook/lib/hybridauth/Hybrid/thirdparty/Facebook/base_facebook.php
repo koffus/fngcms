@@ -45,14 +45,14 @@ class FacebookApiException extends Exception
  $this->result = $result;
 
  $code = 0;
- if (isset($result['error_code']) && is_int($result['error_code'])) {
+ if (isset($result['error_code']) and is_int($result['error_code'])) {
  $code = $result['error_code'];
  }
 
  if (isset($result['error_description'])) {
  // OAuth 2.0 Draft 10 style
  $msg = $result['error_description'];
- } else if (isset($result['error']) && is_array($result['error'])) {
+ } else if (isset($result['error']) and is_array($result['error'])) {
  // OAuth 2.0 Draft 00 style
  $msg = $result['error']['message'];
  } else if (isset($result['error_msg'])) {
@@ -260,11 +260,11 @@ abstract class BaseFacebook
  if (isset($config['fileUpload'])) {
  $this->setFileUploadSupport($config['fileUpload']);
  }
- if (isset($config['trustForwarded']) && $config['trustForwarded']) {
+ if (isset($config['trustForwarded']) and $config['trustForwarded']) {
  $this->trustForwarded = true;
  }
  if (isset($config['allowSignedRequest'])
- && !$config['allowSignedRequest']) {
+ and !$config['allowSignedRequest']) {
  $this->allowSignedRequest = false;
  }
  $state = $this->getPersistentData('state');
@@ -494,7 +494,7 @@ abstract class BaseFacebook
  // the JS SDK puts a code in with the redirect_uri of ''
  if (array_key_exists('code', $signed_request)) {
  $code = $signed_request['code'];
- if ($code && $code == $this->getPersistentData('code')) {
+ if ($code and $code == $this->getPersistentData('code')) {
  // short-circuit if the code we have is the same as the one presented
  return $this->getPersistentData('access_token');
  }
@@ -515,7 +515,7 @@ abstract class BaseFacebook
  }
 
  $code = $this->getCode();
- if ($code && $code != $this->getPersistentData('code')) {
+ if ($code and $code != $this->getPersistentData('code')) {
  $access_token = $this->getAccessTokenFromCode($code);
  if ($access_token) {
  $this->setPersistentData('code', $code);
@@ -543,7 +543,7 @@ abstract class BaseFacebook
  */
  public function getSignedRequest() {
  if (!$this->signedRequest) {
- if ($this->allowSignedRequest && !empty($_REQUEST['signed_request'])) {
+ if ($this->allowSignedRequest and !empty($_REQUEST['signed_request'])) {
  $this->signedRequest = $this->parseSignedRequest(
  $_REQUEST['signed_request']
  );
@@ -608,7 +608,7 @@ abstract class BaseFacebook
  $access_token = $this->getAccessToken();
  if ($access_token &&
  $access_token != $this->getApplicationAccessToken() &&
- !($user && $persisted_access_token == $access_token)) {
+ !($user and $persisted_access_token == $access_token)) {
  $user = $this->getUserFromAccessToken();
  if ($user) {
  $this->setPersistentData('user_id', $user);
@@ -638,7 +638,7 @@ abstract class BaseFacebook
 
  // if 'scope' is passed as an array, convert to comma separated list
  $scopeParams = isset($params['scope']) ? $params['scope'] : null;
- if ($scopeParams && is_array($scopeParams)) {
+ if ($scopeParams and is_array($scopeParams)) {
  $params['scope'] = implode(',', $scopeParams);
  }
 
@@ -865,7 +865,7 @@ abstract class BaseFacebook
  ), true);
 
  // results are returned, errors are thrown
- if (is_array($result) && isset($result['error_code'])) {
+ if (is_array($result) and isset($result['error_code'])) {
  $this->throwAPIException($result);
  // @codeCoverageIgnoreStart
  }
@@ -889,7 +889,7 @@ abstract class BaseFacebook
  * @return boolean true if this is video post
  */
  protected function isVideoPost($path, $method = 'GET') {
- if ($method == 'POST' && preg_match("/^(\/)(.+)(\/)(videos)$/", $path)) {
+ if ($method == 'POST' and preg_match("/^(\/)(.+)(\/)(videos)$/", $path)) {
  return true;
  }
  return false;
@@ -906,7 +906,7 @@ abstract class BaseFacebook
  * @throws FacebookApiException
  */
  protected function _graph($path, $method = 'GET', $params = array()) {
- if (is_array($method) && empty($params)) {
+ if (is_array($method) and empty($params)) {
  $params = $method;
  $method = 'GET';
  }
@@ -924,7 +924,7 @@ abstract class BaseFacebook
  ), true);
 
  // results are returned, errors are thrown
- if (is_array($result) && isset($result['error'])) {
+ if (is_array($result) and isset($result['error'])) {
  $this->throwAPIException($result);
  // @codeCoverageIgnoreStart
  }
@@ -947,13 +947,13 @@ abstract class BaseFacebook
  $params['access_token'] = $this->getAccessToken();
  }
 
- if (isset($params['access_token']) && !isset($params['appsecret_proof'])) {
+ if (isset($params['access_token']) and !isset($params['appsecret_proof'])) {
  $params['appsecret_proof'] = $this->getAppSecretProof($params['access_token']);
  }
 
  // json_encode all params values that are not strings
  foreach ($params as $key => $value) {
- if (!is_string($value) && !($value instanceof CURLFile)) {
+ if (!is_string($value) and !($value instanceof CURLFile)) {
  $params[$key] = json_encode($value);
  }
  }
@@ -1026,7 +1026,7 @@ abstract class BaseFacebook
  // the case, curl will try IPv4 first and if that fails, then it will
  // fall back to IPv6 and the error EHOSTUNREACH is returned by the
  // operating system.
- if ($result === false && empty($opts[CURLOPT_IPRESOLVE])) {
+ if ($result === false and empty($opts[CURLOPT_IPRESOLVE])) {
  $matches = array();
  $regex = '/Failed to connect to ([^:].*): Network is unreachable/';
  if (preg_match($regex, curl_error($ch), $matches)) {
@@ -1234,7 +1234,7 @@ abstract class BaseFacebook
  * @return string The HTTP Host
  */
  protected function getHttpHost() {
- if ($this->trustForwarded && isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+ if ($this->trustForwarded and isset($_SERVER['HTTP_X_FORWARDED_HOST'])) {
  $forwardProxies = explode(',', $_SERVER['HTTP_X_FORWARDED_HOST']);
  if (!empty($forwardProxies)) {
  return $forwardProxies[0];
@@ -1249,7 +1249,7 @@ abstract class BaseFacebook
  * @return string The HTTP Protocol
  */
  protected function getHttpProtocol() {
- if ($this->trustForwarded && isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
+ if ($this->trustForwarded and isset($_SERVER['HTTP_X_FORWARDED_PROTO'])) {
  if ($_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') {
  return 'https';
  }
@@ -1315,8 +1315,8 @@ abstract class BaseFacebook
  // use port if non default
  $port =
  isset($parts['port']) &&
- (($protocol === 'http://' && $parts['port'] !== 80) ||
- ($protocol === 'https://' && $parts['port'] !== 443))
+ (($protocol === 'http://' and $parts['port'] !== 80) ||
+ ($protocol === 'https://' and $parts['port'] !== 443))
  ? ':' . $parts['port'] : '';
 
  // rebuild

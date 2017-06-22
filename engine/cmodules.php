@@ -67,12 +67,12 @@ function coreRegisterUser() {
 		return;
 	}
 
-	if (!$_REQUEST['type'] && $config['users_selfregister']) {
+	if (!$_REQUEST['type'] and $config['users_selfregister']) {
 		// Receiving parameter list during registration
 		$auth = $AUTH_METHOD[$config['auth_module']];
 		$params = $auth->get_reg_params();
 		generate_reg_page($params);
-	} else if ($_REQUEST['type'] == "doregister" && $config['users_selfregister']) {
+	} else if ($_REQUEST['type'] == "doregister" and $config['users_selfregister']) {
 		// Receiving parameter list during registration
 		$auth = $AUTH_METHOD[$config['auth_module']];
 		$params = $auth->get_reg_params();
@@ -94,7 +94,7 @@ function coreRegisterUser() {
 		}
 
 		// Execute filters - check if user is allowed to register
-		if ((!$msg) && is_array($PFILTERS['core.registerUser']))
+		if ((!$msg) and is_array($PFILTERS['core.registerUser']))
 			foreach ($PFILTERS['core.registerUser'] as $k => $v) {
 				if (!$v->registerUser($params, $msg)) {
 					break;
@@ -102,7 +102,7 @@ function coreRegisterUser() {
 			}
 
 		// Trying register
-		if (!$msg && ($uid = $auth->register($params, $values, $msg))) {
+		if (!$msg and ($uid = $auth->register($params, $values, $msg))) {
 			// OK, fetch user record
 			if ($uid > 1) {
 				// ** COMPAT: exec action only if $uid > 1
@@ -112,7 +112,7 @@ function coreRegisterUser() {
 				ngSYSLOG(array('plugin' => 'core', 'item' => 'register'), array('action' => 'register'), $urec, array(1, ''));
 
 				// Execute filters - add additional variables
-				if (is_array($urec) && is_array($PFILTERS['core.registerUser']))
+				if (is_array($urec) and is_array($PFILTERS['core.registerUser']))
 					foreach ($PFILTERS['core.registerUser'] as $k => $v) { $v->registerUserNotify($uid, $urec); }
 			}
 		} else {
@@ -154,7 +154,7 @@ function generate_reg_page($params, $values = array(), $msg = '') {
 			'manual' => $param['manual'],
 		);
 
-		if (isset($param['id']) && $param['id'])
+		if (isset($param['id']) and $param['id'])
 			$tRow['id'] = $param['id'];
 
 		if ($param['error']) {
@@ -252,7 +252,7 @@ function coreRestorePassword() {
 	}
 
 	// Confirmation
-	if ($userid && $code) {
+	if ($userid and $code) {
 		$auth = $AUTH_METHOD[$config['auth_module']];
 		$msg = '';
 
@@ -287,7 +287,7 @@ function coreRestorePassword() {
 		}
 
 		// Trying password recovery
-		if (($msg == '') && $auth->restorepw($params, $values, $msg)) {
+		if (($msg == '') and $auth->restorepw($params, $values, $msg)) {
 			// OK
 			// ...
 		} else {
@@ -388,8 +388,8 @@ function coreLoginAction($row = null, $redirect = null){
 	Lang::load('login', 'site');
 	$SYSTEM_FLAGS['info']['title']['group']	= __('loc_login');
 
-	// Try to auth && check for bans
-	if (is_array($row) && (!($ban_mode = checkBanned($ip, 'users', 'auth', $row, $row['name'])))) {
+	// Try to auth and check for bans
+	if (is_array($row) and (!($ban_mode = checkBanned($ip, 'users', 'auth', $row, $row['name'])))) {
 
 		$auth_db->save_auth($row);
 		$username			= $row['name'];
@@ -448,8 +448,8 @@ function coreLogin(){
 	// Determine redirect point
 	// If POST fiels (ONLY POST) 'redirect' is set - redirect
 	$redirect = '';
-	if (isset($_POST['redirect']) && $_POST['redirect']) {							$redirect = $_POST['redirect'];
-	} else if (isset($_REQUEST['redirect_home']) && $_REQUEST['redirect_home']) {	$redirect = $config['home_url'];
+	if (isset($_POST['redirect']) and $_POST['redirect']) {							$redirect = $_POST['redirect'];
+	} else if (isset($_REQUEST['redirect_home']) and $_REQUEST['redirect_home']) {	$redirect = $config['home_url'];
 	} else if (preg_match('#^http\:\/\/#', $HTTP_REFERER, $tmp)) {					$redirect = $HTTP_REFERER;
 	} else {																		$redirect = $config['home_url']; }
 

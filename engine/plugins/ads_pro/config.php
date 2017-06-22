@@ -126,9 +126,9 @@ function showlist()
     foreach ($var as $k => $v) {
         foreach ($v as $kk => $vv) {
             $if_view = $vv['state'] ? true : false;
-            if ($vv['start_view'] && $vv['start_view'] > $t_time)
+            if ($vv['start_view'] and $vv['start_view'] > $t_time)
                 $if_view = false;
-            if ($vv['end_view'] && $vv['end_view'] <= $t_time)
+            if ($vv['end_view'] and $vv['end_view'] <= $t_time)
                 $if_view = false;
 
             $ttvars['entries'][] = array(
@@ -369,7 +369,7 @@ function move($action)
             if ($id == $sub_keys[$j]) {
                 $if_break = true;
                 if ($action == 'up') {
-                    if ($j == 0 && $i != 0) {
+                    if ($j == 0 and $i != 0) {
                         array_splice($keys, $i - 1, 2, array($keys[$i], $keys[$i - 1]));
                         array_splice($values, $i - 1, 2, array($values[$i], $values[$i - 1]));
                         $var = array_combine($keys, $values);
@@ -381,7 +381,7 @@ function move($action)
                         break;
                     }
                 } else if ($action == 'down') {
-                    if ($j == $sub_count - 1 && $i != $count - 1) {
+                    if ($j == $sub_count - 1 and $i != $count - 1) {
                         array_splice($keys, $i, 2, array($keys[$i + 1], $keys[$i]));
                         array_splice($values, $i, 2, array($values[$i + 1], $values[$i]));
                         $var = array_combine($keys, $values);
@@ -421,11 +421,11 @@ function GetTimeStamp($date)
             return null;
             break;
     }
-    if (!is_array($tdate) && count($tdate) != 3)
+    if (!is_array($tdate) and count($tdate) != 3)
         $tdate = null;
-    if (!is_array($ttime) && count($ttime) != 2)
+    if (!is_array($ttime) and count($ttime) != 2)
         $ttime = null;
-    if ($tdate === null && $ttime === null)
+    if ($tdate === null and $ttime === null)
         return null;
     if ($tdate === null) $tdate = array(0, 0, 0);
     if ($ttime === null) $ttime = array(0, 0);

@@ -81,7 +81,7 @@ class Hybrid_Provider_Adapter {
 		}
 
 		# include the adapter wrapper
-		if (isset($this->config["wrapper"]) && is_array($this->config["wrapper"])) {
+		if (isset($this->config["wrapper"]) and is_array($this->config["wrapper"])) {
 			if (isset($this->config["wrapper"]["path"])) {
 				require_once $this->config["wrapper"]["path"];
 			}

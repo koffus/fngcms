@@ -38,7 +38,7 @@ class auth_vb {
 	// Set remember fields
 	function setRemember($vb_row, $flag){
 
-		if ((pluginGetVariable('auth_vb', 'setremember') == 1)||(!pluginGetVariable('auth_vb', 'setremember') && $flag)) {
+		if ((pluginGetVariable('auth_vb', 'setremember') == 1)||(!pluginGetVariable('auth_vb', 'setremember') and $flag)) {
 			$this->setremember = true;
 			$this->remember_cookies = array('bbuserid' => $vb_row['userid'], 'bbpassword' => md5($vb_row['password']));
 		} else {
@@ -105,7 +105,7 @@ class auth_vb {
 			$mysql->query("unlock tables");
 
 			// If passwords are equal (and record linking is allowed) - let's link
-			if (pluginGetVariable('auth_vb', 'userjoin') && ($row['pass'] == md5(md5($password)))) {
+			if (pluginGetVariable('auth_vb', 'userjoin') and ($row['pass'] == md5(md5($password)))) {
 				$mysql->query("update ".prefix."_users set vb_userid=".db_squote($vb_row['userid'])." where id=".db_squote($row['id']));
 				$row['vb_userid'] = $vb_row['userid'];
 				$this->vb_row = $vb_row;
@@ -182,7 +182,7 @@ class auth_vb {
 		@setcookie('bbsessionhash', $newsessionhash, 0, '/', pluginGetVariable('auth_vb','cookie_domain')?pluginGetVariable('auth_vb','cookie_domain'):'');
 
 		// Set "remember" cookies if this mode is requested [ REMEMBER for 1 YEAR ]
-		if ($this->setremember && is_array($this->remember_cookies))
+		if ($this->setremember and is_array($this->remember_cookies))
 			foreach ($this->remember_cookies as $c => $cv)
 				@setcookie($c, $cv, time()+ 365*24*3600, '/', pluginGetVariable('auth_vb','cookie_domain')?pluginGetVariable('auth_vb','cookie_domain'):'');
 		return 1;
@@ -249,7 +249,7 @@ class auth_vb {
 		$cookie_userid = intval($_COOKIE['bbuserid']);
 		$cookie_password = $_COOKIE['bbpassword'];
 
-		if (!$gotuserid && $cookie_userid && $cookie_password) {
+		if (!$gotuserid and $cookie_userid and $cookie_password) {
 			$query = "select userid from ".$dbprefix."user where userid=".$cookie_userid." and md5(password)=".db_squote($cookie_password);
 		 if ($userrec = $this->auth_db->record($query)) {
 		 	$gotuserid = $userrec['userid'];
@@ -257,7 +257,7 @@ class auth_vb {
 		}
 
 		// Save session if we have not (or have expired) one
-		if ($gotuserid && !$gotsession) {
+		if ($gotuserid and !$gotsession) {
 		 // Delete expired session [ if have ]
 			if (!empty($sessionhash))
 				$this->auth_db->query("delete from ".$dbprefix."session where sessionhash=".db_squote($sessionhash));
@@ -271,7 +271,7 @@ class auth_vb {
 		}
 
 		// If we fetched user info - fetch our linked record
-		if ($gotuserid && ($urow = $mysql->record("select * from ".uprefix."_users where vb_userid = ".db_squote($gotuserid)))) {
+		if ($gotuserid and ($urow = $mysql->record("select * from ".uprefix."_users where vb_userid = ".db_squote($gotuserid)))) {
 			return $urow;
 		}
 
@@ -362,7 +362,7 @@ class auth_vb {
 		}
 
 		// Save password if new one is given
-		if ($urow['vb_userid'] && $values['password']) {
+		if ($urow['vb_userid'] and $values['password']) {
 			$dbprefix = pluginGetVariable('auth_vb', 'dbprefix')?pluginGetVariable('auth_vb', 'dbprefix'):'';
 
 			// Fetch user row

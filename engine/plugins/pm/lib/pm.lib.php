@@ -81,7 +81,7 @@ class pm{
 		$mysql->query("UPDATE ".uprefix."_users SET `pm_all` = `pm_all` + 1, `pm_unread` = `pm_unread` + 1 WHERE `id` = ".db_squote($torow['id']));
 		
 		# send email if needed 
-		if($torow['pm_email'] && $torow['mail']){
+		if($torow['pm_email'] and $torow['mail']){
 			$msg_link = generatePluginLink('pm', null, array('pmid' => $id, 'action' => 'read'), array(), false, true);
 			$set_link = generatePluginLink('pm', null, array('action' => 'set'), array(), false, true);
 			

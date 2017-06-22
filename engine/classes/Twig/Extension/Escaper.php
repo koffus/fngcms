@@ -78,7 +78,7 @@ class Twig_Extension_Escaper extends Twig_Extension
  {
  // disable string callables to avoid calling a function named html or js,
  // or any other upcoming escaping strategy
- if (!is_string($this->defaultStrategy) && is_callable($this->defaultStrategy)) {
+ if (!is_string($this->defaultStrategy) and is_callable($this->defaultStrategy)) {
  return call_user_func($this->defaultStrategy, $filename);
  }
 

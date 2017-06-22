@@ -133,7 +133,7 @@ class auth_punbb {
 			$mysql->query("unlock tables");
 
 			// If passwords are equal (and record linking is allowed) - let's link
-			if (pluginGetVariable('auth_punbb', 'userjoin') && ($row['pass'] == md5(md5($password)))) {
+			if (pluginGetVariable('auth_punbb', 'userjoin') and ($row['pass'] == md5(md5($password)))) {
 				$mysql->query("update ".prefix."_users set punbb_userid=".db_squote($pun_row['id'])." where id=".db_squote($row['id']));
 				$row['punbb_userid'] = $pun_row['id'];
 				$this->pun_row = $pun_row;
@@ -423,7 +423,7 @@ class auth_punbb {
 		}
 
 		// Save password if new one is given
-		if ($urow['punbb_userid'] && $values['password']) {
+		if ($urow['punbb_userid'] and $values['password']) {
 			$dbprefix = pluginGetVariable('auth_punbb', 'dbprefix')?pluginGetVariable('auth_punbb', 'dbprefix'):'';
 			$punbb_password = $this->punBB_gen_password($values['password']);
 			$sql = "update ".$dbprefix."users set password=".db_squote($punbb_password)." where id = ".db_squote($urow['punbb_userid']);

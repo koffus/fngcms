@@ -42,7 +42,7 @@ class OAuth1Client{
 		$this->consumer = new OAuthConsumer( $consumer_key, $consumer_secret );
 		$this->token = null;
 
-		if ( $oauth_token && $oauth_token_secret ){
+		if ( $oauth_token and $oauth_token_secret ){
 			$this->token = new OAuthConsumer( $oauth_token, $oauth_token_secret );
 		}
 	}
@@ -129,7 +129,7 @@ class OAuth1Client{
 	*/
 	function api( $url, $method = 'GET', $parameters = array(), $body = null, $content_type = null, $multipart = false )
 	{
-		if ( strrpos($url, 'http://') !== 0 && strrpos($url, 'https://') !== 0 ) {
+		if ( strrpos($url, 'http://') !== 0 and strrpos($url, 'https://') !== 0 ) {
 			$url = $this->api_base_url . $url;
 		}
 
@@ -218,7 +218,7 @@ class OAuth1Client{
 					curl_setopt( $ci, CURLOPT_POSTFIELDS, $postfields );
 				}
 
-				if ( !empty($auth_header) && $this->curl_auth_header && !$multipart ){
+				if ( !empty($auth_header) and $this->curl_auth_header and !$multipart ){
 					curl_setopt( $ci, CURLOPT_HTTPHEADER, array( 'Content-Type: application/atom+xml', $auth_header ) );
 				}
 				break;

@@ -111,7 +111,7 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 					'dayNo' => $dayno,
 					'countNews' => isset($counters[$dayno])?$counters[$dayno]:0,
 					'link' => $day_link,
-					'className' => __('calendar:class_'.(($flagCurrentMonth && ($localTime[3] == $dayno))?'today_':'').'week'.(($j<6)?'day':'end')),
+					'className' => __('calendar:class_'.(($flagCurrentMonth and ($localTime[3] == $dayno))?'today_':'').'week'.(($j<6)?'day':'end')),
 					'isToday' => ($localTime[3] == $dayno)?true:false,
 					'isWeekDay' => ($j<6)?true:false,
 					'isWeekEnd' => ($j == 7)?true:false,
@@ -243,7 +243,7 @@ function plugin_calendar_showTwig($params) {
 	$year = date('Y', $today);
 
 	// Check if month/year are set
-	if (isset($params['year']) && isset($params['month'])) {
+	if (isset($params['year']) and isset($params['month'])) {
 		$month	= intval($params['month']);
 		$year	= intval($params['year']);
 	} else {
@@ -266,8 +266,8 @@ function plugin_calendar_showTwig($params) {
 	}
 
 	// Check offset
-	if (isset($params['offset']) && ($params['offset'] == 'prev')) {	$month--;	}
-	if (isset($params['offset']) && ($params['offset'] == 'next')) {	$month++;	}
+	if (isset($params['offset']) and ($params['offset'] == 'prev')) {	$month--;	}
+	if (isset($params['offset']) and ($params['offset'] == 'next')) {	$month++;	}
 
 	// Update month for offset fix
 	if ($month > 12) {

@@ -82,20 +82,20 @@ class Parse
                         $quotes = 2;
                         $state = 1;
                         $keyName = '';
-                    } else if ((($x >= 'A') && ($x <= 'Z')) || (($x >= 'a') && ($x <= 'z'))) {
+                    } else if ((($x >= 'A') and ($x <= 'Z')) or (($x >= 'a') and ($x <= 'z'))) {
                         $state = 1;
                         $keyName = $x;
                     }
                     break;
                 case 1:
-                    if ((($quotes == 1) && ($x == "'")) || (($quotes == 2) && ($x == '"'))) {
+                    if ((($quotes == 1) and ($x == "'")) or (($quotes == 2) and ($x == '"'))) {
                         $quotes = 0;
                         $state = 2;
-                    } else if ((($x >= 'A') && ($x <= 'Z')) || (($x >= 'a') && ($x <= 'z'))) {
+                    } else if ((($x >= 'A') and ($x <= 'Z')) or (($x >= 'a') and ($x <= 'z'))) {
                         $keyName .= $x;
                     } else if ($x == '=') {
                         $state = 3;
-                    } else if (($x == ' ') || ($x == chr(9))) {
+                    } else if (($x == ' ') or ($x == chr(9))) {
                         $state = 2;
                     } else {
                         $erorFlag = 1;
@@ -104,7 +104,7 @@ class Parse
                 case 2:
                     if ($x == '=') {
                         $state = 3;
-                    } else if (($x == ' ') || ($x == chr(9))) {
+                    } else if (($x == ' ') or ($x == chr(9))) {
                         ;
                     } else {
                         $errorFlag = 1;
@@ -119,16 +119,16 @@ class Parse
                         $quotes = 2;
                         $state = 4;
                         $keyValue = '';
-                    } else if ((($x >= 'A') && ($x <= 'Z')) || (($x >= 'a') && ($x <= 'z'))) {
+                    } else if ((($x >= 'A') and ($x <= 'Z')) or (($x >= 'a') and ($x <= 'z'))) {
                         $state = 4;
                         $keyValue = $x;
                     }
                     break;
                 case 4:
-                    if ((($quotes == 1) && ($x == "'")) || (($quotes == 2) && ($x == '"'))) {
+                    if ((($quotes == 1) and ($x == "'")) or (($quotes == 2) and ($x == '"'))) {
                         $quotes = 0;
                         $state = 5;
-                    } else if (!$quotes and (($x == ' ') || ($x == chr(9)))) {
+                    } else if (!$quotes and (($x == ' ') or ($x == chr(9)))) {
                         $state = 5;
                     } else {
                         $keyValue .= $x;
@@ -265,7 +265,7 @@ class Parse
                 $urlREF = $this->validateURL((!isset($keys['src']) or !$keys['src']) ? $alt : $keys['src']);
 
                 // Return an error if BB code is bad
-                if ((!is_array($keys)) || ($urlREF === false)) {
+                if ((!is_array($keys)) or ($urlREF === false)) {
                     array_push($rdest, '[INVALID IMG BB CODE]');
                     continue;
                 }

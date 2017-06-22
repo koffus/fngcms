@@ -19,7 +19,7 @@ function plugin_basket_total() {
 		$filter []= '(user_id = '.db_squote($userROW['id']).')';
 	}
 
-	if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {
+	if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {
 		$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';
 	}
 
@@ -27,7 +27,7 @@ function plugin_basket_total() {
 	$tCount = 0;
 	$tPrice = 0;
 
-	if (count($filter) && is_array($res = $mysql->record("select count(*) as count, sum(price*count) as price from ".prefix."_basket where ".join(" or ", $filter), 1))) {
+	if (count($filter) and is_array($res = $mysql->record("select count(*) as count, sum(price*count) as price from ".prefix."_basket where ".join(" or ", $filter), 1))) {
 		$tCount = $res['count'];
 		$tPrice = $res['price'];
 	}
@@ -56,7 +56,7 @@ function plugin_basket_list(){
 		$filter []= '(user_id = '.db_squote($userROW['id']).')';
 	}
 
-	if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {
+	if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {
 		$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';
 	}
 
@@ -97,7 +97,7 @@ function plugin_basket_update() {
 		$filter []= '(user_id = '.db_squote($userROW['id']).')';
 	}
 
-	if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {
+	if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {
 		$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';
 	}
 
@@ -121,7 +121,7 @@ function plugin_basket_update() {
 
 
 // XFields filter
-if (class_exists('XFieldsFilter') && class_exists('FeedbackFilter')) {
+if (class_exists('XFieldsFilter') and class_exists('FeedbackFilter')) {
 	class BasketXFieldsFilter extends XFieldsFilter {
 
 		function showTableEntry($newsID, $SQLnews, $rowData, &$rowVars) {
@@ -162,7 +162,7 @@ if (class_exists('XFieldsFilter') && class_exists('FeedbackFilter')) {
 				$filter []= '(user_id = '.db_squote($userROW['id']).')';
 			}
 
-			if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {
+			if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {
 				$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';
 			}
 
@@ -205,7 +205,7 @@ if (class_exists('XFieldsFilter') && class_exists('FeedbackFilter')) {
 				$filter []= '(user_id = '.db_squote($userROW['id']).')';
 			}
 
-			if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {
+			if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {
 				$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';
 			}
 
@@ -245,7 +245,7 @@ if (class_exists('XFieldsFilter') && class_exists('FeedbackFilter')) {
 				$filter []= '(user_id = '.db_squote($userROW['id']).')';
 			}
 
-			if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {
+			if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {
 				$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';
 			}
 

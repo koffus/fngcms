@@ -41,7 +41,7 @@ class Twig_ExpressionParser
  {
  $expr = $this->getPrimary();
  $token = $this->parser->getCurrentToken();
- while ($this->isBinary($token) && $this->binaryOperators[$token->getValue()]['precedence'] >= $precedence) {
+ while ($this->isBinary($token) and $this->binaryOperators[$token->getValue()]['precedence'] >= $precedence) {
  $op = $this->binaryOperators[$token->getValue()];
  $this->parser->getStream()->next();
 
@@ -101,12 +101,12 @@ class Twig_ExpressionParser
 
  protected function isUnary(Twig_Token $token)
  {
- return $token->test(Twig_Token::OPERATOR_TYPE) && isset($this->unaryOperators[$token->getValue()]);
+ return $token->test(Twig_Token::OPERATOR_TYPE) and isset($this->unaryOperators[$token->getValue()]);
  }
 
  protected function isBinary(Twig_Token $token)
  {
- return $token->test(Twig_Token::OPERATOR_TYPE) && isset($this->binaryOperators[$token->getValue()]);
+ return $token->test(Twig_Token::OPERATOR_TYPE) and isset($this->binaryOperators[$token->getValue()]);
  }
 
  public function parsePrimaryExpression()
@@ -173,7 +173,7 @@ class Twig_ExpressionParser
  // a string cannot be followed by another string in a single expression
  $nextCanBeString = true;
  while (true) {
- if ($stream->test(Twig_Token::STRING_TYPE) && $nextCanBeString) {
+ if ($stream->test(Twig_Token::STRING_TYPE) and $nextCanBeString) {
  $token = $stream->next();
  $nodes[] = new Twig_Node_Expression_Constant($token->getValue(), $token->getLine());
  $nextCanBeString = false;
@@ -294,7 +294,7 @@ class Twig_ExpressionParser
  throw new Twig_Error_Syntax('Calling "parent" outside a block is forbidden', $line, $this->parser->getFilename());
  }
 
- if (!$this->parser->getParent() && !$this->parser->hasTraits()) {
+ if (!$this->parser->getParent() and !$this->parser->hasTraits()) {
  throw new Twig_Error_Syntax('Calling "parent" on a template that does not extend nor "use" another template is forbidden', $line, $this->parser->getFilename());
  }
 
@@ -340,7 +340,7 @@ class Twig_ExpressionParser
  ||
  $token->getType() == Twig_Token::NUMBER_TYPE
  ||
- ($token->getType() == Twig_Token::OPERATOR_TYPE && preg_match(Twig_Lexer::REGEX_NAME, $token->getValue()))
+ ($token->getType() == Twig_Token::OPERATOR_TYPE and preg_match(Twig_Lexer::REGEX_NAME, $token->getValue()))
  ) {
  $arg = new Twig_Node_Expression_Constant($token->getValue(), $lineno);
 
@@ -380,7 +380,7 @@ class Twig_ExpressionParser
  $stream->expect(Twig_Token::PUNCTUATION_TYPE, ']');
  }
 
- if ($node instanceof Twig_Node_Expression_Name && null !== $alias = $this->parser->getImportedSymbol('template', $node->getAttribute('name'))) {
+ if ($node instanceof Twig_Node_Expression_Name and null !== $alias = $this->parser->getImportedSymbol('template', $node->getAttribute('name'))) {
  $node = new Twig_Node_Expression_MethodCall($node, 'get'.$arg->getAttribute('value'), $arguments, $lineno);
  $node->setAttribute('safe', true);
 
@@ -476,7 +476,7 @@ class Twig_ExpressionParser
  protected function getFunctionNodeClass($name)
  {
  $functionMap = $this->parser->getEnvironment()->getFunctions();
- if (isset($functionMap[$name]) && $functionMap[$name] instanceof Twig_Function_Node) {
+ if (isset($functionMap[$name]) and $functionMap[$name] instanceof Twig_Function_Node) {
  return $functionMap[$name]->getClass();
  }
 
@@ -486,7 +486,7 @@ class Twig_ExpressionParser
  protected function getFilterNodeClass($name)
  {
  $filterMap = $this->parser->getEnvironment()->getFilters();
- if (isset($filterMap[$name]) && $filterMap[$name] instanceof Twig_Filter_Node) {
+ if (isset($filterMap[$name]) and $filterMap[$name] instanceof Twig_Filter_Node) {
  return $filterMap[$name]->getClass();
  }
 

@@ -65,7 +65,7 @@ class auth_basic extends CoreAuthPlugin {
 		// Multilogin is allowed. Session information is stored in separate table
 		if (pluginGetVariable('auth_basic', 'multilogin')) {
 			// Drop old session (if applicable)
-			if (isset($_COOKIE['zz_auth']) && $_COOKIE['zz_auth'])
+			if (isset($_COOKIE['zz_auth']) and $_COOKIE['zz_auth'])
 				$mysql->query("delete from ".uprefix."_users_sessions where authcookie = ".db_squote($_COOKIE['zz_auth'])." limit 1");
 
 			// Register new session
@@ -120,14 +120,14 @@ class auth_basic extends CoreAuthPlugin {
 		}
 
 		// Check for "IPLOCK" protection
-		if (pluginGetVariable('auth_basic', 'iplock') && ($ip != $row['ip'])) {
+		if (pluginGetVariable('auth_basic', 'iplock') and ($ip != $row['ip'])) {
 			return '';
 		}
 
 		// Auth done
 	 	if ($row['name']) {
 			// Check if we need to update last visit field
-	 		if ((pluginGetVariable('auth_basic', 'lastupdate') > 0) && ((time() - $row['last']) > pluginGetVariable('auth_basic', 'lastupdate'))) {
+	 		if ((pluginGetVariable('auth_basic', 'lastupdate') > 0) and ((time() - $row['last']) > pluginGetVariable('auth_basic', 'lastupdate'))) {
 	 			$query = "update ".uprefix."_users set last = ".db_squote(time()).", ip=".db_squote($ip)." where id=".db_squote($row['id']);
 	 			$mysql->query($query);
 

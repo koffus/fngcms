@@ -327,7 +327,7 @@ class urlHandler
         $position = count($this->hList);
         while ($position >= 0) {
             $h = $this->hList[$position];
-            if ((isset($h['pluginName'])) and ($h['pluginName'] == $pluginName) and (isset($h['handlerName'])) && (($handlerName == '*') or ($h['handlerName'] == $handlerName))) {
+            if ((isset($h['pluginName'])) and ($h['pluginName'] == $pluginName) and (isset($h['handlerName'])) and (($handlerName == '*') or ($h['handlerName'] == $handlerName))) {
                 array_splice($this->hList, $position, 1);
             }
             $position--;

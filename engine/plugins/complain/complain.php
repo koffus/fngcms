@@ -12,7 +12,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 function plugin_complain_resolve_error($id) {
  foreach (explode("\n",pluginGetVariable('complain', 'errlist')) as $erow) {
- if (preg_match('#^(\d+)\|(.+?)$#', trim($erow), $m) && ($m[1] == $id)) {
+ if (preg_match('#^(\d+)\|(.+?)$#', trim($erow), $m) and ($m[1] == $id)) {
  return $m[2];
  }
  }
@@ -119,7 +119,7 @@ function plugin_complain_add() {
  $tpath = locatePluginTemplates(array('ext.form', 'infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
 
  // Check if we shouldn't show block for unregs
- if ((!is_array($userROW)) && (!pluginGetVariable('complain', 'allow_unreg'))) {
+ if ((!is_array($userROW)) and (!pluginGetVariable('complain', 'allow_unreg'))) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly').__('complain:link.close'))));
  $template['vars']['mainblock'] = $tpl->show('infoblock');
@@ -137,8 +137,8 @@ function plugin_complain_add() {
  $txvars = array();
  $txvars['vars'] = array('ds_id' => intval($_REQUEST['ds_id']), 'entry_id' => intval($_REQUEST['entry_id']), 'errorlist' => $err );
  $txvars['regx']['#\[notify\](.*?)\[/notify\]#is'] = ((is_array($userROW)) &&(pluginGetVariable('complain', 'inform_reporter') == 2))?'$1':'';
- $txvars['regx']['#\[email\](.*?)\[/email\]#is'] = ((!is_array($userROW)) && pluginGetVariable('complain', 'allow_unreg_inform'))?'$1':'';
- $txvars['regx']['#\[text\](.*?)\[/text\]#is'] = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text')==1)) or (pluginGetVariable('complain', 'allow_text') == 2))?'$1':'';
+ $txvars['regx']['#\[email\](.*?)\[/email\]#is'] = ((!is_array($userROW)) and pluginGetVariable('complain', 'allow_unreg_inform'))?'$1':'';
+ $txvars['regx']['#\[text\](.*?)\[/text\]#is'] = ((is_array($userROW) and (pluginGetVariable('complain', 'allow_text')==1)) or (pluginGetVariable('complain', 'allow_text') == 2))?'$1':'';
 
  $txvars['vars']['form_url'] = generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'post'));
 
@@ -158,7 +158,7 @@ function plugin_complain_post() {
  $tpath = locatePluginTemplates(array('ext.form', 'infoblock', 'error.noentry', 'form.confirm'), 'complain', pluginGetVariable('complain', 'localSource'));
 
  // Check if we shouldn't show block for unregs
- if ((!is_array($userROW)) && (!pluginGetVariable('complain', 'allow_unreg'))) {
+ if ((!is_array($userROW)) and (!pluginGetVariable('complain', 'allow_unreg'))) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly').__('complain:link.close'))));
  $template['vars']['mainblock'] = $tpl->show('infoblock');
@@ -203,19 +203,19 @@ function plugin_complain_post() {
 
  // Check reporter notification mode
  if (is_array($userROW)) {
- $flagNotify = ((pluginGetVariable('complain', 'inform_reporter') == '1')||((pluginGetVariable('complain', 'inform_reporter') == '2') && ($_REQUEST['notify'])))?1:0;
+ $flagNotify = ((pluginGetVariable('complain', 'inform_reporter') == '1')||((pluginGetVariable('complain', 'inform_reporter') == '2') and ($_REQUEST['notify'])))?1:0;
  $publisherMail = $userROW['mail'];
  } else {
- if ((strlen($_REQUEST['mail']) < 70) && (preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $_REQUEST['mail']))) {
+ if ((strlen($_REQUEST['mail']) < 70) and (preg_match("/^[\.A-z0-9_\-]+[@][A-z0-9_\-]+([.][A-z0-9_\-]+)+[A-z]{1,4}$/", $_REQUEST['mail']))) {
  $publisherMail = $_REQUEST['mail'];
  } else {
  $publisherMail = '';
  }
- $flagNotify = (pluginGetVariable('complain', 'allow_unreg_inform') && $publisherMail)?1:0;
+ $flagNotify = (pluginGetVariable('complain', 'allow_unreg_inform') and $publisherMail)?1:0;
  }
 
  // Text error description
- $errorText = ((is_array($userROW) && (pluginGetVariable('complain', 'allow_text') == 1)) or (pluginGetVariable('complain', 'allow_text') == 2))? $_REQUEST['error_text'] : '';
+ $errorText = ((is_array($userROW) and (pluginGetVariable('complain', 'allow_text') == 1)) or (pluginGetVariable('complain', 'allow_text') == 2))? $_REQUEST['error_text'] : '';
 
  // Fill flags variable
  $flags = $flagNotify?'N':'';
@@ -238,7 +238,7 @@ function plugin_complain_post() {
  __('complain:mail.open.body'));
 
  // Inform author
- if (pluginGetVariable('complain', 'inform_author') && strlen($cdata['author_mail'])) {
+ if (pluginGetVariable('complain', 'inform_author') and strlen($cdata['author_mail'])) {
  sendEmailMessage($cdata['author_mail'], __('complain:mail.open.subj'), $mail_text);
  }
 
@@ -294,7 +294,7 @@ function plugin_complain_update() {
  $ilist = array();
 
  foreach ($_REQUEST as $k => $v) {
- if (preg_match('#^inc_(\d+)$#', $k, $m) && ($v == "1"))
+ if (preg_match('#^inc_(\d+)$#', $k, $m) and ($v == "1"))
  	array_push($ilist, $m[1]);
  }
 
@@ -314,7 +314,7 @@ function plugin_complain_update() {
  if ($_REQUEST['setowner'] == '1') {
  // Admins can change all ownerships, users - can set ownership only for their news
  // that are not already owned by anyone
- $mysql->query("update ".prefix."_complain set owner_id = ".db_squote($userROW['id'])." where id in (".join(",", $ilist).")".(($userROW['status']>1 && (!in_array($userROW['name'], $admins)))?' and owner_id = 0 and author_id='.db_squote($userROW['id']):''));
+ $mysql->query("update ".prefix."_complain set owner_id = ".db_squote($userROW['id'])." where id in (".join(",", $ilist).")".(($userROW['status']>1 and (!in_array($userROW['name'], $admins)))?' and owner_id = 0 and author_id='.db_squote($userROW['id']):''));
  }
 
  // Change status [ ONLY FOR NEWS OWNED BY ME ]
@@ -325,7 +325,7 @@ function plugin_complain_update() {
  // If 'N' flag is set in `flags` field - we should make a notification of an author
  if (strpos($irow['flags'], 'N') !== false) {
  // // If links found and "inform_reporter" flag is ON and status is really changed - send message
- // if (pluginGetVariable('complain', 'inform_reporter') && $irow['publisher_id'] && (is_array($prec = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($irow['publisher_id']))) && $prec['mail']) && ($irow['status'] != $newstatus)) {
+ // if (pluginGetVariable('complain', 'inform_reporter') and $irow['publisher_id'] and (is_array($prec = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($irow['publisher_id']))) and $prec['mail']) and ($irow['status'] != $newstatus)) {
  // We're ready to send mail
  // Check if reference storage & entry exists, fetch entrie's params
  $cdata = array();
@@ -377,7 +377,7 @@ class ComplainNewsFilter extends NewsFilter {
 		}
 
 		// Check if we shouldn't show block for unregs
-		if ((!is_array($userROW)) && (!pluginGetVariable('complain', 'allow_unreg'))) {
+		if ((!is_array($userROW)) and (!pluginGetVariable('complain', 'allow_unreg'))) {
 		 $tvars['vars']['plugin_complain'] = '';
 			return 1;
 		}

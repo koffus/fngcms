@@ -274,10 +274,10 @@ function send_title()
 				if(empty($id))
 					$error_text[] = 'id не передан';
 				
-				if($mysql->result('SELECT 1 FROM '.prefix.'_simple_title_pro WHERE cat_id = \'' . $id . '\' LIMIT 1') && empty($_REQUEST['edit']))
+				if($mysql->result('SELECT 1 FROM '.prefix.'_simple_title_pro WHERE cat_id = \'' . $id . '\' LIMIT 1') and empty($_REQUEST['edit']))
 					$error_text[] = 'Для этой категории уже есть TITLE';
 				
-				if(empty($error_text) && empty($_REQUEST['edit'])){
+				if(empty($error_text) and empty($_REQUEST['edit'])){
 					$mysql->query('INSERT INTO '.prefix.'_simple_title_pro (title, cat_id) 
 						VALUES (
 							'.db_squote($title).',
@@ -285,7 +285,7 @@ function send_title()
 						)
 					');
 					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_cat');
-				}else if(empty($error_text) && !empty($_REQUEST['edit'])){
+				}else if(empty($error_text) and !empty($_REQUEST['edit'])){
 					$cacheFileName = md5('block_directory_sites_cat'.$frow['cat_id'].$config['default_lang']).'.txt';
 					
 					cacheStoreFile($cacheFileName, $title, 'simple_title_pro');
@@ -318,10 +318,10 @@ function send_title()
 				if(empty($id))
 					$error_text[] = 'id не передан';
 				
-				if($mysql->result('SELECT 1 FROM '.prefix.'_simple_title_pro WHERE news_id = \'' . $id . '\' LIMIT 1') && empty($_REQUEST['edit']))
+				if($mysql->result('SELECT 1 FROM '.prefix.'_simple_title_pro WHERE news_id = \'' . $id . '\' LIMIT 1') and empty($_REQUEST['edit']))
 					$error_text[] = 'Для этой новости уже есть TITLE';
 				
-				if(empty($error_text) && empty($_REQUEST['edit'])){
+				if(empty($error_text) and empty($_REQUEST['edit'])){
 					$mysql->query('INSERT INTO '.prefix.'_simple_title_pro (title, news_id) 
 						VALUES 
 						('.db_squote($title).',
@@ -329,7 +329,7 @@ function send_title()
 						)
 					');
 					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_news');
-				}else if(empty($error_text) && !empty($_REQUEST['edit'])){
+				}else if(empty($error_text) and !empty($_REQUEST['edit'])){
 					$cacheFileName = md5('block_directory_sites_news'.$frow['news_id'].$config['default_lang']).'.txt';
 					
 					cacheStoreFile($cacheFileName, $title, 'simple_title_pro');
@@ -363,10 +363,10 @@ function send_title()
 				if(empty($id))
 					$error_text[] = 'id не передан';
 				
-				if($mysql->result('SELECT 1 FROM '.prefix.'_simple_title_pro WHERE static_id = \'' . $id . '\' LIMIT 1') && empty($_REQUEST['edit']))
+				if($mysql->result('SELECT 1 FROM '.prefix.'_simple_title_pro WHERE static_id = \'' . $id . '\' LIMIT 1') and empty($_REQUEST['edit']))
 					$error_text[] = 'Для этой статики уже есть TITLE';
 				
-				if(empty($error_text) && empty($_REQUEST['edit'])){
+				if(empty($error_text) and empty($_REQUEST['edit'])){
 					$mysql->query('INSERT INTO '.prefix.'_simple_title_pro (title, static_id) 
 						VALUES 
 						('.db_squote($title).',
@@ -374,7 +374,7 @@ function send_title()
 						)
 					');
 					coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro&action=list_static');
-				}else if(empty($error_text) && !empty($_REQUEST['edit'])){
+				}else if(empty($error_text) and !empty($_REQUEST['edit'])){
 					$cacheFileName = md5('block_directory_sites_static'.$frow['static_id'].$config['default_lang']).'.txt';
 					
 					cacheStoreFile($cacheFileName, $title, 'simple_title_pro');

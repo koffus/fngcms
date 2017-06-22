@@ -18,7 +18,7 @@ class Twig_Node_Expression_GetAttr extends Twig_Node_Expression
 
  public function compile(Twig_Compiler $compiler)
  {
- if (function_exists('twig_template_get_attributes') && !$this->getAttribute('disable_c_ext')) {
+ if (function_exists('twig_template_get_attributes') and !$this->getAttribute('disable_c_ext')) {
  $compiler->raw('twig_template_get_attributes($this, ');
  } else {
  $compiler->raw('$this->getAttribute(');

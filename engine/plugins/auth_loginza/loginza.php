@@ -248,7 +248,7 @@ pluginRegisterFilter('plugin.uprofile','auth_loginza', new uLoginzaFilter);
 function genNickname ($responce) {
 		if ($responce['nickname']) {
 			return $responce['nickname'];
-		} elseif (!empty($responce['email']) && preg_match('/^(.+)\@/i', $responce['email'], $nickname)) {
+		} elseif (!empty($responce['email']) and preg_match('/^(.+)\@/i', $responce['email'], $nickname)) {
 			return $nickname[1];
 		} elseif ( ($fullname = genFullName($responce)) ) {
 			return $fullname;

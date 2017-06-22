@@ -65,7 +65,7 @@
 
 	function wm_auth() {
 		name = AcceptWM.strLoginName;
-		if(AcceptWM /*&& (AcceptWM.readyState == 4)*/ && (name != "not login")) {
+		if(AcceptWM /*&& (AcceptWM.readyState == 4)*/ and (name != "not login")) {
 			document.getElementById("wmid").value = name;
 			document.getElementById("sign").value = AcceptWM.SignString(document.getElementById("plan").value);
 			if (document.getElementById("sign").value != "") return true;

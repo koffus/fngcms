@@ -106,7 +106,7 @@ class Hybrid_Storage implements Hybrid_Storage_Interface {
 	function deleteMatch($key) {
 		$key = strtolower($key);
 
-		if (isset($_SESSION["HA::STORE"]) && count($_SESSION["HA::STORE"])) {
+		if (isset($_SESSION["HA::STORE"]) and count($_SESSION["HA::STORE"])) {
 			$f = $_SESSION['HA::STORE'];
 			foreach ($f as $k => $v) {
 				if (strstr($k, $key)) {

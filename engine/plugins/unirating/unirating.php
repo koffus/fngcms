@@ -33,7 +33,7 @@ class UNRatingNewsFilter extends NewsFilter {
 		$trvars['vars']['rating'] = (!$rating or !$votes) ? 0 : round(($rating / $votes), 0);
 		$trvars['vars']['votes'] = $votes;
 
-		if ($_COOKIE['rating'.$newsID] or (pluginGetVariable('unirating','regonly') && !is_array($userROW))) {
+		if ($_COOKIE['rating'.$newsID] or (pluginGetVariable('unirating','regonly') and !is_array($userROW))) {
 			// Show
 			$tpl -> template('rating', $tpath['rating']);
 			$tpl -> vars('rating', $trvars);

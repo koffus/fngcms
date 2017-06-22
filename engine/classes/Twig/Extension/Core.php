@@ -278,7 +278,7 @@ class Twig_Extension_Core extends Twig_Extension
  protected function getTestNodeClass(Twig_Environment $env, $name)
  {
  $testMap = $env->getTests();
- if (isset($testMap[$name]) && $testMap[$name] instanceof Twig_Test_Node) {
+ if (isset($testMap[$name]) and $testMap[$name] instanceof Twig_Test_Node) {
  return $testMap[$name]->getClass();
  }
 
@@ -306,7 +306,7 @@ class Twig_Extension_Core extends Twig_Extension
  */
 function twig_cycle($values, $i)
 {
- if (!is_array($values) && !$values instanceof ArrayAccess) {
+ if (!is_array($values) and !$values instanceof ArrayAccess) {
  return $values;
  }
 
@@ -457,7 +457,7 @@ function twig_date_converter(Twig_Environment $env, $date = null, $timezone = nu
  }
 
  $asString = (string) $date;
- if (ctype_digit($asString) or (!empty($asString) && '-' === $asString[0] && ctype_digit(substr($asString, 1)))) {
+ if (ctype_digit($asString) or (!empty($asString) and '-' === $asString[0] and ctype_digit(substr($asString, 1)))) {
  $date = new DateTime('@'.$date);
  $date->setTimezone($defaultTimezone);
 
@@ -612,7 +612,7 @@ function twig_slice(Twig_Environment $env, $item, $start, $length = null, $prese
 
  $item = (string) $item;
 
- if (function_exists('mb_get_info') && null !== $charset = $env->getCharset()) {
+ if (function_exists('mb_get_info') and null !== $charset = $env->getCharset()) {
  return mb_substr($item, $start, null === $length ? mb_strlen($item, $charset) - $start : $length, $charset);
  }
 
@@ -707,7 +707,7 @@ function _twig_default_filter($value, $default = '')
  */
 function twig_get_array_keys_filter($array)
 {
- if (is_object($array) && $array instanceof Traversable) {
+ if (is_object($array) and $array instanceof Traversable) {
  return array_keys(iterator_to_array($array));
  }
 
@@ -729,7 +729,7 @@ function twig_get_array_keys_filter($array)
  */
 function twig_reverse_filter(Twig_Environment $env, $item, $preserveKeys = false)
 {
- if (is_object($item) && $item instanceof Traversable) {
+ if (is_object($item) and $item instanceof Traversable) {
  return array_reverse(iterator_to_array($item), $preserveKeys);
  }
 
@@ -783,7 +783,7 @@ function twig_in_filter($value, $compare)
  }
 
  return false !== strpos($compare, (string) $value);
- } elseif (is_object($compare) && $compare instanceof Traversable) {
+ } elseif (is_object($compare) and $compare instanceof Traversable) {
  return in_array($value, iterator_to_array($compare, false), $strict);
  }
 
@@ -801,11 +801,11 @@ function twig_in_filter($value, $compare)
  */
 function twig_escape_filter(Twig_Environment $env, $string, $strategy = 'html', $charset = null, $autoescape = false)
 {
- if ($autoescape && is_object($string) && $string instanceof Twig_Markup) {
+ if ($autoescape and is_object($string) and $string instanceof Twig_Markup) {
  return $string;
  }
 
- if (!is_string($string) && !(is_object($string) && method_exists($string, '__toString'))) {
+ if (!is_string($string) and !(is_object($string) and method_exists($string, '__toString'))) {
  return $string;
  }
 
@@ -1007,7 +1007,7 @@ function _twig_escape_html_attr_callback($matches)
  * The following replaces characters undefined in HTML with the
  * hex entity for the Unicode replacement character.
  */
- if (($ord <= 0x1f && $chr != "\t" && $chr != "\n" && $chr != "\r") or ($ord >= 0x7f && $ord <= 0x9f)) {
+ if (($ord <= 0x1f and $chr != "\t" and $chr != "\n" and $chr != "\r") or ($ord >= 0x7f and $ord <= 0x9f)) {
  return '&#xFFFD;';
  }
 
@@ -1191,7 +1191,7 @@ function twig_test_empty($value)
  return 0 == count($value);
  }
 
- return false === $value or (empty($value) && '0' != $value);
+ return false === $value or (empty($value) and '0' != $value);
 }
 
 /**

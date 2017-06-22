@@ -54,7 +54,7 @@ function multi_multisites(){
  if (!$siteDomainName) { $siteDomainName = $multiconfig[$multimaster]['domains'][0]; }
 
  // Если мультидомен выбран - меняем пути
- if ($multiDomainName && ($multiDomainName != $multimaster)) {
+ if ($multiDomainName and ($multiDomainName != $multimaster)) {
  }
 
  $siteDomainName = trim($siteDomainName);

@@ -43,9 +43,9 @@ function showNews($handlerName, $params)
     // Check if template requires extracting embedded images
     $tplVars = $TemplateCache['site']['#variables'];
     if (isset($tplVars['configuration'])
-        && is_array($tplVars['configuration'])
-        && isset($tplVars['configuration']['extractEmbeddedItems'])
-        && $tplVars['configuration']['extractEmbeddedItems']
+        and is_array($tplVars['configuration'])
+        and isset($tplVars['configuration']['extractEmbeddedItems'])
+        and $tplVars['configuration']['extractEmbeddedItems']
     ) {
         $callingParams['extractEmbeddedItems'] = true;
     }
@@ -62,7 +62,7 @@ function showNews($handlerName, $params)
         $callingParams['style'] = $flagPrint ? 'print' : 'full';
 
         // Execute filters [ onBeforeShow ] ** ONLY IN 'news' mode. In print mode we don't use it
-        if (!$flagPrint && is_array($PFILTERS['news'])) {
+        if (!$flagPrint and isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
             foreach ($PFILTERS['news'] as $k => $v) {
                 $v->onBeforeShow('full');
             }
@@ -96,7 +96,7 @@ function showNews($handlerName, $params)
         // Try to show news
         if (($row = news_showone($vars['id'], $vars['altname'], $callingParams)) !== false) {
             // Execute filters [ onAfterShow ] ** ONLY IN 'news' mode. In print mode we don't use it
-            if (!$flagPrint && is_array($PFILTERS['news'])) {
+            if (!$flagPrint and isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
                 foreach ($PFILTERS['news'] as $k => $v) {
                     $v->onAfterNewsShow($row['id'], $row, array('style' => 'full'));
                 }
@@ -106,10 +106,10 @@ function showNews($handlerName, $params)
     } else {
 
         $callingParams['style'] = 'short';
-        $callingParams['page'] = (isset($params['page']) && intval($params['page'])) ? intval($params['page']) : (isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 0);
+        $callingParams['page'] = (isset($params['page']) and intval($params['page'])) ? intval($params['page']) : (isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 0);
 
         // Execute filters [ onBeforeShow ]
-        if (is_array($PFILTERS['news'])) {
+        if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
             foreach ($PFILTERS['news'] as $k => $v)
                 $v->onBeforeShow('short');
         }
@@ -153,11 +153,11 @@ function showNews($handlerName, $params)
                 $category = '';
                 if (isset($params['catid'])) {
                     $category = $params['catid'];
-                } else if (isset($params['category']) && isset($catz[$params['category']])) {
+                } else if (isset($params['category']) and isset($catz[$params['category']])) {
                     $category = $catz[$params['category']]['id'];
                 } else if (isset($_REQUEST['catid'])) {
                     $category = $params['catid'];
-                } else if (isset($_REQUEST['category']) && isset($catz[$_REQUEST['category']])) {
+                } else if (isset($_REQUEST['category']) and isset($catz[$_REQUEST['category']])) {
                     $category = $catz[$_REQUEST['category']]['id'];
                 }
 
@@ -233,7 +233,9 @@ function showNews($handlerName, $params)
                 $tableVars = news_showlist(array('DATA', 'category', '=', $category), $paginationParams, $callingParams);
 
                 // TABLE - prepare information about category
-                $tableVars['category'] = array_shift(makeCategoryInfo($currentCategory['id']));
+                
+                $tableVars['category'] = makeCategoryInfo($currentCategory['id']);
+                $tableVars['category'] = array_shift($tableVars['category']);
 
                 // TABLE - prepare information about sorting block
                 $sortDefault = array(/*'id desc', */
@@ -245,6 +247,7 @@ function showNews($handlerName, $params)
                 ksort($sortDefault);
                 //}
 
+                $tableVars['newsOrder'] = '';
                 $sortOrder = explode(' ', $callingParams['newsOrder']);
                 foreach ($sortDefault as $key => $value) {
                     $pieces = explode(' ', $value);
@@ -269,7 +272,7 @@ function showNews($handlerName, $params)
                 $month = intval(isset($params['month']) ? $params['month'] : $_REQUEST['month']);
                 $day = intval(isset($params['day']) ? $params['day'] : $_REQUEST['day']);
 
-                if (($year < 1970) || ($year > 2100) || ($month < 1) || ($month > 12) || ($day < 1) || ($day > 31))
+                if (($year < 1970) or ($year > 2100) or ($month < 1) or ($month > 12) or ($day < 1) or ($day > 31))
                     return false;
 
                 $tableVars['year'] = $year;
@@ -322,7 +325,7 @@ function showNews($handlerName, $params)
                 $year = intval(isset($params['year']) ? $params['year'] : $_REQUEST['year']);
                 $month = intval(isset($params['month']) ? $params['month'] : $_REQUEST['month']);
 
-                if (($year < 1970) || ($year > 2100) || ($month < 1) || ($month > 12))
+                if (($year < 1970) or ($year > 2100) or ($month < 1) or ($month > 12))
                     return false;
 
                 $tableVars['year'] = $year;
@@ -351,7 +354,7 @@ function showNews($handlerName, $params)
             case 'by.year':
                 $year = intval(isset($params['year']) ? $params['year'] : $_REQUEST['year']);
 
-                if (($year < 1970) || ($year > 2100))
+                if (($year < 1970) or ($year > 2100))
                     return false;
 
                 $tableVars['year'] = $year;
@@ -386,7 +389,7 @@ function showNews($handlerName, $params)
         $template['vars']['mainblock'] .= $xt->render($tableVars);
 
         // Execute filters [ onAfterShow ]
-        if (is_array($PFILTERS['news'])) {
+        if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
             foreach ($PFILTERS['news'] as $k => $v) {
                 $v->onAfterShow('short');
             }

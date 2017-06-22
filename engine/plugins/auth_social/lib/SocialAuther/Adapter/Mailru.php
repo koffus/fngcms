@@ -75,11 +75,11 @@ class Mailru extends AbstractAdapter
 
  if (isset($userInfo[0]['uid'])) {
  $this->userInfo = $userInfo[0];
- if (isset($this->userInfo['location']) && is_array($this->userInfo['location']))
+ if (isset($this->userInfo['location']) and is_array($this->userInfo['location']))
  {
- if (isset($this->userInfo['location']['country']) && isset($this->userInfo['location']['country']['name']))
+ if (isset($this->userInfo['location']['country']) and isset($this->userInfo['location']['country']['name']))
  $this->userInfo['country_name'] = &$this->userInfo['location']['country']['name'];
- if (isset($this->userInfo['location']['city']) && isset($this->userInfo['location']['city']['name']))
+ if (isset($this->userInfo['location']['city']) and isset($this->userInfo['location']['city']['name']))
  $this->userInfo['city_name'] = &$this->userInfo['location']['city']['name'];
  }
  $result = true;

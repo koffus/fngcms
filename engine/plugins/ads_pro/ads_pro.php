@@ -89,9 +89,9 @@ function plugin_ads_pro($params) {
 
 			// Skip blocks if they're displayed `by time` & shouldn't be displayed now
 			if ($blockInfo['state'] == 2) {
-				if ($blockInfo['start_view'] && $blockInfo['start_view'] > $t_time)
+				if ($blockInfo['start_view'] and $blockInfo['start_view'] > $t_time)
 					$blockIsVisible = false;
-				if ($blockInfo['end_view'] && $blockInfo['end_view'] <= $t_time)
+				if ($blockInfo['end_view'] and $blockInfo['end_view'] <= $t_time)
 					$blockIsVisible = false;
 			}
 			// Skip block if it's marked as `not to be displayed`
@@ -178,7 +178,7 @@ function plugin_ads_pro($params) {
 	// Scan blocks, marked to be displayed
 	foreach ($blockDisplayList as $blockID => $blockRecList) {
 		// Process multidisplay mode
-		if ((count($blockRecList) > 1) && (($mdm = pluginGetVariable('ads_pro', 'multidisplay_mode')) > 0)) {
+		if ((count($blockRecList) > 1) and (($mdm = pluginGetVariable('ads_pro', 'multidisplay_mode')) > 0)) {
 			// - First active
 			if ($mdm == 1) {
 				$blockRecList = array($blockRecList[0]);

@@ -83,7 +83,7 @@ function finance_register_acceptor(&$ref) {
 function finance_check_money($userlogin, $balance_no = -1) {
 	global $mysql, $userROW, $FINANCE_CACHE;
 
-	if (is_array($userROW) && ($userlogin == $userROW['name'])) {
+	if (is_array($userROW) and ($userlogin == $userROW['name'])) {
 		$res = $userROW;
 	} else {
 		$res = $mysql->record("select * from ".uprefix."_users where name=".db_squote($userlogin));
@@ -93,9 +93,9 @@ function finance_check_money($userlogin, $balance_no = -1) {
 
 		$sum = isset($res['balance'])?$res['balance']:0;
 		// Проверяем нет ли данных уже в кеше
-		if (isset($FINANCE_CACHE['BM']) && is_array($FINANCE_CACHE['BM'])) {
+		if (isset($FINANCE_CACHE['BM']) and is_array($FINANCE_CACHE['BM'])) {
 			foreach ($FINANCE_CACHE['BM'] as $row)
-				if (($row['monetary'] == 1) && isset($res['balance'.$row['id']]))
+				if (($row['monetary'] == 1) and isset($res['balance'.$row['id']]))
 					 $sum+= $res['balance'.$row['id']];
 		} else {
 			foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary = 1") as $row) {
@@ -116,7 +116,7 @@ function finance_check_money($userlogin, $balance_no = -1) {
 function finance_check_enough_money($userlogin, $type, $tprice, $price) {
 	global $mysql, $userROW, $FINANCE_CACHE;
 
-	if (is_array($userROW) && ($userlogin == $userROW['name'])) {
+	if (is_array($userROW) and ($userlogin == $userROW['name'])) {
 		$res = $userROW;
 	} else {
 		$res = $mysql->record("select * from ".uprefix."_users where name=".db_squote($userlogin));
@@ -127,7 +127,7 @@ function finance_check_enough_money($userlogin, $type, $tprice, $price) {
 		// Пользователь найден
 
 		// Проверяем наличие средств на основном (монетарном) балансе
-		if (isset($res['balance']) && ($res['balance'] > $price)) { return 1; }
+		if (isset($res['balance']) and ($res['balance'] > $price)) { return 1; }
 
 		// Проверяем наличие поинтов на выделенных балансах
 		if ($type) {
@@ -142,9 +142,9 @@ function finance_check_enough_money($userlogin, $type, $tprice, $price) {
 		$balance = isset($res['balance'])?$res['balance']:0;
 
 		// Обращаемся к кешу если он есть
-		if (isset($FINANCE_CACHE['BM']) && is_array($FINANCE_CACHE['BM'])) {
+		if (isset($FINANCE_CACHE['BM']) and is_array($FINANCE_CACHE['BM'])) {
 			foreach ($FINANCE_CACHE['BM'] as $row)
-				if (($row['monetary'] == 1) && isset($res['balance'.$row['id']]))
+				if (($row['monetary'] == 1) and isset($res['balance'.$row['id']]))
 					 $balance+= $res['balance'.$row['id']];
 		} else {
 			foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary = 1") as $row) {
@@ -191,11 +191,11 @@ function finance_pay($identity, $payment) {
 	global $mysql, $userROW;
 
 	// Если нам не передали identity пользователя - выходим
-	if (!isset($identity['id']) && !isset($identity['login']))
+	if (!isset($identity['id']) and !isset($identity['login']))
 		return false;
 
 	// Если надо заплатить со счета текущего пользователя - берём данные из памяти
-	if	(is_array($userROW) && ((isset($identity['id']) && ($userROW['id'] == $identity['id']))||(isset($identity['login']) && ($userROW['login'] == $identity['login'])))) {
+	if	(is_array($userROW) and ((isset($identity['id']) and ($userROW['id'] == $identity['id']))||(isset($identity['login']) and ($userROW['login'] == $identity['login'])))) {
 		$res = $userROW;
 	} else {
 		$res = $mysql->record("select * from ".uprefix."_users where ".(isset($identity['id'])?('id='.db_squote($identity['id'])):'login='.db_squote($identity['name'])));
@@ -302,7 +302,7 @@ function finance_pay($identity, $payment) {
 function finance_add_money($userlogin, $balance, $sum, $description = '') {
 	global $mysql, $userROW, $ip;
 
-	if (is_array($userROW) && ($userlogin == $userROW['name'])) {
+	if (is_array($userROW) and ($userlogin == $userROW['name'])) {
 		$res = $userROW;
 	} else {
 		$res = $mysql->record("select * from ".uprefix."_users where name=".db_squote($userlogin));

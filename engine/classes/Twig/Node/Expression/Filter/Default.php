@@ -25,7 +25,7 @@ class Twig_Node_Expression_Filter_Default extends Twig_Node_Expression_Filter
  {
  $default = new Twig_Node_Expression_Filter($node, new Twig_Node_Expression_Constant('_default', $node->getLine()), $arguments, $node->getLine());
 
- if ('default' === $filterName->getAttribute('value') && ($node instanceof Twig_Node_Expression_Name or $node instanceof Twig_Node_Expression_GetAttr)) {
+ if ('default' === $filterName->getAttribute('value') and ($node instanceof Twig_Node_Expression_Name or $node instanceof Twig_Node_Expression_GetAttr)) {
  $test = new Twig_Node_Expression_Test_Defined(clone $node, 'defined', new Twig_Node(), $node->getLine());
  $false = count($arguments) ? $arguments->getNode(0) : new Twig_Node_Expression_Constant('', $node->getLine());
 

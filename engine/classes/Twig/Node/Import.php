@@ -36,7 +36,7 @@ class Twig_Node_Import extends Twig_Node
  ->raw(' = ')
  ;
 
- if ($this->getNode('expr') instanceof Twig_Node_Expression_Name && '_self' === $this->getNode('expr')->getAttribute('name')) {
+ if ($this->getNode('expr') instanceof Twig_Node_Expression_Name and '_self' === $this->getNode('expr')->getAttribute('name')) {
  $compiler->raw("\$this");
  } else {
  $compiler

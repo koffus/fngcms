@@ -25,7 +25,7 @@ function url() {
 	$tpath = locatePluginTemplates(array('config/main', 'config/url'), 'suser', 1);
 
 	if (isset($_REQUEST['submit'])) {
-		if(isset($_REQUEST['url']) && !empty($_REQUEST['url'])) {
+		if(isset($_REQUEST['url']) and !empty($_REQUEST['url'])) {
 			$ULIB = new urlLibrary();
 			$ULIB->loadConfig(); 
 			$ULIB->registerCommand('suser', '', array ('vars' => array(), 'descr' => array ('russian' => 'Список пользователей')));

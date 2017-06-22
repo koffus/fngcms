@@ -82,7 +82,7 @@ class Twig_Lexer implements Twig_LexerInterface
  */
  public function tokenize($code, $filename = null)
  {
- if (function_exists('mb_internal_encoding') && ((int) ini_get('mbstring.func_overload')) & 2) {
+ if (function_exists('mb_internal_encoding') and ((int) ini_get('mbstring.func_overload')) & 2) {
  $mbEncoding = mb_internal_encoding();
  mb_internal_encoding('ASCII');
  }
@@ -198,7 +198,7 @@ class Twig_Lexer implements Twig_LexerInterface
 
  protected function lexBlock()
  {
- if (empty($this->brackets) && preg_match($this->regexes['lex_block'], $this->code, $match, null, $this->cursor)) {
+ if (empty($this->brackets) and preg_match($this->regexes['lex_block'], $this->code, $match, null, $this->cursor)) {
  $this->pushToken(Twig_Token::BLOCK_END_TYPE);
  $this->moveCursor($match[0]);
  $this->popState();
@@ -209,7 +209,7 @@ class Twig_Lexer implements Twig_LexerInterface
 
  protected function lexVar()
  {
- if (empty($this->brackets) && preg_match($this->regexes['lex_var'], $this->code, $match, null, $this->cursor)) {
+ if (empty($this->brackets) and preg_match($this->regexes['lex_var'], $this->code, $match, null, $this->cursor)) {
  $this->pushToken(Twig_Token::VAR_END_TYPE);
  $this->moveCursor($match[0]);
  $this->popState();
@@ -242,7 +242,7 @@ class Twig_Lexer implements Twig_LexerInterface
  // numbers
  elseif (preg_match(self::REGEX_NUMBER, $this->code, $match, null, $this->cursor)) {
  $number = (float) $match[0]; // floats
- if (ctype_digit($match[0]) && $number <= PHP_INT_MAX) {
+ if (ctype_digit($match[0]) and $number <= PHP_INT_MAX) {
  $number = (int) $match[0]; // integers lower than the maximum
  }
  $this->pushToken(Twig_Token::NUMBER_TYPE, $number);
@@ -319,7 +319,7 @@ class Twig_Lexer implements Twig_LexerInterface
  $this->moveCursor($match[0]);
  $this->pushState(self::STATE_INTERPOLATION);
 
- } elseif (preg_match(self::REGEX_DQ_STRING_PART, $this->code, $match, null, $this->cursor) && strlen($match[0]) > 0) {
+ } elseif (preg_match(self::REGEX_DQ_STRING_PART, $this->code, $match, null, $this->cursor) and strlen($match[0]) > 0) {
  $this->pushToken(Twig_Token::STRING_TYPE, stripcslashes($match[0]));
  $this->moveCursor($match[0]);
 
@@ -338,7 +338,7 @@ class Twig_Lexer implements Twig_LexerInterface
  protected function lexInterpolation()
  {
  $bracket = end($this->brackets);
- if ($this->options['interpolation'][0] === $bracket[0] && preg_match($this->regexes['interpolation_end'], $this->code, $match, null, $this->cursor)) {
+ if ($this->options['interpolation'][0] === $bracket[0] and preg_match($this->regexes['interpolation_end'], $this->code, $match, null, $this->cursor)) {
  array_pop($this->brackets);
  $this->pushToken(Twig_Token::INTERPOLATION_END_TYPE);
  $this->moveCursor($match[0]);
@@ -351,7 +351,7 @@ class Twig_Lexer implements Twig_LexerInterface
  protected function pushToken($type, $value = '')
  {
  // do not push empty text tokens
- if (Twig_Token::TEXT_TYPE === $type && '' === $value) {
+ if (Twig_Token::TEXT_TYPE === $type and '' === $value) {
  return;
  }
 

@@ -11,14 +11,14 @@ class WPingerNewsfilter extends NewsFilter {
 	}
 
 	function editNewsNotify($newsID, $SQLnews, &$SQLnew, &$tvars) {
-		if ($SQLnew['approve'] && !$SQLnews['approve'])
+		if ($SQLnew['approve'] and !$SQLnews['approve'])
 			plugin_wpinger_servicePing();
 		return 1;
 	}
 
 	// Mass news modify
 	function massModifyNewsNotify($idList, $setValue, $currentData) {
-		if (isset($setValue['approve']) && $setValue['approve'])
+		if (isset($setValue['approve']) and $setValue['approve'])
 			plugin_wpinger_servicePing();
 		return 1;
 	}

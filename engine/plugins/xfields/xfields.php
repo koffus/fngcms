@@ -38,7 +38,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 	// Scan if user want to change description
 	foreach ($attachList as $iRec) {
 		//print "[A:".$iRec['id']."]";
-		if (isset($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr']) && is_array($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr']) && isset($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr'][$iRec['id']])) {
+		if (isset($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr']) and is_array($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr']) and isset($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr'][$iRec['id']])) {
 			// We have this field in EDIT mode
 			if ($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr'][$iRec['id']] != $iRec['decsription']) {
 				$mysql->query("update ".prefix."_images set description = ".db_squote($_REQUEST['xfields_'.$iRec['pidentity'].'_dscr'][$iRec['id']])." where id = ".intval($iRec['id']));
@@ -51,7 +51,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 		// Attached images are processed in special way
 		if ($data['type'] == 'images') {
 			// Check if we should delete some images
-			if (isset($_POST['xfields_'.$id.'_del']) && is_array($_POST['xfields_'.$id.'_del'])) {
+			if (isset($_POST['xfields_'.$id.'_del']) and is_array($_POST['xfields_'.$id.'_del'])) {
 				foreach ($_POST['xfields_'.$id.'_del'] as $key => $value) {
 					// Allow to delete only images, that are attached to current news
 					if ($value) {
@@ -71,7 +71,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 			}
 
 			// Check for new attached files
-			if (isset($_FILES['xfields_'.$id]) && isset($_FILES['xfields_'.$id]['name']) && is_array($_FILES['xfields_'.$id]['name'])) {
+			if (isset($_FILES['xfields_'.$id]) and isset($_FILES['xfields_'.$id]['name']) and is_array($_FILES['xfields_'.$id]['name'])) {
 				foreach ($_FILES['xfields_'.$id]['name'] as $iId => $iName) {
 					if ($_FILES['xfields_'.$id]['error'][$iId] > 0) {
 						//print $iId." >>ERROR: ".$_FILES['xfields_'.$id]['error'][$iId]."<br/>\n";
@@ -98,7 +98,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 							'http_varnum' => $iId,
 							'plugin' => 'xfields',
 							'pidentity' => $id,
-							'description' => (isset($_REQUEST['xfields_'.$id.'_adscr']) && is_array($_REQUEST['xfields_'.$id.'_adscr']) && isset($_REQUEST['xfields_'.$id.'_adscr'][$iId]))?($_REQUEST['xfields_'.$id.'_adscr'][$iId]):'',
+							'description' => (isset($_REQUEST['xfields_'.$id.'_adscr']) and is_array($_REQUEST['xfields_'.$id.'_adscr']) and isset($_REQUEST['xfields_'.$id.'_adscr'][$iId]))?($_REQUEST['xfields_'.$id.'_adscr'][$iId]):'',
 						)
 					);
 
@@ -133,7 +133,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 						if ($thumb) {
 							//print "THUMB_OK<br/>";
 							// If we created thumb - check if we need to transform it
-							$stampThumb = ($data['thumbStamp'] && ($stampFileName != ''))?1:0;
+							$stampThumb = ($data['thumbStamp'] and ($stampFileName != ''))?1:0;
 							$shadowThumb = $data['thumbShadow'];
 							if ($shadowThumb or $stampThumb) {
 								$stamp = $imanager->image_transform(
@@ -173,7 +173,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 						// Gather filesize for thumbinals
 						$thumb_size_x = 0;
 						$thumb_size_y = 0;
-						if (is_array($thumb) && is_readable($config['attach_dir'].$up[2].'/thumb/'.$up[1]) && is_array($szt = $imanager->get_size($config['attach_dir'].$up[2].'/thumb/'.$up[1]))) {
+						if (is_array($thumb) and is_readable($config['attach_dir'].$up[2].'/thumb/'.$up[1]) and is_array($szt = $imanager->get_size($config['attach_dir'].$up[2].'/thumb/'.$up[1]))) {
 							$thumb_size_x = $szt[1];
 							$thumb_size_y = $szt[2];
 						}
@@ -235,7 +235,7 @@ class XFieldsNewsFilter extends NewsFilter {
 									if (!$data['required']) $val .= '<option value=""></option>';
 									if (is_array($data['options']))
 										foreach ($data['options'] as $k => $v)
-											$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && $data['default'] == $k)||(!$data['storekeys'] && $data['default'] == $v))?' selected':'').'>'.$v.'</option>';
+											$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and $data['default'] == $k)||(!$data['storekeys'] and $data['default'] == $v))?' selected':'').'>'.$v.'</option>';
 									$val .= '</select>';
 									$xfEntry['input'] = $val;
 									break;
@@ -243,7 +243,7 @@ class XFieldsNewsFilter extends NewsFilter {
 									if (!$data['required']) $val .= '<option value=""></option>';
 									if (is_array($data['options']))
 										foreach ($data['options'] as $k => $v)
-											$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && $data['default'] == $k)||(!$data['storekeys'] && $data['default'] == $v))?' selected':'').'>'.$v.'</option>';
+											$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and $data['default'] == $k)||(!$data['storekeys'] and $data['default'] == $v))?' selected':'').'>'.$v.'</option>';
 									$val .= '</select>';
 									$xfEntry['input'] = $val;
 									break;
@@ -286,7 +286,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
 		// Prepare table data [if needed]
 		$flagTData = false;
-		if (isset($xf['tdata']) && is_array($xf['tdata'])) {
+		if (isset($xf['tdata']) and is_array($xf['tdata'])) {
 			// Data are not provisioned
 			$tlist = array();
 
@@ -387,7 +387,7 @@ class XFieldsNewsFilter extends NewsFilter {
 				return 0;
 			}
 			// Check if we should save data into separate SQL field
-			if ($data['storage'] && ($rcall[$id] != ''))
+			if ($data['storage'] and ($rcall[$id] != ''))
 				$SQL['xfields_'.$id] = $rcall[$id];
 		}
 		
@@ -439,13 +439,13 @@ class XFieldsNewsFilter extends NewsFilter {
 		}
 
 		// Prepare table data [if needed]
-		if (isset($xf['tdata']) && is_array($xf['tdata']) && isset($_POST['xftable']) && is_array($xft = json_decode($_POST['xftable'], true))) {
+		if (isset($xf['tdata']) and is_array($xf['tdata']) and isset($_POST['xftable']) and is_array($xft = json_decode($_POST['xftable'], true))) {
 			//print "<pre>[".(is_array($xft)?'ARR':'NOARR')."]INCOMING ARRAY: ".var_export($xft, true)."</pre>";
 			$recList = array();
 			$queryList = array();
 			// SCAN records
 			foreach ($xft as $k => $v) {
-				if (is_array($v) && isset($v['#id'])) {
+				if (is_array($v) and isset($v['#id'])) {
 					$editMode = 0;
 
 					$tRec = array('xfields' => array());
@@ -519,7 +519,7 @@ class XFieldsNewsFilter extends NewsFilter {
 								if (!$data['required']) $val .= '<option value="">&nbsp;</option>';
 								if (is_array($data['options']))
 									foreach ($data['options'] as $k => $v) {
-										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v)))?' selected':'').'>'.$v.'</option>';
+										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and ($xdata[$id] == $k))||(!$data['storekeys'] and ($xdata[$id] == $v)))?' selected':'').'>'.$v.'</option>';
 									}
 								$val .= '</select>';
 								$xfEntry['input'] = $val;
@@ -530,7 +530,7 @@ class XFieldsNewsFilter extends NewsFilter {
 								if (is_array($data['options']))
 									foreach ($data['options'] as $k => $v) {
 										var_dump();
-										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && (in_array($k, $xdata[$id])))||(!$data['storekeys'] && (in_array($v, $xdata[$id]))))?' selected':'').'>'.$v.'</option>';
+										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and (in_array($k, $xdata[$id])))||(!$data['storekeys'] and (in_array($v, $xdata[$id]))))?' selected':'').'>'.$v.'</option>';
 									}
 								$val .= '</select>';
 								$xfEntry['input'] = $val;
@@ -608,7 +608,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
 		// Prepare table data [if needed]
 		$flagTData = false;
-		if (isset($xf['tdata']) && is_array($xf['tdata'])) {
+		if (isset($xf['tdata']) and is_array($xf['tdata'])) {
 			// Load table data for specific news
 			$tlist = array();
 			foreach ($mysql->select("select * from ".prefix."_xfields where (linked_ds = 1) and (linked_id = ".db_squote($newsID).")") as $trow) {
@@ -617,7 +617,7 @@ class XFieldsNewsFilter extends NewsFilter {
 				// Scan every field for value
 				foreach ($xf['tdata'] as $fId => $fData) {
 					$fValue = '';
-					if (is_array($ts) && isset($ts[$fId])) {
+					if (is_array($ts) and isset($ts[$fId])) {
 						$fValue = $ts[$fId];
 					} elseif (isset($trow['xfields_'.$fId])) {
 						$fValue = $trow['xfields_'.$fId];
@@ -776,13 +776,13 @@ class XFieldsNewsFilter extends NewsFilter {
 		// Prepare table data [if needed]
 		$haveTable = false;
 
-		if (isset($xf['tdata']) && is_array($xf['tdata']) && isset($_POST['xftable']) && is_array($xft = json_decode($_POST['xftable'], true))) {
+		if (isset($xf['tdata']) and is_array($xf['tdata']) and isset($_POST['xftable']) and is_array($xft = json_decode($_POST['xftable'], true))) {
 			//print "<pre>[".(is_array($xft)?'ARR':'NOARR')."]INCOMING ARRAY: ".var_export($xft, true)."</pre>";
 			$recList = array();
 			$queryList = array();
 			// SCAN records
 			foreach ($xft as $k => $v) {
-				if (is_array($v) && isset($v['#id'])) {
+				if (is_array($v) and isset($v['#id'])) {
 					$editMode = 0;
 					$tOldRec = array();
 					$tOldRecX = array();
@@ -864,7 +864,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
 	// Called before showing list of news
 	function onBeforeShowlist($callingParams) {
-		if (isset($linkedFiles['data']) && is_array($linkedFiles['data'])) {
+		if (isset($linkedFiles['data']) and is_array($linkedFiles['data'])) {
 			// Check for news that have attached TABLE data and load this table into memory
 			// ...
 		}
@@ -909,7 +909,7 @@ class XFieldsNewsFilter extends NewsFilter {
 					// Check if there're attached images
 					$imglist = array();
 
-					if ($xfk && count($ilist = explode(',', $xfk))) {
+					if ($xfk and count($ilist = explode(',', $xfk))) {
 						// Check if we have already preloaded (by engine) images
 						$ilk = array();
 						foreach ($ilist as $irec) {
@@ -921,14 +921,14 @@ class XFieldsNewsFilter extends NewsFilter {
 						}
 
 						// Check if we have some not loaded news
-						if (count($ilk) && count($timglist = $mysql->select("select * from ".prefix."_images where id in (".$xfk.")"))) {
+						if (count($ilk) and count($timglist = $mysql->select("select * from ".prefix."_images where id in (".$xfk.")"))) {
 							$imglist = array_merge($imglist, $timglist);
 							unset($timglist);
 						}
 
 					}
 
-//					if ($xfk && count($ilist = explode(',', $xfk)) && count($imglist = $mysql->select("select * from ".prefix."_images where id in (".$xfk.")"))) {
+//					if ($xfk and count($ilist = explode(',', $xfk)) and count($imglist = $mysql->select("select * from ".prefix."_images where id in (".$xfk.")"))) {
 					if (count($imglist)) {
 					// Yes, show field block
 						$tvars['regx']["#\[xfield_".$kp."\](.*?)\[/xfield_".$kp."\]#is"] = '$1';
@@ -997,12 +997,12 @@ class XFieldsNewsFilter extends NewsFilter {
 					}
 
 					// Parse BB code [if required]
-					if ($config['use_bbcodes'] && $v['bb_support']) {
+					if ($config['use_bbcodes'] and $v['bb_support']) {
 						$xfk = $parse-> bbcodes($xfk);
 					}
 
 					// Process formatting
-					if (($v['type'] == 'textarea') && (!$v['noformat'])) {
+					if (($v['type'] == 'textarea') and (!$v['noformat'])) {
 						$xfk = (str_replace("\n","<br/>\n",$xfk).(mb_strlen($xfk, 'UTF-8') ? '<br/>' : ''));
 					}
 					$tvars['vars']['p']['xfields'][$k]['value'] = $xfk;
@@ -1011,7 +1011,7 @@ class XFieldsNewsFilter extends NewsFilter {
 			}
 
 		// Show table if we have it
-		if (isset($xf['tdata']) && is_array($xf['tdata']) && isset($fields['#table']) && ($fields['#table'] == 1)) {
+		if (isset($xf['tdata']) and is_array($xf['tdata']) and isset($fields['#table']) and ($fields['#table'] == 1)) {
 			// Yes, we have table. Display it!
 
 			// Prepare conversion table
@@ -1043,7 +1043,7 @@ class XFieldsNewsFilter extends NewsFilter {
 				}
 
 				// Process filters (if any)
-				if (isset($PFILTERS['xfields']) && is_array($PFILTERS['xfields']))
+				if (isset($PFILTERS['xfields']) and is_array($PFILTERS['xfields']))
 					foreach ($PFILTERS['xfields'] as $k => $v) { $v->showTableEntry($newsID, $SQLnews, $trec, $xrec); }
 
 				$xrecs []= $xrec;
@@ -1125,7 +1125,7 @@ if (getPluginStatusActive('uprofile')) {
 						if (!$data['required']) $val .= '<option value="">&nbsp;</option>';
 						if (is_array($data['options']))
 							foreach ($data['options'] as $k => $v) {
-								$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v)))?' selected':'').'>'.$v.'</option>';
+								$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and ($xdata[$id] == $k))||(!$data['storekeys'] and ($xdata[$id] == $v)))?' selected':'').'>'.$v.'</option>';
 							}
 						$val .= '</select>';
 						$xfEntry['input'] = $val;
@@ -1353,7 +1353,7 @@ if (getPluginStatusActive('uprofile')) {
 					// Our behaviour depends on field type
 					if ($v['type'] == 'images') {
 						// Check if there're attached images
-						if ($xfk && count($ilist = explode(',', $xfk)) && count($imglist = $mysql->select("select * from ".prefix."_images where id in (".$xfk.")"))) {
+						if ($xfk and count($ilist = explode(',', $xfk)) and count($imglist = $mysql->select("select * from ".prefix."_images where id in (".$xfk.")"))) {
 							//print "-xGotIMG[$k]";
 							// Yes, get list of images
 							$imgInfo = $imglist[0];
@@ -1425,12 +1425,12 @@ if (getPluginStatusActive('uprofile')) {
 						}
 
 						// Parse BB code [if required]
-						if ($config['use_bbcodes'] && $v['bb_support']) {
+						if ($config['use_bbcodes'] and $v['bb_support']) {
 							$xfk = $parse-> bbcodes($xfk);
 						}
 
 						// Process formatting
-						if (($v['type'] == 'textarea') && (!$v['noformat'])) {
+						if (($v['type'] == 'textarea') and (!$v['noformat'])) {
 							$xfk = (str_replace("\n","<br/>\n",$xfk).(mb_strlen($xfk, 'UTF-8')?'<br/>':''));
 						}
 						// TWIG based variables
@@ -1510,7 +1510,7 @@ class XFieldsCoreFilter extends CoreFilter {
 			return 1;
 
 		foreach ($xf['users'] as $k => $v) {
-			if ($v['regpage'] && !$v['disabled']) {
+			if ($v['regpage'] and !$v['disabled']) {
 				//print "$k: <pre>".var_export($v, true)."</pre>";
 				$tEntry = array(
 					'name' => 'xfield_'.$k,
@@ -1554,7 +1554,7 @@ class XFieldsCoreFilter extends CoreFilter {
 		$xdata = array();
 		$SQL = array();
 		foreach ($xf['users'] as $k => $v) {
-			if ($v['regpage'] && !$v['disabled']) {
+			if ($v['regpage'] and !$v['disabled']) {
 
 				switch ($v['type']) {
 					case 'text':

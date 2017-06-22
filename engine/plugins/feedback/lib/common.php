@@ -44,7 +44,7 @@ function feedback_listTemplates() {
 
 	// Check if there are custom templates in site template
 	foreach ($dScan as $dPath => $dPrefix) {
-		if (is_dir($dPath) && ($dh = opendir($dPath))) {
+		if (is_dir($dPath) and ($dh = opendir($dPath))) {
 			while (($fn = readdir($dh)) !== false) {
 				if (in_array($fn, array('.', '..')))
 					continue;

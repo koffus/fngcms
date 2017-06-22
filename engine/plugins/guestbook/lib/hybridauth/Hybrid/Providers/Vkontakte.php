@@ -166,7 +166,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 		foreach ($this->fields as $field => $map)
 			$user->$field = (property_exists($response,$map)) ? $response->$map : null;
 
-		if (property_exists($user, 'profileURL') && !empty($user->profileURL)) {
+		if (property_exists($user, 'profileURL') and !empty($user->profileURL)) {
 			$user->profileURL = 'http://vk.com/' . $user->profileURL;
 		}
 
@@ -194,7 +194,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			}
 		}
 
-		if (property_exists($user, 'city') && $withAdditionalRequests) {
+		if (property_exists($user, 'city') and $withAdditionalRequests) {
 			$params = array(
 				'city_ids' => $user->city,
 			);
@@ -206,7 +206,7 @@ class Hybrid_Providers_Vkontakte extends Hybrid_Provider_Model_OAuth2
 			}
 		}
 
-		if (property_exists($user, 'country') && $withAdditionalRequests) {
+		if (property_exists($user, 'country') and $withAdditionalRequests) {
 			$params = array(
 				'country_ids' => $user->country,
 			);

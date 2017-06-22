@@ -93,7 +93,7 @@ class CommentsNewsFilter extends NewsFilter
         if ($allowCom == 2) {
             // `Use default` - check master category
             $masterCat = intval(array_shift(explode(',', $SQLnews['catid'])));
-            if ($masterCat && isset($catmap[$masterCat])) {
+            if ($masterCat and isset($catmap[$masterCat])) {
                 $allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
             }
 
@@ -116,7 +116,7 @@ class CommentsNewsFilter extends NewsFilter
         //	* style == full
         // * emulate == false
         // * plugin == not set
-        if (!(($callingParams['style'] == 'full') && (!$callingParams['emulate']) && (!isset($callingParams['plugin'])))) {
+        if (!(($callingParams['style'] == 'full') and (!$callingParams['emulate']) and (!isset($callingParams['plugin'])))) {
             // No, we don't need to show comments
             $tvars['vars']['plugin_comments'] = '';
             return 1;
@@ -135,7 +135,7 @@ class CommentsNewsFilter extends NewsFilter
         $fcat = array_shift(explode(',', $SQLnews['catid']));
 
         // Check if there is a custom mapping
-        if ($fcat && $catmap[$fcat] && ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+        if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
             // Check if directory exists
             if (is_dir(tpl_site . 'ncustom/' . $ctname)) {
                 $callingCommentsParams['overrideTemplatePath'] = tpl_site . 'ncustom/' . $ctname;
@@ -157,7 +157,7 @@ class CommentsNewsFilter extends NewsFilter
         if (pluginGetVariable('comments', 'multipage')) {
             $multi_mcount = intval(pluginGetVariable('comments', 'multi_mcount'));
             // If we have comments more than for one page - activate pagination
-            if (($multi_mcount >= 0) && ($SQLnews['com'] > $multi_mcount)) {
+            if (($multi_mcount >= 0) and ($SQLnews['com'] > $multi_mcount)) {
                 $callingCommentsParams['limitCount'] = $multi_mcount;
                 $flagMoreComments = true;
                 if (!$multi_mcount)
@@ -184,7 +184,7 @@ class CommentsNewsFilter extends NewsFilter
         }
 
         // Show form for adding comments
-        if ($allowCom && (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
+        if ($allowCom and (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
             $tcvars['vars']['form'] = comments_showform($newsID, $callingCommentsParams);
             $tcvars['regx']['#\[regonly\](.*?)\[\/regonly\]#is'] = '';
             $tcvars['regx']['#\[commforbidden\](.*?)\[\/commforbidden\]#is'] = '';
@@ -296,7 +296,7 @@ function plugin_comments_add()
         // Find first category
         $fcat = array_shift(explode(',', $SQLnews['catid']));
         // Check if there is a custom mapping
-        if ($fcat && $catmap[$fcat] && ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+        if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
             // Check if directory exists
             if (is_dir($templatePath . '/ncustom/' . $ctname))
                 $callingCommentsParams['overrideTemplatePath'] = $templatePath . '/ncustom/' . $ctname;
@@ -368,7 +368,7 @@ function plugin_comments_show()
     $fcat = array_shift(explode(',', $newsRow['catid']));
 
     // Check if there is a custom mapping
-    if ($fcat && $catmap[$fcat] && ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+    if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
         // Check if directory exists
         if (is_dir(tpl_site . 'ncustom/' . $ctname)) {
             $callingCommentsParams['overrideTemplatePath'] = tpl_site . 'ncustom/' . $ctname;
@@ -387,7 +387,7 @@ function plugin_comments_show()
 
     // If we have comments more than for one page - activate pagination
     $multi_scount = intval(pluginGetVariable('comments', 'multi_scount'));
-    if (($multi_scount > 0) && ($newsRow['com'] > $multi_scount)) {
+    if (($multi_scount > 0) and ($newsRow['com'] > $multi_scount)) {
 
         // Page count
         $pageCount = ceil($newsRow['com'] / $multi_scount);
@@ -428,7 +428,7 @@ function plugin_comments_show()
     $allowCom = $newsRow['allow_com'];
 
     // Show form for adding comments
-    if ($newsRow['allow_com'] && (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
+    if ($newsRow['allow_com'] and (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
         $tcvars['vars']['form'] = comments_showform($newsID, $callingCommentsParams);
         $tcvars['regx']['#\[regonly\](.*?)\[\/regonly\]#is'] = '';
         $tcvars['regx']['#\[commforbidden\](.*?)\[\/commforbidden\]#is'] = '';
@@ -465,7 +465,7 @@ function plugin_comments_delete()
         // Second: check if this comment exists
         $comid = intval($_REQUEST['id']);
 
-        if (($comid) && ($row = $mysql->record("select * from " . prefix . "_comments where id=" . db_squote($comid)))) {
+        if (($comid) and ($row = $mysql->record("select * from " . prefix . "_comments where id=" . db_squote($comid)))) {
             $mysql->query("delete from " . prefix . "_comments where id=" . db_squote($comid));
             $mysql->query("update " . uprefix . "_users set com=com-1 where id=" . db_squote($row['author_id']));
             $mysql->query("update " . prefix . "_news set com=com-1 where id=" . db_squote($row['post']));

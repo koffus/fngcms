@@ -56,7 +56,7 @@ class Facebook extends BaseFacebook
  */
  public function __construct($config) {
  if ((function_exists('session_status') 
- && session_status() !== PHP_SESSION_ACTIVE) or !session_id()) {
+ and session_status() !== PHP_SESSION_ACTIVE) or !session_id()) {
  Session::init();
  }
  parent::__construct($config);
@@ -90,7 +90,7 @@ class Facebook extends BaseFacebook
  $cookie_name = $this->getSharedSessionCookieName();
  if (isset($_COOKIE[$cookie_name])) {
  $data = $this->parseSignedRequest($_COOKIE[$cookie_name]);
- if ($data && !empty($data['domain']) &&
+ if ($data and !empty($data['domain']) &&
  self::isAllowedDomain($this->getHttpHost(), $data['domain'])) {
  // good case
  $this->sharedSessionID = $data['id'];

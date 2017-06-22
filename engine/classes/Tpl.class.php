@@ -47,19 +47,19 @@ class tpl
         fclose($fp);
 
         // Check if includes feature is activated
-        if (isset($params['includeAllowed']) && $params['includeAllowed']) {
+        if (isset($params['includeAllowed']) and $params['includeAllowed']) {
             // Check include working mode: recursive or normal
-            if (isset($params['includeAllowRecursive']) && $params['includeAllowRecursive']) {
+            if (isset($params['includeAllowRecursive']) and $params['includeAllowRecursive']) {
                 // Recursive mode: ON
                 while (preg_match('#\[:include (.+?)\]#is', $data, $iM)) {
                     $incName = $iM[1];
-                    if (!(isset($params['includeDisableChroot']) && $params['includeDisableChroot'])) {
+                    if (!(isset($params['includeDisableChroot']) and $params['includeDisableChroot'])) {
                         $incName = str_replace(array('/../', '/./'), '', $incName);
                         if (preg_match('#^\.\.\/(.+)$#is', $incName, $mt))
                             $incName = $mt[1];
                     }
                     $incFile = $dir . $incName;
-                    if (is_file($incFile) && is_readable($incFile)) {
+                    if (is_file($incFile) and is_readable($incFile)) {
                         $fI = fopen($incFile, 'r');
                         $incData = filesize($incFile) ? fread($fI, filesize($incFile)) : '';
                         $data = str_replace($iM[0], $incData, $data);
@@ -73,13 +73,13 @@ class tpl
 
                     foreach ($iMList as $iMNo => $iM) {
                         $incName = $iM[1];
-                        if (!(isset($params['includeDisableChroot']) && $params['includeDisableChroot'])) {
+                        if (!(isset($params['includeDisableChroot']) and $params['includeDisableChroot'])) {
                             $incName = str_replace(array('/../', '/./'), '', $incName);
                             if (preg_match('#^\.\.\/(.+)$#is', $incName, $mt))
                                 $incName = $mt[1];
                         }
                         $incFile = $dir . $incName;
-                        if (is_file($incFile) && is_readable($incFile)) {
+                        if (is_file($incFile) and is_readable($incFile)) {
                             $fI = fopen($incFile, 'r');
                             $incData = filesize($incFile) ? fread($fI, filesize($incFile)) : '';
                             $pMatchString[] = $iM[0];
@@ -111,8 +111,8 @@ class tpl
         list($usec, $sec) = explode(' ', microtime());
         $timeStart = (float)$sec + (float)$usec;
 
-        $data = (isset($params['inline']) && $params['inline']) ? $nn : $this->data[$nn];
-        if (isset($params['codeExec']) && $params['codeExec'])
+        $data = (isset($params['inline']) and $params['inline']) ? $nn : $this->data[$nn];
+        if (isset($params['codeExec']) and $params['codeExec'])
             $data = (eval(' ?>' . $this->data[$nn] . '<?php '));
 
         if (preg_match_all('/(?<=\{)l_(.*?)(?=\})/i', $data, $larr)) {
@@ -186,7 +186,7 @@ class tpl
                 foreach (preg_split("#\|#", $v[2]) as $rule) {
                     if (preg_match("#^(.+?)\:(.+?)$#", $rule, $pt)) {
                         // Specified: Plugin + Handler
-                        if (($pt[1] == $CurrentHandler['pluginName']) && ($pt[2] == $CurrentHandler['handlerName'])) {
+                        if (($pt[1] == $CurrentHandler['pluginName']) and ($pt[2] == $CurrentHandler['handlerName'])) {
                             $ruleCatched = true;
                             break;
                         }
@@ -195,7 +195,7 @@ class tpl
                         break;
                     }
                 }
-                $bShowFlag = (($ruleCatched && !$filterNegativeFlag) || (!$ruleCatched && $filterNegativeFlag));
+                $bShowFlag = (($ruleCatched and !$filterNegativeFlag) or (!$ruleCatched and $filterNegativeFlag));
                 $data = str_replace($v[0], $bShowFlag ? $v[3] : '', $data);
             }
         }
@@ -214,7 +214,7 @@ class tpl
             }
         }
 
-        if ($PHP_SELF && $PHP_SELF == "admin.php") {
+        if ($PHP_SELF and $PHP_SELF == "admin.php") {
             preg_match_all('/(?<=\{)c_(.*?)(?=\})/i', $data, $carr);
 
             foreach ($carr[0] as $k => $v) {
@@ -224,7 +224,7 @@ class tpl
         }
 
         // Process variables
-        if (isset($vars['vars']) && is_array($vars['vars'])) {
+        if (isset($vars['vars']) and is_array($vars['vars'])) {
             foreach ($vars['vars'] as $id => $var) {
                 if (substr($id, 0, 1) == '[') {
                     $data = str_replace($id, $var, $data);
@@ -236,7 +236,7 @@ class tpl
         }
 
         // Process regular expressions
-        if (isset($vars['regx']) && is_array($vars['regx'])) {
+        if (isset($vars['regx']) and is_array($vars['regx'])) {
             foreach ($vars['regx'] as $id => $var) {
                 $data = preg_replace($id, $var, $data);
             }
@@ -246,7 +246,7 @@ class tpl
         $data = str_replace('{admin_url}', admin_url, $data);
         $data = str_replace('{scriptLibrary}', scriptLibrary, $data);
 
-        if (isset($params['inline']) && $params['inline'])
+        if (isset($params['inline']) and $params['inline'])
             return $data;
 
         $this->da_vr[$nn] = $data;

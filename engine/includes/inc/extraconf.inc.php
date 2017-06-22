@@ -32,7 +32,7 @@ function pluginSwitch($pluginID, $mode = 'on') {
 			$activated['active'][$pluginID] = $extras[$pluginID]['dir'];
 
 			// Mark module to be activated in all listed actions
-			if (isset($extras[$pluginID]['acts']) && isset($extras[$pluginID]['file'])) {
+			if (isset($extras[$pluginID]['acts']) and isset($extras[$pluginID]['file'])) {
 				foreach (explode(',',$extras[$pluginID]['acts']) as $act) {
 						$activated['actions'][$act][$pluginID] = $extras[$pluginID]['dir'].'/'.$extras[$pluginID]['file'];
 				}

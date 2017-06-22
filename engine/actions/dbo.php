@@ -35,7 +35,7 @@ function ParseQueries($sql)
                 $queries[$i] = '';
                 $complete_stmt = false;
 
-                for ($j = $i + 1; (!$complete_stmt && ($j < $query_count)); $j++) {
+                for ($j = $i + 1; (!$complete_stmt and ($j < $query_count)); $j++) {
                     $total_quotes = preg_match_all("/'/", $queries[$j], $matches);
                     $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $queries[$j], $matches);
                     $unescaped_quotes = $total_quotes - $escaped_quotes;
@@ -71,7 +71,7 @@ function systemDboModify()
     }
 
     // Check for security token
-    if ((!isset($_REQUEST['token'])) || ($_REQUEST['token'] != genUToken('admin.dbo'))) {
+    if ((!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.dbo'))) {
         msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
         ngSYSLOG(array('plugin' => '#admin', 'item' => 'dbo', 'ds_id' => $id), array('action' => 'modify'), null, array(0, 'SECURITY.TOKEN'));
         return false;
@@ -329,7 +329,7 @@ function systemDboModify()
     if (getIsSet($_REQUEST['massdelbackup'])) {
         $backup_dir = opendir(root . 'backups');
         while ($bf = readdir($backup_dir)) {
-            if (($bf == '.') || ($bf == '..'))
+            if (($bf == '.') or ($bf == '..'))
                 continue;
 
             @unlink(root . 'backups/' . $bf);
@@ -404,7 +404,7 @@ function systemDboForm()
 
 //
 // Main loop
-if (isset($_REQUEST['subaction']) && $_REQUEST['subaction'])
+if (isset($_REQUEST['subaction']) and $_REQUEST['subaction'])
     switch ($_REQUEST['subaction']) {
         case 'modify':
             systemDboModify();

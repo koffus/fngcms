@@ -29,13 +29,13 @@ class Finance_Acceptor_WM extends Finance_Acceptor {
 	function paymentAcceptForm($sum = 0) {
 		global $tpl, $username, $userROW;
 
-		if (isset($_REQUEST['result_ok']) && $_REQUEST['result_ok']) {
+		if (isset($_REQUEST['result_ok']) and $_REQUEST['result_ok']) {
 		$tpl->template('result_ok',extras_dir.'/fin_wm/tpl');
 			$tpl->vars('result_ok', array( 'vars' => array()));
 			return $tpl->show('result_ok');
  	 	}
 
-		if (isset($_REQUEST['result_fail']) && $_REQUEST['result_fail']) {
+		if (isset($_REQUEST['result_fail']) and $_REQUEST['result_fail']) {
 			$tpl->template('result_fail',extras_dir.'/fin_wm/tpl');
 			$tpl->vars('result_fail', array( 'vars' => array()));
 			return $tpl->show('result_fail');
@@ -84,7 +84,7 @@ class Finance_Acceptor_WM extends Finance_Acceptor {
 		$pRating = 0;
 
 		foreach (array('wmz', 'wmr', 'wme') as $c) {
-			if (pluginGetVariable('fin_wm', 'allow_'.$c) && ($WM['payee_purse'] == strtoupper(pluginGetVariable('fin_wm', $c.'_number')))) {
+			if (pluginGetVariable('fin_wm', 'allow_'.$c) and ($WM['payee_purse'] == strtoupper(pluginGetVariable('fin_wm', $c.'_number')))) {
 				$pNumber = $WM['payee_purse'];
 				$pRating = doubleval(pluginGetVariable('fin_wm', $c.'_rate'));
 				$pType = $c;

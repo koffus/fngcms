@@ -316,7 +316,7 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
                     $publish_error = 1;
                     break;
                 }
-                if (($field['action'] == 'create') || ($field['action'] == 'cmodify') || ($field['action'] == 'cleave')) {
+                if (($field['action'] == 'create') or ($field['action'] == 'cmodify') or ($field['action'] == 'cleave')) {
                     if (!$field['type']) {
                         $publish_result = 'Field type should be specified';
                         $publish_error = 1;
@@ -343,7 +343,7 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
                     $publish_error = 1;
                     break;
                 }
-                if (($field['action'] == 'create') || ($field['action'] == 'cmodify') || ($field['action'] == 'cleave')) {
+                if (($field['action'] == 'create') or ($field['action'] == 'cmodify') or ($field['action'] == 'cleave')) {
                     if (!$field['type']) {
                         $publish_result = 'Field type should be specified';
                         $publish_error = 1;

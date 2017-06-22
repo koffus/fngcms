@@ -19,7 +19,7 @@ class Hybrid_Logger {
 		if (Hybrid_Auth::$config["debug_mode"]) {
 			if (!isset(Hybrid_Auth::$config["debug_file"])) {
 				throw new Exception("'debug_mode' is set to 'true' but no log file path 'debug_file' is set.", 1);
-			} elseif (!file_exists(Hybrid_Auth::$config["debug_file"]) && !is_writable(Hybrid_Auth::$config["debug_file"])) {
+			} elseif (!file_exists(Hybrid_Auth::$config["debug_file"]) and !is_writable(Hybrid_Auth::$config["debug_file"])) {
 				if (!touch(Hybrid_Auth::$config["debug_file"])) {
 					throw new Exception("'debug_mode' is set to 'true', but the file " . Hybrid_Auth::$config['debug_file'] . " in 'debug_file' can not be created.", 1);
 				}
@@ -76,7 +76,7 @@ class Hybrid_Logger {
 	 * @return void
 	 */
 	public static function error($message, $object = null) {
-		if (isset(Hybrid_Auth::$config["debug_mode"]) && in_array(Hybrid_Auth::$config["debug_mode"], array(true, 'info', 'error'), true)) {
+		if (isset(Hybrid_Auth::$config["debug_mode"]) and in_array(Hybrid_Auth::$config["debug_mode"], array(true, 'info', 'error'), true)) {
  $dt = new DateTime('now', new DateTimeZone( 'UTC' ));
 			file_put_contents(Hybrid_Auth::$config["debug_file"], implode(' -- ', array(
 				'ERROR',

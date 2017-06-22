@@ -91,7 +91,7 @@ class WMXI {
 
 	# constructor
 	function WMXI($wm_cert = "", $encoding = "UTF-8") {
-		if (($wm_cert != "") && !file_exists($wm_cert)) {
+		if (($wm_cert != "") and !file_exists($wm_cert)) {
 			die("Specified certificate $wm_cert not found.");
 		}
 		$this->wm_cert = $wm_cert;

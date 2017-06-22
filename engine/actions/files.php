@@ -20,7 +20,7 @@ Lang::load('files', 'admin');
 // Init file managment class
 $fmanager = new FileManagment();
 
-if($userROW['status'] > "3" or ($userROW['status'] != "1" && ($action == "imagedelete" or $action == "move")) or ($userROW['status'] > "3" && $action == "rename")) {
+if($userROW['status'] > "3" or ($userROW['status'] != "1" and ($action == "imagedelete" or $action == "move")) or ($userROW['status'] > "3" and $action == "rename")) {
 	msg(array('type' => 'danger', 'message' => __('msge_mod')));
 }
 

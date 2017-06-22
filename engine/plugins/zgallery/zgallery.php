@@ -19,7 +19,7 @@ function plugin_block_zgallery($number, $mode, $cat, $overrideTemplateName, $cac
  $filter = array();
  }
  
- if(isset($cat) && !empty($cat))
+ if(isset($cat) and !empty($cat))
  {
  $cc_str = "";
  $cat_array = explode(',', $cat);
@@ -72,7 +72,7 @@ function plugin_block_zgallery($number, $mode, $cat, $overrideTemplateName, $cac
  // Generate cache file name [ we should take into account SWITCHER plugin ]
  $cacheFileName = md5('zgallery'.$config['theme'].$templateName.$config['default_lang'].join('', $cacheKeys)).'.txt';
 
- if (!$cacheDisabled && ($cacheExpire > 0)) {
+ if (!$cacheDisabled and ($cacheExpire > 0)) {
  $cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'zgallery');
  if ($cacheData != false) {
  // We got data from cache. Return it and stop
@@ -106,7 +106,7 @@ function plugin_block_zgallery($number, $mode, $cat, $overrideTemplateName, $cac
  $xt = $twig->loadTemplate($tpath[$templateName].$templateName.'.tpl');
  $output = $xt->render($tVars);
  
- if (!$cacheDisabled && ($cacheExpire > 0)) {
+ if (!$cacheDisabled and ($cacheExpire > 0)) {
  cacheStoreFile($cacheFileName, $output, 'zgallery');
  }
  

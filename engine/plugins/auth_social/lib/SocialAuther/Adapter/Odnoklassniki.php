@@ -73,7 +73,7 @@ class Odnoklassniki extends AbstractAdapter
  */
  public function getCountry()
  {
- if (isset($this->response['location']) && is_array($this->response['location']))
+ if (isset($this->response['location']) and is_array($this->response['location']))
  {
  return isset($this->response['location']['country']) ? $this->response['location']['country'] : null;
  }
@@ -87,7 +87,7 @@ class Odnoklassniki extends AbstractAdapter
  */
  public function getCity()
  {
- if (isset($this->response['location']) && is_array($this->response['location']))
+ if (isset($this->response['location']) and is_array($this->response['location']))
  {
  return isset($this->response['location']['city']) ? $this->response['location']['city'] : null;
  }
@@ -114,7 +114,7 @@ class Odnoklassniki extends AbstractAdapter
 
  $tokenInfo = $this->post('http://api.odnoklassniki.ru/oauth/token.do', $params);
 
- if (isset($tokenInfo['access_token']) && isset($this->publicKey)) {
+ if (isset($tokenInfo['access_token']) and isset($this->publicKey)) {
  $sign = md5("application_key={$this->publicKey}format=jsonmethod=users.getCurrentUser" . md5("{$tokenInfo['access_token']}{$this->clientSecret}"));
 
  $params = array(

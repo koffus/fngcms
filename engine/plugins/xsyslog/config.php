@@ -73,7 +73,7 @@ function show_xsyslog() {
 		array_push($conditions, "item = ".db_squote($fItem));
 	}
 	
-	if ($fDateStart && $fDateEnd) {
+	if ($fDateStart and $fDateEnd) {
 		array_push( $conditions, "dt BETWEEN STR_TO_DATE(".db_squote($fDateStart).",'%d.%m.%Y') AND STR_TO_DATE(".db_squote($fDateEnd).",'%d.%m.%Y')" );
 	}
 	elseif ($fDateStart) {
@@ -175,13 +175,13 @@ function makeVARList($params = array()){
 	if (!isset($params['checkarea']) or !$params['checkarea']) {
 		if (!$params['noHeader']) {
 			$out = '<select name="$name\" id="plugmenu"'.
-				((isset($params['style']) && ($params['style'] != ''))?' style="'.$params['style'].' form-control"':' class="form-control"').
-				((isset($params['class']) && ($params['class'] != ''))?' class="'.$params['class'].' form-control"':' class="form-control"').
+				((isset($params['style']) and ($params['style'] != ''))?' style="'.$params['style'].' form-control"':' class="form-control"').
+				((isset($params['class']) and ($params['class'] != ''))?' class="'.$params['class'].' form-control"':' class="form-control"').
 				'>';
 		}
-	 if (isset($params['doempty']) && $params['doempty'])		{ $out.= "<option ".(((isset($params['greyempty']) && $params['greyempty']))?'style="background: #c41e3a;" ':'')."value=\"0\">".__('no_cat')."</option>\n"; $optList []= array('k' => 0, 'v' => __('nocat')); }
-	 if (isset($params['doall']) && $params['doall'])			{ $out.= "<option value=\"".(isset($params['allmarker'])?$params['allmarker']:'')."\">".__('sh_all')."</option>\n"; $optList []= array('k' => (isset($params['allmarker'])?$params['allmarker']:''), 'v' => __('sh_all')); }
-	 if (isset($params['dowithout']) && $params['dowithout'])	{ $out.= "<option value=\"0\"".(((!is_null($params['selected'])) && ($params['selected'] == 0))?' selected="selected"':'').">".__('sh_empty')."</option>\n"; $optList []= array('k' => 0, 'v' => __('sh_empty')); }
+	 if (isset($params['doempty']) and $params['doempty'])		{ $out.= "<option ".(((isset($params['greyempty']) and $params['greyempty']))?'style="background: #c41e3a;" ':'')."value=\"0\">".__('no_cat')."</option>\n"; $optList []= array('k' => 0, 'v' => __('nocat')); }
+	 if (isset($params['doall']) and $params['doall'])			{ $out.= "<option value=\"".(isset($params['allmarker'])?$params['allmarker']:'')."\">".__('sh_all')."</option>\n"; $optList []= array('k' => (isset($params['allmarker'])?$params['allmarker']:''), 'v' => __('sh_all')); }
+	 if (isset($params['dowithout']) and $params['dowithout'])	{ $out.= "<option value=\"0\"".(((!is_null($params['selected'])) and ($params['selected'] == 0))?' selected="selected"':'').">".__('sh_empty')."</option>\n"; $optList []= array('k' => 0, 'v' => __('sh_empty')); }
 	}
 	
 		$catz = array();
@@ -192,22 +192,22 @@ function makeVARList($params = array()){
 
 	foreach($catz as $k => $v){
 		if (in_array($v[$obj], $params['skip'])) { continue; }
-		if ($params['skipDisabled'] && ($v['alt_url'] != '')) { continue; }
-		if (isset($params['checkarea']) && $params['checkarea']) {
+		if ($params['skipDisabled'] and ($v['alt_url'] != '')) { continue; }
+		if (isset($params['checkarea']) and $params['checkarea']) {
 			$out .= str_repeat('&#8212; ', $v['poslevel']).
 					'<label><input type="checkbox" name="'.
 					$name.
 					'_'.
 					$v[$obj].
 					'" value="1"'.
-					((isset($params['selected']) && is_array($params['selected']) && in_array($v[$obj], $params['selected']))?' checked="checked"':'').
-					(((($v['alt_url'] != '')||(isset($params['disabledarea']) && $params['disabledarea'])))?' disabled="disabled"':'').
+					((isset($params['selected']) and is_array($params['selected']) and in_array($v[$obj], $params['selected']))?' checked="checked"':'').
+					(((($v['alt_url'] != '')||(isset($params['disabledarea']) and $params['disabledarea'])))?' disabled="disabled"':'').
 					'/> '.
 					$v[$obj].
 					"</label><br/>\n";
 		} else {
-			$out.="<option value=\"".((isset($params['nameval']) && $params['nameval'])?$v[$obj]:$v[$obj])."\"".((isset($params['selected']) && ($v[$obj]==$params['selected']))?' selected="selected"':'').($v['alt_url'] != ''?' disabled="disabled" style="background: #c41e3a;"':'').">".str_repeat('&#8212; ', $v['poslevel']).$v[$obj]."</option>\n";
-			$optList []= array('k' => ((isset($params['nameval']) && $params['nameval'])?$v[$obj]:$v[$obj]), 'v' => str_repeat('&#8212; ', $v['poslevel']).$v[$obj]);
+			$out.="<option value=\"".((isset($params['nameval']) and $params['nameval'])?$v[$obj]:$v[$obj])."\"".((isset($params['selected']) and ($v[$obj]==$params['selected']))?' selected="selected"':'').($v['alt_url'] != ''?' disabled="disabled" style="background: #c41e3a;"':'').">".str_repeat('&#8212; ', $v['poslevel']).$v[$obj]."</option>\n";
+			$optList []= array('k' => ((isset($params['nameval']) and $params['nameval'])?$v[$obj]:$v[$obj]), 'v' => str_repeat('&#8212; ', $v['poslevel']).$v[$obj]);
 		}
 	}
 	if (!isset($params['checkarea']) or !$params['checkarea']) {
@@ -216,7 +216,7 @@ function makeVARList($params = array()){
 		}
 	}
 
-	if (isset($params['returnOptArray']) && $params['returnOptArray'])
+	if (isset($params['returnOptArray']) and $params['returnOptArray'])
 		return $optList;
 
 	return $out;

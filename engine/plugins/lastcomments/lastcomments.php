@@ -29,7 +29,7 @@ function lastcomments_page() {
 	global $SYSTEM_FLAGS, $template, $CurrentHandler;
 
 	// Action if ppage is enabled
-	if (pluginGetVariable('lastcomments','ppage') && ($CurrentHandler['handlerParams']['value']['pluginName'] == 'core')) {
+	if (pluginGetVariable('lastcomments','ppage') and ($CurrentHandler['handlerParams']['value']['pluginName'] == 'core')) {
 		$SYSTEM_FLAGS['info']['title']['group'] = "lastcomments";
 		$template['vars']['mainblock'] = lastcomments(1);
 	} else {
@@ -47,7 +47,7 @@ function lastcomments_rssfeed(){
 	global $SUPRESS_TEMPLATE_SHOW, $SUPRESS_MAINBLOCK_SHOW, $CurrentHandler;
 
 	// Action if rssfeed is enabled
-	if (pluginGetVariable('lastcomments','rssfeed') && !(checkLinkAvailable('lastcomments', 'rss') && $CurrentHandler['handlerParams']['value']['pluginName'] == 'core')) {		
+	if (pluginGetVariable('lastcomments','rssfeed') and !(checkLinkAvailable('lastcomments', 'rss') and $CurrentHandler['handlerParams']['value']['pluginName'] == 'core')) {		
 		// Hide Template
 		$SUPRESS_TEMPLATE_SHOW = true;
 		$SUPRESS_MAINBLOCK_SHOW = true;
@@ -96,7 +96,7 @@ function lastcomments($mode = 0) {
 	// Use default <noavatar> file
 	// - Check if noavatar is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noAvatarURL = (isset($tplVars['configuration']) && is_array($tplVars['configuration']) && isset($tplVars['configuration']['noAvatarImage']) && $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
+	$noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
 	//
 	// Prepare for battle
@@ -156,7 +156,7 @@ function lastcomments($mode = 0) {
 			$avatar_url = '';
 		}
 
-		if ($row['author_id'] && getPluginStatusActive('uprofile')) {
+		if ($row['author_id'] and getPluginStatusActive('uprofile')) {
 			$author_link = checkLinkAvailable('uprofile', 'show')?
 				generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
 				generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));

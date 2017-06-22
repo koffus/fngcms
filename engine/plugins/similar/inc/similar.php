@@ -62,7 +62,7 @@ function plugin_similar_reset($newsID){
 	// 1. Select list of TAGS id's
 	$list = $mysql->select("select tagID from ".prefix."_tags_index where newsID in (".join(", ", $newsList).")", 1);
 	// 2. Select list of affected news
-	if (is_array($list) && count($list)) {
+	if (is_array($list) and count($list)) {
 		$aList = array();
 		foreach ($list as $rec)
 			$aList []= $rec['tagID'];
@@ -70,7 +70,7 @@ function plugin_similar_reset($newsID){
 		$nlist = $mysql->select("select newsID from ".prefix."_tags_index where tagID in (".join(",", $aList).') group by newsID', 1);
 
 		// 3. Update affected news
-		if (is_array($nlist) && count($nlist)) {
+		if (is_array($nlist) and count($nlist)) {
 			$nList = array();
 			foreach ($nlist as $rec)
 				$nList []= $rec['newsID'];
@@ -87,7 +87,7 @@ function plugin_similar_resetLinked($newsID) {
 	// Select all linked news
 	$list = $mysql->select("select newsID from ".prefix."_similar_index where refNewsID in (".join(", ", $newsList).")", 1);
 	// 2. Select list of affected news
-	if (is_array($list) && count($list)) {
+	if (is_array($list) and count($list)) {
 		$nList = array();
 		foreach ($list as $rec)
 			$nList []= $rec['newsID'];

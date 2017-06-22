@@ -13,7 +13,7 @@ $header = file_get_contents(root.'plugins/xmenu/tpl/mhead.tpl');
 // Make an activity array - to mark menu's that are activated
 $activity = array();
 for ($i = 1; $i <= 9; $i++) {
-	if ((is_array($var=pluginGetVariable('xmenu','activate'))) && ($var[$i]))
+	if ((is_array($var=pluginGetVariable('xmenu','activate'))) and ($var[$i]))
 		$activity[] = "#go_".$i." { color: red; }";
 }
 

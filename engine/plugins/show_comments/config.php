@@ -101,7 +101,7 @@ function show_comments() {
 		if (mb_strlen($text, 'UTF-8') > $comm_length) {
 			$text = $parse->truncateHTML($text, $comm_length);
 		}
-		if ($prd['author_id'] && getPluginStatusActive('uprofile')) {
+		if ($prd['author_id'] and getPluginStatusActive('uprofile')) {
 			$author_link = checkLinkAvailable('uprofile', 'show') ?
 			generateLink('uprofile', 'show', array('name' => $prd['author'], 'id' => $prd['author_id'])) :
 			generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $prd['author_id']));

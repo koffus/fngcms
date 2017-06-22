@@ -63,7 +63,7 @@ class Hybrid_Auth {
 	 * @throws Exception
 	 */
 	public static function initialize($config) {
-		if (!is_array($config) && !file_exists($config)) {
+		if (!is_array($config) and !file_exists($config)) {
 			throw new Exception("Hybriauth config does not exist on the given path.", 1);
 		}
 
@@ -163,7 +163,7 @@ class Hybrid_Auth {
 
 			// try to provide the previous if any
 			// Exception::getPrevious (PHP 5 >= 5.3.0) http://php.net/manual/en/exception.getprevious.php
-			if (version_compare(PHP_VERSION, '5.3.0', '>=') && ($p instanceof Exception)) {
+			if (version_compare(PHP_VERSION, '5.3.0', '>=') and ($p instanceof Exception)) {
 				throw new Exception($m, $c, $p);
 			} else {
 				throw new Exception($m, $c);
@@ -267,7 +267,7 @@ class Hybrid_Auth {
 			Hybrid_Logger::info("Hybrid_Auth::setup( $providerId ), no stored params found for this provider. Initialize a new one for new session");
 		}
 
-		if (is_array($params) && !isset($params["hauth_return_to"])) {
+		if (is_array($params) and !isset($params["hauth_return_to"])) {
 			$params["hauth_return_to"] = Hybrid_Auth::getCurrentUrl();
 			Hybrid_Logger::debug("Hybrid_Auth::setup( $providerId ). HybridAuth Callback URL set to: ", $params["hauth_return_to"]);
 		}
@@ -355,7 +355,7 @@ class Hybrid_Auth {
 		Hybrid_Logger::info("Enter Hybrid_Auth::redirect( $url, $mode )");
 
 		// Ensure session is saved before sending response, see https://github.com/symfony/symfony/pull/12341
-		if ((PHP_VERSION_ID >= 50400 && PHP_SESSION_ACTIVE === session_status()) or (PHP_VERSION_ID < 50400 && isset($_SESSION) && session_id())) {
+		if ((PHP_VERSION_ID >= 50400 and PHP_SESSION_ACTIVE === session_status()) or (PHP_VERSION_ID < 50400 and isset($_SESSION) and session_id())) {
 			session_write_close();
 		}
 
@@ -390,8 +390,8 @@ class Hybrid_Auth {
 
 		$protocol = 'http://';
 
-		if ((isset($_SERVER['HTTPS']) && ( $_SERVER['HTTPS'] == 'on' or $_SERVER['HTTPS'] == 1 ))
-				|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'))
+		if ((isset($_SERVER['HTTPS']) and ( $_SERVER['HTTPS'] == 'on' or $_SERVER['HTTPS'] == 1 ))
+				|| (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) and $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'))
 		{
 			$protocol = 'https://';
 		}

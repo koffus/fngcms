@@ -63,7 +63,7 @@ class ImageManagment
         $origY = $sz[1];
         $origType = $sz[2];
 
-        if (!(($sizeX > 0) && ($sizeY > 0) && ($origX > 0) && ($origY > 0))) {
+        if (!(($sizeX > 0) and ($sizeY > 0) and ($origX > 0) and ($origY > 0))) {
             if ($param['rpc']) {
                 return array('status' => 0, 'errorCode' => 353, 'errorText' => 'Unable to determine image size');
             }
@@ -133,7 +133,7 @@ class ImageManagment
 
         // Prepare for transparency // NON-ALPHA transparency
         $oTColor = imagecolortransparent($img);
-        if ($oTColor >= 0 && $oTColor < imagecolorstotal($img)) {
+        if ($oTColor >= 0 and $oTColor < imagecolorstotal($img)) {
             $TColor = imagecolorsforindex($img, $oTColor);
             $nTColor = imagecolorallocate($newimg, $TColor['red'], $TColor['green'], $TColor['blue']);
             imagefill($newimg, 0, 0, $nTColor);
@@ -157,7 +157,7 @@ class ImageManagment
                 $res = @imagegif($newimg, $dir . '/thumb/' . $file);
                 break;
             case 2:
-                $res = @imagejpeg($newimg, $dir . '/thumb/' . $file, ($quality >= 10 && $quality <= 100) ? $quality : 80);
+                $res = @imagejpeg($newimg, $dir . '/thumb/' . $file, ($quality >= 10 and $quality <= 100) ? $quality : 80);
                 break;
             case 3:
                 $res = @imagepng($newimg, $dir . '/thumb/' . $file);
@@ -264,7 +264,7 @@ class ImageManagment
         }
 
         // Check if resize of original file is requested
-        if (isset($param['resize']) && is_array($param['resize']) && ($param['resize']['x'] > 0) && ($param['resize']['y'] > 0)) {
+        if (isset($param['resize']) and is_array($param['resize']) and ($param['resize']['x'] > 0) and ($param['resize']['y'] > 0)) {
             // Calculate ratio and new X/Y sizes
             $ratio = min($param['resize']['x'] / $origX, $param['resize']['y'] / $origY);
             $newX = round($origX * $ratio);
@@ -358,7 +358,7 @@ class ImageManagment
             // BOTH FILES ARE LOADED
             $destX = $origX - $stampX - 10;
             $destY = $origY - $stampY - 10;
-            if (($destX < 0) || ($destY < 0)) {
+            if (($destX < 0) or ($destY < 0)) {
                 if (!$param['stamp_noerror']) {
                     if ($param['rpc']) {
                         return array('status' => 0, 'errorCode' => 406, 'errorText' => __('upload.error.stampsize'));
@@ -406,7 +406,7 @@ class ImageManagment
         }
 
         // WRITE A RESULT FILE
-        if (($param['outquality'] < 10) || ($param['outquality'] > 100)) {
+        if (($param['outquality'] < 10) or ($param['outquality'] > 100)) {
             $param['outquality'] = 80;
         }
 

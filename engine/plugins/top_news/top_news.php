@@ -47,7 +47,7 @@ function top_news(){
 		$ifcategory = pluginGetVariable('top_news', "{$currentVar}_ifcategory");
 
 		# if print only "in categories and news" then return
-		if ($ifcategory && $CurrentHandler['params']['category'] == "" ){
+		if ($ifcategory and $CurrentHandler['params']['category'] == "" ){
 			$template['vars'][$blockName] = '';
 			continue;
 		}
@@ -100,13 +100,13 @@ function top_news(){
 		if (pluginGetVariable('top_news', "{$currentVar}_mainpage")) $filter[] = 'mainpage = 1';
 			
 		# categories filter
-		if (($CurrentHandler['params']['category'] && $CurrentHandler['params']['altname'] == "" && $ifcategory))
+		if (($CurrentHandler['params']['category'] and $CurrentHandler['params']['altname'] == "" and $ifcategory))
 		$filter[] = "(catid regexp '[[:<:]](".trim(array_search($CurrentHandler['params']['category'], $catmap)).")[[:>:]]')";
 		else{
 			$catfilter = array();
 			$categories = array();
 
-				if($SYSTEM_FLAGS['news']['db.categories'] && $ifcategory) $categories = $SYSTEM_FLAGS['news']['db.categories']; 
+				if($SYSTEM_FLAGS['news']['db.categories'] and $ifcategory) $categories = $SYSTEM_FLAGS['news']['db.categories']; 
 				elseif (pluginGetVariable('top_news', "{$currentVar}_categories")) $categories = explode(',', pluginGetVariable('top_news', "{$currentVar}_categories")); 
 
 				if(count($categories)){
@@ -166,7 +166,7 @@ function top_news(){
 			}
 			
 			# show edit news button
-			if (is_array($userROW) && ($row['author_id'] == $userROW['id'] or $userROW['status'] == "1" or $userROW['status'] == "2")){ 
+			if (is_array($userROW) and ($row['author_id'] == $userROW['id'] or $userROW['status'] == "1" or $userROW['status'] == "2")){ 
 					$tvars['vars']['[edit-news]'] = "<a href='".admin_url."/admin.php?mod=news&amp;action=edit&amp;id={$row['id']}' target='_blank'>"; 
 					$tvars['vars']['[/edit-news]'] = '</a>';
 			} 

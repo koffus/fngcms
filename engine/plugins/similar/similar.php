@@ -89,7 +89,7 @@ class SimilarNewsfilter extends NewsFilter {
 				loadActionHandlers('news:show:one');
 			}
 
-			if (($similars == 2) && count($similarRows = $mysql->select($query))) {
+			if (($similars == 2) and count($similarRows = $mysql->select($query))) {
 
 				// Array for dimensions of data [ similar / same category ]
 				$result = array('', '');
@@ -97,7 +97,7 @@ class SimilarNewsfilter extends NewsFilter {
 					$txvars = [];
 
 					// Execute filters [ if requested ]
-					if (pluginGetVariable('similar', 'pcall') && is_array($PFILTERS['news']))
+					if (pluginGetVariable('similar', 'pcall') and is_array($PFILTERS['news']))
 						foreach ($PFILTERS['news'] as $k => $v) { if ($k != 'similar') $v->showNewsPre($similar['id'], $similar, $callingParams); }
 
 					// Set formatted date
@@ -108,7 +108,7 @@ class SimilarNewsfilter extends NewsFilter {
 					$txvars['vars']['url'] = News::generateLink($similar);
 
 					// Execute filters [ if requested ]
-					if (pluginGetVariable('similar', 'pcall') && is_array($PFILTERS['news']))
+					if (pluginGetVariable('similar', 'pcall') and is_array($PFILTERS['news']))
 						foreach ($PFILTERS['news'] as $k => $v) { if ($k != 'similar') $v->showNews($similar['id'], $similar, $txvars, $callingParams); }
 
 					$tpl -> template('similar_entry', $tpath['similar_entry']);

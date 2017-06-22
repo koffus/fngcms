@@ -71,7 +71,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 		$optionals = array("scope", "redirect_uri", "display", "auth_type");
 
 		foreach ($optionals as $parameter) {
-			if (isset($this->config[$parameter]) && !empty($this->config[$parameter])) {
+			if (isset($this->config[$parameter]) and !empty($this->config[$parameter])) {
 				$parameters[$parameter] = $this->config[$parameter];
 
 				//If the auth_type parameter is used, we need to generate a nonce and include it as a parameter
@@ -84,7 +84,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 			}
 		}
 
-		if (isset($this->config['force']) && $this->config['force'] === true) {
+		if (isset($this->config['force']) and $this->config['force'] === true) {
 			$parameters['auth_type'] = 'reauthenticate';
 			$parameters['auth_nonce'] = md5(uniqid(mt_rand(), true));
 
@@ -103,7 +103,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 	 */
 	function loginFinish() {
 		// in case we get error_reason=user_denied&error=access_denied
-		if (isset($_REQUEST['error']) && $_REQUEST['error'] == "access_denied") {
+		if (isset($_REQUEST['error']) and $_REQUEST['error'] == "access_denied") {
 			throw new Exception("Authentication failed! The user denied your request.", 5);
 		}
 
@@ -192,7 +192,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 		$this->user->profile->description = (array_key_exists('about', $data)) ? $data['about'] : "";
 		$this->user->profile->email = (array_key_exists('email', $data)) ? $data['email'] : "";
 		$this->user->profile->emailVerified = (array_key_exists('email', $data)) ? $data['email'] : "";
-		$this->user->profile->region = (array_key_exists("location", $data) && array_key_exists("name", $data['location'])) ? $data['location']["name"] : "";
+		$this->user->profile->region = (array_key_exists("location", $data) and array_key_exists("name", $data['location'])) ? $data['location']["name"] : "";
 
 		if (!empty($this->user->profile->region)) {
 			$regionArr = explode(',', $this->user->profile->region);
@@ -251,7 +251,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 			}
 
 			// Prepare the next call if paging links have been returned
-			if (array_key_exists('paging', $response) && array_key_exists('next', $response['paging'])) {
+			if (array_key_exists('paging', $response) and array_key_exists('next', $response['paging'])) {
 				$pagedList = true;
 				$next_page = explode('friends', $response['paging']['next']);
 				$apiCall = $next_page[1];
@@ -299,7 +299,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 		} else {
 			$access_token = null;
 			foreach ($this->getUserPages(true) as $p) {
-				if (isset($p['id']) && intval($p['id']) == intval($pageid)) {
+				if (isset($p['id']) and intval($p['id']) == intval($pageid)) {
 					$access_token = $p['access_token'];
 					break;
 				}
@@ -338,7 +338,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 	 * {@inheridoc}
 	 */
 	function getUserPages($writableonly = false) {
-		if (( isset($this->config['scope']) && strpos($this->config['scope'], 'manage_pages') === false ) or (!isset($this->config['scope']) && strpos($this->scope, 'manage_pages') === false ))
+		if (( isset($this->config['scope']) and strpos($this->config['scope'], 'manage_pages') === false ) or (!isset($this->config['scope']) and strpos($this->scope, 'manage_pages') === false ))
 			throw new Exception("User status requires manage_page permission!");
 
 		try {
@@ -357,7 +357,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 
 		$wrpages = array();
 		foreach ($pages['data'] as $p) {
-			if (isset($p['perms']) && in_array('CREATE_CONTENT', $p['perms'])) {
+			if (isset($p['perms']) and in_array('CREATE_CONTENT', $p['perms'])) {
 				$wrpages[] = $p;
 			}
 		}
@@ -389,7 +389,7 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 		$activities = array();
 
 		foreach ($response['data'] as $item) {
-			if ($stream == "me" && $item["from"]["id"] != $this->api->getUser()) {
+			if ($stream == "me" and $item["from"]["id"] != $this->api->getUser()) {
 				continue;
 			}
 
@@ -406,11 +406,11 @@ class Hybrid_Providers_Facebook extends Hybrid_Provider_Model {
 				$ua->text = (array_key_exists("link", $item)) ? $item["link"] : "";
 			}
 
-			if (empty($ua->text) && isset($item["story"])) {
+			if (empty($ua->text) and isset($item["story"])) {
 				$ua->text = (array_key_exists("link", $item)) ? $item["link"] : "";
 			}
 
-			if (empty($ua->text) && isset($item["message"])) {
+			if (empty($ua->text) and isset($item["message"])) {
 				$ua->text = (array_key_exists("message", $item)) ? $item["message"] : "";
 			}
 

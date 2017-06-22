@@ -341,8 +341,8 @@ abstract class Twig_Template implements Twig_TemplateInterface
 
  // array
  if (Twig_TemplateInterface::METHOD_CALL !== $type) {
- if ((is_array($object) && array_key_exists($item, $object))
- or ($object instanceof ArrayAccess && isset($object[$item]))
+ if ((is_array($object) and array_key_exists($item, $object))
+ or ($object instanceof ArrayAccess and isset($object[$item]))
  ) {
  if ($isDefinedTest) {
  return true;

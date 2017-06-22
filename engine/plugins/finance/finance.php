@@ -266,7 +266,7 @@ function plugin_finance_pay_accept($need_form=0) {
  global $FINANCE_MONEY_ACCEPTORS, $template;
 	$acceptor_id = $_REQUEST['acceptor'];
 	foreach ($FINANCE_MONEY_ACCEPTORS as $acceptor) {
-		if ($acceptor->active && ($acceptor->id == $acceptor_id)) {
+		if ($acceptor->active and ($acceptor->id == $acceptor_id)) {
 			// Определяем что надо сделать
 			if ($need_form) {
 				// Выводим форму от аксептора

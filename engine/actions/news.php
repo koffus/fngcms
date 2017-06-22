@@ -130,13 +130,13 @@ function editNewsForm() {
 			'extended_more' => ( $config['extended_more'] or (trim($tvars['vars']['content.delimiter'])) ) ? true : false,
 			'editable' => (($perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) or ($perm[$permGroupMode.'.unpublish']))?true:false,
 			'deleteable' => ($perm[$permGroupMode.'.delete'.(($row['approve'] == 1)?'.published':'')])?true:false,
-			'html.lost' => (($row['flags'] & 2) && (!$perm[$permGroupMode.'.html']))?1:0,
-			'mainpage.lost' => (($row['mainpage']) && (!$perm[$permGroupMode.'.mainpage']))?true:false,
-			'pinned.lost' => (($row['pinned']) && (!$perm[$permGroupMode.'.pinned']))?true:false,
-			'catpinned.lost' => (($row['catpinned']) && (!$perm[$permGroupMode.'.catpinned']))?true:false,
-			'publish.lost' => (($row['approve'] == 1) && (!$perm[$permGroupMode.'.modify.published']))?true:false,
-			'favorite.lost' => (($row['favorite']) && (!$perm[$permGroupMode.'.favorite']))?true:false,
-			'multicat.lost' => ((count($cats)>1) && (!$perm[$permGroupMode.'.multicat']))?true:false,
+			'html.lost' => (($row['flags'] & 2) and (!$perm[$permGroupMode.'.html']))?1:0,
+			'mainpage.lost' => (($row['mainpage']) and (!$perm[$permGroupMode.'.mainpage']))?true:false,
+			'pinned.lost' => (($row['pinned']) and (!$perm[$permGroupMode.'.pinned']))?true:false,
+			'catpinned.lost' => (($row['catpinned']) and (!$perm[$permGroupMode.'.catpinned']))?true:false,
+			'publish.lost' => (($row['approve'] == 1) and (!$perm[$permGroupMode.'.modify.published']))?true:false,
+			'favorite.lost' => (($row['favorite']) and (!$perm[$permGroupMode.'.favorite']))?true:false,
+			'multicat.lost' => ((count($cats)>1) and (!$perm[$permGroupMode.'.multicat']))?true:false,
 			'html.disabled' => (!$perm[$permGroupMode.'.html'])?true:false,
 			'customdate.disabled' => (!$perm[$permGroupMode.'.customdate'])?true:false,
 			'mainpage.disabled' => (!$perm[$permGroupMode.'.mainpage'])?true:false,
@@ -155,7 +155,7 @@ function editNewsForm() {
 		$tVars['link'] = News::generateLink($row, false, 0, true);
 	}
 
-	$tVars['flags']['can_publish']		= ((($row['approve'] == 1) && ($perm[$permGroupMode.'.modify.published'])) or (($row['approve'] < 1) && $perm[$permGroupMode.'.publish']))?1:0;
+	$tVars['flags']['can_publish']		= ((($row['approve'] == 1) and ($perm[$permGroupMode.'.modify.published'])) or (($row['approve'] < 1) and $perm[$permGroupMode.'.publish']))?1:0;
 	$tVars['flags']['can_unpublish']	= (($row['approve'] < 1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
 	$tVars['flags']['can_draft']		= (($row['approve'] == -1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
 
@@ -201,7 +201,7 @@ function editNewsForm() {
 
 			// Check if file exists
 			$fname = ($arow['storage']?$config['attach_dir']:$config['files_dir']).$arow['folder'].'/'.$arow['name'];
-			if (file_exists($fname) && ($fsize = @filesize($fname))) {
+			if (file_exists($fname) and ($fsize = @filesize($fname))) {
 				$attachEntry['filesize'] = Formatsize($fsize);
 				$attachEntry['url'] = (($arow['storage'])?($config['attach_url']):($config['files_url'])).'/'.$arow['folder'].'/'.$arow['name'];
 			} else {
@@ -233,7 +233,7 @@ function massCommentDelete(){
 	$delcomid = $_REQUEST['delcomid'];
 
 	// Check for security token
-	if ($permCheck && (!isset($_REQUEST['token']))||($_REQUEST['token'] != genUToken('admin.news.edit'))) {
+	if ($permCheck and (!isset($_REQUEST['token']))||($_REQUEST['token'] != genUToken('admin.news.edit'))) {
 		msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
 		return;
 	}
@@ -267,7 +267,7 @@ function massCommentDelete(){
 		}
 
 		// User can't delete comments of another user with the same (or higher) access level
-		if (($userROW['status'] > 1) && ($userROW['status'] >= $crow['castatus']) && ($userROW['id'] != $crow['author_id']) && ($crow['castatus'] > 0)) {
+		if (($userROW['status'] > 1) and ($userROW['status'] >= $crow['castatus']) and ($userROW['id'] != $crow['author_id']) and ($crow['castatus'] > 0)) {
 			$countBlocked++;
 			continue;
 		}
@@ -348,7 +348,7 @@ function listNewsForm() {
 	));
 
 	// Check if we have view access
-	if (!$perm['view'] or (!$perm['personal.list'] && !$perm['other.list'])) {
+	if (!$perm['view'] or (!$perm['personal.list'] and !$perm['other.list'])) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
 		return;
 	}
@@ -507,7 +507,7 @@ function listNewsForm() {
 			)
 		);
 
-		if (getIsSet($PFILTERS['news']) && is_array($PFILTERS['news']))
+		if (getIsSet($PFILTERS['news']) and is_array($PFILTERS['news']))
 			foreach ($PFILTERS['news'] as $k => $v) {
 				$v->listNewsForm($id, $row, $tVars);
 			}
@@ -576,7 +576,7 @@ function listNewsForm() {
 				'alt' => $row['alt'],
 				'alt_url' => $row['alt_url'],
 				'flags' => array(
-					'selected' => (isset($_REQUEST['category']) && ($row['id'] == $_REQUEST['category']))?true:false,
+					'selected' => (isset($_REQUEST['category']) and ($row['id'] == $_REQUEST['category']))?true:false,
 				),
 			);
 
@@ -595,7 +595,7 @@ function listNewsForm() {
 	}
 
 	$tVars['catmenu'] = $tcRecs;
-	$tVars['cat_active'] = ((isset($_REQUEST['category']) && (isset($catmap[intval($_REQUEST['category'])]))))?intval($_REQUEST['category']):0;
+	$tVars['cat_active'] = ((isset($_REQUEST['category']) and (isset($catmap[intval($_REQUEST['category'])]))))?intval($_REQUEST['category']):0;
 
 	//$xt = $twig->loadTemplate('skins/default/tpl/news/table_catalog.tpl');
 	$xt = $twig->loadTemplate('skins/default/tpl/news/table.tpl');
@@ -661,12 +661,12 @@ function addNewsForm($retry = ''){
 				),
 			),
 		'flags'				=> array(
-			'mainpage' => $perm['add.mainpage'] && $perm['personal.mainpage'],
-			'favorite' => $perm['add.favorite'] && $perm['personal.favorite'],
-			'pinned' => $perm['add.pinned'] && $perm['personal.pinned'],
-			'catpinned' => $perm['add.catpinned'] && $perm['personal.catpinned'],
-			'html'				=> $perm['add.html'] && $perm['personal.html'],
-			'raw'				=> $perm['add.raw'] && $perm['personal.html'],
+			'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],
+			'favorite' => $perm['add.favorite'] and $perm['personal.favorite'],
+			'pinned' => $perm['add.pinned'] and $perm['personal.pinned'],
+			'catpinned' => $perm['add.catpinned'] and $perm['personal.catpinned'],
+			'html'				=> $perm['add.html'] and $perm['personal.html'],
+			'raw'				=> $perm['add.raw'] and $perm['personal.html'],
 			'mainpage.disabled' => !$perm['personal.mainpage'],
 			'favorite.disabled' => !$perm['personal.favorite'],
 			'pinned.disabled' => !$perm['personal.pinned'],

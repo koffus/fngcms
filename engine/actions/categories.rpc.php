@@ -127,7 +127,7 @@ function admCategoryReorder($params = array()) {
 	}
 
 	// Check if we need to move category (and this category exists
-	if (is_array($params) && isset($params['mode']) && isset($params['id']) && isset($ncat[$params['id']])) {
+	if (is_array($params) and isset($params['mode']) and isset($params['id']) and isset($ncat[$params['id']])) {
 		// 1. Find parent category
 		$xpc = $tree[$params['id']]['parent'];
 
@@ -136,14 +136,14 @@ function admCategoryReorder($params = array()) {
 		$xpl = count($tree[$xpc]['children']);
 
 		// 3. Move if requested and possible
-		if (($xps !== FALSE) && ($params['mode'] == 'up') && ($xps > 0)) {
+		if (($xps !== FALSE) and ($params['mode'] == 'up') and ($xps > 0)) {
 			$xt = $tree[$xpc]['children'][$xps-1];
 			$tree[$xpc]['children'][$xps-1] = $tree[$xpc]['children'][$xps];
 			$tree[$xpc]['children'][$xps] = $xt;
 			$moveResult = 1;
 		}
 
-		if (($xps !== FALSE) && ($params['mode'] == 'down') && ($xps < ($xpl-1))) {
+		if (($xps !== FALSE) and ($params['mode'] == 'down') and ($xps < ($xpl-1))) {
 			$xt = $tree[$xpc]['children'][$xps+1];
 			$tree[$xpc]['children'][$xps+1] = $tree[$xpc]['children'][$xps];
 			$tree[$xpc]['children'][$xps] = $xt;

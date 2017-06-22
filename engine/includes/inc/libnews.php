@@ -77,8 +77,10 @@ function news_showone($newsID, $alt_name, $callingParams = array())
 
         // Check if correct categories were specified [ only for SINGLE category display
         if ((isset($callingParams['validateCategoryID']) or isset($callingParams['validateCategoryAlt']) or 1) and $config['news_multicat_url']) {
-            if (getIsSet($row['catid']))
-                $nci = intval(array_shift(explode(',', $row['catid'])));
+            if (getIsSet($row['catid'])) {
+                $nci = explode(',', $row['catid']);
+                $nci = intval(array_shift($nci));
+            }
 
             $nca = (getIsSet($nci)) ? $catmap[$nci] : 'none';
 
@@ -105,8 +107,10 @@ function news_showone($newsID, $alt_name, $callingParams = array())
 
     if ($callingParams['setCurrentCategory']) {
         // Fetch category ID from news
-        if (getIsSet($row['catid']))
-            $cid = intval(array_shift(explode(',', $row['catid'])));
+        if (getIsSet($row['catid'])) {
+            $nci = explode(',', $row['catid']);
+            $nci = intval(array_shift($nci));
+        }
 
         if (getIsSet($cid) and isset($catmap[$cid])) {
             // Save current category identifier
@@ -142,7 +146,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     $tX1 = $timer->stop(4);
 
     // Execute filters
-    if (is_array($PFILTERS['news']))
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news']))
         foreach ($PFILTERS['news'] as $k => $v) {
             $v->showNewsPre($row['id'], $row, $callingParams);
             $timer->registerEvent('[FILTER] News->showNewsPre: call plugin [' . $k . ']');
@@ -202,8 +206,10 @@ function news_showone($newsID, $alt_name, $callingParams = array())
 
     // Show icon of `MAIN` category for current news
     $masterCatID = 0;
-    if (getIsSet($row['catid']))
-        $masterCatID = intval(array_shift(explode(',', $row['catid'])));
+    if (getIsSet($row['catid'])) {
+        $masterCatID = explode(',', $row['catid']);
+        $masterCatID = intval(array_shift($masterCatID));
+    }
 
     if ($masterCatID and isset($catmap[$masterCatID]) and trim($catz[$catmap[$masterCatID]]['icon'])) {
         $tvars['vars']['icon'] = trim($catz[$catmap[$masterCatID]]['icon']);
@@ -259,11 +265,12 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     $tX1 = $timer->stop(4);
 
     // Execute filters
-    if (is_array($PFILTERS['news']))
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
         foreach ($PFILTERS['news'] as $k => $v) {
             $timer->registerEvent('[FILTER] News->showNews: call plugin [' . $k . ']');
             $v->showNews($row['id'], $row, $tvars, $callingParams);
         }
+    }
 
     $tX2 = $timer->stop(4);
     $timer->registerEvent('Show single news: full exec time [ ' . ($tX2 - $tX0) . ' ] sec');
@@ -325,8 +332,10 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     } else if ($callingParams['customCategoryTemplate']) {
         // -> check for custom category templates
         // Find first category
-        if (getIsSet($row['catid']))
-            $fcat = array_shift(explode(',', $row['catid']));
+        if (getIsSet($row['catid'])) {
+            $fcat = explode(',', $row['catid']);
+            $fcat = intval(array_shift($fcat));
+        }
         // Check if there is a custom mapping
         if (getIsSet($fcat) and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
             // Check if directory exists
@@ -534,7 +543,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     // Set default template path
     $templatePath = tpl_dir . $config['theme'];
 
-    $cstart = $start_from = intval($callingParams['page']);
+    $cstart = $start_from = isset($callingParams['page']) ? intval($callingParams['page']) : 0;
 
     if ($cstart < 1)
         $cstart = 1;
@@ -661,7 +670,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     loadActionHandlers('news_short');
 
     // Execute filters
-    if (is_array($PFILTERS['news'])) {
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
         // Special handler for linked images/files
         $callingParams['linkedImages'] = $linkedImages;
         $callingParams['linkedFiles'] = $linkedFiles;
@@ -679,10 +688,11 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
         $callingParams['nCount'] = $nCount;
 
         // Execute filters
-        if (is_array($PFILTERS['news']))
+        if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
             foreach ($PFILTERS['news'] as $k => $v) {
                 $v->showNewsPre($row['id'], $row, $callingParams);
             }
+        }
 
         $tvars = News::fillVariables($row, 0, isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 0, 0, isset($callingParams['regenShortNews']) ? $callingParams['regenShortNews'] : array());
 
@@ -763,7 +773,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
         $tvars['vars']['news']['embed']['imgCount'] = count($tvars['vars']['news']['embed']['images']);
 
         // Print icon if only one parent category
-        if (isset($row['catid']) and $row['catid'] and !stristr(",", $row['catid']) and isset($catmap[$row['catid']]) and ($catalt = $catmap[$row['catid']]) and isset($catz[$catalt]['icon']) and $catz[$catalt]['icon']) {
+        if (isset($row['catid']) and !stristr(",", $row['catid']) and isset($catmap[$row['catid']]) and ($catalt = $catmap[$row['catid']]) and isset($catz[$catalt]['icon']) and $catz[$catalt]['icon']) {
             // [TWIG] news.flags.hasCategoryIcon
             $tvars['news']['flags']['hasCategoryIcon'] = true;
             $tvars['vars']['icon'] = $catz[$catalt]['icon'];
@@ -797,7 +807,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
         //executeActionHandler('news_short');
 
         // Execute filters
-        if (is_array($PFILTERS['news'])) {
+        if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
             foreach ($PFILTERS['news'] as $k => $v)
                 $v->showNews($row['id'], $row, $tvars, $callingParams);
         }
@@ -816,8 +826,10 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
             $fcat = getIsSet($callingParams['currentCategoryId']);
             if ($callingParams['customCategoryTemplate'] == 1) {
                 // Find first category
-                if (getIsSet($row['catid']))
-                    $fcat = array_shift(explode(',', $row['catid']));
+                if (getIsSet($row['catid'])) {
+                    $fcat = explode(',', $row['catid']);
+                    $fcat = intval(array_shift($fcat));
+                }
             }
 
             // Check if there is a custom mapping

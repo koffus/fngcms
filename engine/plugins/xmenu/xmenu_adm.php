@@ -15,7 +15,7 @@ class xmenu_adm_categories extends FilterAdminCategories {
 	}
 	function addCategory(&$tvars, &$SQL) {
 		$line = '';
-		if (isset($_REQUEST['xmenu']) && is_array($_REQUEST['xmenu']))
+		if (isset($_REQUEST['xmenu']) and is_array($_REQUEST['xmenu']))
 			for ($i = 0; $i <= 9; $i++)
 				$line .= ($_REQUEST['xmenu'][$i])?'#':'_';
 		$SQL['xmenu'] = $line;
@@ -33,7 +33,7 @@ class xmenu_adm_categories extends FilterAdminCategories {
 	}
 	function editCategory($categoryID, $SQL, &$SQLnew, &$tvars) {
 		$line = '';
-		if (isset($_REQUEST['xmenu']) && is_array($_REQUEST['xmenu']))
+		if (isset($_REQUEST['xmenu']) and is_array($_REQUEST['xmenu']))
 			for ($i = 1; $i <= 9; $i++)
 				$line .= ($_REQUEST['xmenu'][$i])?'#':'_';
 		$SQLnew['xmenu'] = $line;

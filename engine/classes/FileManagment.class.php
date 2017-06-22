@@ -89,7 +89,7 @@ class FileManagment
     function file_fetch_url($url)
     {
 
-        if ((!($tmpn = tempnam(ini_get('upload_tmp_dir'), 'upload_'))) || (!($f = fopen($tmpn, 'w')))) {
+        if ((!($tmpn = tempnam(ini_get('upload_tmp_dir'), 'upload_'))) or (!($f = fopen($tmpn, 'w')))) {
             msg(array('type' => 'danger', 'message' => __('upload.error.tempcreate')));
             return;
         }
@@ -133,14 +133,14 @@ class FileManagment
         Lang::load('files');
 
         // Normalize category (to make it possible to have empty category)
-        $wCategory = (trim($param['category'])) ? ($param['category'] . '/') : '';
+        $wCategory = (isset($param['category'])) ? (trim($param['category']) . '/') : '';
 
         //print "CALL file_upload -> upload(".$param['http_var']."//".$param['http_varnum'].")<br>\n<pre>"; var_dump($param); print "</pre><br>\n";
 
         $http_var = getIsSet($param['http_var']);
         $http_varnum = intval(getIsSet($param['http_varnum']));
 
-        if ($param['manual']) {
+        if (isset($param['manual'])) {
             if ($param['url']) {
                 if (is_array($fetch_result = $this->file_fetch_url($param['url']))) {
                     $fname = $param['manualfile'] ? $param['manualfile'] : $fetch_result[1];    // override file name if needed
@@ -155,7 +155,7 @@ class FileManagment
                 $fsize = filesize($ftmp);
             }
         } else {
-            if ((is_int($http_varnum)) && is_array($_FILES[$http_var]['name'])) {
+            if ((is_int($http_varnum)) and is_array($_FILES[$http_var]['name'])) {
                 $fname = $_FILES[$http_var]['name'][$http_varnum];
                 $fsize = $_FILES[$http_var]['size'][$http_varnum];
                 $ftype = $_FILES[$http_var]['type'][$http_varnum];
@@ -185,7 +185,7 @@ class FileManagment
 
         // * File size
         if ($fsize > $this->max_size) {
-            if ($param['rpc']) {
+            if (isset($param['rpc'])) {
                 return array('status' => 0, 'errorCode' => 302, 'errorText' => str_replace('{fname}', $fname, __('upload.error.size')), 'errorDescription' => str_replace('{size}', Formatsize($this->max_size), __('upload.error.size#info')));
             } else {
                 msg(array('type' => 'danger', 'title' => str_replace('{fname}', $fname, __('upload.error.size')), 'message' => str_replace('{size}', Formatsize($this->max_size), __('upload.error.size#info'))));
@@ -250,7 +250,7 @@ class FileManagment
         $ext = count($fil) ? array_pop($fil) : '';
 
         // * File type [ don't allow to upload PHP files in any case ]
-        if ((array_search(strtolower($ext), $this->required_type) === FALSE) || (array_search(strtolower($ext), array('php', 'pht', 'phtml', 'php3', 'php4', 'php5')) !== FALSE)) {
+        if ((array_search(strtolower($ext), $this->required_type) === FALSE) or (array_search(strtolower($ext), array('php', 'pht', 'phtml', 'php3', 'php4', 'php5')) !== FALSE)) {
             if ($param['rpc']) {
                 return array('status' => 0, 'errorCode' => 304, 'errorText' => str_replace('{fname}', $fname, __('upload.error.ext')), 'errorDescription' => str_replace('{ext}', join(", ", $this->required_type), __('upload.error.ext#info')));
             } else {
@@ -502,7 +502,7 @@ class FileManagment
         // Create record in SQL DB (or replace old)
         if ($replace_id) {
             // Delete old THUMB (if exists)
-            if ($row['preview'] and ($param['type'] == 'image') && is_file($this->dname . $param['category'] . '/thumb/' . $row['name'])) {
+            if ($row['preview'] and ($param['type'] == 'image') and is_file($this->dname . $param['category'] . '/thumb/' . $row['name'])) {
                 @unlink($this->dname . $param['category'] . '/thumb/' . $row['name']);
             }
 
@@ -565,7 +565,7 @@ class FileManagment
 
         if (is_array($row = $mysql->record("select * from " . prefix . "_" . $this->tname . " where " . $limit))) {
             // Check permissions
-            if (!(($row['owner_id'] == $userROW['id']) || ($userROW['status'] == 1) || ($userROW['status'] == 2))) {
+            if (!(($row['owner_id'] == $userROW['id']) or ($userROW['status'] == 1) or ($userROW['status'] == 2))) {
                 msg(array('type' => 'danger', 'message' => __('upload.error.perm.delete')));
                 return 0;
             }

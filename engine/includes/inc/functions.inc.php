@@ -677,16 +677,16 @@ function makeCategoryList($params = array())
                 '>';
         }
         if (isset($params['doempty']) and $params['doempty']) {
-            $out .= '<option ' . (((isset($params['greyempty']) and $params['greyempty'])) ? 'style="background: #c41e3a;" ' : '') . 'value="0">' . __(no_cat) . '</option>';
-            $optList [] = array('k' => 0, 'v' => __(no_cat));
+            $out .= '<option ' . (((isset($params['greyempty']) and $params['greyempty'])) ? 'style="background: #c41e3a;" ' : '') . 'value="0">' . __('no_cat') . '</option>';
+            $optList [] = array('k' => 0, 'v' => __('no_cat'));
         }
         if (isset($params['doall']) and $params['doall']) {
-            $out .= '<option value="' . (isset($params['allmarker']) ? $params['allmarker'] : '') . '">' . __(sh_all) . '</option>';
-            $optList [] = array('k' => (isset($params['allmarker']) ? $params['allmarker'] : ''), 'v' => __(sh_all));
+            $out .= '<option value="' . (isset($params['allmarker']) ? $params['allmarker'] : '') . '">' . __('sh_all') . '</option>';
+            $optList [] = array('k' => (isset($params['allmarker']) ? $params['allmarker'] : ''), 'v' => __('sh_all'));
         }
         if (isset($params['dowithout']) and $params['dowithout']) {
-            $out .= '<option value="0"' . (((!is_null($params['selected'])) and ($params['selected'] == 0)) ? ' selected' : '') . '>' . __(sh_empty) . '</option>';
-            $optList [] = array('k' => 0, 'v' => __(sh_empty));
+            $out .= '<option value="0"' . (((!is_null($params['selected'])) and ($params['selected'] == 0)) ? ' selected' : '') . '>' . __('sh_empty') . '</option>';
+            $optList [] = array('k' => 0, 'v' => __('sh_empty'));
         }
     }
     if (isset($params['resync']) and $params['resync']) {
@@ -906,12 +906,12 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array())
                     $tEntries[$i]['flags']['closeLevel_' . $x] = true;
                 }
             }
-            if ($tEntries[$i]['level'] > $tEntries[$i + 1]['level'])
+            if (isset($tEntries[$i + 1]['level']) and ($tEntries[$i]['level'] > $tEntries[$i + 1]['level']))
                 $tEntries[$i]['closeToLevel'] = intval($tEntries[$i + 1]['level']);
         }
     }
 
-    if ($flags['returnData']) {
+    if (isset($flags['returnData'])) {
         return $flags['onlyID'] ? $tIDs : $tEntries;
     }
 
@@ -1752,7 +1752,7 @@ function coreSearchForm()
     Lang::load('search', 'site');
 
     $xt = $twig->loadTemplate(tpl_site . 'search.form.tpl');
-    $template['vars']['search_form'] .= $xt->render(array('form_url' => generateLink('search', '', array())));
+    $template['vars']['search_form'] = $xt->render(array('form_url' => generateLink('search', '', array())));
 }
 
 // Return current news category

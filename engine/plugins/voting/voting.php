@@ -74,7 +74,7 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 
 	$vpp = intval(pluginGetVariable('voting', 'vpp'));
 	$pageCount	= 0;
-	if ($vpp>0 && !$mode) {
+	if ($vpp>0 and !$mode) {
 		// Calculate real number of pages
 		$pc = $mysql->record("select count(*) as cnt from ".prefix."_vote where active = 1");
 		$pageCount = ceil($pc['cnt'] / $vpp);
@@ -117,10 +117,10 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 		// Choose template name for this operation
 		switch ($mode) {
 			case '0':
-			case '1': $tpl_prefix = ($dup||$row['closed']||($row['regonly'] && !$username))?'shls':'edls'; break;
+			case '1': $tpl_prefix = ($dup||$row['closed']||($row['regonly'] and !$username))?'shls':'edls'; break;
 			case '2': $tpl_prefix = 'edls'; break;
 			case '3': $tpl_prefix = 'shls'; break;
-			case '4': $tpl_prefix = ($dup||$row['closed']||($row['regonly'] && !$username))?'sh':'ed'; break;
+			case '4': $tpl_prefix = ($dup||$row['closed']||($row['regonly'] and !$username))?'sh':'ed'; break;
 			case '5': $tpl_prefix = 'ed'; break;
 			case '6': $tpl_prefix = 'sh'; break;
 		}
@@ -199,9 +199,9 @@ function plugin_voting_screen($flagPanel = false) {
 
 	// ========================================
 	// MODE: Vote request
-	if (($_REQUEST['mode'] == 'vote') && ($choice = intval($_REQUEST['choice']))) {
+	if (($_REQUEST['mode'] == 'vote') and ($choice = intval($_REQUEST['choice']))) {
 	 // Search for poll and poll line
-		if (($row = $mysql->record("select * from ".prefix."_voteline where id = $choice")) && ($vrow = $mysql->record("select * from ".prefix."_vote where id = ".$row['voteid']))) {
+		if (($row = $mysql->record("select * from ".prefix."_voteline where id = $choice")) and ($vrow = $mysql->record("select * from ".prefix."_vote where id = ".$row['voteid']))) {
 			// Line was found
 			// Check is user already took part in this poll (according to security model)
 			$dup = 0;
@@ -233,7 +233,7 @@ function plugin_voting_screen($flagPanel = false) {
 
 				// Check returning mode for template
 				$retMode = 3;
-				if ($is_ajax && $flagPanel) {
+				if ($is_ajax and $flagPanel) {
 					$retMode = 6;
 				}
 
@@ -245,7 +245,7 @@ function plugin_voting_screen($flagPanel = false) {
 			$template['vars']['mainblock'] = __('voting:msg.norec');
 			if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 		}
-	 } else if (($_REQUEST['mode'] == 'show') && ($voteid = intval($_REQUEST['voteid']))) {
+	 } else if (($_REQUEST['mode'] == 'show') and ($voteid = intval($_REQUEST['voteid']))) {
 		$template['vars']['mainblock'] = plugin_showvote($skin, $flagPanel?6:3, $voteid);
 		if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 	 } else {

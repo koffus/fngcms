@@ -241,7 +241,7 @@ function show_options() {
 		pluginSetVariable('guestbook', 'approve_msg', secure_html($_REQUEST['approve_msg']));
 		pluginSetVariable('guestbook', 'admin_count', intval($_REQUEST['admin_count']));
 
-		if (isset($_REQUEST['url']) && intval($_REQUEST['url']) == 1) {
+		if (isset($_REQUEST['url']) and intval($_REQUEST['url']) == 1) {
 			$ULIB = new urlLibrary();
 			$ULIB->loadConfig();
 			$ULIB->registerCommand('guestbook', '', array(

@@ -102,7 +102,7 @@ class urlLibrary
             unset($this->CMD[$plugin][$cmd]);
 
             // Check if there're no more commands for this plugin
-            if (is_array($this->CMD[$plugin]) && (!count($this->CMD[$plugin]))) {
+            if (is_array($this->CMD[$plugin]) and (!count($this->CMD[$plugin]))) {
                 unset($this->CMD[$plugin]);
             }
         }

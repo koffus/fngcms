@@ -72,7 +72,7 @@ class Errors extends \PhpConsole\Dispatcher {
 	 */
 	public function dispatchException(\Exception $exception) {
 		if($this->isActive()) {
-			if($this->dispatchPreviousExceptions && $exception->getPrevious()) {
+			if($this->dispatchPreviousExceptions and $exception->getPrevious()) {
 				$this->dispatchException($exception->getPrevious());
 			}
 			$message = new \PhpConsole\ErrorMessage();
@@ -122,9 +122,9 @@ class Errors extends \PhpConsole\Dispatcher {
 	 * @return bool
 	 */
 	protected function isIgnored(\PhpConsole\ErrorMessage $message) {
-		if($this->ignoreRepeatedSource && $message->file) {
+		if($this->ignoreRepeatedSource and $message->file) {
 			foreach($this->sentMessages as $sentMessage) {
-				if($message->file == $sentMessage->file && $message->line == $sentMessage->line && $message->class == $sentMessage->class) {
+				if($message->file == $sentMessage->file and $message->line == $sentMessage->line and $message->class == $sentMessage->class) {
 					return true;
 				}
 			}

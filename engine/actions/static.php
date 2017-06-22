@@ -207,7 +207,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 	$permModify		= checkPermission(array('plugin' => '#admin', 'item' => 'static'), null, 'modify');
 	$permDetails	= checkPermission(array('plugin' => '#admin', 'item' => 'static'), null, 'details');
 
-	if (!$perm['modify'] && !$perm['details']) {
+	if (!$perm['modify'] and !$perm['details']) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
 		return 0;
 	}
@@ -217,7 +217,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 	$row = array();
 	$origRow = array();
 
-	$requestID = ($sID > 0)?$sID:((isset($_REQUEST['id']) && $_REQUEST['id'])?$_REQUEST['id']:0);
+	$requestID = ($sID > 0)?$sID:((isset($_REQUEST['id']) and $_REQUEST['id'])?$_REQUEST['id']:0);
 
 	// EDIT
 	if (($operationMode == 3) or ($operationMode == 4)) {
@@ -241,8 +241,8 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 			if (isset($_REQUEST[$k]))
 				$row[$k] = $_REQUEST[$k];
 		}
-		$row['approve'] = (isset($_REQUEST['flag_published']) && $_REQUEST['flag_published'])?1:0;
-		$row['flags'] = ((isset($_REQUEST['flag_raw']) && $_REQUEST['flag_raw'])?1:0) + ((isset($_REQUEST['flag_html']) && $_REQUEST['flag_html'])?2:0) + ((isset($_REQUEST['flag_template_main']) && $_REQUEST['flag_template_main'])?4:0);
+		$row['approve'] = (isset($_REQUEST['flag_published']) and $_REQUEST['flag_published'])?1:0;
+		$row['flags'] = ((isset($_REQUEST['flag_raw']) and $_REQUEST['flag_raw'])?1:0) + ((isset($_REQUEST['flag_html']) and $_REQUEST['flag_html'])?2:0) + ((isset($_REQUEST['flag_template_main']) and $_REQUEST['flag_template_main'])?4:0);
 	}
 
 	// Fill basic variables
@@ -263,7 +263,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 			'canTemplateMain' => $perm['template.main'],
 			'meta'				=> $config['meta'],
 			'html'				=> $perm['html'],
-			'isPublished' => ($editMode && ($origRow['approve']))?1:0,
+			'isPublished' => ($editMode and ($origRow['approve']))?1:0,
 		)
 	);
 	// Fill data entry
@@ -282,7 +282,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 			'flag_template_main' => ((getIsSet($row['flags'])/4) % 2)?1:0,
 		);
 
-	if ($editMode && ($origRow['approve'])) {
+	if ($editMode and ($origRow['approve'])) {
 		$tVars['data']['url'] = (checkLinkAvailable('static', '')?
 				generateLink('static', '', array('altname' => $origRow['alt_name'], 'id' => $origRow['id']), array(), false, true):
 				generateLink('core', 'plugin', array('plugin' => 'static'), array('altname' => $origRow['alt_name'], 'id' => $origRow['id']), false, true));
@@ -291,7 +291,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0){
 	executeActionHandler('addstatic');
 	executeActionHandler('editstatic');
 
-	if (getIsSet($PFILTERS['static']) && is_array($PFILTERS['static']))
+	if (getIsSet($PFILTERS['static']) and is_array($PFILTERS['static']))
 		foreach ($PFILTERS['static'] as $k => $v) {
 			if ($editMode) {
 				$v->editStaticForm($row['id'], $row, $tVars);
@@ -377,7 +377,7 @@ function addStatic(){
 	// 0 = RAW mode		[if set, no conversion "\n" => "<br />" will be done]
 	// 1 = HTML enable	[if set, HTML codes may be used in news]
 
-	$SQL['flags'] = (($perm['html'] && isset($_REQUEST['flag_raw']) && $_REQUEST['flag_raw'])?1:0) + (($perm['html'] && isset($_REQUEST['flag_html']) && $_REQUEST['flag_html'])?2:0) + (($perm['html'] && isset($_REQUEST['flag_template_main']) && $_REQUEST['flag_template_main'])?4:0);
+	$SQL['flags'] = (($perm['html'] and isset($_REQUEST['flag_raw']) and $_REQUEST['flag_raw'])?1:0) + (($perm['html'] and isset($_REQUEST['flag_html']) and $_REQUEST['flag_html'])?2:0) + (($perm['html'] and isset($_REQUEST['flag_template_main']) and $_REQUEST['flag_template_main'])?4:0);
 
 	if (is_array($PFILTERS['static']))
 		foreach ($PFILTERS['static'] as $k => $v) { $v->addStatic($tvars, $SQL); }
@@ -456,13 +456,13 @@ function editStatic(){
 
 	$SQL['template']	= $_REQUEST['template'];
 	$SQL['approve']		= intval($_REQUEST['flag_published']);
-	if (isset($_POST['set_postdate']) && $_POST['set_postdate']) {
+	if (isset($_POST['set_postdate']) and $_POST['set_postdate']) {
 		if (preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', $_REQUEST['cdate'], $m)) {
 			$SQL['postdate'] = mktime($m[4], $m[5], 0, $m[2], $m[1], $m[3]) + ($config['date_adjust'] * 60);
 		}
 	}
 
-	$SQL['flags'] = (($perm['html'] && isset($_REQUEST['flag_raw']) && $_REQUEST['flag_raw'])?1:0) + (($perm['html'] && isset($_REQUEST['flag_html']) && $_REQUEST['flag_html'])?2:0) + (($perm['html'] && isset($_REQUEST['flag_template_main']) && $_REQUEST['flag_template_main'])?4:0);
+	$SQL['flags'] = (($perm['html'] and isset($_REQUEST['flag_raw']) and $_REQUEST['flag_raw'])?1:0) + (($perm['html'] and isset($_REQUEST['flag_html']) and $_REQUEST['flag_html'])?2:0) + (($perm['html'] and isset($_REQUEST['flag_template_main']) and $_REQUEST['flag_template_main'])?4:0);
 
 	if (is_array($PFILTERS['static']))
 		foreach ($PFILTERS['static'] as $k => $v) { $v->editStatic($row['id'], $row, $SQL, $tvars); }

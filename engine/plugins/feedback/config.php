@@ -70,7 +70,7 @@ function saveForm()
         foreach ($elist as $erec) {
             // Проверяем наличие email'ов в списке
             $mlist = preg_split('# *(\,) *#', trim($erec[2], -1));
-            if (count($mlist) && strlen($mlist[0])) {
+            if (count($mlist) and strlen($mlist[0])) {
                 $eok[$num] = array($num, trim($erec[1]), $mlist);
                 $num++;
             }
@@ -97,7 +97,7 @@ function saveForm()
     $flags = ($_REQUEST['jcheck'] ? '1' : '0') .
         ($_REQUEST['captcha'] ? '1' : '0') .
         ($_REQUEST['html'] ? '1' : '0') .
-        (((intval($_REQUEST['link_news']) >= 0) && (intval($_REQUEST['link_news']) <= 2)) ? intval($_REQUEST['link_news']) : 0) .
+        (((intval($_REQUEST['link_news']) >= 0) and (intval($_REQUEST['link_news']) <= 2)) ? intval($_REQUEST['link_news']) : 0) .
         ($_REQUEST['isSubj'] ? '1' : '0') .
         ($_REQUEST['utf8'] ? '1' : '0');
 
@@ -282,7 +282,7 @@ function showFormRow()
         if (!is_array($fData)) $fData = array();
 
         // Check if form's row exists
-        if ($fRowId && !isset($fData[$fRowId])) {
+        if ($fRowId and !isset($fData[$fRowId])) {
             $tVars['content'] = "Указанное поле [" . $id . "][" . $fRowId . "] не существует!";
             break;
         }
@@ -381,19 +381,19 @@ function editFormRow()
         if (!is_array($fData)) $fData = array();
 
         // Check if form's row exists
-        if ($editMode && !isset($fData[$fRowId])) {
+        if ($editMode and !isset($fData[$fRowId])) {
             $tVars['content'] = "Указанное поле [" . $id . "][" . $fRowId . "] не существует!";
             break;
         }
 
         // For "add" mode - check if field already exists
-        if (!$editMode && isset($fData[$fRowId])) {
+        if (!$editMode and isset($fData[$fRowId])) {
             $tVars['content'] = "Указанное поле [" . $id . "][" . $fRowId . "] уже существует!";
             break;
         }
 
         // Проверка корректности символов в имени [ только латница и цифры ]
-        if (!$editMode && !preg_match('#^[a-zA-Z0-9\.]+$#', $fRowId)) {
+        if (!$editMode and !preg_match('#^[a-zA-Z0-9\.]+$#', $fRowId)) {
             $tVars['content'] = "Имя поля содержит запрещенные символы. Разрешено использовать только символы латинского алфавита и цифры!";
             break;
 
@@ -420,7 +420,7 @@ function editFormRow()
                 $fld['type'] = 'date';
                 // Check default date
                 if (preg_match('#^ *(\d{1,2})\.(\d{1,2})\.(\d{4}) *$#', $_REQUEST['date_default'], $match) &&
-                    ($match[1] >= 1) && ($match[1] <= 31) && ($match[2] >= 1) && ($match[2] <= 12) && ($match[3] >= 1970) && ($match[3] <= 2099)
+                    ($match[1] >= 1) and ($match[1] <= 31) and ($match[2] >= 1) and ($match[2] <= 12) and ($match[3] >= 1970) and ($match[3] <= 2099)
                 ) {
                     $fld['default'] = $match[1] . '.' . $match[2] . '.' . $match[3];
                     $fld['default:vars']['day'] = $match[1];

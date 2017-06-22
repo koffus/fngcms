@@ -14,8 +14,8 @@ function plugin_gmanager_main($params)
 	global $userROW, $template, $tpl, $mysql, $TemplateCache, $SYSTEM_FLAGS;
 
 	$page = 1;
-	if(isset($params['page']) && $params['page']) { $page = intval($params['page']);}
-	else if(isset($_REQUEST['page']) && $_REQUEST['page']) { $page = intval($_REQUEST['page']);}
+	if(isset($params['page']) and $params['page']) { $page = intval($params['page']);}
+	else if(isset($_REQUEST['page']) and $_REQUEST['page']) { $page = intval($_REQUEST['page']);}
 
 	$SYSTEM_FLAGS['info']['title']['group'] = __('gmanager:title').($page > 1?' - '.__('gmanager:page').' '.$page:'');
 	
@@ -43,7 +43,7 @@ function plugin_gmanager_main($params)
 	$entries_cell = '';
 	
 	$limit = '';
-	if ($max_row && $max_cell)
+	if ($max_row and $max_cell)
 		$limit = 'limit '.($page - 1) * $max_row * $max_cell.', '.$max_row * $max_cell;
 	
 	foreach($mysql->select('select * from '.prefix.'_gmanager where if_active=1 order by `order` '.$limit) as $row)
@@ -71,7 +71,7 @@ function plugin_gmanager_main($params)
 		$tpl->vars('main.cell', $pvars);
 		$entries_cell .= $tpl->show('main.cell');
 
-		if ($max_cell && $cell >= $max_cell - 1)
+		if ($max_cell and $cell >= $max_cell - 1)
 		{
 			$ppvars['vars']['tpl_url'] = $tpl_url;
 			$ppvars['vars']['entries'] = $entries_cell;
@@ -83,7 +83,7 @@ function plugin_gmanager_main($params)
 			$entries_cell = '';
 			$cell = 0;
 			$row_count ++;
-			if ($max_row && $row_count >= $max_row)
+			if ($max_row and $row_count >= $max_row)
 				break;
 		}
 		else
@@ -113,7 +113,7 @@ function plugin_gmanager_main($params)
 
 	$tvars['vars']['pages'] = '';
 
-	if (pluginGetVariable('gmanager', 'main_page') && $max_row && $max_cell)
+	if (pluginGetVariable('gmanager', 'main_page') and $max_row and $max_cell)
 	{
 		$count = 0;
 		if (is_array($pcnt = $mysql->record('select count(*) as cnt from '.prefix.'_gmanager where if_active=1')))
@@ -142,15 +142,15 @@ function plugin_gmanager_gallery($params)
 	global $userROW, $template, $tpl, $mysql, $TemplateCache, $SYSTEM_FLAGS;
 
 	$page = 1;
-	if(isset($params['page']) && $params['page']) { $page = intval($params['page']);}
-	else if(isset($_REQUEST['page']) && $_REQUEST['page']) { $page = intval($_REQUEST['page']);}
+	if(isset($params['page']) and $params['page']) { $page = intval($params['page']);}
+	else if(isset($_REQUEST['page']) and $_REQUEST['page']) { $page = intval($_REQUEST['page']);}
 	$id = 0;
-	if(isset($params['id']) && $params['id']) { $id = intval($params['id']);}
-	else if(isset($_REQUEST['id']) && $_REQUEST['id']) { $id = intval($_REQUEST['id']);}
+	if(isset($params['id']) and $params['id']) { $id = intval($params['id']);}
+	else if(isset($_REQUEST['id']) and $_REQUEST['id']) { $id = intval($_REQUEST['id']);}
 	$name = '';
-	if(isset($params['name']) && $params['name']) { $name = secure_html(convert($params['name']));}
-	else if(isset($_REQUEST['name']) && $_REQUEST['name']) { $name = secure_html(convert($_REQUEST['name']));}
-	if (!$name && !$id) return false;
+	if(isset($params['name']) and $params['name']) { $name = secure_html(convert($params['name']));}
+	else if(isset($_REQUEST['name']) and $_REQUEST['name']) { $name = secure_html(convert($_REQUEST['name']));}
+	if (!$name and !$id) return false;
 	$where = 'where id='.db_squote($id);
 	if (!$id)
 		$where = 'where name='.db_squote($name);
@@ -187,7 +187,7 @@ function plugin_gmanager_gallery($params)
 	$entries_cell = '';
 	
 	$limit = '';
-	if ($max_row && $max_cell)
+	if ($max_row and $max_cell)
 		$limit = 'limit '.($page - 1) * $max_row * $max_cell.', '.$max_row * $max_cell;
 	
 	foreach($mysql->select('select name, description from '.prefix.'_images where folder='.db_squote($name).' order by `date` '.$limit) as $row)
@@ -210,7 +210,7 @@ function plugin_gmanager_gallery($params)
 		$tpl->vars('gallery.cell', $pvars);
 		$entries_cell .= $tpl->show('gallery.cell');
 
-		if ($max_cell && $cell >= $max_cell - 1)
+		if ($max_cell and $cell >= $max_cell - 1)
 		{
 			$ppvars['vars']['tpl_url'] = $tpl_url;
 			$ppvars['vars']['entries'] = $entries_cell;
@@ -222,7 +222,7 @@ function plugin_gmanager_gallery($params)
 			$entries_cell = '';
 			$cell = 0;
 			$row_count ++;
-			if ($max_row && $row_count >= $max_row)
+			if ($max_row and $row_count >= $max_row)
 				break;
 		}
 		else
@@ -251,7 +251,7 @@ function plugin_gmanager_gallery($params)
 	}
 
 	$tvars['vars']['pages'] = '';
-	if (pluginGetVariable('gmanager', 'one_page') && $max_row && $max_cell)
+	if (pluginGetVariable('gmanager', 'one_page') and $max_row and $max_cell)
 	{
 		$count = 0;
 		if (is_array($pcnt = $mysql->record('select count(*) as cnt from '.prefix.'_images where folder='.db_squote($name))))

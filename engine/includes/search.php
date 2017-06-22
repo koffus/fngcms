@@ -135,7 +135,7 @@ function search_news() {
 	$tableVars['author'] = $author;
 	$tableVars['search'] = $search;
 	$tableVars['searchSettings'] = (isset($_COOKIE['searchSettings']) and $_COOKIE['searchSettings']) ? '  checked="checked"' : '';
-	$tableVars['pagination'] = $tableVars['pages']['output'];
+	$tableVars['pagination'] = isset($tableVars['pages']['output']) ?: '';
 	$tableVars['flags'] = array(
 		'found' => (count($search_array) and $tableVars['count']) ? 1 : 0,
 		'notfound' => (count($search_array) and !$tableVars['count']) ? 1 : 0,
@@ -147,6 +147,7 @@ function search_news() {
 
 	// Make month list
 	$mnth_list = explode(',', __('months'));
+    $tableVars['datelist'] = '';
 	foreach ( $mysql->select("SELECT month(from_unixtime(postdate)) as month, year(from_unixtime(postdate)) as year, COUNT(id) AS cnt FROM " . prefix . "_news WHERE approve = '1' GROUP BY year, month ORDER BY year DESC, month DESC") as $row ) {
 		$pd_value = sprintf("%04u%02u",$row['year'],$row['month']);
 		$pd_text = $mnth_list[$row['month']-1].' '.$row['year'];
@@ -157,7 +158,7 @@ function search_news() {
 	$sortDefault = array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc', 'views desc', 'views asc', 'com desc', 'com asc');
 	$tableVars['orderlist'] = '<option value="">'.__('search.order_default').'</option>';
 	foreach ( $sortDefault as $v ) {
-		$pieces = explode(' ', $value);
+		$pieces = explode(' ', $v);
 		if ( $pieces[0] == 'com' and !getPluginStatusActive('comments') )
 			continue;
 		$vx = str_replace(' ','_',$v);

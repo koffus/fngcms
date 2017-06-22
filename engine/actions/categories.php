@@ -20,7 +20,7 @@ function listSubdirs($dir) {
 	$list = array();
 	if ($h = @opendir($dir)) {
 		while (($fn = readdir($h)) !== false) {
-			if (($fn != '.') && ($fn != '..') && is_dir($dir . '/' . $fn))
+			if (($fn != '.') and ($fn != '..') and is_dir($dir . '/' . $fn))
 				array_push($list, $fn);
 		}
 		closedir($h);
@@ -171,7 +171,7 @@ function admCategoryAdd() {
 	$imanager = new ImageManagment();
 
 	// Check if new image was attached
-	if (isset($_FILES) && isset($_FILES['image']) && is_array($_FILES['image']) && isset($_FILES['image']['error']) && ($_FILES['image']['error'] == 0)) {
+	if (isset($_FILES) and isset($_FILES['image']) and is_array($_FILES['image']) and isset($_FILES['image']['error']) and ($_FILES['image']['error'] == 0)) {
 		// new file is uploaded
 		$up = $fmanager->file_upload(array('dsn' => true, 'linked_ds' => 2, 'linked_id' => $rowID['id'], 'type' => 'image', 'http_var' => 'image', 'http_varnum' => 0));
 		//print "OUT: <pre>".var_export($up, true)."</pre>";
@@ -226,7 +226,7 @@ function admCategoryEditForm(){
 	$permModify = checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'modify');
 	$permDetails = checkPermission(array('plugin' => '#admin', 'item' => 'categories'), null, 'details');
 
-	if (!$permModify && !$permDetails) {
+	if (!$permModify and !$permDetails) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
 		return;
 	}
@@ -364,13 +364,13 @@ function admCategoryEdit(){
 	$imanager = new ImageManagment();
 
 	// Check is existent image should be deleted
-	if (isset($_POST['image_del']) && $_POST['image_del'] && ($SQLold['image_id'])) {
+	if (isset($_POST['image_del']) and $_POST['image_del'] and ($SQLold['image_id'])) {
 		$fmanager->file_delete(array('type' => 'image', 'id' => $SQLold['image_id']));
 		$SQL['image_id'] = 0;
 	}
 
 	// Check if new image was attached
-	if (isset($_FILES) && (!$SQL['image_id']) && isset($_FILES['image']) && is_array($_FILES['image']) && isset($_FILES['image']['error']) && ($_FILES['image']['error'] == 0)) {
+	if (isset($_FILES) and (!$SQL['image_id']) and isset($_FILES['image']) and is_array($_FILES['image']) and isset($_FILES['image']['error']) and ($_FILES['image']['error'] == 0)) {
 		// new file is uploaded
 		$up = $fmanager->file_upload(array('dsn' => true, 'linked_ds' => 2, 'linked_id' => $catid, 'type' => 'image', 'http_var' => 'image', 'http_varnum' => 0));
 		//print "OUT: <pre>".var_export($up, true)."</pre>";

@@ -25,7 +25,7 @@ class http_get {
 
 	function request($proto, $url, $params = '', $timeout = 5, $referer = 0) {
 	 // Open TCP connection
-	 if ((strtolower($proto) != 'get') && (strtolower($proto) != 'post')) { return false; }
+	 if ((strtolower($proto) != 'get') and (strtolower($proto) != 'post')) { return false; }
 		list ($host, $port, $path) = http_get::parse_url($url);
 		if (!$host) { return ''; }
 		if (!function_exists('fsockopen')) { return false; }
@@ -74,7 +74,7 @@ class http_get {
 		// Try to read data, not more than 1 Mb
 		$maxchunks = 128; $chunk = 0; $dsize = 0; $dmaxsize = 1024 * 1024;
 		$data = '';
-		while ((!feof($fp)) && (!$fi['timed_out'])) {
+		while ((!feof($fp)) and (!$fi['timed_out'])) {
 			$in = fread($fp, 128 * 1024);
 
 			$dsize += mb_strlen($in, 'UTF-8');
@@ -103,7 +103,7 @@ class http_get {
 		// Let's analyse header
 		$hdr = explode("\r\n",$header);
 		$status = 0;
-		if ($hdr[0] && preg_match('/^HTTP\/1.\d +(\d+) +(.+)$/i', $hdr[0], $match)) {
+		if ($hdr[0] and preg_match('/^HTTP\/1.\d +(\d+) +(.+)$/i', $hdr[0], $match)) {
 			// Found status string
 			$status = $match[1];
 		}

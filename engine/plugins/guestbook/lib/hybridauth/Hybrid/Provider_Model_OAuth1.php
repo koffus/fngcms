@@ -58,7 +58,7 @@ class Hybrid_Provider_Model_OAuth1 extends Hybrid_Provider_Model {
 			503 => "Service Unavailable."
 		);
 
-		if (!$code && $this->api) {
+		if (!$code and $this->api) {
 			$code = $this->api->http_code;
 		}
 

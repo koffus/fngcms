@@ -31,11 +31,11 @@ class Vk extends AbstractAdapter
  {
  $result = null;
 
- if (isset($this->userInfo['first_name']) && isset($this->userInfo['last_name'])) {
+ if (isset($this->userInfo['first_name']) and isset($this->userInfo['last_name'])) {
  $result = $this->userInfo['first_name'] . ' ' . $this->userInfo['last_name'];
- } elseif (isset($this->userInfo['first_name']) && !isset($this->userInfo['last_name'])) {
+ } elseif (isset($this->userInfo['first_name']) and !isset($this->userInfo['last_name'])) {
  $result = $this->userInfo['first_name'];
- } elseif (!isset($this->userInfo['first_name']) && isset($this->userInfo['last_name'])) {
+ } elseif (!isset($this->userInfo['first_name']) and isset($this->userInfo['last_name'])) {
  $result = $this->userInfo['last_name'];
  }
 
@@ -82,11 +82,11 @@ class Vk extends AbstractAdapter
  */
  public function getPhone()
  {
- if (isset($this->userInfo['mobile_phone']) && !empty($this->userInfo['mobile_phone'])) {
+ if (isset($this->userInfo['mobile_phone']) and !empty($this->userInfo['mobile_phone'])) {
  $phone = $this->userInfo['mobile_phone'];
  }
 
- elseif (isset($this->userInfo['home_phone']) && !empty($this->userInfo['home_phone'])) {
+ elseif (isset($this->userInfo['home_phone']) and !empty($this->userInfo['home_phone'])) {
  $phone = $this->userInfo['home_phone'];
  }
 
@@ -115,7 +115,7 @@ class Vk extends AbstractAdapter
 
  $result = null;
 
- if (isset($this->userInfo['country']) && isset($this->userInfo['token']['access_token']))
+ if (isset($this->userInfo['country']) and isset($this->userInfo['token']['access_token']))
  {
  $params = array(
  'cids' => $this->userInfo['country'],
@@ -146,7 +146,7 @@ class Vk extends AbstractAdapter
 
  $result = null;
 
- if (isset($this->userInfo['city']) && isset($this->userInfo['token']['access_token']))
+ if (isset($this->userInfo['city']) and isset($this->userInfo['token']['access_token']))
  {
  $params = array(
  'cids' => $this->userInfo['city'],

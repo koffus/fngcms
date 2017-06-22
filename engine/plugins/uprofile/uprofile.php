@@ -22,7 +22,7 @@ function uprofile_showProfile($params) {
 
 	// Check if valid user identity is specified
 	$urow = '';
-	if (isset($params['id']) && (intval($params['id']) > 0)) {
+	if (isset($params['id']) and (intval($params['id']) > 0)) {
 		$urow = $mysql->record("select * from ".uprefix."_users where id = ".intval($params['id']));
 	} else if (isset($params['name'])) {
 		$urow = $mysql->record("select * from ".uprefix."_users where name = ".db_squote($params['name']));
@@ -36,7 +36,7 @@ function uprofile_showProfile($params) {
 		return;
 	}
 
-	if (is_array($PFILTERS['plugin.uprofile']))
+	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->showProfilePre($urow['id'], $urow); }
 
 	// Determine paths for all template files
@@ -70,10 +70,10 @@ function uprofile_showProfile($params) {
 			'photo' => $userPhoto[2],
 			'avatar' => $userAvatar[1],
 			'flags' => array(
-				'hasPhoto' => $config['use_photos'] && $userPhoto[0],
-				'hasAvatar' => $config['use_avatars'] && $userAvatar[0],
+				'hasPhoto' => $config['use_photos'] and $userPhoto[0],
+				'hasAvatar' => $config['use_avatars'] and $userAvatar[0],
 				'hasIcq' => is_numeric($urow['icq'])?1:0,
-				'isOwnProfile' => (isset($userROW) && is_array($userROW) && ($userROW['id'] == $urow['id']))?1:0,
+				'isOwnProfile' => (isset($userROW) and is_array($userROW) and ($userROW['id'] == $urow['id']))?1:0,
 			),
 		),
 		'token'				=> genUToken('uprofile.editForm'),
@@ -99,7 +99,7 @@ function uprofile_showProfile($params) {
 		'#{l_uprofile:(.+?)}#' => '{{ lang.uprofile[\'$1\'] }}',
 	);
 
-	if (is_array($PFILTERS['plugin.uprofile']))
+	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->showProfile($urow['id'], $urow, $tVars); }
 
 	$twigLoader->setConversion($tpath['users'].'users.tpl', $conversionConfig, $conversionConfigRegex);
@@ -154,7 +154,7 @@ function uprofile_editForm($ajaxMode = false){
 	}
 
 	// Notify about `EDIT COMPLETE` if editComplete parameter is passed
-	if (isset($_GET['editComplete']) && $_GET['editComplete']) {
+	if (isset($_GET['editComplete']) and $_GET['editComplete']) {
 		msg(array('message' => __('uprofile')['msgo_saved']));
 	}
 
@@ -169,7 +169,7 @@ function uprofile_editForm($ajaxMode = false){
 	$urow['#images']	= $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = ".$DSlist['users'].") and (linked_id = ".db_squote($urow['id']).')', 1);
 
 	// Manage profile data [if needed]
-	if (is_array($PFILTERS['plugin.uprofile']))
+	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileFormPre($urow['id'], $urow); }
 
 	// Determine paths for all template files
@@ -199,10 +199,10 @@ function uprofile_editForm($ajaxMode = false){
 			'photo_thumb' => $userPhoto[1],
 			'photo' => $userPhoto[2],
 			'avatar' => $userAvatar[1],
-			'php_self' => $PHP_SELF,
+			'php_self' => isset($PHP_SELF) ?: '',
 			'flags' => array(
-				'hasPhoto' => $config['use_photos'] && $userPhoto[0],
-				'hasAvatar' => $config['use_avatars'] && $userAvatar[0],
+				'hasPhoto' => $config['use_photos'] and $userPhoto[0],
+				'hasAvatar' => $config['use_avatars'] and $userAvatar[0],
 				'hasIcq' => is_numeric($urow['icq'])?1:0,
 			),
 		),
@@ -242,7 +242,7 @@ function uprofile_editForm($ajaxMode = false){
 		'#{plugin_xfields_(\d+)}#' => ' {{ p.xfields[$1] }}',
 	);
 
-	if (is_array($PFILTERS['plugin.uprofile']))
+	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileForm($urow['id'], $urow, $tVars); }
 
 	$twigLoader->setConversion($tpath['profile'].'profile.tpl', $conversionConfig, $conversionConfigRegex);
@@ -288,14 +288,14 @@ function uprofile_editApply(){
 	}
 
 	// Delete avatar if requested
-	if ($_REQUEST['delavatar']) {
+	if (isset($_REQUEST['delavatar'])) {
 		uprofile_manageDelete('avatar', $currentUser['id']);
 	} else {
 		$avatar = $currentUser['avatar'];
 	}
 
 	// Delete photo if requested
-	if ($_REQUEST['delphoto']) {
+	if (isset($_REQUEST['delphoto'])) {
 		uprofile_manageDelete('photo', $currentUser['id']);
 	} else {
 		$photo = $currentUser['photo'];
@@ -318,7 +318,7 @@ function uprofile_editApply(){
 
 				// Check avatar size limit (!!!)
 				$lwh = intval($config['avatar_wh']);
-				if ($lwh && (($sz[1] > $lwh)||($sz[2] > $lwh))) {
+				if ($lwh and (($sz[1] > $lwh)||($sz[2] > $lwh))) {
 					// Fatal: uploaded avatar mismatch size limits !
 					msg(array('type' => 'danger', 'title' => __('uprofile')['msge_size'], 'message' => sprintf(__('uprofile')['msgi_size'], $lwh.'x'.$lwh)));
 					$fmanage->file_delete(array('type' => 'avatar', 'id' => $up[0]));
@@ -391,7 +391,7 @@ function uprofile_editApply(){
 	$currentUser['#images']	= $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = ".$DSlist['users'].") and (linked_id = ".db_squote($currentUser['id']).')', 1);
 
 	// Call external plugins for request processing
-	if (is_array($PFILTERS['plugin.uprofile']))
+	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfile($currentUser['id'], $currentUser, $sqlFields); }
 
 	// Prepare SQL line
@@ -403,7 +403,7 @@ function uprofile_editApply(){
 	$mysql->query($sqlUpdate);
 
 	// Call external plugins for request processing
-	if (is_array($PFILTERS['plugin.uprofile']))
+	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileNotify($currentUser['id'], $currentUser, $sqlFields); }
 
 	return true;

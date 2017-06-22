@@ -11,7 +11,7 @@ function comments_add(){
 
 	// Check membership
 	// If login/pass is entered (either logged or not)
-	if ($_POST['name'] && $_POST['password']) {
+	if ($_POST['name'] and $_POST['password']) {
 		$auth = $AUTH_METHOD[$config['auth_module']];
 		$user = $auth->login(0, $_POST['name'], $_POST['password']);
 		if (!is_array($user)) {
@@ -85,7 +85,7 @@ function comments_add(){
 		}
 
 		// Check if author name use incorrect symbols. Check should be done only for unregs
-		if ((!$SQL['author_id']) && (preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/", $SQL['author']) or mb_strlen($SQL['author'], 'UTF-8') > 60)) {
+		if ((!$SQL['author_id']) and (preg_match("/[^(\w)|(\x7F-\xFF)|(\s)]/", $SQL['author']) or mb_strlen($SQL['author'], 'UTF-8') > 60)) {
 			msg(array('type' => 'danger', 'message' => __('comments:err.badname')));
 			return;
 		}
@@ -133,7 +133,7 @@ function comments_add(){
 		if ($allowCom == 2) {
 			// `Use default` - check master category
 			$masterCat = intval(array_shift(explode(',', $news_row['catid'])));
-			if ($masterCat && isset($catmap[$masterCat])) {
+			if ($masterCat and isset($catmap[$masterCat])) {
 				$allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
 			}
 
@@ -191,7 +191,7 @@ function comments_add(){
 	if (pluginGetVariable('comments', 'maxwlen') > 1){
 		$SQL['text'] = preg_replace('/(\S{'.intval(pluginGetVariable('comments', 'maxwlen')).'})(?!\s)/', '$1 ', $SQL['text']);
 
-		if ((!$SQL['author_id']) && (mb_strlen($SQL['author'], 'UTF-8') > pluginGetVariable('comments', 'maxwlen'))) {
+		if ((!$SQL['author_id']) and (mb_strlen($SQL['author'], 'UTF-8') > pluginGetVariable('comments', 'maxwlen'))) {
 			$SQL['author'] = mb_substr( $SQL['author'], 0, pluginGetVariable('comments', 'maxwlen'), 'UTF-8' )." ...";
 		}
 	}
@@ -205,10 +205,10 @@ function comments_add(){
 	if (is_array($PFILTERS['comments']))
 		foreach ($PFILTERS['comments'] as $k => $v) {
 			$pluginResult = $v->addComments($memberRec, $news_row, $tvars, $SQL);
-			if ((is_array($pluginResult) && ($pluginResult['result'])) or (!is_array($pluginResult) && $pluginResult))
+			if ((is_array($pluginResult) and ($pluginResult['result'])) or (!is_array($pluginResult) and $pluginResult))
 				continue;
 
-			msg(array('type' => 'danger', 'message' => str_replace(array('{plugin}', '{errorText}'), array($k, (is_array($pluginResult) && isset($pluginResult['errorText'])?$pluginResult['errorText']:'')), __('comments:err.'.((is_array($pluginResult) && isset($pluginResult['errorText']))?'e':'').'pluginlock'))));
+			msg(array('type' => 'danger', 'message' => str_replace(array('{plugin}', '{errorText}'), array($k, (is_array($pluginResult) and isset($pluginResult['errorText'])?$pluginResult['errorText']:'')), __('comments:err.'.((is_array($pluginResult) and isset($pluginResult['errorText']))?'e':'').'pluginlock'))));
 			return 0;
 		}
 

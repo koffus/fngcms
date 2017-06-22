@@ -125,7 +125,7 @@ function suser_search($params){
  if (!$data['required']) $val .= '<option value="">'.__('sh_all').'</option>';
  if (is_array($data['options']))
  foreach ($data['options'] as $k => $v) {
- $val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v) or ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
+ $val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and ($xdata[$id] == $k))||(!$data['storekeys'] and ($xdata[$id] == $v) or ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
  }
  $val .= '</select>';
  break;
@@ -155,7 +155,7 @@ function suser_search($params){
  $tVars['boxlist']['from'] = $from;
  
  // check if search conditions are selected 
- $where = (is_array($where) && $where) ? 'WHERE '.implode(' AND ', $where) : '';
+ $where = (is_array($where) and $where) ? 'WHERE '.implode(' AND ', $where) : '';
  
  foreach ($mysql->select('SELECT * FROM '.prefix.'_users '.$where) as $row) {
  $tEntry[] = get_entries($row); 
@@ -197,10 +197,10 @@ function suser_show($params) {
  case 4: $where[] = 'status = \'4\''; break;
  }
  
- if(isset($username) && $username)
+ if(isset($username) and $username)
  $where[] = 'name LIKE '.securemysql_suser('%'.$username.'%').'';
  
- if(is_array($where) && $where)
+ if(is_array($where) and $where)
  $where = 'WHERE '.implode(' AND ', $where);
 
  
@@ -227,7 +227,7 @@ function suser_show($params) {
  }
 
  // sort by xfields
- if (strpos($sort_by, 'fields_') && xmode()) {
+ if (strpos($sort_by, 'fields_') and xmode()) {
  $sort_b = $sort_by;
  } 
 
@@ -244,7 +244,7 @@ function suser_show($params) {
  if ($pageNo < 1) $pageNo = 1;
  if (!isset($limitStart)) $limitStart = ($pageNo - 1)* $limitCount;
  
- if ($countPages > 1 && $countPages >= $pageNo){
+ if ($countPages > 1 and $countPages >= $pageNo){
  $paginationParams = array('pluginName' => 'suser', 'params' => array(), 'xparams' => array('username' => $username, 'show_group' => $show_group, 'sort_by' => $sort_by, 'sort_dir' => $sort_dir), 'paginator' => array('page', 1, false));
 
  $navigations = LoadVariables_suser();
@@ -272,7 +272,7 @@ function suser_show($params) {
  'sort' => $sort_b,
  'xflist' => get_xflist(), 
  'pages' => array(
- 'true' => (isset($pages) && $pages)?1:0,
+ 'true' => (isset($pages) and $pages)?1:0,
  'print' => isset($pages)?$pages:''
  ),
  

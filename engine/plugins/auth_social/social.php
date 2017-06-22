@@ -75,7 +75,7 @@ function socialAuth()
  }
 
 
- if (isset($_GET['provider']) && array_key_exists($_GET['provider'], $adapters)) {
+ if (isset($_GET['provider']) and array_key_exists($_GET['provider'], $adapters)) {
  $auther = new SocialAuther\SocialAuther($adapters[$_GET['provider']]);
 
  if ($auther->authenticate()) {
@@ -164,7 +164,7 @@ function socialAuth()
  $user->birthday = $auther->getBirthday();
  //$user->avatar = $auther->getAvatar();
 
- if (isset($userFromDb) && $userFromDb != $user) {
+ if (isset($userFromDb) and $userFromDb != $user) {
  $idToUpdate = $record['id'];
  $birthday = date('Y-m-d', strtotime($user->birthday));
  $get_avatar = $auther->getAvatar();

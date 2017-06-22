@@ -30,13 +30,13 @@ class File extends AllKeysList {
 		}
 		$this->filePath = realpath($filePath);
 
-		if($validatePathNotUnderDocRoot && $this->isPathUnderDocRoot()) {
+		if($validatePathNotUnderDocRoot and $this->isPathUnderDocRoot()) {
 			throw new \Exception('Path ' . $this->filePath . ' is under DOCUMENT_ROOT. It\'s insecure!');
 		}
 	}
 
 	protected function isPathUnderDocRoot() {
-		return !empty($_SERVER['DOCUMENT_ROOT']) && strpos($this->filePath, $_SERVER['DOCUMENT_ROOT']) === 0;
+		return !empty($_SERVER['DOCUMENT_ROOT']) and strpos($this->filePath, $_SERVER['DOCUMENT_ROOT']) === 0;
 	}
 
 	protected function initFileHandler() {

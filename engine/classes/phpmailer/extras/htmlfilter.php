@@ -44,7 +44,7 @@ function tln_tagprint($tagname, $attary, $tagtype)
  $fulltag = '</' . $tagname . '>';
  } else {
  $fulltag = '<' . $tagname;
- if (is_array($attary) && sizeof($attary)) {
+ if (is_array($attary) and sizeof($attary)) {
  $atts = array();
  while (list($attname, $attvalue) = each($attary)) {
  array_push($atts, "$attname=$attvalue");
@@ -439,7 +439,7 @@ function tln_getnxtag($body, $offset)
 function tln_deent(&$attvalue, $regex, $hex = false)
 {
  preg_match_all($regex, $attvalue, $matches);
- if (is_array($matches) && sizeof($matches[0]) > 0) {
+ if (is_array($matches) and sizeof($matches[0]) > 0) {
  $repl = array();
  for ($i = 0; $i < sizeof($matches[0]); $i++) {
  $numval = $matches[1][$i];
@@ -468,7 +468,7 @@ function tln_defang(&$attvalue)
  * Skip this if there aren't ampersands or backslashes.
  */
  if (strpos($attvalue, '&') === false
- && strpos($attvalue, '\\') === false
+ and strpos($attvalue, '\\') === false
  ) {
  return;
  }
@@ -539,7 +539,7 @@ function tln_fixatts(
  */
  $oldattvalue = $attvalue;
  tln_defang($attvalue);
- if ($attname == 'style' && $attvalue !== $oldattvalue) {
+ if ($attname == 'style' and $attvalue !== $oldattvalue) {
  $attvalue = "idiocy";
  $attary{$attname} = $attvalue;
  }
@@ -599,7 +599,7 @@ function tln_fixurl($attname, &$attvalue, $trans_image_path, $block_external_ima
 {
  $sQuote = '"';
  $attvalue = trim($attvalue);
- if ($attvalue && ($attvalue[0] =='"'|| $attvalue[0] == "'")) {
+ if ($attvalue and ($attvalue[0] =='"'|| $attvalue[0] == "'")) {
  // remove the double quotes
  $sQuote = $attvalue[0];
  $attvalue = trim(substr($attvalue,1,-1));
@@ -702,7 +702,7 @@ function tln_fixstyle($body, $pos, $trans_image_path, $block_external_images)
  case '!':
  if ($sToken == '<') {
  // possible comment
- if (isset($body{$i+2}) && substr($body,$i,3) == '!--') {
+ if (isset($body{$i+2}) and substr($body,$i,3) == '!--') {
  $i = strpos($body,'-->',$i+3);
  if ($i === false) { // no end comment
  $i = strlen($body);
@@ -793,7 +793,7 @@ function tln_body2div($attary, $trans_image_path)
  $text = '#000000';
  $has_bgc_stl = $has_txt_stl = false;
  $styledef = '';
- if (is_array($attary) && sizeof($attary) > 0){
+ if (is_array($attary) and sizeof($attary) > 0){
  foreach ($attary as $attname=>$attvalue){
  $quotchar = substr($attvalue, 0, 1);
  $attvalue = str_replace($quotchar, "", $attvalue);
@@ -813,7 +813,7 @@ function tln_body2div($attary, $trans_image_path)
  }
  // Outlook defines a white bgcolor and no text color. This can lead to
  // white text on a white bg with certain themes.
- if ($has_bgc_stl && !$has_txt_stl) {
+ if ($has_bgc_stl and !$has_txt_stl) {
  $styledef .= "color: $text; ";
  }
  if (strlen($styledef) > 0){
@@ -877,7 +877,7 @@ function tln_sanitize(
  /**
  * Take care of <style>
  */
- if ($tagname == "style" && $tagtype == 1){
+ if ($tagname == "style" and $tagtype == 1){
  list($free_content, $curpos) =
  tln_fixstyle($body, $gt+1, $trans_image_path, $block_external_images);
  if ($free_content != FALSE){
@@ -932,7 +932,7 @@ function tln_sanitize(
  * tagtype appropriately.
  */
  if ($tagtype == 1
- && in_array($tagname, $self_closing_tags)
+ and in_array($tagname, $self_closing_tags)
  ) {
  $tagtype = 3;
  }
@@ -941,14 +941,14 @@ function tln_sanitize(
  * inside it.
  */
  if ($tagtype == 1
- && in_array($tagname, $rm_tags_with_content)
+ and in_array($tagname, $rm_tags_with_content)
  ) {
  $skip_content = $tagname;
  } else {
  if (($rm_tags == false
- && in_array($tagname, $tag_list)) ||
+ and in_array($tagname, $tag_list)) ||
  ($rm_tags == true
- && !in_array($tagname, $tag_list))
+ and !in_array($tagname, $tag_list))
  ) {
  $tagname = false;
  } else {
@@ -969,7 +969,7 @@ function tln_sanitize(
  /**
  * This is where we run other checks.
  */
- if (is_array($attary) && sizeof($attary) > 0) {
+ if (is_array($attary) and sizeof($attary) > 0) {
  $attary = tln_fixatts(
  $tagname,
  $attary,
@@ -984,7 +984,7 @@ function tln_sanitize(
  }
  }
  }
- if ($tagname != false && $skip_content == false) {
+ if ($tagname != false and $skip_content == false) {
  $trusted .= tln_tagprint($tagname, $attary, $tagtype);
  }
  }

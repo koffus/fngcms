@@ -18,7 +18,7 @@ class Twig_Node_Expression_Array extends Twig_Node_Expression
 
  $this->index = -1;
  foreach ($this->getKeyValuePairs() as $pair) {
- if ($pair['key'] instanceof Twig_Node_Expression_Constant && ctype_digit((string) $pair['key']->getAttribute('value')) && $pair['key']->getAttribute('value') > $this->index) {
+ if ($pair['key'] instanceof Twig_Node_Expression_Constant and ctype_digit((string) $pair['key']->getAttribute('value')) and $pair['key']->getAttribute('value') > $this->index) {
  $this->index = $pair['key']->getAttribute('value');
  }
  }

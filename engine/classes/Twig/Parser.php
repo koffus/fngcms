@@ -156,7 +156,7 @@ class Twig_Parser implements Twig_ParserInterface
  throw new Twig_Error_Syntax('A block must start with a tag name', $token->getLine(), $this->getFilename());
  }
 
- if (null !== $test && call_user_func($test, $token)) {
+ if (null !== $test and call_user_func($test, $token)) {
  if ($dropNeedle) {
  $this->stream->next();
  }
@@ -172,7 +172,7 @@ class Twig_Parser implements Twig_ParserInterface
  if (null === $subparser) {
  if (null !== $test) {
  $error = sprintf('Unexpected tag name "%s"', $token->getValue());
- if (is_array($test) && isset($test[0]) && $test[0] instanceof Twig_TokenParserInterface) {
+ if (is_array($test) and isset($test[0]) and $test[0] instanceof Twig_TokenParserInterface) {
  $error .= sprintf(' (expecting closing tag for the "%s" tag defined near line %s)', $test[0]->getTag(), $lineno);
  }
 
@@ -364,9 +364,9 @@ class Twig_Parser implements Twig_ParserInterface
  {
  // check that the body does not contain non-empty output nodes
  if (
- ($node instanceof Twig_Node_Text && !ctype_space($node->getAttribute('data')))
+ ($node instanceof Twig_Node_Text and !ctype_space($node->getAttribute('data')))
  ||
- (!$node instanceof Twig_Node_Text && !$node instanceof Twig_Node_BlockReference && $node instanceof Twig_NodeOutputInterface)
+ (!$node instanceof Twig_Node_Text and !$node instanceof Twig_Node_BlockReference and $node instanceof Twig_NodeOutputInterface)
  ) {
  if (false !== strpos((string) $node, chr(0xEF).chr(0xBB).chr(0xBF))) {
  throw new Twig_Error_Syntax('A template that extends another one cannot have a body but a byte order mark (BOM) has been detected; it must be removed.', $node->getLine(), $this->getFilename());
@@ -385,7 +385,7 @@ class Twig_Parser implements Twig_ParserInterface
  }
 
  foreach ($node as $k => $n) {
- if (null !== $n && null === $n = $this->filterBodyNodes($n)) {
+ if (null !== $n and null === $n = $this->filterBodyNodes($n)) {
  $node->removeNode($k);
  }
  }

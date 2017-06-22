@@ -49,7 +49,7 @@ class Paginator
 
         // ===[ TO PUT INTO CONFIG ]===
         $pages = '';
-        if (isset($param['maxNavigations']) && ($param['maxNavigations'] > 3) && ($param['maxNavigations'] < 500)) {
+        if (isset($param['maxNavigations']) and ($param['maxNavigations'] > 3) and ($param['maxNavigations'] < 500)) {
             $maxNavigations = intval($param['maxNavigations']);
         } else {
             $maxNavigations = 8;

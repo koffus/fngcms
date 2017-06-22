@@ -28,7 +28,7 @@ function bbMediaProcess($content)
 
  // Check for possible error in case of using "]" within params/url
  // Ex: [url="file[my][super].avi" target="_blank"]F[I]LE[/url] is parsed incorrectly
- if ((strpos($alt, ']') !== false) && (strpos($alt, "\"") !== false)) {
+ if ((strpos($alt, ']') !== false) and (strpos($alt, "\"") !== false)) {
  // Possible bracket error. Make deep analysis
  $jline = $paramLine . ']' . $alt;
  $brk = 0;
@@ -39,7 +39,7 @@ function bbMediaProcess($content)
  continue;
  }
 
- if ((!$brk) && ($jline[$ji] == ']')) {
+ if ((!$brk) and ($jline[$ji] == ']')) {
  // Found correct delimiter
  $paramLine = substr($jline, 0, $ji);
  $alt = substr($jline, $ji + 1);
@@ -83,15 +83,15 @@ function bbMediaProcess($content)
  );
 
  foreach ($kdefault as $kscan => $kvalue) {
- if (isset($keys[$kscan]) && preg_match("#^(\d+)(\%){0,1}$#", $keys[$kscan], $m)) {
- if (isset($m[2]) && ($m[2] == '%')) {
- if (($m[1] > 5) && ($m[1] <= 100)) {
+ if (isset($keys[$kscan]) and preg_match("#^(\d+)(\%){0,1}$#", $keys[$kscan], $m)) {
+ if (isset($m[2]) and ($m[2] == '%')) {
+ if (($m[1] > 5) and ($m[1] <= 100)) {
  $keys[$kscan] = $m[1] . $m[2];
  } else {
  $keys[$kscan] = $kvalue[$keys['type']];
  }
  } else {
- if (($m[1] > 10) && ($m[1] < 2048)) {
+ if (($m[1] > 10) and ($m[1] < 2048)) {
  $keys[$kscan] = $m[1];
  } else {
  $keys[$kscan] = $kvalue[$keys['type']];
@@ -162,7 +162,7 @@ function bbMediaProcess($content)
  }
 
  // - preview image
- if (isset($keys['preview']) && preg_match("#^http\:\/\/.*?\.(png|jpg|gif)$#i", $keys['preview'], $m)) {
+ if (isset($keys['preview']) and preg_match("#^http\:\/\/.*?\.(png|jpg|gif)$#i", $keys['preview'], $m)) {
  $poster = "poster='" . $keys['preview'] . "'";
  } else {
  $poster = "";

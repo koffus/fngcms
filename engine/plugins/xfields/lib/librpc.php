@@ -115,13 +115,13 @@ function xfields_rpc_group_modify($params){
 				unset($xf['grp.news'][$grpId]['entries'][$position]);
 			}
 
-			if (($params['action'] == 'fldUp') && ($position>0)) {
+			if (($params['action'] == 'fldUp') and ($position>0)) {
 				$tmp = $xf['grp.news'][$grpId]['entries'][$position-1];
 				$xf['grp.news'][$grpId]['entries'][$position-1] = $xf['grp.news'][$grpId]['entries'][$position];
 				$xf['grp.news'][$grpId]['entries'][$position] = $tmp;
 			}
 
-			if (($params['action'] == 'fldDown') && (($position+1)<count($xf['grp.news'][$grpId]['entries']))) {
+			if (($params['action'] == 'fldDown') and (($position+1)<count($xf['grp.news'][$grpId]['entries']))) {
 				$tmp = $xf['grp.news'][$grpId]['entries'][$position+1];
 				$xf['grp.news'][$grpId]['entries'][$position+1] = $xf['grp.news'][$grpId]['entries'][$position];
 				$xf['grp.news'][$grpId]['entries'][$position] = $tmp;

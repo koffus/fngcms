@@ -31,13 +31,13 @@ function plugin_rss_yandex_generate($catname = ''){
 	$SUPRESS_MAINBLOCK_SHOW = 1;
 
 	// Break if category specified & doesn't exist
-	if (($catname != '') && (!isset($catz[$catname]))) {
+	if (($catname != '') and (!isset($catz[$catname]))) {
 		header('HTTP/1.1 404 Not found');
 		exit;
 	}
  @header('Content-type: text/xml; charset=utf-8');
 	// Generate header
-	$xcat = (($catname != '') && isset($catz[$catname]))?$catz[$catname]:'';
+	$xcat = (($catname != '') and isset($catz[$catname]))?$catz[$catname]:'';
 
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
 	// Take into account: FLAG: use_hide, check if user is logged in
@@ -63,7 +63,7 @@ function plugin_rss_yandex_generate($catname = ''){
 	$query = '';
 	$orderBy = "id desc";
 	if (is_array($xcat)) {
-		$orderBy = ($xcat['orderby'] && in_array($xcat['orderby'], array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc')))?$xcat['orderby']:'id desc';
+		$orderBy = ($xcat['orderby'] and in_array($xcat['orderby'], array('id desc', 'id asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc')))?$xcat['orderby']:'id desc';
 		$query = "select * from ".prefix."_news where catid regexp '[[:<:]](".$xcat['id'].")[[:>:]]' and approve=1 ";
 	} else {
 		$query = "select * from ".prefix."_news where approve=1 ";
@@ -79,10 +79,10 @@ function plugin_rss_yandex_generate($catname = ''){
 	$xFList = array();
 	$encImages = array();
 	$enclosureIsImages = false;
-	if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') && getPluginStatusActive('xfields')) {
+	if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') and getPluginStatusActive('xfields')) {
 		$xFList = xf_configLoad();
 		$eFieldName = pluginGetVariable('rss_yandex','xfEnclosure');
-		if (isset($xFList['news'][$eFieldName]) && ($xFList['news'][$eFieldName]['type'] == 'images')) {
+		if (isset($xFList['news'][$eFieldName]) and ($xFList['news'][$eFieldName]['type'] == 'images')) {
 			$enclosureIsImages = true;
 
 			// Prepare list of news with attached images
@@ -110,11 +110,11 @@ function plugin_rss_yandex_generate($catname = ''){
 		$enclosureList = array();
 
 		// Check if Enclosure `xfields` integration is activated
-		if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') && (true or getPluginStatusActive('xfields'))) {
+		if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') and (true or getPluginStatusActive('xfields'))) {
 			// Load (if needed XFIELDS plugin
 			include_once(root."/plugins/xfields/xfields.php");
 
-			if (is_array($xfd = xf_decode($row['xfields'])) && isset($xfd[pluginGetVariable('rss_yandex','xfEnclosure')])) {
+			if (is_array($xfd = xf_decode($row['xfields'])) and isset($xfd[pluginGetVariable('rss_yandex','xfEnclosure')])) {
 				// Check enclosure field type
 				if ($enclosureIsImages) {
 					// images
@@ -130,7 +130,7 @@ function plugin_rss_yandex_generate($catname = ''){
 		}
 
 		// Check if embedded items should be exported in enclosure
-		if (pluginGetVariable('rss_yandex', 'textEnclosureEnabled') && isset($newsVars['news']['embed']['images']) && is_array($newsVars['news']['embed']['images'])) {
+		if (pluginGetVariable('rss_yandex', 'textEnclosureEnabled') and isset($newsVars['news']['embed']['images']) and is_array($newsVars['news']['embed']['images'])) {
 
 			foreach ($newsVars['news']['embed']['images'] as $url) {
 				// Check for absolute link

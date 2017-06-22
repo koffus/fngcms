@@ -50,7 +50,7 @@ class Finance_Acceptor_SMS_RB extends Finance_Acceptor {
 	 	// Код можно активировать. Проверяем цену
 	 	$price = file_get_contents('http://easysms.ru/cgi-bin/price_informer.pl?num='.$rData[3]);
 	 	$priceData = explode('|',$price);
-	 	if ($priceData[0] && ($priceData[0] == $rData[3])) { 
+	 	if ($priceData[0] and ($priceData[0] == $rData[3])) { 
 	 		$acceptSum = $priceData[1+intval(pluginGetVariable('fin_sms','bonus_mode'))]; 
 	 	} else {
 	 		return $return.'Не могу получить информацию по стоимости SMS на номер "'.$rData[3].'"';

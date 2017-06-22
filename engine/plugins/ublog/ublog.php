@@ -12,7 +12,7 @@ include_once root.'includes/news.php';
 class UblogFilter extends p_uprofileFilter {
 	function showProfile($userID, $SQLrow, &$tvars) {
 		$link = generatePluginLink('ublog', null, array('uid' => $userID, 'uname' => $SQLrow['name']));
-		if (pluginGetVariable('ublog','replaceCount') && ($SQLrow['news'] > 0)) {
+		if (pluginGetVariable('ublog','replaceCount') and ($SQLrow['news'] > 0)) {
 			$tvars['user']['news'] = '<a href="'.$link.'">'.$SQLrow['news'].'</a>';
 			$tvars['vars']['p']['ublog']['flags']['haveBlog'] = true;
 			$tvars['vars']['p']['ublog']['blogLink'] = $link;
@@ -59,9 +59,9 @@ function plugin_ublog() {
 	}
 
 	// Check if user exists
-	if (isset($pparams['uid']) && ($urow = $mysql->record("select * from ".uprefix."_users where id = ".intval($pparams['uid'])))) {
+	if (isset($pparams['uid']) and ($urow = $mysql->record("select * from ".uprefix."_users where id = ".intval($pparams['uid'])))) {
 		// found :)
-	} else if (isset($pparams['uname']) && ($urow = $mysql->record("select * from ".uprefix."_users where name = ".db_squote($pparams['uname'])))) {
+	} else if (isset($pparams['uname']) and ($urow = $mysql->record("select * from ".uprefix."_users where name = ".db_squote($pparams['uname'])))) {
 		// found :)
 	} else {
 		// User not found - return an error
@@ -92,8 +92,8 @@ function plugin_ublog() {
 			'photo' => $userPhoto[2],
 			'avatar' => $userAvatar[1],
 			'flags' => array(
-				'hasPhoto' => $config['use_photos'] && $userPhoto[0],
-				'hasAvatar' => $config['use_avatars'] && $userAvatar[0],
+				'hasPhoto' => $config['use_photos'] and $userPhoto[0],
+				'hasAvatar' => $config['use_avatars'] and $userAvatar[0],
 				'hasIcq' => is_numeric($urow['icq'])?1:0,
 			),
 		),
@@ -101,7 +101,7 @@ function plugin_ublog() {
 	);
 
 	// [MANUALLY] call xfields plugin for generating user's profile
-	if (is_array($PFILTERS['plugin.uprofile']) && isset($PFILTERS['plugin.uprofile']['xfields']))
+	if (is_array($PFILTERS['plugin.uprofile']) and isset($PFILTERS['plugin.uprofile']['xfields']))
 		 { $PFILTERS['plugin.uprofile']['xfields']->showProfile($urow['id'], $urow, $tVars); }
 
 
@@ -119,7 +119,7 @@ function plugin_ublog() {
 		'extendedReturnPagination' => true,
 		'customCategoryTemplate' => false,
 		'showNumber' => $showNumber,
-		'page' => ((isset($_GET['page']) && (intval($_GET['page'])>0))?intval($_GET['page']):0),
+		'page' => ((isset($_GET['page']) and (intval($_GET['page'])>0))?intval($_GET['page']):0),
 	);
 
 	$paginationParams['params'] = $pparams;

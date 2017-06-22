@@ -47,11 +47,11 @@ function admGeneratePluginList()
             'author' => $extra['author'],
             'id' => $extra['id'],
             'style' => getPluginStatusActive($id) ? 'pluginEntryActive' : 'pluginEntryInactive',
-            'readme' => file_exists(extras_dir . '/' . $id . '/readme') && filesize(extras_dir . '/' . $id . '/readme') ? ('<a href="' . admin_url . '/includes/showinfo.php?mode=plugin&amp;item=readme&amp;plugin=' . $id . '" target="_blank" title="' . __('entry.readme') . '"><img src="' . skins_url . '/images/readme.png" width=16 height=16/></a>') : '',
-            'history' => file_exists(extras_dir . '/' . $id . '/history') && filesize(extras_dir . '/' . $id . '/history') ? ('<a href="' . admin_url . '/includes/showinfo.php?mode=plugin&amp;item=history&amp;plugin=' . $id . '" target="_blank" title="' . __('entry.history') . '"><img src="' . skins_url . '/images/history.png" width=16 height=16/></a>') : ''
+            'readme' => file_exists(extras_dir . '/' . $id . '/readme') and filesize(extras_dir . '/' . $id . '/readme') ? ('<a href="' . admin_url . '/includes/showinfo.php?mode=plugin&amp;item=readme&amp;plugin=' . $id . '" target="_blank" title="' . __('entry.readme') . '"><img src="' . skins_url . '/images/readme.png" width=16 height=16/></a>') : '',
+            'history' => file_exists(extras_dir . '/' . $id . '/history') and filesize(extras_dir . '/' . $id . '/history') ? ('<a href="' . admin_url . '/includes/showinfo.php?mode=plugin&amp;item=history&amp;plugin=' . $id . '" target="_blank" title="' . __('entry.history') . '"><img src="' . skins_url . '/images/history.png" width=16 height=16/></a>') : ''
         );
 
-        if (isset($repoPluginInfo[$extra['id']]) && ($repoPluginInfo[$extra['id']][1] > $extra['version'])) {
+        if (isset($repoPluginInfo[$extra['id']]) and ($repoPluginInfo[$extra['id']][1] > $extra['version'])) {
             $tEntry['new'] = '<a href="http://ngcms.ru/sync/plugins.php?action=jump&amp;id=' . $extra['id'] . '.html" title="' . $repoPluginInfo[$extra['id']][1] . '"target="_blank"><img src="' . skins_url . '/images/new.gif" width=30 height=15/></a>';
         } else {
             $tEntry['new'] = '';
@@ -62,7 +62,7 @@ function admGeneratePluginList()
         //
         // Check for permanent modules
         //
-        if (($extra['permanent']) && (!getPluginStatusActive($id))) {
+        if (($extra['permanent']) and (!getPluginStatusActive($id))) {
             // turn on
             if (pluginSwitch($id, 'on')) {
                 msg(array('message' => sprintf(__('msgo_is_on'), $extra['name'])));
@@ -75,17 +75,17 @@ function admGeneratePluginList()
         $needinstall = 0;
         $tEntry['install'] = '';
         if (getPluginStatusInstalled($extra['id'])) {
-            if (isset($extra['deinstall']) && $extra['deinstall'] && is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['deinstall'])) {
+            if (isset($extra['deinstall']) and $extra['deinstall'] and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['deinstall'])) {
                 $tEntry['install'] = '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '&amp;stype=deinstall">' . __('deinstall') . '</a>';
             }
         } else {
-            if (isset($extra['install']) && $extra['install'] && is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['install'])) {
+            if (isset($extra['install']) and $extra['install'] and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['install'])) {
                 $tEntry['install'] = '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '&amp;stype=install">' . __('install') . '</a>';
                 $needinstall = 1;
             }
         }
 
-        $tEntry['url'] = (isset($extra['config']) && $extra['config'] && (!$needinstall) && is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['config'])) ? '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '">' . $extra['name'] . '</a>' : $extra['name'];
+        $tEntry['url'] = (isset($extra['config']) and $extra['config'] and (!$needinstall) and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['config'])) ? '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '">' . $extra['name'] . '</a>' : $extra['name'];
         $tEntry['link'] = (getPluginStatusActive($id) ? '<a href="' . $PHP_SELF . '?mod=extras&amp;token=' . genUToken('admin.extras') . '&amp;disable=' . $id . '">' . __('switch_off') . '</a>' : '<a href="' . $PHP_SELF . '?mod=extras&amp;token=' . genUToken('admin.extras') . '&amp;enable=' . $id . '">' . __('switch_on') . '</a>');
 
         if ($needinstall) {
@@ -149,7 +149,7 @@ $repoPluginInfo = repoSync();
 // ==============================================================
 $enable = isset($_REQUEST['enable']) ? $_REQUEST['enable'] : '';
 $disable = isset($_REQUEST['disable']) ? $_REQUEST['disable'] : '';
-$manage = (isset($_REQUEST['manageConfig']) && $_REQUEST['manageConfig'] && isset($_REQUEST['action']) && ($_REQUEST['action'] == 'commit')) ? true : false;
+$manage = (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig'] and isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) ? true : false;
 
 // Check for security token
 if ($enable or $disable or $manage) {
@@ -160,10 +160,10 @@ if ($enable or $disable or $manage) {
     }
 }
 
-if (isset($_REQUEST['manageConfig']) && $_REQUEST['manageConfig']) {
+if (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig']) {
     pluginsLoadConfig();
 
-    if (isset($_REQUEST['action']) && ($_REQUEST['action'] == 'commit')) {
+    if (isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) {
         print "TRY COMMIT";
     }
     $confLine = json_encode($PLUGINS['config']);

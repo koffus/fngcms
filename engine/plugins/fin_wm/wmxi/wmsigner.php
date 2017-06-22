@@ -196,7 +196,7 @@ class WMSigner {
 			}
 		}
 
-		if (isset($sign_keys["ekey"]) && isset($sign_keys["nkey"])) {
+		if (isset($sign_keys["ekey"]) and isset($sign_keys["nkey"])) {
 			$digest = $this->_md4($data);
 			$to_encrypt = $digest;
 			for($i = 0; $i < 10; ++$i) { $to_encrypt .= pack("V", mt_rand()); }

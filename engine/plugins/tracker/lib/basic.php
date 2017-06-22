@@ -124,10 +124,10 @@ function tracker_fetch_tstatus($info_hash, $mode, $timeout = 60, $params = array
 		}
 
 		// Check for us (in `report` mode)
-		if (($mode == 'report') && ($peer['peer_id'] == $params['peer_id']) && ($peer['real_ip'] == $ip)) {
+		if (($mode == 'report') and ($peer['peer_id'] == $params['peer_id']) and ($peer['real_ip'] == $ip)) {
 			$flag_updated = true;
 			// Delete if event is `stopped`
-			if (isset($params['event']) && ($params['event'] == 'stopped')) {
+			if (isset($params['event']) and ($params['event'] == 'stopped')) {
 				$our_row = -2;
 				continue;
 			}

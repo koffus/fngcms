@@ -167,7 +167,7 @@ class Twig_Error extends Exception
  }
 
  if ($this->filename) {
- if (is_string($this->filename) or (is_object($this->filename) && method_exists($this->filename, '__toString'))) {
+ if (is_string($this->filename) or (is_object($this->filename) and method_exists($this->filename, '__toString'))) {
  $filename = sprintf('"%s"', $this->filename);
  } else {
  $filename = json_encode($this->filename);
@@ -175,7 +175,7 @@ class Twig_Error extends Exception
  $this->message .= sprintf(' in %s', $filename);
  }
 
- if ($this->lineno && $this->lineno >= 0) {
+ if ($this->lineno and $this->lineno >= 0) {
  $this->message .= sprintf(' at line %d', $this->lineno);
  }
 
@@ -188,7 +188,7 @@ class Twig_Error extends Exception
  {
  $template = null;
  foreach (debug_backtrace() as $trace) {
- if (isset($trace['object']) && $trace['object'] instanceof Twig_Template && 'Twig_Template' !== get_class($trace['object'])) {
+ if (isset($trace['object']) and $trace['object'] instanceof Twig_Template and 'Twig_Template' !== get_class($trace['object'])) {
  if (null === $this->filename or $this->filename == $trace['object']->getTemplateName()) {
  $template = $trace['object'];
  }
@@ -196,7 +196,7 @@ class Twig_Error extends Exception
  }
 
  // update template filename
- if (null !== $template && null === $this->filename) {
+ if (null !== $template and null === $this->filename) {
  $this->filename = $template->getTemplateName();
  }
 
@@ -208,7 +208,7 @@ class Twig_Error extends Exception
  $file = $r->getFileName();
 
  $exceptions = array($e = $this);
- while (($e instanceof self or method_exists($e, 'getPrevious')) && $e = $e->getPrevious()) {
+ while (($e instanceof self or method_exists($e, 'getPrevious')) and $e = $e->getPrevious()) {
  $exceptions[] = $e;
  }
 

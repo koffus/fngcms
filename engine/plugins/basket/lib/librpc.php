@@ -17,12 +17,12 @@ function basket_add_item($linked_ds, $linked_id, $title, $price, $count, $xfld =
 	// ======== Prepare update of totals informer ========
 	$filter = array();
 	if (is_array($userROW)) {												$filter []= '(user_id = '.db_squote($userROW['id']).')';		}
-	if (isset($_COOKIE['ngTrackID']) && ($_COOKIE['ngTrackID'] != '')) {	$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';	}
+	if (isset($_COOKIE['ngTrackID']) and ($_COOKIE['ngTrackID'] != '')) {	$filter []= '(cookie = '.db_squote($_COOKIE['ngTrackID']).')';	}
 
 	$tCount = 0;
 	$tPrice = 0;
 
-	if (count($filter) && is_array($res = $mysql->record("select count(*) as count, sum(price*count) as price from ".prefix."_basket where ".join(" or ", $filter), 1))) {
+	if (count($filter) and is_array($res = $mysql->record("select count(*) as count, sum(price*count) as price from ".prefix."_basket where ".join(" or ", $filter), 1))) {
 		$tCount = $res['count'];
 		$tPrice = $res['price'];
 	}
@@ -92,7 +92,7 @@ function basket_rpc_manage($params){
 					$btitle = str_replace($replace[0], $replace[1], $btitle);
 
 					// Get price
-					if (pluginGetVariable('basket', 'news_price') && isset($xfData[pluginGetVariable('basket', 'news_price')])) {
+					if (pluginGetVariable('basket', 'news_price') and isset($xfData[pluginGetVariable('basket', 'news_price')])) {
 						$price = $xfData[pluginGetVariable('basket', 'news_price')];
 					} else {
 						$price = 0;
@@ -129,7 +129,7 @@ function basket_rpc_manage($params){
  $xfTData = unserialize($rec['xfields']);
 
  // Get price
- if (pluginGetVariable('basket', 'ntable_price') && isset($xfTData[pluginGetVariable('basket', 'ntable_price')])) {
+ if (pluginGetVariable('basket', 'ntable_price') and isset($xfTData[pluginGetVariable('basket', 'ntable_price')])) {
  $price = $xfTData[pluginGetVariable('basket', 'ntable_price')];
  } else {
  $price = 0;

@@ -229,7 +229,7 @@ abstract class AbstractAdapter implements AdapterInterface
  public function getScreenName()
  {
  $result = null;
- if (isset($this->socialFieldsMap['screenName']) && isset($this->userInfo[$this->socialFieldsMap['screenName']])) {
+ if (isset($this->socialFieldsMap['screenName']) and isset($this->userInfo[$this->socialFieldsMap['screenName']])) {
  $result = $this->userInfo[$this->socialFieldsMap['screenName']];
  }
  return $result;

@@ -103,7 +103,7 @@ function pm_inbox (){
 	foreach($mysql->select("SELECT pm.*, u.id as uid, u.name as uname FROM ".prefix."_pm pm LEFT JOIN ".uprefix."_users u ON pm.from_id=u.id WHERE pm.to_id = ".db_squote($userROW['id'])." AND folder='inbox' ORDER BY viewed ASC, date DESC ".$limit) as $row) 
 	{
 		$author = '';
-		if ($row['from_id'] && $row['uid']) {
+		if ($row['from_id'] and $row['uid']) {
 			$alink = checkLinkAvailable('uprofile', 'show')?
 						generateLink('uprofile', 'show', array('name' => $row['uname'], 'id' => $row['uid'])):
 						generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['uname'], 'id' => $row['uid']));
@@ -166,7 +166,7 @@ function pm_outbox (){
 	foreach($mysql->select("SELECT pm.*, u.id as uid, u.name as uname FROM ".prefix."_pm pm LEFT JOIN ".uprefix."_users u ON pm.to_id=u.id WHERE pm.from_id = ".db_squote($userROW['id'])." AND folder='outbox' ORDER BY date DESC ".$limit) as $row) 
 	{
 		$author = '';
-		if ($row['to_id'] && $row['uid']) {
+		if ($row['to_id'] and $row['uid']) {
 			$alink = checkLinkAvailable('uprofile', 'show')?
 						generateLink('uprofile', 'show', array('name' => $row['uname'], 'id' => $row['uid'])):
 						generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['uname'], 'id' => $row['uid']));
@@ -249,7 +249,7 @@ function pm_read(){
 		$template['vars']['mainblock'] = $xt->render($tVars);
 		
 		# update pm counters
-		if ((!$row['viewed']) && ($row['to_id'] == $userROW['id']) && ($row['folder']=='inbox')) {
+		if ((!$row['viewed']) and ($row['to_id'] == $userROW['id']) and ($row['folder']=='inbox')) {
 			$mysql->query("UPDATE ".prefix."_pm SET `viewed` = '1' WHERE `id` = ".db_squote($row['id']));
 			$mysql->query("UPDATE ".uprefix."_users SET `pm_unread` = `pm_unread` - 1 WHERE `id` = ".db_squote($userROW['id']));
 		}

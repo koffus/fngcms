@@ -37,7 +37,7 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 
 		// Override the redirect uri when it's set in the config parameters. This way we prevent
 		// redirect uri mismatches when authenticating with Google.
-		if (isset($this->config['redirect_uri']) && !empty($this->config['redirect_uri'])) {
+		if (isset($this->config['redirect_uri']) and !empty($this->config['redirect_uri'])) {
 			$this->api->redirect_uri = $this->config['redirect_uri'];
 		}
 	}
@@ -50,15 +50,15 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 		$optionals = array("scope", "access_type", "redirect_uri", "approval_prompt", "hd", "state");
 
 		foreach ($optionals as $parameter) {
-			if (isset($this->config[$parameter]) && !empty($this->config[$parameter])) {
+			if (isset($this->config[$parameter]) and !empty($this->config[$parameter])) {
 				$parameters[$parameter] = $this->config[$parameter];
 			}
-			if (isset($this->config["scope"]) && !empty($this->config["scope"])) {
+			if (isset($this->config["scope"]) and !empty($this->config["scope"])) {
 				$this->scope = $this->config["scope"];
 			}
 		}
 
-		if (isset($this->config['force']) && $this->config['force'] === true) {
+		if (isset($this->config['force']) and $this->config['force'] === true) {
 			$parameters['approval_prompt'] = 'force';
 		}
 
@@ -152,7 +152,7 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 		// see http://support.google.com/plus/answer/1713826?hl=en
 		if (property_exists($response, 'urls')) {
 			foreach ($response->urls as $u) {
-				if (property_exists($u, 'primary') && $u->primary == true)
+				if (property_exists($u, 'primary') and $u->primary == true)
 					$this->user->profile->webSiteURL = $u->value;
 			}
 		} else {
@@ -160,7 +160,7 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 		}
 		// google API returns age ranges or min. age only (with plus.login scope)
 		if (property_exists($response, 'ageRange')) {
-			if (property_exists($response->ageRange, 'min') && property_exists($response->ageRange, 'max')) {
+			if (property_exists($response->ageRange, 'min') and property_exists($response->ageRange, 'max')) {
 				$this->user->profile->age = $response->ageRange->min . ' - ' . $response->ageRange->max;
 			} else {
 				$this->user->profile->age = '> ' . $response->ageRange->min;
@@ -219,7 +219,7 @@ class Hybrid_Providers_Google extends Hybrid_Provider_Model_OAuth2 {
 						 */
 						if (is_array($entry->link)) {
 							foreach ($entry->link as $l) {
-								if (property_exists($l, 'gd$etag') && $l->type == "image/*") {
+								if (property_exists($l, 'gd$etag') and $l->type == "image/*") {
 									$uc->photoURL = $this->addUrlParam($l->href, array('access_token' => $this->api->access_token));
 								} else if ($l->type == "self") {
 									$uc->profileURL = $this->addUrlParam($l->href, array('access_token' => $this->api->access_token));

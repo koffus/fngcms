@@ -107,9 +107,9 @@ class CronManager
 
         $ok = 0;
         foreach ($this->config as $k => $v) {
-            if (((!$min) && ($v['plugin'] == $plugin) && ((!$handler) or ($v['handler'] == $handler))) ||
-                (($v['min'] == $min) && ($v['hour'] == $hour) && ($v['day'] == $day) && ($v['month'] == $month) &&
-                    ($v['dow'] == $DOW) && ($v['plugin'] == $plugin) && ($v['handler'] == $handler))
+            if (((!$min) and ($v['plugin'] == $plugin) and ((!$handler) or ($v['handler'] == $handler))) or
+                (($v['min'] == $min) and ($v['hour'] == $hour) and ($v['day'] == $day) and ($v['month'] == $month) and
+                    ($v['dow'] == $DOW) and ($v['plugin'] == $plugin) and ($v['handler'] == $handler))
             ) {
                 array_splice($this->config, $k, 1);
                 $ok = 1;
@@ -141,7 +141,7 @@ class CronManager
         //$timeout = 5;
         //$period = 10;
 
-        if (!is_dir($cacheDir) && !mkdir($cacheDir)) {
+        if (!is_dir($cacheDir) and !mkdir($cacheDir)) {
             print "Can't create temp directory for plugin 'core'<br />\n";
             return;
         }
@@ -155,8 +155,8 @@ class CronManager
             return -1;
         }
         while (false !== ($file = readdir($dir))) {
-            if ((false !== ($fsize = filesize($cacheDir . '/' . $file))) && (preg_match('#^cron_(\d+)$#', $file, $m))) {
-                if ($fsize && (intval($m[1]) > $lastRunTime)) {
+            if ((false !== ($fsize = filesize($cacheDir . '/' . $file))) and (preg_match('#^cron_(\d+)$#', $file, $m))) {
+                if ($fsize and (intval($m[1]) > $lastRunTime)) {
                     $lastRunTime = intval($m[1]);
                 } else if (intval($m[1]) > $fn_progress) {
                     $fn_progress = intval($m[1]);
@@ -166,7 +166,7 @@ class CronManager
         closedir($dir);
 
         // Stop if there're still running processes or $period is not finished yet
-        if (!(($lastRunTime + $period < $nowTime) && ($fn_progress + $timeout < $nowTime))) {
+        if (!(($lastRunTime + $period < $nowTime) and ($fn_progress + $timeout < $nowTime))) {
             return 0;
         }
 
@@ -193,7 +193,7 @@ class CronManager
             return -1;
         }
         while (false !== ($file = readdir($dir))) {
-            if (preg_match("#^cron_(\d+)$#", $file, $m) && intval($m[1]) > $fn_max) {
+            if (preg_match("#^cron_(\d+)$#", $file, $m) and intval($m[1]) > $fn_max) {
                 $fn_max = $m[1];
             }
         }
@@ -324,7 +324,7 @@ class CronManager
             return -1;
         }
         while (false !== ($file = readdir($dir))) {
-            if (preg_match("#^cron_(\d+)$#", $file, $m) && (intval($m[1]) < $myFlagTime)) {
+            if (preg_match("#^cron_(\d+)$#", $file, $m) and (intval($m[1]) < $myFlagTime)) {
                 unlink($cacheDir . '/' . $file);
             }
         }

@@ -19,7 +19,7 @@ class Text_ReplaceNewsFilter extends NewsFilter {
 		foreach (array('short-story', 'full-story') as $varKeyName) {
 			if (!isset($tvars['vars'][$varKeyName])) { continue; }
 			foreach($this->text as $text){
-				if(isset($text) && $text){
+				if(isset($text) and $text){
 					$text = array_map('trim', explode("|", $text));
 					$str_url = str_replace(array('%search%', '%replace%', '%root%', '%scriptLibrary%', '%home%'), array($text[0], $text[1], root, scriptLibrary, home), $this->str_url);
 					$tvars['vars'][$varKeyName] = $this->text_replace($tvars['vars'][$varKeyName], $text[0], $str_url, $text[2]?$text[2]:$this->p_count);
@@ -30,7 +30,7 @@ class Text_ReplaceNewsFilter extends NewsFilter {
 		foreach (array('short', 'full') as $varKeyName) {
 			if (!isset($tvars['vars']['news'][$varKeyName])) { continue; }
 			foreach($this->text as $text){
-				if(isset($text) && $text){
+				if(isset($text) and $text){
 					$text = array_map('trim', explode("|", $text));
 					$str_url = str_replace(array('%search%', '%replace%', '%root%', '%scriptLibrary%', '%home%'), array($text[0], $text[1], root, scriptLibrary, home), $this->str_url);
 					$tvars['vars']['news'][$varKeyName] = $this->text_replace($tvars['vars']['news'][$varKeyName], $text[0], $str_url, $text[2]?$text[2]:$this->p_count);
@@ -54,7 +54,7 @@ class Text_ReplaceNewsFilter extends NewsFilter {
 			$pos1 = strrpos(substr($text, 0, $pos), '<a ');
 			if ($pos1 !== false){
 				$pos2 = strpos($text, '</a>', $pos1);
-				if ($pos2 !== false && $pos2 > $pos) return $this->text_replace($text, $search, $replace, $p_count, $pos+1, $i-1);
+				if ($pos2 !== false and $pos2 > $pos) return $this->text_replace($text, $search, $replace, $p_count, $pos+1, $i-1);
 			}
 			
 			if($this->c_replace <> 0){
@@ -74,12 +74,12 @@ class Text_ReplaceNewsFilter extends NewsFilter {
 		$pos1 = strrpos(substr($text, 0, $pos), '<img ');
 		if ($pos1 !== false){
 			$pos2 = strpos($text, '>', $pos1);
-			if ($pos2 !== false && $pos2 > $pos) return $this->replace($text, $word, $pos + 1);			
+			if ($pos2 !== false and $pos2 > $pos) return $this->replace($text, $word, $pos + 1);			
 		}
 		$pos1 = strrpos(substr($text, 0, $pos), '<a ');
 		if ($pos1 !== false){
 			$pos2 = strpos($text, '</a>', $pos1);
-			if ($pos2 !== false && $pos2 > $pos) return $this->replace($text, $word, $pos + 1);			
+			if ($pos2 !== false and $pos2 > $pos) return $this->replace($text, $word, $pos + 1);			
 		}
 		$text = substr_replace($text, ' <a href="'.home.'">'.$word.'</a>', $pos, strlen(' '.$word));
 		return true;

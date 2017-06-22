@@ -37,21 +37,21 @@ class Hybrid_Endpoint {
 		$this->request = $request;
 
 		// If openid_policy requested, we return our policy document
-		if (isset($this->request["get"]) && $this->request["get"] == "openid_policy") {
+		if (isset($this->request["get"]) and $this->request["get"] == "openid_policy") {
 			$this->processOpenidPolicy();
 		}
 
 		// If openid_xrds requested, we return our XRDS document
-		if (isset($this->request["get"]) && $this->request["get"] == "openid_xrds") {
+		if (isset($this->request["get"]) and $this->request["get"] == "openid_xrds") {
 			$this->processOpenidXRDS();
 		}
 
 		// If we get a hauth.start
-		if (isset($this->request["hauth_start"]) && $this->request["hauth_start"]) {
+		if (isset($this->request["hauth_start"]) and $this->request["hauth_start"]) {
 			$this->processAuthStart();
 		}
 		// Else if hauth.done
-		elseif (isset($this->request["hauth_done"]) && $this->request["hauth_done"]) {
+		elseif (isset($this->request["hauth_done"]) and $this->request["hauth_done"]) {
 			$this->processAuthDone();
 		}
 		// Else we advertise our XRDS document, something supposed to be done from the Realm URL page

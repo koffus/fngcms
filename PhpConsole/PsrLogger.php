@@ -53,7 +53,7 @@ class PsrLogger extends \Psr\Log\AbstractLogger {
 	 *
 	 */
 	public function log($level, $message, array $context = array()) {
-		if(is_object($message) && is_callable($message, '__toString')) {
+		if(is_object($message) and is_callable($message, '__toString')) {
 			$message = (string)$message;
 		}
 		$message = $this->fetchMessageContext($message, $context);
@@ -62,7 +62,7 @@ class PsrLogger extends \Psr\Log\AbstractLogger {
 			$this->connector->getDebugDispatcher()->dispatchDebug($message, static::$debugLevels[$level], $this->ignoreTraceCalls);
 		}
 		elseif(isset(static::$errorsLevels[$level])) {
-			if(isset($context['exception']) && $context['exception'] instanceof \Exception) {
+			if(isset($context['exception']) and $context['exception'] instanceof \Exception) {
 				$this->connector->getErrorsDispatcher()->dispatchException($context['exception']);
 			}
 			else {

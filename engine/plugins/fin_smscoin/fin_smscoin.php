@@ -17,7 +17,7 @@ class Finance_Acceptor_SMSCOIN extends Finance_Acceptor {
 			// We got data from cache. Try to read it
 			$data = unserialize($cacheData);
 
-			if (is_array($data) && count($data)) {
+			if (is_array($data) and count($data)) {
 				$this->pricelist = $data['pricelist'];
 				$this->priceindex = $data['priceindex'];
 				return true;

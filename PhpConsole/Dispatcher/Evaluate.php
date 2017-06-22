@@ -60,7 +60,7 @@ class Evaluate extends \PhpConsole\Dispatcher {
 			$message->time = round($result->time, 6);
 
 			$newLastError = error_get_last();
-			if($newLastError && $newLastError != $previousLastError) {
+			if($newLastError and $newLastError != $previousLastError) {
 				$this->connector->getErrorsDispatcher()->dispatchError($newLastError ['type'], $newLastError ['message'], $newLastError ['file'], $newLastError ['line'], 999);
 			}
 			if($result->exception) {

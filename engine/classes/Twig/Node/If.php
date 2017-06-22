@@ -51,7 +51,7 @@ class Twig_Node_If extends Twig_Node
  ;
  }
 
- if ($this->hasNode('else') && null !== $this->getNode('else')) {
+ if ($this->hasNode('else') and null !== $this->getNode('else')) {
  $compiler
  ->outdent()
  ->write("} else {\n")

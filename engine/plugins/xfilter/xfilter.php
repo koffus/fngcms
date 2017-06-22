@@ -33,7 +33,7 @@ function xfilter($params) {
 	}
 	
 	// generate the list of categories excluding 'skipcat' list
-	if (count($_REQUEST) && count($skipcat)) {
+	if (count($_REQUEST) and count($skipcat)) {
 		foreach ($skipcat as $skip) {
 			array_push($filter, array('SQL', "catid not like ('%".$skip."%')"));
 		}
@@ -63,7 +63,7 @@ function xfilter($params) {
 						if (!$data['required']) $val .= '<option value="">'.__('sh_all').'</option>';
 						if (is_array($data['options']))
 								foreach ($data['options'] as $k => $v) {
-										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] && ($xdata[$id] == $k))||(!$data['storekeys'] && ($xdata[$id] == $v) or ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
+										$val .= '<option value="'.secure_html(($data['storekeys'])?$k:$v).'"'.((($data['storekeys'] and ($xdata[$id] == $k))||(!$data['storekeys'] and ($xdata[$id] == $v) or ($_REQUEST["xfields_$id"] == $v)))?' selected="selected"':'').'>'.$v.'&nbsp;'.'</option>';
 								}
 								$val .= '</select>';
 						break;
@@ -91,7 +91,7 @@ function xfilter($params) {
 	// sort news
 	$orderAllowed = array('id_desc' => 'id desc', 'id_asc' => 'id asc', 'postdate_desc' => 'postdate desc', 'postdate_asc' => 'postdate asc', 'title_desc' => 'title desc', 'title_asc' => 'title asc');
 
-	if ($params['order'] && isset($orderAllowed[$params['order']])) {
+	if ($params['order'] and isset($orderAllowed[$params['order']])) {
 		$newsOrder = $orderAllowed[$params['order']];
 	} else {
 		$newsOrder = $orderAllowed['id desc'];
@@ -108,7 +108,7 @@ function xfilter($params) {
 	}
 
 	
-	if ($filter && $CurrentHandler['pluginName'] == 'news' ) {
+	if ($filter and $CurrentHandler['pluginName'] == 'news' ) {
 		 array_unshift($filter, 'AND'); 
 		 $filtered = news_showlist($filter, $paginationParams, $callingParams);
 	

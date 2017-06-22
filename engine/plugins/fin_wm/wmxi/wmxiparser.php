@@ -92,7 +92,7 @@ class WMXIParser {
 			if ($skip_attr) {
 				$result[$name] = isset($v["node"]) ? $this->Reindex($v["node"], $skip_attr) : $v["data"];
 			} else {
-				if (isset($v["@"]) && !$skip_attr) { $result[$name]["@"] = $v["@"]; }
+				if (isset($v["@"]) and !$skip_attr) { $result[$name]["@"] = $v["@"]; }
 				$result[$name]["data"] = isset($v["node"]) ? $this->Reindex($v["node"], $skip_attr) : $v["data"];
 			}
 		}

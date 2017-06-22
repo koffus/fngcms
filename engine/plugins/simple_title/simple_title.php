@@ -32,7 +32,7 @@ if ($action == false)
 		define('p1', $category_title);
 		define('p2', $news_title);
 		define('p3', $site_title);
-if ($_GET['altname'] == '' && $_GET['category'] <> '')
+if ($_GET['altname'] == '' and $_GET['category'] <> '')
 {
 $template['vars']['titles'] = str_replace(array('%1%','%2%','%3%'),array(p1,p2,p3),pluginGetVariable('simple_title','c_title'));
 echo $news_title;

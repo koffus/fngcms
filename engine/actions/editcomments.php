@@ -68,7 +68,7 @@ function editcomment() {
 
 			$mysql->query("UPDATE ".prefix."_comments SET mail=".db_squote($mail).", text=".db_squote($comment).", answer=".db_squote($content).", name=".db_squote($userROW['name'])." WHERE id=".db_squote($comid));
 
-			if ($content && $_REQUEST['send_notice'] && $mail) {
+			if ($content and $_REQUEST['send_notice'] and $mail) {
 				$row = $mysql->record("select * from ".prefix."_news where id=".db_squote($newsid));
 				$newsLink = News::generateLink($row, false, 0, true);
 				sendEmailMessage($mail, __('comanswer'), sprintf(__('notice'), $userROW['name'], $content, $newsLink), 'html');

@@ -33,8 +33,8 @@ class TitleNewsFilter extends NewsFilter {
 		
 		$title = secure_html($_REQUEST['titles']);
 		
-		if( isset($title) && !empty($title) ){
-			if( isset($newsid) && !empty($newsid) ){
+		if( isset($title) and !empty($title) ){
+			if( isset($newsid) and !empty($newsid) ){
 				$mysql->query('INSERT INTO '.prefix.'_simple_title_pro
 									(	title,
 										news_id

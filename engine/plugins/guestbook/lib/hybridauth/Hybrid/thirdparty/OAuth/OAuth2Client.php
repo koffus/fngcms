@@ -99,12 +99,12 @@ class OAuth2Client
 	public function authenticated()
 	{
 		if ( $this->access_token ){
-			if ( $this->token_info_url && $this->refresh_token ){
+			if ( $this->token_info_url and $this->refresh_token ){
 				// check if this access token has expired,
 				$tokeninfo = $this->tokenInfo( $this->access_token );
 
 				// if yes, access_token has expired, then ask for a new one
-				if( $tokeninfo && isset( $tokeninfo->error ) ){
+				if( $tokeninfo and isset( $tokeninfo->error ) ){
 					$response = $this->refreshToken( $this->refresh_token );
 
 					// if wrong response
@@ -128,7 +128,7 @@ class OAuth2Client
 	*/
 	public function api( $url, $method = "GET", $parameters = array() )
 	{
-		if ( strrpos($url, 'http://') !== 0 && strrpos($url, 'https://') !== 0 ) {
+		if ( strrpos($url, 'http://') !== 0 and strrpos($url, 'https://') !== 0 ) {
 			$url = $this->api_base_url . $url;
 		}
 
@@ -140,7 +140,7 @@ class OAuth2Client
 			case 'POST' : $response = $this->request( $url, $parameters, "POST" ); break;
 		}
 
-		if( $response && $this->decode_json ){
+		if( $response and $this->decode_json ){
 			return $this->response = json_decode( $response );
 		}
 

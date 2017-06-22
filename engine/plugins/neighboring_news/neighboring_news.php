@@ -34,7 +34,7 @@ class NeighboringNewsFilter extends NewsFilter
         $tpath = locatePluginTemplates(array('neighboring_news', 'next_news', 'previous_news'), 'neighboring_news', pluginGetVariable('neighboring_news', 'localSource'));
 
         // full_mode
-        if (pluginGetVariable('neighboring_news', 'full_mode') && $mode['style'] == 'full') {
+        if (pluginGetVariable('neighboring_news', 'full_mode') and $mode['style'] == 'full') {
 
             if (intval($SQLnews['catid']) != null) {
 
@@ -63,7 +63,7 @@ class NeighboringNewsFilter extends NewsFilter
                 if ($row['alt_name']) {
                     $tpl->template('next_news', $tpath['next_news']);
 
-                    if ($row['author_id'] && getPluginStatusActive('uprofile')) {
+                    if ($row['author_id'] and getPluginStatusActive('uprofile')) {
                         $author_link = checkLinkAvailable('uprofile', 'show') ?
                             generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])) :
                             generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));
@@ -95,7 +95,7 @@ class NeighboringNewsFilter extends NewsFilter
                 if ($row['alt_name']) {
                     $tpl->template('previous_news', $tpath['previous_news']);
 
-                    if ($row['author_id'] && getPluginStatusActive('uprofile')) {
+                    if ($row['author_id'] and getPluginStatusActive('uprofile')) {
                         $author_link = checkLinkAvailable('uprofile', 'show') ?
                             generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])) :
                             generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));
@@ -128,7 +128,7 @@ class NeighboringNewsFilter extends NewsFilter
             }
         } //full mode end
 
-        if (pluginGetVariable('neighboring_news', 'short_mode') && $mode['style'] == 'short') {
+        if (pluginGetVariable('neighboring_news', 'short_mode') and $mode['style'] == 'short') {
 
             if (intval($SQLnews['catid']) != null) {
 
@@ -167,7 +167,7 @@ class NeighboringNewsFilter extends NewsFilter
                 if ($row['alt_name']) {
                     $tpl->template('next_news', $tpath['next_news']);
 
-                    if ($row['author_id'] && getPluginStatusActive('uprofile')) {
+                    if ($row['author_id'] and getPluginStatusActive('uprofile')) {
                         $author_link = checkLinkAvailable('uprofile', 'show') ?
                             generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])) :
                             generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));
@@ -203,7 +203,7 @@ class NeighboringNewsFilter extends NewsFilter
                 if ($row['alt_name']) {
                     $tpl->template('previous_news', $tpath['previous_news']);
 
-                    if ($row['author_id'] && getPluginStatusActive('uprofile')) {
+                    if ($row['author_id'] and getPluginStatusActive('uprofile')) {
                         $author_link = checkLinkAvailable('uprofile', 'show') ?
                             generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])) :
                             generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));

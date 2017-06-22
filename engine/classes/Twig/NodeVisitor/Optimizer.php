@@ -56,7 +56,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  $this->enterOptimizeFor($node, $env);
  }
 
- if (!version_compare(phpversion(), '5.4.0RC1', '>=') && self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) && !$env->isStrictVariables() && !$env->hasExtension('sandbox')) {
+ if (!version_compare(phpversion(), '5.4.0RC1', '>=') and self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) and !$env->isStrictVariables() and !$env->hasExtension('sandbox')) {
  if ($this->inABody) {
  if (!$node instanceof Twig_Node_Expression) {
  if (get_class($node) !== 'Twig_Node') {
@@ -90,11 +90,11 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
 
  $node = $this->optimizePrintNode($node, $env);
 
- if (self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) && !$env->isStrictVariables() && !$env->hasExtension('sandbox')) {
+ if (self::OPTIMIZE_VAR_ACCESS === (self::OPTIMIZE_VAR_ACCESS & $this->optimizers) and !$env->isStrictVariables() and !$env->hasExtension('sandbox')) {
  if ($node instanceof Twig_Node_Body) {
  $this->inABody = false;
  } elseif ($this->inABody) {
- if (!$expression && get_class($node) !== 'Twig_Node' && $prependedNodes = array_shift($this->prependedNodes)) {
+ if (!$expression and get_class($node) !== 'Twig_Node' and $prependedNodes = array_shift($this->prependedNodes)) {
  $nodes = array();
  foreach (array_unique($prependedNodes) as $name) {
  $nodes[] = new Twig_Node_SetTemp($name, $node->getLine());
@@ -111,7 +111,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
 
  protected function optimizeVariables($node, $env)
  {
- if ('Twig_Node_Expression_Name' === get_class($node) && $node->isSimple()) {
+ if ('Twig_Node_Expression_Name' === get_class($node) and $node->isSimple()) {
  $this->prependedNodes[0][] = $node->getAttribute('name');
 
  return new Twig_Node_Expression_TempName($node->getAttribute('name'), $node->getLine());
@@ -156,7 +156,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  */
  protected function optimizeRawFilter($node, $env)
  {
- if ($node instanceof Twig_Node_Expression_Filter && 'raw' == $node->getNode('filter')->getAttribute('value')) {
+ if ($node instanceof Twig_Node_Expression_Filter and 'raw' == $node->getNode('filter')->getAttribute('value')) {
  return $node->getNode('node');
  }
 
@@ -183,7 +183,7 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  // when do we need to add the loop variable back?
 
  // the loop variable is referenced for the current loop
- elseif ($node instanceof Twig_Node_Expression_Name && 'loop' === $node->getAttribute('name')) {
+ elseif ($node instanceof Twig_Node_Expression_Name and 'loop' === $node->getAttribute('name')) {
  $this->addLoopToCurrent();
  }
 
@@ -193,18 +193,18 @@ class Twig_NodeVisitor_Optimizer implements Twig_NodeVisitorInterface
  }
 
  // include without the only attribute
- elseif ($node instanceof Twig_Node_Include && !$node->getAttribute('only')) {
+ elseif ($node instanceof Twig_Node_Include and !$node->getAttribute('only')) {
  $this->addLoopToAll();
  }
 
  // the loop variable is referenced via an attribute
  elseif ($node instanceof Twig_Node_Expression_GetAttr
- && (!$node->getNode('attribute') instanceof Twig_Node_Expression_Constant
+ and (!$node->getNode('attribute') instanceof Twig_Node_Expression_Constant
  or 'parent' === $node->getNode('attribute')->getAttribute('value')
  )
- && (true === $this->loops[0]->getAttribute('with_loop')
+ and (true === $this->loops[0]->getAttribute('with_loop')
  or ($node->getNode('node') instanceof Twig_Node_Expression_Name
- && 'loop' === $node->getNode('node')->getAttribute('name')
+ and 'loop' === $node->getNode('node')->getAttribute('name')
  )
  )
  ) {

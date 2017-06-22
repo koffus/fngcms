@@ -245,7 +245,7 @@ function msg_delete_submit()
 {
  global $userROW, $mysql, $template;
 
- if (is_array($userROW) && ($userROW['status'] == "1")) {
+ if (is_array($userROW) and ($userROW['status'] == "1")) {
  if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($_REQUEST['id']))))) {
  $template['vars']['mainblock'] = __('guestbook')['error_entry_notfound'];
  return;
@@ -272,17 +272,17 @@ function guestbook_list($params = array())
  $privatekey = pluginGetVariable('guestbook', 'private_key');
 
  // ADD notication
- if ((isset($params['act']) && $params['act'] == 'add') or (isset($_REQUEST['add']) && $_REQUEST['add'])) {
+ if ((isset($params['act']) and $params['act'] == 'add') or (isset($_REQUEST['add']) and $_REQUEST['add'])) {
  $success_add[] = (pluginGetVariable('guestbook', 'approve_msg')) ? __('guestbook')['success_add_wo_approve'] : __('guestbook')['success_add'];
  }
 
  // EDIT notication
- if ((isset($params['act']) && $params['act'] == 'upd') or (isset($_REQUEST['upd']) && $_REQUEST['upd'])) {
+ if ((isset($params['act']) and $params['act'] == 'upd') or (isset($_REQUEST['upd']) and $_REQUEST['upd'])) {
  $success_add[] = __('guestbook')['success_edit'];
  }
 
  // DELETE notication
- if ((isset($params['act']) && $params['act'] == 'del') or (isset($_REQUEST['del']) && $_REQUEST['del'])) {
+ if ((isset($params['act']) and $params['act'] == 'del') or (isset($_REQUEST['del']) and $_REQUEST['del'])) {
  $success_add[] = __('guestbook')['success_delete'];
  }
 
@@ -342,8 +342,8 @@ function guestbook_list($params = array())
  'smilies' => (pluginGetVariable('guestbook', 'usmilies')) ? Smilies('', 10) : "",
  'bbcodes' => (pluginGetVariable('guestbook', 'ubbcodes')) ? BBCodes() : "",
  'use_captcha' => (pluginGetVariable('guestbook', 'ecaptcha')),
- 'captcha' => (pluginGetVariable('guestbook', 'ecaptcha') && !(is_array($userROW))) ? recaptcha_get_html($publickey) : '',
- 'use_guests' => (!is_array($userROW) && !pluginGetVariable('guestbook', 'guests')),
+ 'captcha' => (pluginGetVariable('guestbook', 'ecaptcha') and !(is_array($userROW))) ? recaptcha_get_html($publickey) : '',
+ 'use_guests' => (!is_array($userROW) and !pluginGetVariable('guestbook', 'guests')),
  'fields' => $tEntries
  );
 
@@ -445,7 +445,7 @@ function guestbook_edit()
  $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');
 
  // admin permission is required to edit messages
- if (is_array($userROW) && $userROW['status'] == "1") {
+ if (is_array($userROW) and $userROW['status'] == "1") {
 
  // get fields
  $fdata = $mysql->select("SELECT * FROM " . prefix . "_guestbook_fields");
@@ -477,7 +477,7 @@ function guestbook_edit()
  }
 
  // Error notification
- $error = (isset($_REQUEST['error']) && $_REQUEST['error']) ? __('guestbook')['error_field_required'] : '';
+ $error = (isset($_REQUEST['error']) and $_REQUEST['error']) ? __('guestbook')['error_field_required'] : '';
 
  $tVars = array(
  'author' => $row['author'],
@@ -555,7 +555,7 @@ function guestbook_social()
  )
  );
 
- if (isset($_GET['provider']) && in_array($_GET['provider'], $providers)) {
+ if (isset($_GET['provider']) and in_array($_GET['provider'], $providers)) {
 
  $provider = $_GET['provider'];
  require_once($_SERVER['DOCUMENT_ROOT'] . '/engine/plugins/guestbook/lib/hybridauth/Hybrid/Auth.php');

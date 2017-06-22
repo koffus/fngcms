@@ -40,7 +40,7 @@ class Twitter extends AbstractAdapter
 
  parse_str($this->get($this->urlRequestToken, $params, false), $tokenInfo);
  
- if (count($tokenInfo) > 0 && isset($tokenInfo['oauth_token'])) {
+ if (count($tokenInfo) > 0 and isset($tokenInfo['oauth_token'])) {
  $this->token = $tokenInfo['oauth_token'];
  $this->tokenSecret = $tokenInfo['oauth_token_secret'];
  }
@@ -112,7 +112,7 @@ class Twitter extends AbstractAdapter
  {
  $result = false;
 
- if (isset($_GET['oauth_token']) && isset($_GET['oauth_verifier'])) {
+ if (isset($_GET['oauth_token']) and isset($_GET['oauth_verifier'])) {
 
  $this->token = $_GET['oauth_token'];
  $this->verifier = $_GET['oauth_verifier'];
@@ -132,7 +132,7 @@ class Twitter extends AbstractAdapter
 
  parse_str($this->get($this->urlAccessToken, $params, false), $tokenInfo);
 
- if (count($tokenInfo) > 0 && isset($tokenInfo['oauth_token'])) {
+ if (count($tokenInfo) > 0 and isset($tokenInfo['oauth_token'])) {
  $this->token = $tokenInfo['oauth_token'];
  $this->tokenSecret = $tokenInfo['oauth_token_secret'];
 

@@ -69,7 +69,7 @@ class Twig_Loader_NGCMS implements Twig_LoaderInterface
  $this->paths = array();
  foreach ($paths as $path) {
  	// Delete last '/' if provided
- 	if ((strlen($path) > 1) && (substr($path, -1) == '/')) {
+ 	if ((strlen($path) > 1) and (substr($path, -1) == '/')) {
  		$path = substr($path, 0, -1);
  	}
 
@@ -132,13 +132,13 @@ class Twig_Loader_NGCMS implements Twig_LoaderInterface
 	}
 
  	// Process REGEX conversion
-		if (isset($this->templateConversionRegex[$name]) && is_array($this->templateConversionRegex[$name])) {
+		if (isset($this->templateConversionRegex[$name]) and is_array($this->templateConversionRegex[$name])) {
 			$tconv = $this->templateConversionRegex[$name];
 			$content = preg_replace(array_keys($tconv), array_values($tconv), $content);
 		}
 
  	// Process static variable conversion
-		if (isset($this->templateConversion[$name]) && is_array($this->templateConversion[$name])) {
+		if (isset($this->templateConversion[$name]) and is_array($this->templateConversion[$name])) {
 			$tconv = $this->templateConversion[$name];
 			$content = str_replace(array_keys($tconv), array_values($tconv), $content);
 		}
@@ -219,7 +219,7 @@ class Twig_Loader_NGCMS implements Twig_LoaderInterface
  }
 
  	// Check for default content
- 	if (isset($this->defaultContent[$path.'/'.$name]) && $this->defaultContent[$path.'/'.$name])
+ 	if (isset($this->defaultContent[$path.'/'.$name]) and $this->defaultContent[$path.'/'.$name])
  		return $this->cache[$$name] = $path.'/'.$name;
 
  }

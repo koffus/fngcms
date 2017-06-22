@@ -56,19 +56,19 @@ function editform()
 		showlist();	return false; }
 	$id = intval($_REQUEST['id']);
 	$values = pluginGetVariable('re_stat', 'values');
-	if ($id != -1 && !is_array($values)) {
+	if ($id != -1 and !is_array($values)) {
 		msg(array('type' => 'danger', 'message' => 'В базе отсутствуют значения, редактировать нечего!'));
 		showlist();	return false; }
-	if ($id != -1 && !array_key_exists($id, $values)) {
+	if ($id != -1 and !array_key_exists($id, $values)) {
 		msg(array('type' => 'danger', 'message' => 'Ключ id='.$id.' отсутствует в базе'));
 		showlist(); return false; } 
 	$if_error = false; $idstat = 0; $code = '';
-	if (isset($_REQUEST['code']) && isset($_REQUEST['idstat'])){
+	if (isset($_REQUEST['code']) and isset($_REQUEST['idstat'])){
 		$code = secure_html(convert($_REQUEST['code']));
 		if (!$code) { 
 			msg(array('type' => 'danger', 'message' => 'Значение <b>код</b> не может быть пустым'));
 			$if_error = true; }
-		foreach ($values as $key => $row) if ($row['code'] === $code && $key != $id){
+		foreach ($values as $key => $row) if ($row['code'] === $code and $key != $id){
 			msg(array('type' => 'danger', 'message' => 'Такое значение <b>код</b> уже присутствует в списке'));
 			$if_error = true; }
 		if (!$if_error){
@@ -153,7 +153,7 @@ function ver_ver()
 {
 	global $mysql, $PLUGINS;
 	$versionbase = pluginGetVariable('re_stat', 'version');
-	if (isset($PLUGINS['config']['re_stat']) && !$versionbase) $versionbase = '0.01';
+	if (isset($PLUGINS['config']['re_stat']) and !$versionbase) $versionbase = '0.01';
 	else if (!$versionbase) {$versionbase = '0.02'; pluginSetVariable('re_stat', 'version', $versionbase); pluginsSaveConfig();}
 	switch ($versionbase) {
 	case '0.01':

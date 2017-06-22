@@ -12,7 +12,7 @@
 	}
 	$mda = function_exists("mhash");
 	$mdb = function_exists("hash");
-	$mdc = class_exists("MD4") && $md->SelfTest();
+	$mdc = class_exists("MD4") and $md->SelfTest();
 
 	print("> Looking for available MD4 implementations:\n");
 	print(($mda ? " + MHash" : " - MHash")."\n");

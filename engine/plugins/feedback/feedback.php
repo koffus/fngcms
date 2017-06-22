@@ -88,13 +88,13 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 
 	// XFields values from user's profile
 	$xfUserValues = array();
-	if (function_exists('xf_decode') && isset($userROW['xfields']) && ($userROW['xfields'] != ''))
+	if (function_exists('xf_decode') and isset($userROW['xfields']) and ($userROW['xfields'] != ''))
 		$xfUserValues = xf_decode($userROW['xfields']);
 
 	// Choose template to use
 	$tFile = feedback_locateTemplateFiles($frow['template']);
 /*
-	if ($frow['template'] && file_exists(root.'plugins/feedback/tpl/templates/'.$frow['template'].'.tpl')) {
+	if ($frow['template'] and file_exists(root.'plugins/feedback/tpl/templates/'.$frow['template'].'.tpl')) {
 		$tP = root.'plugins/feedback/tpl/templates/';
 		$tN = $frow['template'];
 	} else {
@@ -141,7 +141,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 		// Fill value
 		$setValue = '';
 
-		if ($mode && (!$fInfo['block'])) {
+		if ($mode and (!$fInfo['block'])) {
 			// FILLED EARLIER
 			$setValue = secure_html(($flagsUTF) ? $_REQUEST['fld_'.$fInfo['name']] : $_REQUEST['fld_'.$fInfo['name']]);
 		} else {
@@ -149,7 +149,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 			$setValue = secure_html($fInfo['default']);
 
 			// If 'by parameter' mode is set, check if this variable was passed in GET
-			if (($fInfo['auto'] == 1) && isset($_REQUEST['v_'.$fInfo['name']])) {
+			if (($fInfo['auto'] == 1) and isset($_REQUEST['v_'.$fInfo['name']])) {
 				$setValue = secure_html(($flagsUTF) ? $_REQUEST['v_'.$fInfo['name']] :$_REQUEST['v_'.$fInfo['name']]);
 			} else if ($fInfo['auto'] == 2) {
 				$setValue = secure_html($xfValues[$fInfo['name']]);
@@ -381,7 +381,7 @@ function plugin_feedback_post() {
 		}
 
 		// Check if required field is filled
-		if ($fInfo['required'] && (strlen($fieldValue) < 1)) {
+		if ($fInfo['required'] and (strlen($fieldValue) < 1)) {
 			// Don't allow to post request
 			plugin_feedback_showScreen(1, str_replace(array('{name}', '{title}'), array($fName, $fInfo['title']), __('feedback:sform.reqfld')));
 			return;
@@ -481,11 +481,11 @@ function plugin_feedback_post() {
 		$eSendList = array();
 		foreach ($fData as $fName => $fInfo) {
 			// FIELD TYPE == Email + NOTIFICATION REQUEST is SET
-			if (($fInfo['type'] == 'email') && ($fInfo['template'] != '')) {
+			if (($fInfo['type'] == 'email') and ($fInfo['template'] != '')) {
 				$tfiles = feedback_locateTemplateFiles($fInfo['template'], $flagHTML);
 
 				$tfn = $tfiles['mail']['file'];
-				if ((filter_var($fieldValues[$fName], FILTER_VALIDATE_EMAIL) !== false) && file_exists($tfn)) {
+				if ((filter_var($fieldValues[$fName], FILTER_VALIDATE_EMAIL) !== false) and file_exists($tfn)) {
 					$eSendList []= $fieldValues[$fName];
 					$xtu = $twig->loadTemplate($tfn);
 					// Render USER email body
@@ -508,7 +508,7 @@ function plugin_feedback_post() {
 
 	// USER notification
 	// - DONE via plugin
-	if ($isSentViaPlugin && ($tResult['redirect'] or $tResult['notify.raw'] or $tResult['notify.template'])) {
+	if ($isSentViaPlugin and ($tResult['redirect'] or $tResult['notify.raw'] or $tResult['notify.template'])) {
 		if ($tResult['redirect']) {
 			$SUPRESS_TEMPLATE_SHOW = true;
 			$SUPRESS_MAINBLOCK_SHOW = true;
@@ -528,7 +528,7 @@ function plugin_feedback_post() {
 		}
 	}
 
-	$notifyMessage = ($isSentViaPlugin && $tResult['notify.msg'])?$tResult['notify.msg']:str_replace('{ecount}', $mailCount, __('feedback:confirm.message'));
+	$notifyMessage = ($isSentViaPlugin and $tResult['notify.msg'])?$tResult['notify.msg']:str_replace('{ecount}', $mailCount, __('feedback:confirm.message'));
 
 	// Prepare user's notification
 	$xt = $twig->loadTemplate($tpath['site.notify'].'site.notify.tpl');

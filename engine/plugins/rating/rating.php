@@ -26,7 +26,7 @@ function plugin_rating_update(){
 	}
 
 	// Check if we feet "register only" limitation
-	if (pluginGetVariable('rating','regonly') && !is_array($userROW)) {
+	if (pluginGetVariable('rating','regonly') and !is_array($userROW)) {
 		return msg(array('type' => 'danger', 'message' => __('rating_only_reg')), 0 , 2);
 	}
 
@@ -72,7 +72,7 @@ function rating_show($newsID, $rating, $votes){
 		'votes' => $votes,
 		);
 
-	if ((isset($_COOKIE['rating'.$newsID]) && $_COOKIE['rating'.$newsID]) or (pluginGetVariable('rating','regonly') && !is_array($userROW))) {
+	if ((isset($_COOKIE['rating'.$newsID]) and $_COOKIE['rating'.$newsID]) or (pluginGetVariable('rating','regonly') and !is_array($userROW))) {
 		// Show
 		$templateName = 'rating';
 		$xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
