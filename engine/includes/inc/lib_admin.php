@@ -625,7 +625,7 @@ function addNews($mode = array()){
 		$mysql->query("update ".prefix."_news set num_images = ".intval($numImages)." where id = ".db_squote($id));
 	}
 
-	executeActionHandler('addnews_', $id);
+	executeActionHandler('addnews_');
 
 	$msgInfo = array('title' => __('addnews')['msgo_added']);
 	if (!$mode['no.editurl']) {
@@ -866,7 +866,7 @@ function editNews($mode = array()) {
 	// Dummy parameter for API call
 	$tvars = array();
 
-	executeActionHandler('editnews', $id);
+	executeActionHandler('editnews');
 
 	$pluginNoError = 1;
 	if (is_array($PFILTERS['news']))

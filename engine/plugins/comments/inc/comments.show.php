@@ -204,7 +204,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 				$v->showComments($newsID, $row, $comnum, $tvars);
 
 		// run OLD-STYLE interceptors
-		executeActionHandler('comments', $row);
+		executeActionHandler('comments');
 
 		// Show template
 		$tpl -> vars($templateName, $tvars);
@@ -290,7 +290,7 @@ function comments_showform($newsID, $callingParams = array()){
 			$v->addCommentsForm($newsID, $tvars);
 
 	// RUN interceptors ( OLD-style )
-	executeActionHandler('comments_form', $row);
+	executeActionHandler('comments_form');
 
 	$tpl -> vars($templateName, $tvars);
 	$output = $tpl -> show($templateName);

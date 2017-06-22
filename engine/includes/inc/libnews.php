@@ -794,7 +794,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
             $tvars['regx']["'\[edit-news\].*?\[/edit-news\]'si"] = "";
             $tvars['regx']["'\[del-news\].*?\[/del-news\]'si"] = "";
         }
-        //executeActionHandler('news_short', '', $row, &$tvars);
+        //executeActionHandler('news_short');
 
         // Execute filters
         if (is_array($PFILTERS['news'])) {

@@ -81,7 +81,7 @@ function showStaticPage($params)
             $v->showStatic($row['id'], $row, $tvars, array());
         }
 
-    executeActionHandler('static', $row);
+    executeActionHandler('static');
 
     if ($row['template']) {
         $templateName = 'static/' . $row['template'];
