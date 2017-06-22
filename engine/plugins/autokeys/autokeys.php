@@ -30,11 +30,11 @@ class autoKeysNewsFilter extends NewsFilter {
 	function editNewsForm($newsID, $SQLold, &$tvars) {
 		global $twig;
 
-		$extends = 'js'; //pluginGetVariable($plugin,'extends') ? pluginGetVariable($plugin,'extends') : 'js';
+		$extends = 'js'; //$extends = pluginGetVariable($plugin,'extends') ? pluginGetVariable($plugin,'extends') : 'js';
 
 		$tpath = locatePluginTemplates(array('editnews'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
 		$xt = $twig->loadTemplate($tpath['editnews'].'/editnews.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+        $tvars['extends']['block'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
 			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_edit')))),
 			);

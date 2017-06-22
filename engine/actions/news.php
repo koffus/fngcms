@@ -106,14 +106,13 @@ function editNewsForm() {
 		'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
 		'approve' => $row['approve'],
 		'token'				=> genUToken('admin.news.edit'),
-		'extends' => array(
-			'script' => '',
-			'style' => '',
+        'extends' => array(
 			'block' => array(
-				'main' => '',
-				'additional' => '',
-				'owner' => array(
-					),
+				'main' => [],
+				'additional' => [],
+				'owner' => [],
+				'js' => [],
+				'css' => [],
 				),
 			),
 		'flags'				=> array(
@@ -213,7 +212,6 @@ function editNewsForm() {
 	}
 	$tVars['attachEntries'] = $attachEntries;
 	$tVars['attachCount'] = $attachNumber;
-	$tVars['extends'] = '';
 
 	if(getIsSet($row['xfields']))
 		executeActionHandler('editnews_entry', $row['xfields'], '');
@@ -653,6 +651,15 @@ function addNewsForm($retry = ''){
 		'smilies' => ($config['use_smilies'])?Smilies('', 20, 'currentInputAreaID'):'',
 		'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
 		'token'				=> genUToken('admin.news.add'),
+        'extends' => array(
+			'block' => array(
+				'main' => [],
+				'additional' => [],
+				'owner' => [],
+				'js' => [],
+				'css' => [],
+				),
+			),
 		'flags'				=> array(
 			'mainpage' => $perm['add.mainpage'] && $perm['personal.mainpage'],
 			'favorite' => $perm['add.favorite'] && $perm['personal.favorite'],

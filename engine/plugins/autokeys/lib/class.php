@@ -2,19 +2,19 @@
 
 class autokeyword {
 
-	var $contents;
-	var $keywords;
-	var $wordLengthMin;
-	var $wordOccuredMin;
-	var $wordLengthMax;
-	var $wordGoodArray;
-	var $wordBlockArray;
-	var $wordMaxCount;
-	var $wordB;
-	var $wordAddTitle;
-	var $wordTitle;
+	private $contents;
+	private $keywords;
+	private $wordLengthMin;
+	private $wordOccuredMin;
+	private $wordLengthMax;
+	private $wordGoodArray;
+	private $wordBlockArray;
+	private $wordMaxCount;
+	private $wordB;
+	private $wordAddTitle;
+	private $wordTitle;
 
-	function __construct($params) {
+	public function __construct($params) {
 		$this->wordGoodArray = array();
 		$this->wordBlockArray = array();
 		$this->wordLengthMin = $params['min_word_length'];
@@ -37,7 +37,7 @@ class autokeyword {
 		$this->contents = $this->replace_chars($params['content']);
 	}
 
-	function replace_chars($content) {
+	public function replace_chars($content) {
 		$parse = new parse();
 		$content = mb_strtolower($content, 'UTF-8');
 		$content = $parse->bbcodes($content);
@@ -52,7 +52,7 @@ class autokeyword {
 		return $content;
 	}
 
-	function parse_words() {
+	public function parse_words() {
 		mb_regex_encoding( 'utf-8' );
 		$content = mb_split( '\s+', $this->contents );
 		$content = array_diff( $content, $this->wordBlockArray );
