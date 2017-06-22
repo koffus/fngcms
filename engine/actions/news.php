@@ -214,7 +214,7 @@ function editNewsForm() {
 	$tVars['attachCount'] = $attachNumber;
 
 	if(getIsSet($row['xfields']))
-		executeActionHandler('editnews_entry', $row['xfields'], '');
+		executeActionHandler('editnews_entry');
 	executeActionHandler('editnews_form');
 
 	if (is_array($PFILTERS['news']))

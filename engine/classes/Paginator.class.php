@@ -42,6 +42,7 @@ class Paginator
             $prev = $param['current'] - 1;
             $tvars['regx']["'\[prev-link\](.*?)\[/prev-link\]'si"] = str_replace('%page%', "$1", str_replace('%link%', str_replace('%page%', $prev, $param['url']), $nav['prevlink']));
         } else {
+            $prev = 0;
             $tvars['regx']["'\[prev-link\](.*?)\[/prev-link\]'si"] = '';
             $no_prev = true;
         }

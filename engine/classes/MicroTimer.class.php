@@ -14,10 +14,13 @@ class MicroTimer
 
     use Singleton;
 
+    private $events = array();
+    private $script_start = 0;
+    private $last_event = 0;
+
     // Constructor
     protected function __construct()
     {
-        $this->events = array();
     }
 
     public function start()

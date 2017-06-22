@@ -7,82 +7,90 @@
 // Author: Vitaly Ponomarev
 //
 
-class PermissionRuleManager {
-	private $isLoaded = false;
-	private $rules = array();
+class PermissionRuleManager
+{
+    private $isLoaded = false;
+    private $rules = array();
 
-	function load() {
-		if (is_file(confroot.'perm.rules.php')) {
-			// Try to load it
-			include confroot.'perm.rules.php';
+    function load()
+    {
+        if (is_file(confroot . 'perm.rules.php')) {
+            // Try to load it
+            include confroot . 'perm.rules.php';
 
-			// Update GLOBAL variable $PERM
-			if (isset($permRules)) {
-				$this->rules = $permRules;
-				$this->isLoaded = true;
-				return true;
-			}
-		}
-		return false;
-	}
+            // Update GLOBAL variable $PERM
+            if (isset($permRules)) {
+                $this->rules = $permRules;
+                $this->isLoaded = true;
+                return true;
+            }
+        }
+        return false;
+    }
 
-	function save() {
-		if (!$this->isLoaded)
-			return false;
+    function save()
+    {
+        if (!$this->isLoaded)
+            return false;
 
-		$prData = "<?php\n".'$permRules = '.var_export($this->$rules, true)."\n;?>";
+        $prData = "<?php\n" . '$permRules = ' . var_export($this->$rules, true) . "\n;?>";
 
-		// Try to save config
-		$fcHandler = @fopen(confroot.'perm.rules.php', 'w');
-		if ($fcHandler) {
-			fwrite($fcHandler, $prData);
-			fclose($fcHandler);
-			return true;
-		}
-		return false;
-	}
+        // Try to save config
+        $fcHandler = @fopen(confroot . 'perm.rules.php', 'w');
+        if ($fcHandler) {
+            fwrite($fcHandler, $prData);
+            fclose($fcHandler);
+            return true;
+        }
+        return false;
+    }
 
-	function getPluginTree($plugin) {
-		if (!$this->isLoaded) {
-			return false;
-		}
-		return $this->rules[$plugin];
-	}
+    function getPluginTree($plugin)
+    {
+        if (!$this->isLoaded) {
+            return false;
+        }
+        return $this->rules[$plugin];
+    }
 
-	function setPluginTree($plugin, $tree) {
-		if (!$this->isLoaded) {
-			return false;
-		}
-		$this->rules[$plugin] = $tree;
-		return true;
-	}
+    function setPluginTree($plugin, $tree)
+    {
+        if (!$this->isLoaded) {
+            return false;
+        }
+        $this->rules[$plugin] = $tree;
+        return true;
+    }
 
-	function removePlugin($plugin) {
-		if (!$this->isLoaded or ($plugin == '#admin')) {
-			return false;
-		}
-		if (isset($this->rules[$plugin]))
-			unset($this->rules[$plugin]);
+    function removePlugin($plugin)
+    {
+        if (!$this->isLoaded or ($plugin == '#admin')) {
+            return false;
+        }
+        if (isset($this->rules[$plugin]))
+            unset($this->rules[$plugin]);
 
-		return true;
-	}
+        return true;
+    }
 
-	function listPlugins() {
-		if (!$this->isLoaded) {
-			return false;
-		}
+    function listPlugins()
+    {
+        if (!$this->isLoaded) {
+            return false;
+        }
 
-		$x = array();
-		foreach ($this->rules as $k => $v)
-			if ($k != '#admin')
-				$x []= $k;
+        $x = array();
+        foreach ($this->rules as $k => $v)
+            if ($k != '#admin')
+                $x [] = $k;
 
-		return $x;
-	}
+        return $x;
+    }
 
-	function getList() {
-		if (!$this->isLoaded)
-			return false;
-		return $this->rules;
-	}
+    function getList()
+    {
+        if (!$this->isLoaded)
+            return false;
+        return $this->rules;
+    }
 }

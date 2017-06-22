@@ -7,83 +7,98 @@
 // Author: Vitaly Ponomarev
 //
 
-class CacheClassMemcached extends CacheClassAbstract {
-	public $cache;
-	public $params;
-	function __construct($params = array()) {
-		$this->cache = new Memcached();
+class CacheClassMemcached extends CacheClassAbstract
+{
+    public $cache;
+    public $params;
 
-		if (!is_array($params))
-			$params = array();
+    function __construct($params = array())
+    {
+        $this->cache = new Memcached();
 
-		if (!isset($params['prefix']))
-			$params['prefix'] = 'ng';
+        if (!is_array($params))
+            $params = array();
 
-		if (!isset($params['expiration']))
-			$params['expiration'] = 60;
+        if (!isset($params['prefix']))
+            $params['prefix'] = 'ng';
 
-		$this->params = $params;
-	}
+        if (!isset($params['expiration']))
+            $params['expiration'] = 60;
 
-	function connect($host, $port) {
-		return $this->cache->addServer($host, $port);
-	}
+        $this->params = $params;
+    }
 
-	function get($plugin, $key, $expire) {
-		return $this->cache->get($this->params['prefix'].':'.$plugin.':'.$key);
-	}
+    function connect($host, $port)
+    {
+        return $this->cache->addServer($host, $port);
+    }
 
-	function getMulti($plugin, $keyList, $expire) {
-		$keyResult = array();
-		if (!is_array($keyList))
-			return false;
+    function get($plugin, $key, $expire)
+    {
+        return $this->cache->get($this->params['prefix'] . ':' . $plugin . ':' . $key);
+    }
 
-		foreach ($keyList as $k)
-			$keyResult[]= $this->params['prefix'].':'.$plugin.':'.$k;
+    function getMulti($plugin, $keyList, $expire)
+    {
+        $keyResult = array();
+        if (!is_array($keyList))
+            return false;
 
-		return $this->cache->getMulti($keyResult);
-	}
+        foreach ($keyList as $k)
+            $keyResult[] = $this->params['prefix'] . ':' . $plugin . ':' . $k;
 
-	function set($plugin, $key, $value, $expiration = -1) {
-		return $this->cache->set($this->params['prefix'].':'.$plugin.':'.$key, $value, ($expiration>=0)?$expiration:$this->params['expiration']);
-	}
+        return $this->cache->getMulti($keyResult);
+    }
 
-	function setMulti($plugin, $keyList, $expiration = 0) {
-		$keyResult = array();
-		if (!is_array($keyList))
-			return false;
+    function set($plugin, $key, $value, $expiration = -1)
+    {
+        return $this->cache->set($this->params['prefix'] . ':' . $plugin . ':' . $key, $value, ($expiration >= 0) ? $expiration : $this->params['expiration']);
+    }
 
-		foreach ($keyList as $k => $v)
-			$keyResult[$this->params['prefix'].':'.$plugin.':'.$k] = $v;
+    function setMulti($plugin, $keyList, $expiration = 0)
+    {
+        $keyResult = array();
+        if (!is_array($keyList))
+            return false;
 
-		return $this->cache->setMulti($keyResult, ($expiration>=0)?$expiration:$this->params['expiration']);
-	}
+        foreach ($keyList as $k => $v)
+            $keyResult[$this->params['prefix'] . ':' . $plugin . ':' . $k] = $v;
 
-	function getResultCode() {
-		return $this->cache->getResultCode();
-	}
+        return $this->cache->setMulti($keyResult, ($expiration >= 0) ? $expiration : $this->params['expiration']);
+    }
 
-	function getResultMessage() {
-		return $this->cache->getResultMessage();
-	}
+    function getResultCode()
+    {
+        return $this->cache->getResultCode();
+    }
 
-	function getResult() {
-		return array($this->cache->getResultCode(), $this->cache->getResultMessage());
-	}
+    function getResultMessage()
+    {
+        return $this->cache->getResultMessage();
+    }
 
-	function touch($plugin, $key, $expiration) {
-		return $this->cache->touch($this->params['prefix'].':'.$plugin.':'.$key, $value, $expiration);
-	}
+    function getResult()
+    {
+        return array($this->cache->getResultCode(), $this->cache->getResultMessage());
+    }
 
-	function increment($plugin, $key, $offset = 1) {
-			return $this->cache->increment($this->params['prefix'].':'.$plugin.':'.$key, $offset);
-	}
+    function touch($plugin, $key, $expiration)
+    {
+        return $this->cache->touch($this->params['prefix'] . ':' . $plugin . ':' . $key, $value, $expiration);
+    }
 
-	function decrement($plugin, $key, $offset = 1) {
-		return $this->cache->decrement($this->params['prefix'].':'.$plugin.':'.$key, $offset);
-	}
+    function increment($plugin, $key, $offset = 1)
+    {
+        return $this->cache->increment($this->params['prefix'] . ':' . $plugin . ':' . $key, $offset);
+    }
 
-	function del($plugin, $key) {
-		return $this->cache->del($this->params['prefix'].':'.$plugin.':'.$key);
-	}
+    function decrement($plugin, $key, $offset = 1)
+    {
+        return $this->cache->decrement($this->params['prefix'] . ':' . $plugin . ':' . $key, $offset);
+    }
+
+    function del($plugin, $key)
+    {
+        return $this->cache->del($this->params['prefix'] . ':' . $plugin . ':' . $key);
+    }
 }

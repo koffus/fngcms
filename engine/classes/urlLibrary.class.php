@@ -23,103 +23,112 @@
 		'descr'			= description
 
 */
-class urlLibrary {
 
-	// Constructor
-	function __construct() {
-		global $config;
+class urlLibrary
+{
 
-		$this->CMD = array();
-		$this->configLoaded = false;
-		$this->fatalError = false;
-		$this->configFileName = confroot . 'urlconf.php';
-	}
+    // Constructor
+    function __construct()
+    {
+        global $config;
 
-	// Load config from DISK
-	function loadConfig(){
-		// Check if config already loaded
-		if ($this->configLoaded) {
-			return true;
-		}
+        $this->CMD = array();
+        $this->configLoaded = false;
+        $this->fatalError = false;
+        $this->configFileName = confroot . 'urlconf.php';
+    }
 
-		// Try to read config file
-		if (is_file($this->configFileName)) {
-			// Include REC
-			include $this->configFileName;
-			if (!isset($urlLibrary)) {
-				$this->fatalError = 1;
-				return false;
-			}
-			$this->CMD = $urlLibrary;
-		}
-		$this->configLoaded = true;
-		return true;
-	}
+    // Load config from DISK
+    function loadConfig()
+    {
+        // Check if config already loaded
+        if ($this->configLoaded) {
+            return true;
+        }
 
-	// Save config to DISK
-	function saveConfig(){
-		// No save if config file is not loaded
-		if (!$this->configLoaded)
-			return false;
+        // Try to read config file
+        if (is_file($this->configFileName)) {
+            // Include REC
+            include $this->configFileName;
+            if (!isset($urlLibrary)) {
+                $this->fatalError = 1;
+                return false;
+            }
+            $this->CMD = $urlLibrary;
+        }
+        $this->configLoaded = true;
+        return true;
+    }
 
-		// Try to write config file
-		if (($f = fopen($this->configFileName, 'w')) === FALSE) {
-			// Error
-			$this->fatalError = true;
-			return false;
-		}
+    // Save config to DISK
+    function saveConfig()
+    {
+        // No save if config file is not loaded
+        if (!$this->configLoaded)
+            return false;
 
-		fwrite($f, '<?php'."\n".'$urlLibrary = '.var_export($this->CMD, true).';');
-		fclose($f);
-		return true;
-	}
+        // Try to write config file
+        if (($f = fopen($this->configFileName, 'w')) === FALSE) {
+            // Error
+            $this->fatalError = true;
+            return false;
+        }
 
-	// Register supported commands
-	function registerCommand($plugin, $cmd, $params){
-		if (!$this->loadConfig()) {
-			return false;
-		}
+        fwrite($f, '<?php' . "\n" . '$urlLibrary = ' . var_export($this->CMD, true) . ';');
+        fclose($f);
+        return true;
+    }
 
-		$this->CMD[$plugin][$cmd] = $params;
-		return true;
-	}
+    // Register supported commands
+    function registerCommand($plugin, $cmd, $params)
+    {
+        if (!$this->loadConfig()) {
+            return false;
+        }
 
-	// Remove recently registered command
-	function removeCommand($plugin, $cmd){
-		if (!$this->loadConfig()) {
-			return false;
-		}
+        $this->CMD[$plugin][$cmd] = $params;
+        return true;
+    }
 
-		// Check if command exists
-		if (isset($this->CMD[$plugin][$cmd])) {
-			unset($this->CMD[$plugin][$cmd]);
+    // Remove recently registered command
+    function removeCommand($plugin, $cmd)
+    {
+        if (!$this->loadConfig()) {
+            return false;
+        }
 
-			// Check if there're no more commands for this plugin
-			if (is_array($this->CMD[$plugin]) && (!count($this->CMD[$plugin]))) {
-				unset($this->CMD[$plugin]);
-			}
-		}
-		return true;
-	}
+        // Check if command exists
+        if (isset($this->CMD[$plugin][$cmd])) {
+            unset($this->CMD[$plugin][$cmd]);
 
-	// Fetch command data
-	function fetchCommand($plugin, $cmd) {
-		return isset($this->CMD[$plugin][$cmd])?$this->CMD[$plugin][$cmd]:false;
-	}
+            // Check if there're no more commands for this plugin
+            if (is_array($this->CMD[$plugin]) && (!count($this->CMD[$plugin]))) {
+                unset($this->CMD[$plugin]);
+            }
+        }
+        return true;
+    }
 
-	// Extract line with most matching language
-	function extractLangRec($data, $pl = '') {
-		global $config;
+    // Fetch command data
+    function fetchCommand($plugin, $cmd)
+    {
+        return isset($this->CMD[$plugin][$cmd]) ? $this->CMD[$plugin][$cmd] : false;
+    }
 
-		if (!is_array($data))
-			return false;
+    // Extract line with most matching language
+    function extractLangRec($data, $pl = '')
+    {
+        global $config;
 
-		if ($pl == '')
-			$pl = $config['default_lang'];
+        if (!is_array($data))
+            return false;
 
-		if (isset($data[$pl]))
-			return $data[$pl];
+        if ($pl == '')
+            $pl = $config['default_lang'];
 
-		return isset($data['english'])?$data['english']:$data[0];
-	}
+        if (isset($data[$pl]))
+            return $data[$pl];
+
+        return isset($data['english']) ? $data['english'] : $data[0];
+    }
 }
