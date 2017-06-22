@@ -103,8 +103,7 @@
 
 */
 
-<<<<<<< HEAD:engine/classes/urlHandler.class.php
-class urlHandler
+class UrlHandler
 {
 
     // Constructor
@@ -1016,4 +1015,4 @@ class urlHandler {
 				(count($uparams)?'?'.join('&'.($intLink?'amp;':''), $uparams):'');
 	}
 }
->>>>>>> 793d0851bfffaab3c66f4904ba33b976b2e08ee8:engine/classes/UrlHandler.class.php
+
