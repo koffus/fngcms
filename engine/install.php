@@ -138,7 +138,7 @@ if (!file_exists($toinc)) {
 Lang::load('install');
 Lang::load('extra-config', 'admin');
 
-$tpl = new tpl;
+$tpl = new Tpl;
 
 // Determine current admin working directory
 list($adminDirName) = array_slice($ADN = preg_split('/(\\\|\/)/', root, -1, PREG_SPLIT_NO_EMPTY), -1, 1);

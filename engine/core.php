@@ -214,8 +214,8 @@ $UHANDLER = new urlHandler();
 $UHANDLER->loadConfig();
 
 // ** Other libraries
-$parse = new parse;
-$tpl = new tpl;
+$parse = new Parse;
+$tpl = new Tpl;
 $ip = checkIP();
 
 // ** Load configuration file
