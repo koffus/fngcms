@@ -2,7 +2,7 @@
 
 //
 // Copyright (C) 2006-2017 Next Generation CMS (http://ngcms.ru/)
-// Name: paginator.class.php
+// Name: Paginator.class.php
 // Description: Paginator class
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //

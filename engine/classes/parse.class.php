@@ -7,7 +7,7 @@
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
-class parse {
+class Parse {
 	function slashes($content) {
 		return (get_magic_quotes_gpc()) ? $content : addslashes($content);
 	}

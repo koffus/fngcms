@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: permissionRuleManager.class.php
-// Description: permissionRuleManager
+// Name: PermissionRuleManager.class.php
+// Description: PermissionRuleManager
 // Author: Vitaly Ponomarev
 //
 
-class permissionRuleManager {
+class PermissionRuleManager {
 	private $isLoaded = false;
 	private $rules = array();
 

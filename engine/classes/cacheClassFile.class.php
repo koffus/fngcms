@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
-// Name: cacheClassFile.class.php
+// Name: CacheClassFile.class.php
 // Description: Cache manager
 // Author: Vitaly Ponomarev
 //
 
-class cacheClassFile extends cacheClassAbstract {
+class CacheClassFile extends CacheClassAbstract {
 	function get($plugin, $key, $expire = -1) {
 		// Default expiration time = 120 sec
 		if ($expire < 0)

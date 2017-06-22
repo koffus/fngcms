@@ -247,7 +247,7 @@ function admCategoriesRPCmodify($params) {
 
 			// Delete attached files (if any)
 			if ($row['image_id']) {
-				$fmanager = new file_managment();
+				$fmanager = new FileManagment();
 				$fmanager->file_delete(array('type' => 'image', 'id' => $row['image_id']));
 			}
 

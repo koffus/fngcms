@@ -167,8 +167,8 @@ function admCategoryAdd() {
 	$mysql->query("insert into ".prefix."_category (".join(", ", array_keys($SQLout)).") values (".join(", ", array_values($SQLout)).")");
 	$rowID = $mysql->record("select LAST_INSERT_ID() as id");
 
-	$fmanager = new file_managment();
-	$imanager = new image_managment();
+	$fmanager = new FileManagment();
+	$imanager = new ImageManagment();
 
 	// Check if new image was attached
 	if (isset($_FILES) && isset($_FILES['image']) && is_array($_FILES['image']) && isset($_FILES['image']['error']) && ($_FILES['image']['error'] == 0)) {
@@ -360,8 +360,8 @@ function admCategoryEdit(){
 		$SQL['keywords']	= $_REQUEST['keywords'] ? secure_html($_REQUEST['keywords']) : '';
 	}
 
-	$fmanager = new file_managment();
-	$imanager = new image_managment();
+	$fmanager = new FileManagment();
+	$imanager = new ImageManagment();
 
 	// Check is existent image should be deleted
 	if (isset($_POST['image_del']) && $_POST['image_del'] && ($SQLold['image_id'])) {

@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
-// Name: cacheClassAbstract.class.php
+// Name: CacheClassAbstract.class.php
 // Description: Cache manager
 // Author: Vitaly Ponomarev
 //
 
-class cacheClassAbstract {
+class CacheClassAbstract {
 	function get($plugin, $key, $expire = -1) 			{	return false;	}
 	function set($plugin, $key, $value, $expire = -1)	{	return false;	}
 	function del($plugin, $key)							{	return false;	}

@@ -1,6 +1,6 @@
 <?php
 
-class captcha {
+class Captcha {
 
 	var $width	= 85;
 	var $height	= 25;

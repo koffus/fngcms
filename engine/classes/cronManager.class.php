@@ -10,7 +10,7 @@
 class CronManager
 {
     // Configuration parameters
-    var $config;
+    public $config;
 
     // Constructor
     function __construct()

@@ -19,8 +19,8 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 	global $mysql, $config, $DSlist;
 	//print "<pre>".var_export($_REQUEST, true)."</pre>";
 	// Init file/image processing libraries
-	$fmanager = new file_managment();
-	$imanager = new image_managment();
+	$fmanager = new FileManagment();
+	$imanager = new ImageManagment();
 
 	// Select xf group name
 	$xfGroupName = '';

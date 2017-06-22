@@ -72,7 +72,7 @@ function admConfigurationTestMemcached($params)
     }
 
     // Connect to Memcached
-    $cacheTest = new cacheClassMemcached(array('prefix' => $params['prefix']));
+    $cacheTest = new CacheClassMemcached(array('prefix' => $params['prefix']));
     $cacheTest->connect($params['ip'], $params['port']);
 
     // Try to set some value

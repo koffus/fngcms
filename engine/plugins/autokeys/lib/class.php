@@ -38,7 +38,7 @@ class autokeyword {
 	}
 
 	public function replace_chars($content) {
-		$parse = new parse();
+		$parse = new Parse();
 		$content = mb_strtolower($content, 'UTF-8');
 		$content = $parse->bbcodes($content);
 		if( $this->wordB )

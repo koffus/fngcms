@@ -307,8 +307,8 @@ function uprofile_editApply(){
 		// Delete an avatar if user already has it
 		uprofile_manageDelete('avatar', $currentUser['id']);
 
-		$fmanage = new file_managment();
-		$imanage = new image_managment();
+		$fmanage = new FileManagment();
+		$imanage = new ImageManagment();
 		$up = $fmanage->file_upload(array('type' => 'avatar', 'http_var' => 'newavatar', 'replace' => 1, 'manualfile' => $currentUser['id'].'.'.strtolower($_FILES['newavatar']['name'])));
 
 		if (is_array($up)) {
@@ -340,8 +340,8 @@ function uprofile_editApply(){
 		// Delete a photo if user already has it
 		uprofile_manageDelete('photo', $currentUser['id']);
 
-		$fmanage = new file_managment();
-		$imanage = new image_managment();
+		$fmanage = new FileManagment();
+		$imanage = new ImageManagment();
 		$up = $fmanage->file_upload(array('type' => 'photo', 'http_var' => 'newphoto', 'replace' => 1, 'manualfile' => $currentUser['id'].'.'.strtolower($_FILES['newphoto']['name'])));
 		if (is_array($up)) {
 			// Now write info about image into DB
@@ -426,7 +426,7 @@ function uprofile_manageDelete($type, $userID){
 	// Search for avatar record in mySQL table
 	if (is_array($imageRow = $mysql->record("select * from ".prefix."_images where owner_id = ".$userID." and category = ".($type=='avatar'?1:2)))) {
 		// Info was found in SQL table
-		$fmanager = new file_managment();
+		$fmanager = new FileManagment();
 		$fmanager->file_delete(array('type' => $type, 'id' => $imageRow['id']));
 		//unlink(avatars_dir.$imageRow['name']);
 	} else if ($uRow[$type]) {

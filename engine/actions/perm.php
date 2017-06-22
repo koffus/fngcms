@@ -14,7 +14,7 @@ Lang::load('perm', 'admin');
 
 @include_once root.'includes/inc/extrainst.inc.php';
 
-$pManager = new permissionRuleManager();
+$pManager = new PermissionRuleManager();
 $pManager->load();
 
 // Preconfigure list of groups from global group list

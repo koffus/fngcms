@@ -29,7 +29,7 @@ function plugin_gmanager_main($params)
 		}
 	}
 	
-	$fmanager = new file_managment();
+	$fmanager = new FileManagment();
 
 	$tpath = locatePluginTemplates(array('main', 'main.row', 'main.cell'), 'gmanager', pluginGetVariable('gmanager', 'locate_tpl'));
 	$tpl_url = $tpath['url:main'];
@@ -173,7 +173,7 @@ function plugin_gmanager_gallery($params)
 		}
 	}
 
-	$fmanager = new file_managment();
+	$fmanager = new FileManagment();
 
 	$tpath = locatePluginTemplates(array('gallery', 'gallery.row', 'gallery.cell'), 'gmanager', pluginGetVariable('gmanager', 'locate_tpl'));
 	$tpl_url = $tpath['url:gallery'];

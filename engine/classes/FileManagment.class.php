@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: file_managment.class.php
+// Name: FileManagment.class.php
 // Description: Files upload managment
 // Author: Vitaly Ponomarev
 //
 
-class file_managment {
+class FileManagment {
 
 	// Constructor
 	function __construct() {
@@ -189,7 +189,7 @@ class file_managment {
 
 		// ** IMAGES :: Check maximum image size & resize if needed
 		if ($param['type'] == 'image') {
-			$im = new image_managment();
+			$im = new ImageManagment();
 			$s = $im->get_size($ftmp);
 			if (!is_array($s)) {
 				if ($param['rpc']) {
@@ -248,7 +248,7 @@ class file_managment {
 			$fil = array(join("_", $fil));
 		}
 
-		$parse = new parse();
+		$parse = new Parse();
 
 		$fil = trim(str_replace(array(' ','\\','/',chr(0)),array('_', ''),join(".",$fil)));
 		$fil = $parse->translit($fil);

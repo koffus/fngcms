@@ -19,7 +19,7 @@ Lang::load('images', 'admin');
 // =======================================
 
 // Init file managment class
-$fmanager = new file_managment();
+$fmanager = new FileManagment();
 
 
 if($userROW['status'] > "3" or ($userROW['status'] != "1" && ($action == "imagedelete" or $action == "move")) or ($userROW['status'] > "3" && $action == "rename")) {

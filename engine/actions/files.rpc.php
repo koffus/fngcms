@@ -22,8 +22,8 @@ function admRPCFilesUpload($params){
 	}
 
 	// Now user is authenticated.
-	$fmanager = new file_managment();
-	$imanager = new image_managment();
+	$fmanager = new FileManagment();
+	$imanager = new ImageManagment();
 
 	// Check parameters:
 	// - type: file / image

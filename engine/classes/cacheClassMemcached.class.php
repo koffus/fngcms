@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
-// Name: cacheClassMemcached.class.php
+// Name: CacheClassMemcached.class.php
 // Description: Cache manager
 // Author: Vitaly Ponomarev
 //
 
-class cacheClassMemcached extends cacheClassAbstract {
+class CacheClassMemcached extends CacheClassAbstract {
 	public $cache;
 	public $params;
 	function __construct($params = array()) {

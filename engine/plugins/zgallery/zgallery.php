@@ -6,7 +6,7 @@ if (!defined('NGCMS'))
 function plugin_block_zgallery($number, $mode, $cat, $overrideTemplateName, $cacheExpire) {
  global $config, $mysql, $tpl, $template, $twig, $twigLoader, $TemplateCache, $userROW;
  
- $fmanager = new file_managment();
+ $fmanager = new FileManagment();
  
  $type = 'image';
  $fmanager->get_limits($type);

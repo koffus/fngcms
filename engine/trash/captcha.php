@@ -20,7 +20,5 @@ $last_modified_gmt = gmdate('D, d M Y H:i:s', $now).' GMT';
 
 $cnumber = isset($_SESSION['captcha'])?$_SESSION['captcha']:1234;
 
-$captc = new captcha;
+$captc = new Captcha;
 $captc->makeimg($cnumber);
-
-?>

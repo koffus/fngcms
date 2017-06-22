@@ -273,7 +273,7 @@ function massDeleteNews($list, $permCheck = true) {
 			foreach ($PFILTERS['news'] as $k => $v) { $v->deleteNewsNotify($nrow['id'], $nrow); }
 
 		// Delete attached news/files if any
-		$fmanager = new file_managment();
+		$fmanager = new FileManagment();
 		// ** Files
 		foreach ($mysql->select("select * from ".prefix."_files where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($nrow['id']).")") as $frec) {
 			$fmanager->file_delete(array('type' => 'file', 'id' => $frec['id']));
@@ -580,7 +580,7 @@ function addNews($mode = array()){
 	if (!$mode['no.files']) {
 
 		// Now let's manage attached files
-		$fmanager = new file_managment();
+		$fmanager = new FileManagment();
 
 		$flagUpdateAttachCount = false;
 
@@ -913,7 +913,7 @@ function editNews($mode = array()) {
 	if (!(isset($params['no.files']) and $params['no.files'])) {
 
 		// Now let's manage attached files
-		$fmanager = new file_managment();
+		$fmanager = new FileManagment();
 
 		$flagUpdateAttachCount = false;
 

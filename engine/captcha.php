@@ -37,5 +37,5 @@ if ( trim($blockName) ) {
 	$cShowNumber = $_SESSION['captcha'];
 }
 
-$captc = new captcha;
+$captc = new Captcha;
 $captc->makeimg($cShowNumber);

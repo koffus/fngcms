@@ -120,8 +120,8 @@ function socialAuth()
  // Delete an avatar if user already has it
  //uprofile_manageDelete('avatar', $currentUser['id']);
 
- $fmanage = new file_managment();
- $imanage = new image_managment();
+ $fmanage = new FileManagment();
+ $imanage = new ImageManagment();
  
  $fname = $userid.'_'.strtolower($_FILES['newavatar']['name']);
  $ftmp = $_FILES['newavatar']['tmp_name'];
@@ -180,8 +180,8 @@ function socialAuth()
  // Delete an avatar if user already has it
  //uprofile_manageDelete('avatar', $currentUser['id']);
 
- $fmanage = new file_managment();
- $imanage = new image_managment();
+ $fmanage = new FileManagment();
+ $imanage = new ImageManagment();
  
  $fname = $userid.'_'.strtolower($_FILES['newavatar']['name']);
  $ftmp = $_FILES['newavatar']['tmp_name'];

@@ -2,7 +2,7 @@
 
 //
 // Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: image_managment.class.php
+// Name: ImageManagment.class.php
 // Description: Images upload managment
 // Author: Vitaly Ponomarev
 //
@@ -10,7 +10,7 @@
 // ======================================================================= //
 // Image managment class //
 // ======================================================================= //
-class image_managment{
+class ImageManagment{
 
 	// Constructor
 	function __construct() {

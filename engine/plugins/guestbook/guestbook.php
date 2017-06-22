@@ -588,7 +588,7 @@ function guestbook_social()
  // UPLOAD AVATAR
  if ($_FILES['newavatar']['name']) {
 
- $imanage = new image_managment();
+ $imanage = new ImageManagment();
 
  $fname = $provider . '_' . time() . '_' . strtolower($_FILES['newavatar']['name']);
  if (!strpos($fname, '.jpg')) {

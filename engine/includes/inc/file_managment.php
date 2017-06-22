@@ -90,7 +90,7 @@ function manage_upload($type){
 		return;
 	}
 
-	$imanager = new image_managment();
+	$imanager = new ImageManagment();
 
 	// PREPARE a list for upload
 	$filelist = array();
@@ -516,7 +516,7 @@ function manage_editApply($type, $id){
 	}
 
 	// Инициализация обрабочика изображений
-	$imanager = new image_managment();
+	$imanager = new ImageManagment();
 
 	// Наложение штампа на оригинальную картинку
 	if ($_POST['createStamp'] and !$irow['stamp']) {
