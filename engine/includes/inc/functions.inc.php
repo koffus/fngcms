@@ -1883,7 +1883,7 @@ function dd($obj)
         $obj = print_r($obj, true);
     }
 
-    echo '<pre>' . htmlentities($obj, ENT_QUOTES) . "</pre><br>\n";
+    echo '<pre style="white-space: pre-wrap;">' . htmlentities($obj, ENT_QUOTES) . "</pre><br>\n";
 }
 
 // Выводит текущую дату в формате, выбранном в админке.
