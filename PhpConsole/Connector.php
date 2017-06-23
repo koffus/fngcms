@@ -10,10 +10,11 @@ namespace PhpConsole;
  *
  * @package PhpConsole
  * @version 3.1
- * @link http://php-console.com
+ * @link http://consle.com
  * @author Sergey Barbushin http://linkedin.com/in/barbushin
  * @copyright © Sergey Barbushin, 2011-2013. All rights reserved.
  * @license http://www.opensource.org/licenses/BSD-3-Clause "The BSD 3-Clause License"
+ * @codeCoverageIgnore
  */
 class Connector {
 
@@ -30,18 +31,18 @@ class Connector {
 
 	/** @var Connector */
 	protected static $instance;
-	/** @var Storage|null */
+	/** @var  Storage|null */
 	private static $postponeStorage;
 
-	/** @var Dumper|null */
+	/** @var  Dumper|null */
 	protected $dumper;
-	/** @var Dispatcher\Debug|null */
+	/** @var  Dispatcher\Debug|null */
 	protected $debugDispatcher;
-	/** @var Dispatcher\Errors|null */
+	/** @var  Dispatcher\Errors|null */
 	protected $errorsDispatcher;
-	/** @var Dispatcher\Evaluate|null */
+	/** @var  Dispatcher\Evaluate|null */
 	protected $evalDispatcher;
-	/** @var string */
+	/** @var  string */
 	protected $serverEncoding = self::CLIENT_ENCODING;
 	protected $sourcesBasePath;
 	protected $headersLimit;
@@ -124,7 +125,7 @@ class Connector {
 			ob_start();
 			$this->isActiveClient = true;
 			$this->registerFlushOnShutDown();
-			$this->setHeadersLimit(isset($_SERVER['SERVER_SOFTWARE']) and stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false
+			$this->setHeadersLimit(isset($_SERVER['SERVER_SOFTWARE']) && stripos($_SERVER['SERVER_SOFTWARE'], 'nginx') !== false
 				? 4096 // default headers limit for Nginx
 				: 8192 // default headers limit for all other web-servers
 			);
@@ -158,7 +159,7 @@ class Connector {
 	 * @throws \Exception
 	 */
 	private function initServerCookie() {
-		if(!isset($_COOKIE[self::SERVER_COOKIE]) or $_COOKIE[self::SERVER_COOKIE] != self::SERVER_PROTOCOL) {
+		if(!isset($_COOKIE[self::SERVER_COOKIE]) || $_COOKIE[self::SERVER_COOKIE] != self::SERVER_PROTOCOL) {
 			$isSuccess = setcookie(self::SERVER_COOKIE, self::SERVER_PROTOCOL, null, '/');
 			if(!$isSuccess) {
 				throw new \Exception('Unable to set PHP Console server cookie');
@@ -177,7 +178,7 @@ class Connector {
 	/**
 	 * Set client connection as not active
 	 */
-	protected function breakClientConnection() {
+	public function disable() {
 		$this->isActiveClient = false;
 	}
 
@@ -203,7 +204,7 @@ class Connector {
 					}
 				}
 			}
-			$this->breakClientConnection();
+			$this->disable();
 		}
 	}
 
@@ -292,9 +293,9 @@ class Connector {
 		}
 		$this->isEvalListenerStarted = true;
 
-		if($this->isActiveClient() and $this->isAuthorized() and isset($_POST[Connector::POST_VAR_NAME]['eval'])) {
+		if($this->isActiveClient() && $this->isAuthorized() && isset($_POST[Connector::POST_VAR_NAME]['eval'])) {
 			$request = $_POST[Connector::POST_VAR_NAME]['eval'];
-			if(!isset($request['data']) or !isset($request['signature'])) {
+			if(!isset($request['data']) || !isset($request['signature'])) {
 				throw new \Exception('Wrong PHP Console eval request');
 			}
 			if($this->auth->getSignature($request['data']) !== $request['signature']) {
@@ -343,7 +344,7 @@ class Connector {
 		$this->convertEncoding($password, self::CLIENT_ENCODING, $this->serverEncoding);
 		$this->auth = new Auth($password, $publicKeyByIp);
 		if($this->client) {
-			$this->isAuthorized = $this->client->auth and $this->auth->isValidAuth($this->client->auth);
+			$this->isAuthorized = $this->client->auth && $this->auth->isValidAuth($this->client->auth);
 		}
 	}
 
@@ -385,7 +386,7 @@ class Connector {
 	 * @throws \Exception
 	 */
 	protected function convertEncoding(&$string, $toEncoding, $fromEncoding) {
-		if($string and is_string($string) and $toEncoding != $fromEncoding) {
+		if($string && is_string($string) && $toEncoding != $fromEncoding) {
 			static $isMbString;
 			if($isMbString === null) {
 				$isMbString = extension_loaded('mbstring');
@@ -396,7 +397,7 @@ class Connector {
 			else {
 				$string = @iconv($fromEncoding, $toEncoding . '//IGNORE', $string) ? : $string;
 			}
-			if(!$string and $toEncoding == 'UTF-8') {
+			if(!$string && $toEncoding == 'UTF-8') {
 				$string = utf8_encode($string);
 			}
 		}
@@ -420,7 +421,7 @@ class Connector {
 	 * @param $encoding
 	 */
 	public function setServerEncoding($encoding) {
-		if($encoding == 'utf8' or $encoding == 'utf-8') {
+		if($encoding == 'utf8' || $encoding == 'utf-8') {
 			$encoding = 'UTF-8'; // otherwise mb_convert_encoding() sometime fails with error(thanks to @alexborisov)
 		}
 		$this->serverEncoding = $encoding;
@@ -466,7 +467,7 @@ class Connector {
 	 * @return bool
 	 */
 	protected function isSsl() {
-		return (isset($_SERVER['HTTPS']) and strtolower($_SERVER['HTTPS']) == 'on') or (isset($_SERVER['SERVER_PORT']) and ($_SERVER['SERVER_PORT']) == 443);
+		return (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') || (isset($_SERVER['SERVER_PORT']) && ($_SERVER['SERVER_PORT']) == 443);
 	}
 
 	/**
@@ -482,12 +483,12 @@ class Connector {
 				$response->getBackData = $_POST[self::POST_VAR_NAME]['getBackData'];
 			}
 
-			if(!$this->isSslOnlyMode or $this->isSsl()) {
+			if(!$this->isSslOnlyMode || $this->isSsl()) {
 				if($this->auth) {
 					$response->auth = $this->auth->getServerAuthStatus($this->client->auth);
 				}
-				if(!$this->auth or $this->isAuthorized()) {
-					$response->isLocal = isset($_SERVER['REMOTE_ADDR']) and $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
+				if(!$this->auth || $this->isAuthorized()) {
+					$response->isLocal = isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] == '127.0.0.1';
 					$response->docRoot = isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : null;
 					$response->sourcesBasePath = $this->sourcesBasePath;
 					$response->isEvalEnabled = $this->isEvalListenerStarted;
@@ -497,7 +498,7 @@ class Connector {
 
 			$responseData = $this->serializeResponse($response);
 
-			if(strlen($responseData) > $this->headersLimit or !$this->setHeaderData($responseData, self::HEADER_NAME, false)) {
+			if(strlen($responseData) > $this->headersLimit || !$this->setHeaderData($responseData, self::HEADER_NAME, false)) {
 				$this->getPostponeStorage()->push($this->postponeResponseId, $responseData);
 			}
 		}
@@ -546,7 +547,7 @@ class Connector {
 		if(isset($_POST[self::POST_VAR_NAME]['getPostponedResponse'])) {
 			header('Content-Type: application/json; charset=' . self::CLIENT_ENCODING);
 			echo $this->getPostponeStorage()->pop($_POST[self::POST_VAR_NAME]['getPostponedResponse']);
-			$this->breakClientConnection();
+			$this->disable();
 			exit;
 		}
 	}
@@ -583,7 +584,7 @@ final class ServerAuthStatus extends DataObject {
 final class Response extends DataObject {
 
 	public $protocol = Connector::SERVER_PROTOCOL;
-	/** @var ServerAuthStatus */
+	/** @var  ServerAuthStatus */
 	public $auth;
 	public $docRoot;
 	public $sourcesBasePath;
@@ -611,7 +612,7 @@ abstract class EventMessage extends Message {
 	public $data;
 	public $file;
 	public $line;
-	/** @var null|TraceCall[] */
+	/** @var  null|TraceCall[] */
 	public $trace;
 }
 

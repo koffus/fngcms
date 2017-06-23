@@ -7,10 +7,11 @@ namespace PhpConsole;
  *
  * @package PhpConsole
  * @version 3.1
- * @link http://php-console.com
+ * @link http://consle.com
  * @author Sergey Barbushin http://linkedin.com/in/barbushin
  * @copyright © Sergey Barbushin, 2011-2013. All rights reserved.
  * @license http://www.opensource.org/licenses/BSD-3-Clause "The BSD 3-Clause License"
+ * @codeCoverageIgnore
  */
 class Auth {
 
@@ -43,23 +44,25 @@ class Auth {
 
 	/**
 	 * Get authorization result data for client
+	 * @codeCoverageIgnore
 	 * @param ClientAuth|null $clientAuth
 	 * @return ServerAuthStatus
 	 */
 	public final function getServerAuthStatus(ClientAuth $clientAuth = null) {
 		$serverAuthStatus = new ServerAuthStatus();
 		$serverAuthStatus->publicKey = $this->getPublicKey();
-		$serverAuthStatus->isSuccess = $clientAuth and $this->isValidAuth($clientAuth);
+		$serverAuthStatus->isSuccess = $clientAuth && $this->isValidAuth($clientAuth);
 		return $serverAuthStatus;
 	}
 
 	/**
 	 * Check if client authorization data is valid
+	 * @codeCoverageIgnore
 	 * @param ClientAuth $clientAuth
 	 * @return bool
 	 */
 	public final function isValidAuth(ClientAuth $clientAuth) {
-		return $clientAuth->publicKey === $this->getPublicKey() and $clientAuth->token === $this->getToken();
+		return $clientAuth->publicKey === $this->getPublicKey() && $clientAuth->token === $this->getToken();
 	}
 
 	/**
