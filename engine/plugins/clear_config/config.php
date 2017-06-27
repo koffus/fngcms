@@ -7,9 +7,6 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload config file
-pluginsLoadConfig();
-
 // Load lang files
 Lang::load('users', 'admin');
 Lang::loadPlugin('clear_config', 'config', '', 'с_с', ':');
@@ -22,7 +19,7 @@ switch ($_REQUEST['action']) {
 function showlist() {
 	global $twig, $PLUGINS;
 
-	pluginsLoadConfig();
+	
 	$ULIB = new urlLibrary();
 	$ULIB->loadConfig();
 	$plug = array();

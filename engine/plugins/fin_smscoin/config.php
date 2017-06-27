@@ -6,9 +6,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-// Preload config file
-pluginsLoadConfig();
-
 // Generate balance list
 $blist = array('' => 'основной баланс');
 foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary=1 order by id") as $brow) {

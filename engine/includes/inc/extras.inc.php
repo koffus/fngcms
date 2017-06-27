@@ -10,49 +10,15 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Register admin filter
-function register_admin_filter($group, $name, $instance)
-{
-    global $AFILTERS;
-    $AFILTERS[$group][$name] = $instance;
-}
-
 //
-// Get/Load list of active plugins & required files
-function getPluginsActiveList()
-{
-    global $PLUGINS;
-
-    if ($PLUGINS['active:loaded']) {
-        return $PLUGINS['active'];
-    }
-    if (is_file(conf_pactive)) {
-        @include conf_pactive;
-        if (is_array($array)) {
-            $PLUGINS['active'] = $array;
-        }
-    }
-    $PLUGINS['active:loaded'] = 1;
-    return $PLUGINS['active'];
-}
-
-//
-// Report if plugin is active
+// Report if plugin is active // TWIG Enabled this
 function getPluginStatusActive($pluginID)
 {
-    $array = getPluginsActiveList();
-    if (isset($array['active'][$pluginID]) and $array['active'][$pluginID]) {
-        return true;
-    }
-    return false;
-}
-
-//
-// Report if plugin is installed
-function getPluginStatusInstalled($pluginID)
-{
-    $array = getPluginsActiveList();
-    if (isset($array['installed'][$pluginID]) and $array['installed'][$pluginID]) {
+    // Load list of active plugins
+    $cPlugin = CPlugin::instance();
+    $active = $cPlugin->getListActive();
+    
+    if (isset($active['active'][$pluginID])) {
         return true;
     }
     return false;
@@ -68,13 +34,15 @@ function loadActionHandlers($action, $plugin = '')
     global $PLUGINS;
 
     $timer = MicroTimer::instance();
+    // Load list of active plugins
+    $cPlugin = CPlugin::instance();
+    $active = $cPlugin->getListActive();
 
     $loadedCount = 0;
-    $array = getPluginsActiveList();
     // Find extras for selected action
-    if (isset($array['actions'][$action]) and is_array($array['actions'][$action])) {
+    if (isset($active['actions'][$action]) and is_array($active['actions'][$action])) {
         // There're some modules
-        foreach ($array['actions'][$action] as $key => $value) {
+        foreach ($active['actions'][$action] as $key => $value) {
             // Skip plugins in manual mode
             if ($plugin and ($key != $plugin))
                 continue;
@@ -99,6 +67,7 @@ function loadActionHandlers($action, $plugin = '')
     return $loadedCount;
 }
 
+
 //
 // Load plugin [ Same behaviour as for loadActionHandlers ]
 function loadPlugin($pluginName, $actionList = '*')
@@ -106,16 +75,18 @@ function loadPlugin($pluginName, $actionList = '*')
     global $PLUGINS;
 
     $timer = MicroTimer::instance();
-
-    $plugList = getPluginsActiveList();
+    // Load list of active plugins
+    $cPlugin = CPlugin::instance();
+    $active = $cPlugin->getListActive();
+    
     $loadCount = 0;
 
     // Don't load if plugin is not activated
-    if (!$plugList['active'][$pluginName])
+    if (!$active['active'][$pluginName])
         return false;
 
     // Scan all available actions and preload plugin's file if needed
-    foreach ($plugList['actions'] as $aName => $pList) {
+    foreach ($active['actions'] as $aName => $pList) {
         if (isset($pList[$pluginName]) and
             ((is_array($actionList) and in_array($aName, $actionList)) or
                 (!is_array($actionList) and (($actionList == '*') or ($actionList == $aName))))
@@ -147,24 +118,25 @@ function loadPlugin($pluginName, $actionList = '*')
 function loadPluginLibrary($plugin, $libname = '')
 {
     $timer = MicroTimer::instance();
-
-    $list = getPluginsActiveList();
+    // Load list of active plugins
+    $cPlugin = CPlugin::instance();
+    $active = $cPlugin->getListActive();
 
     // Check if we know about this plugin
-    if (!isset($list['active'][$plugin])) return false;
+    if (!isset($active['active'][$plugin])) return false;
 
     // Check if we need to load all libs
     if (!$libname) {
-        foreach ($list['libs'][$plugin] as $id => $file) {
+        foreach ($active['libs'][$plugin] as $id => $file) {
             $tX = $timer->stop(4);
-            include_once extras_dir . '/' . $list['active'][$plugin] . '/' . $file;
+            include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $file;
             $timer->registerEvent('loadPluginLibrary: ' . $plugin . '.' . $id . ' [' . $file . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
         }
         return true;
     } else {
-        if (isset($list['libs'][$plugin][$libname])) {
+        if (isset($active['libs'][$plugin][$libname])) {
             $tX = $timer->stop(4);
-            include_once extras_dir . '/' . $list['active'][$plugin] . '/' . $list['libs'][$plugin][$libname];
+            include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $active['libs'][$plugin][$libname];
             $timer->registerEvent('loadPluginLibrary: ' . $plugin . ' [' . $libname . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
             return true;
         }
@@ -240,30 +212,30 @@ function actionDisable($action)
 // =========================================================
 
 //
-// Get variable
-function pluginGetVariable($pluginID, $var)
-{
-    global $PLUGINS;
 
-    if (!$PLUGINS['config:loaded'] and !pluginsLoadConfig())
-        return false;
+    // Get plugin variable
+    function pluginGetVariable($pluginID, $var)
+    {
+        global $PLUGINS;
 
-    if (!isset($PLUGINS['config'][$pluginID])) {
-        return null;
+        if (!$PLUGINS['config:loaded'])
+            return false;
+
+        if (!isset($PLUGINS['config'][$pluginID])) {
+            return null;
+        }
+        if (!isset($PLUGINS['config'][$pluginID][$var])) {
+            return null;
+        }
+        return $PLUGINS['config'][$pluginID][$var];
     }
-    if (!isset($PLUGINS['config'][$pluginID][$var])) {
-        return null;
-    }
-    return $PLUGINS['config'][$pluginID][$var];
-}
-
 //
 // Set variable
 function pluginSetVariable($pluginID, $var, $value)
 {
     global $PLUGINS;
 
-    if (!$PLUGINS['config:loaded'] and !pluginsLoadConfig())
+    if (!$PLUGINS['config:loaded'])
         return false;
 
     $PLUGINS['config'][$pluginID][$var] = $value;
@@ -276,7 +248,7 @@ function pluginsSaveConfig($suppressNotify = false)
 {
     global $PLUGINS;
 
-    if (!$PLUGINS['config:loaded'] and !pluginsLoadConfig()) {
+    if (!$PLUGINS['config:loaded']) {
         if (!$suppressNotify) {
             msg(array('type' => 'danger', 'title' => str_replace('{name}', conf_pconfig, __('error.config.read')), 'message' => __('error.config.read#desc')));
         }
@@ -297,145 +269,6 @@ function pluginsSaveConfig($suppressNotify = false)
 }
 
 //
-// Load configuration variables for plugins
-function pluginsLoadConfig()
-{
-    global $PLUGINS;
-
-    if ($PLUGINS['config:loaded']) {
-        return 1;
-    }
-    $fconfig = @fopen(conf_pconfig, 'r');
-    if ($fconfig) {
-        if (filesize(conf_pconfig)) {
-            $content = fread($fconfig, filesize(conf_pconfig));
-        } else {
-            $content = serialize(array());
-        }
-        $PLUGINS['config'] = unserialize($content);
-        $PLUGINS['config:loaded'] = 1;
-        fclose($fconfig);
-        return true;
-    } else {
-        // File doesn't exists. Mark as `loaded`
-        $PLUGINS['config'] = array();
-        $PLUGINS['config:loaded'] = 1;
-    }
-    return false;
-}
-
-//
-// Load 'version' file from plugin directory
-function plugins_load_version_file($filename)
-{
-
-    // config variables & function init
-    $config_params = array('id', 'name', 'version', 'acts', 'file', 'config', 'install', 'deinstall', 'management', 'type', 'description', 'author', 'author_uri', 'permanent', 'library', 'actions');
-    $required_params = array('id', 'name', 'version', 'type');
-    $list_params = array('library', 'actions');
-    $ver = array();
-
-    foreach ($list_params as $id)
-        $ver[$id] = array();
-
-    // open file
-    if (!($file = @fopen($filename, 'r'))) {
-        return false;
-    }
-
-    // read file
-    while (!feof($file)) {
-        $line = fgets($file);
-        if (preg_match("/^(.+?) *\: *(.+?) *$/i", $line, $r) == 1) {
-            $key = rtrim(strtolower($r[1]));
-            $value = rtrim($r[2]);
-            if (in_array($key, $config_params)) {
-                if (in_array($key, $list_params)) {
-                    $ver[$key][] = $value;
-                } else {
-                    $ver[$key] = $value;
-                }
-            }
-        }
-    }
-
-    // Make some cleanup
-    $ver['acts'] = isset($ver['acts']) ? str_replace(' ', '', $ver['acts']) : '';
-    if (isset($ver['permanent']) and ($ver['permanent'] == 'yes')) {
-        $ver['permanent'] = 1;
-    } else {
-        $ver['permanent'] = 0;
-    }
-
-    // check for filling required params
-    foreach ($required_params as $v) {
-        if (!$ver[$v]) {
-            return false;
-        }
-    }
-
-    // check for library/actions filling
-    foreach (array('library', 'actions') as $key) {
-        $list = $ver[$key];
-        $ver[$key] = array();
-
-        foreach ($list as $rec) {
-            if (!$rec) continue;
-            list ($ids, $fname) = explode(';', $rec);
-
-            $ids = trim($ids);
-            $fname = trim($fname);
-
-            if (!$ids or !$fname) return false;
-            $idlist = explode(',', $ids);
-            foreach ($idlist as $entry)
-                if (trim($entry))
-                    $ver[$key][trim($entry)] = $fname;
-        }
-    }
-    return $ver;
-}
-
-//
-// Get a list of installed plugins
-function pluginsGetList()
-{
-    $timer = MicroTimer::instance();
-
-    $timer->registerEvent('@ pluginsGetList() called');
-    // open directory
-    $handle = @opendir(extras_dir);
-    $extras = array();
-    // load list of extras
-    while (false != ($dir = @readdir($handle))) {
-        $edir = extras_dir . '/' . $dir;
-        // Skip special dirs ',' and '..'
-        if (($dir == '.') or ($dir == '..') or (!is_dir($edir))) {
-            continue;
-        }
-
-        // Check 'version' file
-        if (!is_file($edir . '/version')) {
-            continue;
-        }
-
-        // Load version file
-        $ver = plugins_load_version_file($edir . '/version');
-        if (!is_array($ver)) {
-            continue;
-        }
-
-        // fill fully file path (within 'plugins' directory)
-        $ver['dir'] = $dir;
-
-        // Good, version file is successfully loaded, add data into array
-        $extras[$ver['id']] = $ver;
-        //array_push($extras, $ver);
-    }
-    return $extras;
-}
-
-//
 // Add plugin's page
 function register_plugin_page($pname, $mode, $func_name, $show_template = 1)
 {
@@ -445,24 +278,6 @@ function register_plugin_page($pname, $mode, $func_name, $show_template = 1)
         $PPAGES[$pname] = array();
     }
     $PPAGES[$pname][$mode] = array('func' => $func_name, 'mode' => $mode);
-}
-
-//
-// Add item into list of additional HTML meta tags
-function register_htmlvar($type, $data)
-{
-    global $EXTRA_HTML_VARS;
-
-    $EXTRA_HTML_VARS[] = array('type' => $type, 'data' => $data);
-}
-
-//
-// Add new stylesheet into template
-function register_stylesheet($url)
-{
-    global $EXTRA_CSS;
-
-    register_htmlvar('css', $url);
 }
 
 //
@@ -697,6 +512,13 @@ function pluginRegisterFilter($group, $name, $instance)
     $PFILTERS[$group][$name] = $instance;
 }
 
+// Register admin filter
+function register_admin_filter($group, $name, $instance)
+{
+    global $AFILTERS;
+    $AFILTERS[$group][$name] = $instance;
+}
+
 // Register RPC function
 function rpcRegisterFunction($name, $instance, $permanent = false)
 {
@@ -752,24 +574,23 @@ function generatePluginLink($pluginName, $handlerName, $params = array(), $xpara
         generateLink('core', 'plugin', array('plugin' => $pluginName, 'handler' => $handlerName), array_merge($params, $xparams), $intLink, $absoluteLink);
 }
 
-//
 // Generate link to page
 function generatePageLink($paginationParams, $page, $intlink = false)
 {
     //print "generatePageLink(".var_export($paginationParams, true).", ".$intlink.";".$page.")<br/>\n";
     // Generate link
-    $lparams = (isset($paginationParams['params']) and is_array($paginationParams['params'])) ? $paginationParams['params'] : array();
-    $lxparams = (isset($paginationParams['xparams']) and is_array($paginationParams['xparams'])) ? $paginationParams['xparams'] : array();
-    $pluginHandler = isset($paginationParams['pluginHandler']) ?: '';
-    
+    $lparams = $paginationParams['params'];
+    $lxparams = $paginationParams['xparams'];
+
     if ($paginationParams['paginator'][2] or ($page > 1)) {
-        if (isset($paginationParams['paginator'][1]) and isset($paginationParams['paginator'][0])) {
+        if ($paginationParams['paginator'][1]) {
             $lxparams[$paginationParams['paginator'][0]] = $page;
         } else {
             $lparams[$paginationParams['paginator'][0]] = $page;
         }
     }
-    return generatePluginLink($paginationParams['pluginName'], $pluginHandler, $lparams, $lxparams, $intlink);
+    //return generateLink($paginationParams['pluginName'], $paginationParams['pluginHandler'], $lparams, $lxparams);
+    return generatePluginLink($paginationParams['pluginName'], $paginationParams['pluginHandler'], $lparams, $lxparams, $intlink);
 }
 
 //

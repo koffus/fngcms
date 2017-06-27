@@ -5,7 +5,7 @@ if(!defined('NGCMS'))
 	exit('HAL');
 }
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('xsyslog', 'config', '', '', '#');
 
 show_xsyslog();

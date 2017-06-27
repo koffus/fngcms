@@ -7,9 +7,6 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload config file
-pluginsLoadConfig();
-
 // need for xfields sort & search
 if ( xmode() and function_exists('xf_configLoad')) {
 	include_once root.'plugins/xfields/xfields.php';

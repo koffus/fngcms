@@ -17,12 +17,14 @@ if (!defined('NGCMS')) die ('HAL');
 // Main module code
 // ==============================================================
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// Load plugin list  
+$extras = $cPlugin->getList();
+
 // Load lang files
 Lang::load('extras', 'admin');
 Lang::load('extra-config', 'admin');
-
-// Load plugin list
-$extras = pluginsGetList();
 
 // Load passed variables:
 // ID of called plugin
@@ -62,7 +64,7 @@ if (!is_array($extras[$plugin])) {
 
 		//
 		// Include required script file
-		@include extras_dir.'/'.$extras[$plugin]['dir'].'/'.$extras[$plugin][$stype];
+		include extras_dir.'/'.$extras[$plugin]['dir'].'/'.$extras[$plugin][$stype];
 
 		//
 		// Run install function if it exists in file

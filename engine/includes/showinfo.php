@@ -15,7 +15,12 @@ if (!defined('NGCMS')) die ('HAL');
 header('Content-Type: text/html; charset=UTF-8');
 
 if ($_REQUEST['mode'] == 'plugin') {
-	$extras = pluginsGetList();
+    
+	// Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // Load plugin list
+    $extras = $cPlugin->getList();
+    
 	$plugin = str_replace(array('/', '\\', '..'), '', $_REQUEST['plugin']);
 	if (!is_array($extras[$plugin]))
 		return;

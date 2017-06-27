@@ -7,9 +7,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-// Preload config file
-pluginsLoadConfig();
-
 // Load lang files
 Lang::loadPlugin('auth_punbb', 'config', '', 'auth');
 

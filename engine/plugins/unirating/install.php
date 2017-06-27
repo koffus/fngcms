@@ -7,7 +7,7 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('finance', 'config');
 
 $db_update = array(

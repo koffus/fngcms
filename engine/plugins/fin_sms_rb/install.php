@@ -4,7 +4,7 @@
 // Configuration file for plugin
 //
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('fin_sms_rb', 'config');
 
 

@@ -7,7 +7,7 @@ if (!defined('NGCMS')) die ('HAL');
 // Voting plugin installer
 //
 
-pluginsLoadConfig();
+
 function plugin_voting_install($action) {
 
 	if ($action != 'autoapply')

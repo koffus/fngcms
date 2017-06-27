@@ -4,9 +4,6 @@
 // Configuration file for plugin
 //
 
-// Preload config file
-pluginsLoadConfig();
-
 // Preload header data
 $header = file_get_contents(root.'plugins/xmenu/tpl/mhead.tpl');
 

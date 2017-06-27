@@ -41,8 +41,6 @@ function admExtrasGetConfig($params)
         return array('status' => 0, 'errorCode' => 5, 'errorText' => 'Wrong security code');
     }
 
-    pluginsLoadConfig();
-
     $confLine = json_encode($PLUGINS['config']);
     $confLine = jsonFormatter($confLine);
 
@@ -77,7 +75,10 @@ function admExtrasOnOff($params)
         return array('status' => 0, 'errorCode' => 6, 'errorText' => 'Plugin name or state is not specified');
     }
 
-    $extras = pluginsGetList();
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // Load plugin list  
+    $extras = $cPlugin->getList();
     if (!isset($extras[$params['plugin']])) {
         return array('status' => 0, 'errorCode' => 7, 'errorText' => 'Plugin [' . $params['plugin'] . ' is not found');
     }

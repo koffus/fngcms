@@ -196,6 +196,9 @@ function massModifyNews($list, $setValue, $permCheck = true) {
 function massDeleteNews($list, $permCheck = true) {
 	global $mysql, $PFILTERS, $userROW;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    
 	$selected_news = $_REQUEST['selected_news'];
 
 	// Check for security token
@@ -256,7 +259,7 @@ function massDeleteNews($list, $permCheck = true) {
 		}
 
 		// Delete comments (with updating user's comment counter) [ if plugin comments is installed ]
-		if (getPluginStatusInstalled('comments')) {
+		if ($cPlugin->getStatusInstalled('comments')) {
 			foreach ($mysql->select("select * from ".prefix."_comments where post=".$nrow['id']) as $crow) {
 				if ($nrow['author_id']) {
 					$mysql->query("update ".uprefix."_users set com=com-1 where id=".$crow['author_id']);

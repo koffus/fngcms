@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 # preload config file
-pluginsLoadConfig();
+
 
 $db_update = array(
 	array(

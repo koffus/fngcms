@@ -5,7 +5,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 //
 // Configuration file for plugin
-pluginsLoadConfig();
+
 Lang::loadPlugin('jchat', 'config', '', '', ':');
 
 $db_update = array(

@@ -7,9 +7,6 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload config file
-pluginsLoadConfig();
-
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 print_r(__('')['bookmarks']);

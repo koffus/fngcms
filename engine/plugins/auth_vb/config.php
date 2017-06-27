@@ -4,9 +4,6 @@
 // Configuration file for plugin
 //
 
-// Preload config file
-pluginsLoadConfig();
-
 // Load lang files
 Lang::loadPlugin('auth_vb', 'config', '', 'auth');
 

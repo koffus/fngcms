@@ -10,7 +10,7 @@ global $AUTH_METHOD;
 global $AUTH_CAPABILITIES;
 global $config;
 
-class auth_basic extends CoreAuthPlugin {
+class auth_basic extends CAuthPlugin {
 
 	// Осуществить вход
 	// $username	= логин

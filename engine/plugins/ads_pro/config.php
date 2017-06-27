@@ -7,44 +7,45 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload config file
-pluginsLoadConfig();
-
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin('ads_pro', 'config', '', '', ':');
 
-switch ($_REQUEST['action']) {
-    case 'list':
-        showlist();
-        break;
-    case 'add':
-        add();
-        break;
-    case 'edit':
-        add();
-        break;
-    case 'add_submit':
-        add_submit();
-        break;
-    case 'edit_submit':
-        add_submit();
-        break;
-    case 'move_up':
-        move('up');
-        break;
-    case 'move_down':
-        move('down');
-        break;
-    case 'dell':
-        delete();
-        break;
-    case 'main_submit':
-        main_submit();
-        break;
-    case 'clear_cash':
-        clear_cash();
-    default:
-        main();
+if (isset($_REQUEST['action'])) {
+    switch ($_REQUEST['action']) {
+        case 'list':
+            showlist();
+            break;
+        case 'add':
+            add();
+            break;
+        case 'edit':
+            add();
+            break;
+        case 'add_submit':
+            add_submit();
+            break;
+        case 'edit_submit':
+            add_submit();
+            break;
+        case 'move_up':
+            move('up');
+            break;
+        case 'move_down':
+            move('down');
+            break;
+        case 'dell':
+            delete();
+            break;
+        case 'main_submit':
+            main_submit();
+            break;
+        case 'clear_cash':
+            clear_cash();
+        default:
+            main();
+    }
+} else {
+    main();
 }
 
 function main()
@@ -117,28 +118,28 @@ function showlist()
 
     $tpath = locatePluginTemplates(array('conf.main', 'conf.list', 'conf.list.row'), 'ads_pro', 1);
 
-    $var = pluginGetVariable('ads_pro', 'data');
-
-    $output = '';
+    $ttvars = [];
     $t_time = time();
     $t_state = array(0 => __('ads_pro:label_off'), 1 => __('ads_pro:label_on'), 2 => __('ads_pro:label_sched'));
     $t_type = array(0 => __('ads_pro:html'), 1 => __('ads_pro:php'), 2 => __('ads_pro:text'));
-    foreach ($var as $k => $v) {
-        foreach ($v as $kk => $vv) {
-            $if_view = $vv['state'] ? true : false;
-            if ($vv['start_view'] and $vv['start_view'] > $t_time)
-                $if_view = false;
-            if ($vv['end_view'] and $vv['end_view'] <= $t_time)
-                $if_view = false;
+    if($var = pluginGetVariable('ads_pro', 'data')) {
+        foreach ($var as $k => $v) {
+            foreach ($v as $kk => $vv) {
+                $if_view = $vv['state'] ? true : false;
+                if ($vv['start_view'] and $vv['start_view'] > $t_time)
+                    $if_view = false;
+                if ($vv['end_view'] and $vv['end_view'] <= $t_time)
+                    $if_view = false;
 
-            $ttvars['entries'][] = array(
-                'name' => $k ? $k : __('ads_pro:error_name'),
-                'id' => $kk,
-                'description' => $vv['description'],
-                'online' => ($if_view or $vv['state'] == 1) ? __('ads_pro:online_on') : __('ads_pro:online_off'),
-                'state' => $t_state[$vv['state']],
-                'type' => $t_type[$vv['type']],
-            );
+                $ttvars['entries'][] = array(
+                    'name' => $k ? $k : __('ads_pro:error_name'),
+                    'id' => $kk,
+                    'description' => $vv['description'],
+                    'online' => ($if_view or $vv['state'] == 1) ? __('ads_pro:online_on') : __('ads_pro:online_off'),
+                    'state' => $t_state[$vv['state']],
+                    'type' => $t_type[$vv['type']],
+                );
+            }
         }
     }
 
@@ -159,7 +160,9 @@ function add()
 {
     global $mysql, $twig;
 
-    $PluginsList = getpluginsActiveList();
+    // Load list of active plugins
+    $cPlugin = CPlugin::instance();
+    $active = $cPlugin->getListActive();
 
     // Load config
     $pConfig = pluginGetVariable('ads_pro', 'data');
@@ -187,7 +190,7 @@ function add()
     $ttvars['plugins_list'] .= "\t\t\t" . 'subsubel.appendChild(document.createTextNode("' . __('ads_pro:all') . '"));' . "\n";
     $ttvars['plugins_list'] .= "\t\t\t" . 'subel.appendChild(subsubel);' . "\n";
     $t_plugin_list = array(0 => __('ads_pro:all'));
-    foreach ($PluginsList['actions']['ppages'] as $key => $value) {
+    foreach ($active['actions']['ppages'] as $key => $value) {
         $t_plugin_list[$key] = $key;
         $ttvars['plugins_list'] .= "\n\t\t\t" . 'subsubel = document.createElement("option");' . "\n";
         $ttvars['plugins_list'] .= "\t\t\t" . 'subsubel.setAttribute("value", "' . $key . '");' . "\n";

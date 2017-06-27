@@ -10,7 +10,7 @@ if (!defined('NGCMS')) die ('HAL');
 //	apply		- apply installation, with handy confirmation
 //	autoapply - apply installation in automatic mode [INSTALL script]
 //
-pluginsLoadConfig();
+
 function plugin_wpinger_install($action) {
 
 	if ($action != 'autoapply')

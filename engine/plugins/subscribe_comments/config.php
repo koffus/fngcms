@@ -5,7 +5,7 @@ if(!defined('NGCMS'))
 	exit('HAL');
 }
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('subscribe_comments', 'config', '', '', '#');
 
 $get_params = parse_url($_SERVER['HTTP_REFERER']);

@@ -6,9 +6,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-// Preload config file
-pluginsLoadConfig();
-
 //include_once root."extras/fin_sms/inc/httpget.inc.php";
 //include_once root."extras/fin_sms/inc/xml2dom.php";
 

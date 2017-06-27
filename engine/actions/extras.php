@@ -26,8 +26,10 @@ function admGeneratePluginList()
 {
     global $twig, $repoPluginInfo, $PHP_SELF;
 
-    $extras = pluginsGetList();
-    ksort($extras);
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // Load plugin list  
+    $extras = $cPlugin->getList();
 
     $pCount = array(0 => 0, 1 => 0, 2 => 0, 3 => 0);
 
@@ -74,7 +76,7 @@ function admGeneratePluginList()
 
         $needinstall = 0;
         $tEntry['install'] = '';
-        if (getPluginStatusInstalled($extra['id'])) {
+        if ($cPlugin->getStatusInstalled($extra['id'])) {
             if (isset($extra['deinstall']) and $extra['deinstall'] and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['deinstall'])) {
                 $tEntry['install'] = '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '&amp;stype=deinstall">' . __('deinstall') . '</a>';
             }
@@ -135,9 +137,12 @@ function repoSync()
 // Main module code
 // ==============================================================
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// Load plugin list  
+$extras = $cPlugin->getList();
+
 Lang::load('extras', 'admin');
-$extras = pluginsGetList();
-ksort($extras);
 
 // ==============================================================
 // Load a list of updated plugins from central repository
@@ -161,7 +166,6 @@ if ($enable or $disable or $manage) {
 }
 
 if (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig']) {
-    pluginsLoadConfig();
 
     if (isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) {
         print "TRY COMMIT";

@@ -103,7 +103,7 @@
 
 */
 
-class urlHandler
+class UrlHandler
 {
 
     // Constructor

@@ -5,7 +5,7 @@ if(!defined('NGCMS'))
 	exit('HAL');
 }
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('auth_social', 'config', '', '', '#');
 
 switch ($_REQUEST['action']) {

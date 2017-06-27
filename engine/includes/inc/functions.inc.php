@@ -611,7 +611,11 @@ function GetPluginDir($name)
 {
     global $EXTRA_CONFIG;
 
-    $extras = pluginsGetList();
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // Load plugin list
+    $extras = $cPlugin->getList();
+    
     if (!$extras[$name]) {
         return 0;
     }
@@ -634,7 +638,6 @@ function GetPluginLangDir($name)
     }
     return $lang_dir;
 }
-
 // makeCategoryList - make <SELECT> list of categories
 // Params: set via named array
 // * name 		- name field of <SELECT>

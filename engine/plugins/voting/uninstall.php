@@ -7,7 +7,7 @@ if (!defined('NGCMS')) die ('HAL');
 // Voting plugin deinstaller
 //
 
-pluginsLoadConfig();
+
 
 Lang::loadPlugin('voting', 'install');
 

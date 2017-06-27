@@ -193,16 +193,16 @@ $timer->registerEvent('Config file is loaded');
 
 // Call multidomains processor
 multi_multidomains();
-//print "siteDomainName [".$siteDomainName."]<br/>\n";
 
 // Initiate session - take care about right domain name for sites with/without www. prefix
-//print "<pre>".var_export($_SERVER, true).var_export($_COOKIE, true)."</pre>";
 @session_set_cookie_params(86400, '/', $ngCookieDomain);
 Session::init();
 
 // ** Load system libraries
 @include_once root . 'includes/inc/consts.inc.php';
 @include_once root . 'includes/inc/functions.inc.php';
+
+$cPlugin = CPlugin::instance();
 @include_once root . 'includes/inc/extras.inc.php';
 
 // [[MARKER]] All system libraries are loaded
@@ -236,7 +236,7 @@ require_once root . 'classes/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 // ** Init our own exception handler
-//set_exception_handler('ngExceptionHandler');
+//set_exception_handler('ngExceptionHandler'); // NOT PHP 7
 //set_error_handler('ngErrorHandler');
 //register_shutdown_function('ngShutdownHandler');
 

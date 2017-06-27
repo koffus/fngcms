@@ -7,7 +7,7 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-pluginsLoadConfig();
+
 
 $db_update = array(
  array(

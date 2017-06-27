@@ -336,6 +336,9 @@ function userMassDeleteInactive(){
 function userList(){
 	global $mysql, $mod, $userROW, $UGROUP, $twig, $PHP_SELF;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    
 	// Check for permissions
 	if (!checkPermission(array('plugin' => '#admin', 'item' => 'users'), null, 'view')) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')));
@@ -481,7 +484,7 @@ function userList(){
 			'canModify' => $permModify?1:0,
 			'canView' => $permDetails?1:0,
 			'canMassAction' => $permMassAction?1:0,
-			'haveComments' => getPluginStatusInstalled('comments')?1:0,
+			'haveComments' => $cPlugin->getStatusInstalled('comments')?1:0,
 		),
 
 	);

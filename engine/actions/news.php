@@ -217,7 +217,7 @@ function editNewsForm() {
 		executeActionHandler('editnews_entry');
 	executeActionHandler('editnews_form');
 
-	if (is_array($PFILTERS['news']))
+	if (isset($PFILTERS['news']) and is_array($PFILTERS['news']))
 		foreach ($PFILTERS['news'] as $k => $v) { $v->editNewsForm($id, $row, $tVars); }
 
 	$xt = $twig->loadTemplate('skins/default/tpl/news/edit.tpl');
@@ -330,6 +330,9 @@ function makeSortList($selected) {
 // ======================================================================================================
 function listNewsForm() {
 	global $mysql, $twig, $catz, $catmap, $userROW, $PHP_SELF, $config;
+
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
 
 	$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array(
 		'view',
@@ -499,7 +502,7 @@ function listNewsForm() {
 			'link' => News::generateLink($row, false, 0, true),
 			'state' => $row['approve'],
 			'flags' => array(
-				'comments' => getPluginStatusInstalled('comments')?true:false,
+				'comments' => $cPlugin->getStatusInstalled('comments')?true:false,
 				'status' => ($row['approve'] == 1)?true:false,
 				'mainpage' => $row['mainpage']?true:false,
 				'editable' => ($row['author_id'] == $userROW['id'])&&($perm['personal.view'])||($row['author_id'] != $userROW['id'])&&($perm['other.view']),
@@ -522,7 +525,7 @@ function listNewsForm() {
 							'<option value="2"'.(($fStatus==2)?' selected':'').'>'.__('smode_unpublished').'</option>'.
 							'<option value="3"'.(($fStatus==3)?' selected':'').'>'.__('smode_published').'</option>',
 		'flags' => array(
-			'comments' => getPluginStatusInstalled('comments')?true:false,
+			'comments' => $cPlugin->getStatusInstalled('comments')?true:false,
 			'allow_modify' => ($userROW['status'] <= 2)?true:false,
 		),
 	);

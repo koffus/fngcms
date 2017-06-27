@@ -41,7 +41,7 @@ define ('INBOX_LINK', generatePluginLink('pm', null, ($_GET['location'] ? array(
  + {{ p.pm.link }} - URL на страницу со входящими сообщениями
 */
 
-class PMCoreFilter extends CoreFilter {
+class PMCoreFilter extends CFilter {
 	function showUserMenu(&$tVars) {
 		global $mysql, $userROW;
 

@@ -1497,7 +1497,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories {
 	}
 }
 
-class XFieldsCoreFilter extends CoreFilter {
+class XFieldsCoreFilter extends CFilter {
 
 	function __construct() {
 		Lang::loadPlugin('xfields', 'config', '', '', ':');

@@ -6,9 +6,6 @@
 
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
-
-// Preload config file
-pluginsLoadConfig();
 Lang::loadPlugin($plugin, 'config', '', '', ':');
 
 // Fill configuration parameters

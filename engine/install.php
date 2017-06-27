@@ -138,6 +138,9 @@ if (!file_exists($toinc)) {
 Lang::load('install');
 Lang::load('extra-config', 'admin');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
 $tpl = new Tpl;
 
 // Determine current admin working directory
@@ -196,7 +199,7 @@ if ($flagPendingChanges) {
 
     // Now let's install plugins
     // First: Load informational `version` files
-    $list = pluginsGetList();
+    $list = $cPlugin->getList();
     foreach ($pluginInstallList as $pName) {
         if ($list[$pName]['install']) {
             include_once root . 'plugins/' . $pName . '/' . $list[$pName]['install'];
@@ -1067,8 +1070,8 @@ function doInstall()
 
         // Now let's install plugins
         // First: Load informational `version` files
-        $list = pluginsGetList();
-        // Подготавливаем список плагинов для установки
+        $list = $cPlugin->getList();
+         // Подготавливаем список плагинов для установки
         $pluginInstallList = array();
         foreach ($_POST as $k => $v) {
             if (preg_match('/^plugin\:(.+?)$/', $k, $m) and ($v == 1)) {

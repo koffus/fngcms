@@ -4,7 +4,7 @@
 // Configuration file for plugin
 //
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('xmenu', 'config');
 
 $db_update = array(

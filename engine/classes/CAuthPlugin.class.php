@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: CoreAuthPlugin.class.php
+// Name: CAuthPlugin.class.php
 // Description: Class template definition: registration plugin
 // Author: Vitaly Ponomarev
 //
 
-class CoreAuthPlugin
+class CAuthPlugin
 {
 
     function login($auto_scan = 1, $username = '', $password = '')

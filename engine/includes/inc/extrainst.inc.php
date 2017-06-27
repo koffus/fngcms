@@ -129,7 +129,7 @@ function commit_plugin_config_changes($module, $params)
 {
 
     // Load cofig
-    pluginsLoadConfig();
+    
 
     $cfgUpdate = array();
 
@@ -213,9 +213,6 @@ function get_mysql_field_type($table, $field)
 function fixdb_plugin_install($module, $params, $mode = 'install', $silent = false)
 {
     global $twig, $mysql;
-
-    // Load config
-    pluginsLoadConfig();
 
     $publish = array();
     if ($mode == 'install') {

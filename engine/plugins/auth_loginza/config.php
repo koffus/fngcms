@@ -8,7 +8,7 @@ if (!defined('NGCMS')) die ('HAL');
  */
 
 # preload config file
-pluginsLoadConfig();
+
 
 $cfg = array();
 $cfgX = array();

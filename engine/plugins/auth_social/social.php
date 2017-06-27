@@ -230,7 +230,7 @@ function socialAuth()
  /**/
 }
 
-class SocialAuthCoreFilter extends CoreFilter {
+class SocialAuthCoreFilter extends CFilter {
 	function showUserMenu(&$tVars) {
 		global $mysql, $userROW;
 

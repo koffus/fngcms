@@ -12,7 +12,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-pluginsLoadConfig();
+
 
 Lang::loadPlugin('nsched', 'install');
 

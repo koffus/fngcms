@@ -7,9 +7,6 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload config file
-pluginsLoadConfig();
-
 //
 // Install script for plugin.
 // $action: possible action modes

@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: CoreFilter.class.php
+// Name: CFilter.class.php
 // Description: Class template definition: core actions filter
 // Author: Vitaly Ponomarev
 //
 
-class CoreFilter
+class CFilter
 {
     // Register new user: FORM handler
     function registerUserForm(&$tvars)

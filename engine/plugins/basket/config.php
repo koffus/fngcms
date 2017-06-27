@@ -7,8 +7,8 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-// Preload config file
-pluginsLoadConfig();
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
 
 // Load XFields config
 if (!function_exists('xf_configLoad')) {
@@ -35,7 +35,7 @@ if (!function_exists('xf_configLoad')) {
 
 // Check if `feedback` plugin is installed
 $feedbackFormList = array();
-if (getPluginStatusInstalled('feedback')) {
+if ($cPlugin->getStatusInstalled('feedback')) {
 	foreach ($mysql->select("select * from ".prefix."_feedback order by id", 1) as $frow) {
 		$feedbackFormList [$frow['id']]= $frow['id'].' - '.$frow['title'];
 	}

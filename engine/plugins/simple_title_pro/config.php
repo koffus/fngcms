@@ -18,7 +18,7 @@
 if(!defined('NGCMS'))
 exit('HAL');
 
-pluginsLoadConfig();
+
 Lang::loadPlugin('simple_title_pro', 'config', '', '', '#');
 
 switch ($_REQUEST['action']) {

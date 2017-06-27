@@ -13,7 +13,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-pluginsLoadConfig();
+
 
 $db_update = array(
  array(

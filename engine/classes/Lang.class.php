@@ -72,12 +72,14 @@ class Lang
         if (!$prefix) {
             $prefix = $plugin;
         }
-        // If requested plugin is activated, we can get 'dir' information from active array
-        $active = getPluginsActiveList();
+        // Load list of active plugins
+        $cPlugin = CPlugin::instance();
+        $active = $cPlugin->getListActive();
 
-        if (!$active['active'][$plugin]) {
+        if (!isset($active['active'][$plugin])) {
             // No, plugin is not active. Let's load plugin list
-            $extras = pluginsGetList();
+            // Load plugin list  
+            $extras = $cPlugin->getList();
 
             // Exit if no data about this plugin is found
             if (!$extras[$plugin]) {

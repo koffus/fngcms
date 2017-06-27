@@ -10,7 +10,7 @@ include_once(root."/plugins/gsmg/lib/common.php");
 // Configuration file for plugin
 //
 
-pluginsLoadConfig();
+
 
 if ($_REQUEST['action'] == 'commit') {
  remove_gsmg_urls();

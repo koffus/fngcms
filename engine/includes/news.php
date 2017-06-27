@@ -23,11 +23,10 @@ include_once root . 'includes/inc/libnews.php';
 function showNews($handlerName, $params)
 {
 
-    Lang::load('news', 'site'); // !!!
-
     global $catz, $catmap, $template, $config, $userROW, $PFILTERS, $SYSTEM_FLAGS, $SUPRESS_TEMPLATE_SHOW, $tpl, $parse, $currentCategory, $twig, $twigLoader, $TemplateCache;
 
     $timer = MicroTimer::instance();
+    Lang::load('news', 'site'); // !!!
 
     // preload plugins
     loadActionHandlers('news');

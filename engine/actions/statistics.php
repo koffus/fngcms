@@ -12,6 +12,9 @@ if (!defined('NGCMS')) die ('HAL');
 
 Lang::load('statistics', 'admin');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
 // Create a protective .htaccess
 create_access_htaccess();
 
@@ -148,7 +151,7 @@ $tVars = array(
 	'news_draft' => empty($nCount['v_-1'])?0:intval($nCount['v_-1']),
 	'news_unapp' => empty($nCount['v_0'])?0:intval($nCount['v_0']),
 	'news'				=> empty($nCount['v_1'])?0:intval($nCount['v_1']),
-	'comments' => getPluginStatusInstalled('comments')?$mysql->result("SELECT count(id) FROM ".prefix."_comments"):'-',
+	'comments' => $cPlugin->getStatusInstalled('comments')?$mysql->result("SELECT count(id) FROM ".prefix."_comments"):'-',
 	'users'				=> $mysql->result("SELECT count(id) FROM ".uprefix."_users"),
 	'users_unact' => $users_unact,
 	'images' => $mysql->result("SELECT count(id) FROM ".prefix."_images"),

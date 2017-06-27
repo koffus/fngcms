@@ -25,6 +25,9 @@ function plugin_nsm_edit_proxy() {
 function plugin_nsm(){
  global $userROW, $mysql, $twig, $template;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    
  // Load permissions
  $perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array(
  'personal.view',
@@ -108,7 +111,7 @@ function plugin_nsm(){
  'canEdit' => $canEdit?1:0,
  'canView' => $canView?1:0,
  'canDelete' => $canDelete?1:0,
- 'comments' => getPluginStatusInstalled('comments')?true:false,
+ 'comments' => $cPlugin->getStatusInstalled('comments')?true:false,
  'status' => ($row['approve'] == 1)?true:false,
  'mainpage' => $row['mainpage']?true:false,
  )

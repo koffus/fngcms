@@ -7,8 +7,8 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload config file
-pluginsLoadConfig();
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
 
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', '', ':');
@@ -16,7 +16,7 @@ Lang::loadPlugin($plugin, 'config', '', '', ':');
 //
 // Prepare configuration parameters
 //
-if (!getPluginStatusInstalled('comments')) {
+if (!$cPlugin->getStatusInstalled('comments')) {
 	msg(array('type' => 'danger', 'message' => 'Плагин comments не установлен!<br />Вернуться в <a href="admin.php?mod=extras" class="alert-link">Управление плагинами</a>'));
 	echo "<META HTTP-EQUIV='Refresh' Content='3'>";
 	return false;
