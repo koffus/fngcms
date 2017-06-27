@@ -24,7 +24,7 @@ function akeysGenerate($params){
     }
 
    // Scan incoming params
-	if (!is_array($params) or !isset($params['title']) or !isset($params['token'])) {
+	if (!is_array($params) or empty($params['title']) or empty($params['content']) ) {
 		return array( 'status' => 0, 'errorCode' => 4, 'errorText' => __('wrong_params_type') );
 	}
 
