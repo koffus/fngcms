@@ -1,6 +1,6 @@
 <?php
 
-class autokeyword {
+class Autokeys {
 
 	private $contents;
 	private $keywords;
@@ -26,6 +26,7 @@ class autokeyword {
 		if( $params['add_title'] ) {
 			$this->wordAddTitle = $params['add_title'];
 			$this->wordTitle = $params['title'];
+            $content = '';
 			for($i=0; $i<$this->wordAddTitle;$i++)
 				$content .= $this->wordTitle.' ';
 			$params['content'] = $content.' '.$params['content'];
@@ -81,7 +82,7 @@ function akeysGetKeys($params) {
 
 	if ( file_exists($stopFile = GetPluginDir('autokeys').'/config/stop-words/' . $config['default_lang'] . '.sw.txt') )
 		$stopText  = file_get_contents( $stopFile );
-	if ( file_exists($allowFile = GetPluginDir($plugin).'/config/allow-words.txt') )
+	if ( file_exists($allowFile = GetPluginDir('autokeys').'/config/allow-words.txt') )
 		$allowText  = file_get_contents( $allowFile );
 
 	$cfg = array(
@@ -100,8 +101,8 @@ function akeysGetKeys($params) {
 		'good_array' => $allowText,
 	);
 
-	$autokeyword = new autokeyword($cfg);
-	$keyword = $autokeyword->parse_words();
+	$autokeys = new Autokeys($cfg);
+	$keyword = $autokeys->parse_words();
 	if ( mb_strlen($keyword, 'UTF-8') > $cfg['word_sum'] ) {
 		$keyword = mb_substr($keyword, 0, $cfg['word_sum'], 'UTF-8');
 		$keyword = mb_substr($words, 0, mb_strrpos($keyword, ',', 'UTF-8'), 'UTF-8');

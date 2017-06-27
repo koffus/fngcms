@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load library
-include_once(root."/plugins/autokeys/lib/class.php");
+@include_once(root."/plugins/autokeys/lib/Autokeys.class.php");
 
 // News filtering class
 class autoKeysNewsFilter extends NewsFilter {

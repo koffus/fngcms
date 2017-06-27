@@ -14,7 +14,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Load additional handlers [ common ]
 loadActionHandlers('rpc');
-loadActionHandlers('rpc:'.(is_array($userROW)?'active':'inactive'));
+loadActionHandlers('rpc:'.((isset($userROW) and is_array($userROW)) ? 'active' : 'inactive'));
 
 // Function to preload ADMIN rpc funcs
 function loadAdminRPC($mod) {
