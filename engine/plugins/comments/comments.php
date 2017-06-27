@@ -92,7 +92,8 @@ class CommentsNewsFilter extends NewsFilter
         $allowCom = $SQLnews['allow_com'];
         if ($allowCom == 2) {
             // `Use default` - check master category
-            $masterCat = intval(array_shift(explode(',', $SQLnews['catid'])));
+            $catid = explode(',', $SQLnews['catid']);
+            $masterCat = intval(array_shift($catid));
             if ($masterCat and isset($catmap[$masterCat])) {
                 $allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
             }
@@ -116,7 +117,7 @@ class CommentsNewsFilter extends NewsFilter
         //	* style == full
         // * emulate == false
         // * plugin == not set
-        if (!(($callingParams['style'] == 'full') and (!$callingParams['emulate']) and (!isset($callingParams['plugin'])))) {
+        if (!(($callingParams['style'] == 'full') and (!isset($callingParams['emulate'])) and (!isset($callingParams['plugin'])))) {
             // No, we don't need to show comments
             $tvars['vars']['plugin_comments'] = '';
             return 1;
@@ -132,7 +133,8 @@ class CommentsNewsFilter extends NewsFilter
         // Set default template path
         $templatePath = tpl_site . 'plugins/comments';
 
-        $fcat = array_shift(explode(',', $SQLnews['catid']));
+        $catid = explode(',', $SQLnews['catid']);
+        $fcat = array_shift($catid);
 
         // Check if there is a custom mapping
         if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
@@ -294,7 +296,8 @@ function plugin_comments_add()
         $templatePath = tpl_dir . $config['theme'];
 
         // Find first category
-        $fcat = array_shift(explode(',', $SQLnews['catid']));
+        $catid = explode(',', $SQLnews['catid']);
+        $fcat = array_shift($catid);
         // Check if there is a custom mapping
         if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
             // Check if directory exists
@@ -482,7 +485,7 @@ function plugin_comments_delete()
     $SUPRESS_TEMPLATE_SHOW = 1;
 
     // Check if we run AJAX request
-    if ($_REQUEST['ajax']) {
+    if (isset($_REQUEST['ajax'])) {
         $template['vars']['mainblock'] = json_encode($output);
     } else {
         // NON-AJAX mode

@@ -35,10 +35,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 	$noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
 	// -> desired template path
-	$templatePath = ($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');
+	$templatePath = isset($callingParams['overrideTemplatePath']) ? $callingParams['overrideTemplatePath'] : (tpl_site.'plugins/comments');
 
 	// -> desired template
-	if ($callingParams['overrideTemplateName']) {
+	if (isset($callingParams['overrideTemplateName'])) {
 		$templateName = $callingParams['overrideTemplateName'];
 	} else {
 		$templateName = 'comments.show';
@@ -226,10 +226,10 @@ function comments_showform($newsID, $callingParams = array()){
 	global $mysql, $config, $template, $tpl, $userROW, $PFILTERS;
 
 	// -> desired template path
-	$templatePath = ($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');
+	$templatePath = isset($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');
 
 	// -> desired template
-	if ($callingParams['overrideTemplateName']) {
+	if (isset($callingParams['overrideTemplateName'])) {
 		$templateName = $callingParams['overrideTemplateName'];
 	} else {
 		$templateName = 'comments.form';
@@ -247,9 +247,9 @@ function comments_showform($newsID, $callingParams = array()){
 	}
 
 	// Lock AJAX calls if required
-	$tvars['regx']['#\[ajax\](.*?)\[\/ajax\]#is'] = $callingParams['noajax']?'':'$1';
+	$tvars['regx']['#\[ajax\](.*?)\[\/ajax\]#is'] = isset($callingParams['noajax'])?'':'$1';
 
-	if ($_COOKIE['com_username'] and trim($_COOKIE['com_username']) != "") {
+	if (isset($_COOKIE['com_username']) and trim($_COOKIE['com_username']) != "") {
 		$tvars['vars']['savedname'] = secure_html(urldecode($_COOKIE['com_username']));
 		$tvars['vars']['savedmail'] = secure_html(urldecode($_COOKIE['com_usermail']));
 	} else {
@@ -285,7 +285,7 @@ function comments_showform($newsID, $callingParams = array()){
 	$tvars['vars']['post_url'] = $link;
 
 	// RUN interceptors
-	if (is_array($PFILTERS['comments']))
+	if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
 		foreach ($PFILTERS['comments'] as $k => $v)
 			$v->addCommentsForm($newsID, $tvars);
 

@@ -11,7 +11,7 @@ function comments_add(){
 
 	// Check membership
 	// If login/pass is entered (either logged or not)
-	if ($_POST['name'] and $_POST['password']) {
+	if (isset($_POST['name']) and isset($_POST['password'])) {
 		$auth = $AUTH_METHOD[$config['auth_module']];
 		$user = $auth->login(0, $_POST['name'], $_POST['password']);
 		if (!is_array($user)) {
@@ -22,7 +22,7 @@ function comments_add(){
 
 	// Entered data have higher priority then login data
 	$memberRec = null;
-	if (is_array($user)) {
+	if (isset($user) and is_array($user)) {
 		$SQL['author'] = $user['name'];
 		$SQL['author_id'] = $user['id'];
 		$SQL['mail'] = $user['mail'];
@@ -132,7 +132,8 @@ function comments_add(){
 		$allowCom = $news_row['allow_com'];
 		if ($allowCom == 2) {
 			// `Use default` - check master category
-			$masterCat = intval(array_shift(explode(',', $news_row['catid'])));
+            $catid = explode(',', $news_row['catid']);
+			$masterCat = intval(array_shift($catid));
 			if ($masterCat and isset($catmap[$masterCat])) {
 				$allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
 			}
@@ -202,7 +203,7 @@ function comments_add(){
 	// RUN interceptors
 	loadActionHandlers('comments:add');
 
-	if (is_array($PFILTERS['comments']))
+	if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
 		foreach ($PFILTERS['comments'] as $k => $v) {
 			$pluginResult = $v->addComments($memberRec, $news_row, $tvars, $SQL);
 			if ((is_array($pluginResult) and ($pluginResult['result'])) or (!is_array($pluginResult) and $pluginResult))
@@ -235,7 +236,7 @@ function comments_add(){
 	checkFlood(1, $ip, 'comments', 'add', $is_member?$memberRec:null, $is_member?null:$SQL['author']);
 
 	// RUN interceptors
-	if (is_array($PFILTERS['comments']))
+	if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
 		foreach ($PFILTERS['comments'] as $k => $v)
 			$v->addCommentsNotify($memberRec, $news_row, $tvars, $SQL, $comment_id);
 

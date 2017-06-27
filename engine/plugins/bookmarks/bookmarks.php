@@ -33,6 +33,9 @@ register_plugin_page('bookmarks', '' , 'bookmarksPage', 0);
 
 Lang::loadPlugin('bookmarks', 'main', '', '', ':');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
 $bookmarks_script = '
 <script type="text/javascript">
 
@@ -136,10 +139,10 @@ $bookmarks_script = '
 	}
 </script>';
 	
-register_htmlvar('plain', $bookmarks_script);
+$cPlugin->register_htmlvar('plain', $bookmarks_script);
 
 $tpath = locatePluginTemplates(array(':bookmarks.css'), 'bookmarks', intval(pluginGetVariable('bookmarks', 'localSource')));
-register_stylesheet($tpath['url::bookmarks.css'].'/bookmarks.css'); 
+$cPlugin->register_stylesheet($tpath['url::bookmarks.css'].'/bookmarks.css'); 
 
 /* declare variables to be global
  * bookmarksLoaded - flag is bookmarks already loaded
@@ -153,7 +156,7 @@ $bookmarksList = array();
 # generate links for add/remove bookmark 
 class BookmarksNewsFilter extends NewsFilter {
 
-	function showNews($newsID, $SQLnews, &$tvars) {
+	function showNews($newsID, $SQLnews, &$tvars, $mode = array()) {
 		global $bookmarksLoaded, $bookmarksList, $userROW, $tpl, $mysql, $twig;
 
 		# determine paths for template files
