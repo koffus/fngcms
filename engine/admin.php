@@ -155,6 +155,7 @@ $permissions = array(
     'extras' => '1',
     'extra-config' => '1',
     'statistics' => '1',
+    'themes' => 99,
     'templates' => 99,
     'users' => 99,
     'rewrite' => '1',

@@ -108,7 +108,14 @@
 				</ul>
 			</li>
 			<li><a href="admin.php?mod=extras" {{ h_active.extras }}><i class="fa fa-puzzle-piece"></i> {{ lang['extras'] }}</a></li>
-			<li><a href="admin.php?mod=templates" {{ h_active.templates }}><i class="fa fa-th-large"></i> {{ lang['templates'] }}</a></li>
+			<li>
+				<a href="#h_active_themes" data-toggle="collapse" {{ h_active.themes }}>
+					<i class="fa fa-paint-brush"></i> {{ lang['themes'] }} <span class="caret"></span></a>
+				<ul id="h_active_themes" class="navbar-nav panel-collapse collapse">
+					<li><a href="admin.php?mod=themes">{{ lang['themes_management'] }}</a></li>
+					<li><a href="admin.php?mod=templates"> {{ lang['templates'] }}</a></li>
+				</ul>
+			</li>
 			<li>
 				<a href="#h_active_options" data-toggle="collapse" {{ h_active.options }}>
 					<i class="fa fa-cogs"></i> {{ lang['options'] }} <span class="caret"></span></a>
