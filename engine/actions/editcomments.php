@@ -43,7 +43,7 @@ function deletecomment() {
 }
 
 function editcomment() {
-	global $mysql, $twig, $config, $userROW;
+	global $mysql, $twig, $config, $userROW, $PHP_SELF;
 
 	$comid = intval($_REQUEST['comid']);
 	if(empty($comid)){
@@ -57,7 +57,7 @@ function editcomment() {
 		exit();
 	}
 
-	if ( $_REQUEST['subaction'] == 'doeditcomment' ) {
+	if ( isset($_REQUEST['subaction']) and $_REQUEST['subaction'] == 'doeditcomment' ) {
 		if (!trim($_REQUEST['poster'])) {
 			msg(array('type' => 'danger', 'message' => __('msge_namefield')));
 		} else {
