@@ -3,9 +3,13 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Preload required libraries
-loadPluginLibrary('uprofile', 'lib');
+
 Lang::loadPlugin('ublog', 'main', '', '', ':');
+
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('uprofile', 'lib');
 
 include_once root.'includes/news.php';
 

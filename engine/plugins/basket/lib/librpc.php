@@ -42,7 +42,10 @@ function basket_add_item($linked_ds, $linked_id, $title, $price, $count, $xfld =
 function basket_rpc_manage($params){
 	global $userROW, $DSlist, $mysql, $twig;
 
-	LoadPluginLibrary('xfields', 'common');
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // preload required libraries
+    $cPlugin->loadLibrary('xfields', 'common');
 
 	if (!is_array($params) or !isset($params['action']))
 		return array('status' => 0, 'errorCode' => 1, 'errorText' => 'Activity mode is not set');

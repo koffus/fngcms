@@ -2,13 +2,13 @@
 
 //
 // Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: urlHandler.class.php
+// Name: UrlHandler.class.php
 // Description: URL handler class
 // Author: Vitaly Ponomarev
 //
 
 /*
- urlHandler - manages a configuration that will be used for URL matching/catching
+ UrlHandler - manages a configuration that will be used for URL matching/catching
 
  Supported function:
  * registerHandler() - register new handler in internal library
@@ -114,7 +114,6 @@ class UrlHandler
         $this->hList = array();
         $this->configLoaded = false;
         $this->configFileName = confroot . 'rewrite.php';
-
         $this->options = $options;
     }
 
@@ -424,7 +423,7 @@ class UrlHandler
         }
 
         if ($flags['debug'])
-            print "urlHandler :: RUN(" . $url . ")<br>\n";
+            print "UrlHandler :: RUN(" . $url . ")<br>\n";
 
         // Modity calling URL if localPrefix is defined
         if (isset($flags['localPrefix']) and (trim($flags['localPrefix']))) {
@@ -432,11 +431,11 @@ class UrlHandler
                 // Catched prefix
                 $url = substr($url, mb_strlen($flags['localPrefix'], 'UTF-8'));
                 if ($flags['debug'])
-                    print "urlHandler :: RUN [<font color='red'><b>LOCAL PREFIX</b></font>: `" . $flags['localPrefix'] . "`] (" . $url . ")<br/>\n";
+                    print "UrlHandler :: RUN [<font color='red'><b>LOCAL PREFIX</b></font>: `" . $flags['localPrefix'] . "`] (" . $url . ")<br/>\n";
             } else {
                 // URL doesn't correspond to LOCAL PREFIX
                 if ($flags['debug'])
-                    print "urlHandler :: RUN [<font color='red'><b>LOCAL PREFIX</b></font>: `" . $flags['localPrefix'] . "`] - <i><b>ERROR: URL DOES NOT CORRESPOND TO PREFIX</b></i><br/>\n";
+                    print "UrlHandler :: RUN [<font color='red'><b>LOCAL PREFIX</b></font>: `" . $flags['localPrefix'] . "`] - <i><b>ERROR: URL DOES NOT CORRESPOND TO PREFIX</b></i><br/>\n";
                 return 0;
             }
         }

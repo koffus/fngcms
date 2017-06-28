@@ -4,7 +4,11 @@
 if (!defined('NGCMS')) die ('HAL');
 
 Lang::loadPlugin('subscribe_comments', 'main', '', '', ':');
-loadPluginLibrary('comments', 'lib');
+
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('comments', 'lib');
 
 function plugin_subscribe_comments_cron()
 {

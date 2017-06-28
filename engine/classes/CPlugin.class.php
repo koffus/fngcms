@@ -71,7 +71,79 @@ class CPlugin
         }
         return false;
     }
-    
+
+    // Load plugin [ Same behaviour as for loadActionHandlers ]
+    public function load($pluginName, $actionList = '*')
+    {
+        global $PLUGINS;
+
+        $timer = MicroTimer::instance();
+        // Load list of active plugins
+        $active = $this->getListActive();
+        
+        $loadCount = 0;
+
+        // Don't load if plugin is not activated
+        if (!$active['active'][$pluginName])
+            return false;
+
+        // Scan all available actions and preload plugin's file if needed
+        foreach ($active['actions'] as $aName => $pList) {
+            if (isset($pList[$pluginName]) and
+                ((is_array($actionList) and in_array($aName, $actionList)) or
+                    (!is_array($actionList) and (($actionList == '*') or ($actionList == $aName))))
+            ) {
+                // Yes, we should load this file. If it's not loaded earlier
+                $pluginFileName = $pList[$pluginName];
+
+                if (!isset($PLUGINS['loaded:files'][$pluginFileName])) {
+                    // Try to load file. First check if it exists
+                    if (is_file(extras_dir . '/' . $pluginFileName)) {
+                        $tX = $timer->stop(4);
+                        include_once extras_dir . '/' . $pluginFileName;
+                        $timer->registerEvent('func loadPlugin (' . $pluginName . '): preloaded file "' . $pluginFileName . '" for ' . ($timer->stop(4) - $tX) . " sec");
+                        $PLUGINS['loaded:files'][$pluginFileName] = 1;
+                        $loadCount++;
+                    } else {
+                        $timer->registerEvent('func loadPlugin (' . $pluginName . '): CAN\'t preload file that doesn\'t exists: "' . $pluginFileName . '"');
+                    }
+                }
+            }
+        }
+
+        $PLUGINS['loaded'][$pluginName] = 1;
+        return $loadCount;
+    }
+
+    // Load plugin's library
+    public function loadLibrary($plugin, $libname = '')
+    {
+        $timer = MicroTimer::instance();
+        // Load list of active plugins
+        $active = $this->getListActive();
+
+        // Check if we know about this plugin
+        if (!isset($active['active'][$plugin])) return false;
+
+        // Check if we need to load all libs
+        if (!$libname) {
+            foreach ($active['libs'][$plugin] as $id => $file) {
+                $tX = $timer->stop(4);
+                include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $file;
+                $timer->registerEvent('loadLibrary: ' . $plugin . '.' . $id . ' [' . $file . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
+            }
+            return true;
+        } else {
+            if (isset($active['libs'][$plugin][$libname])) {
+                $tX = $timer->stop(4);
+                include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $active['libs'][$plugin][$libname];
+                $timer->registerEvent('loadLibrary: ' . $plugin . ' [' . $libname . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
+                return true;
+            }
+            return false;
+        }
+    }
+
     // pluginsGetList
     // Get list of installed plugins
     // Сделать загрузку один раз, передавать в массив $extras[$ver['id']], как и в $PLUGINS
@@ -210,20 +282,11 @@ class CPlugin
 
     //
     // Add item into list of additional HTML meta tags
-    function register_htmlvar($type, $data)
+    public function regHtmlVar($type, $data)
     {
         global $EXTRA_HTML_VARS;
 
         $EXTRA_HTML_VARS[] = array('type' => $type, 'data' => $data);
-    }
-
-    //
-    // Add new stylesheet into template
-    function register_stylesheet($url)
-    {
-        global $EXTRA_CSS;
-
-        $this->register_htmlvar('css', $url);
     }
 
     /**

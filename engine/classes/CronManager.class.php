@@ -126,6 +126,8 @@ class CronManager
     {
 
         $timer = MicroTimer::instance();
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
 
         // Check if there're any CRON tasks, return if no tasks
         if (sizeof($this->config) == 0) {
@@ -273,11 +275,11 @@ class CronManager
             }
         }
 
+        $trace = '';
         // Check if now we have anything to run
         if (sizeof($runList)) {
 
             // Call handlers
-            $trace = '';
             foreach ($runList as $num => $run) {
                 $funcName = '';
                 // Preload plugin and get function name
@@ -286,7 +288,7 @@ class CronManager
                     $funcName = 'core_cron';
                 } else {
                     // COMMON plugins - load plugin for handler "CRON"
-                    loadPlugin($run[0], 'cron');
+                    $cPlugin->load($run[0], 'cron');
                     $funcName = 'plugin_' . $run[0] . '_cron';
                 }
                 // Try to call function and to pass parameter (handler)

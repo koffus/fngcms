@@ -2,12 +2,12 @@
 
 //
 // Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
-// Name: urlLibrary.class.php
+// Name: UrlLibrary.class.php
 // Description: URL handler class
 // Author: Vitaly Ponomarev
 //
 
-//urlLibrary - manages a list of possible actions that are supported by different plugins
+//UrlLibrary - manages a list of possible actions that are supported by different plugins
 
 /*
  First: each plugin registers it's list of supported commands and
@@ -24,7 +24,7 @@
 
 */
 
-class urlLibrary
+class UrlLibrary
 {
 
     // Constructor
@@ -50,11 +50,11 @@ class urlLibrary
         if (is_file($this->configFileName)) {
             // Include REC
             include $this->configFileName;
-            if (!isset($urlLibrary)) {
+            if (!isset($UrlLibrary)) {
                 $this->fatalError = 1;
                 return false;
             }
-            $this->CMD = $urlLibrary;
+            $this->CMD = $UrlLibrary;
         }
         $this->configLoaded = true;
         return true;
@@ -74,7 +74,7 @@ class urlLibrary
             return false;
         }
 
-        fwrite($f, '<?php' . "\n" . '$urlLibrary = ' . var_export($this->CMD, true) . ';');
+        fwrite($f, '<?php' . "\n" . '$UrlLibrary = ' . var_export($this->CMD, true) . ';');
         fclose($f);
         return true;
     }

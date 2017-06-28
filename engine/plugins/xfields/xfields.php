@@ -9,9 +9,13 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('xfields', 'common');
+
 // Load lang files
 Lang::loadPlugin('xfields', 'config', '', '', ':');
-LoadPluginLibrary('xfields', 'common');
 
 //
 // XFields: Add/Modify attached files
@@ -1073,7 +1077,11 @@ class XFieldsNewsFilter extends NewsFilter {
 
 // Manage uprofile modifications
 if (getPluginStatusActive('uprofile')) {
-	loadPluginLibrary('uprofile', 'lib');
+    
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // preload required libraries
+    $cPlugin->loadLibrary('uprofile', 'lib');
 
 	class XFieldsUPrifileFilter extends p_uprofileFilter {
 

@@ -1,5 +1,5 @@
 <?php
-$urlLibrary = array (
+$UrlLibrary = array (
   'news' => 
   array (
     'main' => 

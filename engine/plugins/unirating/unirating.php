@@ -19,12 +19,15 @@ class UNRatingNewsFilter extends NewsFilter {
 	function showNews($newsID, $SQLnews, &$tvars, $mode) {
 		global $tpl, $mysql, $userROW;
 
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+
 		Lang::loadPlugin('unirating', 'site');
 		$localSkin = pluginGetVariable('unirating', 'news_localSkin');
 		if (!$localSkin) $localSkin='news/basic';
 
 		$tpath = locatePluginTemplates(array('rating', 'rating.form', ':rating.css'), 'unirating', pluginGetVariable('unirating', 'news_localSource'), $localSkin);
-		register_stylesheet($tpath['url::rating.css'].'/rating.css');
+		$cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css');
 
 		$trvars = array();
 		$trvars['vars']['tpl_url'] = $tpath['url::rating.css'];

@@ -17,10 +17,10 @@ if ( !checkPermission(array('plugin' => '#admin', 'item' => 'rewrite'), null, 'd
 	return false;
 }
 
-$ULIB = new urlLibrary();
+$ULIB = new UrlLibrary();
 $ULIB->loadConfig();
 
-$UH = new urlHandler();
+$UH = new UrlHandler();
 $UH->loadConfig();
 
 $lang = Lang::load('rewrite', 'admin');

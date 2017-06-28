@@ -3,10 +3,10 @@
 # protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-# preload required libraries
-//loadPluginLibrary('uprofile', 'lib');
-//loadPluginLibrary('comments', 'lib');
-loadPluginLibrary('uprofile', 'lib');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('uprofile', 'lib');
 
 register_plugin_page('auth_social', '' , 'socialAuth', 0);
 registerActionHandler('usermenu', 'auth_social_links');

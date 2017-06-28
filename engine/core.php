@@ -209,7 +209,7 @@ $cPlugin = CPlugin::instance();
 $timer->registerEvent('Core files are included');
 
 // ** Activate URL processing library
-$UHANDLER = new urlHandler();
+$UHANDLER = new UrlHandler();
 $UHANDLER->loadConfig();
 
 // ** Other libraries

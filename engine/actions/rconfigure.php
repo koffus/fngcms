@@ -5,10 +5,10 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-$ULIB = new urlLibrary();
+$ULIB = new UrlLibrary();
 $ULIB->loadConfig();
 
-$UHANDLER = new urlHandler();
+$UHANDLER = new UrlHandler();
 $UHANDLER->loadConfig();
 
 $ULIB->registerCommand('news', 'all',

@@ -373,6 +373,7 @@ function plugin_tags_tag($params = array()) {
 		// Unknown tag
 		$entries = __('tags:nonews');
 	} else {
+        $entries = '';
 		$SYSTEM_FLAGS['info']['title']['secure_html']	= secure_html($tag);
 
 		// Set page display limit
@@ -409,6 +410,7 @@ function plugin_tags_tag($params = array()) {
 		} else {
 			$limit = 'limit '.$perPage;
 			$pagesCount = 1;
+            $pages = '';
 		}
 
 		foreach ($mysql->select("select n.* from ".prefix."_tags_index i left join ".prefix."_news n on n.id = i.newsID where i.tagID =".db_squote($rec['id'])." order by n.postdate desc ".$limit) as $row) {
@@ -451,7 +453,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	}
 
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
-	$cacheFileName = md5('tags'.$config['home_url'].$config['theme'].$config['default_lang'].$masterTPL.('page'.isset($_REQUEST['page'])?$_REQUEST['page']:'').'age'.$age.'cat'.(is_array($cl)?join(",",$cl):$cl)).'.txt';
+	$cacheFileName = md5('tags'.$config['home_url'].$config['theme'].$config['default_lang'].$masterTPL.'page'.(isset($_REQUEST['page'])?$_REQUEST['page']:'').'age'.$age.'cat'.(is_array($cl)?join(",",$cl):$cl)).'.txt';
 	if (pluginGetVariable('tags','cache')) {
 		$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('tags','cacheExpire'), 'tags');
 		if ($cacheData != false) {

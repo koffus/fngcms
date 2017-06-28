@@ -383,8 +383,8 @@ function systemDboForm()
         $tableInfo = array(
             'table' => $info['Name'],
             'rows' => $info['Rows'],
-            'data' => Formatsize($info['Data_length'] + $info['Index_length'] + $info['Data_free']),
-            'overhead' => ($info['Data_free'] > 0) ? '<span style="color:red;">' . Formatsize($info['Data_free']) . '</span>' : 0,
+            'data' => formatSize($info['Data_length'] + $info['Index_length'] + $info['Data_free']),
+            'overhead' => ($info['Data_free'] > 0) ? '<span style="color:red;">' . formatSize($info['Data_free']) . '</span>' : 0,
         );
 
         $tableList [] = $tableInfo;

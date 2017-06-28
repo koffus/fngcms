@@ -202,7 +202,7 @@ function editNewsForm() {
 			// Check if file exists
 			$fname = ($arow['storage']?$config['attach_dir']:$config['files_dir']).$arow['folder'].'/'.$arow['name'];
 			if (file_exists($fname) and ($fsize = @filesize($fname))) {
-				$attachEntry['filesize'] = Formatsize($fsize);
+				$attachEntry['filesize'] = formatSize($fsize);
 				$attachEntry['url'] = (($arow['storage'])?($config['attach_url']):($config['files_url'])).'/'.$arow['folder'].'/'.$arow['name'];
 			} else {
 				$attachEntry['filesize'] = '<font color="red">n/a</font>';

@@ -58,7 +58,7 @@ foreach (array(
 		// Load list of files, ExecTimeLimit = 5 sec (don't allow to work for > 5 sec)
 		if (!$timeLimit) {
 			list ($size, $count, $null, $timeLimit) = directoryWalk($dir, null, null, false, 5);
-			$STATS[$id.'_size'] = Formatsize($size);
+			$STATS[$id.'_size'] = formatSize($size);
 			$STATS[$id.'_amount'] = $count. ($timeLimit?'<b>++</b>':'');
 		} else {
 			$STATS[$id.'_size'] = 'too much';
@@ -76,7 +76,7 @@ $mysql_size = 0;
 foreach ($mysql->select("SHOW TABLE STATUS FROM `".$config['dbname']."`") as $result) {
 	$mysql_size += $result['Data_length'] + $result['Index_length'];
 }
-$mysql_size = Formatsize($mysql_size);
+$mysql_size = formatSize($mysql_size);
 
 $backup = @decoct(@fileperms(root."backups")) % 1000;
 $avatars = @decoct(@fileperms(avatars_dir)) % 1000;
@@ -115,7 +115,7 @@ if (file_exists($note_path)) {
 }
 
 $df_size = disk_free_space(root);
-$df = ($df_size > 1) ? Formatsize($df_size) : 'n/a';
+$df = ($df_size > 1) ? formatSize($df_size) : 'n/a';
 
 // Calculate number of news
 $nCount = array();

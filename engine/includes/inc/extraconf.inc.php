@@ -56,7 +56,7 @@ function pluginSwitch($pluginID, $mode = 'on') {
 			unset($active['libs'][$pluginID]);
 
 			foreach ($active['actions'] as $key => $value) {
-				if ($active['actions'][$key][$pluginID]) {
+				if (isset($active['actions'][$key][$pluginID])) {
 						unset($active['actions'][$key][$pluginID]);
 				}
 			}

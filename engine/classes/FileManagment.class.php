@@ -186,9 +186,9 @@ class FileManagment
         // * File size
         if ($fsize > $this->max_size) {
             if (isset($param['rpc'])) {
-                return array('status' => 0, 'errorCode' => 302, 'errorText' => str_replace('{fname}', $fname, __('upload.error.size')), 'errorDescription' => str_replace('{size}', Formatsize($this->max_size), __('upload.error.size#info')));
+                return array('status' => 0, 'errorCode' => 302, 'errorText' => str_replace('{fname}', $fname, __('upload.error.size')), 'errorDescription' => str_replace('{size}', formatSize($this->max_size), __('upload.error.size#info')));
             } else {
-                msg(array('type' => 'danger', 'title' => str_replace('{fname}', $fname, __('upload.error.size')), 'message' => str_replace('{size}', Formatsize($this->max_size), __('upload.error.size#info'))));
+                msg(array('type' => 'danger', 'title' => str_replace('{fname}', $fname, __('upload.error.size')), 'message' => str_replace('{size}', formatSize($this->max_size), __('upload.error.size#info'))));
                 return 0;
             }
         }

@@ -128,6 +128,8 @@ function plugin_jchat_show(){
 function plugin_jchat_index() {
 	global $template, $tpl, $SUPRESS_TEMPLATE_SHOW, $userROW, $CurrentHandler;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
 	Lang::loadPlugin('jchat', 'main', '', '', ':');
 
 	// We shouldn't show side jchat panel if user currently visited separate jchat window
@@ -144,7 +146,7 @@ function plugin_jchat_index() {
 
 	// Determine paths for all template files
 	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat'), 'jchat', pluginGetVariable('jchat', 'localSource'));
-	register_stylesheet($tpath['url::jchat.css'].'/jchat.css');
+	$cPlugin->regHtmlVar('css', $tpath['url::jchat.css'].'/jchat.css');
 
 	$tvars = array();
 	$start = isset($_REQUEST['start'])?intval($_REQUEST['start']):0;
@@ -332,6 +334,9 @@ function plugin_jchat_del() {
 function plugin_jchat_win() {
 	global $template, $tpl, $SUPRESS_TEMPLATE_SHOW, $userROW;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
 	Lang::loadPlugin('jchat', 'main', '', '', ':');
 
 	if (pluginGetVariable('jchat', 'win_mode'))
@@ -351,7 +356,7 @@ function plugin_jchat_win() {
 
 	// Determine paths for all template files
 	$tpath = locatePluginTemplates(array(':jchat.css', 'jchat.main', 'jchat.self'), 'jchat', pluginGetVariable('jchat', 'localSource'));
-	register_stylesheet($tpath['url::jchat.css'].'/jchat.css');
+	$cPlugin->regHtmlVar('css', $tpath['url::jchat.css'].'/jchat.css');
 
 	if ( intval(pluginGetVariable('jchat', 'win_mode')) ) {
 		$tvars['vars']['home'] = home;

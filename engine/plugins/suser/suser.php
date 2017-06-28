@@ -10,7 +10,10 @@ registerActionHandler('index_post', 'suser_header_show');
 
 // need for xfields sort & search
 if (xmode()) {
- LoadPluginLibrary('xfields', 'common');
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // preload required libraries
+    $cPlugin->loadLibrary('xfields', 'common');
 }
 
 function xmode() {

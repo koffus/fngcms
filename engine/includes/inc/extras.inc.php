@@ -68,82 +68,6 @@ function loadActionHandlers($action, $plugin = '')
 }
 
 
-//
-// Load plugin [ Same behaviour as for loadActionHandlers ]
-function loadPlugin($pluginName, $actionList = '*')
-{
-    global $PLUGINS;
-
-    $timer = MicroTimer::instance();
-    // Load list of active plugins
-    $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
-    
-    $loadCount = 0;
-
-    // Don't load if plugin is not activated
-    if (!$active['active'][$pluginName])
-        return false;
-
-    // Scan all available actions and preload plugin's file if needed
-    foreach ($active['actions'] as $aName => $pList) {
-        if (isset($pList[$pluginName]) and
-            ((is_array($actionList) and in_array($aName, $actionList)) or
-                (!is_array($actionList) and (($actionList == '*') or ($actionList == $aName))))
-        ) {
-            // Yes, we should load this file. If it's not loaded earlier
-            $pluginFileName = $pList[$pluginName];
-
-            if (!isset($PLUGINS['loaded:files'][$pluginFileName])) {
-                // Try to load file. First check if it exists
-                if (is_file(extras_dir . '/' . $pluginFileName)) {
-                    $tX = $timer->stop(4);
-                    include_once extras_dir . '/' . $pluginFileName;
-                    $timer->registerEvent('func loadPlugin (' . $pluginName . '): preloaded file "' . $pluginFileName . '" for ' . ($timer->stop(4) - $tX) . " sec");
-                    $PLUGINS['loaded:files'][$pluginFileName] = 1;
-                    $loadCount++;
-                } else {
-                    $timer->registerEvent('func loadPlugin (' . $pluginName . '): CAN\'t preload file that doesn\'t exists: "' . $pluginFileName . '"');
-                }
-            }
-        }
-    }
-
-    $PLUGINS['loaded'][$pluginName] = 1;
-    return $loadCount;
-}
-
-//
-// Load plugin's library
-function loadPluginLibrary($plugin, $libname = '')
-{
-    $timer = MicroTimer::instance();
-    // Load list of active plugins
-    $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
-
-    // Check if we know about this plugin
-    if (!isset($active['active'][$plugin])) return false;
-
-    // Check if we need to load all libs
-    if (!$libname) {
-        foreach ($active['libs'][$plugin] as $id => $file) {
-            $tX = $timer->stop(4);
-            include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $file;
-            $timer->registerEvent('loadPluginLibrary: ' . $plugin . '.' . $id . ' [' . $file . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
-        }
-        return true;
-    } else {
-        if (isset($active['libs'][$plugin][$libname])) {
-            $tX = $timer->stop(4);
-            include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $active['libs'][$plugin][$libname];
-            $timer->registerEvent('loadPluginLibrary: ' . $plugin . ' [' . $libname . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
-            return true;
-        }
-        return false;
-    }
-}
-
 function registerActionHandler($action, $function, $arguments = 0, $priority = 5)
 {
     global $acts;
@@ -598,8 +522,11 @@ function generatePageLink($paginationParams, $page, $intlink = false)
 function _MASTER_defaultRUN($pluginName, $handlerName, $params, &$skip, $handlerParams)
 {
     global $PPAGES, $SYSTEM_FLAGS, $CurrentHandler;
+
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
     // Preload requested plugin
-    loadPlugin($pluginName, 'ppages');
+    $cPlugin->load($pluginName, 'ppages');
 
     // Make chain-load for all plugins, that want to activate during this plugin activation
     loadActionHandlers('action.ppages.' . $pluginName);

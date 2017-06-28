@@ -187,7 +187,7 @@ if ($mod != 'preview') {
     Lang::load('index', 'admin');
 
     // Get user variables
-    LoadPluginLibrary('uprofile', 'lib');
+    $cPlugin->loadLibrary('uprofile', 'lib');
     $status = $UGROUP[$userROW['status']]['langName'][$config['default_lang']];
     $userPhoto = function_exists('userGetPhoto') ? userGetPhoto($userROW) : $skins_url . '/assets/img/default-avatar.jpg';
     $userAvatar = (!empty($userROW['avatar']) and function_exists('userGetAvatar')) ? userGetAvatar($userROW)[1] : $skins_url . '/assets/img/default-avatar.jpg';

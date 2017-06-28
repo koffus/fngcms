@@ -51,6 +51,9 @@ function processJSON(){
 
 	// Set correct content/type
 	header('Content-Type: application/json; charset=UTF-8');
+    
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
 
 	// Decode passed params
 	$params = json_decode($_POST['params'], true);
@@ -63,15 +66,16 @@ function processJSON(){
 		default:
 			if (isset($RPCFUNC[$methodName])) {
 				$out = call_user_func($RPCFUNC[$methodName], $params);
-			} else if (preg_match('#^plugin\.(.+?)\.#', $methodName, $m) and loadPlugin($m[1], 'rpc') and isset($RPCFUNC[$methodName])) {
+			} else if (preg_match('#^plugin\.(.+?)\.#', $methodName, $m) and $cPlugin->load($m[1], 'rpc') and isset($RPCFUNC[$methodName])) {
 				// If method "plugin.NAME.something" is called, try to load action "rpc" for plugin "NAME"
 				$out = call_user_func($RPCFUNC[$methodName], $params);
 			} else if (preg_match('#^admin\.(.+?)\.#', $methodName, $m) and loadAdminRPC($m[1]) and isset($RPCADMFUNC[$methodName])) {
 				// If method "plugin.NAME.something" is called, try to load action "rpc" for plugin "NAME"
 				$out = call_user_func($RPCADMFUNC[$methodName], $params);
 			} else {
-				$out = rpcDefault($methodName, $params); break;
+				$out = rpcDefault($methodName, $params);
 			}
+            break;
 	}
 	//print "<pre>JSON OUTPUT: ".json_encode($out)."</pre>";
 	// Print output
@@ -103,11 +107,10 @@ function rpcRewriteSubmit($params) {
 		return array('status' => 0, 'errorCode' => 3, 'errorText' => 'Access denied (token)');
 	}
 
-	@include_once 'includes/classes/uhandler.class.php';
-	$ULIB = new urlLibrary();
+	$ULIB = new UrlLibrary();
 	$ULIB->loadConfig();
 
-	$UHANDLER = new urlHandler();
+	$UHANDLER = new UrlHandler();
 	$UHANDLER->loadConfig();
 
 	// Scan incoming params

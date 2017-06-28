@@ -24,9 +24,11 @@
 # protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-# preload required libraries
-loadPluginLibrary('uprofile', 'lib');
-loadPluginLibrary('comments', 'lib');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('uprofile', 'lib');
+$cPlugin->loadLibrary('comments', 'lib');
 
 register_plugin_page('auth_loginza', '' , 'loginzaAuth', 0);
 register_plugin_page('auth_loginza', 'register' , 'loginzaRegister', 0);

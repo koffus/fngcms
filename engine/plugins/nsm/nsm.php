@@ -9,7 +9,10 @@ register_plugin_page('nsm','add','plugin_nsm_add_proxy');
 register_plugin_page('nsm','edit','plugin_nsm_edit_proxy');
 register_plugin_page('nsm','del','plugin_nsm_del');
 
-LoadPluginLibrary('xfields', 'common');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('xfields', 'common');
 
 function plugin_nsm_add_proxy() {
  $tpl_name = 'news.add';

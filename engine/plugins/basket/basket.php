@@ -3,10 +3,13 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-LoadPluginLibrary('xfields', 'common');
-LoadPluginLibrary('feedback', 'common');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('xfields', 'common');
+$cPlugin->loadLibrary('feedback', 'common');
 
-register_htmlvar('js', admin_url.'/plugins/basket/js/basket.js');
+$cPlugin->regHtmlVar('js', admin_url.'/plugins/basket/js/basket.js');
 
 //
 // Отображение общей информации/остатков в корзине

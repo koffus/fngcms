@@ -599,7 +599,7 @@ class Parse
                     if (is_array($rec)) {
                         // Generate file ULR
                         $fname = ($rec['storage'] ? $config['attach_dir'] : $config['files_dir']) . $rec['folder'] . '/' . $rec['name'];
-                        $fsize = (file_exists($fname) and ($fsize = @filesize($fname))) ? Formatsize($fsize) : 'n/a';
+                        $fsize = (file_exists($fname) and ($fsize = @filesize($fname))) ? formatSize($fsize) : 'n/a';
 
                         $params = array(
                             'url' => ($rec['storage'] ? $config['attach_url'] : $config['files_url']) . '/' . $rec['folder'] . '/' . $rec['name'],
@@ -642,7 +642,7 @@ class Parse
                                 array_push($rdest, ($rec['storage'] ? $config['attach_url'] : $config['files_url']) . '/' . $rec['folder'] . '/' . $rec['name']);
                                 break;
                             case 'size':
-                                array_push($rdest, (file_exists($fname) and ($fsize = @filesize($fname))) ? Formatsize($fsize) : 'n/a');
+                                array_push($rdest, (file_exists($fname) and ($fsize = @filesize($fname))) ? formatSize($fsize) : 'n/a');
                                 break;
                             case 'name':
                                 $dots = explode(".", $rec['orig_name']);

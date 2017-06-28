@@ -35,7 +35,7 @@ params:
 
 function generate_config_page($module, $params, $values = array())
 {
-    global $twig;
+    global $twig, $PHP_SELF;
 
     function mkParamLine($param)
     {
@@ -51,33 +51,35 @@ function generate_config_page($module, $params, $values = array())
             'name' => $param['name'],
             'title' => $param['title'],
             'descr' => $param['descr'],
-            'error' => str_replace('%error%', $param['error'], __('param_error')),
+            'error' => isset($param['error']) ? (str_replace('%error%', $param['error'], __('param_error'))) : '',
             'input' => '',
             'flags' => array(
-                'descr' => $param['descr'] ? true : false,
-                'error' => $param['error'] ? true : false
+                'descr' => isset($param['descr']) ? true : false,
+                'error' => isset($param['error']) ? true : false
             )
         );
 
-        if ($values[$param['name']]) {
+        if (isset($values[$param['name']])) {
             $param['value'] = $values[$param['name']];
         }
         if (!empty($_POST[$param['name']])) {
             $param['value'] = $_POST[$param['name']];
         }
 
+        $html_flags = isset($param['html_flags'] ) ? $param['html_flags'] : '';
+        
         if ($param['type'] == 'text') {
-            $tvars['input'] = '<textarea name="' . $param['name'] . '" ' . $param['html_flags'] . ' class="form-control">' . secure_html($param['value']) . '</textarea>';
+            $tvars['input'] = '<textarea name="' . $param['name'] . '" ' . $html_flags . ' class="form-control">' . secure_html($param['value']) . '</textarea>';
         } elseif ($param['type'] == 'button') {
-            $tvars['input'] = '<input type="button" name="' . $param['name'] . '" ' . $param['html_flags'] . ' value="' . secure_html($param['value']) . '" class="btn btn-default" />';
+            $tvars['input'] = '<input type="button" name="' . $param['name'] . '" ' . $html_flags . ' value="' . secure_html($param['value']) . '" class="btn btn-default" />';
         } elseif ($param['type'] == 'input') {
-            $tvars['input'] = '<input type="text" name="' . $param['name'] . '" ' . $param['html_flags'] . ' value="' . secure_html($param['value']) . '" class="form-control" />';
+            $tvars['input'] = '<input type="text" name="' . $param['name'] . '" ' . $html_flags . ' value="' . secure_html($param['value']) . '" class="form-control" />';
         } elseif ($param['type'] == 'checkbox') {
-            $tvars['input'] = '<input type="checkbox" name="' . $param['name'] . '" ' . $param['html_flags'] . ' value="1"' . ($param['value'] ? ' checked' : '') . ' />';
+            $tvars['input'] = '<input type="checkbox" name="' . $param['name'] . '" ' . $html_flags . ' value="1"' . ($param['value'] ? ' checked' : '') . ' />';
         } elseif ($param['type'] == 'hidden') {
             $tvars['input'] = '<input type="hidden" name="' . $param['name'] . '" value="' . secure_html($param['value']) . '" class="form-control" />';
         } elseif ($param['type'] == 'select') {
-            $tvars['input'] = '<select name="' . $param['name'] . '" ' . $param['html_flags'] . ' class="form-control">';
+            $tvars['input'] = '<select name="' . $param['name'] . '" ' . $html_flags . ' class="form-control">';
             foreach ($param['values'] as $oid => $oval) {
                 $tvars['input'] .= '<option value="' . secure_html($oid) . '"' . ($param['value'] == secure_html($oid) ? ' selected' : '') . '>' . secure_html($oval) . '</option>';
             }
@@ -128,7 +130,7 @@ function generate_config_page($module, $params, $values = array())
 function commit_plugin_config_changes($module, $params)
 {
 
-    // Load cofig
+    // Load config
     
 
     $cfgUpdate = array();
@@ -136,22 +138,24 @@ function commit_plugin_config_changes($module, $params)
     // For each param do save data
     foreach ($params as $param) {
         // Validate parameter if needed
-        if ($param['mode'] == 'group') {
+        if (isset($param['mode']) and $param['mode'] == 'group') {
             if (is_array($param['entries'])) {
                 foreach ($param['entries'] as $gparam) {
-                    if ($gparam['name'] and (!$gparam['nosave'])) {
+                    if (isset($gparam['name']) and empty($gparam['nosave'])) {
                         pluginSetVariable($module, $gparam['name'], $_POST[$gparam['name']] . '');
                         $cfgUpdate[$gparam['name']] = $_POST[$gparam['name']] . '';
                     }
                 }
             }
-        } else if ($param['name'] and (!$param['nosave'])) {
+        } elseif (isset($param['name']) and empty($param['nosave'])) {
             pluginSetVariable($module, $param['name'], $_POST[$param['name']] . '');
         }
     }
 
     // Save config
-    pluginsSaveConfig();
+    if(pluginsSaveConfig()) {
+        msg(array('message' => __('commited')));
+    }
 
     // Generate log
     ngSYSLOG(array('plugin' => '#admin', 'item' => 'config#' . $module), array('action' => 'update', 'list' => $cfgUpdate), null, array(1));
@@ -167,13 +171,6 @@ function load_commit_params($cfg, $outparams)
         }
     }
     return $outparams;
-}
-
-// Priint page with config change complition notification
-function print_commit_complete($plugin, $cfg)
-{
-    generate_config_page($plugin, $cfg);
-    msg(array('message' => __('commited')));
 }
 
 // check if table exists

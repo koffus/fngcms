@@ -12,7 +12,9 @@ if (!defined('NGCMS')) die ('HAL');
 
 Lang::load('users', 'admin');
 
-LoadPluginLibrary('uprofile', 'lib');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+$cPlugin->loadLibrary('uprofile', 'lib');
 
 //
 // Form: Edit user

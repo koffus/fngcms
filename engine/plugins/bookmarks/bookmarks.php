@@ -139,10 +139,10 @@ $bookmarks_script = '
 	}
 </script>';
 	
-$cPlugin->register_htmlvar('plain', $bookmarks_script);
+$cPlugin->regHtmlVar('plain', $bookmarks_script);
 
 $tpath = locatePluginTemplates(array(':bookmarks.css'), 'bookmarks', intval(pluginGetVariable('bookmarks', 'localSource')));
-$cPlugin->register_stylesheet($tpath['url::bookmarks.css'].'/bookmarks.css'); 
+$cPlugin->regHtmlVar('css', $tpath['url::bookmarks.css'].'/bookmarks.css'); 
 
 /* declare variables to be global
  * bookmarksLoaded - flag is bookmarks already loaded
