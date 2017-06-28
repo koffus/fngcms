@@ -22,11 +22,6 @@ class Lang
         if (file_exists($dir_lang = tpl_dir . $config['theme'] . '/lang/' . $config['default_lang'] . '.ini'))
             self::$data['theme'] = parse_ini_file($dir_lang, true);
 
-        self::$weekdays = explode(',', __('weekdays'));
-        self::$short_weekdays = explode(',', __('short_weekdays'));
-        self::$months = explode(',', __('months'));
-        self::$short_months = explode(',', __('short_months'));
-
         // - Global variables [by REFERENCE]
         $twig->addGlobalRef('lang', self::$data);
     }
@@ -117,7 +112,7 @@ class Lang
             // Delimiter = '#' - special delimiter, make a separate array
             if ($delimiter == '#') {
                 self::set($plugin_lang, $prefix);
-            } else if (($delimiter == '') and ($prefix == '')) {
+            } else if (empty($delimiter) and empty($prefix)) {
                 self::set($plugin_lang);
             } else {
                 foreach ($plugin_lang as $p => $v) {
@@ -146,7 +141,7 @@ class Lang
     public static function get($key, $default_value = false)
     {
 
-        if (isset(self::$data[$key]) and !empty(self::$data[$key]))
+        if (!empty(self::$data[$key]))
             return self::$data[$key];
 
         // this need to global, admin.panel
@@ -163,10 +158,10 @@ class Lang
     public static function retDate($format, $timestamp)
     {
 
-        $weekdays = self::$weekdays;
-        $short_weekdays = self::$short_weekdays;
-        $months = self::$months;
-        $short_months = self::$short_months;
+        $weekdays = explode(',', self::$data['weekdays']);
+        $short_weekdays = explode(',', self::$data['short_weekdays']);
+        $months = explode(',', self::$data['months']);
+        $short_months = explode(',', self::$data['short_months']);
 
         foreach ($weekdays as $name => $value)
             $weekdays[$name] = preg_replace("/./", "\\\\\\0", $value);
