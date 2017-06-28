@@ -2,11 +2,11 @@
 document.addEventListener('DOMContentLoaded', function() {
 	$.notify({
 		// options
-		title: '<b>{title}</b>',
-		message: '{message}',
+		title: {title},
+		message: {message},
 	},{
 		// settings
-		type: '{type}',
+		type: {type},
 	});
 });
 </script>
