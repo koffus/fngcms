@@ -181,32 +181,6 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
 		$tVars['weekdays'][$k ? $k : 7] = $v;
 	}
 
-	// Prepare conversion table
-	$conversionConfig = array(
-		'{entries}' => '{% for week in weeks %}{% include localPath(0) ~ "entries.tpl" %}{% endfor %}',
-		'{current_link}' => '<a href="{{ currentMonth.link }}">{{ currentMonth.name }}</a>',
-		'{tpl_url}' => '{{ tpl_url }}',
-	);
-
-	$conversionConfigRegex = array(
-		'#\[prev_link\](.+?)\[/prev_link\]#is' => '{% if (flags.havePrevMonth) %}<a href="{{ prevMonth.link }}">$1</a>{% endif %}',
-		'#\[next_link\](.+?)\[/next_link\]#is' => '{% if (flags.haveNextMonth) %}<a href="{{ nextMonth.link }}">$1</a>{% endif %}',
-	);
-
-	$conversionConfigE = array();
-
-	for ($i=0; $i < 7; $i++) {
-		$conversionConfig['{l_weekday_'.$i.'}']	= '{{ weekdays['.$i.'] }}';
-	}
-
-	for ($i=1; $i <= 7; $i++) {
-		$conversionConfigE['{cl'.$i.'}']	= '{{ week['.$i.'].className }}';
-		$conversionConfigE['{d'.$i.'}']		= '{% if (week['.$i.'].countNews>0) %}<a href="{{ week['.$i.'].link }}">{{ week['.$i.'].dayNo}}</a>{% else %}{{ week['.$i.'].dayNo }}{% endif %}';
-	}
-
-	$twigLoader->setConversion($tpath['calendar'].'calendar.tpl', $conversionConfig, $conversionConfigRegex);
-	$twigLoader->setConversion($tpath['entries'].'entries.tpl', $conversionConfigE);
-
 	// AJAX flag
 	$tVars['flags']['ajax'] = $flagAJAX?1:0;
 
@@ -284,11 +258,13 @@ function plugin_calendar_showTwig($params) {
 	if (!empty($params['category'])) {
 		$categoryList = explode(',', $params['category']);
 	}
+    
+    $flagAJAX = isset($params['flagAJAX']) ? true : false;
 
-	return plug_calgen($month, $year, isset($params['template']) ? $params['template'] : false, $categoryList, 0, $params['flagAJAX']);
+	return plug_calgen($month, $year, isset($params['template']) ? $params['template'] : false, $categoryList, 0, $flagAJAX);
 }
 
-twigRegisterFunction('calendar', 'show', plugin_calendar_showTwig);
+twigRegisterFunction('calendar', 'show', 'plugin_calendar_showTwig');
 
 
 function calendar_rpc_manage($params){

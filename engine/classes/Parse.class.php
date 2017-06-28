@@ -369,7 +369,7 @@ class Parse
                 }
 
                 // Check for EMPTY URL
-                $urlREF = $this->validateURL((!$keys['href']) ? $alt : $keys['href']);
+                $urlREF = $this->validateURL((empty($keys['href']) ? $alt : $keys['href']));
 
                 if ($urlREF === false) {
                     // EMPTY, SKIP

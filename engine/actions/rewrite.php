@@ -17,7 +17,6 @@ if ( !checkPermission(array('plugin' => '#admin', 'item' => 'rewrite'), null, 'd
 	return false;
 }
 
-@include_once 'includes/classes/uhandler.class.php';
 $ULIB = new urlLibrary();
 $ULIB->loadConfig();
 
