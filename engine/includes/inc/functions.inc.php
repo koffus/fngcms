@@ -49,7 +49,7 @@ function secure_html($string)
     return trim($string);
 }
 
-function Formatsize($bytes)
+function formatSize($bytes)
 {
 
     if ($bytes >= 1073741824) {
@@ -467,9 +467,9 @@ function msg($params, $mode = 0, $disp = -1)
 
     $tmvars = array('vars' => array(
         'id' => rand(8, 88),
-        'type' => $type,
-        'title' => $title,
-        'message' => $message,
+        'type' => db_squote($type),
+        'title' => db_squote('<b>'.$title.'</b><br />'),
+        'message' => db_squote($message),
     ));
     $message = $tpl->vars($TemplateCache[$mode ? 'admin' : 'site']['#variables']['messages']['msg'], $tmvars, array('inline' => true));
 
@@ -1778,11 +1778,14 @@ function getCurrentNewsCategory()
 function twigCallPlugin($funcName, $params)
 {
     global $TWIGFUNC;
+    
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
 
     // Try to preload function if required
     if (!isset($TWIGFUNC[$funcName])) {
         if (preg_match("#^(.+?)\.(.+?)$#", $funcName, $m)) {
-            loadPlugin($m[1], 'twig');
+            $cPlugin->load($m[1], 'twig');
         }
     }
 
