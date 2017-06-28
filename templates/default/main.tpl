@@ -1,4 +1,5 @@
-[TWIG]<!DOCTYPE html>
+<!DOCTYPE html>
+<!--[TWIG]-->
 <html lang="{{ lang['langcode'] }}">
 <head>
 	<title>{{ titles }}</title>
@@ -169,7 +170,8 @@
 
 	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
 {% endblock %}
+
+[debug]{debug_queries}{debug_profiler}[/debug]
+<!--[/TWIG]-->
 </body>
 </html>
-[debug]{debug_queries}{debug_profiler}[/debug]
-[/TWIG]

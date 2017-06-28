@@ -35,7 +35,7 @@ $cPlugin = CPlugin::instance();
 // preload required libraries
 $cPlugin->loadLibrary('pm', 'lib');
 
-define ('INBOX_LINK', generatePluginLink('pm', null, ($_GET['location'] ? array('action' => $_GET['location']) : array())));
+define ('INBOX_LINK', generatePluginLink('pm', null, (isset($_GET['location']) ? array('action' => $_GET['location']) : array())));
 
 /* 
  fill variables in usermenu.tpl

@@ -237,7 +237,7 @@ function showNews($handlerName, $params)
                 $tableVars['category'] = array_shift($tableVars['category']);
 
                 // TABLE - prepare information about sorting block
-                $sortDefault = array(/*'id desc', */
+                $sortDefault = array('id desc',
                     'postdate desc', 'title desc', 'views desc', 'com desc');
                 //if ( isset($_COOKIE['newsOrder']) and in_array($callingParams['newsOrder'], $sortDefault) ) {
                 $sortKey = array_search($callingParams['newsOrder'], $sortDefault);

@@ -1,4 +1,5 @@
-[TWIG]<!DOCTYPE html>
+<!DOCTYPE html>
+<!--[TWIG]-->
 <html lang="{{ lang['langcode'] }}">
 <head>
 	<title>{{ titles }}</title>
@@ -118,9 +119,7 @@
 	{% if not (global.flags.isLogged) %}{{ personal_menu }}{% endif %}
 	<div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
 
+[debug]{debug_queries}{debug_profiler}[/debug]
+<!--[/TWIG]-->
 </body>
 </html>
-[debug]
-{debug_queries}<br/>{debug_profiler}
-[/debug]
-[/TWIG]
