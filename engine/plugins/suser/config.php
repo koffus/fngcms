@@ -23,13 +23,13 @@ function url() {
 
 	if (isset($_REQUEST['submit'])) {
 		if(isset($_REQUEST['url']) and !empty($_REQUEST['url'])) {
-			$ULIB = new urlLibrary();
+			$ULIB = new UrlLibrary();
 			$ULIB->loadConfig(); 
 			$ULIB->registerCommand('suser', '', array ('vars' => array(), 'descr' => array ('russian' => 'Список пользователей')));
 			$ULIB->registerCommand('suser', 'search', array ('vars' => array(), 'descr' => array ('russian' => 'Поиск пользователей')));
 			$ULIB->saveConfig();
 		} else {
-			$ULIB = new urlLibrary();
+			$ULIB = new UrlLibrary();
 			$ULIB->loadConfig();
 			$ULIB->removeCommand('suser', '');
 			$ULIB->removeCommand('suser', 'search');

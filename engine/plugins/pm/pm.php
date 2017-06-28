@@ -30,7 +30,10 @@ Lang::loadPlugin('pm', 'main', '', '', ':');
 
 registerActionHandler('usermenu', 'new_pm');
 
-LoadPluginLibrary('pm', 'lib');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('pm', 'lib');
 
 define ('INBOX_LINK', generatePluginLink('pm', null, ($_GET['location'] ? array('action' => $_GET['location']) : array())));
 
@@ -447,6 +450,9 @@ function pm_set(){
 function pm(){
 	global $userROW, $template, $SYSTEM_FLAGS;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
 	$SYSTEM_FLAGS['info']['title']['group'] = __('pm:pm');
 
 	if(!$userROW['id']){
@@ -454,8 +460,8 @@ function pm(){
 		return 1;
 	}
 
- $tpath = locatePluginTemplates(array(':pm.css'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
-	register_stylesheet($tpath['url::pm.css'].'/pm.css'); 
+    $tpath = locatePluginTemplates(array(':pm.css'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
+	$cPlugin->regHtmlVar('css', $tpath['url::pm.css'].'/pm.css'); 
 	
 	switch($_REQUEST['action']){
 		case "read" : pm_read(); break;

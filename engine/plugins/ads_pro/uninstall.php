@@ -3,7 +3,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	plugin_mark_deinstalled('ads_pro');
 } else {
 	$text = 'Cейчас плагин будет удален';

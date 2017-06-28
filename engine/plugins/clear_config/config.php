@@ -20,7 +20,7 @@ function showlist() {
 	global $twig, $PLUGINS;
 
 	
-	$ULIB = new urlLibrary();
+	$ULIB = new UrlLibrary();
 	$ULIB->loadConfig();
 	$plug = array();
 	$conf = array();
@@ -116,7 +116,7 @@ function delete() {
 			else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'config', $id)));
 			break;
 		case 'urlcmd':
-			$ULIB = new urlLibrary();
+			$ULIB = new UrlLibrary();
 			$ULIB->loadConfig();
 			if (isset($ULIB->CMD[$id])) {
 				unset($ULIB->CMD[$id]);

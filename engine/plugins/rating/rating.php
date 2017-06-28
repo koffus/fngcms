@@ -6,6 +6,9 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_rating_update(){
 	global $mysql, $twig, $userROW;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
 	Lang::loadPlugin('rating', 'site');
 
 	// Security protection - limit rating values between 1..5
@@ -39,7 +42,7 @@ function plugin_rating_update(){
 	$localSkin = pluginGetVariable('rating', 'localSkin');
 	if (!$localSkin) $localSkin='basic';
 	$tpath = locatePluginTemplates(array('rating', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
-	register_stylesheet($tpath['url::rating.css'].'/rating.css'); 
+	$cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 
 
 	$tVars = array(
 		'tpl_url' => $tpath['url::rating.css'],
@@ -56,12 +59,15 @@ function plugin_rating_update(){
 function rating_show($newsID, $rating, $votes){
 	global $twig, $userROW;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
 	Lang::loadPlugin('rating', 'site');
 	$localSkin = pluginGetVariable('rating', 'localSkin');
 	if (!$localSkin) $localSkin='basic';
 
 	$tpath = locatePluginTemplates(array('rating', 'rating.form', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
-	register_stylesheet($tpath['url::rating.css'].'/rating.css'); 
+	$cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 
 	
 	$tVars = array(
 		'tpl_url' => $tpath['url::rating.css'],

@@ -19,7 +19,7 @@ $db_update = array(
 	),
 );
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
 		plugin_mark_deinstalled($plugin);
 	}

@@ -12,7 +12,7 @@ include_once(root."/plugins/gsmg/lib/common.php");
 
 
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
  remove_gsmg_urls();
  plugin_mark_deinstalled($plugin);
  $url = home."/engine/admin.php?mod=extras";

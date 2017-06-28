@@ -41,12 +41,10 @@ array_push($cfgX, array('name' => 'autocreate_ng', 'title' => __('auth_auto_ng')
 array_push($cfgX, array('name' => 'autocreate_punbb', 'title' => __('auth_auto_punbb'), 'descr' => __('auth_auto_punbb_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_punbb','autocreate_punbb')));
 array_push($cfg, array('mode' => 'group', 'title' => __('auth_auto'), 'entries' => $cfgX));
 
-// RUN 
-if ($_REQUEST['action'] == 'commit') {
+// RUN
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
-	commit_plugin_config_changes('auth_punbb', $cfg);
-	print_commit_complete($plugin, $cfg);
-} else {
-	generate_config_page('auth_punbb', $cfg);
+	commit_plugin_config_changes($plugin, $cfg);
 }
 
+generate_config_page($plugin, $cfg);

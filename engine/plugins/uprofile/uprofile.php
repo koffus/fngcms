@@ -9,7 +9,10 @@ register_plugin_page('uprofile','edit','uprofile_editProfile',0);
 register_plugin_page('uprofile','apply','uprofile_applyProfile',0);
 register_plugin_page('uprofile','show','uprofile_showProfile',0);
 
-LoadPluginLibrary('uprofile', 'lib');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('uprofile', 'lib');
 
 // =============================================================
 // External functions of plugin

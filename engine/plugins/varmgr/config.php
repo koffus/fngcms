@@ -34,12 +34,11 @@ array_push($cfg, array(
 	'title' => __('group.config'),
 	'entries' => $cfgX,
 	));
-	
-// RUN 
-if ($_REQUEST['action'] == 'commit') {
+
+// RUN
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
-	print_commit_complete($plugin, $cfg);
-} else {
-	generate_config_page($plugin, $cfg);
 }
+
+generate_config_page($plugin, $cfg);

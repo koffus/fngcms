@@ -6,7 +6,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_lastcomments_install($action) {
 	global $config;
 
-	$ULIB = new urlLibrary();
+	$ULIB = new UrlLibrary();
 	$ULIB->loadConfig();
 
 	$ULIB->registerCommand('lastcomments', '',

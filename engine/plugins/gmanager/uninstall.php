@@ -3,12 +3,12 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin('gmanager', 'config', '', '', ':');
-$ULIB = new urlLibrary();
+$ULIB = new UrlLibrary();
 $ULIB->loadConfig();
 $ULIB->removeCommand('gmanager', '');
 $ULIB->removeCommand('gmanager', 'gallery');
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	plugin_mark_deinstalled('gmanager');
 	$ULIB->saveConfig();
 } else {

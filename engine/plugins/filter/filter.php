@@ -3,8 +3,10 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Load LIBRARY
-loadPluginLibrary('comments', 'lib');
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+// preload required libraries
+$cPlugin->loadLibrary('comments', 'lib');
 
 // Filter class
 class clFilterComments extends FilterComments {

@@ -91,17 +91,15 @@ array_push($cfg, array(
 	));
 
 // RUN
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// Rebuild index table
 	if ($_REQUEST['rebuild']) {
 		if($mysql->query('UPDATE '.prefix.'_users SET `pm_sync` = 0'))
 			msg(array('message' => __('rebuild.done')));
-		generate_config_page($plugin, $cfg);
-	} else {
-		// If submit requested, do config save
-		commit_plugin_config_changes($plugin, $cfg);
-		print_commit_complete($plugin, $cfg);
 	}
-} else {
-	generate_config_page($plugin, $cfg);
+
+	// If submit requested, do config save
+	commit_plugin_config_changes($plugin, $cfg);
 }
+
+generate_config_page($plugin, $cfg);

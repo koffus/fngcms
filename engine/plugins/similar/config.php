@@ -125,23 +125,18 @@ array_push($cfg, array(
 	));
 
 // RUN
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// Rebuild index table
 	if ($_REQUEST['rebuild']) {
 		// * Truncate index
-		$mysql->query("truncate table ".prefix."_similar_index");
-
 		// * Mark all news to have broken index
-		$mysql->query("update ".prefix."_news set similar_status = 0");
-
-			msg(array('message' => __('rebuild.done'),
-		));
-		generate_config_page($plugin, $cfg);
-	} else {
-		// If submit requested, do config save
-		commit_plugin_config_changes($plugin, $cfg);
-		print_commit_complete($plugin, $cfg);
+		if($mysql->query("truncate table ".prefix."_similar_index") and $mysql->query("update ".prefix."_news set similar_status = 0"))
+            msg(array('message' => __('rebuild.done'),));
 	}
-} else {
-	generate_config_page($plugin, $cfg);
+
+    // If submit requested, do config save
+    commit_plugin_config_changes($plugin, $cfg);
 }
+
+generate_config_page($plugin, $cfg);
+

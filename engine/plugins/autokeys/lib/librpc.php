@@ -36,4 +36,3 @@ function akeysGenerate($params){
 }
 
 rpcRegisterFunction('plugin.autokeys.generate', 'akeysGenerate');
-

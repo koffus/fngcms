@@ -70,7 +70,7 @@ function editform()
 			$if_error = true; }
 		if (!$if_error){
 			$idstat = intval($_REQUEST['idstat']);
-			$ULIB = new urlLibrary();
+			$ULIB = new UrlLibrary();
 			$ULIB->loadConfig();
 			if ($id == -1) {
 				$values[] = array('code' => $code, 'id' => $idstat);
@@ -118,7 +118,7 @@ function delete()
 		msg(array('type' => 'danger', 'message' => 'Ключ id='.$id.' отсутствует в базе'));
 		showlist(); return false; }
 
-	$ULIB = new urlLibrary();
+	$ULIB = new UrlLibrary();
 	$ULIB->loadConfig();
 	$ULIB->removeCommand('re_stat', $values[$id]['code']);
 	$ULIB->saveConfig();	
@@ -132,7 +132,7 @@ function delete()
 function re_map()
 {
 	global $mysql, $config;
-	$ULIB = new urlLibrary();
+	$ULIB = new UrlLibrary();
 	$ULIB->loadConfig();
 	if (isset($ULIB->CMD['re_stat']))
 		unset($ULIB->CMD['re_stat']);

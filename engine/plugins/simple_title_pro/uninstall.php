@@ -5,7 +5,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 		plugin_mark_deinstalled($plugin);
 	
 } else {

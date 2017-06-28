@@ -51,8 +51,7 @@ for ($i = 1; $i <= 9; $i++) {
 array_push($cfg, array('type' => 'flat', 'input' => '<table class="content">'));
 
 // RUN
-if ($_REQUEST['action'] == 'commit') {
-	// If submit requested, do config save
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// 1. Menus
 	pluginSetVariable('xmenu', 'activate', $_REQUEST['activate']);
 	pluginSetVariable('xmenu', 'mode', $_REQUEST['mode']);
@@ -78,9 +77,8 @@ if ($_REQUEST['action'] == 'commit') {
 		}
 	}
 
-	//print "<pre>"; var_dump($_REQUEST); print "</pre>";
-
-	print_commit_complete($plugin, $cfg);
-} else {
-	generate_config_page($plugin, $cfg);
+	// If submit requested, do config save
+	commit_plugin_config_changes($plugin, $cfg);
 }
+
+generate_config_page($plugin, $cfg);

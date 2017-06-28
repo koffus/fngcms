@@ -80,13 +80,10 @@ $cfgX = array();
 array_push($cfgX, array('name' => 'feedback_form', 'type' => 'select', 'title' => 'Форма обратной связи для оформления заказа', 'descr' => 'Плагин <b>basket</b> отвечает только за наполнение корзины товаров.<br/>Отправка заказа производится через форму обратной связи плагина <b>feedback</b>.<br/>Выберите форму обратной связи через которую будет производиться отправка заказа', 'values' => $feedbackFormList, value => pluginGetVariable('basket','feedback_form')));
 array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки интеграции</b>', 'entries' => $cfgX));
 
-
 // RUN
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
-	print_commit_complete($plugin, $cfg);
-} else {
-	generate_config_page($plugin, $cfg);
 }
 
+generate_config_page($plugin, $cfg);

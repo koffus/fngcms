@@ -29,7 +29,7 @@ $db_update = array(
  ),
 );
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('basket', $db_update)) {
 		plugin_mark_installed('basket');

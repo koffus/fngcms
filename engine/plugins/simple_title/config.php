@@ -7,7 +7,7 @@ array_push($cfg, array('name' => 'm_title', 'title' => 'Title для главн�
 array_push($cfg, array('name' => 'static_title', 'title' => 'Title для статической страницы<br>Только %3%','type' => 'input', 'value' => pluginGetVariable('simple_title','static_title')));
 
 array_push($cfg, array('descr' => 'Ключи:<br><b>%1%</b> - имя категории<br><b>%2%</b> - имя новости<br><b>%3%</b> - заголовок сайта<br><b>%4%</b> - заголовок статической страницы<br>'));
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	commit_plugin_config_changes('simple_title', $cfg);
 	print "Changes commited: <a href='admin.php?mod=extra-config&plugin=simple_title'>Назад</a>\n";
 } else {

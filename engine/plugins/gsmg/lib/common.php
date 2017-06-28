@@ -12,7 +12,7 @@ class gsmgFilter {
 
 function create_gsmg_urls()
 {
- $ULIB = new urlLibrary();
+ $ULIB = new UrlLibrary();
  $ULIB->loadConfig();
  
  $ULIB->registerCommand('gsmg', '',
@@ -23,7 +23,7 @@ function create_gsmg_urls()
 
  $ULIB->saveConfig();
  
- $UHANDLER = new urlHandler();
+ $UHANDLER = new UrlHandler();
  $UHANDLER->loadConfig();
  
  $UHANDLER->registerHandler(0,
@@ -63,12 +63,12 @@ function create_gsmg_urls()
 
 function remove_gsmg_urls()
 {
- $ULIB = new urlLibrary();
+ $ULIB = new UrlLibrary();
  $ULIB->loadConfig();
  $ULIB->removeCommand('gsmg', '');
  $ULIB->saveConfig();
 
- $UHANDLER = new urlHandler();
+ $UHANDLER = new UrlHandler();
  $UHANDLER->loadConfig();
  $UHANDLER->removePluginHandlers('gsmg', '');
  $UHANDLER->saveConfig();

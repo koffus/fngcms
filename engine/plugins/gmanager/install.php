@@ -26,7 +26,7 @@ function plugin_gmanager_install($action) {
 	 ),
 	);
 
-	$ULIB = new urlLibrary();
+	$ULIB = new UrlLibrary();
 	$ULIB->loadConfig();
 	$ULIB->registerCommand('gmanager', '',
 		array ('vars' => array(

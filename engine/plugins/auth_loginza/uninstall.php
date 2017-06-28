@@ -34,7 +34,7 @@ $db_update = array(
 	),
 );
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	if (fixdb_plugin_install('auth_loginza', $db_update, 'deinstall')) {
 		plugin_mark_deinstalled('auth_loginza');
 	}

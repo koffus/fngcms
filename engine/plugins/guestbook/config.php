@@ -239,7 +239,7 @@ function show_options() {
 		pluginSetVariable('guestbook', 'admin_count', intval($_REQUEST['admin_count']));
 
 		if (isset($_REQUEST['url']) and intval($_REQUEST['url']) == 1) {
-			$ULIB = new urlLibrary();
+			$ULIB = new UrlLibrary();
 			$ULIB->loadConfig();
 			$ULIB->registerCommand('guestbook', '', array(
 				'vars' => array(
@@ -275,7 +275,7 @@ function show_options() {
 				));
 			$ULIB->saveConfig();
 		} else {
-			$ULIB = new urlLibrary();
+			$ULIB = new UrlLibrary();
 			$ULIB->loadConfig();
 			$ULIB->removeCommand('guestbook', '');
 			$ULIB->removeCommand('guestbook', 'edit');

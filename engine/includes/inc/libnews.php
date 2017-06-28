@@ -105,7 +105,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
 
     }
 
-    if ($callingParams['setCurrentCategory']) {
+    if (isset($callingParams['setCurrentCategory'])) {
         // Fetch category ID from news
         if (getIsSet($row['catid'])) {
             $nci = explode(',', $row['catid']);
@@ -123,7 +123,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
         }
     }
 
-    if ($callingParams['setCurrentNews']) {
+    if (isset($callingParams['setCurrentNews'])) {
         // Save some significant news flags for plugin processing
         $SYSTEM_FLAGS['news']['db.id'] = $row['id'];
         $SYSTEM_FLAGS['news']['db.categories'] = array();
@@ -162,45 +162,49 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     // Prepare list of linked files and images
     $callingParams['linkedFiles'] = array();
     $tvars['vars']['_files'] = array();
-    foreach ($row['#files'] as $k => $v) {
-        if ($v['linked_id'] == $row['id']) {
-            $callingParams['linkedFiles']['ids'] [] = $v['id'];
-            $callingParams['linkedFiles']['data'] [] = $v;
-            $tvars['vars']['_files'] [] = array(
-                'plugin' => $v['plugin'],
-                'pidentity' => $v['pidentity'],
-                'url' => ($v['storage'] ? $config['attach_url'] : $config['files_url']) . '/' . $v['folder'] . '/' . $v['name'],
-                'name' => $v['name'],
-                'origName' => secure_html($v['orig_name']),
-                'description' => secure_html($v['description']),
-                'size' => FormatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['files_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
-            );
+    if(isset($row['#files']) and is_array($row['#files']) and count($row['#files'])) {
+        foreach ($row['#files'] as $k => $v) {
+            if ($v['linked_id'] == $row['id']) {
+                $callingParams['linkedFiles']['ids'] [] = $v['id'];
+                $callingParams['linkedFiles']['data'] [] = $v;
+                $tvars['vars']['_files'] [] = array(
+                    'plugin' => $v['plugin'],
+                    'pidentity' => $v['pidentity'],
+                    'url' => ($v['storage'] ? $config['attach_url'] : $config['files_url']) . '/' . $v['folder'] . '/' . $v['name'],
+                    'name' => $v['name'],
+                    'origName' => secure_html($v['orig_name']),
+                    'description' => secure_html($v['description']),
+                    'size' => formatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['files_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
+                );
+            }
         }
     }
 
     $callingParams['linkedImages'] = array();
     $tvars['vars']['_images'] = array();
-    foreach ($row['#images'] as $k => $v) {
-        if ($v['linked_id'] == $row['id']) {
-            $callingParams['linkedImages']['ids'] [] = $k;
-            $callingParams['linkedImages']['data'] [] = $v;
-            $tvars['vars']['_images'] [] = array(
-                'plugin' => $v['plugin'],
-                'pidentity' => $v['pidentity'],
-                'url' => ($v['storage'] ? $config['attach_url'] : $config['images_url']) . '/' . $v['folder'] . '/' . $v['name'],
-                'purl' => $v['preview'] ? (($v['storage'] ? $config['attach_url'] : $config['images_url']) . '/' . $v['folder'] . '/thumb/' . $v['name']) : null,
-                'width' => $v['width'],
-                'height' => $v['height'],
-                'pwidth' => $v['p_width'],
-                'pheight' => $v['p_height'],
-                'name' => $v['name'],
-                'origName' => secure_html($v['orig_name']),
-                'description' => secure_html($v['description']),
-                'size' => FormatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['images_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
-                'flags' => array(
-                    'hasPreview' => $v['preview'],
-                ),
-            );
+    if(isset($row['#images']) and is_array($row['#images']) and count($row['#images'])) {
+        foreach ($row['#images'] as $k => $v) {
+            if ($v['linked_id'] == $row['id']) {
+                $callingParams['linkedImages']['ids'] [] = $k;
+                $callingParams['linkedImages']['data'] [] = $v;
+                $tvars['vars']['_images'] [] = array(
+                    'plugin' => $v['plugin'],
+                    'pidentity' => $v['pidentity'],
+                    'url' => ($v['storage'] ? $config['attach_url'] : $config['images_url']) . '/' . $v['folder'] . '/' . $v['name'],
+                    'purl' => $v['preview'] ? (($v['storage'] ? $config['attach_url'] : $config['images_url']) . '/' . $v['folder'] . '/thumb/' . $v['name']) : null,
+                    'width' => $v['width'],
+                    'height' => $v['height'],
+                    'pwidth' => $v['p_width'],
+                    'pheight' => $v['p_height'],
+                    'name' => $v['name'],
+                    'origName' => secure_html($v['orig_name']),
+                    'description' => secure_html($v['description']),
+                    'size' => formatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['images_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
+                    'flags' => array(
+                        'hasPreview' => $v['preview'],
+                    ),
+                );
+            }
         }
     }
 
@@ -244,7 +248,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     // news.embed.images	- list of URL's
     // news.embed.imgCount	- count of extracted URL's
     $tvars['vars']['news']['embed'] = array('images' => array());
-    if ($callingParams['extractEmbeddedItems']) {
+    if (isset($callingParams['extractEmbeddedItems'])) {
         // Join short/full news into single line
         $tempLine = $tvars['vars']['news']['short'] . $tvars['vars']['news']['full'];
         // Scan for <img> tag
@@ -714,7 +718,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
                         'name' => $v['name'],
                         'origName' => secure_html($v['orig_name']),
                         'description' => secure_html($v['description']),
-                        'size' => FormatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['files_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
+                        'size' => formatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['files_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
                     );
                 }
             }
@@ -739,7 +743,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
                         'name' => $v['name'],
                         'origName' => secure_html($v['orig_name']),
                         'description' => secure_html($v['description']),
-                        'size' => FormatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['images_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
+                        'size' => formatSize(filesize(($v['storage'] ? $config['attach_dir'] : $config['images_dir']) . '/' . $v['folder'] . '/' . $v['name'])),
                         'flags' => array(
                             'hasPreview' => $v['preview'],
                         ),

@@ -27,7 +27,7 @@ array_push($cfg, array(
 	));
 
 // RUN
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do
 	messaging($_REQUEST['subject'], $_REQUEST['content']);
 } else {

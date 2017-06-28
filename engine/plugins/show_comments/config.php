@@ -247,12 +247,10 @@ array_push($cfg, array(
 	));
 
 // RUN
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
-	print_commit_complete($plugin, $cfg);
-	show_comments();
-} else {
-	generate_config_page('show_comments', $cfg);
-	show_comments();
 }
+
+generate_config_page($plugin, $cfg);
+show_comments();

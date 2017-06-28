@@ -30,6 +30,5 @@ function tagsSuggest($params){
 	return array('status' => 1, 'errorCode' => 0, 'data' => array($params, $output));
 }
 
-//rpcRegisterFunction('plugin.cart.demo', 'cart_rpc_demo');
 rpcRegisterFunction('plugin.tags.suggest', 'tagsSuggest');
 

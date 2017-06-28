@@ -249,7 +249,7 @@ function manage_showlist($type) {
 		$fileurl			= $fmanager->uname.'/'.$folder.$row['name'];
 		$thumburl			= $fmanager->uname.'/'.$folder.'thumb/'.$row['name'];
 		if (is_readable($fname)) {
-			$fsize		= FormatSize(filesize($fname));
+			$fsize		= formatSize(filesize($fname));
 		} else {
 			$fsize		= '-';
 		}
@@ -442,8 +442,8 @@ function manage_editForm($type, $id){
 				$fileurl			= $fmanager->uname.'/'.$folder.$irow['name'];
 				$thumburl			= $fmanager->uname.'/'.$folder.'thumb/'.$irow['name'];
 
-				$fsize			= is_readable($fname) ? FormatSize(@filesize($fname)) : '-';
-				$thumbsize		= is_readable($thumbname) ? FormatSize(@filesize($thumbname)) : '-';
+				$fsize			= is_readable($fname) ? formatSize(@filesize($fname)) : '-';
+				$thumbsize		= is_readable($thumbname) ? formatSize(@filesize($thumbname)) : '-';
 
 				$tvars['vars'] = array(
 					'id' => $irow['id'],

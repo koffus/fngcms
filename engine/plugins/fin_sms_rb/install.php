@@ -62,7 +62,7 @@ $db_update = array(
  ),
 );
 
-if ($_REQUEST['action'] == 'commit') {
+if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('fin_sms_rb', $db_update)) {
 		plugin_mark_installed('fin_sms_rb');
