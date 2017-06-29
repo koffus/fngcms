@@ -25,6 +25,9 @@ function plugin_archive($params) {
 	$cache = isset($params['cache']) ? $params['cache'] : pluginGetVariable('archive', 'cache');
 	$cacheExpire = isset($params['cacheExpire']) ? $params['cacheExpire'] : pluginGetVariable('archive', 'cacheExpire');
 
+	if ( ($maxnum < 1) or ($maxnum > 50) )
+		$maxnum = 12;
+
 	if ($overrideTemplateName) {
 		$templateName = $overrideTemplateName;
 	} else {
@@ -32,7 +35,7 @@ function plugin_archive($params) {
 	}
 
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
-	$cacheFileName = md5('archive' . $config['theme'] . $templateName . $config['default_lang']) . '.txt';
+	$cacheFileName = md5('archive' . $config['theme'] . $templateName . $config['default_lang']) . $maxnum . '.txt';
 	if ($cache and $cacheExpire > 0) {
 		$cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'archive');
 		if ($cacheData != false) {
@@ -40,9 +43,6 @@ function plugin_archive($params) {
 			return $cacheData;
 		}
 	}
-
-	if ( ($maxnum < 1) or ($maxnum > 50) )
-		$maxnum = 12;
 
 	// Determine paths for all template files
 	$tpath = locatePluginTemplates(array($templateName), 'archive', $localSource);
@@ -88,4 +88,4 @@ function plugin_archive($params) {
 
 }
 
-twigRegisterFunction('archive', 'show', plugin_archive);
+twigRegisterFunction('archive', 'show', 'plugin_archive');

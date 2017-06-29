@@ -21,6 +21,10 @@
 				{{ plugin_lastcomments }}
 			{% endif %}
 
+			{% if pluginIsActive('favorites') %}
+				{{ plugin_favorites }}
+			{% endif %}
+
 			{% if pluginIsActive('voting') %}
 				{{ voting }}
 			{% endif %}

@@ -119,7 +119,7 @@ function plugin_basket_update() {
 
 	// Redirect to basket page
 	$SUPRESS_TEMPLATE_SHOW = true;
-	coreRedirectAndTerminate(generatePluginLink('basket', null, array(), array(), false, true);
+	coreRedirectAndTerminate(generatePluginLink('basket', null, array(), array(), false, true));
 }
 
 

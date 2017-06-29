@@ -3,59 +3,63 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-registerActionHandler('index', 'plugin_favorites');
+// Load lang file
+Lang::loadPlugin('favorites', 'main', '', '', ':');
 
-function plugin_favorites() {
-	global $config, $mysql, $tpl, $template;
+function plugin_favorites()
+{
+    global $config, $mysql, $twig, $template, $parse;
 
-	$counter = intval(pluginGetVariable('favorites','counter'));
-	$number = intval(pluginGetVariable('favorites','number'));
-	$maxlength = intval(pluginGetVariable('favorites','maxlength'));
+    $number = intval(pluginGetVariable('favorites', 'number'));
+    $maxlength = intval(pluginGetVariable('favorites', 'maxlength'));
+    $counter = pluginGetVariable('favorites', 'counter') ? intval(pluginGetVariable('favorites', 'counter')) : false;
+    $cache = pluginGetVariable('favorites', 'cache');
+    $cacheExpire = pluginGetVariable('favorites', 'cacheExpire');
 
-	// Generate cache file name [ we should take into account SWITCHER plugin ]
-	$cacheFileName = md5('favorites'.$config['theme'].$config['default_lang'].$year.$month).'.txt';
+    if (!$number) {
+        $number = 10;
+    }
+    if (!$maxlength) {
+        $maxlength = 100;
+    }
 
-	if (pluginGetVariable('favorites','cache')) {
-		$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('favorites','cacheExpire'), 'favorites');
-		if ($cacheData != false) {
-			// We got data from cache. Return it and stop
-			$template['vars']['plugin_favorites'] = $cacheData;
-			return;
-		}
-	}
+    $templateName = 'favorites';
 
-	if (!$number)		{ $number = 10; }
-	if (!$maxlength)	{ $maxlength = 100; }
+    // Generate cache file name [ we should take into account SWITCHER plugin ]
+    $cacheFileName = md5('favorites' . $config['theme'] . $templateName . $config['default_lang'] . $number . $maxlength) . '.txt';
+    if ($cache and $cacheExpire > 0) {
+        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('favorites', 'cacheExpire'), 'favorites');
+        if ($cacheData != false) {
+            // We got data from cache. Return it and stop
+            $template['vars']['plugin_favorites'] = $cacheData;
+            return;
+        }
+    }
 
-	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('entries', 'favorites'), 'favorites', pluginGetVariable('favorites', 'localSource'));
+    // Determine paths for all template files
+    $tpath = locatePluginTemplates(array('entries', 'favorites'), 'favorites', pluginGetVariable('favorites', 'localSource'));
 
-	foreach ($mysql->select("select alt_name, postdate, title, views, catid from ".prefix."_news where favorite = '1' and approve = '1' limit 0,$number") as $row) {
-		$tvars['vars'] = array(
-			'link' => News::generateLink($row),
-			'views' => ($counter) ? ' [ '.$row['views'].' ]' : ''
-		);
-		if (mb_strlen($row['title'], 'UTF-8') > $maxlength) {
-			$tvars['vars']['title'] = substr(secure_html($row['title']), 0, $maxlength)."...";
-		} else {
-			$tvars['vars']['title'] = secure_html($row['title']);
-		}
+    foreach ($mysql->select("select id, alt_name, postdate, title, views, catid from " . prefix . "_news where favorite = '1' and approve = '1' limit 0," . $number) as $row) {
+        if (mb_strlen($row['title'], 'UTF-8') > $maxlength) {
+            $title = $parse->truncateHTML(secure_html($row['title']), 0, $maxlength);
+        } else {
+            $title = secure_html($row['title']);
+        }
 
-		$tpl -> template('entries', $tpath['entries']);
-		$tpl -> vars('entries', $tvars);
-		$result .= $tpl -> show('entries');
-	}
+        $tVars['entries'][] = array(
+            'link' => News::generateLink($row),
+            'title' => $title,
+            'views' => $counter ? (int)$row['views'] : '',
+        );
+    }
 
-	unset($tvars);
-	$tvars['vars'] = array('tpl_url' => tpl_url, 'favourite' => $result);
+    $xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
+    $output = $xt->render($tVars);
+    $template['vars']['plugin_favorites'] = $output;
 
-	$tpl -> template('favorites', $tpath['favorites']);
-	$tpl -> vars('favorites', $tvars);
-
-	$output = $tpl -> show('favorites');
-	$template['vars']['plugin_favorites'] = $output;
-
-	if (pluginGetVariable('favorites','cache')) {
-		cacheStoreFile($cacheFileName, $output, 'favorites');
-	}
+    if ($cache and $cacheExpire > 0) {
+        cacheStoreFile($cacheFileName, $output, 'favorites');
+    }
 }
+
+registerActionHandler('index', 'plugin_favorites');

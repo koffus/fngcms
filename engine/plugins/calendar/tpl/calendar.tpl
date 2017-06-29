@@ -1,5 +1,5 @@
 {% if (not flags.ajax) %}
-	<script type="text/javascript" language="javascript">
+	<script>
 		function ng_calendar_walk(month, year, offset, category) {
 			$.ajax({
 				type: 'POST',
@@ -36,7 +36,13 @@
 			<thead>
 				<tr id="month">
 					<th><a href="{{ prevMonth.link }}" onclick="ng_calendar_walk({{ currentEntry.month }}, {{ currentEntry.year }}, 'prev'); return false;" class="prev-month">«</a></th>
-					<th colspan="5" class="text-center"><a href="{{ currentMonth.link }}">{{ currentMonth.name }} {{ currentEntry.year }}</a></th>
+					<th colspan="5" class="text-center">
+                        {% if currentMonth.flags.issetNews %}
+                            <a href="{{ currentMonth.link }}">{{ currentMonth.name }} {{ currentEntry.year }}</a>
+                        {% else %}
+                            {{ currentMonth.name }} {{ currentEntry.year }}
+                        {% endif %}
+                   </th>
 					<th class="text-right"><a href="{{ nextMonth.link }}" onclick="ng_calendar_walk({{ currentEntry.month }}, {{ currentEntry.year }}, 'next'); return false;" class="next-month">»</a></th>
 				</tr>
 			</thead>
