@@ -156,6 +156,8 @@ $enable = isset($_REQUEST['enable']) ? $_REQUEST['enable'] : '';
 $disable = isset($_REQUEST['disable']) ? $_REQUEST['disable'] : '';
 $manage = (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig'] and isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) ? true : false;
 
+    $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
+
 // Check for security token
 if ($enable or $disable or $manage) {
     if ((!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.extras'))) {

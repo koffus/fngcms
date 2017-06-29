@@ -63,6 +63,8 @@ function systemDboModify()
 {
     global $config, $mysql, $catz;
 
+    $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
+
     // Check for permissions
     if (!checkPermission(array('plugin' => '#admin', 'item' => 'dbo'), null, 'modify')) {
         msg(array('type' => 'danger', 'message' => __('perm.denied')));
@@ -368,6 +370,8 @@ function systemDboModify()
 function systemDboForm()
 {
     global $mysql, $twig, $config, $PHP_SELF;
+
+    $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
 
     // Check for permissions
     if (!checkPermission(array('plugin' => '#admin', 'item' => 'dbo'), null, 'details')) {

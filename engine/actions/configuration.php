@@ -43,6 +43,8 @@ $twig->addFunction('mkSelectNY',	new Twig_Function_Function('twigmkSelectNY'));
 function systemConfigSave(){
 	global $config, $mysql;
 
+    $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
+    
 	// Check for permissions
 	if (!checkPermission(array('plugin' => '#admin', 'item' => 'configuration'), null, 'modify')) {
 		msg(array('type' => 'danger', 'message' => __('perm.denied')), 1, 1);
@@ -105,6 +107,8 @@ function systemConfigSave(){
 // Show configuration form
 function systemConfigEditForm(){
 	global $AUTH_CAPABILITIES, $PHP_SELF, $twig, $multiconfig;
+
+    $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
 
 	// Check for token
 	if (!checkPermission(array('plugin' => '#admin', 'item' => 'configuration'), null, 'details')) {
