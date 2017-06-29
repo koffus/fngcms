@@ -467,9 +467,9 @@ function msg($params, $mode = 0, $disp = -1)
 
     $tmvars = array('vars' => array(
         'id' => rand(8, 88),
-        'type' => db_squote($type),
-        'title' => db_squote('<b>'.$title.'</b><br />'),
-        'message' => db_squote($message),
+        'type' => $type,
+        'title' => trim(db_squote('<b>'.$title.'</b><br />'), "'"),
+        'message' => trim(db_squote($message), "'"),
     ));
     $message = $tpl->vars($TemplateCache[$mode ? 'admin' : 'site']['#variables']['messages']['msg'], $tmvars, array('inline' => true));
 
