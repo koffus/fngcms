@@ -22,6 +22,11 @@ class Lang
         if (file_exists($dir_lang = tpl_dir . $config['theme'] . '/lang/' . $config['default_lang'] . '.ini'))
             self::$data['theme'] = parse_ini_file($dir_lang, true);
 
+        self::$weekdays = explode(',', self::$data['weekdays']);
+        self::$short_weekdays = explode(',', self::$data['short_weekdays']);
+        self::$months = explode(',', self::$data['months']);
+        self::$short_months = explode(',', self::$data['short_months']);
+        
         // - Global variables [by REFERENCE]
         $twig->addGlobalRef('lang', self::$data);
     }
@@ -157,27 +162,21 @@ class Lang
 
     public static function retDate($format, $timestamp)
     {
-
-        $weekdays = explode(',', self::$data['weekdays']);
-        $short_weekdays = explode(',', self::$data['short_weekdays']);
-        $months = explode(',', self::$data['months']);
-        $short_months = explode(',', self::$data['short_months']);
-
-        foreach ($weekdays as $name => $value)
+        foreach (self::$weekdays as $name => $value)
             $weekdays[$name] = preg_replace("/./", "\\\\\\0", $value);
 
-        foreach ($short_weekdays as $name => $value)
+        foreach (self::$short_weekdays as $name => $value)
             $short_weekdays[$name] = preg_replace("/./", "\\\\\\0", $value);
 
-        foreach ($months as $name => $value)
+        foreach (self::$months as $name => $value)
             $months[$name] = preg_replace("/./", "\\\\\\0", $value);
 
-        foreach ($short_months as $name => $value)
+        foreach (self::$short_months as $name => $value)
             $short_months[$name] = preg_replace("/./", "\\\\\\0", $value);
 
+        $format = @preg_replace("/(?<!\\\\)l/", $weekdays[date("w", $timestamp)], $format);
         $format = @preg_replace("/(?<!\\\\)D/", $short_weekdays[date("w", $timestamp)], $format);
         $format = @preg_replace("/(?<!\\\\)F/", $months[date("n", $timestamp) - 1], $format);
-        $format = @preg_replace("/(?<!\\\\)l/", $weekdays[date("w", $timestamp)], $format);
         $format = @preg_replace("/(?<!\\\\)M/", $short_months[date("n", $timestamp) - 1], $format);
 
         return @date($format, $timestamp);
