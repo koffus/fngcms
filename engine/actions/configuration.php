@@ -133,7 +133,7 @@ function systemConfigEditForm(){
 	// Now in $config we have original version of configuration data
 	include confroot.'config.php';
 
-	$load_profiler = $config['load_profiler'] - time();
+	$load_profiler = (isset($config['load_profiler'])?$config['load_profiler']:0) - time();
 	if (($load_profiler < 0) or ($load_profiler > 86400))
 		$config['load_profiler'] = 0;
 

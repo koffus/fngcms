@@ -98,7 +98,7 @@ function plugin_mark_installed($plugin) {
     $active = $cPlugin->getListActive();
 
 	// return if already installed
-	if ($active['installed'][$plugin]) {
+	if (isset($active['installed'][$plugin])) {
 		return 1;
 	}
 

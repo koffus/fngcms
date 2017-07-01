@@ -182,8 +182,20 @@ $timer->start();
 multi_multisites();
 @define('confroot', root . 'conf/' . ($multiDomainName and $multimaster and ($multiDomainName != $multimaster) ? 'multi/' . $multiDomainName . '/' : ''));
 
+// ** Load configuration file
+if ((!file_exists(confroot . 'config.php')) or (filesize(confroot . 'config.php') < 10)) {
+    if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
+        @header("Location: " . $ms[1] . "/engine/install.php");
+    } else {
+        @header("Location: " . adminDirName . "/install.php");
+    }
+    echo "NGCMS: Engine is not installed yet. Please run installer from /engine/install.php";
+    exit;
+}
+
 // ** Load system config
-@include_once confroot . 'config.php';
+include_once confroot . 'config.php';
+
 // [[FIX config variables]]
 if (!isset($config['uprefix']))
     $config['uprefix'] = $config['prefix'];
@@ -216,17 +228,6 @@ $UHANDLER->loadConfig();
 $parse = new Parse;
 $tpl = new Tpl;
 $ip = checkIP();
-
-// ** Load configuration file
-if ((!file_exists(confroot . 'config.php')) or (filesize(confroot . 'config.php') < 10)) {
-    if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
-        @header("Location: " . $ms[1] . "/engine/install.php");
-    } else {
-        @header("Location: " . adminDirName . "/install.php");
-    }
-    echo "NGCMS: Engine is not installed yet. Please run installer from /engine/install.php";
-    exit;
-}
 
 // ** Load user groups
 loadGroups();
@@ -320,9 +321,9 @@ loadPermissions();
 // Initialize system libraries
 // ============================================================================
 // System protection
-if (!$AUTH_CAPABILITIES[$config['auth_module']]['login'])
+if (empty($AUTH_CAPABILITIES[$config['auth_module']]['login']))
     $config['auth_module'] = 'basic';
-if (!$AUTH_CAPABILITIES[$config['auth_db']]['db'])
+if (empty($AUTH_CAPABILITIES[$config['auth_db']]['db']))
     $config['auth_db'] = 'basic';
 
 if ((is_object($AUTH_METHOD[$config['auth_module']])) and (is_object($AUTH_METHOD[$config['auth_db']]))) {
@@ -343,7 +344,7 @@ if ((is_object($AUTH_METHOD[$config['auth_module']])) and (is_object($AUTH_METHO
         $is_logged = true;
         $username = $xrow['name'];
         $userROW = $xrow;
-        if ($config['x_ng_headers']) {
+        if (isset($config['x_ng_headers'])) {
             header("X-NG-UserID: " . intval($userROW['id']));
             header("X-NG-Login: " . htmlentities($username));
         }

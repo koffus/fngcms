@@ -88,7 +88,7 @@ function listStatic() {
 	$all_count_rec = $cnt['cnt'];
 
 	$countPages = ceil($all_count_rec / $per_page);
-	$pagesss = new Paginator;
+	$pagesss = new Paginator();
 	$tVars['pagesss'] = $pagesss->get(
 		array(
 			'current' => $pageNo,

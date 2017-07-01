@@ -89,7 +89,7 @@ $avatars = ($avatars != "777") ? '<span style="color:red;">'.$avatars.'</span>' 
 $photos = ($photos != "777") ? '<span style="color:red;">'.$photos.'</span>' : '<span style="color:green;"><b>'.$photos.'</b></span>';
 $backup = ($backup != "777") ? '<span style="color:red;">'.$backup.'</span>' : '<span style="color:green;"><b>'.$backup.'</b></span>';
 
-$note_path = root.'trash/'.$parse->translit(strtolower(name)).'_note.inc.txt';
+$note_path = root.'trash/'.$parse->translit(strtolower($userROW['name'])).'_note.inc.txt';
 
 if ($action == 'save') {
 	$note = secure_html($_POST['note']);

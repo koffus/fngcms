@@ -209,7 +209,7 @@ function get_mysql_field_type($table, $field)
 // Database update during install
 function fixdb_plugin_install($module, $params, $mode = 'install', $silent = false)
 {
-    global $twig, $mysql;
+    global $twig, $mysql, $PHP_SELF;
 
     $publish = array();
     if ($mode == 'install') {
@@ -325,9 +325,9 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
             }
 
             // Check if different character set are supported [ version >= 4.1.1 ]
-            $charset = is_array($mysql->record("show variables like 'character_set_client'")) ? (' DEFAULT CHARSET=' . ($table['charset'] ? $table['charset'] : 'utf8')) : '';
+            $charset = is_array($mysql->record("show variables like 'character_set_client'")) ? (' DEFAULT CHARSET=' . (isset($table['charset']) ? $table['charset'] : 'utf8')) : '';
 
-            $query = "create table " . $chgTableName . " (" . implode(', ', $fieldlist) . ($table['key'] ? ', ' . $table['key'] : '') . ")" . $charset . ($table['engine'] ? ' engine=' . $table['engine'] : '');
+            $query = "create table " . $chgTableName . " (" . implode(', ', $fieldlist) . ($table['key'] ? ', ' . $table['key'] : '') . ")" . $charset . (isset($table['engine']) ? ' engine=' . $table['engine'] : '');
             $mysql->query($query);
             array_push($publish, array('title' => $publish_title, 'descr' => "SQL: [$query]", 'result' => ($publish_result ? $publish_result : ($error ? __('idbc_fail') : __('idbc_ok')))));
         } else {
@@ -414,7 +414,7 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
     // Write an info
     foreach ($publish as $v) {
         $entry = $v;
-        if ($entry['error']) {
+        if (isset($entry['error'])) {
             $entry['result'] = '<font color="red">' . $entry['result'] . '</font>';
         }
         $entries[] = $entry;

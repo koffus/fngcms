@@ -80,7 +80,7 @@ function systemDboModify()
     }
 
     // Update message counters
-    if ($_REQUEST['cat_recount']) {
+    if (isset($_REQUEST['cat_recount'])) {
         // Обновляем счётчики в категориях
         $ccount = array();
         $nmap = '';
@@ -160,7 +160,7 @@ function systemDboModify()
     }
 
     // MASS: Check/Repair/Optimize tables
-    if ($_REQUEST['masscheck'] or $_REQUEST['massrepair'] or $_REQUEST['massoptimize']) {
+    if (getIsSet($_REQUEST['masscheck']) or getIsSet($_REQUEST['massrepair']) or getIsSet($_REQUEST['massoptimize'])) {
         $mode = 'check';
         if ($_REQUEST['massrepair'])
             $mode = 'repair';
@@ -344,6 +344,7 @@ function systemDboModify()
         $filename = str_replace('/', '', $_REQUEST['filename']);
         if (file_exists($filename = root . 'backups/' . $filename . '.gz')) {
             $fp = gzopen($filename, "r");
+            $query = '';
 
             while (!gzeof($fp)) {
                 $query .= gzread($fp, 10000);

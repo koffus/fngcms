@@ -112,15 +112,15 @@ if (isset($_REQUEST['action']) and ($_REQUEST['action'] == 'logout')) {
 
 //
 // Show LOGIN screen if user is not logged in
-if (!is_array($userROW)) {
+if (empty($userROW) or !is_array($userROW)) {
     $tvars['vars'] = array(
         'php_self' => $PHP_SELF,
         'redirect' => $REQUEST_URI,
         'year' => date('Y'),
         'home_title' => home_title,
-        'error' => $SYSTEM_FLAGS['auth_fail'] ? __('msge_login') : '',
+        'error' => isset($SYSTEM_FLAGS['auth_fail']) ? __('msge_login') : '',
     );
-    $tvars['regx']['#\[error\](.+?)\[/error\]#is'] = ($SYSTEM_FLAGS['auth_fail']) ? '$1' : '';
+    $tvars['regx']['#\[error\](.+?)\[/error\]#is'] = isset($SYSTEM_FLAGS['auth_fail']) ? '$1' : '';
 
     $tpl->template('login', tpl_actions);
     $tpl->vars('login', $tvars);

@@ -1297,7 +1297,7 @@ function ngSYSLOG($identity, $action, $user, $status)
 {
     global $ip, $mysql, $userROW, $config;
 
-    if (!$config['syslog'])
+    if (empty($config['syslog']) or !$config['syslog'])
         return false;
 
     $sVars = array(
