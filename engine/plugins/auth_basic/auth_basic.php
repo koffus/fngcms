@@ -10,7 +10,7 @@ global $AUTH_METHOD;
 global $AUTH_CAPABILITIES;
 global $config;
 
-class auth_basic extends CAuthPlugin {
+class AuthBasic extends CAuthPlugin {
 
 	// Осуществить вход
 	// $username	= логин
@@ -643,7 +643,7 @@ class auth_basic extends CAuthPlugin {
 	}
 }
 
-$AUTH_METHOD['basic']	= new auth_basic;
+$AUTH_METHOD['basic']	= new AuthBasic();
 $AUTH_CAPABILITIES['basic'] = array('login' => '1', 'db' => '1');
 
 if (pluginGetVariable('auth_basic','en_dbprefix')) {

@@ -138,9 +138,6 @@ if (!file_exists($toinc)) {
 Lang::load('install');
 Lang::load('extra-config', 'admin');
 
-// Load CORE Plugin
-$cPlugin = CPlugin::instance();
-
 $tpl = new Tpl;
 
 // Determine current admin working directory
@@ -187,7 +184,7 @@ if (isset($_POST['action'])) {
 }
 
 // If we made installations and have some pending changes
-if ($flagPendingChanges) {
+if (true === $flagPendingChanges) {
 
     include_once root . 'core.php';
     include_once root . 'includes/inc/extraconf.inc.php';
@@ -198,10 +195,12 @@ if ($flagPendingChanges) {
     $error = 0;
 
     // Now let's install plugins
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
     // First: Load informational `version` files
     $list = $cPlugin->getList();
     foreach ($pluginInstallList as $pName) {
-        if ($list[$pName]['install']) {
+        if (isset($list[$pName]['install'])) {
             include_once root . 'plugins/' . $pName . '/' . $list[$pName]['install'];
             $res = call_user_func('plugin_' . $pName . '_install', 'autoapply');
 
@@ -216,7 +215,7 @@ if ($flagPendingChanges) {
         array_push($LOG, __('msg.plugin.activation') . ' <b>' . $pName . '</b> ... ' . (pluginSwitch($pName, 'on') ? __('msg.ok') : __('msg.error')));
     }
 
-    print '<div class="body"><p style="width: 99%;">';
+    print '<div class="body"><p>';
     foreach ($LOG as $line) {
         print $line . "<br />\n";
     }
@@ -226,7 +225,7 @@ if ($flagPendingChanges) {
         }
         print '<div class="warningDiv">' . __('msg.errorInfo') . '</div>';
     } else {
-        print __('msg.complete1') . ' <a href="' . $homeURL . $adminDirName . '/">' . __('msg.complete2') . '</a>.';
+        print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName);
     }
     print '</p></div>';
 }
@@ -1049,14 +1048,6 @@ function doInstall()
             break;
         }
 
-        // А теперь - включаем необходимые плагины
-        $pluginInstallList = array();
-        foreach ($_POST as $k => $v) {
-            if (preg_match('/^plugin\:(.+?)$/', $k, $m) and ($v == 1)) {
-                array_push($pluginInstallList, $m[1]);
-            }
-        }
-
         // Закрываем все файлы
         foreach (array_keys($frec) as $k)
             fclose($frec[$k]);
@@ -1068,10 +1059,7 @@ function doInstall()
         include_once root . 'includes/inc/extraconf.inc.php';
         include_once root . 'includes/inc/extrainst.inc.php';
 
-        // Now let's install plugins
-        // First: Load informational `version` files
-        $list = $cPlugin->getList();
-         // Подготавливаем список плагинов для установки
+        // Подготавливаем список плагинов для установки
         $pluginInstallList = array();
         foreach ($_POST as $k => $v) {
             if (preg_match('/^plugin\:(.+?)$/', $k, $m) and ($v == 1)) {
@@ -1085,19 +1073,11 @@ function doInstall()
     if ($error) {
         $output .= "<br/>\n";
         foreach ($ERROR as $errText) {
-            $output .= '<div class="errorDiv"><b><u>' . __('msg.error') . '</u>!</b><br/>' . $errText . '</div>';
+            $output .= '<div class="alert alert-danger"><b>' . __('msg.error') . '!</b><br/>' . $errText . '</div>';
         }
-
         // Make navigation menu
-        $output .= '<div class="warningDiv">';
-        $output .= 'Если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку.<br/>';
-        $output .= '<input type="button" style="width: 230px;" value="Вернуться к настройке БД" onclick="document.getElementById(\'stage\').value=\'0\'; form.submit();"/>';
-        $output .= '</div>';
-        $output .= '<div class="warningDiv">';
-        $output .= 'Если Вы самостоятельно устранили ошибку, то попробуйте еще раз.';
-        $output .= '<input type="button" style="width: 230px;" value="Попробовать ещё раз" onclick="document.getElementById(\'action\').value=\'install\'; form.submit();"/>';
-        $output .= '</div>';
-
+        $output .= '<div class="alert alert-warning">Если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку. <a href="#" onclick="document.getElementById(\'stage\').value=\'0\'; form.submit();">Вернуться к настройке БД</a></div>';
+        $output .= '<div class="alert alert-warning">Если Вы самостоятельно устранили ошибку, то попробуйте еще раз. <a href="#" onclick="document.getElementById(\'action\').value=\'install\'; form.submit();">Попробовать ещё раз</a></div>';
     }
 
     $tvars['vars']['actions'] = $output;
