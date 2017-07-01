@@ -118,7 +118,7 @@ function showlist()
 
     $tpath = locatePluginTemplates(array('conf.main', 'conf.list', 'conf.list.row'), 'ads_pro', 1);
 
-    $ttvars = [];
+    $ttvars = array();
     $t_time = time();
     $t_state = array(0 => __('ads_pro:label_off'), 1 => __('ads_pro:label_on'), 2 => __('ads_pro:label_sched'));
     $t_type = array(0 => __('ads_pro:html'), 1 => __('ads_pro:php'), 2 => __('ads_pro:text'));
@@ -253,19 +253,21 @@ function add()
         $ttvars['start_view'] = $var['start_view'] ? date('Y.m.d H:i', $var['start_view']) : '';
         $ttvars['end_view'] = $var['end_view'] ? date('Y.m.d H:i', $var['end_view']) : '';
         $ttvars['location_list'] = '';
-        foreach ($var['location'] as $k => $v) {
-            $ttvars['location_list'] .= '<tr><td class="location_' . ($k) . '">' . ($k) . ': </td><td class="location_' . ($k) . '">';
-            $ttvars['location_list'] .= MakeDropDown(array(0 => __('ads_pro:around'), 1 => __('ads_pro:main'), 2 => __('ads_pro:not_main'), 3 => __('ads_pro:category'), 4 => __('ads_pro:static'), 5 => __('ads_pro:news'), 6 => __('ads_pro:plugins')), 'location[' . ($k) . '][mode]" onchange="AddSubBlok(this, ' . ($k) . ');', $v['mode']);
+        if(count($var['location'])) {
+            foreach ($var['location'] as $k => $v) {
+                $ttvars['location_list'] .= '<tr><td class="location_' . ($k) . '">' . ($k) . ': </td><td class="location_' . ($k) . '">';
+                $ttvars['location_list'] .= MakeDropDown(array(0 => __('ads_pro:around'), 1 => __('ads_pro:main'), 2 => __('ads_pro:not_main'), 3 => __('ads_pro:category'), 4 => __('ads_pro:static'), 5 => __('ads_pro:news'), 6 => __('ads_pro:plugins')), 'location[' . ($k) . '][mode]" onchange="AddSubBlok(this, ' . ($k) . ');', $v['mode']);
 
-            $ttvars['location_list'] .= '</td><td class="location_' . ($k) . '">';
-            if ($v['mode'] == 3) $ttvars['location_list'] .= MakeDropDown($t_category_list, 'location[' . ($k) . '][id]', $v['id']);
-            if ($v['mode'] == 4) $ttvars['location_list'] .= MakeDropDown($t_static_list, 'location[' . ($k) . '][id]', $v['id']);
-            if ($v['mode'] == 5) $ttvars['location_list'] .= MakeDropDown($t_news_list, 'location[' . ($k) . '][id]', $v['id']);
-            if ($v['mode'] == 6) $ttvars['location_list'] .= MakeDropDown($t_plugin_list, 'location[' . ($k) . '][id]', $v['id']);
-            $ttvars['location_list'] .= '</td><td class="location_' . ($k) . '">';
+                $ttvars['location_list'] .= '</td><td class="location_' . ($k) . '">';
+                if ($v['mode'] == 3) $ttvars['location_list'] .= MakeDropDown($t_category_list, 'location[' . ($k) . '][id]', $v['id']);
+                if ($v['mode'] == 4) $ttvars['location_list'] .= MakeDropDown($t_static_list, 'location[' . ($k) . '][id]', $v['id']);
+                if ($v['mode'] == 5) $ttvars['location_list'] .= MakeDropDown($t_news_list, 'location[' . ($k) . '][id]', $v['id']);
+                if ($v['mode'] == 6) $ttvars['location_list'] .= MakeDropDown($t_plugin_list, 'location[' . ($k) . '][id]', $v['id']);
+                $ttvars['location_list'] .= '</td><td class="location_' . ($k) . '">';
 
-            $ttvars['location_list'] .= MakeDropDown(array(0 => __('ads_pro:view'), 1 => __('ads_pro:not_view')), 'location[' . ($k) . '][view]', $v['view']);
-            $ttvars['location_list'] .= '</td></tr>';
+                $ttvars['location_list'] .= MakeDropDown(array(0 => __('ads_pro:view'), 1 => __('ads_pro:not_view')), 'location[' . ($k) . '][view]', $v['view']);
+                $ttvars['location_list'] .= '</td></tr>';
+            }
         }
         $ttvars['ads_blok'] = '';
         foreach ($mysql->select("select ads_blok from " . prefix . "_ads_pro where id=" . db_squote($id) . " limit 1") as $row) $ttvars['ads_blok'] = $row['ads_blok'];
@@ -303,20 +305,17 @@ function add_submit()
     $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
     $name = $parse->translit(secure_html($_REQUEST['name']));
     if (!$name) $name = 0;
-    $description = secure_html(convert($_REQUEST['description']));
+    $description = secure_html($_REQUEST['description']);
     $type = intval($_REQUEST['type']);
-    $location = $_REQUEST['location'];
-    array_walk_recursive($location, intval);
+    $location = isset($_REQUEST['location']) ? $_REQUEST['location'] : NULL;
     $state = intval($_REQUEST['state']);
-    $start_view = GetTimeStamp(secure_html(convert($_REQUEST['start_view'])));
-    $end_view = GetTimeStamp(secure_html(convert($_REQUEST['end_view'])));
+    $start_view = !empty($_REQUEST['start_view']) ? GetTimeStamp(secure_html($_REQUEST['start_view'])) : 0;
+    $end_view = !empty($_REQUEST['end_view']) ? GetTimeStamp(secure_html($_REQUEST['end_view'])) : 0;
     $ads_blok = $_REQUEST['ads_blok'];
-
     $var = pluginGetVariable('ads_pro', 'data');
     if (!$id) {
         $mysql->query("insert into " . prefix . "_ads_pro (ads_blok) values (" . db_squote($ads_blok) . ")");
-
-        $id = intval($mysql->lastid(prefix . "_ads_pro"));
+        $id = intval($mysql->lastid("ads_pro")); // !!! NOT prefix . "_ads_pro"
     } else {
         $t_update = $mysql->query("update " . prefix . "_ads_pro set ads_blok=" . db_squote($ads_blok) . " where id=" . db_squote($id) . " limit 1");
 
@@ -352,6 +351,7 @@ function add_submit()
     pluginsSaveConfig();
     clear_cash();
     showlist();
+    
 }
 
 function move($action)
