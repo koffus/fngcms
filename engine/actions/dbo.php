@@ -80,7 +80,7 @@ function systemDboModify()
     }
 
     // Update message counters
-    if (isset($_REQUEST['cat_recount'])) {
+    if (getIsSet($_REQUEST['cat_recount'])) {
         // Обновляем счётчики в категориях
         $ccount = array();
         $nmap = '';
