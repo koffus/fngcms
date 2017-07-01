@@ -15,6 +15,10 @@ Lang::load('statistics', 'admin');
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
 
+if(isset($_REQUEST['action']) and $_REQUEST['action'] === 'clearCacheFiles') {
+    clearCacheFiles();
+}
+
 // Create a protective .htaccess
 create_access_htaccess();
 

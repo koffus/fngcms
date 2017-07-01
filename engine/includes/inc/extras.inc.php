@@ -329,6 +329,23 @@ function cacheRetrieveFile($fname, $expire, $plugin = '')
     return $data;
 }
 
+
+function clearCacheFiles()
+{
+    $error = false;
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(root . 'cache/'), RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
+        if ($file->isFile()) {
+            if (!@unlink($file->getPathname()))
+                $error = true;
+        }
+    }
+    if($error){
+        msg(array('message' => __('msg.cashe_not_clear'), 'type' => 'warning'));
+    } else {
+        msg(array('message' => __('msg.cashe_clear')));
+    }
+}
+
 function create_access_htaccess()
 {
 

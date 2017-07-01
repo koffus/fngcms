@@ -33,6 +33,7 @@
 
 			<div class="navbar-custom-menu">
 				<ul class="nav navbar-nav">
+					<li><a href="admin.php?mod=statistics&action=clearCacheFiles" title="{{ lang['clearCacheFiles'] }}"><i class="fa fa-recycle" aria-hidden="true"></i></a></li>
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
 							<i class="fa fa-plus"></i>
