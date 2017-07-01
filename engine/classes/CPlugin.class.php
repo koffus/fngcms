@@ -40,9 +40,10 @@ class CPlugin
             include conf_pactive;
             if (is_array($array)) {
                 $PLUGINS['active'] = $array;
+                $PLUGINS['active:loaded'] = 1;
             }
         }
-        $PLUGINS['active:loaded'] = 1;
+        $PLUGINS['active:loaded'] = 0;
     }
 
     // Load configuration variables for plugins
@@ -289,6 +290,35 @@ class CPlugin
         $EXTRA_HTML_VARS[] = array('type' => $type, 'data' => $data);
     }
 
+    // Get plugin variable
+    function getVar($pluginID, $var)
+    {
+        global $PLUGINS;
+
+        if (!$PLUGINS['config:loaded'])
+            return false;
+
+        if (!isset($PLUGINS['config'][$pluginID])) {
+            return null;
+        }
+        if (!isset($PLUGINS['config'][$pluginID][$var])) {
+            return null;
+        }
+        return $PLUGINS['config'][$pluginID][$var];
+    }
+
+    // Set variable
+    function setVar($pluginID, $var, $value)
+    {
+        global $PLUGINS;
+
+        if (!$PLUGINS['config:loaded'])
+            return false;
+
+        $PLUGINS['config'][$pluginID][$var] = $value;
+        return true;
+    }
+    
     /**
      * @return array
      */
