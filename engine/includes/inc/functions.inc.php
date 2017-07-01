@@ -1702,7 +1702,7 @@ function coreUserMenu()
     // If not logged in
     if (!is_array($userROW)) {
 
-        $tVars['flags']['loginError'] = ($SYSTEM_FLAGS['auth_fail']) ? '$1' : '';
+        $tVars['flags']['loginError'] = (isset($SYSTEM_FLAGS['auth_fail'])) ? '$1' : '';
         $tVars['redirect'] = isset($SYSTEM_FLAGS['module.usermenu']['redirect']) ? $SYSTEM_FLAGS['module.usermenu']['redirect'] : $_SERVER['REQUEST_URI'];
         $tVars['reg_link'] = generateLink('core', 'registration');
         $tVars['lost_link'] = generateLink('core', 'lostpassword');

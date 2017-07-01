@@ -50,11 +50,11 @@ class UrlLibrary
         if (is_file($this->configFileName)) {
             // Include REC
             include $this->configFileName;
-            if (!isset($UrlLibrary)) {
+            if (!isset($urlLibrary)) {
                 $this->fatalError = 1;
                 return false;
             }
-            $this->CMD = $UrlLibrary;
+            $this->CMD = $urlLibrary;
         }
         $this->configLoaded = true;
         return true;
@@ -74,7 +74,7 @@ class UrlLibrary
             return false;
         }
 
-        fwrite($f, '<?php' . "\n" . '$UrlLibrary = ' . var_export($this->CMD, true) . ';');
+        fwrite($f, '<?php' . "\n" . '$urlLibrary = ' . var_export($this->CMD, true) . ';');
         fclose($f);
         return true;
     }
