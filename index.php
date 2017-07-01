@@ -5,7 +5,6 @@
 // Name: index.php
 // Description: core index file
 // Author: NGCMS project team
-//
 
 // Call debug from PhpConsole\Handler
 require_once('PhpConsole/__autoload.php');

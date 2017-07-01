@@ -120,7 +120,6 @@ class UrlHandler
     // Populate handler record from HTTP submit interface
     function populateHandler($ULIB, $data)
     {
-        //
         // First - find references from URL library
         if (!isset($data['pluginName']) or !isset($data['handlerName']) or !isset($ULIB->CMD[$data['pluginName']][$data['handlerName']])) {
             return array(array(1, 'No match with URL library' . var_export($data, true)), false);
@@ -136,16 +135,13 @@ class UrlHandler
         // 1 - scanning tag name
         $state = 0;
         $dataStartPos = 0;
-
         $pos = 0;
-        $rcmd = $data['regex'];
-        $len = mb_strlen($rcmd, 'UTF-8');
-
         $variativeID = 0;
         $variative = 0;
         $closeit = false;
-
         $genmap = array();
+        $rcmd = $data['regex'];
+        $len = mb_strlen($rcmd, 'UTF-8');
 
         while ($pos < $len) {
             switch ($state) {
@@ -159,7 +155,6 @@ class UrlHandler
                         $newVariative = 0;
                         $closeit = true;
                     }
-
                     if ($rcmd[$pos] == '{') {
                         $state = 1;
                         $closeit = true;
@@ -167,7 +162,6 @@ class UrlHandler
                     }
                     if ($closeit) {
                         $closeit = false;
-
                         if ($pos > $dataStartPos) {
                             $text = substr($rcmd, $dataStartPos, $pos - $dataStartPos);
                             $genmap[] = array(0, $text, $variative);
