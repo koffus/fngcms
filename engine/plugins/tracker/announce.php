@@ -201,7 +201,7 @@ class TrackerNewsFilter extends NewsFilter
         if (pluginGetVariable('tracker', 'smagnet') and $_POST['tracker_magnet']) {
             // Create a record in `tracker_magnets` table
             $mysql->query("insert into " . prefix . "_tracker_magnets (magnet, infohash) values (" . db_squote($_POST['tracker_magnet']) . ", '')");
-            $SQL['tracker_magnetid'] = $mysql->lastid(prefix . '_tracker_magnets');
+            $SQL['tracker_magnetid'] = $mysql->lastid('tracker_magnets');  // !!! NOT prefix . "_tracker_magnets"
 
             $md = magnetDecodeLink($_POST['tracker_magnet']);
             if (isset($md['torrent.infohash']))
@@ -277,7 +277,7 @@ class TrackerNewsFilter extends NewsFilter
         if (($_POST['tracker_magnet'] != '') and (!$SQLold['tracker_magnetid'])) {
             // Add new link
             $mysql->query("insert into " . prefix . "_tracker_magnets (magnet, infohash) values (" . db_squote($_POST['tracker_magnet']) . ", " . db_squote($magnet_infohash) . ")");
-            $SQLnew['tracker_magnetid'] = $mysql->lastid(prefix . '_tracker_magnets');
+            $SQLnew['tracker_magnetid'] = $mysql->lastid('tracker_magnets');  // !!! NOT prefix . "_tracker_magnets"
             $SQLnew['tracker_infohash'] = $magnet_infohash;
         }
 
