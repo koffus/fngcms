@@ -135,35 +135,20 @@ function actionDisable($action)
 // PLUGINS: parameters managment
 // =========================================================
 
-//
+// Get plugin variable
+function pluginGetVariable($pluginID, $var)
+{
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    return $cPlugin->getVar($pluginID, $var);
+}
 
-    // Get plugin variable
-    function pluginGetVariable($pluginID, $var)
-    {
-        global $PLUGINS;
-
-        if (!$PLUGINS['config:loaded'])
-            return false;
-
-        if (!isset($PLUGINS['config'][$pluginID])) {
-            return null;
-        }
-        if (!isset($PLUGINS['config'][$pluginID][$var])) {
-            return null;
-        }
-        return $PLUGINS['config'][$pluginID][$var];
-    }
-//
 // Set variable
 function pluginSetVariable($pluginID, $var, $value)
 {
-    global $PLUGINS;
-
-    if (!$PLUGINS['config:loaded'])
-        return false;
-
-    $PLUGINS['config'][$pluginID][$var] = $value;
-    return true;
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    $cPlugin->setVar($pluginID, $var, $value);
 }
 
 //
@@ -180,7 +165,7 @@ function pluginsSaveConfig($suppressNotify = false)
     }
 
     //
-    if (!($fconfig = @fopen(conf_pconfig, 'w'))) {
+    if (!($fconfig = fopen(conf_pconfig, 'w'))) {
         if (!$suppressNotify) {
             msg(array('type' => 'danger', 'title' => str_replace('{name}', conf_pconfig, __('error.config.write')), 'message' => __('error.config.write#desc')));
         }
