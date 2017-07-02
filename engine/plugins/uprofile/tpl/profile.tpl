@@ -22,19 +22,19 @@
 			<table class="table table-user-information">
 				<tbody>
 					<tr>
-						<td>{l_uprofile:status}</td><td>{status}</td>
+						<td>{{ lang.uprofile['status'] }}</td><td>{{ user.status }}</td>
 					</tr>
 					<tr>
-						<td>{l_uprofile:regdate}</td><td>{regdate}</td>
+						<td>{{ lang.uprofile['regdate'] }}</td><td>{{ user.regdate }}</td>
 					</tr>
 					<tr>
-						<td>{l_uprofile:last}</td><td>{last}</td>
+						<td>{{ lang.uprofile['last'] }}</td><td>{{ user.last }}</td>
 					</tr>
 					<tr>
-						<td>{l_uprofile:all_news}</td><td>{news}</td>
+						<td>{{ lang.uprofile['all_news'] }}</td><td>{{ user.news }}</td>
 					</tr>
 					<tr>
-						<td>{l_uprofile:all_comments}</td><td>{comments}</td>
+						<td>{{ lang.uprofile['all_comments'] }}</td><td>{{ user.comments }}</td>
 					</tr>
 					<tr>
 						<td><label class="control-label">{{ lang.uprofile['site'] }}</label></td><td><input type="text" name="editsite" value="{{ user.site }}" class="form-control input-sm" /></td>
