@@ -129,22 +129,11 @@
 							{% endfor %}
 						{% endif %}
 					</div>
-					{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}
-						<table class="table table-condensed">
-							{{ plugin.xfields[0] }}
-						</table>
-					{% endif %}
-					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
-						<table class="table table-condensed">
-							{{ plugin.xfields[1] }}
-						</table>
-					{% endif %}
-					{% if (pluginIsActive('xfields')) %}{{ plugin.xfields.general }}{% endif %}
 				</div>
 
 				<div class="panel-group" id="accordion">
 					<!-- PLUGIN IN ADDITIONAL BLOCK -->
-					{% if (extends.block.additional) %}
+					{% if (extends.block.additional or pluginIsActive('xfields')) %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.additional'] }}</a></h4>
@@ -163,7 +152,7 @@
 					<!-- PLUGIN WITH OWNER BLOCK -->
 					{% if (extends.block.owner) %}
 						{% for entry in extends.block.owner %}
-						<div class="panel panel-default">
+						<div class="panel panel-default {% if(entry.table) %}panel-table{% endif %}">
 							<div class="panel-heading">
 								<h4 class="panel-title"><a href="#panel-owner-{{ loop.index }}" data-toggle="collapse" data-parent="#accordion">{{ entry.header_title }}</a></h4>
 							</div>
@@ -176,7 +165,7 @@
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.attaches'] }} ({% if (attachCount>0) %}{{ attachCount }}{% else %}{{ lang['noa'] }}{% endif %})</a>
+								<a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.attaches'] }} {% if (attachCount>0) %}({{ attachCount }}){% endif %}</a>
 							</h4>
 						</div>
 						<div id="attaches" class="panel-collapse collapse">
@@ -210,7 +199,7 @@
 										<tr>
 											<td colspan="5"></td>
 											<td class="text-center" width="10">
-												<button type="button" title="{l_attach.more_rows}" onclick="attachAddRow('attachFilelist_edit');" class="btn btn-primary" title="{l_attach.more_rows}"><i class="fa fa-plus"></i></button>
+                                                <button type="button" title="{{ lang['attach.more_rows'] }}" onclick="attachAddRow('attachFilelist_edit');" class="btn btn-primary" title="{{ lang['attach.more_rows'] }}"><i class="fa fa-plus"></i></button>
 											</td>
 										</tr>
 									</tbody>

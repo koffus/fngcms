@@ -1,4 +1,4 @@
-<div id="uprofileReplaceForm">
+<!--div id="uprofileReplaceForm"-->
 	<h2 class="section-title">{{ lang.uprofile['profile_of'] }} <b>{{ user.name }} </b><!--[id: {{ user.id }}]--></h2>
 
 	<div class="row">
@@ -60,7 +60,7 @@
 					{% endif %}
 					{% if (user.flags.isOwnProfile) %}
 					<tr>
-						<td colspan="2"><br /><a href="{{ home }}/profile.html" class="btn btn-primary" onclick="ng_uprofile_editCall(); return false;">{{ lang.uprofile['edit_profile'] }}</a></td>
+						<td colspan="2"><br /><a href="{{ home }}/profile.html" class="btn btn-primary" onclick="/*ng_uprofile_editCall(); return false;*/">{{ lang.uprofile['edit_profile'] }}</a></td>
 					</tr>
 					{% endif %}
 				</tbody>
@@ -71,7 +71,7 @@
 			{% endif %}
 		</div>
 	</div>
-</div>
+<!--/div>
 
 {% if (user.flags.isOwnProfile) %}
 <script>
@@ -101,4 +101,4 @@ function ng_uprofile_editCall() {
 
 }
 </script>
-{% endif %}
+{% endif %}-->

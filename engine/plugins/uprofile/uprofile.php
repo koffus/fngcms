@@ -82,30 +82,9 @@ function uprofile_showProfile($params) {
 		'token'				=> genUToken('uprofile.editForm'),
 	);
 
-	$conversionConfig = array(
-		'{user}' => '{{ user.name }}',
-		'{news}' => '{{ user.news }}',
-		'{com}' => '{{ user.com }}',
-		'{status}' => '{{ user.status }}',
-		'{last}' => '{{ user.last }}',
-		'{reg}' => '{{ user.reg }}',
-		'{site}' => '{{ user.site }}',
-		'{icq}' => '{{ user.icq }}',
-		'{from}' => '{{ user.from }}',
-		'{info}' => '{{ user.info }}',
-		'{photo}' => '{{ user.photo_thumb }}',
-		'{photo_link}' => '{{ user.photo }}',
-		'{avatar}' => '{{ user.avatar }}',
-		'{tpl_url}' => '{{ tpl_url }}',
-	);
-	$conversionConfigRegex = array(
-		'#{l_uprofile:(.+?)}#' => '{{ lang.uprofile[\'$1\'] }}',
-	);
-
 	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->showProfile($urow['id'], $urow, $tVars); }
 
-	$twigLoader->setConversion($tpath['users'].'users.tpl', $conversionConfig, $conversionConfigRegex);
 	$xt = $twig->loadTemplate($tpath['users'].'users.tpl');
 	$template['vars']['mainblock'] .= $xt->render($tVars);
 }
@@ -148,7 +127,7 @@ function uprofile_applyProfile() {
 function uprofile_editForm($ajaxMode = false){
 	global $mysql, $userROW, $config, $tpl, $template, $twig, $twigLoader, $SYSTEM_FLAGS, $PFILTERS, $DSlist;
 
-	$SYSTEM_FLAGS['info']['title']['group']		= __('uprofile')['header.edit'];
+	$SYSTEM_FLAGS['info']['title']['group'] = __('uprofile')['header.edit'];
 
 	// Check if user is logged in
 	if (!is_array($userROW)) {
@@ -168,8 +147,8 @@ function uprofile_editForm($ajaxMode = false){
 	$urow = $userROW;
 
 	// Load list of attached images/files
-	//$currentUser['#files']	= $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_files where (linked_ds = ".$DSlist['users'].") and (linked_id = ".db_squote($currentUser['id']).')', 1);
-	$urow['#images']	= $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = ".$DSlist['users'].") and (linked_id = ".db_squote($urow['id']).')', 1);
+	//$currentUser['#files'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_files where (linked_ds = ".$DSlist['users'].") and (linked_id = ".db_squote($currentUser['id']).')', 1);
+	$urow['#images'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = ".$DSlist['users'].") and (linked_id = ".db_squote($urow['id']).')', 1);
 
 	// Manage profile data [if needed]
 	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
@@ -219,36 +198,9 @@ function uprofile_editForm($ajaxMode = false){
 		'info_sizelimit' => intval($config['user_aboutsize']),
 	);
 
-	$conversionConfig = array(
-		'{php_self}' => '{{ php_self }}',
-		'{name}' => '{{ user.name }}',
-		'{regdate}' => '{{ user.reg }}',
-		'{last}' => '{{ user.last }}',
-		'{status}' => '{{ user.status }}',
-		'{news}' => '{{ user.news }}',
-		'{comments}' => '{{ user.com }}',
-		'{email}' => '{{ user.email }}',
-		'{from}' => '{{ user.from }}',
-		'{site}' => '{{ user.site }}',
-		'{icq}' => '{{ user.icq }}',
-		'{about}' => '{{ user.info }}',
-		'{about_sizelimit_text}' => '{{ info_sizelimit_text }}',
-		'{about_sizelimit}' => '{{ info_sizelimit }}',
-		'{photo}' => '{% if (flags.photoAllowed) %}<input type="file" name="newphoto" size="40" /><br />{% if (user.flags.hasPhoto) %}<a href="{{ user.photo }}" target="_blank"><img src="{{ user.photo_thumb }}" style="margin: 5px; border: 0px; alt=""/></a><br/><input type="checkbox" name="delphoto" id="delphoto" class="check" />&nbsp;<label for="delphoto">{{ lang.uprofile[\'delete\'] }}</label>{% endif %}{% else %}{{ lang.uprofile[\'photos_denied\'] }}{% endif %}',
-		'{avatar}' => '{% if (flags.avatarAllowed) %}<input type="file" name="newavatar" size="40" /><br />{% if (user.flags.hasAvatar) %}<img src="{{ user.avatar }}" style="margin: 5px; border: 0px; alt=""/><br/><input type="checkbox" name="delavatar" id="delavatar" class="check" />&nbsp;<label for="delavatar">{{ lang.uprofile[\'delete\'] }}</label>{% endif %}{% else %}{{ lang.uprofile[\'avatars_denied\'] }}{% endif %}',
-		'{form_action}' => '{{ form_action }}',
-		'{token}' => '{{ token }}',
-		'{tpl_url}' => '{{ tpl_url }}',
-	);
-	$conversionConfigRegex = array(
-		'#{l_uprofile:(.+?)}#' => '{{ lang.uprofile[\'$1\'] }}',
-		'#{plugin_xfields_(\d+)}#' => ' {{ p.xfields[$1] }}',
-	);
-
 	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileForm($urow['id'], $urow, $tVars); }
 
-	$twigLoader->setConversion($tpath['profile'].'profile.tpl', $conversionConfig, $conversionConfigRegex);
 	$xt = $twig->loadTemplate($tpath['profile'].'profile.tpl');
 
 	$render = $xt->render($tVars);

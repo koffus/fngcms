@@ -116,23 +116,12 @@
 								{{ entry.body }}
 							{% endfor %}
 						{% endif %}
-					</div>
-					{% if (pluginIsActive('xfields') and plugin.xfields[0]) %}
-						<table class="table table-condensed">
-							{{ plugin.xfields[0] }}
-						</table>
-					{% endif %}
-					{% if (pluginIsActive('xfields') and plugin.xfields[1]) %}
-						<table class="table table-condensed">
-							{{ plugin.xfields[1] }}
-						</table>
-					{% endif %}
-					{% if (pluginIsActive('xfields')) %}{{ plugin.xfields.general }}{% endif %}
+                    </div>
 				</div>
 
 				<div class="panel-group" id="accordion">
 					<!-- PLUGIN IN ADDITIONAL BLOCK -->
-					{% if (extends.block.additional) %}
+					{% if (extends.block.additional or pluginIsActive('xfields')) %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.additional'] }}</a></h4>
@@ -151,7 +140,7 @@
 					<!-- PLUGIN WITH OWNER BLOCK -->
 					{% if (extends.block.owner) %}
 						{% for entry in extends.block.owner %}
-						<div class="panel panel-default">
+						<div class="panel panel-default {% if(entry.table) %}panel-table{% endif %}">
 							<div class="panel-heading">
 								<h4 class="panel-title"><a href="#panel-owner-{{ loop.index }}" data-toggle="collapse" data-parent="#accordion">{{ entry.header_title }}</a></h4>
 							</div>
@@ -163,13 +152,13 @@
 					<!-- ATTACHES -->
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
-							<h4 class="panel-title"><i class="fa fa-th-list"></i>
-								<a href="#attaches" data-toggle="collapse" data-parent="#accordion" aria-expanded="false">{{ lang.addnews['bar.attaches'] }}</a>
+							<h4 class="panel-title">
+								<a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.addnews['bar.attaches'] }}</a>
 							</h4>
 						</div>
 						<div id="attaches" class="panel-collapse collapse" aria-expanded="false">
 							<div class="panel-body">
-								<table id="attachFilelist" class="table table-condensed table-bordered">
+								<table id="attachFilelist" class="table table-condensed">
 									<thead>
 										<tr>
 											<th>{{ lang['attach.filename'] }} - {{ lang['attach.size'] }}</th>
@@ -180,7 +169,7 @@
 										<tr>
 											<td></td>
 											<td class="text-center" width="10">
-												<button type="button" title="{l_attach.more_rows}" onclick="attachAddRow('attachFilelist');" class="btn btn-primary" title="{l_attach.more_rows}"><i class="fa fa-plus"></i></button>
+												<button type="button" title="{{ lang['attach.more_rows'] }}" onclick="attachAddRow('attachFilelist');" class="btn btn-primary" title="{{ lang['attach.more_rows'] }}"><i class="fa fa-plus"></i></button>
 											</td>
 										</tr>
 									</tbody>

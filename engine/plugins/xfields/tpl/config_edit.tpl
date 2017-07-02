@@ -335,9 +335,20 @@
 			</div>
 			{% if (sectionID != 'tdata') %}
 			<div class="form-group">
-				<div class="col-sm-5">{{ lang['xfields:location'] }}<span class="help-block">{{ lang['xfields:location_desc'] }}</span></div>
+				<div class="col-sm-5">{{ lang['localExtends'] }}
+                    <span class="help-block">
+                        {% if (sectionID == 'users') and (type != 'images') %}
+                            {{ lang['localExtendsUser#desc'] }}
+                        {% else %}
+                            {{ lang['localExtends#desc'] }}
+                        {% endif %}
+                   </span>
+               </div>
 				<div class="col-sm-7">
-					<input type="text" name="area" value="{{ area }}" class="form-control" />
+                    <select name="extends" class="form-control">
+                        <option value="main" {{ main_selected }}>{{ lang['extends_main'] }}</option>
+                        <option value="additional" {{ additional_selected }}>{{ lang['extends_additional'] }}</option>
+                    </select>
 				</div>
 			</div>
 			{% endif %}

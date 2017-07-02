@@ -24,7 +24,7 @@
 					<th>{{ lang['xfields:field_default'] }}</th>
 					<th>{{ lang['xfields:field_required'] }}</th>
 					{% if (sectionID != 'tdata') %}
-						<th>{{ lang['xfields:field_area'] }}</th>
+						<th>{{ lang['xfields:field_extends'] }}</th>
 					{% endif %}
 					<th class="text-right">{{ lang['action'] }}</th>
 				</tr>
@@ -39,7 +39,7 @@
 					<td>{% if (entry.flags.default) %}{{ entry.default }}{% else %}<font color="red">{{ lang['xfields:field_def_no'] }}</font>{% endif %}</td>
 					<td>{% if (entry.flags.required) %}<font color="red"><b>{{ lang['yesa'] }}</b></font>{% else %}{{ lang['noa'] }}{% endif %}</td>
 					{% if (sectionID != 'tdata') %}
-						<td>{{ entry.area }}</td>
+						<td>{{ entry.extends }}</td>
 					{% endif %}
 					<td class="text-right">
 						<div class="btn-group">

@@ -447,7 +447,7 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
 // Create install page
 function generate_install_page($plugin, $text, $stype = 'install')
 {
-    global $twig;
+    global $twig, $PHP_SELF;
 
     $tVars = array(
         'plugin' => $plugin,
@@ -455,7 +455,7 @@ function generate_install_page($plugin, $text, $stype = 'install')
         'install_text' => $text,
         'mode_text' => ($stype == 'install') ? __('install_text') : __('deinstall_text'),
         'mode_commit' => ($stype == 'install') ? __('commit_install') : __('commit_deinstall'),
-        'php_self' => $PHP_SELF
+        'php_self' => $PHP_SELF,
     );
 
     $xt = $twig->loadTemplate(tpl_actions . 'extra-config/install.tpl');

@@ -112,20 +112,20 @@
 				<table class="table">
 					<thead>
 						<tr>
-							<th>ID поля</th>
+							<!--th>ID поля</th-->
 							<th>Название поля</th>
-							<th>Тип поля</th>
-							<th>Блок</th>
+							<!--th>Тип поля</th>
+							<th>Блок</th-->
 							<th>Значение</th>
 						</tr>
 					</thead>
 					<tbody>
 						{% for xFN,xfV in p.xfields.fields %}
 						<tr>
-							<td>{{ xFN }}</td>
+							<!--td>{{ xFN }}</td-->
 							<td>{{ xfV.title }}</td>
-							<td>{{ xfV.data.type }}</td>
-							<td>{{ xfV.data.area }}</td>
+							<!--td>{{ xfV.data.type }}</td>
+							<td>{{ xfV.data.extends }}</td-->
 							<td>{{ xfV.input }}</td>
 						</tr>
 						{% endfor %}

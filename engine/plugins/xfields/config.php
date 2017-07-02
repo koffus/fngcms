@@ -29,13 +29,17 @@ $sectionID = $_REQUEST['section'];
 if (!in_array($sectionID, array('news', 'grp.news', 'users', 'grp.users', 'tdata')))
 	$sectionID = 'news';
 
-switch ($_REQUEST['action']) {
-	case 'add': showAddEditForm(); break;
-	case 'doadd': doAddEdit(); break;
-	case 'edit': showAddEditForm(); break;
-	case 'doedit': doAddEdit(); break;
-	case 'update': doUpdate(); showList(); break;
-	default: showList();
+if (isset($_REQUEST['action'])) {
+    switch ($_REQUEST['action']) {
+        case 'add': showAddEditForm(); break;
+        case 'doadd': doAddEdit(); break;
+        case 'edit': showAddEditForm(); break;
+        case 'doedit': doAddEdit(); break;
+        case 'update': doUpdate(); showList(); break;
+        default: showList();
+    }
+} else {
+    showList();
 }
 
 //
@@ -85,40 +89,41 @@ function showFieldList(){
 	global $xf, $twig, $sectionID;
 
 	$xEntries = array();
-	foreach ($xf[$sectionID] as $id => $data) {
-		$storage = '';
-		if ($data['storage']) {
-			$storage = '<br/><font color="red"><b>'.$data['db.type'].($data['db.len']?(' ('.$data['db.len'].')'):'').'</b> </font>';
-		}
+    if(isset($xf[$sectionID]) and is_array($xf[$sectionID])) {
+        foreach ($xf[$sectionID] as $id => $data) {
+            $storage = '';
+            if ($data['storage']) {
+                $storage = '<br/><font color="red"><b>'.$data['db.type'].($data['db.len']?(' ('.$data['db.len'].')'):'').'</b> </font>';
+            }
 
-		$xEntry = array(
-			'name' => $id,
-			'title' => $data['title'],
-			'type' => __('xfields:type_'.$data['type']).$storage,
-			'default' => ( ($data['type']=="checkbox") ? ($data['default'] ? __('yesa') : __('noa')) : ($data['default']) ),
-			'link' => '?mod=extra-config&plugin=xfields&action=edit&section='.$sectionID.'&field='.$id,
-			'linkup' => '?mod=extra-config&plugin=xfields&action=update&subaction=up&section='.$sectionID.'&field='.$id,
-			'linkdown' => '?mod=extra-config&plugin=xfields&action=update&subaction=down&section='.$sectionID.'&field='.$id,
-			'linkdel' => '?mod=extra-config&plugin=xfields&action=update&subaction=del&section='.$sectionID.'&field='.$id,
-			'area' => (intval($data['area'])>0)?intval($data['area']):'',
-			'flags' => array(
-				'required' => $data['required']?true:false,
-				'default' => (($data['default'] != '') or ($data['type']=="checkbox"))?true:false,
-				'disabled' => $data['disabled']?true:false,
-				'regpage' => $data['regpage']?true:false,
-			),
-		);
+            $xEntry = array(
+                'name' => $id,
+                'title' => $data['title'],
+                'type' => __('xfields:type_'.$data['type']).$storage,
+                'default' => ( ($data['type']=="checkbox") ? ($data['default'] ? __('yesa') : __('noa')) : ($data['default']) ),
+                'link' => '?mod=extra-config&plugin=xfields&action=edit&section='.$sectionID.'&field='.$id,
+                'linkup' => '?mod=extra-config&plugin=xfields&action=update&subaction=up&section='.$sectionID.'&field='.$id,
+                'linkdown' => '?mod=extra-config&plugin=xfields&action=update&subaction=down&section='.$sectionID.'&field='.$id,
+                'linkdel' => '?mod=extra-config&plugin=xfields&action=update&subaction=del&section='.$sectionID.'&field='.$id,
+                'extends' => __('extends_' . (!empty($data['extends']) ? $data['extends'] : 'additional')),
+                'flags' => array(
+                    'required' => !empty($data['required'])?true:false,
+                    'default' => (!empty($data['default']) or ($data['type']=="checkbox"))?true:false,
+                    'disabled' => !empty($data['disabled'])?true:false,
+                    'regpage' => !empty($data['regpage'])?true:false,
+                ),
+            );
 
-		$options = '';
-		if (is_array($data['options']) and count($data['options'])) {
-			foreach ($data['options'] as $k => $v)
-				$options .= (($data['storekeys'])?('<b>'.$k.'</b>: '.$v):('<b>'.$v.'</b>'))."<br>\n";
-		}
-		$xEntry['options'] = $options;
+            $options = '';
+            if (isset($data['options']) and is_array($data['options']) and count($data['options'])) {
+                foreach ($data['options'] as $k => $v)
+                    $options .= (($data['storekeys'])?('<b>'.$k.'</b>: '.$v):('<b>'.$v.'</b>'))."<br>\n";
+            }
+            $xEntry['options'] = $options;
 
-		$xEntries []= $xEntry;
-	}
-
+            $xEntries []= $xEntry;
+        }
+    }
 	$tVars = array(
 		'entries' => $xEntries,
 		'section_name' => __('xfields:section.'.$sectionID),
@@ -137,22 +142,26 @@ function showFieldList(){
 function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 	global $xf, $sectionID, $twig;
 
-	$field = ($efield == NULL)?$_REQUEST['field']:$efield;
+	$field = ($efield === NULL and isset($_REQUEST['field'])) ? $_REQUEST['field'] : $efield;
 
 	if ($eMode == NULL) {
-		$editMode = (is_array($xf[$sectionID][$field]))?1:0;
+		$editMode = (isset($xf[$sectionID][$field]) and is_array($xf[$sectionID][$field]))?1:0;
 	} else {
 		$editMode = $eMode;
 	}
 
 	$tVars = array();
+    $xsel = '';
 
 	if ($editMode) {
 		$data = is_array($xdata)?$xdata:$xf[$sectionID][$field];
-
+        foreach (array('text', 'textarea', 'select', 'multiselect', 'checkbox', 'images') as $ts) {
+			$tVars['defaults'][$ts] = ($data['type'] == $ts)?(($ts=="checkbox")?($data['default']?' checked="checked"':''):$data['default']):'';
+			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == $ts)?' selected':'').'>'.__('xfields:type_'.$ts).'</option>';
+		}
 		$tVars['flags']['editMode'] = 1;
-		$tVars['flags']['disabled'] = $data['disabled']?true:false;
-		$tVars['flags']['regpage'] = $data['regpage']?true:false;
+		$tVars['flags']['disabled'] = !empty($data['disabled']) ? true : false;
+		$tVars['flags']['regpage'] = !empty($data['regpage']) ? true : false;
 		$tVars = $tVars + array(
 			'id' => $field,
 			'title' => $data['title'],
@@ -160,10 +169,11 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 			'storage' => intval($data['storage']),
 			'db_type' => $data['db.type'],
 			'db_len' => (intval($data['db.len'])>0)?intval($data['db.len']):'',
-			'area' => (intval($data['area'])>0)?intval($data['area']):'',
-			'bb_support' => $data['bb_support']?'checked="checked"':'',
-			'html_support' => $data['html_support']?'checked="checked"':'',
-			'noformat' => $data['noformat']?'checked="checked"':'',
+			'main_selected' => ($data['extends'] == 'main') ? 'selected' : '',
+			'additional_selected' => ($data['extends'] == 'additional') ? 'selected' : '',
+			'bb_support' => !empty($data['bb_support'])?'checked="checked"':'',
+			'html_support' => !empty($data['html_support'])?'checked="checked"':'',
+			'noformat' => !empty($data['noformat'])?'checked="checked"':'',
 		);
 
 		$xsel = '';
@@ -205,9 +215,9 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 							</tr>');
 		}
 
- $m_sOpts = array();
+        $m_sOpts = array();
 		$fNum = 1;
- if ( $data['type'] == 'multiselect' ) {
+        if ( $data['type'] == 'multiselect' ) {
 			if (is_array($data['options']))
 				foreach ($data['options'] as $k => $v) {
 					array_push($m_sOpts, '<tr>
@@ -240,19 +250,19 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 
 		$tVars = $tVars + array(
 			'sOpts' => implode("\n", $sOpts),
- 'm_sOpts' => implode("\n", $m_sOpts),
+            'm_sOpts' => implode("\n", $m_sOpts),
 			'type_opts' => $xsel,
-			'storekeys_opts' => '<option value="0">'.__('xfields:tselect_store_value').'</option><option value="1"'.(($data['storekeys'])?' selected':'').'>'.__('xfields:tselect_store_key').'</option>',
+			'storekeys_opts' => '<option value="0">'.__('xfields:tselect_store_value').'</option><option value="1"'.(!empty($data['storekeys'])?' selected':'').'>'.__('xfields:tselect_store_key').'</option>',
 			'required_opts' => '<option value="0">'.__('noa').'</option><option value="1"'.(($data['required'])?' selected':'').'>'.__('yesa').'</option>',
 			'images' => array(
-				'maxCount' => intval($data['maxCount']),
-				'thumbWidth' => intval($data['thumbWidth']),
-				'thumbHeight' => intval($data['thumbHeight']),
+				'maxCount' => !empty($data['maxCount']) ? intval($data['maxCount']) : '0',
+				'thumbWidth' => !empty($data['thumbWidth']) ? intval($data['thumbWidth']) : '0',
+				'thumbHeight' => !empty($data['thumbHeight']) ? intval($data['thumbHeight']) : '0',
 			),
 		);
 
 		foreach (array('imgStamp', 'imgShadow', 'imgThumb', 'thumbStamp', 'thumbShadow') as $k) {
-			$tVars['images'][$k] = intval($data[$k])?'checked="checked"':'';
+			$tVars['images'][$k] = (!empty($data[$k]) and intval($data[$k])) ? 'checked="checked"':'';
 		}
 	//print "<pre>".var_export($tVars, true)."</pre>";
 	} else {
@@ -268,8 +278,7 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 									<a href="#" onclick="return false;" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 								</td>
 							</tr>');
-
- $m_sOpts = array();
+        $m_sOpts = array();
 		array_push($m_sOpts, '<tr>
 								<td>
 									<input size="12" name="mso_data[1][0]" type="text" value="" class="form-control" />
@@ -286,7 +295,7 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$tVars['flags']['disabled'] = false;
 		$tVars = $tVars + array(
 			'sOpts' => implode("\n", $sOpts),
- 'm_sOpts' => implode("\n", $m_sOpts),
+            'm_sOpts' => implode("\n", $m_sOpts),
 			'id' => '',
 			'title' => '',
 			'type' => 'text',
@@ -298,7 +307,7 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL){
 		$xsel = '';
 		foreach (array('text', 'textarea', 'select', 'multiselect', 'checkbox', 'images') as $ts) {
 			$tVars['defaults'][$ts] = '';
-			$xsel .= '<option value="'.$ts.'"'.(($data['type'] == 'text')?' selected':'').'>'.__('xfields:type_'.$ts).'</option>';
+			$xsel .= '<option value="'.$ts.'"'.((isset($data['type']) and ($data['type'] == 'text')) ? ' selected' : '').'>'.__('xfields:type_'.$ts).'</option>';
 		}
 
 		$tVars = $tVars + array(
@@ -352,11 +361,11 @@ function doAddEdit() {
 
 	// Let's fill parameters
 	$data['title'] = $_REQUEST['title'];
-	$data['required'] = intval($_REQUEST['required']);
-	$data['disabled'] = intval($_REQUEST['disabled']);
-	$data['area'] = intval($_REQUEST['area']);
+	$data['required'] = isset($_REQUEST['required']) ? intval($_REQUEST['required']) : 0;
+	$data['disabled'] = isset($_REQUEST['disabled']) ? intval($_REQUEST['disabled']) : 0;
+	$data['extends'] = isset($_REQUEST['extends']) ? $_REQUEST['extends'] : 'additional';
 	$data['type'] = $_REQUEST['type'];
-	$data['bb_support'] = $_REQUEST['bb_support']?1:0;
+	$data['bb_support'] = isset($_REQUEST['bb_support']) ? intval($_REQUEST['bb_support']) : 0;
 	$data['default'] = '';
 
 	if (($sectionID == 'users') and ($data['type'] != 'images'))
@@ -364,20 +373,20 @@ function doAddEdit() {
 
 	switch ($data['type']) {
 		case 'checkbox':
-				$data['default'] = $_REQUEST['checkbox_default']?1:0;
+				$data['default'] = isset($_REQUEST['checkbox_default']) ? intval($_REQUEST['checkbox_default']) : 0;
 			break;
 		case 'text':
 			if ($_REQUEST['text_default'] != '')
 				$data['default'] = $_REQUEST['text_default'];
-			$data['bb_support'] = $_REQUEST['text_bb_support']?1:0;
-			$data['html_support'] = $_REQUEST['text_html_support']?1:0;
+			$data['bb_support'] = isset($_REQUEST['bb_support']) ? intval($_REQUEST['bb_support']) : 0;
+			$data['html_support'] = isset($_REQUEST['html_support']) ? intval($_REQUEST['html_support']) : 0;
 			break;
 		case 'textarea':
 			if ($_REQUEST['textarea_default'] != '')
 				$data['default'] = $_REQUEST['textarea_default'];
-			$data['bb_support'] = $_REQUEST['textarea_bb_support']?1:0;
-			$data['html_support'] = $_REQUEST['textarea_html_support']?1:0;
-			$data['noformat'] = $_REQUEST['textarea_noformat']?1:0;
+			$data['bb_support'] = isset($_REQUEST['bb_support']) ? intval($_REQUEST['bb_support']) : 0;
+			$data['html_support'] = isset($_REQUEST['html_support']) ? intval($_REQUEST['html_support']) : 0;
+			$data['noformat'] = isset($_REQUEST['noformat']) ? intval($_REQUEST['noformat']) : 0;
 			break;
 		case 'select':
 

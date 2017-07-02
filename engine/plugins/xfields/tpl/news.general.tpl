@@ -10,13 +10,12 @@ var xfList = {{ xfList }};
 var tblConfig = {{ xtableConf }};
 var tblData = {{ xtableVal }};
 
-
 function tblLoadData(initMode) {
 	// Load body collection
 	var trows = $("#tdataTable >tbody");
 
 	var irows;
-	if (initMode) {
+	if (initMode && tblData.length > 0) {
 		irows = tblData;
 	} else {
 		// Scan default values
@@ -55,12 +54,15 @@ function tblLoadData(initMode) {
 			}
 		}
 		var t = $("<td>").appendTo(trow);
+        t.attr("class", "text-center");
+        t.attr("width", "10");
 		$("<a>")
 			.html(
-				$("<img>")
-				.attr("src", "{{ skins_url }}/images/delete.gif")
+				$("<i>")
+				.attr("class", "fa fa-trash")
 			)
-			.attr("href", "#")
+			.attr("type", "button")
+			.attr("class", "btn btn-danger")
 			.bind("click", function() { $(this).parent().parent().remove(); return false; })
 			.appendTo(t);
 	}
@@ -102,9 +104,6 @@ function tblSaveData() {
 
 }
 
-tblLoadData(1);
-
-
 // Update visibility of XFields fields
 function xf_update_visibility(cid) {
 	// Show only fields for this category profile
@@ -113,7 +112,7 @@ function xf_update_visibility(cid) {
 			var xfGrp = xfGroupConfig[xfCategories[cid]];
 			$("#xf_profile").text("Группа доп. полей [ "+xfCategories[cid]+" :: "+xfGroupConfig[xfCategories[cid]]['title']+" ]");
 		} else {
-			$("#xf_profile").text("");
+			$("#xf_profile").text("{{ lang['xfields:group_title'] }}");
 		}
 	}
 
@@ -141,6 +140,9 @@ function xf_update_visibility(cid) {
 
 // Manage fields after document is loaded
 $(document).ready(function() {
+
+    tblLoadData(1);
+
 	// Get current category
 	var currentCategory = $("#catmenu").val();
 
