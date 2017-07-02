@@ -127,28 +127,26 @@ $(document).on('click', '.preview-img a', function(){
 });
 
 function insert_image(text, area) {
-	var form = document.forms['form'];
-	try {
-	 var xarea = document.forms['DATA_tmp_storage'].area.value;
-	 if (xarea != '') area = xarea;
-	} catch(err) {;}
-	var control = document.getElementById(area);
-	// IE
-	if (document.selection && document.selection.createRange){
-		sel = document.selection.createRange();
-		sel.text = text = sel.text;
-	} else
-	// Mozilla
-	if (control.selectionStart || control.selectionStart == "0"){
-		var startPos = control.selectionStart;
-		var endPos = control.selectionEnd;
-
-		control.value = control.value.substring(0, startPos) + text + control.value.substring(startPos, control.value.length);
-		//control.selectionStart = msgfield.selectionEnd = endPos + open.length + close.length;
-	} else {
-		control.value += text;
-	}
-	control.focus();
+    var form = document.forms['form'];
+    try {
+        var xarea = document.forms['DATA_tmp_storage'].area.value;
+        if (xarea != '') area = xarea;
+    } catch(err) {;}
+        var control = document.getElementById(area);
+    // IE
+    if (document.selection && document.selection.createRange){
+        sel = document.selection.createRange();
+        sel.text = text = sel.text;
+    } else
+    // Mozilla
+    if (control.selectionStart || control.selectionStart == "0"){
+        var startPos = control.selectionStart;
+        var endPos = control.selectionEnd;
+        control.value = control.value.substring(0, startPos) + text + control.value.substring(startPos, control.value.length);
+    } else {
+        control.value += text;
+    }
+    //control.focus();
 }
 
 /* Получение списка изображений */
