@@ -360,9 +360,7 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
     global $config;
 
     // Init $mail client
-    @include_once root . 'classes/phpmailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer;
-
+    $mail = new PHPMailer();
     $mail->CharSet = 'UTF-8';
 
     // Fill `sender` field

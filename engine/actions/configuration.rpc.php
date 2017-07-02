@@ -116,8 +116,7 @@ function admConfigurationTestEMail($params)
     }
 
     // Init $mail client
-    @include_once root . 'classes/phpmailer/PHPMailerAutoload.php';
-    $mail = new PHPMailer;
+    $mail = new PHPMailer();
 
     $fromName = ($params['from']['name'] ? $params['from']['name'] : 'NGCMS Mail Agent');
 
