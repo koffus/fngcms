@@ -56,6 +56,7 @@ function admRPCFilesUpload($params){
 	$mkStamp = (($config['stamp_mode'] == 2) or (!$config['stamp_mode'] and $_REQUEST['stamp']))?1:0;
 	$mkShadow = (($config['shadow_mode'] == 2) or (!$config['shadow_mode'] and $_REQUEST['shadow']))?1:0;
 
+    $stamp = '';
 	$stampFileName = '';
 	if (file_exists(root.'trash/'.$config['wm_image'].'.gif')) {
 		$stampFileName = root.'trash/'.$config['wm_image'].'.gif';

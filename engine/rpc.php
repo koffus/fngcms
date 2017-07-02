@@ -56,7 +56,7 @@ function processJSON(){
     $cPlugin = CPlugin::instance();
 
 	// Decode passed params
-	$params = json_decode($_POST['params'], true);
+	$params = json_decode((isset($_POST['params']) ? $_POST['params'] : ''), true);
 
 	$methodName = (isset($_POST['methodName']))?$_POST['methodName']:(isset($_GET['methodName'])?$_GET['methodName']:'');
 	switch ($methodName) {

@@ -163,7 +163,7 @@ class FileManagment
                 $ferr = $_FILES[$http_var]['error'][$http_varnum];
             } else {
                 // in case of one upload we may set a manual filename
-                $fname = ($param['manualfile']) ? $param['manualfile'] : $_FILES[$http_var]['name'];
+                $fname = isset($param['manualfile']) ? $param['manualfile'] : $_FILES[$http_var]['name'];
                 $fsize = $_FILES[$http_var]['size'];
                 $ftype = $_FILES[$http_var]['type'];
                 $ftmp = $_FILES[$http_var]['tmp_name'];
@@ -474,7 +474,7 @@ class FileManagment
         }
 
         // Now let's upload file
-        if ($param['manual']) {
+        if (isset($param['manual'])) {
             if (!copy($ftmp, $this->dname . $wCategory . $fname)) {
                 unlink($ftmp);
 
