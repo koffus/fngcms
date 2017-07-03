@@ -16,9 +16,9 @@
 @define('NGCMS', true);
 
 @define('engineName', 'NGCMS');
-@define('engineVersion', '0.9.5.RC1');
+@define('engineVersion', 'v0.9.6.2-alpha');
 @define('engineVersionType', 'GIT');
-@define('engineVersionBuild', '20170212');
+@define('engineVersionBuild', '2017-07-02');
 
 @define('DS', DIRECTORY_SEPARATOR );
 
