@@ -1,7 +1,7 @@
 <div style="text-align : left;">
 <table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
 <tr>
-<td width="100%" colspan="2" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" />Настройка плагина: Список пользователей => {global} </td>
+<td width="100%" colspan="2" class="contentHead">Настройка плагина: Список пользователей => {global} </td>
 </tr>
 <tr><td>&nbsp;</td></tr>
 </table>

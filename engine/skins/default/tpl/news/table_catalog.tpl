@@ -21,7 +21,7 @@
 <table width="250" cellspacing="0" cellpadding="0" border="0" style="margin-right: 2px;">
 <thead><tr class="contHead"><td>Категории</td></tr></thead>
 <tbody>
-<tr><td {% if (cat_active < 1) %}style="background-color: #EEEEEE;"{% endif %}><img alt="+" height="18" width="18" src="{{ skins_url }}/images/catmenu/plus.gif" /> <a href="?mod=news">Все категории</a></td></tr>
+<tr><td {% if (cat_active < 1) %}style="background-color: #EEEEEE;"{% endif %}>+ <a href="?mod=news">Все категории</a></td></tr>
 {% for cat in catmenu %}
  <tr>
  <td {% if (cat.flags.selected) %}style="background-color: #EEEEEE;"{% endif %}><div style="float: left; margin-right: 5px;">{{ cat.cutter }}</div> <div style="float: left;"><a href="?mod=news&category={{ cat.id }}">{{ cat.name }}</a>{% if (cat.posts>0) %} [ {{ cat.posts }}]{% endif %}</div></td>
@@ -43,9 +43,9 @@
 <tbody>
 {% for entry in entries %}
 <tr align="left">
-	<td width="16" class="contentEntry1" cellspacing=0 cellpadding=0 style="padding:0; margin:0;">{% if entry.flags.mainpage %}<img src="{{ skins_url }}/images/mainpage.png" border="0" width="16" height="16" title="Main"/> {% endif %}</td>
+	<td width="16" class="contentEntry1" cellspacing=0 cellpadding=0 style="padding:0; margin:0;">{% if entry.flags.mainpage %}{% endif %}</td>
 	<td class="contentEntry1"><a href="admin.php?mod=news&amp;action=edit&amp;id={{ entry.newsid }}">{{ entry.title }}</a><br/><small>{% if entry.flags.status %}<a href="{{ entry.link }}">{{ entry.link }}</a>{% else %}нет ссылки{% endif %}</small></td>
-	<td class="contentEntry1">{% if entry.flags.status %}<img src="{{ skins_url }}/images/yes.png" alt="{{ lang.approved }}" />{% else %}<img src="{{ skins_url }}/images/no.png" alt="{{ lang.unapproved }}" />{% endif %} </td>
+	<td class="contentEntry1">{% if entry.flags.status %}<i class="fa fa-check text-success" title="{{ lang['approved'] }}"></i>{% else %}<i class="fa fa-times text-danger" title="{{ lang['unapproved'] }}"></i>{% endif %} </td>
 	<td class="contentEntry1"><input name="selected_news[]" value="{{ entry.newsid }}" class="check" type="checkbox" /></td>
 </tr>
 {% else %}

@@ -68,7 +68,7 @@ function listStatic() {
 
 		$tEntry['url']		= $row['approve']?('<a href="'.$link.'" target="_blank">'.$link.'</a>'):'';
 		$tEntry['title']	= str_replace(array("'", '"'), array("&#039;", "&quot;"), $row['title']);
-		$tEntry['status']	= ($row['approve']) ? '<img src="'.skins_url.'/images/yes.png" alt="'.__('approved').'" />' : '<img src="'.skins_url.'/images/no.png" alt="'.__('unapproved').'" />';
+		$tEntry['status']	= ($row['approve']) ? '<i class="fa fa-check text-success"></i>' : '<i class="fa fa-times text-danger"></i>';
 
 		$tEntries []= $tEntry;
 	}

@@ -268,9 +268,9 @@ function manage_showlist($type) {
 
 		$addtime = Lang::retDate("d.m.Y", $row['date']);
 		$rename = ($userROW['status'] == 1 or $userROW['status'] == 2 or (is_array($userROW) and ($row['ownerID'] == $userROW['id']))) ? '<a href="admin.php?mod=' . ($type=='image' ? 'images' : 'files') . '&amp;subaction=rename&amp;of=' . $row['name'] . '&amp;category=' . $row['folder'] . '&amp;id=' . $row['id'] .
-		'" onclick="if(ren=window.prompt(\'' . __('name') . ':\',\'' . $row['name'] . '\')){ window.location.href=this.href+\'&rf=\'+ren; } return false;">'.
-		'<img src="'.skins_url.'/images/rename.gif" border="0"/></a>' : '';
-		
+		'" onclick="if(ren=window.prompt(\'' . __('name') . ':\',\'' . $row['name'] . '\')){ window.location.href=this.href+\'&rf=\'+ren; } return false;" class="btn btn-default">'.
+		'<i class="fa fa-pencil"></i>' : '';
+
 		if ($type != 'image') {
 			$file_link = '<a href="' . $fileurl . '" title="' . $row['name'] . '" target="_blank">' . $row['orig_name'].'</a> ';
 		}
@@ -307,7 +307,7 @@ function manage_showlist($type) {
 								($_REQUEST['page']?'&page='.$_REQUEST['page']:'').
 								($_REQUEST['npp']?'&npp='.$_REQUEST['npp']:'');
 		} else {
-			$tvars['vars']['insert_file'] = '<a href="javascript:insertimage(\''.$html_file.'\', \''.$_REQUEST['ifield'].'\')">'.__('insert').'</a>';
+			$tvars['vars']['insert_file'] = '<a href="javascript:insertimage(\''.$html_file.'\', \''.$_REQUEST['ifield'].'\')" class="btn btn-default"><i class="fa fa-paperclip"></i></a>';
 
 		}
 

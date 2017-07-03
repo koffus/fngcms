@@ -1,11 +1,11 @@
 <div style="text-align : left;">
 <table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
 <tr>
-<td width="100%" colspan="2" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" /><a href="admin.php?mod=extras">Управление плагинами</a></td>
+<td width="100%" colspan="2" class="contentHead"><a href="admin.php?mod=extras">Управление плагинами</a></td>
 </tr>
 <tr><td>&nbsp;</td></tr>
 <tr>
-<td width="100%" colspan="2" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" />Настройка плагина: re_stat</td>
+<td width="100%" colspan="2" class="contentHead">Настройка плагина: re_stat</td>
 </tr>
 <tr><td>&nbsp;</td></tr>
 </table>
@@ -26,8 +26,7 @@
 <form method="post" action="admin.php?mod=extra-config&amp;plugin=re_stat">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr>
-<td width="100%" colspan="2" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" />[add]
-Добавить[/add][edit]Редакрировать[/edit] элемент списка</td>
+<td width="100%" colspan="2" class="contentHead">[add]Добавить[/add][edit]Редакрировать[/edit] элемент списка</td>
 </tr>
 <tr>
 <td width="50%" class="contentEntry1">Код</td>

@@ -54,7 +54,7 @@ function admGeneratePluginList()
         );
 
         if (isset($repoPluginInfo[$extra['id']]) and ($repoPluginInfo[$extra['id']][1] > $extra['version'])) {
-            $tEntry['new'] = '<a href="http://ngcms.ru/sync/plugins.php?action=jump&amp;id=' . $extra['id'] . '.html" title="' . $repoPluginInfo[$extra['id']][1] . '"target="_blank"><img src="' . skins_url . '/images/new.gif" width=30 height=15/></a>';
+            $tEntry['new'] = '<a href="http://ngcms.ru/sync/plugins.php?action=jump&amp;id=' . $extra['id'] . '.html" title="' . $repoPluginInfo[$extra['id']][1] . '"target="_blank"><sup class="label label-success">NEW</sup></a>';
         } else {
             $tEntry['new'] = '';
         }

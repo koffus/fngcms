@@ -5,5 +5,5 @@
 	<td>{size}</td>
 	<td>{folder}</td>
 	<td>{user}</td>
-	<td nowrap>{insert_file} {rename}</td>
+	<td nowrap class="text-right"><div class="btn-group">{rename}{insert_file}</div></td>
 </tr>

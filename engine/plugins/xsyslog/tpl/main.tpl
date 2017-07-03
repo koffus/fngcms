@@ -16,7 +16,7 @@
 					<div class="col col-md-3 col-sm-6">
 						<div class="form-group">
 							<label>Пользователь</label>
-							<input name="an" id="an" type="text" value="{{an}}" autocomplete="off" class="bfauthor form-control" /> <span id="suggestLoader" style="width: 20px; visibility: hidden;"><img src="{{skins_url}}/images/loading.gif"/></span>
+							<input name="an" id="an" type="text" value="{{an}}" autocomplete="off" class="bfauthor form-control" /> <span id="suggestLoader" style="width: 20px; visibility: hidden;"></span>
 						</div>
 						<div class="form-group">
 							<label>Статус</label>

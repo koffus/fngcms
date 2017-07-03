@@ -62,7 +62,7 @@ function admCategoryList($retMode = 0) {
             'alt' => $row['alt'],
             'alt_url' => $row['alt_url'],
             'info' => $row['info'],
-            'show_main' => intval(substr($row['flags'],0,1)) ? ('<img src="'.skins_url.'/images/yes.png" alt="'.__('yesa').'" title="'.__('yesa').'"/>') : ('<img src="'.skins_url.'/images/no.png" alt="'.__('noa').'"/>'),
+            'show_main' => intval(substr($row['flags'],0,1)) ? ('<i class="fa fa-check text-success"></i>') : ('<i class="fa fa-times text-danger"></i>'),
             'template' => trim($row['tpl']) ? $row['tpl'] : '--',
             'news' => ($row['posts']>0)?$row['posts'] : '--',
             'linkView' => (checkLinkAvailable('news', 'by.category')?
@@ -75,12 +75,12 @@ function admCategoryList($retMode = 0) {
 
         // Prepare position
         if ($row['poslevel'] > 0) {
-            $tEntry['level'] = str_repeat('<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/line.gif" />', ($row['poslevel']));
+            $tEntry['level'] = str_repeat('<img alt="-" height="18" width="18" src="'.skins_url.'/images/line.gif" />', ($row['poslevel']));
         } else {
             $tEntry['level'] = '';
         }
         $tEntry['level'] = $tEntry['level'] .
-            '<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/join'.((($num == ($cLen-1) or ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
+            '<img alt="-" height="18" width="18" src="'.skins_url.'/images/join'.((($num == ($cLen-1) or ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
         $tvars['regx']['#\[news\](.*?)\[\/news\]#is'] = ($row['posts']>0)?'$1':'';
 
         $tEntries []= $tEntry;

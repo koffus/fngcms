@@ -2,11 +2,11 @@
 
 <table class="content" border="0" cellspacing="0" cellpadding="0" align="center">
 <tr>
-<td width="100%" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" /><a href="admin.php?mod=extras">Управление плагинами</a></td>
+<td width="100%" class="contentHead"><a href="admin.php?mod=extras">Управление плагинами</a></td>
 </tr>
 <tr><td>&nbsp;</td></tr>
 <tr>
-<td width="100%" class="contentHead"><img src="{skins_url}/images/nav.gif" hspace="8" alt="" />Настройка плагина: re_stat</td>
+<td width="100%" class="contentHead">Настройка плагина: re_stat</td>
 </tr>
 <tr><td>&nbsp;</td></tr>
 </table>

@@ -586,12 +586,12 @@ function listNewsForm() {
 			// Prepare position
 			$tcRec['cutter'] = '';
 			if ($row['poslevel'] > 0) {
-				$tcRec['cutter'] = str_repeat('<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/line.gif" />', ($row['poslevel']));
+				$tcRec['cutter'] = str_repeat('<img alt="-" height="18" width="18" src="'.skins_url.'/images/line.gif" />', ($row['poslevel']));
 			} else {
 				$tcRec['cutter'] = '';
 			}
 			$tcRec['cutter'] = $tcRec['cutter'] .
-				'<img alt="-" height="18" width="18" src="'.skins_url.'/images/catmenu/join'.((($num == ($cLen-1) or ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
+				'<img alt="-" height="18" width="18" src="'.skins_url.'/images/join'.((($num == ($cLen-1) or ($cList[$num]['poslevel'] > $cList[$num+1]['poslevel'])))?'bottom':'').'.gif" />';
 
 			$tcRecs []= $tcRec;
 		}

@@ -86,7 +86,7 @@
 							<th>{l_size}</th>
 							<th>{l_category}</th>
 							<th>{l_author}</th>
-							<th>{l_action}</th>
+							<th class="text-right">{l_action}</th>
 						</tr>
 					</thead>
 					
