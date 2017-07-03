@@ -131,10 +131,16 @@ $news_unapp = ($news_unapp == "0") ? $news_unapp : '<font color="#ff6600">'.$new
 $users_unact = $mysql->result("SELECT count(id) FROM ".uprefix."_users WHERE activation != ''");
 $users_unact = ($users_unact == "0") ? $users_unact : '<font color="#ff6600">'.$users_unact.'</font>';
 
-// Display GIT guild version if versionType == GIT
-$displayEngineVersion = (engineVersionType == "GIT")?
-		engineVersion." + GIT ".engineVersionBuild:
-		engineVersion." ".engineVersionType;
+if(function_exists('opcache_get_status')) {
+    $opcache_support = __('yesa') . ' / ';
+    if(opcache_get_status ('opcache_enabled')) {
+        $opcache_support .= __('support_on');
+    } else {
+        $opcache_support .= __('support_off');
+    }
+} else {
+    $opcache_support = __('noa');
+}
 
 $tVars = array(
 	'php_self' => $PHP_SELF,
@@ -142,10 +148,9 @@ $tVars = array(
 	'php_version' => phpversion(),
 	'mysql_version' => $mysql->mysql_version(),
 	'gd_version' => (isset($gd_version) and is_array($gd_version))?$gd_version["GD Version"]:'<font color="red"><b>NOT INSTALLED</b></font>',
-	'currentVersion' => $displayEngineVersion,
-	'versionNotifyURL' => 'http://ngcms.ru/sync/versionInfo.php?ver='.urlencode(engineVersion).'&type='.urlencode(engineVersionType).'&build='.urlencode(engineVersionBuild).'&uuid='.$config['UUID'].'&pdo='.((extension_loaded('PDO') and extension_loaded('pdo_mysql') and class_exists('PDO'))?'yes':'no'),
+	'currentVersion' => engineVersion,
+	'versionNotifyURL' => '',
 	'mysql_size' => $mysql_size,
-	'allowed_size' => $df,
 	'avatars' => $avatars,
 	'backup' => $backup,
 	'upfiles' => $upfiles,
@@ -162,6 +167,7 @@ $tVars = array(
 	'categories' => $mysql->result("SELECT count(id) FROM ".prefix."_category"),
 	'admin_note' => $note,
 	'pdo_support' => (extension_loaded('PDO') and extension_loaded('pdo_mysql') and class_exists('PDO'))?__('yesa'):('<font color="red">'.__('noa').'</font>'),
+	'opcache_support' => $opcache_support,
 );
 
 $tVars = $tVars + $STATS;

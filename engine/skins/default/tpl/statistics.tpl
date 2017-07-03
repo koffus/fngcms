@@ -114,12 +114,8 @@
 						<td>{{ php_os }}</td>
 					</tr>
 					<tr>
-						<td>{{ lang['php_version'] }}</td>
-						<td>{{ php_version }}</td>
-					</tr>
-					<tr>
-						<td>{{ lang['mysql_version'] }}</td>
-						<td>{{ mysql_version }}</td>
+						<td>{{ lang['php_version'] }} / {{ lang['mysql_version'] }}</td>
+						<td>{{ php_version }} / {{ mysql_version }}</td>
 					</tr>
 					<tr>
 						<td>{{ lang['gd_version'] }}</td>
@@ -129,6 +125,10 @@
 						<td>{{ lang['pdo_support'] }}</td>
 						<td>{{ pdo_support }}</td>
 					</tr>
+					<tr>
+						<td>{{ lang['opcache_support'] }}</td>
+						<td>{{ opcache_support }}</td>
+					</tr>
 				</table>
 			</div>
 		</div>
@@ -136,21 +136,28 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Next Generation CMS</h4>
+					<h4>Next Generation CMS <span class="badge pull-right" title="{{ lang['current_version'] }}">{{ currentVersion }}</span></h4>
 				</div>
 				<table class="table table-statistics">
 					<tr>
-						<td>{{ lang['current_version'] }}</td>
-						<td>{{ currentVersion }}</td>
-					</tr>
-					<tr>
-						<td>{{ lang['last_version'] }}</td>
-						<td><span id="syncLastVersion">loading..</span></td>
+						<td>{{ lang['lastRelease'] }}</td>
+						<td><span id="lastRelease">loading..</span></td>
 					</tr>
 					<tr>
 						<td>{{ lang['git_version'] }}</td>
-						<td><span id="syncSVNVersion">loading..</span></td>
+						<td>
+                            <span><a href="https://github.com/russsiq/fngcms/archive/master.zip">Download Zip</a></span> 
+                            <!--[ <span><a href="#" id="compare">Изменения</a> ]</span-->
+                        </td>
 					</tr>
+					<tr>
+						<td>{{ lang.lastCommit }}</td>
+						<td><span id="lastCommit">loading..</span></td>
+					</tr>
+					<!--tr>
+						<td></td>
+						<td><span id="lastCommitInfo">loading..</span></td>
+					</tr-->
 				</table>
 			</div>
 		</div>
@@ -177,11 +184,6 @@
 						<tr><td>{{ lang['group_photos'] }}</td><td>{{ photo_amount }}</td><td>{{ photo_size }}</td><td> {{ photo_perm }}</td></tr>
 						<tr><td>{{ lang['group_avatars'] }}</td><td>{{ avatar_amount }}</td><td>{{ avatar_size }}</td><td> {{ avatar_perm }}</td></tr>
 						<tr><td>{{ lang['group_backup'] }}</td><td>{{ backup_amount }}</td><td>{{ backup_size }}</td><td> {{ backup_perm }}</td></tr>
-						<tr>
-						<td colspan="2">{{ lang['allowed_size'] }}</td>
-						<td>{{ allowed_size }}</td>
-						<td></td>
-						</tr>
 						<tr>
 						<td colspan="2">{{ lang['mysql_size'] }}</td>
 						<td>{{ mysql_size }}</td>
@@ -251,4 +253,59 @@
 	</div>
 </div>
 
-<script src="{{versionNotifyURL }}"></script>
+<!--script src="{{ scriptLibrary }}/js/markdown.min.js">$('#lastCommitDate').html(markdown.toHTML(json[0].commit.message));</script-->
+
+<script>
+$(function(){
+    $('#ghapidata').html('<div id="loader"><img src="css/loader.gif" alt="loading..."></div>');
+    
+    var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/v0.9.6.2-alpha...master";
+    var reqReleas = "https://api.github.com/repos/russsiq/fngcms/releases/latest";
+    var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
+
+    /*$('#compare').bind( 'click', function() {
+        requestJSON(reqCompare, function(json) {
+            if(json.message == "Not Found") {
+                alert(compare = "No Info Found");
+            } else {
+                var files = json.files;
+                var list = $('<dl>');
+                list.attr("class", "dl-horizontal");
+                $(files).each(function() {
+                    list.append('<dt>' + this.status + '</dt>');
+                    list.append('<dd><a href="'+ this.blob_url +'" target="_blank">' + this.filename + '</a></dd>');
+                });
+                alert(list.html());
+                showModal(list.html());
+            }
+        });
+        return false;
+    });*/
+            
+    requestJSON(reqReleas, function(json) {
+        if(json.message == "Not Found") {
+            $('#lastRelease').html("No Info Found");
+        } else {
+            $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ '+
+                json.published_at.slice(0, 10) + ' ]');
+        }
+    });
+    requestJSON(reqCommit, function(json) {
+        if(json.message == "Not Found") {
+            $('#lastCommit').html("No Info Found");
+        } else {
+            $('#lastCommit').html('<a href="'+json[0].html_url+'" target="_blank">'+json[0].sha.slice(0, 7)+'</a> \
+                <b>@</b> <a href="'+json[0].committer.html_url+'" target="_blank">'+json[0].committer.login+'</a> [ '+
+                json[0].commit.author.date.slice(0, 10) + ' ]');
+        }
+    });
+    function requestJSON(url, callback) {
+        $.ajax({
+          url: url,
+          complete: function(xhr) {
+            callback.call(null, xhr.responseJSON);
+          }
+        });
+    }
+});
+</script>
