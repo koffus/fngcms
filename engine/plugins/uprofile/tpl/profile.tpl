@@ -106,7 +106,7 @@
 	</div>
 </form>
 
-<script type="text/javascript">
+<script>
 	$(function() {
 		var sizelimit = {{ info_sizelimit }};
 		if(sizelimit > 0 ) {
