@@ -237,9 +237,9 @@ require_once root . 'classes/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 // ** Init our own exception handler
-//set_exception_handler('ngExceptionHandler'); // NOT PHP 7
-//set_error_handler('ngErrorHandler');
-//register_shutdown_function('ngShutdownHandler');
+set_exception_handler('ngExceptionHandler'); // NOT PHP 7
+set_error_handler('ngErrorHandler');
+register_shutdown_function('ngShutdownHandler');
 
 // *** Initialize TWIG engine
 $twigLoader = new Twig_Loader_NGCMS(root);
