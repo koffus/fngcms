@@ -13,6 +13,13 @@
 
 // Check configuration file
 if ((!file_exists(root . 'conf/config.php')) or (filesize(root . 'conf/config.php') < 10)) {
+    // Для установки отключаем кеширование
+    // т.к. возникают проблемы с сохранением конфигурационного файла в PHP > 5.5
+    header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
+    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
+    header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
+    header('Cache-Control: post-check=0, pre-check=0', false);
+    header('Pragma: no-cache'); // HTTP/1.0
     if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
         @header("Location: " . $ms[1] . "/engine/install.php");
     } else {

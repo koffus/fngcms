@@ -227,7 +227,7 @@ if (true === $flagPendingChanges) {
         }
         print '<div class="warningDiv">' . __('msg.errorInfo') . '</div>';
     } else {
-        print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName . 'admin.php?action=clearCacheFiles');
+        print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName . '/admin.php?action=clearCacheFiles');
     }
     print '</p></div>';
 }
@@ -1078,8 +1078,8 @@ function doInstall()
             $output .= '<div class="alert alert-danger"><b>' . __('msg.error') . '!</b><br/>' . $errText . '</div>';
         }
         // Make navigation menu
-        $output .= '<div class="alert alert-warning">Если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку. <a href="#" onclick="document.getElementById(\'stage\').value=\'0\'; form.submit();">Вернуться к настройке БД</a></div>';
-        $output .= '<div class="alert alert-warning">Если Вы самостоятельно устранили ошибку, то попробуйте еще раз. <a href="#" onclick="document.getElementById(\'action\').value=\'install\'; form.submit();">Попробовать ещё раз</a></div>';
+        $output .= '<div class="alert alert-warning">Если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку. <a href="#" onclick="document.getElementById(\'stage\').value=\'0\'; document.getElementById(\'db\').submit();">Вернуться к настройке БД</a></div>';
+        $output .= '<div class="alert alert-warning">Если Вы самостоятельно устранили ошибку, то попробуйте еще раз. <a href="#" onclick="document.getElementById(\'action\').value=\'install\'; document.getElementById(\'db\').submit();">Попробовать ещё раз</a></div>';
     }
 
     $tvars['vars']['actions'] = $output;
