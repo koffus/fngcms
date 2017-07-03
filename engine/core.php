@@ -11,6 +11,17 @@
 @define('root', dirname(__FILE__) . '/');
 @define('site_root', dirname(dirname(__FILE__)) . '/');
 
+// Check configuration file
+if ((!file_exists(root . 'conf/config.php')) or (filesize(root . 'conf/config.php') < 10)) {
+    if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
+        @header("Location: " . $ms[1] . "/engine/install.php");
+    } else {
+        @header("Location: " . adminDirName . "/install.php");
+    }
+    echo "NGCMS: Engine is not installed yet. Please run installer from /engine/install.php";
+    exit;
+}
+
 // Check for minimum supported PHP version
 if (version_compare(PHP_VERSION, '5.4.0') < 0)
     @require(root . '/data/errors/core_php_version.php');
@@ -217,17 +228,6 @@ $UHANDLER->loadConfig();
 $parse = new Parse;
 $tpl = new Tpl;
 $ip = checkIP();
-
-// ** Load configuration file
-if ((!file_exists(confroot . 'config.php')) or (filesize(confroot . 'config.php') < 10)) {
-    if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
-        @header("Location: " . $ms[1] . "/engine/install.php");
-    } else {
-        @header("Location: " . adminDirName . "/install.php");
-    }
-    echo "NGCMS: Engine is not installed yet. Please run installer from /engine/install.php";
-    exit;
-}
 
 // ** Load user groups
 loadGroups();

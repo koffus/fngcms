@@ -75,16 +75,18 @@ function __($key, $default_value = '')
     return Lang::get($key, $default_value = '');
 }
 
-// Для установки системы отключаем кеширование
+// Для установки отключаем кеширование
 // т.к. возникают проблемы с сохранением конфигурационного файла в PHP > 5.5
-header('Expires: Mon, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
+header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
 header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
-header('Cache-Control: no-store, no-cache, must-revalidate');// HTTP/1.1
+header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
 header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache');// HTTP/1.0
+header('Pragma: no-cache'); // HTTP/1.0
 
 if (function_exists('opcache_get_status'))
     ini_set('opcache.enable', '0');
+if (function_exists('opcache_get_status'))
+    ini_set('opcache.enable_cli', '0');
 if (function_exists('xcache_get'))
     ini_set('xcache.cacher', '0');
 
@@ -225,7 +227,7 @@ if (true === $flagPendingChanges) {
         }
         print '<div class="warningDiv">' . __('msg.errorInfo') . '</div>';
     } else {
-        print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName);
+        print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName . 'admin.php?action=clearCacheFiles');
     }
     print '</p></div>';
 }
