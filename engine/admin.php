@@ -68,11 +68,11 @@ header('Cache-Control: post-check=0, pre-check=0', false);
 header('Pragma: no-cache'); // HTTP/1.0
 
 if (function_exists('opcache_get_status'))
-    ini_set('opcache.enable', '0');
+    ini_set('opcache.enable', 0);
 if (function_exists('opcache_get_status'))
-    ini_set('opcache.enable_cli', '0');
+    ini_set('opcache.enable_cli', 0);
 if (function_exists('xcache_get'))
-    ini_set('xcache.cacher', '0');
+    ini_set('xcache.cacher', 0);
 
 // Pre-configure required global variables
 global $action, $subaction, $mod;
