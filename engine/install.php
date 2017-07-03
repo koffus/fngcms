@@ -971,7 +971,7 @@ function doInstall()
             'captcha_font' => 'verdana',
             'use_cookies' => '0',
             'use_sessions' => '1',
-            'number' => '5',
+            'number' => '9',
             'news_view_counters' => '1',
             'category_counters' => '1',
             'category_link' => '1',
