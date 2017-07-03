@@ -8,7 +8,7 @@
 	<meta name="generator" content="NGCMS jChat plugin" />
 	<meta name="document-state" content="dynamic" />
 	<link href="{jchat.self.css}" rel="stylesheet" type="text/css" media="screen" />
-	<script src="{scriptLibrary}/jq/jquery.min.js"></script>
+	<script src="{scriptLibrary}/js/jquery.min.js"></script>
 	<script src="{scriptLibrary}/functions.js"></script>
 	<script src="{scriptLibrary}/ajax.js"></script>
 </head>

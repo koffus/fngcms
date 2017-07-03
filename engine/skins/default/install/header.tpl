@@ -10,7 +10,7 @@
 	<link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" rel="stylesheet">
 	<link href="{templateURL}/style.css" rel="stylesheet">
 
-	<script src="{scriptLibrary}/jq/jquery.min.js"></script>
+	<script src="{scriptLibrary}/js/jquery.min.js"></script>
 	<script src="{skins_url}/assets/js/bootstrap.js"></script>
 </head>
 <body>

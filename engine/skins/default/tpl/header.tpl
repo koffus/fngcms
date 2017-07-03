@@ -9,7 +9,7 @@
 	<link href="{{ skin }}" rel="stylesheet">
 	<link href="{{ skins_url }}/css/style.css" rel="stylesheet">
 
-	<script src="{{ scriptLibrary }}/jq/jquery.min.js"></script>
+	<script src="{{ scriptLibrary }}/js/jquery.min.js"></script>
 	<script src="{{ skins_url }}/assets/js/bootstrap.js"></script>
 	<script src="{{ skins_url }}/assets/js/notify.js"></script>
 	<script src="{{ skins_url }}/js/script.js"></script>
