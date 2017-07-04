@@ -32,7 +32,7 @@ function msg_add_submit()
  // anonymous user
  if (!is_array($userROW)) {
 
- $_POST['author'] = secure_html(convert($_POST['author']));
+ $_POST['author'] = secure_html($_POST['author']);
  if (!mb_strlen($_POST['author'], 'UTF-8')) {
  $errors[] = __('guestbook')['error_req_name'];
  }
@@ -53,7 +53,7 @@ function msg_add_submit()
  }
  }
 
- $message = secure_html(convert($_POST['content']));
+ $message = secure_html($_POST['content']);
 
  // check for links
  preg_match("~^(?:(?:https?|ftp|telnet)://(?:[a-z0-9_-]{1,32}(?::[a-z0-9_-]{1,32})?@)?)?(?:(?:[a-z0-9-]{1,128}\.)+(?:ru|su|com|net|org|mil|edu|arpa|gov|biz|info|aero|inc|name|[a-z]{2})|(?!0)(?:(?!0[^.]|255)[0-9]{1,3}\.){3}(?!0|255)[0-9]{1,3})(?:/[a-z0-9.,_@%&?+=\~/-]*)?(?:#[^ '\"&]*)?$~i", $message, $find_url);
@@ -75,7 +75,7 @@ function msg_add_submit()
  $errors[] = __('guestbook')['error_req_text'] . ' ' . str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), __('guestbook')['error_length_text']);
  }
 
- if ((mb_strlen($message, 'UTF-8') < $minl or mb_strlen($message, 'UTF-8') > $maxl)) {
+ if ((mb_strlen($message, 'UTF-8') < $minl) or (mb_strlen($message, 'UTF-8') > $maxl)) {
  $errors[] = str_replace(array('{minl}', '{maxl}'), array($minl, $maxl), __('guestbook')['error_length_text']);
  }
 
@@ -96,7 +96,7 @@ function msg_add_submit()
  $fields[$value['id']] = intval($value['required']);
  $fmail[] = array(
  'name' => $value['name'],
- 'value' => secure_html(convert($_POST[$value['id']])),
+ 'value' => secure_html($_POST[$value['id']]),
  );
  }
 
@@ -112,7 +112,7 @@ function msg_add_submit()
 
  foreach ($fields as $fid => $freq) {
  if (!empty($_POST[$fid])) {
- $_POST[$fid] = secure_html(convert($_POST[$fid]));
+ $_POST[$fid] = secure_html($_POST[$fid]);
  $new_rec[$fid] = db_squote($_POST[$fid]);
  } elseif ($freq === 1) {
  $errors[] = __('guestbook')['error_field_required'];
@@ -182,10 +182,10 @@ function msg_edit_submit()
 {
  global $template, $tpl, $userROW, $ip, $config, $mysql, $twig;
 
- $id = secure_html(convert($_REQUEST['id']));
- $author = secure_html(convert($_REQUEST['author']));
- $message = secure_html(convert($_REQUEST['content']));
- $answer = secure_html(convert($_REQUEST['answer']));
+ $id = secure_html($_REQUEST['id']);
+ $author = secure_html($_REQUEST['author']);
+ $message = secure_html($_REQUEST['content']);
+ $answer = secure_html($_REQUEST['answer']);
  $message = str_replace("\r\n", "<br />", $message);
 
  if (empty($author) or empty($message)) {
@@ -439,7 +439,7 @@ function guestbook_edit()
 {
  global $template, $tpl, $userROW, $ip, $config, $mysql, $twig, $CurrentHandler;
 
- $id = intval(isset($CurrentHandler['params']['id']) ? $CurrentHandler['params']['id'] : (isset($_REQUEST['id']) ? secure_html(convert($_REQUEST['id'])) : ''));
+ $id = intval(isset($CurrentHandler['params']['id']) ? $CurrentHandler['params']['id'] : (isset($_REQUEST['id']) ? secure_html($_REQUEST['id']) : ''));
 
  $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
  $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');

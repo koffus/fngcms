@@ -420,12 +420,12 @@
 	{% endfor %}
 {% endif %}
 
-<script src="{{ home }}/lib/ajax.js"></script>
-<script src="{{ home }}/lib/libsuggest.js"></script>
+<script src="{{ scriptLibrary }}/ajax.js"></script>
+<script src="{{ scriptLibrary }}/libsuggest.js"></script>
 
-<link href="{{ skins_url }}/assets/css/datetimepicker.css" rel="stylesheet">
-<script src="{{ skins_url }}/assets/js/moment.js"></script>
-<script src="{{ skins_url }}/assets/js/datetimepicker.js"></script>
+<link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
+<script src="{{ scriptLibrary }}/js/moment-2.17.1.js"></script>
+<script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
 
 <script>
 function insertselcat(cat) {

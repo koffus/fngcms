@@ -125,12 +125,12 @@
 	</div>
 </div>
 
-<link href="{{ skins_url }}/assets/codemirror-5.23.0/codemirror.css" rel="stylesheet">
-<script src="{{ skins_url }}/assets/codemirror-5.23.0/codemirror.js"></script>
-<script src="{{ skins_url }}/assets/js/emmet.js"></script>
+<link href=" {{ scriptLibrary }}/codemirror-5.23.0/codemirror.css" rel="stylesheet">
+<script src="{{ scriptLibrary }}/codemirror-5.23.0/codemirror.js"></script>
+<script src="{{ scriptLibrary }}/codemirror-5.23.0/emmet.js"></script>
 
-<script src="{{ home }}/lib/ngFileTree.js"></script>
-<link href="{{ home }}/lib/ngFileTree.css" rel="stylesheet" />
+<script src="{{ scriptLibrary }}/ngFilesTree/ngFilesTree.js"></script>
+<link href=" {{ scriptLibrary }}/ngFilesTree/ngFilesTree.css" rel="stylesheet" />
 
 <script>
 var ngTemplateName = 'default';

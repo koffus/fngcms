@@ -18,11 +18,11 @@ switch ($_REQUEST['action']) {
 	case 'add_field' : add_field(); break;
 	case 'edit_field' : edit_field(); break;
 	case 'drop_field' : drop_field(); manage_fields(); break;
-	case 'insert_field' : $result = insert_field(); if ($result === TRUE) manage_fields(); else add_field(); break;
-	case 'update_field' : $result = update_field(); if ($result === TRUE) manage_fields(); else edit_field($result); break;
+	case 'insert_field' : $result = insert_field(); if ($result === true) manage_fields(); else add_field(); break;
+	case 'update_field' : $result = update_field(); if ($result === true) manage_fields(); else edit_field($result); break;
 	case 'options' : show_options(); break;
 	case 'show_messages' : show_messages(); break;
-	case 'edit_message' : $result = edit_message(); if ($result === TRUE) show_messages(); break;
+	case 'edit_message' : $result = edit_message($_REQUEST['id']); if ($result === true) show_messages(); break;
 	case 'delete_message' : delete_message(); show_messages(); break;
 	case 'delete_social' : $result = delete_social(); edit_message($result); break;
 	case 'modify' : modify(); show_messages(); break;
@@ -101,7 +101,7 @@ function insert_field() {
 	$mysql->query("ALTER TABLE " . prefix . "_guestbook ADD " . $id . " VARCHAR(50) NOT NULL DEFAULT ''");
 
 	msg(array('message' => __('gbconfig')['msgo_field_add_success']));
-	return TRUE;
+	return true;
 }
 
 /*
@@ -168,7 +168,7 @@ function update_field() {
 		" WHERE id = " . db_squote($id)
 		);
 	msg(array('message' => __('gbconfig')['msgo_field_edit_success']));
-	return TRUE;
+	return true;
 }
 
 /*
@@ -481,7 +481,7 @@ function edit_message($mid) {
 			if (!count($errors)) {
 				$mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
 				msg(array('message' => __('gbconfig')['msgo_edit_success']));
-				return TRUE;
+				return true;
 			} else {
 				msg(array('type' => 'danger', 'message' => implode($errors)));
 			}

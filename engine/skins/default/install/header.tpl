@@ -7,12 +7,12 @@
 
     <title>{l_header.title}</title>
 
-    <link href="{skins_url}/assets/css/themes/default.css" rel="stylesheet">
+    <link href="{scriptLibrary}/bootstrap-3.3.7/bootstrap.css" rel="stylesheet">
     <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" rel="stylesheet">
     <link href="{templateURL}/style.css" rel="stylesheet">
 
-    <script src="{scriptLibrary}/js/jquery.min.js"></script>
-    <script src="{skins_url}/assets/js/bootstrap.js"></script>
+    <script src="{scriptLibrary}/js/jquery-3.2.1.js"></script>
+    <script src="{scriptLibrary}/bootstrap-3.3.7/bootstrap.js"></script>
 </head>
 <body>
 

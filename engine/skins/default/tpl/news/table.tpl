@@ -215,11 +215,12 @@
 	<a href="#" id="suggestClose">{{ lang.editnews['close'] }}</a>
 </div>
 
-<link href="{{ skins_url }}/assets/css/datetimepicker.css" rel="stylesheet">
-<script src="{{ skins_url }}/assets/js/moment.js"></script>
-<script src="{{ skins_url }}/assets/js/datetimepicker.js"></script>
+<link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
+<script src="{{ scriptLibrary }}/js/moment-2.17.1.js"></script>
+<script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
 
 <script>
+<!--
 $(document).ready(function() {
 	
 	$('#dr1').datetimepicker({format: 'DD.MM.YYYY', locale: '{{ lang['langcode'] }}',pickTime:false});
@@ -238,4 +239,5 @@ $(document).ready(function() {
 								}
 							);
 });
+-->
 </script>

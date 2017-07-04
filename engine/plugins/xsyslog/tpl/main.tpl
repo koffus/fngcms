@@ -137,9 +137,9 @@
 <script src="{{ scriptLibrary }}/admin.js"></script>
 <script src="{{ scriptLibrary }}/libsuggest.js"></script>
 
-<link href="{{ skins_url }}/assets/css/datetimepicker.css" rel="stylesheet">
-<script src="{{ skins_url }}/assets/js/moment.js"></script>
-<script src="{{ skins_url }}/assets/js/datetimepicker.js"></script>
+<link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
+<script src="{{ scriptLibrary }}/js/moment-2.17.1.js"></script>
+<script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
 
 <script type="text/javascript">
 <!--
@@ -220,12 +220,14 @@ function filter_attach_DateEdit(id) {
 
 -->
 </script>
-<script type="text/javascript">
-$('#dr1').datetimepicker({format: 'DD.MM.YYYY', locale: 'ru',pickTime:false});
-$('#dr2').datetimepicker({format: 'DD.MM.YYYY', locale: 'ru',pickTime:false});
-
-
+<script>
 <!--
+$(function() {
+    $('#dr1').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
+    $('#dr2').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
+});
+
+
 // INIT NEW SUGGEST LIBRARY [ call only after full document load ]
 function systemInit() {
 var aSuggest = new ngSuggest('an',

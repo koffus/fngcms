@@ -6,7 +6,7 @@
 
 	<title>{home_title}</title>
 
-	<link href="{skins_url}/assets/css/fontawesome.css" rel="stylesheet">
+	<link href="{scriptLibrary}/fontawesome-4.7.0/fontawesome.css" rel="stylesheet"/>
 	<link href="{skins_url}/assets/css/themes/default.css" rel="stylesheet">
 	<link href="{skins_url}/css/login.css" rel="stylesheet">
 </head>

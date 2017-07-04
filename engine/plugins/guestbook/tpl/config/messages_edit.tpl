@@ -108,6 +108,13 @@
  </table>
  {% endif %}
 </form>
+
+<link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
+<script src="{{ scriptLibrary }}/js/moment-2.17.1.js"></script>
+<script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
+
 <script type="text/javascript">
- $("#cdate").datetimepicker( { currentText: "DD.MM.YYYY HH:MM" });
+$(function() {
+    $('#cdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
+});
 </script>

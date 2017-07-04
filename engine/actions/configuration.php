@@ -150,7 +150,7 @@ function systemConfigEditForm(){
 		'list' => array(
 			'captcha_font' => ListFiles('trash', 'ttf'),
 			'theme' => ListFiles('../templates',''),
-			'skin' => ListFiles('skins/default/assets/css/themes/','css'),
+			'skin' => ListFiles('skins/default/themes/','css'),
 			'default_lang' => ListFiles('lang', ''),
 			'wm_image' => ListFiles('trash', array('gif', 'png'), 2),
 			'auth_module' => $auth_modules,

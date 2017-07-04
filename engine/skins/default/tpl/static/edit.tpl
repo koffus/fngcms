@@ -164,9 +164,9 @@
 
 <form name="DATA_tmp_storage" action="" id="DATA_tmp_storage"><input type="hidden" name="area" value="" /></form>
 
-<link href="{{ skins_url }}/assets/css/datetimepicker.css" rel="stylesheet">
-<script src="{{ skins_url }}/assets/js/moment.js"></script>
-<script src="{{ skins_url }}/assets/js/datetimepicker.js"></script>
+<link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
+<script src="{{ scriptLibrary }}/js/moment-2.17.1.js"></script>
+<script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
 
 <script>
 

@@ -253,7 +253,7 @@
 	</div>
 </div>
 
-<!--script src="{{ scriptLibrary }}/js/markdown.min.js">$('#lastCommitDate').html(markdown.toHTML(json[0].commit.message));</script-->
+<!--script src="{{ scriptLibrary }}/js/markdown.js">$('#lastCommitDate').html(markdown.toHTML(json[0].commit.message));</script-->
 
 <script>
 $(function(){

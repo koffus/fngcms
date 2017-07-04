@@ -6,17 +6,17 @@
     <meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no"/>
     <meta http-equiv="Cache-Control" content="no-cache"/>
-    <link href="{{ skins_url }}/assets/css/fontawesome.css" rel="stylesheet"/>
+    <link href="{{ scriptLibrary }}/fontawesome-4.7.0/fontawesome.css" rel="stylesheet"/>
     <link href="{{ skin }}" rel="stylesheet"/>
     <link href="{{ skins_url }}/css/style.css" rel="stylesheet"/>
 
-    <script src="{{ scriptLibrary }}/js/jquery.min.js"></script>
-    <script src="{{ skins_url }}/assets/js/bootstrap.js"></script>
-    <script src="{{ skins_url }}/assets/js/notify.js"></script>
-    <script src="{{ skins_url }}/js/script.js"></script>
+    <script src="{{ scriptLibrary }}/js/jquery-3.2.1.js"></script>
+    <script src="{{ scriptLibrary }}/bootstrap-3.3.7/bootstrap.js"></script>
+    <script src="{{ scriptLibrary }}/js/notify-3.1.5.js"></script>
     <script src="{{ scriptLibrary }}/functions.js"></script>
     <script src="{{ scriptLibrary }}/ajax.js"></script>
     <script src="{{ scriptLibrary }}/admin.js"></script>
+    <script src="{{ skins_url }}/js/script.js"></script>
 </head>
 <body>
 
