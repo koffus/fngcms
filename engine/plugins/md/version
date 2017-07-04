@@ -1,0 +1,18 @@
+;
+; Version description file for plugin @@ Next Generation CMS
+;
+
+ID: md
+Name: Markdown parser
+Version: 0.1
+Acts: admin:mod:news
+File: md.php
+; Config: config.php
+; Install: install.php
+; Deinstall: uninstall.php
+Type: plugin
+Description: Markdown парсер при добавлении/редактировании новостей. Состряпан со вкусом
+Author: RusiQ
+Author_URI: https://github.com/russsiq
+Title: Markdown parser
+Information: Markdown парсер при добавлении/редактировании новостей. Состряпан со вкусом

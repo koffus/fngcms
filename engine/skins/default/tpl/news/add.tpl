@@ -306,6 +306,16 @@
 <script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
 
 <script>
+<!--
+
+// Global variable: ID of current active input area
+var currentInputAreaID = 'ng_news_content{% if (flags.edit_split) %}_short{% endif %}';
+var form = document.getElementById('postForm');
+
+$(function() {
+    $('#cdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
+});
+
 function insertselcat(cat) {
 	var ss = $('select[name=category] option:selected');
 	if( ss.val() == 0 ) {
@@ -323,14 +333,6 @@ function insertselcat(cat) {
 $('input[name*=category_], select[name=category]').on('click', function (e) {
 	insertselcat();
 });
-//insertselcat();
-
-$('#cdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
-
-//
-// Global variable: ID of current active input area
-var currentInputAreaID = 'ng_news_content{% if (flags.edit_split) %}_short{% endif %}';
-var form = document.getElementById('postForm');
 
 function preview(){
 
@@ -373,7 +375,7 @@ document.onkeydown = function(e) {
 		return false;
 	}
 }
-
+-->
 </script>
 
 <script>
