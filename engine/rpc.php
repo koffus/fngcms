@@ -3,7 +3,7 @@
 //
 // Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru)
 // Name: rpc.php
-// Description: Service functions controller
+// Description: Remote Procedure Call (Service functions controller)
 // Author: Vitaly Ponomarev
 //
 

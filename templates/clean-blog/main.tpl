@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--[TWIG]-->
+<!--[TWIG] {% spaceless %}-->
 <html lang="{{ lang['langcode'] }}">
 <head>
     <title>{{ titles }}</title>
@@ -120,6 +120,6 @@
     <div id="loading-layer" class="col-md-3"><i class="fa fa-spinner fa-pulse"></i> {{ lang.loading }}</div>
 
 [debug]{debug_queries}{debug_profiler}[/debug]
-<!--[/TWIG]-->
 </body>
 </html>
+<!--{% endspaceless %} [/TWIG]-->

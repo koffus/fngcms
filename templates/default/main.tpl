@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!--[TWIG]-->
+<!--[TWIG] {% spaceless %}-->
 <html lang="{{ lang['langcode'] }}">
 <head>
     <title>{{ titles }}</title>
@@ -172,6 +172,6 @@
 {% endblock %}
 
 [debug]{debug_queries}{debug_profiler}[/debug]
-<!--[/TWIG]-->
 </body>
 </html>
+<!--{% endspaceless %} [/TWIG]-->
