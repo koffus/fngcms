@@ -26,8 +26,8 @@
 		<h4>{{ news.categories.masterText }}</h4>
 		<p>{{ news.short|truncateHTML(200,' ...')|striptags }}</p>
 		<div class="article-one-footer">
-			<span class="mr-auto"><i class="fa fa-calendar"></i> {{ news.dateStamp | cdate  }}</span>
-			{% if (news.flags.isUpdated) %}<span class="mr-auto"><i class="fa fa-refresh"></i> {{ news.updateStamp | cdate }}</span>{% endif %}
+			<span class="mr-auto"><i class="fa fa-calendar"></i>&nbsp;{{ news.dateStamp | cdate  }}</span>
+			{% if (news.flags.isUpdated) %}<span class="mr-auto"><i class="fa fa-refresh"></i>&nbsp;{{ news.updateStamp | cdate }}</span>{% endif %}
 			
 			<span><i class="fa fa-eye"></i> {{ news.views }}</span>
 		</div>

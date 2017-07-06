@@ -38,11 +38,24 @@ function add_comment(){
 				var resRX = eval('('+cajax.response+')');
 				var nc = document.getElementById('new_comments');
 				nc.innerHTML += resRX['data'];
+                var scriptNodesList = nc.getElementsByTagName('script');
+                if (scriptNodesList.length > 0) {
+                    var wholeScript = '';
+                    for (var i = 0; i < scriptNodesList.length; i++) {
+                        var scriptCode = scriptNodesList.item(i);
+                        wholeScript += scriptCode.innerHTML + ' ';
+                        scriptNodesList.item(i).remove();
+                    }
+                    var scriptElement = document.createElement('script');
+                    scriptElement.type = 'text/javascript';
+                    scriptElement.text = wholeScript;
+                    $("head").append(scriptElement);
+                }
 				if (resRX['status']) { 
 					// Added successfully!
 					form.content.value = '';
+                    $('html, body').animate({ scrollTop: $(nc).offset().top-87 }, 888);
 				}
-				$('html, body').animate({ scrollTop: $(nc).offset().top-87 }, 888);
  			} catch (err) { 
 				alert('Error parsing JSON output. Result: '+cajax.response); 
 			}
