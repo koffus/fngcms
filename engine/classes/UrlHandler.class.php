@@ -122,7 +122,7 @@ class UrlHandler
     {
         // First - find references from URL library
         if (!isset($data['pluginName']) or !isset($data['handlerName']) or !isset($ULIB->CMD[$data['pluginName']][$data['handlerName']])) {
-            return array(array(1, 'No match with URL library' . var_export($data, true)), false);
+            return array(array(1, 'No match with URL library ' . var_export($data, true)), false);
         }
 
         // Command catched
