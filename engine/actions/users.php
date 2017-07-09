@@ -484,14 +484,14 @@ function userList(){
         'entries' => $tEntries,
         'group' => isset($_REQUEST['group'])?intval($_REQUEST['group']):0,
         'sortLink' => $sortLinkMap,
+        'localPrefix' => localPrefix,
         'flags' => 	array(
             'canModify' => $permModify?1:0,
             'canView' => $permDetails?1:0,
             'canMassAction' => $permMassAction?1:0,
             'haveComments' => $cPlugin->getStatusInstalled('comments')?1:0,
-        ),
-
-    );
+            ),
+        );
 
     $xt = $twig->loadTemplate('skins/default/tpl/users/table.tpl');
     echo $xt->render($tVars);

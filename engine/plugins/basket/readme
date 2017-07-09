@@ -40,7 +40,7 @@
 
 ** плагин добавляет свою js библиотеку basket.js, она позволяет добавлять товары в корзину через AJAX
 пример правильного кода для добавления:
-[basket]<a href="#" onclick="rpcBasketRequest('plugin.basket.manage', {'action': 'add', 'ds':1,'id':{news-id},'count':1}); return false;">В корзину</a>[/basket]
+[basket]<a href="#" onclick="rpcBasketRequest('{{ admin_url }}/rpc.php', 'plugin.basket.manage', {'action': 'add', 'ds':1,'id':{news-id},'count':1}); return false;">В корзину</a>[/basket]
 
 Плагин позволяет работать в разных режимах:
 - можно использовать новость как еденицу товара, одна новость - один товар, тогда "Работа с доп. полями внутри новостей"

@@ -6,6 +6,7 @@ ID: voting
 Name: Voting manager
 Version: 0.16
 Acts: index, ppages
+Actions: rpc;lib/librpc.php
 File: voting.php
 Install: install.php
 Deinstall: uninstall.php
@@ -15,4 +16,4 @@ Description: Управление голосованиями
 Author: Vitaly A. Ponomarev
 Author_URI: http://ngcms.ru/
 Title: Голосование на сайте
-Information: Добавляет блок голосований на сайте, позволяет одновременно проводить несколько голосований и видеть результаты голосований на отдельной страничке.
+Information: Добавляет блок голосований на сайте, позволяет одновременно проводить несколько голосований и видеть результаты голосований на отдельной странице.

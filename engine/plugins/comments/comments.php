@@ -3,7 +3,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::load('comments', 'site');
+Lang::loadPlugin('comments', 'main', '', '', ':');
 
 class CommentsNewsFilter extends NewsFilter
 {
@@ -258,88 +258,6 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
 
 }
 
-function plugin_comments_add()
-{
-    global $config, $catz, $catmap, $tpl, $template, $SUPRESS_TEMPLATE_SHOW;
-
-    $SUPRESS_TEMPLATE_SHOW = 1;
-
-    // Connect library
-    include_once(root . "/plugins/comments/inc/comments.show.php");
-    include_once(root . "/plugins/comments/inc/comments.add.php");
-
-    // Call comments_add() to ADD COMMENT
-    if (is_array($addResult = comments_add())) {
-
-        // Ok.
-        // Check if AJAX mode is turned OFF
-        if (!$_REQUEST['ajax']) {
-            // We should JUMP to this new comment
-
-            // Make FULL news link
-            $nlink = News::generateLink($addResult[0]);
-
-            // Make redirect to full news
-            @header("Location: " . $nlink);
-            return 1;
-        }
-
-        // AJAX MODE.
-        // Let's print (ONLY) new comment
-        $SQLnews = $addResult[0];
-        $commentId = $addResult[1];
-
-        // Check if we need to override news template
-        $callingCommentsParams = array('outprint' => true);
-
-        // Set default template path
-        $templatePath = tpl_dir . $config['theme'];
-
-        // Find first category
-        $catid = explode(',', $SQLnews['catid']);
-        $fcat = array_shift($catid);
-        // Check if there is a custom mapping
-        if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-            // Check if directory exists
-            if (is_dir($templatePath . '/ncustom/' . $ctname))
-                $callingCommentsParams['overrideTemplatePath'] = $templatePath . '/ncustom/' . $ctname;
-        }
-        $output = array(
-            'status' => 1,
-            'rev' => intval(pluginGetVariable('comments', 'backorder')),
-            'data' => comments_show($SQLnews['id'], $commentId, $SQLnews['com'] + 1, $callingCommentsParams)
-        );
-
-        print json_encode($output);
-        $template['vars']['mainblock'] = '';
-
-        return 1;
-    } else {
-        // Some errors.
-        if ($_REQUEST['ajax']) {
-            // AJAX MODE
-            $output = array(
-                'status' => 0,
-                'data' => $template['vars']['mainblock'],
-            );
-            print json_encode($output);
-            $template['vars']['mainblock'] = '';
-
-        } else {
-            // NON-AJAX MODE
-            $tavars = array('vars' => array(
-                'title' => __('comments:err.redir.title'),
-                'message' => $template['vars']['mainblock'],
-                'link' => secure_html(($_REQUEST['referer']) ? $_REQUEST['referer'] : '/'),
-                'linktext' => __('comments:err.redir.url'),
-            ));
-            $tpl->template('redirect', tpl_site);
-            $tpl->vars('redirect', $tavars);
-            $template['vars']['mainblock'] = $tpl->show('redirect');
-        }
-    }
-}
-
 // Show dedicated page for comments
 function plugin_comments_show()
 {
@@ -368,7 +286,8 @@ function plugin_comments_show()
     // Set default template path [from site template / comments plugin subdirectory]
     $templatePath = tpl_site . 'plugins/comments';
 
-    $fcat = array_shift(explode(',', $newsRow['catid']));
+    $catid = explode(',', $newsRow['catid']);
+    $fcat = intval(array_shift($catid));
 
     // Check if there is a custom mapping
     if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
@@ -396,7 +315,7 @@ function plugin_comments_show()
         $pageCount = ceil($newsRow['com'] / $multi_scount);
 
         // Check if user wants to access not first page
-        $page = intval($_REQUEST['page']);
+        $page = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : '1';
         if ($page < 1) $page = 1;
 
         $callingCommentsParams['limitCount'] = intval(pluginGetVariable('comments', 'multi_scount'));
@@ -522,6 +441,5 @@ Lang::loadPlugin('comments', 'main', '', '', ':');
 pluginRegisterFilter('news', 'comments', new CommentsNewsFilter);
 register_admin_filter('categories', 'comments', new CommentsFilterAdminCategories);
 
-register_plugin_page('comments', 'add', 'plugin_comments_add', 0);
 register_plugin_page('comments', 'show', 'plugin_comments_show', 0);
 register_plugin_page('comments', 'delete', 'plugin_comments_delete', 0);

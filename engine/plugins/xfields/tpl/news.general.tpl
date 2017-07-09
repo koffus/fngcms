@@ -99,8 +99,8 @@ function tblSaveData() {
 		//tblRec['#id'] = trow.childNodes[0].innerHTML;
 		tblRecs.push(tblRec);
 	}
-	document.getElementById('xftable').value = json_encode(tblRecs);
-	//alert(json_encode(tblRecs));
+	document.getElementById('xftable').value = JSON.stringify(tblRecs);
+	//alert(JSON.stringify(tblRecs));
 
 }
 
@@ -139,7 +139,7 @@ function xf_update_visibility(cid) {
 }
 
 // Manage fields after document is loaded
-$(document).ready(function() {
+$(function() {
 
     tblLoadData(1);
 

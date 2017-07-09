@@ -4,9 +4,6 @@
 	<li class="active">{{ lang.editnews['news_title'] }}</li>
 </ul>
 
-<script src="{{ scriptLibrary }}/ajax.js"></script>
-<script src="{{ scriptLibrary }}/libsuggest.js"></script>
-
 <!-- Info content -->
 <div class="page-main">
 	<!-- Filter form: BEGIN -->
@@ -215,29 +212,26 @@
 	<a href="#" id="suggestClose">{{ lang.editnews['close'] }}</a>
 </div>
 
+<script src="{{ scriptLibrary }}/libsuggest.js"></script>
+
 <link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
 <script src="{{ scriptLibrary }}/js/moment-2.17.1.js"></script>
 <script src="{{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.js"></script>
 
 <script>
-<!--
-$(document).ready(function() {
-	
-	$('#dr1').datetimepicker({format: 'DD.MM.YYYY', locale: '{{ lang['langcode'] }}',pickTime:false});
-	$('#dr2').datetimepicker({format: 'DD.MM.YYYY', locale: '{{ lang['langcode'] }}',pickTime:false});
-	
-	var aSuggest = new ngSuggest('an',
-								{
-									'localPrefix'	: '{{ localPrefix }}',
-									'reqMethodName'	: 'core.users.search',
-									'lId'		: 'suggestLoader',
-									'hlr'		: 'true',
-									'iMinLen'	: 1,
-									'stCols'	: 2,
-									'stColsClass': [ 'cleft', 'cright' ],
-									'stColsHLR'	: [ true, false ],
-								}
-							);
+$(function() {
+    
+    $('#dr1').datetimepicker({format: 'DD.MM.YYYY', locale: '{{ lang['langcode'] }}',pickTime:false});
+    $('#dr2').datetimepicker({format: 'DD.MM.YYYY', locale: '{{ lang['langcode'] }}',pickTime:false});
+    
+    var aSuggest = new ngSuggest('an', {
+        'localPrefix'	: '{{ localPrefix }}',
+        'reqMethodName'	: 'core.users.search',
+        'lId' : 'suggestLoader',
+        'hlr' : 'true',
+        'stCols' : 2,
+        'stColsClass': [ 'cleft', 'cright' ],
+        'stColsHLR'	: [ true, false ],
+    });
 });
--->
 </script>

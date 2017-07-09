@@ -28,42 +28,14 @@
 </div>
 
 <script>
-    function loadData() {
-
-        $.ajax({
-            type: 'POST',
-            url: '{{ admin_url }}/rpc.php',
-            dataType: 'json',
-            data: {
-                json: 1,
-                rndval: new Date().getTime(),
-                methodName: 'admin.extras.getPluginConfig',
-                params: json_encode({
-                    'token': '{{ token }}',
-                }),
-            },
-            beforeSend: function () {
-                ngShowLoading();
-            },
-            error: function () {
-                ngHideLoading();
-                $.notify({message: '{{ lang['rpc_httpError'] }}'}, {type: 'danger'});
-            },
-        }).done(function (data) {
-            ngHideLoading();
-            try {
-                resTX = eval(data);
-            } catch (err) {
-                $.notify({message: '{{ lang['rpc_jsonError'] }} ' + data}, {type: 'danger'});
-            }
-            if (!resTX['status']) {
-                $.notify({message: 'Error [' + resTX['errorCode'] + ']: ' + resTX['errorText']}, {type: 'danger'});
-            } else {
-                var line = resTX['content'];
-                var newline = line.replace(/\\u/g, "%u");
-                $('#configArea').val(unescape(newline));
-            }
-        });
-    }
-
+function loadData() {
+    var url = '{{ admin_url }}/rpc.php';
+    var method = 'admin.extras.getPluginConfig';
+    var params = {'token': '{{ token }}',};
+    $.reqJSON(url, method, params, function(json) {
+        var line = json.content;
+        var newline = line.replace(/\\u/g, "%u");
+        $('#configArea').val(unescape(newline));
+    });
+}
 </script>

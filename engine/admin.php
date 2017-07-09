@@ -223,6 +223,7 @@ if ($mod != 'preview') {
     $tVars = array(
         'php_self' => $PHP_SELF,
         'titles' => __('adminpanel') . ' : ' . $config['home_title'],
+        'home_title' => home_title,
         'skin' => $skins_url . '/themes/' . $config['skin'] . '.css', // switchTheme
         'user' => array(
             'id' => $userROW['id'],

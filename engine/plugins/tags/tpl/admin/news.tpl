@@ -14,7 +14,6 @@ $(function() {
 		'reqMethodName': 'plugin.tags.suggest',
 		'lId': 'suggestLoader',
 		'hlr': 'true',
-		'iMinLen': 1,
 		'stCols': 2,
 		'stColsClass': [ 'cleft', 'cright' ],
 		'stColsHLR': [ true, false ],

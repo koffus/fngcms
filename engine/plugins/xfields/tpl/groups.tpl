@@ -88,7 +88,6 @@
 			</div>
 		</div>
 	</form>
-
 </div>
 
 <script>
@@ -133,7 +132,6 @@ function selectGroupList(force) {
 								'<a href="#" class="btn btn-danger" onclick="fieldModifyRequest(this.parentNode.parentNode.parentNode.tag, 3);"><i class="fa fa-trash-o"></i></a></div>';
 				r.appendChild(tl);
 			}
-
 			if ( rowNo == 0 ) {
 				var r = fldList.insertRow(-1);
 				var xCell = r.insertCell(0);
@@ -141,10 +139,8 @@ function selectGroupList(force) {
 				xCell.innerHTML = 'В этой группе нет полей';
 			}
 		}
-
 		grpList.parentNode.enabled = true;
 		gListValue = grpList.value;
-
 		document.getElementById('edGrpId').value = gListValue;
 		document.getElementById('edGrpName').value = (gListValue != '')?gConfig[gListValue]['title']:'';
 		if (gListValue == '') {
@@ -161,7 +157,6 @@ function selectGroupList(force) {
 			document.getElementById('fldGroup').style.display = '';
 		}
 	}
-
 }
 
 function fieldModifyRequest(id, action) {
@@ -175,7 +170,6 @@ function fieldModifyRequest(id, action) {
 	var fa = 'fld'+((action==1)?'Up':((action==2)?'Down':'Del'));
 	//alert('FieldName ('+id+')['+gListValue+']: '+fn+ '; action: '+fa);
 	//return;
-
 	rpcRequest(
 		'plugin.xfields.group.modify',
 		{
@@ -184,7 +178,6 @@ function fieldModifyRequest(id, action) {
 			'id'	 : document.getElementById('edGrpId').value,
 			'field'	 : fn,
 		});
-
 }
 
 function drawGroupList(gID) {
@@ -210,7 +203,6 @@ function generateFieldList() {
 		var o = document.createElement('option');
 		o.value = i;
 		o.text = i + ' :: ' + fConfig[i]['title'];
-	//	alert('ADD');
 		items.options.add(o);
 	}
 }
@@ -250,7 +242,6 @@ function initEvents() {
 			alert('Nothing to delete!');
 			return;
 		}
-
 		rpcRequest(
 			'plugin.xfields.group.modify',
 			{
@@ -266,7 +257,6 @@ function initEvents() {
 			alert('Group is not selected');
 			return;
 		}
-
 		rpcRequest(
 			'plugin.xfields.group.modify',
 			{
@@ -280,46 +270,19 @@ function initEvents() {
 }
 
 function rpcRequest(method, params) {
- //var dOut = json_encode(dData);
-
- var linkTX = new sack();
- linkTX.requestFile = 'rpc.php';
- linkTX.setVar('json', '1');
- linkTX.setVar('methodName', method);
- linkTX.setVar('params', json_encode(params));
- linkTX.method='POST';
- linkTX.onComplete = function() {
-	if (linkTX.responseStatus[0] == 200) {
-		var resTX;
- try {
- 	 		resTX = eval('('+linkTX.response+')');
- 		} catch (err) { alert('{l_fmsg.save.json_parse_error} '+linkTX.response); }
-
- 		// First - check error state
- 		if (!resTX['status']) {
- 			// ERROR. Display it
- 			alert('Error ('+resTX['errorCode']+'): '+resTX['errorText']);
- 		} else {
- 			//alert('Request complete, answer: '+resTX['data']+'; '+typeof(resTX['config']));
- 			if (typeof(resTX['config'])=='object') {
- 				gConfig = resTX['config'];
- 				drawGroupList(gListValue);
- 				selectGroupList(1);
-			}
- 		}
- 	} else {
- 		alert('{l_fmsg.save.httperror} '+linkTX.responseStatus[0]);
-	}
- }
- linkTX.onShow();
- linkTX.runAJAX();
+    $.reqJSON('{{ admin_url }}/rpc.php', method, params, function(json) {
+        if ('object' == typeof(json.config)) {
+            gConfig = json.config;
+            drawGroupList(gListValue);
+            selectGroupList(1);
+            $.notify({message: json.msg},{type: 'success'});
+        }
+    });
 }
-
 
 initEvents();
 drawGroupList(0);
 grpList.selectedIndex = 0;
 selectGroupList(0);
 generateFieldList();
-//rpcRequest('plugin.xfields.demo', { 'action' : 'add', 'name' : 'infomania'});
 </script>

@@ -49,4 +49,3 @@
 
 @define('conf_pactive', confroot.'plugins.php', true);
 @define('conf_pconfig', confroot.'plugdata.php', true);
-

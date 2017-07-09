@@ -1,13 +1,10 @@
 <script type="text/javascript">
-var ajax = new sack();
-function rating(rating, post_id){
-	ajax.onShow('');
-	ajax.setVar('rating', rating);
-	ajax.setVar('post_id', post_id);
-	ajax.requestFile = '{{ ajax_url }}';
-	ajax.method = 'GET';
-	ajax.element = 'ratingdiv_'+post_id;
-	ajax.runAJAX();
+function rating(rating, post_id) {
+    var params = {'rating': rating, 'post_id': post_id};
+    $.reqJSON('{{ admin_url }}/rpc.php', 'plugin.rating.update', params, function(json) {
+        $('#ratingdiv_'+post_id).html(json.content);
+        $.notify({message: json.msg},{type: 'success'});
+    });
 }
 </script>
 

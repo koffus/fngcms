@@ -1,21 +1,16 @@
 .jchat_ODD TD { background-color: #FFFFFF; width: 100%; text-align: left;}
 .jchat_EVEN TD { background-color: #FBFBFB; width: 100%; text-align: left; }
 .jchat_INFO TD { background-color: #FFFFFF; width: 100%; text-align: left; font: 12px arial; }
-
 .chat-textarea {
     position: relative;
 }
-
 .chat-textarea:after {
-
-display: inline-block;
+    display: inline-block;
     font: normal normal normal 14px/1 FontAwesome;
     font-size: inherit;
     text-rendering: auto;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-	
-	
     content: "\f003";
     color: #bec0c2;
     right: 20px;
@@ -27,81 +22,81 @@ display: inline-block;
     padding-right: 40px;
 }
 #jchatWLen {
-	right: 20px;
+    right: 20px;
     bottom: 15px;
     font-size: 12px;
     position: absolute;
 }
 .chat-table::-webkit-scrollbar,
 #jChatText::-webkit-scrollbar {
-	width: 12px;
+    width: 12px;
+}
+.chat-table {
+    border: 1px solid rgba(0,0,0,.15);
+}
+.chat-table .table {
+    margin-bottom: 0;
 }
 /* Let's get this party started */
 .chat-table::-webkit-scrollbar,
 #jChatText::-webkit-scrollbar {
-	width: 6px;
+    width: 6px;
 }
 /* Track */
 .chat-table::-webkit-scrollbar-track,
 #jChatText::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
 }
 /* Handle */
 .chat-table::-webkit-scrollbar-thumb,
 #jChatText::-webkit-scrollbar-thumb {
-	background:#ddd; 
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+    background:#ddd; 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 .chat-table::-webkit-scrollbar-thumb:window-inactive,
 #jChatText::-webkit-scrollbar-thumb:window-inactive {
-	background: #ddd; 
+    background: #ddd; 
 }
-
-
-
 .chat-table {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  overflow: auto;
-  max-height: 400px;
-  font-size: 14px;
-  margin-bottom: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    max-height: 400px;
+    font-size: 14px;
+    margin-bottom: 1rem;
 }
 .chat-table tr>td {
-  padding: 15px 24px;
+    padding: 15px 24px;
+    border: 0;
 }
 .chat-table tr>td:before,
 .chat-table tr>td:after {
-  content: " ";
-  display: table;
+    content: " ";
+    display: table;
 }
 .chat-table tr>td:after {
-  clear: both;
+    clear: both;
 }
 .chat-table .user-avatar {
-	float: left;
+    float: left;
 }
 .chat-table .user-avatar img {
-	border-radius: 50%;
-	width: 34px;
-	height: 34px;
-	border-radius: 50%;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
 }
 .chat-table .user {
-  font-weight: bold;
-   cursor: pointer;
-   margin: 0 0 0 20px;
-   float: left;
+    font-weight: bold;
+    cursor: pointer;
+    margin: 0 0 0 20px;
+    float: left;
 }
 .chat-table time {
-  float: right;
-  font-style: italic;
-  color: rgba(190, 192, 194, 0.8);
-  font-size: 11px;
-}
-.chat-table p {
-float: left;
-    max-width: 80%;
+    float: left;
+    font-style: italic;
+    color: rgba(190, 192, 194, 0.8);
+    font-size: 11px;
     margin: 0 0 0 20px;
 }

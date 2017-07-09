@@ -2,6 +2,7 @@ ID: bookmarks
 Name: Users Bookmarks
 Version: 2.4
 Acts: index, news, ppages
+Actions: rpc;lib/librpc.php
 File: bookmarks.php
 Type: widget
 Install: install.php

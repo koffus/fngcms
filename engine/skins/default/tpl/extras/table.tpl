@@ -88,7 +88,7 @@ function searchInTable() {
 
 }
 
-$(document).ready(function() {
+$(function() {
 
 	$('#searchInput').on('keyup', function(){
 		// Reset nav-tabs

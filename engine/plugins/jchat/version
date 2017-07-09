@@ -6,6 +6,7 @@ ID: jchat
 Name: AJAX chat
 Version: 0.09
 Acts: index, ppages
+Actions: rpc;jchat.php
 File: jchat.php
 Config: config.php
 Install: install.php

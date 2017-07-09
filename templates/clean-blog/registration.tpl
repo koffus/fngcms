@@ -1,196 +1,3 @@
-<script type="text/javascript">
-
-    $( document ).ready(function() {
-        var registrationValidator = (function() {
-
-            var validateFields = function() {
-
-                $("#reg_login").change(function() {
-
-                    if ($('#reg_login').val() == '') {
-                        $("#reg_login").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
-                            "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
-                        });
-                        $("small#reg_login").html("{{ lang.auth_login_descr }}");
-                        return;
-                    }
-
-					$.ajax({
-						type: 'POST',
-						url: '{{ admin_url }}/rpc.php',
-						dataType: 'json',
-						data: {
-							json: 1,
-							rndval: new Date().getTime(),
-							methodName : 'core.registration.checkParams',
-							params: json_encode({
-									'login': $('#reg_login').val(),
-								}),
-						},
-						beforeSend: function() {/*ngShowLoading();*/},
-						error: function() {ngHideLoading();alert('HTTP error during request', 'ERROR');},
-					}).done(function( data ) {
-						ngHideLoading();
-						if(typeof data == 'string') {
-							resTX = $.parseJSON(data);
-						} else {
-							resTX = data;
-						}
-						if (!resTX['status']) {
-							alert('Error ['+resTX['errorCode']+']: '+resTX['errorText']);
-						} else {
-							if ((resTX['data']['login']>0)&&(resTX['data']['login'] < 100)) {
-								$("#reg_login").css("border-color", "#b54d4b");
-								$("small#reg_login").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_login_warning }}</span>");
-							} else {
-								$("#reg_login").css("border-color", "#94c37a");
-								$("small#reg_login").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_login_success }}</span>");
-							}
-						}
-					});
-				});
-
-                $("#reg_email").change(function() {
-
-                    if ($('#reg_email').val() == '') {
-                        $("#reg_email").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
-                            "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
-                        });
-                        $("small#reg_email").html("<span>{{ lang.auth_email_descr }}</span>");
-                        return;
-                    }
-
-					$.ajax({
-						type: 'POST',
-						url: '{{ admin_url }}/rpc.php',
-						dataType: 'json',
-						data: {
-							json: 1,
-							rndval: new Date().getTime(),
-							methodName : 'core.registration.checkParams',
-							params: json_encode({
-									'email' : $('#reg_email').val(),
-								}),
-						},
-						beforeSend: function() {/*ngShowLoading();*/},
-						error: function() {ngHideLoading();alert('HTTP error during request', 'ERROR');},
-					}).done(function( data ) {
-						ngHideLoading();
-						if(typeof data == 'string') {
-							resTX = $.parseJSON(data);
-						} else {
-							resTX = data;
-						}
-						if (!resTX['status']) {
-							alert('Error ['+resTX['errorCode']+']: '+resTX['errorText']);
-						} else {
-							if ((resTX['data']['email']>0)&&(resTX['data']['email'] < 100)) {
-								$("#reg_email").css("border-color", "#b54d4b");
-								$("small#reg_email").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_email_warning }}</span>");
-							} else {
-								$("#reg_email").css("border-color", "#94c37a");
-								$("small#reg_email").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_email_success }}</span>");
-							}
-						}
-					});
-                });
-
-
-                $("#reg_password2").change(function() {
-
-                    if ($('#reg_password2').val() == '' && $('#reg_password').val() == '') {
-                        $("#reg_password").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
-                            "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
-                        });
-                        $("#reg_password2").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
-                            "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
-                        });
-                        $("small#reg_password2").html("<span>{{ lang.auth_pass2_descr }}</span>");
-                        return;
-                    }
-
-                    if ($('#reg_password2').val() != $('#reg_password').val()) {
-                        $("#reg_password").css("border-color", "#b54d4b");
-                        $("#reg_password2").css("border-color", "#b54d4b");
-                        $("small#reg_password2").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_password_warning }}</span>");
-                    } else {
-                        $("#reg_password").css("border-color", "#94c37a");
-                        $("#reg_password2").css("border-color", "#94c37a");
-                        $("small#reg_password2").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_password_success }}</span>");
-                    }
-
-
-                });
-
-
-                $("#reg_password").change(function() {
-
-                    if ($('#reg_password2').val() == '' && $('#reg_password').val() == '') {
-                        $("#reg_password").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
-                            "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
-                        });
-                        $("#reg_password2").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
-                            "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
-                        });
-                        $("small#reg_password2").html("<span>{{ lang.auth_pass2_descr }}</span>");
-                        return;
-                    }
-                    if ($('#reg_password2').val() != $('#reg_password').val()) {
-                        $("#reg_password").css("border-color", "#b54d4b");
-                        $("#reg_password2").css("border-color", "#b54d4b");
-                        $("small#reg_password2").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_password_warning }}</span>");
-                    } else {
-                        $("#reg_password").css("border-color", "#94c37a");
-                        $("#reg_password2").css("border-color", "#94c37a");
-                        $("small#reg_password2").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_password_success }}</span>");
-                    }
-
-
-                });
-
-            };
-
-            return {
-                validateFields: validateFields
-            };
-
-        })();
-
-        registrationValidator.validateFields();
-    });
-
-	function validate() {
-		if (document.register.agree.checked == false) {
-			alert( '{{ lang.theme['registration_check_rules'] }}' );
-			return false;
-		}
-		return true;
-	}
-	function reload_captcha() {
-		var captc = document.getElementById('img_captcha');
-		if (captc != null) {
-			captc.src = "{{ admin_url }}/captcha.php?rand=" + Math.random();
-		}
-	}
-</script>
 <!-- Page Header -->
 <header class="intro-header" style="background-image: url('{tpl_url}/img/home-bg.jpg')">
 	<div class="container">
@@ -283,17 +90,131 @@
 </div>
 
 <script type="text/javascript">
-	function validate() {
-		if (document.register.agree.checked == false) {
-			alert( '{{ lang.theme['registration_check_rules'] }}' );
-			return false;
-		}
-		return true;
-	}
-	function reload_captcha() {
-		var captc = document.getElementById('img_captcha');
-		if (captc != null) {
-			captc.src = "{{ admin_url }}/captcha.php?rand=" + Math.random();
-		}
-	}
+    $( document ).ready(function() {
+        var registrationValidator = (function() {
+            var validateFields = function() {
+                $("#reg_login").change(function() {
+                    if ($('#reg_login').val() == '') {
+                        $("#reg_login").css({
+                            "display": "table-cell",
+                            "background": "#f9f9f9",
+                            "border": "1px solid #e2e2e2",
+                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
+                        });
+                        $("small#reg_login").html("{{ lang.auth_login_descr }}");
+                        return;
+                    }
+                    // onlineCheckRegistration
+                    var url = '{{ admin_url }}/rpc.php';
+                    var method = 'core.registration.checkParams';
+                    var params = {'login': $('#reg_login').val(),};
+                    $.reqJSON(url, method, params, function(json) {
+                        if ((json.data.login > 0 ) && (json.data.login < 100)) {
+                            $("#reg_login").css("border-color", "#b54d4b");
+                            $("small#reg_login").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_login_warning }}</span>");
+                        } else {
+                            $("#reg_login").css("border-color", "#94c37a");
+                            $("small#reg_login").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_login_success }}</span>");
+                        }
+                    });
+                });
+                $("#reg_email").change(function() {
+                    if ($('#reg_email').val() == '') {
+                        $("#reg_email").css({
+                            "display": "table-cell",
+                            "background": "#f9f9f9",
+                            "border": "1px solid #e2e2e2",
+                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
+                        });
+                        $("small#reg_email").html("<span>{{ lang.auth_email_descr }}</span>");
+                        return;
+                    }
+                    // onlineCheckRegistration
+                    var url = '{{ admin_url }}/rpc.php';
+                    var method = 'core.registration.checkParams';
+                    var params = {'email' : $('#reg_email').val(),};
+                    $.reqJSON(url, method, params, function(json) {
+                        if ((json.data.email > 0 ) && (json.data.email < 100)) {
+                            $("#reg_email").css("border-color", "#b54d4b");
+                            $("small#reg_email").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_email_warning }}</span>");
+                        } else {
+                            $("#reg_email").css("border-color", "#94c37a");
+                            $("small#reg_email").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_email_success }}</span>");
+                        }
+                    });
+                });
+                $("#reg_password2").change(function() {
+                    if ($('#reg_password2').val() == '' && $('#reg_password').val() == '') {
+                        $("#reg_password").css({
+                            "display": "table-cell",
+                            "background": "#f9f9f9",
+                            "border": "1px solid #e2e2e2",
+                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
+                        });
+                        $("#reg_password2").css({
+                            "display": "table-cell",
+                            "background": "#f9f9f9",
+                            "border": "1px solid #e2e2e2",
+                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
+                        });
+                        $("small#reg_password2").html("<span>{{ lang.auth_pass2_descr }}</span>");
+                        return;
+                    }
+                    if ($('#reg_password2').val() != $('#reg_password').val()) {
+                        $("#reg_password").css("border-color", "#b54d4b");
+                        $("#reg_password2").css("border-color", "#b54d4b");
+                        $("small#reg_password2").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_password_warning }}</span>");
+                    } else {
+                        $("#reg_password").css("border-color", "#94c37a");
+                        $("#reg_password2").css("border-color", "#94c37a");
+                        $("small#reg_password2").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_password_success }}</span>");
+                    }
+                });
+                $("#reg_password").change(function() {
+                    if ($('#reg_password2').val() == '' && $('#reg_password').val() == '') {
+                        $("#reg_password").css({
+                            "display": "table-cell",
+                            "background": "#f9f9f9",
+                            "border": "1px solid #e2e2e2",
+                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
+                        });
+                        $("#reg_password2").css({
+                            "display": "table-cell",
+                            "background": "#f9f9f9",
+                            "border": "1px solid #e2e2e2",
+                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
+                        });
+                        $("small#reg_password2").html("<span>{{ lang.auth_pass2_descr }}</span>");
+                        return;
+                    }
+                    if ($('#reg_password2').val() != $('#reg_password').val()) {
+                        $("#reg_password").css("border-color", "#b54d4b");
+                        $("#reg_password2").css("border-color", "#b54d4b");
+                        $("small#reg_password2").html("<span style='color:#b54d4b;'>{{ lang.theme.registration_msg_password_warning }}</span>");
+                    } else {
+                        $("#reg_password").css("border-color", "#94c37a");
+                        $("#reg_password2").css("border-color", "#94c37a");
+                        $("small#reg_password2").html("<span style='color:#94c37a;'>{{ lang.theme.registration_msg_password_success }}</span>");
+                    }
+                });
+            };
+            return {
+                validateFields: validateFields
+            };
+        })();
+        registrationValidator.validateFields();
+    });
+    function validate() {
+        if (document.register.agree.checked == false) {
+            $.notify({message:'{{ lang.theme['registration_check_rules'] }}'},{type: 'info'});
+            return false;
+        }
+        return true;
+    }
+    function reload_captcha() {
+        var captc = document.getElementById('img_captcha');
+        if (captc != null) {
+            captc.src = "{{ admin_url }}/captcha.php?rand=" + Math.random();
+        }
+    }
 </script>

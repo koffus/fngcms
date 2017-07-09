@@ -1,4 +1,5 @@
-<h2 class="section-title">Все комментарии посетителей к записи <a href="{link}">{title}</a></h2>
+<h2 class="section-title"><a href="{link}">{title}</a></h2>
+<p>Все комментарии посетителей к записи</p>
 
 <section class="section comments-list">
 
@@ -21,7 +22,7 @@
 	[/regonly]
 
 	[commforbidden]
-	<div class="alert alert-danger">
+	<div class="alert alert-info">
 		Комментирование данной новости запрещено.
 	</div>
 	[/commforbidden]

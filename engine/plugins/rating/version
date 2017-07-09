@@ -6,7 +6,8 @@ ID: rating
 Name: Рейтинг новостей
 Name_EN: News rating
 Version: 0.06
-Acts: ppages, news_full, news_short, news_search
+Acts: news_full, news_short, news_search
+Actions: rpc;lib/librpc.php
 File: rating.php
 Config: config.php
 Type: plugin

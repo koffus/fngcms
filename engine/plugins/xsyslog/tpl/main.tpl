@@ -133,7 +133,6 @@
 
 <!-- Hidden SUGGEST div -->
 <div id="suggestWindow" class="suggestWindow"><table id="suggestBlock" cellspacing="0" cellpadding="0" width="100%"></table><a href="#" align="right" id="suggestClose">{{ lang['close'] }}</a></div>
-<script src="{{ scriptLibrary }}/ajax.js"></script>
 <script src="{{ scriptLibrary }}/admin.js"></script>
 <script src="{{ scriptLibrary }}/libsuggest.js"></script>
 
@@ -236,7 +235,6 @@ var aSuggest = new ngSuggest('an',
 									'reqMethodName'	: 'core.users.search',
 									'lId'		: 'suggestLoader',
 									'hlr'		: 'true',
-									'iMinLen'	: 1,
 									'stCols'	: 2,
 									'stColsClass': [ 'cleft', 'cright' ],
 									'stColsHLR'	: [ true, false ],

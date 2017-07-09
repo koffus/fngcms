@@ -160,7 +160,7 @@ class Lang
 
     }
 
-    public static function retDate($format, $timestamp)
+    public static function retDate($format, $date)
     {
         foreach (self::$weekdays as $name => $value)
             $weekdays[$name] = preg_replace("/./", "\\\\\\0", $value);
@@ -174,11 +174,11 @@ class Lang
         foreach (self::$short_months as $name => $value)
             $short_months[$name] = preg_replace("/./", "\\\\\\0", $value);
 
-        $format = @preg_replace("/(?<!\\\\)l/", $weekdays[date("w", $timestamp)], $format);
-        $format = @preg_replace("/(?<!\\\\)D/", $short_weekdays[date("w", $timestamp)], $format);
-        $format = @preg_replace("/(?<!\\\\)F/", $months[date("n", $timestamp) - 1], $format);
-        $format = @preg_replace("/(?<!\\\\)M/", $short_months[date("n", $timestamp) - 1], $format);
+        $format = @preg_replace("/(?<!\\\\)l/", $weekdays[date("w", $date)], $format);
+        $format = @preg_replace("/(?<!\\\\)D/", $short_weekdays[date("w", $date)], $format);
+        $format = @preg_replace("/(?<!\\\\)F/", $months[date("n", $date) - 1], $format);
+        $format = @preg_replace("/(?<!\\\\)M/", $short_months[date("n", $date) - 1], $format);
 
-        return @date($format, $timestamp);
+        return @date($format, $date);
     }
 }

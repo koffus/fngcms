@@ -2,8 +2,6 @@
 
 //
 // Suggest helper for Add/Edit news
-//
-
 function tagsSuggest($params){
 	global $userROW, $DSlist, $mysql, $twig;
 
@@ -17,7 +15,7 @@ function tagsSuggest($params){
 	}
 
 	// Check if tag is specified
-	if ($params == '')
+	if (empty($params))
 		return array('status' => 1, 'errorCode' => 0, 'data' => array($params, array()));
 
 	$searchTag = $params;
@@ -31,4 +29,3 @@ function tagsSuggest($params){
 }
 
 rpcRegisterFunction('plugin.tags.suggest', 'tagsSuggest');
-

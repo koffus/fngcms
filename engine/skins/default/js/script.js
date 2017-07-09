@@ -1,7 +1,7 @@
 var $ = jQuery.noConflict();
 var attachAbsoluteRowID = 0;
 
-$(document).ready(function(){
+$(function() {
     // Прокрутка вверх
     $(window).scroll(function () {
         ( $(this).scrollTop() == 0 ) ? $('.scrollTop').fadeOut() : $('.scrollTop').fadeIn();
@@ -267,7 +267,7 @@ function attachAddRow(id) {
     
     el = document.createElement('button');
     el.setAttribute('type', 'button');
-    el.setAttribute('onclick', 'document.getElementById("' + id + '").deleteRow(this.parentNode.parentNode.rowIndex);');
+    el.setAttribute('onclick', '$(this).closest("tr").remove();');
     el.setAttribute('class', 'btn btn-danger');
     el.innerHTML = '<i class="fa fa-trash"></i>';
     xCell.appendChild(el);

@@ -17,7 +17,7 @@
     <div class="container-fluid">
         <div class="row-fluid" >
             <div class="col-md-offset-4 col-md-4" id="box">
-                <h2>Login</h2>
+                <h2>{home_title}</h2>
                 <hr>
                 <form name="login" action="admin.php" method="post" class="form-horizontal">
                     <input type="hidden" name="redirect" value="{redirect}">

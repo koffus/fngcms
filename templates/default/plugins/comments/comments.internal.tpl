@@ -1,3 +1,5 @@
+
+
 <section class="section comments-list">
 	[comheader]<h5 class="section-heading">Комментарии ({comnum})</h5>[/comheader]
 

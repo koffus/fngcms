@@ -1,10 +1,10 @@
 <?php
 
 //
-// Copyright (C) 2006-2017 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2017 FNGCMS (https://github.com/russsiq/fngcms/)
 // Name: Paginator.class.php
 // Description: Paginator class
-// Author: Vitaly Ponomarev, Alexey Zinchenko
+// Author: RusiQ
 //
 
 class Paginator

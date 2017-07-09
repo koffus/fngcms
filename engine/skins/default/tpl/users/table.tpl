@@ -18,7 +18,7 @@
 					<div class="col col-md-3 col-sm-6">
 						<div class="form-group">
 							<label for="name">{{ lang['name'] }}</label>
-							<input type="text" name="name" id="name" value="{{ name }}" class="form-control">
+							<input type="text" name="name" id="name" value="{{ name }}" class="form-control" autocomplete="off" />
 						</div>
 					</div>
 					<!--/Block 1-->
@@ -215,29 +215,37 @@
 </div>
 {% endif %}
 
+<script src="{{ scriptLibrary }}/libsuggest.js"></script>
+
 <script>
 	function updateAction() {
 		mode = document.forms['form_users'].action.value;
-
 		if (mode == 'massSetStatus')
 			$('#newstatus').css( "display", "block" );
 		else
 			$('#newstatus').css( "display", "none" );
 	}
-
 	function validateAction() {
 		mode = document.forms['form_users'].action.value;
-
 		if (mode == '') {
 			alert('Необходимо выбрать действие!');
 			return;
 		}
-
 		if ((mode == 'massSetStatus')&&(document.forms['form_users'].newstatus.value < 1)) {
 			alert('{l_msge_setstatus}');
 			return;
 		}
-
 		document.forms['form_users'].submit();
 	}
+$(function() {
+    var aSuggest = new ngSuggest('name', {
+        'localPrefix': '{{ localPrefix }}',
+        'reqMethodName': 'core.users.search',
+        'lId': 'suggestLoader',
+        'hlr': 'true',
+        'stCols': 2,
+        'stColsClass': [ 'cleft', 'cright' ],
+        'stColsHLR': [ true, false ],
+    });
+});
 </script>

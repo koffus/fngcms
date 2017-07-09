@@ -69,7 +69,7 @@ if (!is_array($extras[$plugin])) {
 		//
 		// Run install function if it exists in file
 		if (($stype == 'install') and function_exists('plugin_'.$plugin.'_install')) {
-			call_user_func('plugin_'.$plugin.'_install', ($_REQUEST['action'] == 'commit')?'apply':'confirm');
+			call_user_func('plugin_'.$plugin.'_install', (isset($_REQUEST['action']) and 'commit' == $_REQUEST['action'])?'apply':'confirm');
 		}
 
 	} else {

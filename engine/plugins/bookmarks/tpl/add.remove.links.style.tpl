@@ -1,12 +1,22 @@
+{% if (global.flags.isLogged) %}
 <span id="bookmarks_{{news}}">
-    <a href="{{link}}" class="dropdown-item">
-        {% if (found) %}<img src="{{ home }}/engine/plugins/bookmarks/img/delete.gif" />
-        {% else %}<img src="{{ home }}/engine/plugins/bookmarks/img/add.gif" />{% endif %}
-        {{link_title}}
-   </a> {{counter}}
+    <a href="#" class="dropdown-item" onclick="bookmarks('{{news}}', '{{action}}'); return false;">
+        <i class="fa fa-bookmark{% if not(found) %}-o{% endif %}"></i> {{link_title}} {{counter}}
+   </a>
 </span>
 <script>
-	var el = document.getElementById('bookmarks_{{news}}').getElementsByTagName('a')[0];
-	el.setAttribute('href', '#');
-	el.setAttribute('onclick', 'bookmarks("{{url}}","{{news}}","{{action}}"); return false;');
+function bookmarks(news, action) {
+    var params = {'news': news, 'action': action};
+    $.reqJSON('{{ admin_url }}/rpc.php', 'plugin.bookmarks.update', params, function(json) {
+        elementObj = document.getElementById("bookmarks_" + news);
+        elementObj.innerHTML = json.content;
+        elementObj = document.getElementById("bookmarks_counter_" + news);
+        if(json.action == 'delete'){
+            $.notify({message: "{{ lang['bookmarks:msg_add'] }}" },{type: 'info'});
+        } else {
+            $.notify({message: "{{ lang['bookmarks:msg_delete'] }}" },{type: 'info'});
+        }
+    });
+}
 </script>
+{% endif %}

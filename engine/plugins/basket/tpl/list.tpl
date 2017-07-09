@@ -1,31 +1,39 @@
-{% if (recs > 0) %}
-<form method="post" action="/plugin/basket/update/"/>
-<h3>Ваша корзина</h3>
-<div class="table">
-<table class="basket_tb">
-<thead>
-<tr valign="top">
- <td>#</td><td>Наименование</td><td>Размер</td><td>Цена</td><td>Кол-во</td><td>Стоимость</td>
-</tr>
-</thead>
-<tbody>
-{% for entry in entries %}
-<tr>
- <td>{{ loop.index }}</td><td>{{ entry.title }}</td><td>{{ entry.xfields.news.size }}</td><td align="right">{{ entry.price }}</td><td><input name="count_{{ entry.id }}" type="text" maxlength="5" style="width: 35px;" value="{{ entry.count }}"/></td><td align="right">{{ entry.sum }}</td>
-</tr>
-{% endfor %}
-</tbody>
-<tfoot>
-<tr>
-<td colspan="4">Итого:</td>
-<td align="right">{{ total }}</td>
-</tr>
-</tfoot>
-</table>
-</div>
-<br/>
-<input type="submit" style="width: 150px;" value="Пересчитать"/> <input type="button" style="width: 150px;" value="Оформить заказ" onclick="document.location='{{ form_url }}';"/>
-</form>
-{% else %}
-Ваша корзина пуста!
-{% endif %}
+<h2 class="section-title">Моя корзина</h2>
+
+<section class="section">
+    <div class="card card-block">
+        {% if (recs > 0) %}
+        <form method="post" action="{{ home }}/plugin/basket/update/">
+            <table class="table">
+            <thead>
+                <tr><th>#</th><th>Наименование</th><th class="text-center" width="80">Кол-во</th><th class="text-right">Цена</th><th class="text-right">Стоимость</th></tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ entry.title }}</td>
+                    <td class="text-center" width="80">
+                        <input name="count_{{ entry.id }}" type="number" maxlength="5" class="form-control input-sm form-control-sm text-right" value="{{ entry.count }}"/>
+                    </td>
+                    <td class="text-right">{{ entry.price }}</td>
+                    <td class="text-right">{{ entry.sum }} <!--span class="delete" onclick="$(this).closest('tr').remove();">Удалить</span--></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr><td colspan="4">Итого:</td><td class="text-right">{{ total }}</td></tr>
+            </tfoot>
+            </table>
+            <hr class="alert-info">
+            <a href="{{ form_url }}" class="btn btn-primary">Оформить заказ</a>
+            <input type="submit" class="btn btn-secondary pull-right" value="Пересчитать"/>
+        </form>
+        {% else %}
+        <div class="text-center">
+        <p><i class="fa fa-shopping-cart fa-5x text-muted"></i></p>
+        <p>Ваша корзина пуста!</p>
+        </div>
+        {% endif %}
+    </div>
+</section>

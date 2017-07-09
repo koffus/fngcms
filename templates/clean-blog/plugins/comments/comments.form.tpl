@@ -1,109 +1,64 @@
 <script type="text/javascript">
-var cajax = new sack();
 function reload_captcha() {
-    var captc = document.getElementById('img_captcha');
-    if (captc != null) {
-        captc.src = "{captcha_url}?rand="+Math.random();
-    }
+    $('#img_captcha').attr('src', '{{ captcha_url }}?rand=' + Math.random());
 }
-
-function add_comment(){
-    // First - delete previous error message
-    var perr;
-    if (perr=document.getElementById('error_message')) {
-        perr.parentNode.removeChild(perr);
-    }
-
-    // Now let's call AJAX comments add
+function add_comment(news, action) {
     var form = document.getElementById('comment');
-    //cajax.whattodo = 'append';
-    cajax.onShow("");
-    [not-logged]
-        cajax.setVar("name", form.name.value);
-        cajax.setVar("mail", form.mail.value);
-        [captcha]
-            cajax.setVar("vcode", form.vcode.value);
-        [/captcha]
-    [/not-logged]
-    cajax.setVar("content", form.content.value);
-    cajax.setVar("newsid", form.newsid.value);
-    cajax.setVar("ajax", "1");
-    cajax.setVar("json", "1");
-    cajax.requestFile = "{post_url}"; //+Math.random();
-    cajax.method = 'POST';
-    //cajax.element = 'new_comments';
-    cajax.onComplete = function() { 
-        if (cajax.responseStatus[0] == 200) {
-            try {
-                var resRX = eval('('+cajax.response+')');
-                var nc = document.getElementById('new_comments');
-                nc.innerHTML += resRX['data'];
-                var scriptNodesList = nc.getElementsByTagName('script');
-                if (scriptNodesList.length > 0) {
-                    var wholeScript = '';
-                    for (var i = 0; i < scriptNodesList.length; i++) {
-                        var scriptCode = scriptNodesList.item(i);
-                        wholeScript += scriptCode.innerHTML + ' ';
-                        scriptNodesList.item(i).remove();
-                    }
-                    var scriptElement = document.createElement('script');
-                    scriptElement.type = 'text/javascript';
-                    scriptElement.text = wholeScript;
-                    $("head").append(scriptElement);
-                }
-                if (resRX['status']) { 
-                    // Added successfully!
-                    form.content.value = '';
-                    $('html, body').animate({ scrollTop: $(nc).offset().top-87 }, 888);
-                }
-            } catch (err) { 
-                alert('Error parsing JSON output. Result: '+cajax.response); 
-            }
-        } else {
-            alert('TX.fail: HTTP code '+cajax.responseStatus[0]);
-        }
-        [captcha]
-            reload_captcha();
-        [/captcha]
-    }
-    cajax.runAJAX();
+    var params = {
+        {% if not(global.flags.isLogged) %}
+           "name": form.name.value,
+            "mail": form.mail.value,
+            {% if (useCaptcha) %}"vcode": form.vcode.value,{% endif %}
+        {% endif %}
+        "content": form.content.value,
+        "newsid": form.newsid.value,
+        "ajax": "1",
+        "json": "1",
+        };
+    $.reqJSON('{{ admin_url }}/rpc.php', 'plugin.comments.update', params, function(json) {
+        form.content.value = '';
+        $('#new_comments').html(json.content);
+        $('html, body').animate({ scrollTop: $('#new_comments').offset().top-87 }, 888);
+        $.notify({message:'Комментарий успешно добавлен'},{type: 'success'});
+    });
+    {% if (useCaptcha) %}reload_captcha();{% endif %}
 }
 </script>
 
 <div class="respond card card-block">
-    <form id="comment" method="post" action="{post_url}" name="form" onsubmit="add_comment(); return false;"[ajax][/ajax] novalidate>
-        <input type="hidden" name="newsid" value="{newsid}" />
-        <input type="hidden" name="referer" value="{request_uri}" />
+    <form id="comment" method="post" action="{{ post_url }}" name="form" onsubmit="add_comment(); return false;" novalidate>
+        <input type="hidden" name="newsid" value="{{ newsid }}" />
+        <input type="hidden" name="referer" value="{{ request_uri }}" />
 
         <fieldset>
             <legend class="">Добавить комментарий</legend>
             <div class="row">
-                [not-logged]
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input type="text" name="name" value="{savedname}" class="form-control" placeholder="Имя" id="name" required="" />
+                {% if not(global.flags.isLogged) %}
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="text" name="name" value="{{ savedname }}" class="form-control" placeholder="Имя" id="name" required="" />
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="form-group">
-                        <input type="email" name="mail" value="{savedmail}" class="form-control" placeholder="Email" id="email" required="" />
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <input type="email" name="mail" value="{{ savedmail }}" class="form-control" placeholder="Email" id="email" required="" />
+                        </div>
                     </div>
-                </div>
-                [/not-logged]
-                [captcha]
-                <div class="col-md-4">
-                    <div class="input-group">
-                        <input type="text" name="vcode" class="form-control" placeholder="Код безопасности" id="captcha" required="" />
-                        <span class="input-group-addon p-0">
-                            <img id="img_captcha" onclick="reload_captcha();" src="{captcha_url}?rand={rand}" alt="captcha" class="captcha"/>
-                        </span>
+                    {% if (useCaptcha) %}
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="text" name="vcode" class="form-control" placeholder="Код безопасности" id="captcha" required="" />
+                            <span class="input-group-addon p-0">
+                                <img id="img_captcha" onclick="reload_captcha();" src="{{ captcha_url }}?rand={{ rand }}" alt="captcha" class="captcha"/>
+                            </span>
+                        </div>
                     </div>
-                </div>
-                [/captcha]
+                    {% endif %}
+                {% endif %}
             </div>
             <div class="form-group">
-                {bbcodes}
-                <!-- SMILES -->
+                {{ bbcodes }}
+                {% if (useSmilies) %}
                 <div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
                     <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
@@ -112,15 +67,15 @@ function add_comment(){
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             </div>
                             <div class="modal-body text-center">
-                                {smilies}
+                                {{ smilies }}
                             </div>
                             <div class="modal-footer">
-                                <button type="cancel" class="btn btn-default" data-dismiss="modal">{l_cancel}</button>
+                                <button type="cancel" class="btn btn-default" data-dismiss="modal">{{ lang['cancel'] }}</button>
                             </div>
                         </div>
                     </div>
                 </div>
-                <!-- /SMILES -->
+                {% endif %}
                 <textarea onkeypress="if(event.keyCode==10 || (event.ctrlKey && event.keyCode==13)) {add_comment();}" name="content" id="content" rows="8" class="form-control message-content" placeholder="Комментарий" required=""></textarea>
             </div>
             <div class="form-group">

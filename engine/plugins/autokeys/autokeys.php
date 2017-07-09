@@ -32,8 +32,8 @@ class autoKeysNewsFilter extends NewsFilter {
 
 		$extends = 'js'; //$extends = pluginGetVariable($plugin,'extends') ? pluginGetVariable($plugin,'extends') : 'js';
 
-		$tpath = locatePluginTemplates(array('editnews'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
-		$xt = $twig->loadTemplate($tpath['editnews'].'/editnews.tpl');
+		$tpath = locatePluginTemplates(array('news'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
+		$xt = $twig->loadTemplate($tpath['news'].'/news.tpl');
         $tvars['extends']['block'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
 			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_edit')))),
@@ -47,8 +47,8 @@ class autoKeysNewsFilter extends NewsFilter {
 
 		$extends = 'js'; //$extends = pluginGetVariable($plugin,'extends') ? pluginGetVariable($plugin,'extends') : 'js';
 
-		$tpath = locatePluginTemplates(array('addnews'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
-		$xt = $twig->loadTemplate($tpath['addnews'].'/addnews.tpl');
+		$tpath = locatePluginTemplates(array('news'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
+		$xt = $twig->loadTemplate($tpath['news'].'/news.tpl');
 		$tvars['extends']['block'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
 			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_add')))),

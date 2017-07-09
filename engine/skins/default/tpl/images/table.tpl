@@ -351,7 +351,7 @@
 
 <!-- Main scripts -->
 <script>
-$(document).ready(function(){
+$(function() {
 
 	$('#mfs').html('Максимальный размер изображения: ' + formatSize({maxSize})+'. Допустимые расширения изображений: {listExt}');
 

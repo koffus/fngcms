@@ -316,7 +316,7 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
                         $publish_error = 1;
                         break;
                     }
-                    array_push($fieldlist, $field['name'] . " " . $field['type'] . " " . $field['params']);
+                    array_push($fieldlist, $field['name'] . " " . $field['type'] . (!empty($field['params']) ? ' ' . $field['params'] : ''));
                 } else if ($field['action'] != 'drop') {
                     $publish_result = 'Unknown action';
                     $publish_error = 1;
@@ -381,9 +381,9 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
                 }
                 if ($field['action'] == 'cmodify') {
                     if (!$ft) {
-                        $query = "alter table " . $chgTableName . " add column `" . $field['name'] . "` " . $field['type'] . " " . $field['params'];
+                        $query = "alter table " . $chgTableName . " add column `" . $field['name'] . "` " . $field['type'] . (!empty($field['params']) ? ' ' . $field['params'] : '');
                     } else {
-                        $query = "alter table " . $chgTableName . " change column `" . $field['name'] . "` `" . $field['name'] . "` " . $field['type'] . " " . $field['params'];
+                        $query = "alter table " . $chgTableName . " change column `" . $field['name'] . "` `" . $field['name'] . "` " . $field['type'] . (!empty($field['params']) ? ' ' . $field['params'] : '');
                     }
                     $mysql->query($query);
                     array_push($publish, array('title' => $publish_title, 'descr' => "SQL: [$query]", 'result' => ($publish_result ? $publish_result : ($error ? __('idbc_fail') : __('idbc_ok')))));

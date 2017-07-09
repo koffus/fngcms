@@ -264,11 +264,11 @@ class News
         if ($row['editdate'] > $row['postdate']) {
             // [TWIG] news.flags.isUpdated, news.update, news.updateStamp
             $tvars['vars']['news']['flags']['isUpdated'] = true;
-            $tvars['vars']['news']['update'] = Lang::retDate($config['timestamp_updated'], $row['editdate']);
+            $tvars['vars']['news']['update'] = Lang::retDate(timestamp, $row['editdate']);
             $tvars['vars']['news']['updateStamp'] = $row['editdate'];
 
             $tvars['regx']['[\[update\](.*)\[/update\]]'] = '$1';
-            $tvars['vars']['update'] = Lang::retDate($config['timestamp_updated'], $row['editdate']);
+            $tvars['vars']['update'] = Lang::retDate(timestamp, $row['editdate']);
             $tvars['vars']['updateStamp'] = $row['editdate'];
         } else {
             // [TWIG] news.flags.isUpdated, news.update, news.updateStamp

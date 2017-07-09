@@ -158,7 +158,6 @@ function systemConfigEditForm(){
 		),
 		'php_self' => $PHP_SELF,
 		'timestamp_active_now' => Lang::retDate($config['timestamp_active'], time()),
-		'timestamp_updated_now' => Lang::retDate($config['timestamp_updated'], time()),
 		'token' => genUToken('admin.configuration'),
 		'multiConfig' => $mConfig,
 	);

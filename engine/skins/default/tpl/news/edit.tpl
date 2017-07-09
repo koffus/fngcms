@@ -20,7 +20,7 @@
 				<!-- MAIN CONTENT -->
 				<div class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title"> {{ lang['maincontent'] }}</h4>
+						<h4 class="panel-title"><i class="fa fa-th-list"></i> {{ lang['maincontent'] }}</h4>
 					</div>
 					<div id="maincontent" class="panel-body">
 						<div class="form-group">
@@ -253,7 +253,7 @@
 							{% endif %}
 							<button type="button" onClick="return preview();" title="{{ lang.editnews['preview'] }}" class="btn btn-primary"><i class="fa fa-eye"></i></button>
 							{% if flags.deleteable %}
-								<button type="button" onClick="confirmIt('admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;selected_news[]={{ id }}&amp;token={{ token }}', '{{ lang.editnews['sure_del'] }}')" title="{{ lang.editnews['delete'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+								<button type="button" onClick="confirmIt('admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;selected_news[]={{ id }}&amp;token={{ token }}', '{{ lang['sure_del'] }}')" title="{{ lang.editnews['delete'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
 							{% endif %}
 						</div>
 					</div>
@@ -394,7 +394,7 @@
 					</tbody>
 					</table>
 					<div class="panel-footer text-right">
-						<button type="submit" title="{{ lang.editnews['comdelete'] }}" onClick="if (!confirm('{{ lang.editnews['sure_del_com'] }}')) {return false;}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+						<button type="submit" title="{{ lang.editnews['comdelete'] }}" onClick="if (!confirm('{{ lang['sure_del'] }}')) {return false;}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
 					</div>
 					{% endif %}
 				</div>
@@ -420,7 +420,6 @@
 	{% endfor %}
 {% endif %}
 
-<script src="{{ scriptLibrary }}/ajax.js"></script>
 <script src="{{ scriptLibrary }}/libsuggest.js"></script>
 
 <link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">
@@ -498,43 +497,25 @@ document.onkeydown = function(e) {
 </script>
 
 <script>
-
 var searchDouble = function() {
-
-	$.ajax({
-		type: 'POST',
-		url: '{{ admin_url }}/rpc.php',
-		dataType: 'text',
-		data: {
-			json: 1,
-			rndval: new Date().getTime(),
-			methodName : 'admin.news.double',
-			params: json_encode({
-					'token': '{{ token }}',
-					'title': $('#newsTitle').val(),
-					'news_id': '{{ id }}',
-					'mode': 'edit',
-				}),
-		},
-		beforeSend: function() {ngShowLoading();},
-		error: function() {ngHideLoading();$.notify({message: "{{ lang['rpc_httpError'] }}"},{type: 'danger'});},
-	}).done(function( data ) {
-		ngHideLoading();
-		try {var resTX = eval('('+data+')');} catch (err) {$.notify({message:"{{ lang['rpc_jsonError'] }} "+data},{type: 'danger'});}
-		if (!resTX['status']) {
-			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else if (resTX['info']) {
-			$.notify({message:"{{ lang['info'] }}<br/>"+resTX['info']},{type: 'info'});
-		} else {
-			var txt = '<br/><ul class="alert alert-info list-unstyled alert-dismissible"><button type="button" class="close" data-dismiss="alert" >&times;</button>';
-			$.each(resTX['data'],function(index, value) {
-				txt += '<li>#' +value.id+ ' &#9;&#9;<a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a></li>';
-			});
-			$('#searchDouble').html(txt+'</ul>');
-		}
-	});
+    if ($.trim($('#newsTitle').val()).length < 4)
+        return $.notify({message: '{{ lang.addnews['msge_title'] }}'},{type: 'danger'});
+    var url = '{{ admin_url }}/rpc.php';
+    var method = 'admin.news.double';
+    var params = {'token': '{{ token }}','title': $('#newsTitle').val(),'news_id': '{{ id }}','mode': 'edit',};
+    $.reqJSON(url, method, params, function(json) {
+        $('#searchDouble').html('');
+        if (json.info) {
+            $.notify({message:json.info},{type: 'info'});
+        } else {
+            var txt = '<ul class="alert alert-info list-unstyled alert-dismissible"><button type="button" class="close" data-dismiss="alert" >&times;</button>';
+            $.each(json.data,function(index, value) {
+                txt += '<li>#' +value.id+ ' &#9;&#9;<a href="'+value.url+'" target="_blank" class="alert-link">'+value.title +'</a></li>';
+            });
+            $('#searchDouble').html(txt+'</ul>');
+        }
+    });
 };
-
 </script>
 
 {{ includ_bb }}

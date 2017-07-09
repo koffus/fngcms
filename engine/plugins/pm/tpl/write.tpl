@@ -63,7 +63,6 @@
 	function systemInit() {
 		new ngSuggest('to_username',
 			{
-				'iMinLen' : 1,
 				'stCols' : 1,
 				'stColsClass': ['cleft'],
 				'lId' : 'suggestLoader',

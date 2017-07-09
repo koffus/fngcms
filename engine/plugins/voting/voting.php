@@ -18,13 +18,16 @@ function plugin_voting_page() {
 }
 
 function plugin_voting() {
-	global $mysql, $tpl, $template, $REQUEST_URI;
+	global $template;
 
 	$voteid = intval(pluginGetVariable('voting','active'));
 	$rand = pluginGetVariable('voting','rotate');
-	$voted = isset($_COOKIE['ngcms_voting'])?explode(',',$_COOKIE['ngcms_voting'].''):array();
+	$voted = isset($_COOKIE['voting']) ? explode('|', $_COOKIE['voting']) : array();
+    $voted = array_flip($voted);
 	$skin = pluginGetVariable('voting','localSkin');
-	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin))||(!$skin)) { $skin = 'basic'; }
+	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin)) or (!$skin)) {
+        $skin = 'basic';
+    }
 
 	$template['vars']['voting'] = plugin_showvote($skin, 4, $voteid, $rand, $voted);
 }
@@ -117,10 +120,10 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 		// Choose template name for this operation
 		switch ($mode) {
 			case '0':
-			case '1': $tpl_prefix = ($dup||$row['closed']||($row['regonly'] and !$username))?'shls':'edls'; break;
+			case '1': $tpl_prefix = ($dup or $row['closed'] or ($row['regonly'] and !$username))?'shls':'edls'; break;
 			case '2': $tpl_prefix = 'edls'; break;
 			case '3': $tpl_prefix = 'shls'; break;
-			case '4': $tpl_prefix = ($dup||$row['closed']||($row['regonly'] and !$username))?'sh':'ed'; break;
+			case '4': $tpl_prefix = ($dup or $row['closed'] or ($row['regonly'] and !$username))?'sh':'ed'; break;
 			case '5': $tpl_prefix = 'ed'; break;
 			case '6': $tpl_prefix = 'sh'; break;
 		}
@@ -133,7 +136,7 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 		 	'name' => $lrow['name'],
 		 	'num' => $num,
 		 	'count' => $lrow['cnt'],
-		 	'perc' => intval($lrow['cnt']*100/$cnt),
+		 	'perc' => round($lrow['cnt']*100/$cnt, 1),
 		 	'post_url' => $post_url,
 		 	'tpl_dir' => admin_url.'/plugins/voting/tpl/skins/'.$tpl_skin);
 			$tpl->vars($tpl_prefix.'_vline', $tvars);
@@ -184,22 +187,22 @@ function plugin_voting_screen($flagPanel = false) {
 	global $mysql, $tpl, $template, $SUPRESS_TEMPLATE_SHOW, $userROW, $ip;
 
 	// Determine calling mode
-	$is_ajax = (($_GET['style'] == 'ajax')||($_POST['style'] == 'ajax'))?1:0;
+	$is_ajax = (isset($_POST['style']) and 'ajax' == $_POST['style'])?1:0;
 
 	// Add own header for AJAX calls
 	if ($is_ajax) {
 		@header('Content-type: text/html; charset="UTF-8"');
 	}
 
-	$votedList = explode(',',$_COOKIE['ngcms_voting']);
+	$votedList = isset($_COOKIE['voting']) ? explode('|', $_COOKIE['voting']) : array();
 
 	// Get current skin
 	$skin = pluginGetVariable('voting','localSkin');
-	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin))||(!$skin)) { $skin = 'basic'; }
+	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin)) or (!$skin)) { $skin = 'basic'; }
 
 	// ========================================
 	// MODE: Vote request
-	if (($_REQUEST['mode'] == 'vote') and ($choice = intval($_REQUEST['choice']))) {
+	if (isset($_REQUEST['mode']) and ($_REQUEST['mode'] == 'vote') and ($choice = intval($_REQUEST['choice']))) {
 	 // Search for poll and poll line
 		if (($row = $mysql->record("select * from ".prefix."_voteline where id = $choice")) and ($vrow = $mysql->record("select * from ".prefix."_vote where id = ".$row['voteid']))) {
 			// Line was found
@@ -227,7 +230,7 @@ function plugin_voting_screen($flagPanel = false) {
 				} else {
 					if (!array_key_exists($vrow['id'],$votedList)) {
 						array_push($votedList,$vrow['id']);
-						@setcookie('ngcms_voting', implode(",",$votedList), time() + 3600 * 24 * 365, '/');
+						@setcookie('voting', implode("|",$votedList), time() + 3600 * 24 * 365, '/');
 					}
 				}
 
@@ -245,7 +248,7 @@ function plugin_voting_screen($flagPanel = false) {
 			$template['vars']['mainblock'] = __('voting:msg.norec');
 			if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 		}
-	 } else if (($_REQUEST['mode'] == 'show') and ($voteid = intval($_REQUEST['voteid']))) {
+	 } else if (isset($_REQUEST['mode']) and ($_REQUEST['mode'] == 'show') and ($voteid = intval($_REQUEST['voteid']))) {
 		$template['vars']['mainblock'] = plugin_showvote($skin, $flagPanel?6:3, $voteid);
 		if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 	 } else {

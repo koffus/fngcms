@@ -143,7 +143,7 @@
 		<input class="btn btn-secondary" type="button" onClick="preview()" value="Просмотр" />
 		
 		{% if flags.deleteable %}
-		<button class="btn btn-secondary" type="button" onClick="confirmIt('{{ deleteURL }}', '{{ lang.editnews['sure_del'] }}')"> <i class="fa fa-trash"></i></button>
+		<button class="btn btn-secondary" type="button" onClick="confirmIt('{{ deleteURL }}', '{{ lang['sure_del'] }}')"> <i class="fa fa-trash"></i></button>
 		{% endif %}
 		</div>
 	</div>

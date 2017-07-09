@@ -46,9 +46,9 @@ class Database
             return true;
         } catch (\PDOException $e) {
             if (!$noerror) {
+                $this->errorReport('connect', 'new PDO', $e);
                 die('<h1>An Error Occurred</h1><hr />' . $e->getCode() . '!');
             }
-            $this->errorReport('connect', 'new PDO', $e);
             $this->error = 1;
             return false;
         }

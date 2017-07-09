@@ -7,7 +7,7 @@
 			{{ mainblock }}
 		</main>
 
-		<aside class="col-lg-3 offset-lg-1">
+		<aside class="sidebar col-lg-3 offset-lg-1">
 
 			{% if pluginIsActive('archive') %}
 				{{ callPlugin('archive.show', {'maxnum' : 12, 'counter' : 1, 'tcounter' : 1, 'template': 'archive', 'cacheExpire': 60}) }}
@@ -15,6 +15,10 @@
 
 			{% if pluginIsActive('calendar') %}
 				{{ callPlugin('calendar.show', {}) }}
+			{% endif %}
+            
+			{% if pluginIsActive('bookmarks') %}
+				{{ plugin_bookmarks }}
 			{% endif %}
 
 			{% if pluginIsActive('lastcomments') %}

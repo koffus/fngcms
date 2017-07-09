@@ -1,1 +1,3 @@
-<span id="bookmarks_{{news}}"><a href="#" title="{{link_title}}" onclick='bookmarks("{{url}}","{{news}}","{{action}}"); return false;'>{{text}}</a> {{counter}}</span>
+<a href="#" class="dropdown-item" onclick="bookmarks('{{news}}', '{{action}}'); return false;">
+    <i class="fa fa-bookmark{% if not(found) %}-o{% endif %}"></i> {{link_title}} {{counter}}
+</a>

@@ -27,8 +27,7 @@
     <script src="{{ scriptLibrary }}/bootstrap-4.0.0/bootstrap.js"></script>
     <script src="{{ scriptLibrary }}/js/notify-3.1.5.js"></script>
     <!-- Theme JavaScript -->
-    <script src="{{ scriptLibrary }}/functions.js"></script>
-    <script src="{{ scriptLibrary }}/ajax.js"></script>
+    <script src="{{ scriptLibrary }}/engine.js"></script>
     <script src="{{ tpl_url }}/js/script.js"></script>
     {% if pluginIsActive('rss_export') %}<link href="{{ home }}/rss.xml" rel="alternate" type="application/rss+xml" title="RSS" />{% endif %}
 </head>

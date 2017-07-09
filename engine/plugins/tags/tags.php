@@ -385,7 +385,7 @@ function plugin_tags_tag($params = array()) {
 		if (pluginGetVariable('tags', 'tpage_paginator')) {
 			$tagCount = $mysql->result("select count(*) as cnt from ".prefix."_tags_index where tagID = ".db_squote($rec['id']));
 			$pagesCount = ceil($tagCount / $perPage);
-			$pageNo = intval($_REQUEST['page']);
+			$pageNo = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 			if ($pageNo < 1)
 				$pageNo = 1;
 
@@ -487,7 +487,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 		if (pluginGetVariable('tags', 'ppage_paginator')) {
 			$tagCount = $mysql->result("select count(*) as cnt from ".prefix."_tags");
 			$pagesCount = ceil($tagCount / $perPage);
-			$pageNo = intval($_REQUEST['page']);
+			$pageNo = isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 1;
 			if ($pageNo < 1)
 				$pageNo = 1;
 

@@ -184,13 +184,22 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 .article-item-text .article-one-footer a:hover {
     color: #0275d8;
 }
+.sidebar {
+    margin-top: 1rem;
+}
 .widget {
 	margin-bottom: 2.5rem;
+    position: relative;
+}
+.widget::after {
+    display: block;
+    content: "";
+    clear: both;
 }
 .widget-title {
 	font-size: 1.2rem;
 	margin-bottom: 1rem;
-	font-weight: 400;
+	font-weight: 300;
 	border-bottom: 2px solid #222;
 	color: #222;
 	padding-bottom: 8px;

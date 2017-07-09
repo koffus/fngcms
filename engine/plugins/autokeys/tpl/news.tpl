@@ -11,30 +11,11 @@ $(function() {
 });
 
 var autokeysAjaxUpdate = function() {
-	$.ajax({
-		type: 'POST',
-		url: '{{ admin_url }}/rpc.php',
-		dataType: 'text',
-		data: {
-			json: 1,
-			rndval: new Date().getTime(),
-			methodName : 'plugin.autokeys.generate',
-			params: json_encode({
-					'token': '{{ token }}', 
-					'title' : $('#newsTitle').val(),
-					'content' : $('#ng_news_content').val(),
-				}),
-		},
-		beforeSend: function() {ngShowLoading();},
-		error: function() {ngHideLoading();$.notify({message: '{{ lang['rpc_httpError'] }}'},{type: 'danger'});},
-	}).done(function( data ) {
-		ngHideLoading();
-		try {var resTX = eval('('+data+')');} catch (err) {$.notify({message:'{{ lang['rpc_jsonError'] }} '+data},{type: 'danger'});}
-		if (!resTX['status']) {
-			$.notify({message:'Error ['+resTX['errorCode']+']: '+resTX['errorText']},{type: 'danger'});
-		} else {
-			$("#newsKeywords").val(resTX['data']);
-		}
-	});
+    if (form.ng_news_content{% if (flags.edit_split) %}_short{% endif %}.value == '' || form.title.value == '')
+        return $.notify({message: '{{ lang.addnews['msge_preview'] }}'},{type: 'danger'});
+    var url = '{{ admin_url }}/rpc.php';
+    var method = 'plugin.autokeys.generate';
+    var params = {'token': '{{ token }}', 'title': $('#newsTitle').val(), 'content': $('#ng_news_content').val()};
+    $.reqJSON(url, method, params, function(json) {$("#newsKeywords").val(json.data);});
 };
 </script>

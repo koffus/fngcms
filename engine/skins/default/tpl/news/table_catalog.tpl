@@ -1,4 +1,3 @@
-<script src="{{ scriptLibrary }}/ajax.js"></script>
 <script src="{{ scriptLibrary }}/admin.js"></script>
 <script src="{{ scriptLibrary }}/libsuggest.js"></script>
 <!-- DEBUG WINDOW <div id="debugWin" style="overflow: auto; position: absolute; top: 160px; left: 230px; width: 400px; height: 400px; background: white; 4px double black; padding: 2px; margin: 2px;">DEBUG WINDOW</div> -->

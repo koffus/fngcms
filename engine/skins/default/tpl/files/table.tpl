@@ -296,7 +296,7 @@
 
 <!-- Main scripts -->
 <script>
-$(document).ready(function(){
+$(function() {
 
 	$('#mfs').html('Максимальный размер файлов: ' + formatSize({maxSize})+'<br>Допустимые расширения файлов: {listExt}');
 

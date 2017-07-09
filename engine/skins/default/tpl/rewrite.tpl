@@ -77,7 +77,6 @@
 	</div>
 </div>
 
-<script src="{{ scriptLibrary }}/ajax.js"></script>
 <script src="{{ scriptLibrary }}/admin.js"></script>
 
 <script>
@@ -143,37 +142,20 @@ function reFillCmd(plugin) {
 
 //
 function reServerSubmit() {
- var dOut = json_encode(dData);
- var linkTX = new sack();
- linkTX.requestFile = 'rpc.php';
- linkTX.setVar('json', '1');
- linkTX.setVar('token', '{{ token }}');
- linkTX.setVar('methodName', 'admin.rewrite.submit');
- linkTX.setVar('params', dOut);
- linkTX.method='POST';
- linkTX.onComplete = function() {
- if (linkTX.responseStatus[0] == 200) {
- try {
- 	 resTX = eval('('+linkTX.response+')');
- 	} catch (err) {
-		$.notify({message: '{{ lang['fmsg.save.json_parse_error'] }} '+linkTX.response},{type: 'danger'});
-	}
-
- 	// First - check error state
- 	if (!resTX['status']) {
- 		// Mark a row if recID is set
- 		if (resTX['recID'])
- 			document.getElementById('re.row.'+resTX['recID']).style.background = '#AAAAAA';
- 		// ERROR. Display it
-		$.notify({message: 'Error ('+resTX['errorCode']+'): '+resTX['errorText']},{type: 'danger'});
- 	} else {
-		$.notify({message: '{{ lang['fmsg.save.done'] }}'},{type: 'success'});
- 	}
- } else {
-	$.notify({message: '{{ lang['fmsg.save.httperror'] }} '+linkTX.responseStatus[0]},{type: 'danger'});
- }
- }
- linkTX.runAJAX();
+    var params = {'token':'{{ token }}'};
+    // Merge dData into params // add token to params
+    $.extend( params, dData );
+    $.reqJSON('rpc.php', 'admin.rewrite.submit', params, function(json) {
+        if (!json.status) {
+            // Mark a row if recID is set
+            if (json.recID)
+                $('#re\\.row\\.'+json.recID).css('backgroundColor', '#AAAAAA');
+            // ERROR. Display it
+            $.notify({message: 'Error ('+json.errorCode+'): '+json.errorText},{type: 'danger'});
+        } else {
+            $.notify({message: '{{ lang['fmsg.save.done'] }}'},{type: 'success'});
+        }
+    });
 }
 
 //

@@ -253,41 +253,21 @@
 	</div>
 </div>
 
-<!--script src="{{ scriptLibrary }}/js/markdown.js">$('#lastCommitDate').html(markdown.toHTML(json[0].commit.message));</script-->
-
 <script>
 $(function(){
-    $('#ghapidata').html('<div id="loader"><img src="css/loader.gif" alt="loading..."></div>');
-    
     var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/v0.9.6.2-alpha...master";
     var reqReleas = "https://api.github.com/repos/russsiq/fngcms/releases/latest";
     var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
-
-    /*$('#compare').bind( 'click', function() {
-        requestJSON(reqCompare, function(json) {
-            if(json.message == "Not Found") {
-                alert(compare = "No Info Found");
-            } else {
-                var files = json.files;
-                var list = $('<dl>');
-                list.attr("class", "dl-horizontal");
-                $(files).each(function() {
-                    list.append('<dt>' + this.status + '</dt>');
-                    list.append('<dd><a href="'+ this.blob_url +'" target="_blank">' + this.filename + '</a></dd>');
-                });
-                alert(list.html());
-                showModal(list.html());
-            }
-        });
-        return false;
-    });*/
-            
     requestJSON(reqReleas, function(json) {
         if(json.message == "Not Found") {
             $('#lastRelease').html("No Info Found");
         } else {
-            $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ '+
-                json.published_at.slice(0, 10) + ' ]');
+            var currentVersion = '{{ currentVersion }}';
+            if (currentVersion === json.tag_name) {
+                $('#lastRelease').html('Обновление не требуется');
+            } else {
+                $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ ' + json.published_at.slice(0, 10) + ' ]');
+            }
         }
     });
     requestJSON(reqCommit, function(json) {
@@ -301,10 +281,20 @@ $(function(){
     });
     function requestJSON(url, callback) {
         $.ajax({
-          url: url,
-          complete: function(xhr) {
-            callback.call(null, xhr.responseJSON);
-          }
+            url: url,
+            beforeSend: function(jqXHR) {
+                $('#list-files').html('Загрузка списка');
+                jqXHR.overrideMimeType("application/json; charset=UTF-8");
+                // Repeat send header ajax
+                jqXHR.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            },
+        })
+        .done(function(data, textStatus, jqXHR) {
+            if (typeof(data) == 'object') {
+                callback.call(null, data);
+            } else {
+                $.notify({message: '<i><b>Bad reply from server</b></i>'},{type: 'danger'});
+            }
         });
     }
 });

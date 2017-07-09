@@ -28,7 +28,6 @@ function admGeneratePluginList()
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
-    // Load plugin list  
     $extras = $cPlugin->getList();
 
     $pCount = array(0 => 0, 1 => 0, 2 => 0, 3 => 0);
@@ -116,7 +115,7 @@ function admGeneratePluginList()
 
 function repoSync()
 {
-    global $extras, $config;
+    /*global $extras, $config;
     if (($vms = cacheRetrieveFile('plugversion.dat', 86400)) === false) {
         // Prepare request to repository
         $paramList = array('_ver=' . urlencode(engineVersion), 'UUID=' . $config['UUID']);
@@ -130,7 +129,8 @@ function repoSync()
         cacheStoreFile('plugversion.dat', $vms);
     }
     $rps = unserialize($vms);
-    return is_array($rps) ? $rps : array();
+    return is_array($rps) ? $rps : array();*/
+    return array();
 }
 
 // ==============================================================

@@ -164,7 +164,7 @@
 </div>
 
 <script>
-$(document).ready(function(){
+$(function() {
 	$('#modal-url-submit').click(function() {
 		var activeTab = $(this).parents('#modal-url').find('.tab-pane.active').prop('id');
 		

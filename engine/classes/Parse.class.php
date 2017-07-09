@@ -202,6 +202,8 @@ class Parse
 
         while (preg_match("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", $content, $null))
             $content = preg_replace("#\[spoiler=\"(.+?)\"\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head"><b>$1</b></div><div class="sp-body">$2</div></div>', $content);
+        while (preg_match("#\[spoiler=(.+?)\](.*?)\[/spoiler\]#is", $content, $null))
+            $content = preg_replace("#\[spoiler=(.+?)\](.*?)\[/spoiler\]#is", '<div class="spoiler"><div class="sp-head"><b>$1</b></div><div class="sp-body">$2</div></div>', $content);
 
         // Process Images
         // Possible format:

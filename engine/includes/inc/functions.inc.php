@@ -39,7 +39,6 @@ function db_dquote($string)
 // HTML & special symbols protection
 function secure_html($string)
 {
-
     if (is_string($string)) {
         $string = htmlspecialchars($string, ENT_QUOTES, 'UTF-8');
         $string = str_replace(array('{', '<', '>', '"', "'"), array('&#123;', '&lt;', '&gt;', '&#34;', '&#039;'), $string);
@@ -51,7 +50,6 @@ function secure_html($string)
 
 function formatSize($bytes)
 {
-
     if ($bytes >= 1073741824) {
         $bytes = number_format($bytes / 1073741824, 2) . ' GB';
     } elseif ($bytes >= 1048576) {
@@ -70,7 +68,6 @@ function formatSize($bytes)
 
 function DirSize($directory)
 {
-
     if (!is_dir($directory))
         return -1;
     $size = 0;
@@ -194,13 +191,10 @@ function BBCodes($area = false, $template = false)
     global $config, $tpl, $mod;
 
     if ($config['use_bbcodes']) {
-
         Lang::load('bbcodes');
-
         $tvars['vars'] = array(
             'area' => $area ? $area : "''",
         );
-
         if (defined('ADMIN')) {
             if ($template and !in_array($template, array('pmmes', 'editcom', 'news', 'static')))
                 return false;
@@ -210,7 +204,6 @@ function BBCodes($area = false, $template = false)
         } else {
             $tplDir = tpl_site;
         }
-
         $tpl->template('bbcodes', $tplDir);
         $tpl->vars('bbcodes', $tvars);
         return $tpl->show('bbcodes');
@@ -219,7 +212,6 @@ function BBCodes($area = false, $template = false)
 
 function phphighlight($content = '')
 {
-
     $f = array('<br>', '<br />', '<p>', '&lt;', '&gt;', '&amp;', '&#124;', '&quot;', '&#036;', '&#092;', '&#039;', '&nbsp;', '\"');
     $r = array("\n", "\n", "\n", '<', '>', '&', '\|', '"', '$', '', '\'', '', '"');
     $content = str_replace($f, $r, $content);
@@ -1303,10 +1295,10 @@ function ngSYSLOG($identity, $action, $user, $status)
         'ip' => db_squote($ip),
         'plugin' => db_squote($identity['plugin']),
         'item' => db_squote($identity['item']),
-        'ds' => intval($identity['ds']),
-        'ds_id' => intval($identity['ds_id']),
+        'ds' => isset($identity['ds']) ? intval($identity['ds']) : 0,
+        'ds_id' => isset($identity['ds_id']) ? intval($identity['ds_id']) : 0,
         'action' => db_squote($action['action']),
-        'alist' => db_squote(serialize($action['list'])),
+        'alist' => isset($action['list']) ? db_squote(serialize($action['list'])) : 0,
         'userid' => is_array($user) ? intval($user['id']) : (($user === NULL) ? intval($userROW['id']) : 0),
         'username' => is_array($user) ? db_squote($user['name']) : (($user === NULL) ? db_squote($userROW['name']) : db_squote($user)),
         'status' => intval($status[0]),
@@ -1892,12 +1884,12 @@ function dd($obj)
 
 // Выводит текущую дату в формате, выбранном в админке.
 // А так же помещает её в тег, который динамически обновляется под клиента.
-function cDate($date, $format = false, $relative = true, $itemprop = 'datePublished')
+function cDate($date, $format = timestamp, $itemprop = false)
 {
 
-    if (!$format) $format = timestamp;//'j F Yг. в G:i';
+    $itemprop = ' itemprop="'.($itemprop ? $itemprop : 'datePublished').'"';
 
-    return '<time datetime="' . date('c', $date) . '" data-type="' . $format . '" data-relative="' . $relative . '">' . Lang::retDate($format, $date) . '</time>';
+    return '<time datetime="' . date('c', $date) . '" data-type="'. $format .'"'. $itemprop . '>' . Lang::retDate($format, $date) . '</time>';
 }
 
 /**

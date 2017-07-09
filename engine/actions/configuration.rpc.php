@@ -37,10 +37,8 @@ function admConfigurationTestDB($params)
     // Check if DB connection params are correct
     $sqlTest = new Database;
     if (!$sqlTest->connect($params['dbhost'], $params['dbuser'], $params['dbpasswd'], $params['dbname'], 1)) {
-        if ($sqlTest->error < 2)
-            return array('status' => 0, 'errorCode' => 4, 'errorText' => __('dbcheck_noconnect'));
-        return array('status' => 0, 'errorCode' => 5, 'errorText' => __('dbcheck_nodb'));
-    };
+        return array('status' => 0, 'errorCode' => 4, 'errorText' => __('dbcheck_noconnect'));
+    }
 
     return (array('status' => 1, 'errorCode' => 0, 'errorText' => __('dbcheck_ok')));
 }
