@@ -121,7 +121,7 @@ function bookmarks_view(){
     $tpath = locatePluginTemplates(array('entries', 'bookmarks'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
 
     $maxlength = intval(pluginGetVariable('bookmarks','maxlength'));
-    if (!$maxlength)	{ $maxlength = 100; }
+    if (!$maxlength) { $maxlength = 100; }
 
     // preload user's bookmarks
     if (!$bookmarksLoaded and pluginGetVariable('bookmarks', 'sidebar'))
@@ -130,12 +130,13 @@ function bookmarks_view(){
     $output = '';
     $count = 0;
     
+    $result = array();
     foreach ($bookmarksList as $row){
         $count++;
-        if($count > intval(pluginGetVariable('bookmarks', 'max_sidebar'))) break; 
+        if($count > intval(pluginGetVariable('bookmarks', 'max_sidebar')))
+            break; 
 
         if (mb_strlen($row['title'], 'UTF-8') > $maxlength) {
-        
             $title = mb_substr(secure_html($row['title']), 0, $maxlength, 'UTF-8') . "...";
         } else {
             $title = secure_html($row['title']);
@@ -155,7 +156,7 @@ function bookmarks_view(){
 
     $tVars = array (
         'tpl_url' => tpl_url,
-        'entries' => ($count ? $result : __('bookmarks:noentries')),
+        'entries' => $result,
         'bookmarks_page' => generatePluginLink('bookmarks', null),
         'count' => $count,
         );

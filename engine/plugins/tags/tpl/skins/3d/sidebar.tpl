@@ -1,9 +1,12 @@
 <div class="widget widget-tags">
-    <h3 class="widget-title">Облако тегов</h3>
-    <div class="widget-content">
+    <div class="widget-header">
+        <h4 class="widget-title">Облако тегов</h4>
+    </div>
+    <div class="widget-body">
         <div id="insertTagCloud"><ul class="list-unstyled">{entries}</ul></div>
-        <br>
-        <a href="{home}/plugin/tags/">Показать все теги</a>
+    </div>
+    <div class="widget-footer text-muted">
+        <p><a href="{home}/plugin/tags/">Показать все теги</a></p>
     </div>
 </div>
 

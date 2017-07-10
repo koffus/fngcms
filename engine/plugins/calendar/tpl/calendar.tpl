@@ -1,17 +1,9 @@
-{% if (not flags.ajax) %}
-<script>
-    function ng_calendar_walk(month, year, offset, category) {
-        var url = '{{ admin_url }}/rpc.php';
-        var method = 'plugin.calendar.show';
-        var params = {'year': year,'offset': offset,'month': month,'category': category,};
-        $.reqJSON(url, method, params, function(json) {$('#ngCalendarDiv').html(json.data);});
-    }
-</script>
-{% endif %}
 <div id="ngCalendarDiv">
     <div class="widget widget-calendar">
-        <h3 class="widget-title">{{ lang['calendar:plugin_title'] }}</h3>
-        <div class="widget-content">
+        <div class="widget-header">
+            <h4 class="widget-title">{{ lang['calendar:plugin_title'] }}</h4>
+        </div>
+        <div class="widget-body">
             <table class="table table-sm" id="calendar">
                 <thead>
                     <tr id="month">
@@ -50,3 +42,11 @@
         </div>
     </div>
 </div>
+<script>
+    function ng_calendar_walk(month, year, offset, category) {
+        var url = '{{ admin_url }}/rpc.php';
+        var method = 'plugin.calendar.show';
+        var params = {'year': year,'offset': offset,'month': month,'category': category,};
+        $.reqJSON(url, method, params, function(json) {$('#ngCalendarDiv').html(json.data);});
+    }
+</script>

@@ -149,7 +149,7 @@ $tVars = array(
 	'mysql_version' => $mysql->mysql_version(),
 	'gd_version' => (isset($gd_version) and is_array($gd_version))?$gd_version["GD Version"]:'<font color="red"><b>NOT INSTALLED</b></font>',
 	'currentVersion' => engineVersion,
-	'versionNotifyURL' => '',
+	'engineVersionBuild' => engineVersionBuild,
 	'mysql_size' => $mysql_size,
 	'avatars' => $avatars,
 	'backup' => $backup,

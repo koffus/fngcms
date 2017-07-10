@@ -136,9 +136,13 @@
 		<div class="col-md-6">
 			<div class="panel panel-default">
 				<div class="panel-heading">
-					<h4>Next Generation CMS <span class="badge pull-right" title="{{ lang['current_version'] }}">{{ currentVersion }}</span></h4>
+					<h4>Next Generation CMS <span id="needUpdate" class="badge bg-success pull-right">Обновите CMS</span></h4>
 				</div>
 				<table class="table table-statistics">
+					<tr>
+						<td>{{ lang['current_version'] }}</td>
+						<td>{{ currentVersion }} [ {{engineVersionBuild}} ]</td>
+					</tr>
 					<tr>
 						<td>{{ lang['lastRelease'] }}</td>
 						<td><span id="lastRelease">loading..</span></td>
@@ -147,7 +151,7 @@
 						<td>{{ lang['git_version'] }}</td>
 						<td>
                             <span><a href="https://github.com/russsiq/fngcms/archive/master.zip">Download Zip</a></span> 
-                            <!--[ <span><a href="#" id="compare">Изменения</a> ]</span-->
+                            [ <span><a href="#" id="compare">Изменения</a> ]</span>
                         </td>
 					</tr>
 					<tr>
@@ -255,7 +259,7 @@
 
 <script>
 $(function(){
-    var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/v0.9.6.2-alpha...master";
+    var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/{{ currentVersion }}...master";
     var reqReleas = "https://api.github.com/repos/russsiq/fngcms/releases/latest";
     var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
     requestJSON(reqReleas, function(json) {
@@ -263,11 +267,12 @@ $(function(){
             $('#lastRelease').html("No Info Found");
         } else {
             var currentVersion = '{{ currentVersion }}';
-            if (currentVersion === json.tag_name) {
-                $('#lastRelease').html('Обновление не требуется');
-            } else {
-                $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ ' + json.published_at.slice(0, 10) + ' ]');
+            var engineVersionBuild = '{{ engineVersionBuild }}';
+            var publish = json.published_at;
+            if (currentVersion === json.tag_name && engineVersionBuild == publish.split('T')[0]) {
+                $('#needUpdate').html('Обновление не требуется');
             }
+            $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ ' + json.published_at.slice(0, 10) + ' ]');
         }
     });
     requestJSON(reqCommit, function(json) {

@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 function make_vote(mode, voteid) {
     var form = document.getElementById('voteForm_'+voteid);
     var choice = -1;
@@ -10,28 +10,17 @@ function make_vote(mode, voteid) {
             }
         }
     }
-
     var voteid = form.voteid.value;
     if (mode && (choice < 0)) {
         $.notify({message:'Сначала необходимо выбрать вариант!'},{type: 'info'});
         return false;
     }
-
     if (mode) { 
         mode = "vote";
     } else {
         mode = "show";
     }
-
-    var params = {
-        "mode": mode,
-        "choice": choice,
-        "voteid": voteid,
-        "list": 0,
-        "style": 'ajax',
-        "ajax": "1",
-        "json": "1",
-        };
+    var params = {"mode": mode,"choice": choice,"voteid": voteid,"list": 0,"style": 'ajax',"ajax": "1","json": "1",};
     $.reqJSON('{admin_url}/rpc.php', 'plugin.voting.update', params, function(json) {
         $('#voting_'+{voteid}).html(json.content);
         $.notify({message:'Спасибо. Ваш голос принят!'},{type: 'success'});
@@ -40,8 +29,10 @@ function make_vote(mode, voteid) {
 </script>
 
 <div id="voting_{voteid}" class="widget widget-voting">
-    <h3 class="widget-title">{l_voting:voting}</h3>
-    <div class="widget-content">
+    <div class="widget-header">
+        <h4 class="widget-title">{l_voting:voting}</h4>
+    </div>
+    <div class="widget-body">
         <h5>{votename}</h5>
         [votedescr]<small>Описание: {votedescr}</small><br/>[/votedescr]
         <form action="{post_url}" method="post" id="voteForm_{voteid}">
@@ -50,8 +41,10 @@ function make_vote(mode, voteid) {
             <input type="hidden" name="referer" value="{referer}" />
             {votelines}
             <a href="#" onclick="make_vote(1, {voteid}); return false;" class="btn btn-outline-primary btn-sm mt-3">Голосовать</a>
-            <!--a href="{home}/plugin/voting/" class="pull-right mt-3 ml-3"><small>Архив</small></a>
-            <a href="#" onclick="make_vote(0, {voteid}); return false;" class="pull-right mt-3"><small>Результаты</small></a-->
         </form>
     </div>
+    <!--div class="widget-footer text-muted">
+        <a href="{home}/plugin/voting/" class="pull-right mt-3 ml-3"><small>Архив</small></a>
+        <a href="#" onclick="make_vote(0, {voteid}); return false;" class="pull-right mt-3"><small>Результаты</small></a>
+    </div-->
 </div>

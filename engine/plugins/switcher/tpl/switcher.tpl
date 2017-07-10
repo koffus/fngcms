@@ -1,13 +1,9 @@
 <div class="widget widget-switcher">
-    <h3 class="widget-title">{{ lang['switcher:select'] }}</h3>
-        <div class="widget-content">
-        <select id="switcher_selector" onchange="sw_update();" class="form-control">{{ list }}</select>
-        <script>
-            function sw_update() {
-                var x = document.getElementById('switcher_selector');
-                document.cookie='sw_template='+x.value+'; expires=Mon,01-Jan-2017';
-                document.location = document.location;
-            }
-        </script>
+    <div class="widget-header">
+        <h4 class="widget-title">{{ lang['favorites:select'] }}</h4>
+    </div>
+    <div class="widget-body">
+        <select onchange="sw_update($(this).val());" class="form-control">{{ list }}</select>
     </div>
 </div>
+<script>function sw_update(val) {setCookie('sw_template', val);location.reload();}</script>

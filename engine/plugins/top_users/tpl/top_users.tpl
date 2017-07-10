@@ -1,6 +1,8 @@
-<div class="widget widget-pages">
-    <h3 class="widget-title">{{ lang['top_users:widget-title'] }}</h3>
-    <div class="widget-content">
+<div class="widget widget-users">
+    <div class="widget-header">
+        <h4 class="widget-title">{{ lang['top_users:widget-title'] }}</h4>
+    </div>
+    <div class="widget-body">
         <dl class="row">
             {% for entry in entries %}
                 <dt class="col-sm-4">
@@ -20,5 +22,3 @@
         </dl>
     </div>
 </div>
-
-

@@ -11,7 +11,7 @@ function bookmarks(news, action) {
         elementObj = document.getElementById("bookmarks_" + news);
         elementObj.innerHTML = json.content;
         elementObj = document.getElementById("bookmarks_counter_" + news);
-        if(json.action == 'delete'){
+        if(action == 'add'){
             $.notify({message: "{{ lang['bookmarks:msg_add'] }}" },{type: 'info'});
         } else {
             $.notify({message: "{{ lang['bookmarks:msg_delete'] }}" },{type: 'info'});

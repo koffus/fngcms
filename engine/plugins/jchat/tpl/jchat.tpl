@@ -1,6 +1,8 @@
 <div class="widget widget-jchat">
-    <h3 class="widget-title">Чат-бокс[selfwin] <small><a href="{link_selfwin}" title="New window"><i class="fa fa-external-link"></i></a></small>[/selfwin]</h3>
-    <div class="widget-content">
+    <div class="widget-header">
+        <h4 class="widget-title">Чат-бокс[selfwin] <small><a href="{link_selfwin}" title="New window"><i class="fa fa-external-link"></i></a></small>[/selfwin]</h4>
+    </div>
+    <div class="widget-body">
         <!-- SCRIPTS INTERNALS BEGIN ((( DO NOT CHANGE ))) -->
             [:include jchat.script.header.js]
         <!-- SCRIPTS INTERNALS END -->
