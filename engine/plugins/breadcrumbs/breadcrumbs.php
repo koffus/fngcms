@@ -195,11 +195,11 @@ function breadcrumbs() {
 							__('bc:plugin')
 						);
 
-					$location[] = array(
-						'url' => generatePluginLink($params['plugin'], '', array(), array(), false, true),
+					/*$location[] = array();
+						/*'url' => generatePluginLink($params['plugin'], '', array(), array(), false, true),
 						'title' => $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ? $SYSTEM_FLAGS['info']['title']['group'] : $params['plugin'],
 						'link' => $link,
-						);
+						);*/
 
 					if ( $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ) {
 						$location_last = $SYSTEM_FLAGS['info']['title']['group'];

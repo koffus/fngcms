@@ -71,7 +71,7 @@
 			{% endif %}
 		</div>
 	</div>
-</div>
+<!--/div>
 
 {% if (user.flags.isOwnProfile) %}
 <script>

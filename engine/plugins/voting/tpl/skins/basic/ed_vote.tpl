@@ -41,15 +41,17 @@ function make_vote(mode, voteid) {
 
 <div id="voting_{voteid}" class="widget widget-voting">
     <h3 class="widget-title">{l_voting:voting}</h3>
-    <h5>{votename}</h5>
-    [votedescr]<small>Описание: {votedescr}</small><br/>[/votedescr]
-    <form action="{post_url}" method="post" id="voteForm_{voteid}">
-        <input type="hidden" name="mode" value="vote" />
-        <input type="hidden" name="voteid" value="{voteid}" />
-        <input type="hidden" name="referer" value="{referer}" />
-        {votelines}
-        <a href="#" onclick="make_vote(1, {voteid}); return false;" class="btn btn-outline-primary btn-sm mt-3">Голосовать</a>
-        <!--a href="{home}/plugin/voting/" class="pull-right mt-3 ml-3"><small>Архив</small></a>
-        <a href="#" onclick="make_vote(0, {voteid}); return false;" class="pull-right mt-3"><small>Результаты</small></a-->
-    </form>
+    <div class="widget-content">
+        <h5>{votename}</h5>
+        [votedescr]<small>Описание: {votedescr}</small><br/>[/votedescr]
+        <form action="{post_url}" method="post" id="voteForm_{voteid}">
+            <input type="hidden" name="mode" value="vote" />
+            <input type="hidden" name="voteid" value="{voteid}" />
+            <input type="hidden" name="referer" value="{referer}" />
+            {votelines}
+            <a href="#" onclick="make_vote(1, {voteid}); return false;" class="btn btn-outline-primary btn-sm mt-3">Голосовать</a>
+            <!--a href="{home}/plugin/voting/" class="pull-right mt-3 ml-3"><small>Архив</small></a>
+            <a href="#" onclick="make_vote(0, {voteid}); return false;" class="pull-right mt-3"><small>Результаты</small></a-->
+        </form>
+    </div>
 </div>
