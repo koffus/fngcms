@@ -200,7 +200,7 @@ if (true === $flagPendingChanges) {
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // First: Load informational `version` files
-    $list = $cPlugin->getList();
+    $list = $cPlugin->getInfo();
     foreach ($pluginInstallList as $pName) {
         if (isset($list[$pName]['install'])) {
             include_once root . 'plugins/' . $pName . '/' . $list[$pName]['install'];

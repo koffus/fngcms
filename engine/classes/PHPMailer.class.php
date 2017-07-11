@@ -3827,15 +3827,15 @@ const MAX_LINE_LENGTH = 998;
 */
 const DEBUG_OFF = 0;
 /**
-* Debug level to show client -> server messages
+* Debug level to show client->server messages
 */
 const DEBUG_CLIENT = 1;
 /**
-* Debug level to show client -> server and server -> client messages
+* Debug level to show client->server and server->client messages
 */
 const DEBUG_SERVER = 2;
 /**
-* Debug level to show connection status, client -> server and server -> client messages
+* Debug level to show connection status, client->server and server->client messages
 */
 const DEBUG_CONNECTION = 3;
 /**
@@ -4088,7 +4088,7 @@ stream_set_timeout($this->smtp_conn, $timeout, 0);
 }
 // Get any announcement
 $announce = $this->get_lines();
-$this->edebug('SERVER -> CLIENT: ' . $announce, self::DEBUG_SERVER);
+$this->edebug('SERVER->CLIENT: ' . $announce, self::DEBUG_SERVER);
 return true;
 }
 /**
@@ -4617,7 +4617,7 @@ $code = substr($this->last_reply, 0, 3);
 $code_ex = null;
 $detail = substr($this->last_reply, 4);
 }
-$this->edebug('SERVER -> CLIENT: ' . $this->last_reply, self::DEBUG_SERVER);
+$this->edebug('SERVER->CLIENT: ' . $this->last_reply, self::DEBUG_SERVER);
 if (!in_array($code, (array)$expect)) {
 $this->setError(
 "$command command failed",
@@ -4694,7 +4694,7 @@ return false;
 */
 public function client_send($data)
 {
-$this->edebug("CLIENT -> SERVER: $data", self::DEBUG_CLIENT);
+$this->edebug("CLIENT->SERVER: $data", self::DEBUG_CLIENT);
 return fwrite($this->smtp_conn, $data);
 }
 /**
@@ -4785,8 +4785,8 @@ $endtime = time() + $this->Timelimit;
 }
 while (is_resource($this->smtp_conn) && !feof($this->smtp_conn)) {
 $str = @fgets($this->smtp_conn, 515);
-$this->edebug("SMTP -> get_lines(): \$data is \"$data\"", self::DEBUG_LOWLEVEL);
-$this->edebug("SMTP -> get_lines(): \$str is  \"$str\"", self::DEBUG_LOWLEVEL);
+$this->edebug("SMTP->get_lines(): \$data is \"$data\"", self::DEBUG_LOWLEVEL);
+$this->edebug("SMTP->get_lines(): \$str is  \"$str\"", self::DEBUG_LOWLEVEL);
 $data .= $str;
 // If 4th character is a space, we are done reading, break the loop, micro-optimisation over strlen
 if ((isset($str[3]) and $str[3] == ' ')) {
@@ -4796,7 +4796,7 @@ break;
 $info = stream_get_meta_data($this->smtp_conn);
 if ($info['timed_out']) {
 $this->edebug(
-'SMTP -> get_lines(): timed-out (' . $this->Timeout . ' sec)',
+'SMTP->get_lines(): timed-out (' . $this->Timeout . ' sec)',
 self::DEBUG_LOWLEVEL
 );
 break;
@@ -4804,7 +4804,7 @@ break;
 // Now check if reads took too long
 if ($endtime and time() > $endtime) {
 $this->edebug(
-'SMTP -> get_lines(): timelimit reached (' .
+'SMTP->get_lines(): timelimit reached (' .
 $this->Timelimit . ' sec)',
 self::DEBUG_LOWLEVEL
 );

@@ -14,7 +14,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_wpinger_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('wpinger', 'config', '', '', ':');
+		Lang::loadPlugin('wpinger', 'config', '', ':');
 
 	// Apply requested action
 	switch ($action) {
@@ -34,7 +34,10 @@ function plugin_wpinger_install($action) {
 			}
 			
 			plugin_mark_installed('wpinger');
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

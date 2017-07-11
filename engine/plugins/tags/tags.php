@@ -12,7 +12,7 @@ class TagsNewsfilter extends NewsFilter {
 	function addNewsForm(&$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('tags', 'config', '', '', ':');
+		Lang::loadPlugin('tags', 'config', '', ':');
 
 		$ttvars = array(
 			'localPrefix' => localPrefix,
@@ -81,7 +81,7 @@ class TagsNewsfilter extends NewsFilter {
 	function editNewsForm($newsID, $SQLold, &$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('tags', 'config', '', '', ':');
+		Lang::loadPlugin('tags', 'config', '', ':');
 
 		$ttvars = array(
 			'localPrefix' => localPrefix,
@@ -362,7 +362,7 @@ function plugin_tags_tag($params = array()) {
 		return;
 	}
 
-	Lang::loadPlugin('tags', 'main', '', '', ':');
+	Lang::loadPlugin('tags', 'main', '', ':');
 
 	$SYSTEM_FLAGS['info']['title']['group']		= __('tags:header.tag.title');
 	$tpath = locatePluginTemplates(array('cloud', 'cloud.tag', 'pages', 'cloud.tag.entry'), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin')?pluginGetVariable('tags', 'localSkin'):'default');
@@ -436,7 +436,7 @@ function plugin_tags_tag($params = array()) {
 function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0){
 	global $tpl, $template, $mysql, $config, $SYSTEM_FLAGS, $TemplateCache;
 
-	Lang::loadPlugin('tags', 'main', '', '', ':');
+	Lang::loadPlugin('tags', 'main', '', ':');
 
 	if ($ppage)
 		$SYSTEM_FLAGS['info']['title']['group'] = __('tags:header.tags.title');

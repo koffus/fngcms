@@ -135,11 +135,11 @@ function top_news(){
 			if (pluginGetVariable('top_news', "{$currentVar}_content")){
 				list ($short_news, $full_news) = explode('<!--more-->', $row['content'], 2);
 			
-				if ($config['blocks_for_reg']) $short_news = $parse -> userblocks($short_news);
-				if ($config['use_htmlformatter']) $short_news = $parse -> htmlformatter($short_news);
-				if ($config['use_bbcodes']) $short_news = $parse -> bbcodes($short_news);
-				if ($config['use_smilies']) $short_news = $parse -> smilies($short_news);
-				if (mb_strlen($short_news, 'UTF-8') > $newslength) $short_news = $parse -> truncateHTML($short_news, $newslength);
+				if ($config['blocks_for_reg']) $short_news = $parse->userblocks($short_news);
+				if ($config['use_htmlformatter']) $short_news = $parse->htmlformatter($short_news);
+				if ($config['use_bbcodes']) $short_news = $parse->bbcodes($short_news);
+				if ($config['use_smilies']) $short_news = $parse->smilies($short_news);
+				if (mb_strlen($short_news, 'UTF-8') > $newslength) $short_news = $parse->truncateHTML($short_news, $newslength);
 			
 				# cutting images
 				if (pluginGetVariable('top_news', "{$currentVar}_img")) $short_news = preg_replace('/<img.*?>/', '', $short_news);
@@ -179,19 +179,19 @@ function top_news(){
 			$tvars['vars']['date'] = str_replace(array('{day}', '{day0}', '{month}', '{month0}', '{year}', '{year2}', '{month_s}', '{month_l}', '{hour}', '{hour0}', '{minute0}'),
 							array(date('j',$row['postdate']), date('d',$row['postdate']), date('n',$row['postdate']), date('m',$row['postdate']), date('y',$row['postdate']), date('Y',$row['postdate']), $langShortMonths[date('n',$row['postdate'])-1], $langMonths[date('n',$row['postdate'])-1], date('G', $row['postdate']), date('H', $row['postdate']), date('i', $row['postdate'])), $dformat);
 
-			$tpl -> template('entries', $tpath['entries']);
-			$tpl -> vars('entries', $tvars);
-			$result .= $tpl -> show('entries');
+			$tpl->template('entries', $tpath['entries']);
+			$tpl->vars('entries', $tvars);
+			$result .= $tpl->show('entries');
 		}
 		
 		unset($tvars);
 		
 	 $tvars['vars'] = array('tpl_url' => tpl_url, 'top_news' => $result);
 
-		$tpl -> template('top_news', $tpath['top_news']);
-		$tpl -> vars('top_news', $tvars);
+		$tpl->template('top_news', $tpath['top_news']);
+		$tpl->vars('top_news', $tvars);
 
-		$output = $tpl -> show('top_news');
+		$output = $tpl->show('top_news');
 		$template['vars'][$blockName] = $output;
 
 		$result = '';

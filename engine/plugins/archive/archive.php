@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang file
-Lang::loadPlugin('archive', 'main', '', '', ':');
+Lang::loadPlugin('archive', 'main', '', ':');
 
 //
 // Show data block for archive plugin

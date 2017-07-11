@@ -51,7 +51,10 @@ function plugin_subscribe_comments_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('subscribe_comments', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 			break;
 	}
 	return true;

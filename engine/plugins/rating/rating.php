@@ -11,7 +11,8 @@ function rating_show($newsID, $rating, $votes){
 
     Lang::loadPlugin('rating', 'site');
     $localSkin = pluginGetVariable('rating', 'localSkin');
-    if (!$localSkin) $localSkin='basic';
+    if (!$localSkin)
+        $localSkin='basic';
 
     $tpath = locatePluginTemplates(array('rating', 'rating.form', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
     $cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 

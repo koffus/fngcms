@@ -117,8 +117,9 @@ function plugin_basket_update() {
     coreRedirectAndTerminate(generatePluginLink('basket', null, array(), array(), false, true));
 }
 
-// XFields filter
 if (class_exists('XFieldsFilter') and class_exists('FeedbackFilter')) {
+
+    // XFields filter
     class BasketXFieldsFilter extends XFieldsFilter {
         function showTableEntry($newsID, $SQLnews, $rowData, &$rowVars) {
             global $DSlist;
@@ -230,12 +231,13 @@ if (class_exists('XFieldsFilter') and class_exists('FeedbackFilter')) {
             }
         }
     }
-    register_plugin_page('basket','','plugin_basket_list',0);
-    register_plugin_page('basket','update','plugin_basket_update',0);
+
+    register_plugin_page('basket','','plugin_basket_list', 0);
+    register_plugin_page('basket','update','plugin_basket_update', 0);
     pluginRegisterFilter('xfields','basket', new BasketXFieldsFilter);
     pluginRegisterFilter('feedback','basket', new BasketFeedbackFilter);
 } else {
-    //print "Basket error: XFields and Feedback plugins must be activated";
+    print('Basket error: XFields and Feedback plugins must be activated');
 }
 
 // Perform replacements while showing news
@@ -264,6 +266,5 @@ class BasketNewsFilter extends NewsFilter {
 
 pluginRegisterFilter('news','basket', new BasketNewsFilter);
 
-//
 // Вызов обработчика
 registerActionHandler('index', 'plugin_basket_total');

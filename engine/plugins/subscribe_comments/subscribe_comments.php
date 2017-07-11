@@ -3,7 +3,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('subscribe_comments', 'main', '', '', ':');
+Lang::loadPlugin('subscribe_comments', 'main', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -99,7 +99,7 @@ function addCommentsNotify($userRec, $newsRec, &$tvars, $SQL, $commID) {
 global $mysql;
 //var_dump($newsRec);
 
-if( $_REQUEST['subscribe_checked'] == 'true' ) {
+if( isset($_REQUEST['subscribe_checked']) and 'true' == $_REQUEST['subscribe_checked'] ) {
 
 if(!($nrow = $mysql->record("select * from ".prefix."_subscribe_comments where news_id='".$newsRec['id']."' and news_altname='".$newsRec['alt_name']."' and user_email='".$SQL['mail']."'")))
 {
@@ -107,7 +107,7 @@ $mysql->query("insert into ".prefix."_subscribe_comments (user_email, news_id, n
 }
 
 }
-elseif( $_REQUEST['subscribe_checked'] == 'false') {
+elseif( isset($_REQUEST['subscribe_checked']) and 'false' == $_REQUEST['subscribe_checked']) {
 //var_dump($_REQUEST); 
 if($nrow = $mysql->record("select * from ".prefix."_subscribe_comments where news_id='".$newsRec['id']."' and news_altname='".$newsRec['alt_name']."' and user_email='".$SQL['mail']."'"))
 {

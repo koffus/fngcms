@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
 switch ($_REQUEST['action']) {
@@ -54,7 +54,10 @@ function main()
 
 function general_submit()
 {
-	
+
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
 	pluginSetVariable('gmanager', 'locate_tpl', intval($_POST['locate_tpl']));
 	pluginSetVariable('gmanager', 'if_auto_cash', intval($_POST['if_auto_cash']));
 	pluginSetVariable('gmanager', 'if_description', intval($_POST['if_description']));
@@ -65,9 +68,12 @@ function general_submit()
 	pluginSetVariable('gmanager', 'one_row', intval($_POST['one_row']));
 	pluginSetVariable('gmanager', 'one_cell', intval($_POST['one_cell']));
 	pluginSetVariable('gmanager', 'one_page', intval($_POST['one_page']));
-	pluginsSaveConfig();
-	if (pluginGetVariable('gmanager', 'if_auto_cash')) clear_cash();
-	msg(array('type' => 'info', 'message' => __('gmanager:info_save_general')));
+    
+	if (pluginGetVariable('gmanager', 'if_auto_cash'))
+        clear_cash();
+    // Save configuration parameters of plugins
+    if($cPlugin->saveConfig())
+        msg(array('type' => 'info', 'message' => __('gmanager:info_save_general')));
 }
 
 function showlist() {

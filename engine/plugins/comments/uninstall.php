@@ -3,13 +3,11 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+*/
 
-
-
-Lang::loadPlugin('comments', 'config', '', '', ':');
+Lang::loadPlugin('comments', 'config', '', ':');
 
 $db_update = array(
  array(
@@ -33,12 +31,11 @@ $db_update = array(
  )
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
-	// If submit requested, do config save
-	if (fixdb_plugin_install('comments', $db_update, 'deinstall')) {
-		plugin_mark_deinstalled('comments');
-	}	
+if (isset($_REQUEST['action']) and 'commit' == $_REQUEST['action']) {
+    // If submit requested, do config save
+    if (fixdb_plugin_install('comments', $db_update, 'deinstall')) {
+        plugin_mark_deinstalled('comments');
+    }
 } else {
-	$text = __('comments:desc_uninstall');
-	generate_install_page('comments', $text, 'deinstall');
+    generate_install_page('comments', __('comments:desc_uninstall'), 'deinstall');
 }

@@ -18,73 +18,57 @@ function pluginSwitch($pluginID, $mode = 'on') {
 
 	// Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
+    $listActive = $cPlugin->getListActive();
 
 	// Decide what to do
 	switch ($mode) {
 		// TURN _ON_
 		case 'on':
 			// Load plugin list
-            $extras = $cPlugin->getList();
-			if (!is_array($extras)) { return false; }
-			if (!$extras[$pluginID]) { return false; }
+            $extras = $cPlugin->getInfo();
+			if (!is_array($extras)) {
+                return false;
+            }
+			if (!$extras[$pluginID]) {
+                return false;
+            }
 
 			// Mark module as active
-			$active['active'][$pluginID] = $extras[$pluginID]['dir'];
+			$listActive['active'][$pluginID] = $extras[$pluginID]['dir'];
 
 			// Mark module to be activated in all listed actions
 			if (isset($extras[$pluginID]['acts']) and isset($extras[$pluginID]['file'])) {
 				foreach (explode(',',$extras[$pluginID]['acts']) as $act) {
-						$active['actions'][$act][$pluginID] = $extras[$pluginID]['dir'].'/'.$extras[$pluginID]['file'];
+						$listActive['actions'][$act][$pluginID] = $extras[$pluginID]['dir'].'/'.$extras[$pluginID]['file'];
 				}
 			}
 
 			foreach ($extras[$pluginID]['actions'] as $act => $file) {
-				$active['actions'][$act][$pluginID] = $extras[$pluginID]['dir'].'/'.$file;
+				$listActive['actions'][$act][$pluginID] = $extras[$pluginID]['dir'].'/'.$file;
 			}
 
 			if (count($extras[$pluginID]['library']))
-				$active['libs'][$pluginID] = $extras[$pluginID]['library'];
+				$listActive['libs'][$pluginID] = $extras[$pluginID]['library'];
 
 			// update active extra list in memory
-			$PLUGINS['active'] = $active;
-			return savePluginsActiveList();
+			$PLUGINS['active'] = $listActive;
+			return $cPlugin->saveListActive();
 
 		// TURN _OFF_
 		case 'off':
-			unset($active['active'][$pluginID]);
-			unset($active['libs'][$pluginID]);
+			unset($listActive['active'][$pluginID]);
+			unset($listActive['libs'][$pluginID]);
 
-			foreach ($active['actions'] as $key => $value) {
-				if (isset($active['actions'][$key][$pluginID])) {
-						unset($active['actions'][$key][$pluginID]);
+			foreach ($listActive['actions'] as $key => $value) {
+				if (isset($listActive['actions'][$key][$pluginID])) {
+						unset($listActive['actions'][$key][$pluginID]);
 				}
 			}
 
-			$PLUGINS['active'] = $active;
-			return savePluginsActiveList();
+			$PLUGINS['active'] = $listActive;
+			return $cPlugin->saveListActive();
 	}
 	return false;
-}
-
-//
-// Save list of active plugins & required files
-//
-
-function savePluginsActiveList(){
-	global $PLUGINS;
-
-	if (!is_file(conf_pactive))
-		return false;
-
-	if (!($file = fopen(conf_pactive, "w")))
-		return false;
-
-	$content = '<?php $array = '.var_export($PLUGINS['active'], true).'; ?>';
-	fwrite($file, $content);
-	fclose($file);
-
-	return true;
 }
 
 //
@@ -95,16 +79,16 @@ function plugin_mark_installed($plugin) {
 
 	// Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
+    $listActive = $cPlugin->getListActive();
 
 	// return if already installed
-	if (isset($active['installed'][$plugin])) {
+	if (isset($listActive['installed'][$plugin])) {
 		return 1;
 	}
 
-	$active['installed'][$plugin] = 1;
-	$PLUGINS['active'] = $active;
-	return savePluginsActiveList();
+	$listActive['installed'][$plugin] = 1;
+	$PLUGINS['active'] = $listActive;
+	return $cPlugin->saveListActive();
 }
 
 //
@@ -115,19 +99,19 @@ function plugin_mark_deinstalled($plugin) {
 
 	// Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
+    $listActive = $cPlugin->getListActive();
 
 	// return if already installed
-	if (!$active['installed'][$plugin]) {
+	if (!$listActive['installed'][$plugin]) {
 		return 1;
 	}
 
-	unset($active['installed'][$plugin]);
-	unset($active['active'][$plugin]);
-	foreach ($active['actions'] as $k => $v) {
-		unset($active['actions'][$k][$plugin]);
+	unset($listActive['installed'][$plugin]);
+	unset($listActive['active'][$plugin]);
+	foreach ($listActive['actions'] as $k => $v) {
+		unset($listActive['actions'][$k][$plugin]);
 	}
 
-	$PLUGINS['active'] = $active;
-	return savePluginsActiveList();
+	$PLUGINS['active'] = $listActive;
+	return $cPlugin->saveListActive();
 }

@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
 switch ($_REQUEST['action']) {
@@ -36,7 +36,7 @@ function showlist()
 		
 		$pvars['vars']['tpl_url'] = $tpath['url:conf.list.row'];
 		$tpl->template('conf.list.row', $tpath['conf.list.row']);
-		$tpl -> vars('conf.list.row', $pvars);
+		$tpl->vars('conf.list.row', $pvars);
 		$output .= $tpl->show('conf.list.row');
 		if (!$row['catid']) $is_null = true;
 	}

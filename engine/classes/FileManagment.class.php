@@ -135,7 +135,7 @@ class FileManagment
         // Normalize category (to make it possible to have empty category)
         $wCategory = (isset($param['category'])) ? (trim($param['category']) . '/') : '';
 
-        //print "CALL file_upload -> upload(".$param['http_var']."//".$param['http_varnum'].")<br>\n<pre>"; var_dump($param); print "</pre><br>\n";
+        //print "CALL file_upload->upload(".$param['http_var']."//".$param['http_varnum'].")<br>\n<pre>"; var_dump($param); print "</pre><br>\n";
 
         $http_var = getIsSet($param['http_var']);
         $http_varnum = intval(getIsSet($param['http_varnum']));

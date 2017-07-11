@@ -17,7 +17,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_feedback_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('feedback', 'config', '', '', ':');
+		Lang::loadPlugin('feedback', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(

@@ -5,7 +5,7 @@ function comments_rpc_manage($params) {
 
     // Connect library
     include_once(root . "/plugins/comments/inc/comments.show.php");
-    Lang::loadPlugin('comments', 'main', '', '', ':');
+    Lang::loadPlugin('comments', 'main', '', ':');
     
     $SQL = array();
 

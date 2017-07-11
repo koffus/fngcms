@@ -242,7 +242,7 @@ function updateConfig() {
 					} else {
 						$confPermUser[$m[4]][$m[1]][$m[2]][$m[3]] = ($v == -1)?NULL:($v?true:false);
 					}
-					//print "SAVE NEW $k -> $v<br/>\n";
+					//print "SAVE NEW $k->$v<br/>\n";
 				}
 
 				//print "(".isset($PERM[$m[4]][$m[1]][$m[2]][$m[3]]).",".($PERM[$m[4]][$m[1]][$m[2]][$m[3]] === NULL).") "; print var_export($PERM[$m[4]][$m[1]][$m[2]][$m[3]]);

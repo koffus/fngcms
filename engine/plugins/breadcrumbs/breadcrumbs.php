@@ -9,260 +9,260 @@
 
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('breadcrumbs', 'main', '', 'bc', ':');
+Lang::loadPlugin('breadcrumbs', 'main', 'bc', ':');
 
 function breadcrumbs() {
-	global $catz, $catmap, $CurrentHandler, $config, $SYSTEM_FLAGS, $systemAccessURL, $twig;
+    global $catz, $catmap, $CurrentHandler, $config, $SYSTEM_FLAGS, $systemAccessURL, $twig;
 
-	$tpath = locatePluginTemplates( array('breadcrumbs'), 'breadcrumbs', pluginGetVariable('breadcrumbs', 'localSource') );
+    $tpath = locatePluginTemplates( array('breadcrumbs'), 'breadcrumbs', pluginGetVariable('breadcrumbs', 'localSource') );
 
-	$location = array();
-	$location_last = '';
+    $location = array();
+    $location_last = '';
 
-	# processing 404 page
-	if ( $SYSTEM_FLAGS['info']['title']['group'] == __('404.title') ) {
+    # processing 404 page
+    if ( $SYSTEM_FLAGS['info']['title']['group'] == __('404.title') ) {
 
-		$link = str_replace(
-			array(
-				'{home_url}',
-				'{home_title}'
-				),
-			array(
-				$config['home_url'],
-				__('bc:mainpage')
-				),
-			__('bc:page_404'));
+        $link = str_replace(
+            array(
+                '{home_url}',
+                '{home_title}'
+                ),
+            array(
+                $config['home_url'],
+                __('bc:mainpage')
+                ),
+            __('bc:page_404'));
 
-		$location[] = array(
-			'url' => $config['home_url'],
-			'title' => __('bc:mainpage'),
-			'link' => $link,
-			);
+        $location[] = array(
+            'url' => $config['home_url'],
+            'title' => __('bc:mainpage'),
+            'link' => $link,
+            );
 
-		$location_last = __('404.title');
-	} else {
+        $location_last = __('404.title');
+    } else {
 
-		if($CurrentHandler) {
-			$params = $CurrentHandler['params'];
-			$pluginName = $CurrentHandler['pluginName'];
-		}
+        if($CurrentHandler) {
+            $params = $CurrentHandler['params'];
+            $pluginName = $CurrentHandler['pluginName'];
+        }
 
-		# generate main page with or without link
-		$main_page = ( $systemAccessURL != '/'
-			? str_replace(
-				array(
-					'{home_url}',
-					'{home_title}'
-					),
-				array(
-					$config['home_url'],
-					__('bc:mainpage')
-					),
-				__('bc:page_404'))
-			: __('bc:mainpage')
-			);
+        # generate main page with or without link
+        $main_page = ( $systemAccessURL != '/'
+            ? str_replace(
+                array(
+                    '{home_url}',
+                    '{home_title}'
+                    ),
+                array(
+                    $config['home_url'],
+                    __('bc:mainpage')
+                    ),
+                __('bc:page_404'))
+            : __('bc:mainpage')
+            );
 
-		$location[] = array(
-			'url' => ($systemAccessURL != '/') ? $config['home_url'] : '',
-			'title' => ($systemAccessURL != '/') ? __('bc:mainpage') : __('bc:mainpage'),
-			'link' => $main_page,
-			);
+        $location[] = array(
+            'url' => ($systemAccessURL != '/') ? $config['home_url'] : '',
+            'title' => ($systemAccessURL != '/') ? __('bc:mainpage') : __('bc:mainpage'),
+            'link' => $main_page,
+            );
 
-		$location_last = $params['page'] ? __('bc:page') . ' ' . $params['page']: $main_page;
+        $location_last = isset($params['page']) ? __('bc:page') . ' ' . intval($params['page']): $main_page;
 
-		# if category
-		if ($CurrentHandler['handlerName'] == 'by.category') {
-			$location_last = GetCategories($catz[$params['category']]['id'], true);
-			# show full path [if requested]
-			if ($catz[$params['category']]['parent'] != 0 and !pluginGetVariable('breadcrumbs', 'block_full_path')) {
-				$id = $catz[$params['category']]['parent'];
+        # if category
+        if ($CurrentHandler['handlerName'] == 'by.category') {
+            $location_last = GetCategories($catz[$params['category']]['id'], true);
+            # show full path [if requested]
+            if ($catz[$params['category']]['parent'] != 0 and !pluginGetVariable('breadcrumbs', 'block_full_path')) {
+                $id = $catz[$params['category']]['parent'];
 
-				do {
-					$location_tmp[] = array(
-						'url' => generateLink('news', 'by.category', array('category' => $catz[$catmap[$id]]['alt'], 'catid' => $catz[$catmap[$id]]['id'])),
-						'title' => $catz[$catmap[$id]]['name'],
-						'link' => GetCategories($id, false),
-						);
+                do {
+                    $location_tmp[] = array(
+                        'url' => generateLink('news', 'by.category', array('category' => $catz[$catmap[$id]]['alt'], 'catid' => $catz[$catmap[$id]]['id'])),
+                        'title' => $catz[$catmap[$id]]['name'],
+                        'link' => GetCategories($id, false),
+                        );
 
-					$id = $catz[$catmap[$id]]['parent'];
-				} while($id != 0);
-				$location = array_merge($location, array_reverse($location_tmp));
-			}
-		# news by date
-		} elseif ( $params['year'] ) {
-			# if we have only year then $year = plain text, if we have month then $year = link
-			$year = (!$params['month'])
-				? $params['year']
-				: str_replace(
-					array(
-						'{year_url}',
-						'{year}'
-						),
-					array(
-						generateLink('news', 'by.year', array('year' => $params['year'])),
-						$params['year']
-						),
-					__('bc:by.year')
-					);
+                    $id = $catz[$catmap[$id]]['parent'];
+                } while($id != 0);
+                $location = array_merge($location, array_reverse($location_tmp));
+            }
+        # news by date
+        } elseif ( isset($params['year']) ) {
+            # if we have only year then $year = plain text, if we have month then $year = link
+            $year = (!$params['month'])
+                ? $params['year']
+                : str_replace(
+                    array(
+                        '{year_url}',
+                        '{year}'
+                        ),
+                    array(
+                        generateLink('news', 'by.year', array('year' => $params['year'])),
+                        $params['year']
+                        ),
+                    __('bc:by.year')
+                    );
 
-			$month_p = Lang::retDate('F', mktime(0, 0, 0, $params['month'], 7, 0));
+            $month_p = Lang::retDate('F', mktime(0, 0, 0, $params['month'], 7, 0));
 
-			# if we have only year and month then $month = plain text, if we have day then $month = link
-			$month = (!$params['day'])
-				? $month_p
-				: str_replace(
-					array(
-						'{month_url}',
-						'{month_p}'
-						),
-					array(
-						generateLink('news', 'by.month', array('year' => $params['year'], 'month' => $params['month'])),
-						$month_p
-						),
-					__('bc:by.month')
-					);
+            # if we have only year and month then $month = plain text, if we have day then $month = link
+            $month = (!$params['day'])
+                ? $month_p
+                : str_replace(
+                    array(
+                        '{month_url}',
+                        '{month_p}'
+                        ),
+                    array(
+                        generateLink('news', 'by.month', array('year' => $params['year'], 'month' => $params['month'])),
+                        $month_p
+                        ),
+                    __('bc:by.month')
+                    );
 
-			$day = $params['day'];
+            $day = $params['day'];
 
-			$location_last = $year;
+            $location_last = $year;
 
-			if( $params['month'] ) {
-				$location[] = array(
-					'url' => (!$params['month']) ? '' : generateLink('news', 'by.year', array('year' => $params['year'])),
-					'title' => (!$params['month']) ? $params['year'] : $params['year'],
-					'link' => $year,
-					);
-				$location_last = $month;
-			}
+            if( $params['month'] ) {
+                $location[] = array(
+                    'url' => (!$params['month']) ? '' : generateLink('news', 'by.year', array('year' => $params['year'])),
+                    'title' => (!$params['month']) ? $params['year'] : $params['year'],
+                    'link' => $year,
+                    );
+                $location_last = $month;
+            }
 
-			if( $params['day'] ) {
-				$location[] = array(
-					'url' => (!$params['day']) ? '' : generateLink('news', 'by.month', array('year' => $params['year'], 'month' => $params['month'])),
-					'title' => (!$params['day']) ? $month_p : $month_p,
-					'link' => $month,
-					);
-				$location_last = $day;
-			}
+            if( $params['day'] ) {
+                $location[] = array(
+                    'url' => (!$params['day']) ? '' : generateLink('news', 'by.month', array('year' => $params['year'], 'month' => $params['month'])),
+                    'title' => (!$params['day']) ? $month_p : $month_p,
+                    'link' => $month,
+                    );
+                $location_last = $day;
+            }
 
-		# plugin, static, etc.
-		} elseif ( $pluginName != 'news' ) {
-			if ( $pluginName == 'static' ) {
-				$location_last = $SYSTEM_FLAGS['info']['title']['item'];
-			} elseif ( ($pluginName == 'uprofile' and $CurrentHandler['handlerName'] == 'edit') or $pluginName == 'search' ) {
-				$location_last = $SYSTEM_FLAGS['info']['title']['group'];
-			} elseif ( $pluginName == 'uprofile' and $CurrentHandler['handlerName'] == 'show' ) {
-				$location_last = $SYSTEM_FLAGS['info']['title']['group'].' '.$SYSTEM_FLAGS['info']['title']['item'];
-			} elseif ( $pluginName == 'core' and (in_array($CurrentHandler['handlerName'], array('registration', 'lostpassword', 'login'))) ) {
-				$location_last = $SYSTEM_FLAGS['info']['title']['group'];
-			} elseif ( $params['plugin'] or $pluginName ) {
-				# if plugin provide put some info
-				if( $SYSTEM_FLAGS['info']['breadcrumbs'] ) {
-					# plugin name becomes link
-					$count = count($SYSTEM_FLAGS['info']['breadcrumbs']) - 1;
-					# all items except last become links
-					for($i = 0; $i < $count ; $i++) {
-						$link = str_replace(
-							array(
-								'{plugin_url}',
-								'{plugin}'
-								),
-							array(
-								$SYSTEM_FLAGS['info']['breadcrumbs'][$i]['link'],
-								$SYSTEM_FLAGS['info']['breadcrumbs'][$i]['text'],
-								),
-								__('bc:plugin')
-							);
-						$location[] = array(
-							'url' => $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['link'],
-							'title' => $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['text'],
-							'link' => $link,
-							);
-					}
+        # plugin, static, etc.
+        } elseif ( $pluginName != 'news' ) {
+            if ( $pluginName == 'static' ) {
+                $location_last = $SYSTEM_FLAGS['info']['title']['item'];
+            } elseif ( ($pluginName == 'uprofile' and $CurrentHandler['handlerName'] == 'edit') or $pluginName == 'search' ) {
+                $location_last = $SYSTEM_FLAGS['info']['title']['group'];
+            } elseif ( $pluginName == 'uprofile' and $CurrentHandler['handlerName'] == 'show' ) {
+                $location_last = $SYSTEM_FLAGS['info']['title']['group'].' '.$SYSTEM_FLAGS['info']['title']['item'];
+            } elseif ( $pluginName == 'core' and (in_array($CurrentHandler['handlerName'], array('registration', 'lostpassword', 'login'))) ) {
+                $location_last = $SYSTEM_FLAGS['info']['title']['group'];
+            } elseif ( $params['plugin'] or $pluginName ) {
+                # if plugin provide put some info
+                if( isset($SYSTEM_FLAGS['info']['breadcrumbs']) ) {
+                    # plugin name becomes link
+                    $count = count($SYSTEM_FLAGS['info']['breadcrumbs']) - 1;
+                    # all items except last become links
+                    for($i = 0; $i < $count ; $i++) {
+                        $link = str_replace(
+                            array(
+                                '{plugin_url}',
+                                '{plugin}'
+                                ),
+                            array(
+                                $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['link'],
+                                $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['text'],
+                                ),
+                                __('bc:plugin')
+                            );
+                        $location[] = array(
+                            'url' => $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['link'],
+                            'title' => $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['text'],
+                            'link' => $link,
+                            );
+                    }
 
-					# last item becomes plain text
-					$location_last = $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['text'];
-				} else {
+                    # last item becomes plain text
+                    $location_last = $SYSTEM_FLAGS['info']['breadcrumbs'][$i]['text'];
+                } else {
 
-					$link = str_replace(
-						array(
-							'{plugin_url}',
-							'{plugin}',
-							),
-						array(
-							generatePluginLink($params['plugin'], '', array(), array(), false, true),
-							$SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ? $SYSTEM_FLAGS['info']['title']['group'] : $params['plugin'],
-							),
-							__('bc:plugin')
-						);
+                    $link = str_replace(
+                        array(
+                            '{plugin_url}',
+                            '{plugin}',
+                            ),
+                        array(
+                            generatePluginLink($params['plugin'], '', array(), array(), false, true),
+                            $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ? $SYSTEM_FLAGS['info']['title']['group'] : $params['plugin'],
+                            ),
+                            __('bc:plugin')
+                        );
 
-					/*$location[] = array();
-						/*'url' => generatePluginLink($params['plugin'], '', array(), array(), false, true),
-						'title' => $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ? $SYSTEM_FLAGS['info']['title']['group'] : $params['plugin'],
-						'link' => $link,
-						);*/
+                    /*$location[] = array();
+                        /*'url' => generatePluginLink($params['plugin'], '', array(), array(), false, true),
+                        'title' => $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ? $SYSTEM_FLAGS['info']['title']['group'] : $params['plugin'],
+                        'link' => $link,
+                        );*/
 
-					if ( $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ) {
-						$location_last = $SYSTEM_FLAGS['info']['title']['group'];
-					} else {
-						$location_last = $params['plugin'];
-					}
-				}
-			}
+                    if ( $SYSTEM_FLAGS['info']['title']['group'] != __('loc_plugin') ) {
+                        $location_last = $SYSTEM_FLAGS['info']['title']['group'];
+                    } else {
+                        $location_last = $params['plugin'];
+                    }
+                }
+            }
 
-		# full news
-		} elseif( $CurrentHandler['pluginName'] == 'news' and $CurrentHandler['handlerName'] == 'news' ){
-			$catids = $SYSTEM_FLAGS['news']['db.categories'];
-			$location_last = $SYSTEM_FLAGS['info']['title']['item'];
+        # full news
+        } elseif( $CurrentHandler['pluginName'] == 'news' and $CurrentHandler['handlerName'] == 'news' ){
+            $catids = $SYSTEM_FLAGS['news']['db.categories'];
+            $location_last = $SYSTEM_FLAGS['info']['title']['item'];
 
-			if( count($catids) != 1 or pluginGetVariable('breadcrumbs', 'block_full_path') ) {
-				if ( $CurrentHandler['params']['category'] != 'none' ) {
-					foreach ($catids as $cid) {
-						foreach ($catz as $cc) {
-							if( $cc['id'] == $cid ) {
-								$location[] = array(
-									'url' => generateLink('news', 'by.category', array('category' => $cc['alt'], 'catid' => $cc['id'])),
-									'title' => $cc['name'],
-									'link' => GetCategories($cc['id'], false),
-									);
-							}
-						}
-					}
-				}
-			} else {
-				$id = $catz[$params['category']]['parent'];
+            if( count($catids) != 1 or pluginGetVariable('breadcrumbs', 'block_full_path') ) {
+                if ( $CurrentHandler['params']['category'] != 'none' ) {
+                    foreach ($catids as $cid) {
+                        foreach ($catz as $cc) {
+                            if( $cc['id'] == $cid ) {
+                                $location[] = array(
+                                    'url' => generateLink('news', 'by.category', array('category' => $cc['alt'], 'catid' => $cc['id'])),
+                                    'title' => $cc['name'],
+                                    'link' => GetCategories($cc['id'], false),
+                                    );
+                            }
+                        }
+                    }
+                }
+            } else {
+                $id = $catz[$params['category']]['parent'];
 
-				$location_tmp[] = array(
-					'url' => generateLink('news', 'by.category', array('category' => $catz[$params['category']]['alt'], 'catid' => $catz[$params['category']]['id'])),
-					'title' => $catz[$params['category']]['name'],
-					'link' => GetCategories($catz[$params['category']]['id'], false),
-					);
+                $location_tmp[] = array(
+                    'url' => generateLink('news', 'by.category', array('category' => $catz[$params['category']]['alt'], 'catid' => $catz[$params['category']]['id'])),
+                    'title' => $catz[$params['category']]['name'],
+                    'link' => GetCategories($catz[$params['category']]['id'], false),
+                    );
 
-				while($id != 0) {
-					foreach ($catz as $cc) {
-						if( $cc['id'] == $id ) {
-							$location_tmp[] = array(
-								'url' => generateLink('news', 'by.category', array('category' => $cc['alt'], 'catid' => $cc['id'])),
-								'title' => $cc['name'],
-								'link' => GetCategories($cc['id'], false),
-								);
-							$id = $catz[$cc['alt']]['parent'];
-						}
-					}
-				}
+                while($id != 0) {
+                    foreach ($catz as $cc) {
+                        if( $cc['id'] == $id ) {
+                            $location_tmp[] = array(
+                                'url' => generateLink('news', 'by.category', array('category' => $cc['alt'], 'catid' => $cc['id'])),
+                                'title' => $cc['name'],
+                                'link' => GetCategories($cc['id'], false),
+                                );
+                            $id = $catz[$cc['alt']]['parent'];
+                        }
+                    }
+                }
 
-				$location = array_merge($location, array_reverse($location_tmp));
-			}
-		}
-	}
+                $location = array_merge($location, array_reverse($location_tmp));
+            }
+        }
+    }
 
-	$tVars = array (
-		'location' => $location,
-		'location_last' => $location_last,
-		'home_title' => home_title,
-		);
+    $tVars = array (
+        'location' => $location,
+        'location_last' => $location_last,
+        'home_title' => home_title,
+        );
 
-	$xt = $twig->loadTemplate($tpath['breadcrumbs'].'breadcrumbs.tpl');
-	return $xt->render($tVars);
+    $xt = $twig->loadTemplate($tpath['breadcrumbs'].'breadcrumbs.tpl');
+    return $xt->render($tVars);
 }
 
-twigRegisterFunction('breadcrumbs', 'show', breadcrumbs);
+twigRegisterFunction('breadcrumbs', 'show', 'breadcrumbs');

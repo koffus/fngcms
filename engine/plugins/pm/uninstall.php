@@ -24,7 +24,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('pm', 'config', '', '', ':');
+Lang::loadPlugin('pm', 'config', '', ':');
 
 $db_update = array(
 	array(

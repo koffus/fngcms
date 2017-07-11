@@ -27,7 +27,7 @@ register_plugin_page('sitemap','','generateSitemap', 0);
 function generateSitemap() {
 	global $template, $twig, $mysql, $config, $parse, $catz, $SYSTEM_FLAGS, $TemplateCache;
 
-	Lang::loadPlugin('sitemap', 'main', '', '', ':');
+	Lang::loadPlugin('sitemap', 'main', '', ':');
 
 	$tpath = locatePluginTemplates(array('sitemap', 'sitemap'), 'sitemap', intval(pluginGetVariable('sitemap', 'localSource')));
 	$xt = $twig->loadTemplate($tpath['sitemap'].'sitemap.tpl');

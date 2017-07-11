@@ -5,7 +5,7 @@ function plugin_gmanager_install($action) {
 	global $config;
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('gmanager', 'config', '', '', ':');
+		Lang::loadPlugin('gmanager', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(
@@ -99,7 +99,10 @@ function plugin_gmanager_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('gmanager', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 			$ULIB->saveConfig();
 
 			break;

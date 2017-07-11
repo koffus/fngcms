@@ -76,15 +76,15 @@ function loginzaAuth(){
 
 				$mysql->query("UPDATE `".uprefix."_users` SET `loginza_id` = ".db_squote($responce_array['identity'])." WHERE id = ".db_squote($userROW['id']));
 		
-				$tpl -> template('append.account.success', $tpath['append.account.success']);
-				$tpl -> vars('append.account.success', array('vars' => array('account' => $responce_array['identity'])));
-				$template['vars']['mainblock'] = $tpl -> show('append.account.success');
+				$tpl->template('append.account.success', $tpath['append.account.success']);
+				$tpl->vars('append.account.success', array('vars' => array('account' => $responce_array['identity'])));
+				$template['vars']['mainblock'] = $tpl->show('append.account.success');
 				return;
 			}
 			else {
-				$tpl -> template('append.account.error', $tpath['append.account.error']);
-				$tpl -> vars('append.account.error', array('vars' => array('account' => $responce_array['identity'])));
-				$template['vars']['mainblock'] = $tpl -> show('append.account.error');
+				$tpl->template('append.account.error', $tpath['append.account.error']);
+				$tpl->vars('append.account.error', array('vars' => array('account' => $responce_array['identity'])));
+				$template['vars']['mainblock'] = $tpl->show('append.account.error');
 				return;
 			}
 		}
@@ -108,9 +108,9 @@ function loginzaAuth(){
 		);
 		
 		# show register form
-		$tpl -> template('register', $tpath['register']);
-		$tpl -> vars('register', $tvars);
-		$template['vars']['mainblock'] = $tpl -> show('register');
+		$tpl->template('register', $tpath['register']);
+		$tpl->vars('register', $tvars);
+		$template['vars']['mainblock'] = $tpl->show('register');
 }
 
 # after confirm user data we register his
@@ -146,14 +146,14 @@ function loginzaRegister(){
 		$user = $mysql->record("SELECT * FROM ".uprefix."_users WHERE name = ".db_squote($values['login']));
 		$auth->save_auth($user);
 		
-		$tpl -> template('register.success', $tpath['register.success']);
-		$tpl -> vars('register.success', array('vars' => (array('username' => $values['login'], 'password' => $values['password']))));
-		$template['vars']['mainblock'] = $tpl -> show('register.success');
+		$tpl->template('register.success', $tpath['register.success']);
+		$tpl->vars('register.success', array('vars' => (array('username' => $values['login'], 'password' => $values['password']))));
+		$template['vars']['mainblock'] = $tpl->show('register.success');
 	} 
 	else{
-		$tpl -> template('register.error', $tpath['register.error']);
-		$tpl -> vars('register.error', array('vars' => array('error.msg' => $msg)));
-		$template['vars']['mainblock'] = $tpl -> show('register.error');
+		$tpl->template('register.error', $tpath['register.error']);
+		$tpl->vars('register.error', array('vars' => array('error.msg' => $msg)));
+		$template['vars']['mainblock'] = $tpl->show('register.error');
 	}
 	
 	unset($_SESSION['loginza_id']);
@@ -168,9 +168,9 @@ function loginzaDelete() {
 	
 	$tpath = LocatePluginTemplates(array('account.delete'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
 	
-	$tpl -> template('account.delete', $tpath['account.delete']);
-	$tpl -> vars('account.delete', array('vars' => array()));
-	$template['vars']['mainblock'] = $tpl -> show('account.delete');
+	$tpl->template('account.delete', $tpath['account.delete']);
+	$tpl->vars('account.delete', array('vars' => array()));
+	$template['vars']['mainblock'] = $tpl->show('account.delete');
 }
 
 # parse identity and show provider icon in comments

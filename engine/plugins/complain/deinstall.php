@@ -7,7 +7,7 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-Lang::loadPlugin('complain', 'config', '', '', ':');
+Lang::loadPlugin('complain', 'config', '', ':');
 
 $db_update = array(
 	array(

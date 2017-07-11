@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin('ads_pro', 'config', '', '', ':');
+Lang::loadPlugin('ads_pro', 'config', '', ':');
 
 if (isset($_REQUEST['action'])) {
     switch ($_REQUEST['action']) {
@@ -84,7 +84,9 @@ function main()
 
 function main_submit()
 {
-    global $twig;
+
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
 
     $chg = 0;
 
@@ -106,9 +108,10 @@ function main_submit()
         $chg++;
     }
     if ($chg) {
-        pluginsSaveConfig();
+        // Save configuration parameters of plugins
+        if ($cPlugin->saveConfig())
+            msg(array('message' => __('commited')));
     }
-    msg(array('message' => __('commited')));
     main();
 }
 
@@ -162,7 +165,7 @@ function add()
 
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
+    $listActive = $cPlugin->getListActive();
 
     // Load config
     $pConfig = pluginGetVariable('ads_pro', 'data');
@@ -190,7 +193,7 @@ function add()
     $ttvars['plugins_list'] .= "\t\t\t" . 'subsubel.appendChild(document.createTextNode("' . __('ads_pro:all') . '"));' . "\n";
     $ttvars['plugins_list'] .= "\t\t\t" . 'subel.appendChild(subsubel);' . "\n";
     $t_plugin_list = array(0 => __('ads_pro:all'));
-    foreach ($active['actions']['ppages'] as $key => $value) {
+    foreach ($listActive['actions']['ppages'] as $key => $value) {
         $t_plugin_list[$key] = $key;
         $ttvars['plugins_list'] .= "\n\t\t\t" . 'subsubel = document.createElement("option");' . "\n";
         $ttvars['plugins_list'] .= "\t\t\t" . 'subsubel.setAttribute("value", "' . $key . '");' . "\n";
@@ -302,6 +305,9 @@ function add_submit()
 {
     global $mysql, $parse;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
     $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
     $name = $parse->translit(secure_html($_REQUEST['name']));
     if (!$name) $name = 0;
@@ -348,14 +354,18 @@ function add_submit()
 
     pluginSetVariable('ads_pro', 'data', $var);
 
-    pluginsSaveConfig();
+    // Save configuration parameters of plugins
+    $cPlugin->saveConfig();
+
     clear_cash();
     showlist();
-    
 }
 
 function move($action)
 {
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
     $id = intval($_REQUEST['id']);
     $var = pluginGetVariable('ads_pro', 'data');
 
@@ -402,8 +412,9 @@ function move($action)
             break;
     }
     pluginSetVariable('ads_pro', 'data', $var);
-    pluginsSaveConfig();
-    msg(array('message' => __('commited')));
+    // Save configuration parameters of plugins
+    if($cPlugin->saveConfig())
+        msg(array('message' => __('commited')));
     showlist();
 }
 
@@ -441,6 +452,9 @@ function delete()
 {
     global $mysql;
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
     $id = intval($_REQUEST['id']);
     $mysql->query("delete from " . prefix . "_ads_pro where id=" . db_squote($id));
     $var = pluginGetVariable('ads_pro', 'data');
@@ -462,8 +476,10 @@ function delete()
     unset($var[$name][$id]);
     if (!count($var[$name])) unset($var[$name]);
     pluginSetVariable('ads_pro', 'data', $var);
-    pluginsSaveConfig();
-    msg(array('type' => 'success', 'message' => sprintf(__('ads_pro:info_delete'), $title)));
+
+    // Save configuration parameters of plugins
+    if ($cPlugin->saveConfig())
+        msg(array('type' => 'success', 'message' => sprintf(__('ads_pro:info_delete'), $title)));
     clear_cash();
     showlist();
 }

@@ -285,8 +285,8 @@ function coreRestorePassword() {
 // Registration page generation
 function generate_restorepw_page($params, $values = array(), $msg = '') {
     global $tpl, $template, $PHP_SELF, $config;
-    $tpl -> template('lostpassword.entries', tpl_site);
-    $tpl -> template('lostpassword.entry-full', tpl_site);
+    $tpl->template('lostpassword.entries', tpl_site);
+    $tpl->template('lostpassword.entry-full', tpl_site);
 
     if ($msg) {
         msg(array('message' => $msg));
@@ -324,11 +324,11 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
         }
 
         if ($param['text']) {
-            $tpl -> vars('lostpassword.entry-full', $tvars);
-            $entries .= $tpl -> show('lostpassword.entry-full');
+            $tpl->vars('lostpassword.entry-full', $tvars);
+            $entries .= $tpl->show('lostpassword.entry-full');
         } else {
-            $tpl -> vars('lostpassword.entries', $tvars);
-            $entries .= $tpl -> show('lostpassword.entries');
+            $tpl->vars('lostpassword.entries', $tvars);
+            $entries .= $tpl->show('lostpassword.entries');
         }
     }
 
@@ -345,9 +345,9 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
                                         generateLink('core', 'lostpassword', array()):
                                         generateLink('core', 'plugin', array('plugin' => 'core', 'handler' => 'lostpassword'));
     $tvars['vars']['entries'] = $entries;
-    $tpl -> template('lostpassword', tpl_site);
-    $tpl -> vars('lostpassword', $tvars);
-    $template['vars']['mainblock'] .= $tpl -> show('lostpassword');
+    $tpl->template('lostpassword', tpl_site);
+    $tpl->vars('lostpassword', $tvars);
+    $template['vars']['mainblock'] .= $tpl->show('lostpassword');
 }
 
 //

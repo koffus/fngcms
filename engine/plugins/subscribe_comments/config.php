@@ -6,7 +6,7 @@ if(!defined('NGCMS'))
 }
 
 
-Lang::loadPlugin('subscribe_comments', 'config', '', '', '#');
+Lang::loadPlugin('subscribe_comments', 'config', '', '#');
 
 $get_params = parse_url($_SERVER['HTTP_REFERER']);
 $get_params = $get_params['query'];
@@ -49,7 +49,7 @@ function show_list_subscribe()
 		
 		$tpl->template('list_entries', $tpath['config/list_entries'].'config');
 		$tpl->vars('list_entries', $gvars);
-		$entries .= $tpl -> show('list_entries');
+		$entries .= $tpl->show('list_entries');
 	}
 
 $delayed_send = pluginGetVariable('subscribe_comments', 'delayed_send');
@@ -113,7 +113,7 @@ function show_list_subscribe_post()
 		
 		$tpl->template('list_entries_post', $tpath['config/list_entries_post'].'config');
 		$tpl->vars('list_entries_post', $gvars);
-		$entries .= $tpl -> show('list_entries_post');
+		$entries .= $tpl->show('list_entries_post');
 	}
 	
 $delayed_send = pluginGetVariable('subscribe_comments', 'delayed_send');
@@ -198,7 +198,7 @@ if( $config['syslog'] == '1' ) {
 		
 		$tpl->template('list_entries_cron', $tpath['config/list_entries_cron'].'config');
 		$tpl->vars('list_entries_cron', $gvars);
-		$entries_cron .= $tpl -> show('list_entries_cron');
+		$entries_cron .= $tpl->show('list_entries_cron');
 	}
 	
 	$pvars['vars']['entries_cron'] = $entries_cron;
@@ -229,7 +229,10 @@ else{
 	{
 		pluginSetVariable('subscribe_comments', 'admin_count', intval($_REQUEST['admin_count']));
 		pluginSetVariable('subscribe_comments', 'delayed_send', intval($_REQUEST['delayed_send']));
-		pluginsSaveConfig();
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        $cPlugin->saveConfig();
 		
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=subscribe_comments');
 	}

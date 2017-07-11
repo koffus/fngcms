@@ -8,7 +8,7 @@ if (!defined('NGCMS')) die ('HAL');
 //
 
 // Load lang files
-Lang::loadPlugin('auth_punbb', 'config', '', 'auth');
+Lang::loadPlugin('auth_punbb', 'config', 'auth');
 
 // Fill configuration parameters
 $cfg = array();

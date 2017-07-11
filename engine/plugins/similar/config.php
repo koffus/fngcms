@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
 include_once('inc/similar.php');

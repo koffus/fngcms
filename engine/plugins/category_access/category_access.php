@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 class CategoryAccessNewsFilter extends NewsFilter {
-	function CategoryAccessNewsFilter() {
+	function __construct() {
 		$this->flag	= false;
 		$this->flag2 = false;
 		$this->templateName	= '';
@@ -20,7 +20,7 @@ class CategoryAccessNewsFilter extends NewsFilter {
 		}
 	}
 
-	function showNews($newsID, $SQLnews, &$tvars, &$mode)
+	public function showNews($newsID, $SQLnews, &$tvars, $mode = array())
 	{ 
 		global $userROW, $catmap, $catz; 
 		if ($this->flag){

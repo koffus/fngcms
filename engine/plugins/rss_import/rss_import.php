@@ -55,25 +55,25 @@ function rss_import_block() {
 			
 			if (pluginGetVariable('rss_import', $vv.'_content')) {
 				$short_news = strip_tags($item->description); //выводим текст статьи	
-				if ($config['blocks_for_reg']) $short_news = $parse -> userblocks($short_news);
- 		//if ($config['use_htmlformatter']) $short_news = $parse -> htmlformatter($short_news);
-		 if ($config['use_bbcodes']) $short_news = $parse -> bbcodes($short_news);
-		 if ($config['use_smilies']) $short_news = $parse -> smilies($short_news);
+				if ($config['blocks_for_reg']) $short_news = $parse->userblocks($short_news);
+ 		//if ($config['use_htmlformatter']) $short_news = $parse->htmlformatter($short_news);
+		 if ($config['use_bbcodes']) $short_news = $parse->bbcodes($short_news);
+		 if ($config['use_smilies']) $short_news = $parse->smilies($short_news);
  		if (mb_strlen($short_news, 'UTF-8') > $newslength) $short_news = substr($short_news, 0, $newslength);
 				if (pluginGetVariable('rss_import', $vv.'_img')) $short_news = preg_replace('%<[^<>]*?img\\s+src\\s*="?[^"]+"?[^<>]*>\\s*(?:</img>)?%i', "", $short_news);
 				$tvars['vars']['short_news'] = $short_news;
 			}
 			$tvars['vars']['link'] = $item->link;
-			$tpl -> template('entries', $tpath['entries']);
-			$tpl -> vars('entries', $tvars);
-			$result .= $tpl -> show('entries');
+			$tpl->template('entries', $tpath['entries']);
+			$tpl->vars('entries', $tvars);
+			$result .= $tpl->show('entries');
 			if ($j == $number) break;
 			$j++;
 		}
 
- 	$tpl -> template('rss', $tpath['rss']);
-		$tpl -> vars('rss', array ('vars' => array ('entries' => $result, 'author' => pluginGetVariable('rss_import', $vv.'_name'))));
-		$template['vars'][$vv] = $tpl -> show('rss');
+ 	$tpl->template('rss', $tpath['rss']);
+		$tpl->vars('rss', array ('vars' => array ('entries' => $result, 'author' => pluginGetVariable('rss_import', $vv.'_name'))));
+		$template['vars'][$vv] = $tpl->show('rss');
 
 		$result = '';
 		

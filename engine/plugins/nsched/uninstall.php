@@ -12,12 +12,6 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-
-
-Lang::loadPlugin('voting', 'install');
-
-
-
 Lang::loadPlugin('nsched', 'install');
 
 $db_update = array(

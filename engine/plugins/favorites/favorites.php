@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang file
-Lang::loadPlugin('favorites', 'main', '', '', ':');
+Lang::loadPlugin('favorites', 'main', '', ':');
 
 function plugin_favorites()
 {

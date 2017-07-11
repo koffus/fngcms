@@ -19,7 +19,7 @@ if ($_REQUEST['mode'] == 'plugin') {
 	// Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Load plugin list
-    $extras = $cPlugin->getList();
+    $extras = $cPlugin->getInfo();
     
 	$plugin = str_replace(array('/', '\\', '..'), '', $_REQUEST['plugin']);
 	if (!is_array($extras[$plugin]))

@@ -6,9 +6,11 @@ register_plugin_page('guestbook', '', 'guestbook_list');
 register_plugin_page('guestbook', 'edit', 'guestbook_edit');
 register_plugin_page('guestbook', 'social', 'guestbook_social');
 
-Lang::loadPlugin('guestbook', 'main', '', '', '#');
+Lang::loadPlugin('guestbook', 'main', '', '#');
 
-switch ($_REQUEST['action']) {
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
+
+switch ($action) {
  case 'add' :
  msg_add_submit();
  break;
@@ -641,6 +643,4 @@ function addToFiles($key, $url)
  //return $_FILES[$key];
 }
 
-twigRegisterFunction('guestbook', 'show', guestbook_block);
-
-?>
+twigRegisterFunction('guestbook', 'show', 'guestbook_block');

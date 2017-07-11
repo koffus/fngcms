@@ -111,14 +111,14 @@ class SimilarNewsfilter extends NewsFilter {
 					if (pluginGetVariable('similar', 'pcall') and is_array($PFILTERS['news']))
 						foreach ($PFILTERS['news'] as $k => $v) { if ($k != 'similar') $v->showNews($similar['id'], $similar, $txvars, $callingParams); }
 
-					$tpl -> template('similar_entry', $tpath['similar_entry']);
-					$tpl -> vars('similar_entry', $txvars);
-					$result[$similar['si_dimension']] .= $tpl -> show('similar_entry');
+					$tpl->template('similar_entry', $tpath['similar_entry']);
+					$tpl->vars('similar_entry', $txvars);
+					$result[$similar['si_dimension']] .= $tpl->show('similar_entry');
 				}
 
-				$tpl -> template('similar', $tpath['similar']);
-				$tpl -> vars('similar', array('vars' => array ('entries' => $result[0])));
-				$tvars['vars']['plugin_similar_tags'] = $tpl -> show('similar');
+				$tpl->template('similar', $tpath['similar']);
+				$tpl->vars('similar', array('vars' => array ('entries' => $result[0])));
+				$tvars['vars']['plugin_similar_tags'] = $tpl->show('similar');
 			} else {
 				$tvars['vars']['plugin_similar_tags'] = '';
 				$tvars['vars']['plugin_similar_categ'] = '';

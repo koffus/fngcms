@@ -596,38 +596,6 @@ function MakeDropDown($options, $name, $selected = "FALSE")
     return $output;
 }
 
-// Return plugin dir
-function GetPluginDir($name)
-{
-    global $EXTRA_CONFIG;
-
-    // Load CORE Plugin
-    $cPlugin = CPlugin::instance();
-    // Load plugin list
-    $extras = $cPlugin->getList();
-    
-    if (!$extras[$name]) {
-        return 0;
-    }
-    return extras_dir . '/' . $extras[$name]['dir'];
-}
-
-function GetPluginLangDir($name)
-{
-    global $config;
-    $lang_dir = GetPluginDir($name) . '/lang';
-    if (!$lang_dir) {
-        return 0;
-    }
-    if (is_dir($lang_dir . '/' . $config['default_lang'])) {
-        $lang_dir = $lang_dir . '/' . $config['default_lang'];
-    } else if (is_dir($lang_dir . '/english')) {
-        $lang_dir = $lang_dir . '/english';
-    } else if (is_dir($lang_dir . '/russian')) {
-        $lang_dir = $lang_dir . '/russian';
-    }
-    return $lang_dir;
-}
 // makeCategoryList - make <SELECT> list of categories
 // Params: set via named array
 // * name 		- name field of <SELECT>

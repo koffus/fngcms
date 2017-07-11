@@ -8,12 +8,12 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin('guestbook', 'config', '', ':');
 
-Lang::loadPlugin('guestbook', 'config', '', 'gbconfig', '#');
+$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
 
 // Prepare configuration parameters
-switch ($_REQUEST['action']) {
+switch ($action) {
 	case 'manage_fields' : manage_fields(); break;
 	case 'add_field' : add_field(); break;
 	case 'edit_field' : edit_field(); break;
@@ -22,7 +22,7 @@ switch ($_REQUEST['action']) {
 	case 'update_field' : $result = update_field(); if ($result === true) manage_fields(); else edit_field($result); break;
 	case 'options' : show_options(); break;
 	case 'show_messages' : show_messages(); break;
-	case 'edit_message' : $result = edit_message($_REQUEST['id']); if ($result === true) show_messages(); break;
+	case 'edit_message' : $result = edit_message(intval($_REQUEST['id'])); if ($result === true) show_messages(); break;
 	case 'delete_message' : delete_message(); show_messages(); break;
 	case 'delete_social' : $result = delete_social(); edit_message($result); break;
 	case 'modify' : modify(); show_messages(); break;
@@ -50,7 +50,7 @@ function add_field() {
 function insert_field() {
 	global $mysql;
 
-	$id = $_REQUEST['id'];
+	$id = intval($_REQUEST['id']);
 	$name = $_REQUEST['name'];
 	$placeholder = $_REQUEST['placeholder'];
 	$default = $_REQUEST['default_value'];
@@ -58,35 +58,35 @@ function insert_field() {
 
 	// Check field ID
 	if (empty($id)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_id_empty']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_id_empty']));
 		return FALSE;
 	}
 
 	// Check if ID is unique
 	$field = $mysql->result('SELECT COUNT(1) FROM ' . prefix . '_guestbook_fields WHERE id = ' . db_squote($id));
 	if (!empty($field)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_duplicate_id']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_duplicate_id']));
 		return FALSE;
 	}
 
 	// Check for characters
 	if (!preg_match('#^[a-z]+$#', $id)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_characters']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_characters']));
 		return FALSE;
 	}
 
 	// Check for length
 	if (strlen($id) < 3) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_id_length']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_id_length']));
 		return FALSE;
 	}
 
 	// Check field name
 	if (empty($name)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_name_empty']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_name_empty']));
 		return FALSE;
 	} elseif (mb_strlen($name, 'UTF-8') < 3) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_name_length']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_name_length']));
 		return FALSE;
 	}
 
@@ -100,7 +100,7 @@ function insert_field() {
 		);
 	$mysql->query("ALTER TABLE " . prefix . "_guestbook ADD " . $id . " VARCHAR(50) NOT NULL DEFAULT ''");
 
-	msg(array('message' => __('gbconfig')['msgo_field_add_success']));
+	msg(array('message' => __('guestbook')['msgo_field_add_success']));
 	return true;
 }
 
@@ -124,7 +124,7 @@ function edit_field($id) {
 
 	// Field ID is empty or not correct
 	if (!count($field)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_id_not_exist']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_id_not_exist']));
 		manage_fields();
 		return;
 	}
@@ -152,10 +152,10 @@ function update_field() {
 
 	// Check field name
 	if (empty($name)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_name_empty']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_name_empty']));
 		return $id;
 	} elseif (mb_strlen($name, 'UTF-8') < 3) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_name_length']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_name_length']));
 		return $id;
 	}
 
@@ -167,7 +167,7 @@ function update_field() {
 		'required =' . db_squote($required) .
 		" WHERE id = " . db_squote($id)
 		);
-	msg(array('message' => __('gbconfig')['msgo_field_edit_success']));
+	msg(array('message' => __('guestbook')['msgo_field_edit_success']));
 	return true;
 }
 
@@ -180,12 +180,12 @@ function drop_field() {
 	$id = $_REQUEST['id'];
 	$field = $mysql->result('SELECT COUNT(1) FROM ' . prefix . '_guestbook_fields WHERE id = ' . db_squote($id));
 	if (empty($field)) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_field_id_not_exist']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_field_id_not_exist']));
 		return;
 	}
 	$mysql->query("DELETE FROM " . prefix . "_guestbook_fields WHERE id = " . db_squote($id));
 	$mysql->query("ALTER TABLE " . prefix . "_guestbook DROP " . $id);
-	msg(array('message' => __('gbconfig')['msgo_field_drop_success']));
+	msg(array('message' => __('guestbook')['msgo_field_drop_success']));
 }
 
 /*
@@ -282,8 +282,11 @@ function show_options() {
 			$ULIB->saveConfig();
 		}
 		pluginSetVariable('guestbook', 'url', intval($_REQUEST['url']));
-		pluginsSaveConfig();
-		msg(array('message' => __('gbconfig')['msgo_settings_saved']));
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        if($cPlugin->saveConfig())
+            msg(array('message' => __('guestbook')['msgo_settings_saved']));
 	}
 
 	$usmilies = pluginGetVariable('guestbook', 'usmilies');
@@ -386,12 +389,12 @@ function delete_social() {
 	$soc = secure_html($_REQUEST['soc']);
 
 	if (!in_array($soc, array('Vkontakte', 'Facebook', 'Google', 'Instagram'))) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_wrong_action']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_wrong_action']));
 		return $id;
 	}
 
 	if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote($id)))) {
-		msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_wrong_action']));
+		msg(array('type' => 'danger', 'message' => __('guestbook')['msge_wrong_action']));
 		return $id;
 	}
 
@@ -405,7 +408,7 @@ function delete_social() {
 	}
 
 	$mysql->query("UPDATE " . prefix . "_guestbook set social = " . db_squote(serialize($new_social)) . " WHERE id = " . db_squote($id));
-	msg(array('message' => __('gbconfig')['msgo_social_deleted']));
+	msg(array('message' => __('guestbook')['msgo_social_deleted']));
 	return $id;
 }
 
@@ -414,11 +417,11 @@ function delete_message() {
 
 	$id = intval($_REQUEST['id']);
 	if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote($id)))) {
-		return msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_wrong_action']));
+		return msg(array('type' => 'danger', 'message' => __('guestbook')['msge_wrong_action']));
 	}
 
 	$mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id = " . $id);
-	return msg(array('message' => __('gbconfig')['msgo_deleted_one']));
+	return msg(array('message' => __('guestbook')['msgo_deleted_one']));
 }
 
 function edit_message($mid) {
@@ -443,7 +446,7 @@ function edit_message($mid) {
 			$answer = str_replace(array("\r\n", "\r"), "\n", convert($_REQUEST['answer']));
 
 			if (empty($author) or empty($message)) {
-				$errors[] = __('gbconfig')['msge_field_required'];
+				$errors[] = __('guestbook')['msge_field_required'];
 			}
 
 			$upd_rec = array(
@@ -461,7 +464,7 @@ function edit_message($mid) {
 				if (!empty($_REQUEST[$frow['id']])) {
 					$upd_rec[$frow['id']] = db_squote($_REQUEST[$frow['id']]);
 				} elseif (intval($frow['required']) === 1) {
-					$errors[] = __('gbconfig')['msge_field_required'];
+					$errors[] = __('guestbook')['msge_field_required'];
 				} else {
 					$upd_rec[$frow['id']] = "''";
 				}
@@ -480,7 +483,7 @@ function edit_message($mid) {
 
 			if (!count($errors)) {
 				$mysql->query('UPDATE ' . prefix . '_guestbook SET ' . $upd_str . ' WHERE id = \'' . intval($id) . '\' ');
-				msg(array('message' => __('gbconfig')['msgo_edit_success']));
+				msg(array('message' => __('guestbook')['msgo_edit_success']));
 				return true;
 			} else {
 				msg(array('type' => 'danger', 'message' => implode($errors)));
@@ -550,20 +553,20 @@ function modify() {
 	$subaction = $_REQUEST['subaction'];
 
 	if (empty($subaction)) {
-		return msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_wrong_action']));
+		return msg(array('type' => 'danger', 'message' => __('guestbook')['msge_wrong_action']));
 	}
 
 	switch ($subaction) {
-		case 'mass_approve' : $active = 'status = 1'; $msg = __('gbconfig')['msgo_activated']; break;
-		case 'mass_forbidden' : $active = 'status = 0'; $msg = __('gbconfig')['msgo_deactivated']; break;
-		case 'mass_delete' : $del = true; $msg = __('gbconfig')['msgo_deleted']; break;
-		default : return msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_wrong_action']));
+		case 'mass_approve' : $active = 'status = 1'; $msg = __('guestbook')['msgo_activated']; break;
+		case 'mass_forbidden' : $active = 'status = 0'; $msg = __('guestbook')['msgo_deactivated']; break;
+		case 'mass_delete' : $del = true; $msg = __('guestbook')['msgo_deleted']; break;
+		default : return msg(array('type' => 'danger', 'message' => __('guestbook')['msge_wrong_action']));
 	}
 
 	// get messages list
 	$id = implode(',', $selected_news);
 	if (empty($id)) {
-		return msg(array('type' => 'danger', 'message' => __('gbconfig')['msge_not_selected']));
+		return msg(array('type' => 'danger', 'message' => __('guestbook')['msge_not_selected']));
 	}
 
 	// change state
@@ -600,8 +603,11 @@ function social_config() {
 		pluginSetVariable('guestbook', 'instagram_client_id', secure_html($_REQUEST['instagram_client_id']));
 		pluginSetVariable('guestbook', 'instagram_client_secret', secure_html($_REQUEST['instagram_client_secret']));
 
-		pluginsSaveConfig();
-		msg(array('message' => __('gbconfig')['msgo_settings_saved']));
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        if($cPlugin->saveConfig())
+            msg(array('message' => __('guestbook')['msgo_settings_saved']));
 	}
 
 	$vk_client_id = pluginGetVariable('guestbook', 'vk_client_id');

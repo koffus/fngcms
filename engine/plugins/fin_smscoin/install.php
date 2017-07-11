@@ -18,7 +18,7 @@ function plugin_fin_smscoin_install($action) {
 	
 
 	if ($action != 'autoapply')
-			Lang::loadPlugin('fin_smscoin', 'config', '', '', ':');
+			Lang::loadPlugin('fin_smscoin', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(

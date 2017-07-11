@@ -151,7 +151,7 @@
 						<td>{{ lang['git_version'] }}</td>
 						<td>
                             <span><a href="https://github.com/russsiq/fngcms/archive/master.zip">Download Zip</a></span> 
-                            [ <span><a href="#" id="compare">Изменения</a> ]</span>
+                            <!--[ <span><a href="#" id="compare">Изменения</a> ]</span-->
                         </td>
 					</tr>
 					<tr>

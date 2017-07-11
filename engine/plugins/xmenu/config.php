@@ -57,7 +57,10 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	pluginSetVariable('xmenu', 'mode', $_REQUEST['mode']);
 	pluginSetVariable('xmenu', 'news', $_REQUEST['news']);
 	pluginSetVariable('xmenu', 'skin', $_REQUEST['skin']);
-	pluginsSaveConfig();
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // Save configuration parameters of plugins
+    $cPlugin->saveConfig();
 
 	// 2. Categories menu mapping
 	if (!is_array($_REQUEST['cmenu'])) {

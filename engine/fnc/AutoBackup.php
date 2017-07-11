@@ -25,7 +25,7 @@ function AutoBackup($delayed = false, $force = false) {
 		// ** Manage marker file
 		$flagDoProcess = false;
 
-		// -> Try to create marker
+		//->Try to create marker
 		if (($fm = fopen($backupMarkerFile, 'x')) !== FALSE) {
 			// Created, write CALL time
 			fwrite($fm, $time_now);

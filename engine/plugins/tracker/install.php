@@ -14,7 +14,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_tracker_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('tracker', 'config', '', '', ':');
+		Lang::loadPlugin('tracker', 'config', '', ':');
 
 	$db_update = array(
 	 array(
@@ -60,7 +60,10 @@ function plugin_tracker_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('tracker', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

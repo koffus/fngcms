@@ -19,7 +19,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_similar_install($action) {
 
 	if ($action != 'autoapply')
-			Lang::loadPlugin('similar', 'config', '', '', ':');
+			Lang::loadPlugin('similar', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(
@@ -72,7 +72,10 @@ function plugin_similar_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('similar', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

@@ -11,7 +11,7 @@ if (!defined('NGCMS')) die ('HAL');
 $cPlugin = CPlugin::instance();
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 //
 // Prepare configuration parameters

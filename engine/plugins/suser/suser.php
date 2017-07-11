@@ -5,7 +5,7 @@ if (!defined('NGCMS')) die ('HAL');
 register_plugin_page('suser','','suser_show',0);
 register_plugin_page('suser','search','suser_search',0);
 
-Lang::loadPlugin('suser', 'main', '', '', '#');
+Lang::loadPlugin('suser', 'main', '', '#');
 registerActionHandler('index_post', 'suser_header_show');
 
 // need for xfields sort & search

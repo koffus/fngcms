@@ -17,7 +17,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_complain_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('complain', 'config', '', '', ':');
+		Lang::loadPlugin('complain', 'config', '', ':');
 
 	$db_update = array(
 	 array(
@@ -73,7 +73,10 @@ function plugin_complain_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('complain', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

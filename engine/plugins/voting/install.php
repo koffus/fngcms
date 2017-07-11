@@ -11,7 +11,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_voting_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('voting', 'config', '', '', ':');
+		Lang::loadPlugin('voting', 'config', '', ':');
 
 	$db_update = array(
 	 array(
@@ -81,7 +81,10 @@ function plugin_voting_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('voting', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

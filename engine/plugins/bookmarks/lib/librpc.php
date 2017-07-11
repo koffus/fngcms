@@ -3,7 +3,7 @@
 function bookmarks_rpc_manage($params) {
     global $mysql, $config, $userROW, $bookmarksList, $bookmarksLoaded, $twig;
 
-    Lang::loadPlugin('bookmarks', 'main', '', '', ':');
+    Lang::loadPlugin('bookmarks', 'main', '', ':');
     $newsID = intval($params['news']);
 
     // Check for permissions

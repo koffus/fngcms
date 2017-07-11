@@ -1,10 +1,14 @@
 <?php
 
-# protect against hack attempts
+/*
+ * Configuration file for plugin
+*/
+
+// Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-# preload config file
-
+// Load LANG file for plugin
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 $db_update = array(
 	array(
@@ -18,7 +22,5 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 		plugin_mark_deinstalled($plugin);
 	}
 } else {
-	generate_install_page($plugin, 'Плагин успешно удален', 'deinstall');
+	generate_install_page($plugin, 'Внимание! При удалении плагина удаляется вся база закладок пользователей. Продолжить?', 'deinstall');
 }
-
-?>

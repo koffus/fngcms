@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
 switch($_REQUEST['action']) {
@@ -36,7 +36,10 @@ function url() {
 			$ULIB->saveConfig();
 		}
 		pluginSetVariable('suser', 'url', intval($_REQUEST['url']));
-		pluginsSaveConfig();
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        $cPlugin->saveConfig();
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=suser&action=url');
 	}
 
@@ -68,7 +71,10 @@ function main() {
 		pluginSetVariable('suser', 'description', secure_html($_REQUEST['description']));
 		pluginSetVariable('suser', 'keywords', secure_html($_REQUEST['keywords']));
 		pluginSetVariable('suser', 'localSource', intval($_REQUEST['localSource']));
-		pluginsSaveConfig();
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        $cPlugin->saveConfig();
 
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=suser');
 	}

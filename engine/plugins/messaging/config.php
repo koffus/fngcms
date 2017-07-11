@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, $plugin, '', '', ':');
+Lang::loadPlugin($plugin, $plugin, '', ':');
 
 // Fill configuration parameters
 $cfg = array('description' => __($plugin.':description'));

@@ -15,7 +15,7 @@ $cPlugin = CPlugin::instance();
 $cPlugin->loadLibrary('xfields', 'common');
 
 // Load lang files
-Lang::loadPlugin('xfields', 'config', '', '', ':');
+Lang::loadPlugin('xfields', 'config', '', ':');
 
 //
 // XFields: Add/Modify attached files
@@ -196,7 +196,7 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 class XFieldsNewsFilter extends NewsFilter {
 
     function __construct() {
-        Lang::loadPlugin('xfields', 'config', '', '', ':');
+        Lang::loadPlugin('xfields', 'config', '', ':');
     }
 
     function addNewsForm(&$tvars) {
@@ -1088,7 +1088,7 @@ if (getPluginStatusActive('uprofile')) {
     class XFieldsUPrifileFilter extends p_uprofileFilter {
 
         function __construct() {
-            Lang::loadPlugin('xfields', 'config', '', '', ':');
+            Lang::loadPlugin('xfields', 'config', '', ':');
         }
 
         function editProfileForm($userID, $SQLrow, &$tvars) {
@@ -1451,7 +1451,7 @@ if (getPluginStatusActive('uprofile')) {
 class XFieldsFilterAdminCategories extends FilterAdminCategories {
 
     function __construct() {
-        Lang::loadPlugin('xfields', 'config', '', '', ':');
+        Lang::loadPlugin('xfields', 'config', '', ':');
     }
 
     function addCategory(&$tvars, &$SQL) {
@@ -1503,7 +1503,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories {
 class XFieldsCoreFilter extends CFilter {
 
     function __construct() {
-        Lang::loadPlugin('xfields', 'config', '', '', ':');
+        Lang::loadPlugin('xfields', 'config', '', ':');
     }
 
     function registerUserForm(&$tvars) {

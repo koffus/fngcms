@@ -6,7 +6,7 @@ if (!defined('NGCMS')) die ('HAL');
 register_plugin_page('feedback','','plugin_feedback_screen',0);
 register_plugin_page('feedback','post','plugin_feedback_post',0);
 
-Lang::loadPlugin('feedback', 'main', '', '', ':');
+Lang::loadPlugin('feedback', 'main', '', ':');
 
 // Load library
 include_once(root."/plugins/feedback/lib/common.php");

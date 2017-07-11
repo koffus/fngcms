@@ -14,7 +14,6 @@
     <script src="{{ scriptLibrary }}/bootstrap-3.3.7/bootstrap.js"></script>
     <script src="{{ scriptLibrary }}/js/notify-3.1.5.js"></script>
     <script src="{{ scriptLibrary }}/engine.js"></script>
-    <script src="{{ scriptLibrary }}/admin.js"></script>
     <script src="{{ skins_url }}/js/script.js"></script>
 </head>
 <body>

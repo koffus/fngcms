@@ -3,8 +3,8 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-//Lang::loadPlugin('uprofile', 'main', '', '', ':');
-Lang::loadPlugin('uprofile', 'main', '', 'uprofile', '#');
+//Lang::loadPlugin('uprofile', 'main', '', ':');
+Lang::loadPlugin('uprofile', 'main', 'uprofile', '#');
 register_plugin_page('uprofile','edit','uprofile_editProfile',0);
 register_plugin_page('uprofile','apply','uprofile_applyProfile',0);
 register_plugin_page('uprofile','show','uprofile_showProfile',0);
@@ -21,7 +21,7 @@ $cPlugin->loadLibrary('uprofile', 'lib');
 function uprofile_showProfile($params) {
 	global $mysql, $userROW, $config, $twig, $twigLoader, $template, $SYSTEM_FLAGS, $PFILTERS;
 
-	//Lang::loadPlugin('uprofile', 'users', '', '', ':');
+	//Lang::loadPlugin('uprofile', 'users', '', ':');
 
 	// Check if valid user identity is specified
 	$urow = '';
@@ -308,7 +308,7 @@ function uprofile_editApply(){
 				$tsy = intval($config['photos_thumb_size_y'])?intval($config['photos_thumb_size_y']):intval($config['photos_thumb_size']);
 				if (($tsx < 10)||($tsx > 1000)) $tsx = 150;
 				if (($tsy < 10)||($tsy > 1000)) $tsy = 150;
-				$thumb = $imanage->create_thumb($config['photos_dir'].$subdirectory, $up[1], $tsx,$tsy);
+				$thumb = $imanage->create_thumb($config['photos_dir'].$subdirectory, $up[1], $tsx, $tsy);
 
 				// If we were unable to create thumb - delete photo, it's damaged!
 				if (!$thumb) {

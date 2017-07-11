@@ -6,7 +6,7 @@ if (!defined('NGCMS')) die ('HAL');
 function messaging($subject, $content) {
 	global $mysql;
 
-	Lang::loadPlugin('messaging', 'messaging', '', 'mes');
+	Lang::loadPlugin('messaging', 'messaging', 'mes');
 
 	if (!$subject or trim($subject) == "") {
 		msg(array('type' => 'danger', 'message' => __('mes_msge_subject')));

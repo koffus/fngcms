@@ -320,7 +320,7 @@ class auth_vb {
 		global $config;
 		$params = array();
 
-		Lang::loadPlugin('auth_vb', 'auth','','auth');
+		Lang::loadPlugin('auth_vb', 'auth', 'auth');
 
 		// Password recovery is restricted. Recovery should be used via vBulletin
 		array_push($params, array('text' => __('auth_norestore')));
@@ -340,7 +340,7 @@ class auth_vb {
 	function confirm_restorepw(&$msg) {
 		global $config, $mysql, $tpl;
 
-		Lang::loadPlugin('auth_basic', 'auth','','auth');
+		Lang::loadPlugin('auth_basic', 'auth', 'auth');
 		$msg = __('auth_newpw_fail');
 		return 0;
 	}

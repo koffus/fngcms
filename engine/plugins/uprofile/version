@@ -14,5 +14,6 @@ Description: Управление/отображение профиля поль
 Information: Позволяет пользователя просматривать чужие профили и редактировать свой.
 Author: Vitaly A. Ponomarev
 Author_URI: http://ngcms.ru/
+Permanent: yes
 preinstall: yes
 Library: lib; lib/uprofile.lib.php

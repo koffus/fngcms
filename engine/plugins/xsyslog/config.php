@@ -6,7 +6,7 @@ if(!defined('NGCMS'))
 }
 
 
-Lang::loadPlugin('xsyslog', 'config', '', '', '#');
+Lang::loadPlugin('xsyslog', 'config', '', '#');
 
 show_xsyslog();
 

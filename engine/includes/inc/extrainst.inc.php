@@ -129,16 +129,15 @@ function generate_config_page($module, $params, $values = array())
 // Automatic save values into module parameters DB
 function commit_plugin_config_changes($module, $params)
 {
-
-    // Load config
-    
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
 
     $cfgUpdate = array();
 
     // For each param do save data
     foreach ($params as $param) {
         // Validate parameter if needed
-        if (isset($param['mode']) and $param['mode'] == 'group') {
+        if (isset($param['mode']) and 'group' == $param['mode']) {
             if (is_array($param['entries'])) {
                 foreach ($param['entries'] as $gparam) {
                     if (isset($gparam['name']) and empty($gparam['nosave'])) {
@@ -153,7 +152,7 @@ function commit_plugin_config_changes($module, $params)
     }
 
     // Save config
-    if(pluginsSaveConfig()) {
+    if($cPlugin->saveConfig()) {
         msg(array('message' => __('commited')));
     }
 

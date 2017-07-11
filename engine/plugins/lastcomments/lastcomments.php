@@ -115,22 +115,22 @@ function lastcomments($mode = 0) {
 		$comm_num++;
 		// Parse comments
 		$text = $row['text'];
-		if ($config['blocks_for_reg'])		{ $text = $parse -> userblocks($text); }
-		if ($config['use_bbcodes'])			{ $text = $parse -> bbcodes($text); }
-		if ($config['use_htmlformatter'])	{ $text = $parse -> htmlformatter($text); }
-		if ($config['use_smilies'])			{ $text = $parse -> smilies($text); }
-		if (mb_strlen($text, 'UTF-8') > $comm_length)	{ $text = $parse -> truncateHTML($text, $comm_length);}
+		if ($config['blocks_for_reg'])		{ $text = $parse->userblocks($text); }
+		if ($config['use_bbcodes'])			{ $text = $parse->bbcodes($text); }
+		if ($config['use_htmlformatter'])	{ $text = $parse->htmlformatter($text); }
+		if ($config['use_smilies'])			{ $text = $parse->smilies($text); }
+		if (mb_strlen($text, 'UTF-8') > $comm_length)	{ $text = $parse->truncateHTML($text, $comm_length);}
 
 		// gen answer
 		if ($row['answer'] != '') {
 			$answer = $row['answer'];
 			$name = $row['name'];
 
-			if ($config['blocks_for_reg'])		{ $answer = $parse -> userblocks($answer); }
-			if ($config['use_htmlformatter'])	{ $answer = $parse -> htmlformatter($answer); }
-			if ($config['use_bbcodes'])			{ $answer = $parse -> bbcodes($answer); }
-			if ($config['use_smilies'])			{ $answer = $parse -> smilies($answer); }
-			if (mb_strlen($answer, 'UTF-8') > $comm_length)	{ $answer = $parse -> truncateHTML($answer, $comm_length);}
+			if ($config['blocks_for_reg'])		{ $answer = $parse->userblocks($answer); }
+			if ($config['use_htmlformatter'])	{ $answer = $parse->htmlformatter($answer); }
+			if ($config['use_bbcodes'])			{ $answer = $parse->bbcodes($answer); }
+			if ($config['use_smilies'])			{ $answer = $parse->smilies($answer); }
+			if (mb_strlen($answer, 'UTF-8') > $comm_length)	{ $answer = $parse->truncateHTML($answer, $comm_length);}
 		} else {
 			$answer = '';
 			$name = '';

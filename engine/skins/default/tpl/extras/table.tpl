@@ -14,10 +14,10 @@
 		</div>
 	</div>
 	<ul class="nav nav-tabs nav-justified">
-		<li data-filter="all" class="active"><a href="#">{{ lang['list.all'] }} <span class="badge">{{ cntAll }}</span></a></li>
-		<li data-filter="pluginEntryActive"><a href="#">{{ lang['list.active'] }} <span class="badge">{{ cntActive }}</span></a></li>
-		<li data-filter="pluginEntryInactive"><a href="#">{{ lang['list.inactive'] }} <span class="badge">{{ cntInactive }}</span></a></li>
-		<li data-filter="pluginEntryUninstalled"><a href="#">{{ lang['list.needinstall'] }} <span class="badge">{{ cntUninstalled }}</span></a></li>
+		<li class="active"><a href="#" data-filter="all">{{ lang['list.all'] }} <span class="badge">{{ cntAll }}</span></a></li>
+		<li><a href="#" data-filter="pluginEntryActive">{{ lang['list.active'] }} <span class="badge">{{ cntActive }}</span></a></li>
+		<li><a href="#" data-filter="pluginEntryInactive">{{ lang['list.inactive'] }} <span class="badge">{{ cntInactive }}</span></a></li>
+		<li><a href="#" data-filter="pluginEntryUninstalled">{{ lang['list.needinstall'] }} <span class="badge">{{ cntUninstalled }}</span></a></li>
 	</ul>
 	<!-- Filter form: END -->
 	<br/>
@@ -58,11 +58,15 @@
 function tabsSwitch(tabs) {
 	var newSelection;
 
-	$(".nav-tabs li").removeClass("active");
-	tabs.addClass("active");
-	newSelection = tabs.attr("data-filter");
-	$(".all").not("."+newSelection).hide();
-	$("."+newSelection).show();
+    if (tabs.parent('li').hasClass('active')) {
+        return ;
+    } else {
+        $('.nav-tabs li').removeClass('active');
+        tabs.parent('li').addClass('active');
+        newSelection = tabs.attr('data-filter');
+        $('.all').not('.'+newSelection).hide();
+        $('.'+newSelection).show();
+    }
 
 }
 
@@ -75,29 +79,30 @@ function searchInTable() {
 	table = $('#maincontent');
 	tr = table.find('tr');
 	// Loop through all table rows, and hide those who don't match the search query
-	for (i=0;i<tr.length;i++) {
-		td = tr[i].getElementsByTagName('td')[0];
-		if (td) {
-			if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-				tr[i].style.display = '';
-			} else {
-				tr[i].style.display = 'none';
-			}
-		} 
-	}
-
+    if(tr.length) {
+        for (i=0;i<tr.length;i++) {
+            td = tr[i].getElementsByTagName('td')[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = '';
+                } else {
+                    tr[i].style.display = 'none';
+                }
+            } 
+        }
+    }
 }
 
 $(function() {
 
 	$('#searchInput').on('keyup', function(){
 		// Reset nav-tabs
-		tabsSwitch($('.nav-tabs li').eq(0));
+		tabsSwitch($('.nav-tabs a').eq(0));
 		searchInTable();
 		return false;
 	});
 
-	$('.nav-tabs').on('click', 'li:not(.active)', function(){
+	$('.nav-tabs').on('click', 'a', function(){
 		$('#searchInput').val('');
 		tabsSwitch($(this));
 		return false;

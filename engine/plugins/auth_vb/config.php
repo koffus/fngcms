@@ -5,7 +5,7 @@
 //
 
 // Load lang files
-Lang::loadPlugin('auth_vb', 'config', '', 'auth');
+Lang::loadPlugin('auth_vb', 'config', 'auth');
 
 // Fill configuration parameters
 $cfg = array();

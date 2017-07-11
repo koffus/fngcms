@@ -1093,7 +1093,7 @@ function showPreview() {
 	if (count($htmlrow))
 		$tvx['vars']['htmlvars'] = join("\n", $htmlrow);
 
-	$tpl -> template('preview', tpl_actions);
-	$tpl -> vars('preview', $tvx);
-	echo $tpl -> show('preview');
+	$tpl->template('preview', tpl_actions);
+	$tpl->vars('preview', $tvx);
+	echo $tpl->show('preview');
 }

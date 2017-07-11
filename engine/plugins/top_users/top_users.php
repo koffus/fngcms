@@ -7,7 +7,7 @@ function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
 	global $config, $mysql, $template, $twig, $twigLoader, $TemplateCache;
 
 	// Load lang files
-	Lang::loadPlugin('top_users', 'main', '', '', ':');
+	Lang::loadPlugin('top_users', 'main', '', ':');
 	
 	// Prepare keys for cacheing
 	$cacheKeys = array();
@@ -121,4 +121,4 @@ function plugin_top_users_showTwig($params) {
 	return plugin_top_users($params['number'], $params['mode'], $params['template'], isset($params['cacheExpire'])?$params['cacheExpire']:0);
 }
 
-twigRegisterFunction('top_users', 'show', plugin_top_users_showTwig);
+twigRegisterFunction('top_users', 'show', 'plugin_top_users_showTwig');

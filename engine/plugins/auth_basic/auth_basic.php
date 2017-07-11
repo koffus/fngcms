@@ -167,7 +167,7 @@ class AuthBasic extends CAuthPlugin {
     function get_reg_params() {
         global $config;
         $params = array();
-        Lang::loadPlugin('auth_basic', 'auth','','auth');
+        Lang::loadPlugin('auth_basic', 'auth', 'auth');
         array_push($params, array('name' => 'login', 'id' => 'reg_login', 'title' => __('auth_login'), 'descr' => __('auth_login_descr'),'type' => 'input'));
         if ($config['register_type'] >= 3) {
             array_push($params, array('id' => 'reg_password', 'name' => 'password', 'title' => __('auth_pass'), 'descr' => __('auth_pass_descr'), 'type' => 'password'));
@@ -188,7 +188,9 @@ class AuthBasic extends CAuthPlugin {
     function register(&$params, $values, &$msg) {
         global $config, $mysql, $tpl;
 
-        Lang::loadPlugin('auth_basic', 'auth','','auth');
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        Lang::loadPlugin('auth_basic', 'auth', 'auth');
 
         $error = 0;
         $userid = 0;
@@ -310,8 +312,8 @@ class AuthBasic extends CAuthPlugin {
                     '#\[activation\].+?\[\/activation]#is' => '',
                 );
 
-                $tpl -> template('register', GetPluginLangDir('auth_basic'));
-                $tpl -> vars('register', $tvars);
+                $tpl->template('register', $cPlugin->getFolderLang('auth_basic'));
+                $tpl->vars('register', $tvars);
                 $msg = $tpl->show('register');
 
                 sendEmailMessage(
@@ -348,8 +350,8 @@ class AuthBasic extends CAuthPlugin {
                     '#\[activation\](.+?)\[\/activation]#is' => '$1',
                 );
 
-                $tpl -> template('register', GetPluginLangDir('auth_basic'));
-                $tpl -> vars('register', $tvars);
+                $tpl->template('register', $cPlugin->getFolderLang('auth_basic'));
+                $tpl->vars('register', $tvars);
                 $msg = $tpl->show('register');
 
                 sendEmailMessage(
@@ -374,8 +376,8 @@ class AuthBasic extends CAuthPlugin {
                 $tvars['regx'] = array(
                     '#\[activation\].+?\[\/activation]#is' => '',
                 );
-                $tpl -> template('register', GetPluginLangDir('auth_basic'));
-                $tpl -> vars('register', $tvars);
+                $tpl->template('register', $cPlugin->getFolderLang('auth_basic'));
+                $tpl->vars('register', $tvars);
                 $msg = $tpl->show('register');
                 sendEmailMessage(
                         $values['email'],
@@ -405,8 +407,8 @@ class AuthBasic extends CAuthPlugin {
                     '#\[activation\](.+?)\[\/activation]#is' => '$1',
                 );
 
-                $tpl -> template('register', GetPluginLangDir('auth_basic'));
-                $tpl -> vars('register', $tvars);
+                $tpl->template('register', $cPlugin->getFolderLang('auth_basic'));
+                $tpl->vars('register', $tvars);
                 $msg = $tpl->show('register');
 
                 sendEmailMessage(
@@ -432,7 +434,7 @@ class AuthBasic extends CAuthPlugin {
         global $config;
         $params = array();
 
-        Lang::loadPlugin('auth_basic', 'auth','','auth');
+        Lang::loadPlugin('auth_basic', 'auth', 'auth');
         $mode = pluginGetVariable('auth_basic','restorepw');
         if (!$mode) {
             return false;
@@ -455,11 +457,14 @@ class AuthBasic extends CAuthPlugin {
     function restorepw(&$params, $values, &$msg) {
         global $config, $mysql, $tpl;
 
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+
+        Lang::loadPlugin('auth_basic', 'auth', 'auth');
+
         $error = 0;
         $values['login'] = trim($values['login']);
         $values['email'] = trim($values['email']);
-
-        Lang::loadPlugin('auth_basic', 'auth','','auth');
         $mode = pluginGetVariable('auth_basic','restorepw');
 
         if (!$mode) {
@@ -497,8 +502,8 @@ class AuthBasic extends CAuthPlugin {
                         'newpw' => $newpassword);
             $tvars['vars']['pwurl'] = generatePluginLink('core', 'lostpassword', array('userid' => $row['id'], 'code' => EncodePassword($newpassword)), array(), false, true);
 
-            $tpl -> template('restorepw', GetPluginLangDir('auth_basic'));
-            $tpl -> vars('restorepw', $tvars);
+            $tpl->template('restorepw', $cPlugin->getFolderLang('auth_basic'));
+            $tpl->vars('restorepw', $tvars);
 
             sendEmailMessage($row['mail'],__('auth_mail_subj'),$tpl->show('restorepw'));
             msg(array('message' => __('msgo_sent')));
@@ -609,7 +614,7 @@ class AuthBasic extends CAuthPlugin {
     // Подтверждение восстановления пароля
     function confirm_restorepw(&$msg, $reqid = NULL, $reqsecret = NULL) {
         global $config, $mysql, $tpl;
-        Lang::loadPlugin('auth_basic', 'auth','','auth');
+        Lang::loadPlugin('auth_basic', 'auth', 'auth');
             $row = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($reqid));
             if (is_array($row)) {
                 if ($reqsecret == $row['newpw']) {

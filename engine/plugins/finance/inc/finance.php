@@ -14,7 +14,7 @@ $FINANCE_CACHE = array();
 // ================================================================
 class Finance_Acceptor {
 	// Конструктор
-	function Finance_Acceptor() {
+	function __construct() {
 		$this->active = 0;
 		$this->type = '';
 		$this->id = '';

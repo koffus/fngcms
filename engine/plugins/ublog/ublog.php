@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 
-Lang::loadPlugin('ublog', 'main', '', '', ':');
+Lang::loadPlugin('ublog', 'main', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();

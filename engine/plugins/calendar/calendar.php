@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang file
-Lang::loadPlugin('calendar', 'main', '', '', ':');
+Lang::loadPlugin('calendar', 'main', '', ':');
 
 // Check execution mode
 if (!pluginGetVariable('calendar', 'mode')) {
@@ -19,7 +19,7 @@ function plugin_calendar()
     global $CurrentHandler, $template;
 
     // Determine MONTH and YEAR for current show process
-    if (($CurrentHandler['pluginName'] == 'news') &&
+    if (isset($CurrentHandler['pluginName']) and ('news' == $CurrentHandler['pluginName']) and 
         (in_array($CurrentHandler['handlerName'], array('by.day', 'by.month', 'by.year')))
     ) {
         $year = isset($CurrentHandler['params']['year']) ? $CurrentHandler['params']['year'] : $_REQUEST['year'];

@@ -26,7 +26,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 register_plugin_page('pm', '', 'pm', 0);
 
-Lang::loadPlugin('pm', 'main', '', '', ':');
+Lang::loadPlugin('pm', 'main', '', ':');
 
 registerActionHandler('usermenu', 'new_pm');
 

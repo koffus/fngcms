@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
 $cfg = array('description' => 'Добавляет новые переменные управления датой новости, а также позволяет заменить формат отображения даты. Идеален для графического отображения даты.');

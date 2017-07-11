@@ -9,7 +9,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
 Lang::load('users', 'admin');
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
 // Default user group for new users

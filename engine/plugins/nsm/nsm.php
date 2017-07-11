@@ -3,7 +3,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('nsm', 'main', '', '', '#');
+Lang::loadPlugin('nsm', 'main', '', '#');
 register_plugin_page('nsm','','plugin_nsm');
 register_plugin_page('nsm','add','plugin_nsm_add_proxy');
 register_plugin_page('nsm','edit','plugin_nsm_edit_proxy');
@@ -624,7 +624,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  $input = '';
  $tfVars = array( 'images' => array());
 
- //$tpl -> template('ed_entry.image', extras_dir.'/xfields/tpl');
+ //$tpl->template('ed_entry.image', extras_dir.'/xfields/tpl');
  if (is_array($SQLold['#images'])) {
  foreach ($SQLold['#images'] as $irow) {
  // Skip images, that are not related to current field

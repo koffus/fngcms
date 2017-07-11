@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load langs
-Lang::loadPlugin('feedback', 'config', '', '', ':');
+Lang::loadPlugin('feedback', 'config', '', ':');
 
 // Load library
 include_once(root . "/plugins/feedback/lib/common.php");

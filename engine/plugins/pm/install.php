@@ -27,7 +27,7 @@ if (!defined('NGCMS'))die ('HAL');
 function plugin_pm_install($action) {
 	
 	if ($action != 'autoapply')
-		Lang::loadPlugin('pm', 'config', '', '', ':');
+		Lang::loadPlugin('pm', 'config', '', ':');
 		
 	$db_create = array(
 		array(

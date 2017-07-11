@@ -18,7 +18,7 @@ function plugin_finance_install($action) {
 	
 
 	if ($action != 'autoapply')
-			Lang::loadPlugin('finance', 'config', '', '', ':');
+			Lang::loadPlugin('finance', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(
@@ -142,7 +142,10 @@ function plugin_finance_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('finance', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

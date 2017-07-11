@@ -33,7 +33,10 @@ function plugin_faq_install($action) {
 			} else {
 				return false;
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 			break;
 	}
 

@@ -275,7 +275,7 @@ function manage_showlist($type) {
 			$file_link = '<a href="' . $fileurl . '" title="' . $row['name'] . '" target="_blank">' . $row['orig_name'].'</a> ';
 		}
 
-		$tpl -> template('entries', tpl_actions.$mod);
+		$tpl->template('entries', tpl_actions.$mod);
 		$tvars['vars'] = array(
 			'rename' => $rename,
 			'view_thumb' => $row['preview'] ? $row['view_thumb'] : '',
@@ -321,8 +321,8 @@ function manage_showlist($type) {
 //			$tvars['vars']['preview_size'] = '';
 		}
 
-		$tpl -> vars('entries', $tvars);
-		$entries .= $tpl -> show('entries');
+		$tpl->vars('entries', $tvars);
+		$entries .= $tpl->show('entries');
 	}
 	
 	$dateslist = '';
@@ -380,7 +380,7 @@ function manage_showlist($type) {
 		$listExt .= '*.'.$eI.';';
 	}
 
-	$tpl -> template('table', tpl_actions.$mod);
+	$tpl->template('table', tpl_actions.$mod);
 	$tvars['vars'] = array(
 		'php_self' => $PHP_SELF,
 		'dateslist' => $dateslist,
@@ -415,8 +415,8 @@ function manage_showlist($type) {
 	} else {
 		$tvars['regx']["#\[status\].*?\[/status\]#si"] = '';
 	}
-	$tpl -> vars('table', $tvars);
-	echo $tpl -> show('table');
+	$tpl->vars('table', $tvars);
+	echo $tpl->show('table');
 }
 
 //

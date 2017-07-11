@@ -24,7 +24,7 @@
 class pm{
 	
 	function __construct(){
-		Lang::loadPlugin('pm', 'main', '', '', ':');
+		Lang::loadPlugin('pm', 'main', '', ':');
 	}
 	/* params:
 	 *

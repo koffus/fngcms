@@ -10,7 +10,7 @@ if (!defined('NGCMS')) die ('HAL');
 class autoKeysNewsFilter extends NewsFilter {
 
 	function __construct() {
-		Lang::loadPlugin('autokeys', 'config', '', '', ':');
+		Lang::loadPlugin('autokeys', 'config', '', ':');
 	}
 
 	function addNews(&$tvars, &$SQL) {

@@ -75,11 +75,11 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
  
  $short_news = '';
  list ($short_news, $full_news) = explode('<!--more-->', $row['content'], 2);
- if ($config['blocks_for_reg']) $short_news = $parse -> userblocks($short_news);
- if ($config['use_htmlformatter']) $short_news = $parse -> htmlformatter($short_news);
- if ($config['use_bbcodes']) $short_news = $parse -> bbcodes($short_news);
- if ($config['use_smilies']) $short_news = $parse -> smilies($short_news);
- //if (strlen($short_news) > $newslength) $short_news = $parse -> truncateHTML($short_news, $newslength);
+ if ($config['blocks_for_reg']) $short_news = $parse->userblocks($short_news);
+ if ($config['use_htmlformatter']) $short_news = $parse->htmlformatter($short_news);
+ if ($config['use_bbcodes']) $short_news = $parse->bbcodes($short_news);
+ if ($config['use_smilies']) $short_news = $parse->smilies($short_news);
+ //if (strlen($short_news) > $newslength) $short_news = $parse->truncateHTML($short_news, $newslength);
  
  $row['news_link'] = $news_link;
  $row['categories'] = $categories;

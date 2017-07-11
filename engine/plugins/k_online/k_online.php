@@ -19,7 +19,7 @@ if (!defined('NGCMS'))
 	die ('HAL');
 
 registerActionHandler('index', 'k_online');
-Lang::loadPlugin('k_online', 'main', '', '', '#');
+Lang::loadPlugin('k_online', 'main', '', '#');
 
 function k_online()
 {global $config, $twig, $template, $userROW, $ip, $mysql;

@@ -16,9 +16,9 @@ function getPluginStatusActive($pluginID)
 {
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
+    $listActive = $cPlugin->getListActive();
     
-    if (isset($active['active'][$pluginID])) {
+    if (isset($listActive['active'][$pluginID])) {
         return true;
     }
     return false;
@@ -36,13 +36,13 @@ function loadActionHandlers($action, $plugin = '')
     $timer = MicroTimer::instance();
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $active = $cPlugin->getListActive();
+    $listActive = $cPlugin->getListActive();
 
     $loadedCount = 0;
     // Find extras for selected action
-    if (isset($active['actions'][$action]) and is_array($active['actions'][$action])) {
+    if (isset($listActive['actions'][$action]) and is_array($listActive['actions'][$action])) {
         // There're some modules
-        foreach ($active['actions'][$action] as $key => $value) {
+        foreach ($listActive['actions'][$action] as $key => $value) {
             // Skip plugins in manual mode
             if ($plugin and ($key != $plugin))
                 continue;
@@ -149,32 +149,6 @@ function pluginSetVariable($pluginID, $var, $value)
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     $cPlugin->setVar($pluginID, $var, $value);
-}
-
-//
-// Save configuration parameters of plugins (should be called after pluginSetVariable)
-function pluginsSaveConfig($suppressNotify = false)
-{
-    global $PLUGINS;
-
-    if (!$PLUGINS['config:loaded']) {
-        if (!$suppressNotify) {
-            msg(array('type' => 'danger', 'title' => str_replace('{name}', conf_pconfig, __('error.config.read')), 'message' => __('error.config.read#desc')));
-        }
-        return false;
-    }
-
-    //
-    if (!($fconfig = fopen(conf_pconfig, 'w'))) {
-        if (!$suppressNotify) {
-            msg(array('type' => 'danger', 'title' => str_replace('{name}', conf_pconfig, __('error.config.write')), 'message' => __('error.config.write#desc')));
-        }
-        return false;
-    }
-
-    fwrite($fconfig, serialize($PLUGINS['config']));
-    fclose($fconfig);
-    return true;
 }
 
 //
@@ -333,14 +307,17 @@ function cacheRetrieveFile($fname, $expire, $plugin = '')
 function clearCacheFiles()
 {
     $error = false;
+    $listSkip = '';
     foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(root . 'cache/'), RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
         if ($file->isFile()) {
-            if (!@unlink($file->getPathname()))
+            if (!@unlink($file->getPathname())) {
+                $listSkip .= '<br>' . $file->getBasename();
                 $error = true;
+            }
         }
     }
     if($error){
-        msg(array('message' => __('msg.cashe_not_clear'), 'type' => 'warning'));
+        msg(array('message' => __('msg.cashe_not_clear') . $listSkip, 'type' => 'warning'));
     } else {
         msg(array('message' => __('msg.cashe_clear')));
     }
@@ -355,35 +332,30 @@ function create_access_htaccess()
         array('dir' => 'conf', 'data' => "<files *>\n\tOrder Deny,Allow\n\tDeny from All\n</files>"),
     );
 
-    //print '<pre>'.var_export($htaccess_array, true).'</pre>';
-
-    if (is_array($htaccess_array))
-        foreach ($htaccess_array as $result) {
-            $htaccessFile = root . $result['dir'] . '/.htaccess';
-
-            // Try to create file
-            if (file_exists($htaccessFile))
-                continue;
-
-            if (($fn = @fopen($htaccessFile, 'w')) == FALSE)
-                continue;
-
-            // Try to make exclusive file lock. Return if failed
-            if (@flock($fn, LOCK_EX) == FALSE) {
-                fclose($fn);
-                continue;
-
-            }
-            // Write into file
-            if (@fwrite($fn, $result['data']) == -1) {
-                // Failed.
-                flock($fn, LOCK_UN);
-                fclose($fn);
-                continue;
-            }
+    foreach ($htaccess_array as $result) {
+        $htaccessFile = root . $result['dir'] . '/.htaccess';
+        // Try to create file
+        if (file_exists($htaccessFile)) {
+            continue;
+        }
+        if (($fn = @fopen($htaccessFile, 'w')) == FALSE) {
+            continue;
+        }
+        // Try to make exclusive file lock. Return if failed
+        if (@flock($fn, LOCK_EX) == FALSE) {
+            fclose($fn);
+            continue;
+        }
+        // Write into file
+        if (@fwrite($fn, $result['data']) == -1) {
+            // Failed.
             flock($fn, LOCK_UN);
             fclose($fn);
+            continue;
         }
+        flock($fn, LOCK_UN);
+        fclose($fn);
+    }
 }
 
 //
@@ -402,7 +374,7 @@ function locatePluginTemplates($tname, $plugin, $localSource = 0, $skin = '', $b
 
     // Check if $tname is correct
     if (!is_array($tname)) {
-        if ($tname == '') {
+        if (empty($tname)) {
             return array();
         }
         $tname = array($tname);

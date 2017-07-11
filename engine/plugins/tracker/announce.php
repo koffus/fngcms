@@ -176,7 +176,7 @@ class TrackerNewsFilter extends NewsFilter
 
         if (pluginGetVariable('tracker', 'smagnet')) {
 
-            Lang::loadPlugin('tracker', 'config', '', '', ':');
+            Lang::loadPlugin('tracker', 'config', '', ':');
 
             $ttvars = array(
                 'tracker_magnet' => '',
@@ -223,7 +223,7 @@ class TrackerNewsFilter extends NewsFilter
 
         if (pluginGetVariable('tracker', 'smagnet')) {
 
-            Lang::loadPlugin('tracker', 'config', '', '', ':');
+            Lang::loadPlugin('tracker', 'config', '', ':');
 
             // Check if we have joined magnet link
             $tracker_magnet = '';
@@ -298,7 +298,7 @@ class TrackerNewsFilter extends NewsFilter
             plugin_tracker_updnews($newsID, $xSQL);
     }
 
-    function showNews($newsID, $SQLnews, &$tvars, $mode)
+   public function showNews($newsID, $SQLnews, &$tvars, $mode = array())
     {
         global $tpl, $config, $mysql;
 
@@ -379,4 +379,4 @@ include_once "lib/basic.php";
 register_plugin_page('tracker', 'announce', 'plugin_tracker_announce');
 pluginRegisterFilter('news', 'tracker', new TrackerNewsFilter);
 
-Lang::loadPlugin('tracker', 'main', '', '', ':');
+Lang::loadPlugin('tracker', 'main', '', ':');

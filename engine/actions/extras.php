@@ -28,7 +28,7 @@ function admGeneratePluginList()
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
-    $extras = $cPlugin->getList();
+    $extras = $cPlugin->getInfo();
 
     $pCount = array(0 => 0, 1 => 0, 2 => 0, 3 => 0);
 
@@ -73,7 +73,7 @@ function admGeneratePluginList()
             }
         }
 
-        $needinstall = 0;
+        $needinstall = false;
         $tEntry['install'] = '';
         if ($cPlugin->getStatusInstalled($extra['id'])) {
             if (isset($extra['deinstall']) and $extra['deinstall'] and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['deinstall'])) {
@@ -82,7 +82,7 @@ function admGeneratePluginList()
         } else {
             if (isset($extra['install']) and $extra['install'] and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['install'])) {
                 $tEntry['install'] = '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '&amp;stype=install">' . __('install') . '</a>';
-                $needinstall = 1;
+                $needinstall = true;
             }
         }
 
@@ -140,7 +140,7 @@ function repoSync()
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
 // Load plugin list  
-$extras = $cPlugin->getList();
+$extras = $cPlugin->getInfo();
 
 Lang::load('extras', 'admin');
 
@@ -156,7 +156,7 @@ $enable = isset($_REQUEST['enable']) ? $_REQUEST['enable'] : '';
 $disable = isset($_REQUEST['disable']) ? $_REQUEST['disable'] : '';
 $manage = (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig'] and isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) ? true : false;
 
-    $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
+$id = (isset($_REQUEST['id'])) ? intval($_REQUEST['id']) : 0;
 
 // Check for security token
 if ($enable or $disable or $manage) {
@@ -167,12 +167,16 @@ if ($enable or $disable or $manage) {
     }
 }
 
-if (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig']) {
+if (isset($_REQUEST['manageConfig']) and true == $_REQUEST['manageConfig']) {
 
-    if (isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) {
+    if (isset($_REQUEST['action']) and ('commit' == $_REQUEST['action'])) {
         print "TRY COMMIT";
     }
-    $confLine = json_encode($PLUGINS['config']);
+
+    // Load of plugins configurations
+    $pConfig = $cPlugin->getConfig();
+    
+    $confLine = json_encode($pConfig);
     $confLine = jsonFormatter($confLine);
 
     $tVars = array(

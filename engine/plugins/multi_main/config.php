@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
 switch ($_REQUEST['action']) {
@@ -65,8 +65,11 @@ function general_submit(){
 		pluginSetVariable('multi_main', 'journ', $_POST['journ']);
 		pluginSetVariable('multi_main', 'moder', $_POST['moder']);
 		pluginSetVariable('multi_main', 'admin', $_POST['admin']);
-		pluginsSaveConfig();
-		msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        if($cPlugin->saveConfig())
+            msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
 	}
 }
 
@@ -147,8 +150,11 @@ function add(){
 		if (!$if_error){
 			$category[$cat] = $tpll;
 			pluginSetVariable('multi_main', 'category', $category);
-			pluginsSaveConfig();
-			msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            if($cPlugin->saveConfig())
+                msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
 			showlist();
 			return;
 		}
@@ -188,8 +194,11 @@ function delete() {
 		if ($_POST['commit'] == 'yes'){
 			unset($category[$cat]);
 			pluginSetVariable('multi_main', 'category', $category);
-			pluginsSaveConfig();
-			msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
+			 // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            if($cPlugin->saveConfig())
+                msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
 		}
 		showlist();
 		return;

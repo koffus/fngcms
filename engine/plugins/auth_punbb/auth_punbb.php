@@ -239,7 +239,7 @@ class auth_punbb {
 	function get_reg_params() {
 		global $config;
 		$params = array();
-		Lang::loadPlugin('auth_punbb', 'auth','','auth');
+		Lang::loadPlugin('auth_punbb', 'auth', 'auth');
 		array_push($params, array('name' => 'login', title => __('auth_login'), 'descr' => __('auth_login_descr'),'type' => 'input'));
 		if ($config['register_type'] == "3") {
  	array_push($params, array('name' => 'password', title => __('auth_pass'), 'descr' => __('auth_pass_descr'), 'type' => 'password'));
@@ -381,7 +381,7 @@ class auth_punbb {
 		global $config;
 		$params = array();
 
-		Lang::loadPlugin('auth_punbb', 'auth','','auth');
+		Lang::loadPlugin('auth_punbb', 'auth', 'auth');
 
 		// Password recovery is restricted. Recovery should be used via punBB
 		array_push($params, array('text' => __('auth_norestore')));
@@ -401,7 +401,7 @@ class auth_punbb {
 	function confirm_restorepw(&$msg) {
 		global $config, $mysql, $tpl;
 
-		Lang::loadPlugin('auth_basic', 'auth','','auth');
+		Lang::loadPlugin('auth_basic', 'auth', 'auth');
 		$msg = __('auth_newpw_fail');
 		return 0;
 	}

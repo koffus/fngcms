@@ -18,7 +18,7 @@ function plugin_comments_install($action) {
 	
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('comments', 'config', '', '', ':');
+		Lang::loadPlugin('comments', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(
@@ -99,7 +99,10 @@ function plugin_comments_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('comments', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

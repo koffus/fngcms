@@ -6,7 +6,7 @@ if (!defined('NGCMS')) die ('HAL');
 //
 // Configuration file for plugin
 
-Lang::loadPlugin('basket', 'config', '', '', ':');
+Lang::loadPlugin('basket', 'config', '', ':');
 
 $db_update = array(
     array(

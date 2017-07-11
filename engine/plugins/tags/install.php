@@ -17,7 +17,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_tags_install($action) {
 
 	if ($action != 'autoapply')
-			Lang::loadPlugin('tags', 'config', '', '', ':');
+			Lang::loadPlugin('tags', 'config', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(
@@ -77,7 +77,10 @@ function plugin_tags_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('tags', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 
 			break;
 	}

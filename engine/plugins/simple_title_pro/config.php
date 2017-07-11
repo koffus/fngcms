@@ -19,7 +19,7 @@ if(!defined('NGCMS'))
 exit('HAL');
 
 
-Lang::loadPlugin('simple_title_pro', 'config', '', '', '#');
+Lang::loadPlugin('simple_title_pro', 'config', '', '#');
 
 switch ($_REQUEST['action']) {
 	case 'list_cat': list_cat();		break;
@@ -504,7 +504,10 @@ function main()
 		pluginSetVariable('simple_title_pro', 'html_secure', secure_html($_REQUEST['html_secure']));
 		pluginSetVariable('simple_title_pro', 'p_title', secure_html($_REQUEST['p_title']));
 		pluginSetVariable('simple_title_pro', 'cache', secure_html($_REQUEST['cache']));
-		pluginsSaveConfig();
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Save configuration parameters of plugins
+        $cPlugin->saveConfig();
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=simple_title_pro');
 	}
 	

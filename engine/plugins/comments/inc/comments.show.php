@@ -34,10 +34,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
     $tplVars = $TemplateCache['site']['#variables'];
     $noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
-    // -> desired template path
+    //->desired template path
     $templatePath = isset($callingParams['overrideTemplatePath']) ? $callingParams['overrideTemplatePath'] : (tpl_site.'plugins/comments');
 
-    // -> desired template
+    //->desired template
     $templateName = isset($callingParams['overrideTemplateName']) ? $callingParams['overrideTemplateName'] : 'comments.show';
 
     if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
@@ -189,10 +189,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 function comments_showform($newsID, $callingParams = array()){
     global $mysql, $config, $template, $twig, $userROW, $PFILTERS;
 
-    // -> desired template path
+    //->desired template path
     $templatePath = isset($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');
 
-    // -> desired template
+    //->desired template
     if (isset($callingParams['overrideTemplateName'])) {
         $templateName = $callingParams['overrideTemplateName'];
     } else {

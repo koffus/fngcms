@@ -2,7 +2,7 @@
 
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
-Lang::loadPlugin('gmanager', 'config', '', '', ':');
+Lang::loadPlugin('gmanager', 'config', '', ':');
 $ULIB = new UrlLibrary();
 $ULIB->loadConfig();
 $ULIB->removeCommand('gmanager', '');

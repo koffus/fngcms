@@ -22,7 +22,7 @@ Lang::load('extras', 'admin');
 
 function admExtrasGetConfig($params)
 {
-    global $userROW, $mysql, $PLUGINS;
+    global $userROW, $mysql;
 
     // Check for permissions
     if (!checkPermission(array('plugin' => '#admin', 'item' => 'extras'), null, 'modify')) {
@@ -41,7 +41,12 @@ function admExtrasGetConfig($params)
         return array('status' => 0, 'errorCode' => 5, 'errorText' => 'Wrong security code');
     }
 
-    $confLine = json_encode($PLUGINS['config']);
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+    // Load of plugins configurations
+    $pConfig = $cPlugin->getConfig();
+
+    $confLine = json_encode($pConfig);
     $confLine = jsonFormatter($confLine);
 
     return (array('status' => 1, 'errorCode' => 0, 'errorText' => 'Ok', 'content' => $confLine));
@@ -78,7 +83,7 @@ function admExtrasOnOff($params)
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Load plugin list  
-    $extras = $cPlugin->getList();
+    $extras = $cPlugin->getInfo();
     if (!isset($extras[$params['plugin']])) {
         return array('status' => 0, 'errorCode' => 7, 'errorText' => 'Plugin [' . $params['plugin'] . ' is not found');
     }

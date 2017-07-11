@@ -7,7 +7,7 @@ registerActionHandler('index', 'plugin_voting');
 register_plugin_page('voting','panel','plugin_voting_panel',0);
 register_plugin_page('voting','','plugin_voting_page',0);
 
-Lang::loadPlugin('voting', 'main', '', '', ':');
+Lang::loadPlugin('voting', 'main', '', ':');
 
 function plugin_voting_panel() {
 	plugin_voting_screen(true);

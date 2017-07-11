@@ -3,14 +3,14 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('comments', 'main', '', '', ':');
+Lang::loadPlugin('comments', 'main', '', ':');
 
 class CommentsNewsFilter extends NewsFilter
 {
     function addNewsForm(&$tvars)
     {
 
-        Lang::loadPlugin('comments', 'config', '', '', ':');
+        Lang::loadPlugin('comments', 'config', '', ':');
 
         for ($ix = 0; $ix <= 2; $ix++) {
             $tvars['plugin']['comments']['acom:' . $ix] = (pluginGetVariable('comments', 'default_news') == $ix) ? 'selected="selected"' : '';
@@ -27,7 +27,7 @@ class CommentsNewsFilter extends NewsFilter
     {
         global $mysql, $config, $parse, $tpl, $PHP_SELF;
 
-        Lang::loadPlugin('comments', 'config', '', '', ':');
+        Lang::loadPlugin('comments', 'config', '', ':');
 
         // List comments
         $comments = '';
@@ -144,7 +144,7 @@ class CommentsNewsFilter extends NewsFilter
                 $templatePath = tpl_site . 'ncustom/' . $ctname;
             }
         }
-        // -> desired template
+        //->desired template
         $templateName = 'comments.internal';
         if (!file_exists($templatePath . DS . $templateName . '.tpl')) {
             $templatePath = tpl_site . 'plugins/comments';
@@ -214,7 +214,7 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
     function addCategoryForm(&$tvars)
     {
 
-        Lang::loadPlugin('comments', 'config', '', '', ':');
+        Lang::loadPlugin('comments', 'config', '', ':');
 
         $allowCom = pluginGetVariable('comments', 'default_categories');
 
@@ -232,7 +232,7 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
     function editCategoryForm($categoryID, $SQL, &$tvars)
     {
 
-        Lang::loadPlugin('comments', 'config', '', '', ':');
+        Lang::loadPlugin('comments', 'config', '', ':');
 
         if (!isset($SQL['allow_com'])) {
             $SQL['allow_com'] = pluginGetVariable('comments', 'default_categories');
@@ -297,7 +297,7 @@ function plugin_comments_show()
             $templatePath = tpl_site . 'ncustom/' . $ctname;
         }
     }
-    // -> desired template
+    //->desired template
     $templateName = 'comments.external';
     if (!file_exists($templatePath . DS . $templateName . '.tpl')) {
         $templatePath = tpl_site . 'plugins/comments';
@@ -437,7 +437,7 @@ function plugin_comments_delete()
     }
 }
 
-Lang::loadPlugin('comments', 'main', '', '', ':');
+Lang::loadPlugin('comments', 'main', '', ':');
 pluginRegisterFilter('news', 'comments', new CommentsNewsFilter);
 register_admin_filter('categories', 'comments', new CommentsFilterAdminCategories);
 

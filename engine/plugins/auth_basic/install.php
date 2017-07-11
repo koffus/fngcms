@@ -5,7 +5,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_auth_basic_install($action) {
 	
 	if ($action != 'autoapply')
-		Lang::loadPlugin('auth_basic', 'config', '', '', ':');
+		Lang::loadPlugin('auth_basic', 'config', '', ':');
 	
 	$db_update = array(
 		array(

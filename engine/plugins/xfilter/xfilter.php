@@ -5,7 +5,7 @@ if (!defined('NGCMS')) die ('HAL');
 include root.'includes/news.php';
 registerActionHandler('index', 'xfilter');
 
-Lang::loadPlugin('xfilter', 'main', '', 'xfl', ':');
+Lang::loadPlugin('xfilter', 'main', 'xfl', ':');
 
 function xfilter($params) {
 	global $twig, $template, $mysql, $CurrentHandler;

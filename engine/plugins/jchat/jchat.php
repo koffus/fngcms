@@ -9,10 +9,10 @@ function plugin_jchat_index() {
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
-    Lang::loadPlugin('jchat', 'main', '', '', ':');
+    Lang::loadPlugin('jchat', 'main', '', ':');
 
     // We shouldn't show side jchat panel if user currently visited separate jchat window
-    if ($CurrentHandler['pluginName'] == 'jchat') {
+    if (isset($CurrentHandler['pluginName']) and ('jchat' == $CurrentHandler['pluginName'])) {
         $template['vars']['plugin_jchat'] = '';
         return;
     }
@@ -73,7 +73,7 @@ function plugin_jchat_win() {
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
 
-    Lang::loadPlugin('jchat', 'main', '', '', ':');
+    Lang::loadPlugin('jchat', 'main', '', ':');
 
     if (pluginGetVariable('jchat', 'win_mode'))
         $SUPRESS_TEMPLATE_SHOW = 1;

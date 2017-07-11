@@ -1,12 +1,14 @@
 <?php
 
+/*
+ * Configuration file for plugin
+*/
+
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-
-Lang::loadPlugin('jchat', 'config', '', '', ':');
+// Load LANG file for plugin
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 $db_update = array(
 	array(
@@ -24,5 +26,5 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 		plugin_mark_deinstalled($plugin);
 	}
 } else {
-	generate_install_page('jchat', __('jchat:desc_deinstall'), 'deinstall');
+	generate_install_page($plugin, __($plugin.':desc_deinstall'), 'deinstall');
 }

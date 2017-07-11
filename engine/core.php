@@ -378,13 +378,13 @@ $cron = new CronManager();
 loadActionHandlers('all');
 $timer->registerEvent('ALL core-related plugins are loaded');
 
-// ** Execute 'core' action handler
-executeActionHandler('core');
-$timer->registerEvent('ALL core-related plugins are executed');
-
 // Define last consts
 @define('tpl_site', site_root . 'templates/' . $config['theme'] . '/');
 @define('tpl_url', home . '/templates/' . $config['theme']);
+
+// ** Execute 'core' action handler
+executeActionHandler('core');
+$timer->registerEvent('ALL core-related plugins are executed');
 
 // - TWIG: Reconfigure allowed template paths - site template is also available
 $twigLoader->setPaths(array(tpl_site, root));
@@ -393,7 +393,8 @@ $twigLoader->setPaths(array(tpl_site, root));
 $twig->addGlobal('tpl_url', tpl_url);
 $twig->addGlobal('scriptLibrary', scriptLibrary);
 
-// Lang files are loaded _after_ executing core scripts. This is done for switcher plugin
+// Lang files are loaded _after_ executing core scripts
+// This is done for switcher plugin
 $lang = new Lang();
 
 $timer->registerEvent('* CORE.PHP is complete');

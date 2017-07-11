@@ -295,4 +295,4 @@ function xNewsShowBlock($params) {
 	return $xOut;
 }
 
-twigRegisterFunction('xnews', 'show', xNewsShowBlock );
+twigRegisterFunction('xnews', 'show', 'xNewsShowBlock');

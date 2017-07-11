@@ -22,7 +22,7 @@ function plugin_complain_resolve_error($id) {
 function plugin_complain_screen() {
 	global $template, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', '', ':');
+ Lang::loadPlugin('complain', 'main', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 
@@ -111,7 +111,7 @@ function plugin_complain_screen() {
 function plugin_complain_add() {
 	global $template, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', '', ':');
+ Lang::loadPlugin('complain', 'main', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 
@@ -150,7 +150,7 @@ function plugin_complain_add() {
 function plugin_complain_post() {
 	global $template, $tpl, $mysql, $userROW, $ip, $config, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', '', ':');
+ Lang::loadPlugin('complain', 'main', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 
@@ -273,7 +273,7 @@ function plugin_complain_post() {
 function plugin_complain_update() {
 	global $template, $config, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', '', ':');
+ Lang::loadPlugin('complain', 'main', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 

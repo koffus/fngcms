@@ -21,7 +21,7 @@ class NSchedNewsFilter extends NewsFilter {
 	function addNewsForm(&$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('nsched', 'config', '', '', ':');
+		Lang::loadPlugin('nsched', 'config', '', ':');
 
 		$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
 
@@ -60,7 +60,7 @@ class NSchedNewsFilter extends NewsFilter {
 	function editNewsForm($newsID, $SQLold, &$tvars) {
 		global $userROW, $twig;
 
-		Lang::loadPlugin('nsched', 'config', '', '', ':');
+		Lang::loadPlugin('nsched', 'config', '', ':');
 
 		$perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
 		$isOwn = ($SQLold['author_id'] == $userROW['id']) ? 1 : 0;

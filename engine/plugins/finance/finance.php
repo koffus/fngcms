@@ -19,7 +19,7 @@ include_once(root."/plugins/finance/inc/finance.php");
 financeInitCache();
 
 // Подгружаем языковой файл
-Lang::loadPlugin('finance', 'main', '', '', ':');
+Lang::loadPlugin('finance', 'main', '', ':');
 
 //
 // Фильтр новостей (для управления ценой)
@@ -33,7 +33,7 @@ class FinanceNewsFilter extends NewsFilter {
 	function addNewsForm(&$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('finance', 'config', '', '', ':');
+		Lang::loadPlugin('finance', 'config', '', ':');
 
 		$ttvars = array(
 			'fin_price' => '',
@@ -58,7 +58,7 @@ class FinanceNewsFilter extends NewsFilter {
 	function editNewsForm($newsID, $SQLold, &$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('finance', 'config', '', '', ':');
+		Lang::loadPlugin('finance', 'config', '', ':');
 
 		$ttvars = array(
 			'fin_price' => $SQLold['fin_price'],
@@ -160,7 +160,7 @@ register_plugin_page('finance','','plugin_finance_screen',0);
 registerActionHandler('index', 'finance_info');
 registerActionHandler('usermenu', 'finance_info_menu');
 
-function finance_info($sth) {
+function finance_info() {
  global $userROW, $template;
 
  $template['vars']['plugin_finance_balance'] = is_array($userROW)?(sprintf("%.02f", finance_check_money($userROW['name'])/100).' '.pluginGetVariable('finance', 'syscurrency')):'';

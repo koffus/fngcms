@@ -4,6 +4,7 @@ class Lang
 {
 
     protected static $data;
+    protected static $language;
 
     public static $weekdays;
     public static $short_weekdays;
@@ -14,13 +15,19 @@ class Lang
     {
         global $config, $twig;
 
+        
+        if (isset($config['default_lang'])) {
+            self::$language = $config['default_lang'];
+        } else {
+            self::$language = isset($_REQUEST['language']) ? $_REQUEST['language'] : 'english';
+        }
+        
         // Загружаем общий язык сайта
         $this::load('common');
-
-        // Загружаем язык темы
-        // как сказано в core
-        if (file_exists($dir_lang = tpl_dir . $config['theme'] . '/lang/' . $config['default_lang'] . '.ini'))
+        // Загружаем язык темы как сказано в core
+        if (file_exists($dir_lang = tpl_dir . $config['theme'] . '/lang/' . self::$language . '.ini')) {
             self::$data['theme'] = parse_ini_file($dir_lang, true);
+        }
 
         self::$weekdays = explode(',', self::$data['weekdays']);
         self::$short_weekdays = explode(',', self::$data['short_weekdays']);
@@ -37,83 +44,43 @@ class Lang
 
         $where = $where ? '/' . $where : '';
 
-        if (empty ($config['default_lang']))
-            $config['default_lang'] = isset($_REQUEST['language']) ? $_REQUEST['language'] : 'english';
-
-        if (!file_exists($toinc = root . 'lang/' . $config['default_lang'] . $where . '/' . $what . '.ini')) {
+        if (!file_exists($toinc = root . 'lang/' . self::$language . $where . '/' . $what . '.ini')) {
             $toinc = root . 'lang/english' . $where . '/' . $what . '.ini';
         }
-
         if (!file_exists($toinc)) {
             $toinc = root . 'lang/russian' . $where . '/' . $what . '.ini';
         }
-
         if (file_exists($toinc)) {
             $content = parse_ini_file($toinc, true);
-
             self::set($content, $area);
-
-            //return;
-
         } else {
             // only the administrator can see alerts
             global $userROW;
             if ($userROW['status'] == 1)
                 msg(array('type' => 'danger', 'message' => 'Unable to load file <code>' . $toinc . '</code>'));
         }
-
     }
 
     // Load LANG file for plugin
-    public static function loadPlugin($plugin, $file, $group = '', $prefix = '', $delimiter = '_')
+    public static function loadPlugin($plugin, $file, $prefix = '', $delimiter = '_')
     {
-        global $config;
-
-        if (!$prefix) {
-            $prefix = $plugin;
-        }
-        // Load list of active plugins
+        // Get folder language of plugin
         $cPlugin = CPlugin::instance();
-        $active = $cPlugin->getListActive();
-
-        if (!isset($active['active'][$plugin])) {
-            // No, plugin is not active. Let's load plugin list
-            // Load plugin list  
-            $extras = $cPlugin->getList();
-
-            // Exit if no data about this plugin is found
-            if (!$extras[$plugin]) {
-                return 0;
-            }
-            $lang_dir = extras_dir . '/' . $extras[$plugin]['dir'] . '/lang';
+        if ($langDir = $cPlugin->getFolderLang($plugin)) {
+            $langFile = $langDir . '/' . $file . '.ini';
         } else {
-            $lang_dir = extras_dir . '/' . $active['active'][$plugin] . '/lang';
+            return false;
         }
-
-        // Exit if no lang dir
-        if (!is_dir($lang_dir)) {
-            return 0;
-        }
-
-        // find if we have 'lang' dir in plugin directory
-        // Try to load langs in order: default / english / russian
-        $lfn = ($group ? $group . '/' : '') . $file . '.ini';
-
-        // Default language
-        if (is_dir($lang_dir . '/' . $config['default_lang']) and is_file($lang_dir . '/' . $config['default_lang'] . '/' . $lfn)) {
-            $lang_dir = $lang_dir . '/' . $config['default_lang'];
-        } else if (is_dir($lang_dir . '/english') and is_file($lang_dir . '/english/' . $lfn)) {
-            $lang_dir = $lang_dir . '/english';
-        } else if (is_dir($lang_dir . '/russian') and is_file($lang_dir . '/russian/' . $lfn)) {
-            $lang_dir = $lang_dir . '/russian';
+        if (is_file($langFile)) {
+            $plugin_lang = parse_ini_file($langFile);
         } else {
-            return 0;
+            return false;
         }
-
-        $plugin_lang = parse_ini_file($lang_dir . '/' . $lfn);
-
         // merge values
         if (is_array($plugin_lang)) {
+            if (empty($prefix)) {
+                $prefix = $plugin;
+            }
             // Delimiter = '#' - special delimiter, make a separate array
             if ($delimiter == '#') {
                 self::set($plugin_lang, $prefix);
@@ -124,40 +91,33 @@ class Lang
                     self::set(array($prefix . $delimiter . $p => $v));
                 }
             }
+            return true;
         }
-        return 1;
-
+        return false;
     }
 
     public static function set($content, $area = false)
     {
-
         if (!is_array(self::$data))
             self::$data = array();
-
         if ($area) {
             self::$data[$area] = $content;
         } else {
             self::$data = array_merge(self::$data, $content);
         }
-
     }
 
     public static function get($key, $default_value = false)
     {
-
         if (!empty(self::$data[$key]))
             return self::$data[$key];
-
         // this need to global, admin.panel
         if (empty($key))
             return self::$data;
-
         if ($default_value)
             return $default_value;
 
         return '<code class="alert-danger">[LANG_LOST: ' . $key . ']</code>';
-
     }
 
     public static function retDate($format, $date)

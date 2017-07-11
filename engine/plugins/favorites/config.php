@@ -8,7 +8,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', '', ':');
+Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
 $cfg = array('description' => 'Плагин отображает новости, для которых выставлен флаг "добавить в закладки"');

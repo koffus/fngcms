@@ -8,7 +8,7 @@ if (!defined('NGCMS')) die ('HAL');
 //
 
 
-Lang::loadPlugin('feedback', 'config', '', '', ':');
+Lang::loadPlugin('feedback', 'config', '', ':');
 
 $db_update = array(
 	array(

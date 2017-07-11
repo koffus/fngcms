@@ -14,7 +14,7 @@ $cPlugin = CPlugin::instance();
 //$tpath = locatePluginTemplates(array(':bookmarks.css'), 'bookmarks', intval(pluginGetVariable('bookmarks', 'localSource')));
 //$cPlugin->regHtmlVar('css', $tpath['url::bookmarks.css'].'/bookmarks.css'); 
 
-Lang::loadPlugin('bookmarks', 'main', '', '', ':');
+Lang::loadPlugin('bookmarks', 'main', '', ':');
 
 registerActionHandler('index', 'bookmarks_view');
 register_plugin_page('bookmarks', 'update' , 'update', 0);
@@ -22,7 +22,7 @@ register_plugin_page('bookmarks', '' , 'bookmarksPage', 0);
 
 /* declare variables to be global
  * bookmarksLoaded - flag is bookmarks already loaded
- * bookmarksList - result of $mysql -> select
+ * bookmarksList - result of $mysql->select
  */
 global $bookmarksLoaded, $bookmarksList;
 

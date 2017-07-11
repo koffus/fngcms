@@ -64,7 +64,10 @@ function plugin_simple_title_pro_install($action) {
 			foreach ($params as $k => $v) {
 				pluginSetVariable('simple_title_pro', $k, $v);
 			}
-			pluginsSaveConfig();
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
+            // Save configuration parameters of plugins
+            $cPlugin->saveConfig();
 			break;
 	}
 	return true;

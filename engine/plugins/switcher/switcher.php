@@ -4,7 +4,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Load lang file
-Lang::loadPlugin('switcher', 'main', '', '', ':');
+Lang::loadPlugin('switcher', 'main', '', ':');
 
 registerActionHandler('core', 'plugin_switcher');
 registerActionHandler('index', 'plugin_switcher_menu');

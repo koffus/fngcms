@@ -304,14 +304,14 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     }
 
     // Make temlate procession - auto/manual overriding
-    // -> calling style
+    //->calling style
     if (!$callingParams['style']) $callingParams['style'] = 'full';
 
-    // -> desired template - override template if needed
+    //->desired template - override template if needed
     if (getIsSet($callingParams['overrideTemplateName'])) {
         $templateName = $callingParams['overrideTemplateName'];
     } else {
-        // -> generate template name for selected style
+        //->generate template name for selected style
         switch ($callingParams['style']) {
             case 'short' :
                 $templateName = 'news.short';
@@ -330,11 +330,11 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     // Set default template path
     $templatePath = tpl_dir . $config['theme'];
 
-    // -> desired template path - override path if needed
+    //->desired template path - override path if needed
     if (getIsSet($callingParams['overrideTemplatePath'])) {
         $templatePath = $callingParams['overrideTemplatePath'];
     } else if ($callingParams['customCategoryTemplate']) {
-        // -> check for custom category templates
+        //->check for custom category templates
         // Find first category
         if (getIsSet($row['catid'])) {
             $fcat = explode(',', $row['catid']);
@@ -523,15 +523,15 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     //print "<pre>".$query['filter']."</pre>";
 
     // Make temlate procession - auto/manual overriding
-    // -> calling style
+    //->calling style
     if (!$callingParams['style'])
         $callingParams['style'] = 'short';
 
-    // -> desired template - override template if needed
+    //->desired template - override template if needed
     if (isset($callingParams['overrideTemplateName']) and $callingParams['overrideTemplateName']) {
         $templateName = $callingParams['overrideTemplateName'];
     } else {
-        // -> generate template name for selected style
+        //->generate template name for selected style
         switch ($callingParams['style']) {
             case 'short':
                 $templateName = 'news.short';
@@ -819,11 +819,11 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
         // Set default template path
         $templatePath = tpl_dir . $config['theme'];
 
-        // -> desired template path - override path if needed
+        //->desired template path - override path if needed
         if (isset($callingParams['overrideTemplatePath']) and $callingParams['overrideTemplatePath']) {
             $templatePath = $callingParams['overrideTemplatePath'];
         } else if (isset($callingParams['customCategoryTemplate']) and $callingParams['customCategoryTemplate']) {
-            // -> check for custom category templates
+            //->check for custom category templates
             // Check mode:
             // 1 - Master category
             // 2 - Current category

@@ -3,7 +3,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('gmanager', 'main', '', '', ':');
+Lang::loadPlugin('gmanager', 'main', '', ':');
 
 register_plugin_page('gmanager','','plugin_gmanager_main');
 register_plugin_page('gmanager','gallery','plugin_gmanager_gallery');
@@ -280,7 +280,7 @@ function plugin_gmanager_gallery($params)
 	if (pluginGetVariable('gmanager', 'if_auto_cash')) cacheStoreFile($cacheFileName, $output, 'gmanager');
 }
 
-function plugin_gmanager_category($params) {
+function plugin_gmanager_category() {
 	global $tpl, $mysql, $template;
 	
 	if (pluginGetVariable('gmanager', 'if_auto_cash'))
