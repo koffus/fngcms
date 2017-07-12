@@ -32,24 +32,26 @@ class CPlugin
 
         $this->info = array();
 
-        $this->loadListActive();
+        $this->loadList();
         $this->loadConfig();
+        
+        //dd($this->plugins);
     }
 
     // Load list of active plugins and required files
     // Protected reloading
-    protected function loadListActive()
+    protected function loadList()
     {
-        global $PLUGINS;
-        
-        if ($PLUGINS['active:loaded']) {
-            return $PLUGINS['active'];
+        if ($this->plugins['active:loaded']) {
+            return $this->plugins;
         }
         if (is_file(conf_pactive)) {
             include conf_pactive;
             if (is_array($array)) {
-                $PLUGINS['active'] = $array;
-                $PLUGINS['active:loaded'] = 1;
+                $this->plugins = $array;
+                $this->plugins['active:loaded'] = 1;
+
+                return $this->plugins;
             } else {
                 // Тут ошибку надо выдать
             }
@@ -58,54 +60,68 @@ class CPlugin
 
     // getPluginsActiveList
     // Get list of active plugins and required files
-    public function getListActive()
+    public function getList()
     {
-        global $PLUGINS;
+        return $this->plugins;
+    }
 
-        return $PLUGINS['active'];
+    // Set list of active plugins and required files
+    // !!!!!!!!!!!! defined ADMIN
+    public function setList($plugins)
+    {
+        if (is_array($plugins)) {
+            $this->plugins = $plugins;
+            return true;
+        }
+
+        return false;
     }
 
     // Save list of active plugins and required files
+    // !!!!!!!!!!!! defined ADMIN
     public function saveListActive()
     {
-        global $PLUGINS;
-
         if (!is_file(conf_pactive)) {
             return false;
         }
         if (!($file = fopen(conf_pactive, "w"))) {
             return false;
         }
-        $content = '<?php $array = '.var_export($PLUGINS['active'], true).'; ?>';
+        $listActive = [
+            'active' => $this->plugins['active'],
+            'actions' => $this->plugins['actions'],
+            'installed' => $this->plugins['installed'],
+            'libs' => $this->plugins['libs'],
+            ];
+        $content = '<?php $array = '.var_export($listActive, true).'; ?>';
         fwrite($file, $content);
-        fclose($file);
+        //fclose($file);
         return true;
+        
     }
 
     // Load configuration variables for all plugins
     // Protected reloading
     protected function loadConfig()
     {
-        global $PLUGINS;
-
-        if ($PLUGINS['config:loaded']) {
+        if (!empty($this->plugins['config:loaded'])) {
             return true;
         }
-        $fconfig = @fopen(conf_pconfig, 'r');
-        if ($fconfig) {
+        if ($fconfig = @fopen(conf_pconfig, 'r')) {
             if (filesize(conf_pconfig)) {
                 $content = fread($fconfig, filesize(conf_pconfig));
             } else {
                 $content = serialize(array());
             }
-            $PLUGINS['config'] = unserialize($content);
-            $PLUGINS['config:loaded'] = 1;
+            $this->plugins['config'] = unserialize($content);
+            $this->plugins['config:loaded'] = 1;
             fclose($fconfig);
+
             return true;
         } else {
             // File doesn't exists, but Mark as `loaded`
-            $PLUGINS['config'] = array();
-            $PLUGINS['config:loaded'] = 1;
+            $this->plugins['config'] = array();
+            $this->plugins['config:loaded'] = 1;
         }
         return false;
     }
@@ -115,13 +131,11 @@ class CPlugin
     // for all plugins, or one plugin, or one var
     public function getConfig($plugin = false, $var = false)
     {
-        global $PLUGINS;
-
         if(!$this->loadConfig()) {
             return null;
         }
 
-        $pConfig = $PLUGINS['config'];
+        $pConfig = $this->plugins['config'];
 
         if($var and $plugin and isset($pConfig[$plugin]) and isset($pConfig[$plugin][$var])) {
             return $pConfig[$plugin][$var];
@@ -133,13 +147,27 @@ class CPlugin
 
         return null;
     }
-    
+
+    // Set configuration variables
+    // for all plugins
+    // !!!!!!!!!!!! defined ADMIN
+    public function setConfig($pConfig)
+    {
+        if(!$this->loadConfig()) {
+            return null;
+        }
+        if (is_array($pConfig)) {
+            $this->plugins['config'] = $pConfig;
+            return true;
+        }
+        return false;
+    }
+
     // Save configuration parameters of plugins (should be called after pluginSetVariable)
+    // !!!!!!!!!!!! defined ADMIN
     public function saveConfig($suppressNotify = false)
     {
-        global $PLUGINS;
-
-        if (!$PLUGINS['config:loaded']) {
+        if (!$this->plugins['config:loaded']) {
             if (!$suppressNotify) {
                 msg(array('type' => 'danger', 'title' => str_replace('{name}', conf_pconfig, __('error.config.read')), 'message' => __('error.config.read#desc')));
             }
@@ -162,20 +190,15 @@ class CPlugin
     // Load plugin [ Same behaviour as for loadActionHandlers ]
     public function loadPlugin($plugin, $actionList = '*')
     {
-        global $PLUGINS;
-
         $timer = MicroTimer::instance();
-        // Load list of active plugins
-        $active = $this->getListActive();
-        
         $loadCount = 0;
 
         // Don't load if plugin is not activated
-        if (!$active['active'][$plugin])
+        if (!$this->plugins['active'][$plugin])
             return false;
 
         // Scan all available actions and preload plugin's file if needed
-        foreach ($active['actions'] as $aName => $pList) {
+        foreach ($this->plugins['actions'] as $aName => $pList) {
             if (isset($pList[$plugin]) and
                 ((is_array($actionList) and in_array($aName, $actionList)) or
                     (!is_array($actionList) and (($actionList == '*') or ($actionList == $aName))))
@@ -183,13 +206,13 @@ class CPlugin
                 // Yes, we should load this file. If it's not loaded earlier
                 $pluginFileName = $pList[$plugin];
 
-                if (!isset($PLUGINS['loaded:files'][$pluginFileName])) {
+                if (!isset($this->plugins['loaded:files'][$pluginFileName])) {
                     // Try to load file. First check if it exists
                     if (is_file(extras_dir . '/' . $pluginFileName)) {
                         $tX = $timer->stop(4);
                         include_once extras_dir . '/' . $pluginFileName;
                         $timer->registerEvent('func loadPlugin (' . $plugin . '): preloaded file "' . $pluginFileName . '" for ' . ($timer->stop(4) - $tX) . " sec");
-                        $PLUGINS['loaded:files'][$pluginFileName] = 1;
+                        $this->plugins['loaded:files'][$pluginFileName] = 1;
                         $loadCount++;
                     } else {
                         $timer->registerEvent('func loadPlugin (' . $plugin . '): CAN\'t preload file that doesn\'t exists: "' . $pluginFileName . '"');
@@ -198,7 +221,7 @@ class CPlugin
             }
         }
 
-        $PLUGINS['loaded'][$plugin] = 1;
+        $this->plugins['loaded'][$plugin] = 1;
         return $loadCount;
     }
 
@@ -206,24 +229,22 @@ class CPlugin
     public function loadLibrary($plugin, $libname = '')
     {
         $timer = MicroTimer::instance();
-        // Load list of active plugins
-        $active = $this->getListActive();
 
         // Check if we know about this plugin
-        if (!isset($active['active'][$plugin])) return false;
+        if (!isset($this->plugins['active'][$plugin])) return false;
 
         // Check if we need to load all libs
         if (!$libname) {
-            foreach ($active['libs'][$plugin] as $id => $file) {
+            foreach ($this->plugins['libs'][$plugin] as $id => $file) {
                 $tX = $timer->stop(4);
-                include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $file;
+                include_once extras_dir . '/' . $this->plugins['active'][$plugin] . '/' . $file;
                 $timer->registerEvent('loadLibrary: ' . $plugin . '.' . $id . ' [' . $file . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
             }
             return true;
         } else {
-            if (isset($active['libs'][$plugin][$libname])) {
+            if (isset($this->plugins['libs'][$plugin][$libname])) {
                 $tX = $timer->stop(4);
-                include_once extras_dir . '/' . $active['active'][$plugin] . '/' . $active['libs'][$plugin][$libname];
+                include_once extras_dir . '/' . $this->plugins['active'][$plugin] . '/' . $this->plugins['libs'][$plugin][$libname];
                 $timer->registerEvent('loadLibrary: ' . $plugin . ' [' . $libname . '] for ' . round($timer->stop(4) - $tX, 4) . " sec");
                 return true;
             }
@@ -350,27 +371,18 @@ class CPlugin
     // Report if plugin is installed
     public function isInstalled($pluginID)
     {
-        global $PLUGINS;
-        
-        $active = $PLUGINS['active'];
-
-        if (isset($active['installed'][$pluginID]) and $active['installed'][$pluginID]) {
-            return true;
-        }
-        return false;
+        return (isset($this->plugins['installed'][$pluginID]) and $this->plugins['installed'][$pluginID]);
     }
 
     // Return plugin folder
     public function getFolder($plugin)
     {
-        global $EXTRA_CONFIG, $userROW;
+        global $userROW;
 
-        $listActive = $this->getListActive();
-
-        if (isset($listActive['active'][$plugin])) {
-            $dir = extras_dir . '/' . $listActive['active'][$plugin];
+        if (isset($this->plugins['active'][$plugin])) {
+            $dir = extras_dir . '/' . $this->plugins['active'][$plugin];
         } else {
-            if ($userROW['status'] == 1 and empty($_REQUEST['stype']))
+            if (empty($_REQUEST['stype']) and '1' == $userROW['status'])
                 msg(array('type' => 'danger', 'title' => 'For admin', 'message' => 'Requested folder for not activated plugin <code>' . $plugin . '</code>'));
             $extras = $this->getInfo();
             if ($extras[$plugin]) {
@@ -412,29 +424,25 @@ class CPlugin
     // Get plugin variable
     function getVar($pluginID, $var)
     {
-        global $PLUGINS;
-
-        if (!$PLUGINS['config:loaded'])
+        if (!$this->plugins['config:loaded'])
             return false;
 
-        if (!isset($PLUGINS['config'][$pluginID])) {
+        if (!isset($this->plugins['config'][$pluginID])) {
             return null;
         }
-        if (!isset($PLUGINS['config'][$pluginID][$var])) {
+        if (!isset($this->plugins['config'][$pluginID][$var])) {
             return null;
         }
-        return $PLUGINS['config'][$pluginID][$var];
+        return $this->plugins['config'][$pluginID][$var];
     }
 
     // Set variable
     function setVar($pluginID, $var, $value)
     {
-        global $PLUGINS;
-
-        if (!$PLUGINS['config:loaded'])
+        if (!$this->plugins['config:loaded'])
             return false;
 
-        $PLUGINS['config'][$pluginID][$var] = $value;
+        $this->plugins['config'][$pluginID][$var] = $value;
         return true;
     }
     

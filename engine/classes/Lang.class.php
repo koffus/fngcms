@@ -14,16 +14,10 @@ class Lang
     final function __construct()
     {
         global $config, $twig;
-
-        
-        if (isset($config['default_lang'])) {
-            self::$language = $config['default_lang'];
-        } else {
-            self::$language = isset($_REQUEST['language']) ? $_REQUEST['language'] : 'english';
-        }
         
         // Загружаем общий язык сайта
         $this::load('common');
+
         // Загружаем язык темы как сказано в core
         if (file_exists($dir_lang = tpl_dir . $config['theme'] . '/lang/' . self::$language . '.ini')) {
             self::$data['theme'] = parse_ini_file($dir_lang, true);
@@ -41,6 +35,12 @@ class Lang
     public static function load($what, $where = '', $area = '')
     {
         global $config;
+
+        if (empty($config['default_lang'])) {
+            self::$language = isset($_REQUEST['language']) ? $_REQUEST['language'] : 'english';
+        } else {
+            self::$language = $config['default_lang'];
+        }
 
         $where = $where ? '/' . $where : '';
 

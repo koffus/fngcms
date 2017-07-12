@@ -26,34 +26,32 @@ function showlist() {
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Load list of active plugins
-    $listActive = $cPlugin->getListActive();
-    // Load of plugins configurations
-    $pConfig = $cPlugin->getConfig();
+    $plugins = $cPlugin->getList();
 
     $ULIB = new UrlLibrary();
     $ULIB->loadConfig();
     $plug = array();
     $conf = array();
-    if (isset($listActive['active']) and is_array($listActive['active'])) {
-        foreach($listActive['active'] as $key => $row) {
+    if (isset($plugins['active']) and is_array($plugins['active'])) {
+        foreach($plugins['active'] as $key => $row) {
             $plug[] = $key;
             $conf[$key][] = 'active'; } }
-    if (isset($listActive['actions']) and is_array($listActive['actions'])) {
-        foreach($listActive['actions'] as $key => $row) {
+    if (isset($plugins['actions']) and is_array($plugins['actions'])) {
+        foreach($plugins['actions'] as $key => $row) {
             if (!is_array($row)) continue;
             foreach($row as $kkey => $rrow) {
                 if (!in_array($kkey, $plug)) $plug[] = $kkey;
                 if (!in_array('actions', $conf[$kkey])) $conf[$kkey][] = 'actions'; } } }
-    if (isset($listActive['installed']) and is_array($listActive['installed'])) {
-        foreach($listActive['installed'] as $key => $row) {
+    if (isset($plugins['installed']) and is_array($plugins['installed'])) {
+        foreach($plugins['installed'] as $key => $row) {
             if (!in_array($key, $plug)) $plug[] = $key;
             $conf[$key][] = 'installed'; } }
-    if (isset($listActive['libs']) and is_array($listActive['libs'])) {
-        foreach($listActive['libs'] as $key => $row) {
+    if (isset($plugins['libs']) and is_array($plugins['libs'])) {
+        foreach($plugins['libs'] as $key => $row) {
             if (!in_array($key, $plug)) $plug[] = $key;
             $conf[$key][] = 'libs'; } }
-    if (is_array($pConfig)) {
-        foreach($pConfig as $key => $row) {
+    if (is_array($plugins['config'])) {
+        foreach($plugins['config'] as $key => $row) {
             if (!in_array($key, $plug)) $plug[] = $key;
             $conf[$key][] = 'config'; } }
     if (isset($ULIB->CMD) and is_array($ULIB->CMD)) {
@@ -84,14 +82,11 @@ function showlist() {
 }
 
 function delete() {
-    global $PLUGINS;
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Load list of active plugins
-    $listActive = $cPlugin->getListActive();
-    // Load of plugins configurations
-    $pConfig = $cPlugin->getConfig();
+    $plugins = $cPlugin->getList();
 
     if (!isset($_REQUEST['id']) and !isset($_REQUEST['conf'])) {
         msg(array('type' => 'danger', 'message' => __('с_с:error')));
@@ -102,36 +97,36 @@ function delete() {
     $conf = secure_html($_REQUEST['conf']);
     switch ($conf){
         case 'active':
-            if (isset($listActive['active'][$id])){
-                unset($PLUGINS['active']['active'][$id]);
+            if (isset($plugins['active'][$id])){
+                unset($plugins['active'][$id]);
                 msg(array('message' => sprintf(__('с_с:del_ok'), 'active', $id)));}
             else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'active', $id)));
             break;
         case 'actions':
             $if_delete = false;
-            if (isset($listActive['actions']) and is_array($listActive['actions'])) {
-                foreach($listActive['actions'] as $key => $row) {
-                    if (isset($listActive['actions'][$key][$id])) {
-                        unset($PLUGINS['active']['actions'][$key][$id]);
+            if (isset($plugins['actions']) and is_array($plugins['actions'])) {
+                foreach($plugins['actions'] as $key => $row) {
+                    if (isset($plugins['actions'][$key][$id])) {
+                        unset($plugins['actions'][$key][$id]);
                         $if_delete = true;} } }
             if ($if_delete) msg(array('message' => sprintf(__('с_с:del_ok'), 'actions', $id)));
             else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'actions', $id)));
             break;
         case 'installed':
-            if (isset($listActive['installed'][$id])) {
-                unset($PLUGINS['active']['installed'][$id]);
+            if (isset($plugins['installed'][$id])) {
+                unset($plugins['installed'][$id]);
                 msg(array('message' => sprintf(__('с_с:del_ok'), 'installed', $id))); }
             else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'installed', $id)));
             break;
         case 'libs':
-            if (isset($listActive['libs'][$id])) {
-                unset($PLUGINS['active']['libs'][$id]);
+            if (isset($plugins['libs'][$id])) {
+                unset($plugins['libs'][$id]);
                 msg(array('message' => sprintf(__('с_с:del_ok'), 'libs', $id))); }
             else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'libs', $id)));
             break;
         case 'config':
-            if (isset($pConfig[$id])) {
-                unset($PLUGINS['config'][$id]);
+            if (isset($plugins['config'][$id])) {
+                unset($plugins['config'][$id]);
                 msg(array('message' => sprintf(__('с_с:del_ok'), 'config', $id))); }
             else msg(array('type' => 'danger', 'message' => sprintf(__('с_с:del_er'), 'config', $id)));
             break;
@@ -145,8 +140,11 @@ function delete() {
             $ULIB->saveConfig();
             break;
     }
+    // update active extra list in memory
+    $cPlugin->setList($plugins);
     $cPlugin->saveListActive();
     // Save configuration parameters of plugins
+    $cPlugin->setConfig($plugins['config']);
     $cPlugin->saveConfig();
     showlist();
 }

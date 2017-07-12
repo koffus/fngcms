@@ -16,9 +16,9 @@ function pluginIsActive($pluginID)
 {
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $listActive = $cPlugin->getListActive();
+    $plugins = $cPlugin->getList();
 
-    return isset($listActive['active'][$pluginID]);
+    return isset($plugins['active'][$pluginID]);
 }
 
 //
@@ -28,35 +28,35 @@ function pluginIsActive($pluginID)
 // plugin for action
 function loadActionHandlers($action, $plugin = '')
 {
-    global $PLUGINS;
+    global $plugins;
 
     $timer = MicroTimer::instance();
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $listActive = $cPlugin->getListActive();
+    $plugins = $cPlugin->getList();
 
     $loadedCount = 0;
     // Find extras for selected action
-    if (isset($listActive['actions'][$action]) and is_array($listActive['actions'][$action])) {
+    if (isset($plugins['actions'][$action]) and is_array($plugins['actions'][$action])) {
         // There're some modules
-        foreach ($listActive['actions'][$action] as $key => $value) {
+        foreach ($plugins['actions'][$action] as $key => $value) {
             // Skip plugins in manual mode
             if ($plugin and ($key != $plugin))
                 continue;
 
             // Do only if this file is was not loaded earlier
-            if (!isset($PLUGINS['loaded:files'][$value])) {
+            if (!isset($plugins['loaded:files'][$value])) {
                 // Try to load file. First check if it exists
                 if (is_file(extras_dir . '/' . $value)) {
                     $tX = $timer->stop(4);
                     include_once extras_dir . '/' . $value;
                     $timer->registerEvent('loadActionHandlers(' . $action . '): preloaded file "' . $value . '" for ' . round($timer->stop(4) - $tX, 4) . " sec");
-                    $PLUGINS['loaded:files'][$value] = 1;
+                    $plugins['loaded:files'][$value] = 1;
                     $loadedCount++;
                 } else {
                     $timer->registerEvent('loadActionHandlers(' . $action . '): CAN\'t preload file that doesn\'t exists: "' . $value . '"');
                 }
-                $PLUGINS['loaded'][$key] = 1;
+                $plugins['loaded'][$key] = 1;
             }
         }
     }
@@ -129,7 +129,7 @@ function actionDisable($action)
 }
 
 // =========================================================
-// PLUGINS: parameters managment
+// plugins: parameters managment
 // =========================================================
 
 // Get plugin variable

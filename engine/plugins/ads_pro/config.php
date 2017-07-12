@@ -165,7 +165,7 @@ function add()
 
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
-    $listActive = $cPlugin->getListActive();
+    $plugins = $cPlugin->getList();
 
     // Load config
     $pConfig = pluginGetVariable('ads_pro', 'data');
@@ -193,7 +193,7 @@ function add()
     $ttvars['plugins_list'] .= "\t\t\t" . 'subsubel.appendChild(document.createTextNode("' . __('ads_pro:all') . '"));' . "\n";
     $ttvars['plugins_list'] .= "\t\t\t" . 'subel.appendChild(subsubel);' . "\n";
     $t_plugin_list = array(0 => __('ads_pro:all'));
-    foreach ($listActive['actions']['ppages'] as $key => $value) {
+    foreach ($plugins['actions']['ppages'] as $key => $value) {
         $t_plugin_list[$key] = $key;
         $ttvars['plugins_list'] .= "\n\t\t\t" . 'subsubel = document.createElement("option");' . "\n";
         $ttvars['plugins_list'] .= "\t\t\t" . 'subsubel.setAttribute("value", "' . $key . '");' . "\n";
@@ -355,7 +355,8 @@ function add_submit()
     pluginSetVariable('ads_pro', 'data', $var);
 
     // Save configuration parameters of plugins
-    $cPlugin->saveConfig();
+    if($cPlugin->saveConfig())
+        msg(array('message' => __('commited')));
 
     clear_cash();
     showlist();

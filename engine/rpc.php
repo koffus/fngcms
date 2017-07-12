@@ -46,7 +46,7 @@ function processJSON(){
         exit;
     }
 
-    $methodName = $params['methodName'];
+    $methodName = $_POST['methodName'];
 
     // Check for permissions from ajax
     if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) or 'xmlhttprequest' != strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
