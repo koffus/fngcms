@@ -14,7 +14,7 @@ function plugin_switcher() {
     global $config;
 
     // Get chosen template
-    $sw_template = $_COOKIE['sw_template'];
+    $sw_template = isset($_COOKIE['sw_template']) ? intval($_COOKIE['sw_template']): null;
     $sw_count = intval(pluginGetVariable('switcher', 'count'));
     if ( empty($sw_count) )
         $sw_count = 3;
