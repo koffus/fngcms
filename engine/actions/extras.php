@@ -47,7 +47,7 @@ function admGeneratePluginList()
             'author_url' => ($extra['author_uri']) ? ('<a href="' . ((strpos($extra['author_uri'], '@') !== FALSE) ? 'mailto:' : '') . $extra['author_uri'] . '">' . $extra['author'] . "</a>") : $extra['author'],
             'author' => $extra['author'],
             'id' => $extra['id'],
-            'style' => getPluginStatusActive($id) ? 'pluginEntryActive' : 'pluginEntryInactive',
+            'style' => pluginIsActive($id) ? 'pluginEntryActive' : 'pluginEntryInactive',
             'readme' => (file_exists(extras_dir . '/' . $id . '/readme') and filesize(extras_dir . '/' . $id . '/readme')) ? ('<a href="' . admin_url . '/includes/showinfo.php?mode=plugin&amp;item=readme&amp;plugin=' . $id . '" target="_blank" title="' . __('entry.readme') . '"><img src="' . skins_url . '/images/readme.png" width=16 height=16/></a>') : '',
             'history' => (file_exists(extras_dir . '/' . $id . '/history') and filesize(extras_dir . '/' . $id . '/history')) ? ('<a href="' . admin_url . '/includes/showinfo.php?mode=plugin&amp;item=history&amp;plugin=' . $id . '" target="_blank" title="' . __('entry.history') . '"><img src="' . skins_url . '/images/history.png" width=16 height=16/></a>') : ''
         );
@@ -63,7 +63,7 @@ function admGeneratePluginList()
         //
         // Check for permanent modules
         //
-        if (($extra['permanent']) and (!getPluginStatusActive($id))) {
+        if (($extra['permanent']) and (!pluginIsActive($id))) {
             // turn on
             if (pluginSwitch($id, 'on')) {
                 msg(array('message' => sprintf(__('msgo_is_on'), $extra['name'])));
@@ -75,7 +75,7 @@ function admGeneratePluginList()
 
         $needinstall = false;
         $tEntry['install'] = '';
-        if ($cPlugin->getStatusInstalled($extra['id'])) {
+        if ($cPlugin->isInstalled($extra['id'])) {
             if (isset($extra['deinstall']) and $extra['deinstall'] and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['deinstall'])) {
                 $tEntry['install'] = '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '&amp;stype=deinstall">' . __('deinstall') . '</a>';
             }
@@ -87,14 +87,14 @@ function admGeneratePluginList()
         }
 
         $tEntry['url'] = (isset($extra['config']) and $extra['config'] and (!$needinstall) and is_file(extras_dir . '/' . $extra['dir'] . '/' . $extra['config'])) ? '<a href="' . $PHP_SELF . '?mod=extra-config&amp;plugin=' . $extra['id'] . '">' . $extra['name'] . '</a>' : $extra['name'];
-        $tEntry['link'] = (getPluginStatusActive($id) ? '<a href="' . $PHP_SELF . '?mod=extras&amp;token=' . genUToken('admin.extras') . '&amp;disable=' . $id . '">' . __('switch_off') . '</a>' : '<a href="' . $PHP_SELF . '?mod=extras&amp;token=' . genUToken('admin.extras') . '&amp;enable=' . $id . '">' . __('switch_on') . '</a>');
+        $tEntry['link'] = (pluginIsActive($id) ? '<a href="' . $PHP_SELF . '?mod=extras&amp;token=' . genUToken('admin.extras') . '&amp;disable=' . $id . '">' . __('switch_off') . '</a>' : '<a href="' . $PHP_SELF . '?mod=extras&amp;token=' . genUToken('admin.extras') . '&amp;enable=' . $id . '">' . __('switch_on') . '</a>');
 
         if ($needinstall) {
             $tEntry['link'] = '';
             $tEntry['style'] = 'pluginEntryUninstalled';
             $pCount[3]++;
         } else {
-            $pCount[1 + (!getPluginStatusActive($id))]++;
+            $pCount[1 + (!pluginIsActive($id))]++;
         }
         $pCount[0]++;
 

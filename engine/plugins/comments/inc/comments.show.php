@@ -92,7 +92,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
         $tVars = array(
             'havePerm' => (is_array($userROW) and (($userROW['status'] == 1) or ($userROW['status'] == 2))) ? true : false,
-            'isProfile' => (!empty($row['reg']) and getPluginStatusActive('uprofile')) ? true : false,
+            'isProfile' => (!empty($row['reg']) and pluginIsActive('uprofile')) ? true : false,
             'useBB' => $config['use_bbcodes'] ? true : false,
             'hasAnswer' => !empty($row['answer']) ? true : false,
             

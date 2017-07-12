@@ -12,16 +12,13 @@ if (!defined('NGCMS')) die ('HAL');
 
 //
 // Report if plugin is active // TWIG Enabled this
-function getPluginStatusActive($pluginID)
+function pluginIsActive($pluginID)
 {
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
     $listActive = $cPlugin->getListActive();
-    
-    if (isset($listActive['active'][$pluginID])) {
-        return true;
-    }
-    return false;
+
+    return isset($listActive['active'][$pluginID]);
 }
 
 //
@@ -500,7 +497,7 @@ function _MASTER_defaultRUN($pluginName, $handlerName, $params, &$skip, $handler
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Preload requested plugin
-    $cPlugin->load($pluginName, 'ppages');
+    $cPlugin->loadPlugin($pluginName, 'ppages');
 
     // Make chain-load for all plugins, that want to activate during this plugin activation
     loadActionHandlers('action.ppages.' . $pluginName);

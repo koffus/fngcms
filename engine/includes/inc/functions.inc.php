@@ -151,7 +151,6 @@ function directoryWalk($dir, $blackmask = null, $whitemask = null, $returnFiles 
     return array($size, $count, $files, false);
 }
 
-//
 // Generate a list of smilies to show
 function Smilies($insert_location, $break_location = false, $area = false)
 {
@@ -692,6 +691,25 @@ function makeCategoryList($params = array())
         return $optList;
 
     return $out;
+}
+
+function ngLoadCategories()
+{
+    global $mysql, $catz, $catmap;
+
+    if (($result = cacheRetrieveFile('LoadCategories.dat', 86400)) === false) {
+        $result = $mysql->select("select nc.*, ni.id as icon_id, ni.name as icon_name, ni.storage as icon_storage, ni.folder as icon_folder, ni.preview as icon_preview, ni.width as icon_width, ni.height as icon_height, ni.p_width as icon_pwidth, ni.p_height as icon_pheight from `" . prefix . "_category` as nc left join `" . prefix . "_images` ni on nc.image_id = ni.id order by nc.posorder asc", 1);
+        cacheStoreFile('LoadCategories.dat', serialize($result));
+    } else {
+        $result = unserialize($result);
+    }
+
+    if (is_array($result)) {
+        foreach ($result as $row) {
+            $catz[$row['alt']] = $row;
+            $catmap[$row['id']] = $row['alt'];
+        }
+    }
 }
 
 function resolveCatNames($idList, $split = ', ')
@@ -1325,214 +1343,10 @@ function ngShutdownHandler()
     @require(root . '/data/errors/ng_shutdown_handler.php');
 }
 
-function TwigEngineMSG($type, $text, $info = '')
-{
-    $cfg = array('type' => $type);
-    if ($text)
-        $cfg['text'] = __($text);
-    if ($info)
-        $cfg['info'] = $info;
-    return msg($cfg, 0, 2);
-}
-
-function twigGetCategoryTree($masterCategory = null, $flags = array())
-{
-    if (!is_array($flags))
-        $flags = array();
-
-    if (!isset($flags['returnData']))
-        $flags['returnData'] = true;
-
-    return generateCategoryMenu($masterCategory, $flags);
-}
-
-function twigLocalPath($context)
-{
-    return $context['_templatePath'];
-}
-
 // Software generated fatal error
 function ngFatalError($title, $description = '')
 {
     @require(root . '/data/errors/ng_fatal_error.php');
-}
-
-function twigIsLang($lang)
-{
-    global $config;
-
-    return ($config['default_lang'] == $lang);
-}
-
-function twigGetLang()
-{
-    global $config;
-
-    return $config['default_lang'];
-}
-
-// Allow to have specific template configuration for different locations ($CurrentHandler global array)
-// RULE is: <ENTRY1>[|<ENTRY2>[|<ENTRY3>...]]
-// ENTRY1,2,.. is: <PLUGIN>[:<HANDLER>]
-function twigIsHandler($rules)
-{
-    global $config, $CurrentHandler;
-
-    $ruleCatched = false;
-    foreach (preg_split("#\|#", $rules) as $rule) {
-        if (preg_match("#^(.+?)\:(.+?)$#", $rule, $pt)) {
-            // Specified: Plugin + Handler
-            if (($pt[1] == $CurrentHandler['pluginName']) and ($pt[2] == $CurrentHandler['handlerName'])) {
-                $ruleCatched = true;
-                break;
-            }
-        } else if ($rule == $CurrentHandler['pluginName']) {
-            $ruleCatched = true;
-            break;
-        }
-    }
-    return $ruleCatched;
-}
-
-function twigIsCategory($list)
-{
-    global $currentCategory, $catz, $catmap, $config, $CurrentHandler;
-
-    //print "twigCall isCategory($list):<pre>".var_export($currentCategory, true)."</pre>";
-
-    // Return if user is not reading any news
-    if ($CurrentHandler['pluginName'] != 'news') return false;
-    if (($CurrentHandler['handlerName'] == 'news') or ($CurrentHandler['handlerName'] == 'print')) return false;
-
-    // Return false if we're not in category now
-    if (!isset($currentCategory)) {
-        return false;
-    }
-
-    // ****** Process modifiers ******
-    if ($list == '') return true;
-    if ($list == ':id') return $currentCategory['id'];
-    if ($list == ':alt') return secure_html($currentCategory['alt']);
-    if ($list == ':name') return secure_html($currentCategory['name']);
-    if ($list == ':icon') return ($currentCategory['image_id'] and $currentCategory['icon_id']) ? 1 : 0;
-    if ($list == ':icon.url') return $config['attach_url'] . '/' . $currentCategory['icon_folder'] . '/' . $currentCategory['icon_name'];
-    if ($list == ':icon.width') return intval($currentCategory['icon_width']);
-    if ($list == ':icon.height') return intval($currentCategory['icon_height']);
-    if ($list == ':icon.preview') return ($currentCategory['image_id'] and $currentCategory['icon_id'] and $currentCategory['icon_preview']) ? 1 : 0;
-    if ($list == ':icon.preview.url') return $config['attach_url'] . '/' . $currentCategory['icon_folder'] . '/thumb/' . $currentCategory['icon_name'];
-    if ($list == ':icon.preview.width') return intval($currentCategory['icon_pwidth']);
-    if ($list == ':icon.preview.height') return intval($currentCategory['icon_pheight']);
-
-
-    foreach (preg_split("# *, *#", $list) as $key) {
-        if ($key == '')
-            continue;
-
-        if (ctype_digit($key)) {
-            if (isset($catmap[$key]) and is_array($currentCategory) and ($currentCategory['id'] == $key))
-                return true;
-        } else {
-            if (isset($catz[$key]) and is_array($catz[$key]) and is_array($currentCategory) and ($currentCategory['alt'] == $key))
-                return true;
-        }
-
-    }
-    return false;
-}
-
-function twigIsNews($rules)
-{
-    global $catz, $catmap, $CurrentHandler, $SYSTEM_FLAGS, $CurrentCategory;
-
-    //print "twigCall isNews($list):<pre>".var_export($SYSTEM_FLAGS['news'], true)."</pre>";
-
-    // Return if user is not in news
-    if ($CurrentHandler['pluginName'] != 'news') return false;
-    if (($CurrentHandler['handlerName'] != 'news') and ($CurrentHandler['handlerName'] != 'print')) return false;
-    if (!isset($SYSTEM_FLAGS['news']['db.id'])) return false;
-
-    $ruleList = array('news' => array(), 'cat' => array(), 'mastercat' => array());
-    $ruleCatched = false;
-
-    // Pre-scan incoming data
-    foreach (preg_split("#\|#", $rules) as $rule) {
-        if (preg_match("#^(.+?)\:(.+?)$#", $rule, $pt)) {
-            $ruleList[$pt[1]] = $ruleList[$pt[1]] + preg_split("# *, *#", $pt[2]);
-        } else {
-            $ruleList['news'] = $ruleList['news'] + preg_split("# *, *#", $rule);
-        }
-    }
-    //print "isNews debug rules: <pre>".var_export($ruleList, true)."</pre>";
-    foreach ($ruleList as $rType => $rVal) {
-        //print "[SCAN TYPE: '$rType' with val: (".var_export($rVal, true).")]<br/>";
-        switch ($rType) {
-            // -- NEWS
-            case 'news':
-                if (!isset($SYSTEM_FLAGS['news']['db.id']))
-                    continue;
-
-                foreach ($rVal as $key) {
-                    if (ctype_digit($key)) {
-                        if ($SYSTEM_FLAGS['news']['db.id'] == $key)
-                            return true;
-                    } else {
-                        if ($SYSTEM_FLAGS['news']['db.alt'] == $key)
-                            return true;
-                    }
-                }
-                break;
-
-            // -- CATEGORY (master or any)
-            case 'mastercat':
-            case 'cat':
-                if ((!isset($SYSTEM_FLAGS['news']['db.categories'])) or ($SYSTEM_FLAGS['news']['db.categories'] == ''))
-                    continue;
-
-                // List of categories from news
-                foreach ($rVal as $key) {
-                    if (ctype_digit($key)) {
-                        if (($rType == 'mastercat') and ($SYSTEM_FLAGS['news']['db.categories'][0] == $key))
-                            return true;
-                        if (($rType == 'cat') and (in_array($key, $SYSTEM_FLAGS['news']['db.categories'])))
-                            return true;
-                    } else {
-                        if (($rType == 'mastercat') and (is_array($catz[$key])) and ($SYSTEM_FLAGS['news']['db.categories'][0] == $catz[$key]['id']))
-                            return true;
-                        if (($rType == 'cat') and (is_array($catz[$key])) and (in_array($catz[$key]['id'], $SYSTEM_FLAGS['news']['db.categories'])))
-                            return true;
-                    }
-                }
-                break;
-        }
-    }
-    return false;
-}
-
-// Check if current user has specified permissions
-// RULE is: <ENTRY1>[|<ENTRY2>[|<ENTRY3>...]]
-// ENTRY1,2,.. is: <PLUGIN>[:<HANDLER>]
-function twigIsPerm($rules)
-{
-
-}
-
-function twigIsSet($context, $val)
-{
-    //print "call TWIG::isSet(".var_export($context, true)." or ".var_export($val, true).");<br/>";
-    //print "call TWIG::isSet(".var_export($val, true).");<br/>";
-    if ((!isset($val)) or (is_array($val) and (count($val) == 0)))
-        return false;
-    return true;
-}
-
-function twigDebugValue($val)
-{
-    return "<b>debugValue:</b><pre>" . var_export($val, true) . "</pre>";
-}
-
-function twigDebugContext($context)
-{
-    return "<b>debugContext:</b><pre>" . var_export($context, true) . "</pre>";
 }
 
 // Notify kernel about script termination, used for statistics calculation
@@ -1732,6 +1546,210 @@ function getCurrentNewsCategory()
     return array(($CurrentHandler['handlerName'] == 'by.category') ? 'short' : 'full', $SYSTEM_FLAGS['news']['currentCategory.id'], $SYSTEM_FLAGS['news']['db.id']);
 }
 
+function TwigEngineMSG($type, $text, $info = '')
+{
+    $cfg = array('type' => $type);
+    if ($text)
+        $cfg['text'] = __($text);
+    if ($info)
+        $cfg['info'] = $info;
+    return msg($cfg, 0, 2);
+}
+
+function twigGetCategoryTree($masterCategory = null, $flags = array())
+{
+    if (!is_array($flags))
+        $flags = array();
+
+    if (!isset($flags['returnData']))
+        $flags['returnData'] = true;
+
+    return generateCategoryMenu($masterCategory, $flags);
+}
+
+function twigLocalPath($context)
+{
+    return $context['_templatePath'];
+}
+
+function twigIsLang($lang)
+{
+    global $config;
+
+    return ($config['default_lang'] == $lang);
+}
+
+function twigGetLang()
+{
+    global $config;
+
+    return $config['default_lang'];
+}
+
+// Allow to have specific template configuration for different locations ($CurrentHandler global array)
+// RULE is: <ENTRY1>[|<ENTRY2>[|<ENTRY3>...]]
+// ENTRY1,2,.. is: <PLUGIN>[:<HANDLER>]
+function twigIsHandler($rules)
+{
+    global $config, $CurrentHandler;
+
+    $ruleCatched = false;
+    foreach (preg_split("#\|#", $rules) as $rule) {
+        if (preg_match("#^(.+?)\:(.+?)$#", $rule, $pt)) {
+            // Specified: Plugin + Handler
+            if (($pt[1] == $CurrentHandler['pluginName']) and ($pt[2] == $CurrentHandler['handlerName'])) {
+                $ruleCatched = true;
+                break;
+            }
+        } else if ($rule == $CurrentHandler['pluginName']) {
+            $ruleCatched = true;
+            break;
+        }
+    }
+    return $ruleCatched;
+}
+
+function twigIsCategory($list)
+{
+    global $currentCategory, $catz, $catmap, $config, $CurrentHandler;
+
+    //print "twigCall isCategory($list):<pre>".var_export($currentCategory, true)."</pre>";
+
+    // Return if user is not reading any news
+    if ($CurrentHandler['pluginName'] != 'news') return false;
+    if (($CurrentHandler['handlerName'] == 'news') or ($CurrentHandler['handlerName'] == 'print')) return false;
+
+    // Return false if we're not in category now
+    if (!isset($currentCategory)) {
+        return false;
+    }
+
+    // ****** Process modifiers ******
+    if ($list == '') return true;
+    if ($list == ':id') return $currentCategory['id'];
+    if ($list == ':alt') return secure_html($currentCategory['alt']);
+    if ($list == ':name') return secure_html($currentCategory['name']);
+    if ($list == ':icon') return ($currentCategory['image_id'] and $currentCategory['icon_id']) ? 1 : 0;
+    if ($list == ':icon.url') return $config['attach_url'] . '/' . $currentCategory['icon_folder'] . '/' . $currentCategory['icon_name'];
+    if ($list == ':icon.width') return intval($currentCategory['icon_width']);
+    if ($list == ':icon.height') return intval($currentCategory['icon_height']);
+    if ($list == ':icon.preview') return ($currentCategory['image_id'] and $currentCategory['icon_id'] and $currentCategory['icon_preview']) ? 1 : 0;
+    if ($list == ':icon.preview.url') return $config['attach_url'] . '/' . $currentCategory['icon_folder'] . '/thumb/' . $currentCategory['icon_name'];
+    if ($list == ':icon.preview.width') return intval($currentCategory['icon_pwidth']);
+    if ($list == ':icon.preview.height') return intval($currentCategory['icon_pheight']);
+
+
+    foreach (preg_split("# *, *#", $list) as $key) {
+        if ($key == '')
+            continue;
+
+        if (ctype_digit($key)) {
+            if (isset($catmap[$key]) and is_array($currentCategory) and ($currentCategory['id'] == $key))
+                return true;
+        } else {
+            if (isset($catz[$key]) and is_array($catz[$key]) and is_array($currentCategory) and ($currentCategory['alt'] == $key))
+                return true;
+        }
+
+    }
+    return false;
+}
+
+function twigIsNews($rules)
+{
+    global $catz, $catmap, $CurrentHandler, $SYSTEM_FLAGS, $CurrentCategory;
+
+    //print "twigCall isNews($list):<pre>".var_export($SYSTEM_FLAGS['news'], true)."</pre>";
+
+    // Return if user is not in news
+    if ($CurrentHandler['pluginName'] != 'news') return false;
+    if (($CurrentHandler['handlerName'] != 'news') and ($CurrentHandler['handlerName'] != 'print')) return false;
+    if (!isset($SYSTEM_FLAGS['news']['db.id'])) return false;
+
+    $ruleList = array('news' => array(), 'cat' => array(), 'mastercat' => array());
+    $ruleCatched = false;
+
+    // Pre-scan incoming data
+    foreach (preg_split("#\|#", $rules) as $rule) {
+        if (preg_match("#^(.+?)\:(.+?)$#", $rule, $pt)) {
+            $ruleList[$pt[1]] = $ruleList[$pt[1]] + preg_split("# *, *#", $pt[2]);
+        } else {
+            $ruleList['news'] = $ruleList['news'] + preg_split("# *, *#", $rule);
+        }
+    }
+    //print "isNews debug rules: <pre>".var_export($ruleList, true)."</pre>";
+    foreach ($ruleList as $rType => $rVal) {
+        //print "[SCAN TYPE: '$rType' with val: (".var_export($rVal, true).")]<br/>";
+        switch ($rType) {
+            // -- NEWS
+            case 'news':
+                if (!isset($SYSTEM_FLAGS['news']['db.id']))
+                    continue;
+
+                foreach ($rVal as $key) {
+                    if (ctype_digit($key)) {
+                        if ($SYSTEM_FLAGS['news']['db.id'] == $key)
+                            return true;
+                    } else {
+                        if ($SYSTEM_FLAGS['news']['db.alt'] == $key)
+                            return true;
+                    }
+                }
+                break;
+
+            // -- CATEGORY (master or any)
+            case 'mastercat':
+            case 'cat':
+                if ((!isset($SYSTEM_FLAGS['news']['db.categories'])) or ($SYSTEM_FLAGS['news']['db.categories'] == ''))
+                    continue;
+
+                // List of categories from news
+                foreach ($rVal as $key) {
+                    if (ctype_digit($key)) {
+                        if (($rType == 'mastercat') and ($SYSTEM_FLAGS['news']['db.categories'][0] == $key))
+                            return true;
+                        if (($rType == 'cat') and (in_array($key, $SYSTEM_FLAGS['news']['db.categories'])))
+                            return true;
+                    } else {
+                        if (($rType == 'mastercat') and (is_array($catz[$key])) and ($SYSTEM_FLAGS['news']['db.categories'][0] == $catz[$key]['id']))
+                            return true;
+                        if (($rType == 'cat') and (is_array($catz[$key])) and (in_array($catz[$key]['id'], $SYSTEM_FLAGS['news']['db.categories'])))
+                            return true;
+                    }
+                }
+                break;
+        }
+    }
+    return false;
+}
+
+// Check if current user has specified permissions
+// RULE is: <ENTRY1>[|<ENTRY2>[|<ENTRY3>...]]
+// ENTRY1,2,.. is: <PLUGIN>[:<HANDLER>]
+function twigIsPerm($rules)
+{
+
+}
+
+function twigIsSet($context, $val)
+{
+    //print "call TWIG::isSet(".var_export($context, true)." or ".var_export($val, true).");<br/>";
+    //print "call TWIG::isSet(".var_export($val, true).");<br/>";
+    if ((!isset($val)) or (empty($val)) or (is_array($val) and (count($val) == 0)))
+        return false;
+    return true;
+}
+
+function twigDebugValue($val)
+{
+    return "<b>debugValue:</b><pre>" . var_export($val, true) . "</pre>";
+}
+
+function twigDebugContext($context)
+{
+    return "<b>debugContext:</b><pre>" . var_export($context, true) . "</pre>";
+}
+
 // Call plugin execution via TWIG
 function twigCallPlugin($funcName, $params)
 {
@@ -1743,7 +1761,7 @@ function twigCallPlugin($funcName, $params)
     // Try to preload function if required
     if (!isset($TWIGFUNC[$funcName])) {
         if (preg_match("#^(.+?)\.(.+?)$#", $funcName, $m)) {
-            $cPlugin->load($m[1], 'twig');
+            $cPlugin->loadPlugin($m[1], 'twig');
         }
     }
 
@@ -1814,25 +1832,6 @@ function jsonFormatter($json)
     }
 
     return $result;
-}
-
-function ngLoadCategories()
-{
-    global $mysql, $catz, $catmap;
-
-    if (($result = cacheRetrieveFile('LoadCategories.dat', 86400)) === false) {
-        $result = $mysql->select("select nc.*, ni.id as icon_id, ni.name as icon_name, ni.storage as icon_storage, ni.folder as icon_folder, ni.preview as icon_preview, ni.width as icon_width, ni.height as icon_height, ni.p_width as icon_pwidth, ni.p_height as icon_pheight from `" . prefix . "_category` as nc left join `" . prefix . "_images` ni on nc.image_id = ni.id order by nc.posorder asc", 1);
-        cacheStoreFile('LoadCategories.dat', serialize($result));
-    } else {
-        $result = unserialize($result);
-    }
-
-    if (is_array($result)) {
-        foreach ($result as $row) {
-            $catz[$row['alt']] = $row;
-            $catmap[$row['id']] = $row['alt'];
-        }
-    }
 }
 
 /**

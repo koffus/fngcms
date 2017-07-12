@@ -54,7 +54,6 @@ if (get_magic_quotes_gpc())
 ini_set('magic_quotes_gpc', 0);
 ini_set('magic_quotes_sybase', 0);
 
-
 // Автозагрузка классов
 spl_autoload_register(function ($className) {
     $file = __DIR__ . '/classes/' . $className . '.class.php';
@@ -104,10 +103,11 @@ if (!defined('skins_url'))
 // Пошла система
 define('NGCMS', 1);
 
-// Переписать это установочное дерьмо
+// !!! Переписать это установочное дерьмо
 
 // Basic variables
 @define('root', dirname(__FILE__) . '/');
+@define('tplRoot', dirname(__FILE__) . '/skins/default/install');
 @include_once root . 'includes/inc/multimaster.php';
 
 multi_multisites();

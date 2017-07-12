@@ -288,7 +288,7 @@ class CronManager
                     $funcName = 'core_cron';
                 } else {
                     // COMMON plugins - load plugin for handler "CRON"
-                    $cPlugin->load($run[0], 'cron');
+                    $cPlugin->loadPlugin($run[0], 'cron');
                     $funcName = 'plugin_' . $run[0] . '_cron';
                 }
                 // Try to call function and to pass parameter (handler)

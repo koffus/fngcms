@@ -156,7 +156,7 @@ function lastcomments($mode = 0) {
 			$avatar_url = '';
 		}
 
-		if ($row['author_id'] and getPluginStatusActive('uprofile')) {
+		if ($row['author_id'] and pluginIsActive('uprofile')) {
 			$author_link = checkLinkAvailable('uprofile', 'show')?
 				generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
 				generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $row['author_id']));

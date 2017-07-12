@@ -38,7 +38,7 @@ class News
         $tvars['vars']['news']['author']['url'] = $alink;
 
         // [TWIG] number of comments
-        if (getPluginStatusActive('comments'))
+        if (pluginIsActive('comments'))
             $tvars['vars']['p']['comments']['count'] = $row['com'];
 
         $tvars['vars']['author'] = '<a href="' . $alink . '" target="_blank">' . $row['author'] . '</a>';

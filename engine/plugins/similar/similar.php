@@ -156,6 +156,6 @@ class SimilarNewsfilter extends NewsFilter {
 }
 
 // Activate plugin ONLY if plugin tags already activated
-if (getPluginStatusActive('tags')) {
+if (pluginIsActive('tags')) {
 	pluginRegisterFilter('news','similar', new SimilarNewsFilter);
 }

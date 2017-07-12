@@ -51,13 +51,13 @@ function generateSitemap() {
 	# count of all news
 	$countNews = $mysql->result('SELECT COUNT(*) FROM '.prefix.'_news');
 
-	$news = $mysql->select('SELECT n.title, n.postdate, n.views,'.(getPluginStatusActive('comments') ? " n.com, " : "").' n.catid, n.id, n.alt_name, c.name, c.alt, c.parent, c.posorder, c.poslevel FROM '.prefix.'_news AS n LEFT JOIN '.prefix.'_category c on n.catid = c.id WHERE `approve` = 1 ORDER BY posorder, catid, pinned DESC, postdate DESC, editdate DESC '.$limit);
+	$news = $mysql->select('SELECT n.title, n.postdate, n.views,'.(pluginIsActive('comments') ? " n.com, " : "").' n.catid, n.id, n.alt_name, c.name, c.alt, c.parent, c.posorder, c.poslevel FROM '.prefix.'_news AS n LEFT JOIN '.prefix.'_category c on n.catid = c.id WHERE `approve` = 1 ORDER BY posorder, catid, pinned DESC, postdate DESC, editdate DESC '.$limit);
 	$tpath = locatePluginTemplates(array('sitemap_news', 'sitemap'), 'sitemap', intval(pluginGetVariable('sitemap', 'localSource')));
 
 	foreach ($news as $row) {
 		if ($cu_c <> $row['name']) {
 			$link_rss = '';
-			if (getPluginStatusActive('rss_export')){
+			if (pluginIsActive('rss_export')){
 				$link_rss = generateLink('rss_export', 'category', array('category' => $row['alt']));
 				$link_rss = '<a href="'.$link_rss.'">'.__('sitemap:label_rss').'</a>';
 			}

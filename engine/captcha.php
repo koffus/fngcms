@@ -27,7 +27,7 @@ if ( trim($blockName) ) {
 		$cShowNumber = $_SESSION['captcha.'.$blockName];
 	} else {
 		// No, captcha is not set. But we can generate it dynamically for ACTIVE plugins
-		if (getPluginStatusActive($blockName)) {
+		if (pluginIsActive($blockName)) {
 			$cShowNumber = rand(00000, 99999);
 			$_SESSION['captcha.'.$blockName] = $cShowNumber;
 		}

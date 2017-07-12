@@ -1078,7 +1078,7 @@ class XFieldsNewsFilter extends NewsFilter {
 }
 
 // Manage uprofile modifications
-if (getPluginStatusActive('uprofile')) {
+if (pluginIsActive('uprofile')) {
     
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();

@@ -259,7 +259,7 @@ function massDeleteNews($list, $permCheck = true) {
 		}
 
 		// Delete comments (with updating user's comment counter) [ if plugin comments is installed ]
-		if ($cPlugin->getStatusInstalled('comments')) {
+		if ($cPlugin->isInstalled('comments')) {
 			foreach ($mysql->select("select * from ".prefix."_comments where post=".$nrow['id']) as $crow) {
 				if ($nrow['author_id']) {
 					$mysql->query("update ".uprefix."_users set com=com-1 where id=".$crow['author_id']);

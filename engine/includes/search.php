@@ -159,7 +159,7 @@ function search_news() {
 	$tableVars['orderlist'] = '<option value="">'.__('search.order_default').'</option>';
 	foreach ( $sortDefault as $v ) {
 		$pieces = explode(' ', $v);
-		if ( $pieces[0] == 'com' and !getPluginStatusActive('comments') )
+		if ( $pieces[0] == 'com' and !pluginIsActive('comments') )
 			continue;
 		$vx = str_replace(' ','_',$v);
 		$tableVars['orderlist'] .= '<option value="'.$v.'"'.($orderby == $v ? ' selected="selected"' : '').'>'.__('search.order_'.$vx).'</option>';

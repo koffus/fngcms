@@ -35,7 +35,7 @@ if (!function_exists('xf_configLoad')) {
 
 // Check if `feedback` plugin is installed
 $feedbackFormList = array();
-if ($cPlugin->getStatusInstalled('feedback')) {
+if ($cPlugin->isInstalled('feedback')) {
 	foreach ($mysql->select("select * from ".prefix."_feedback order by id", 1) as $frow) {
 		$feedbackFormList [$frow['id']]= $frow['id'].' - '.$frow['title'];
 	}

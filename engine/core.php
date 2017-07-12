@@ -275,7 +275,7 @@ $twig->addGlobal('home', home);
 $twig->addGlobal('currentURL', $systemAccessURL);
 
 // - Define functions
-$twig->addFunction('pluginIsActive', new Twig_Function_Function('getPluginStatusActive'));
+$twig->addFunction('pluginIsActive', new Twig_Function_Function('pluginIsActive'));
 $twig->addFunction('localPath', new Twig_Function_Function('twigLocalPath', array('needs_context' => true)));
 $twig->addFunction('getLang', new Twig_Function_Function('twigGetLang'));
 $twig->addFunction('isLang', new Twig_Function_Function('twigIsLang'));

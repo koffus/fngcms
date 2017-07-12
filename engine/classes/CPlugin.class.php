@@ -160,7 +160,7 @@ class CPlugin
     }
 
     // Load plugin [ Same behaviour as for loadActionHandlers ]
-    public function load($plugin, $actionList = '*')
+    public function loadPlugin($plugin, $actionList = '*')
     {
         global $PLUGINS;
 
@@ -348,7 +348,7 @@ class CPlugin
 
     // getPluginStatusInstalled
     // Report if plugin is installed
-    public function getStatusInstalled($pluginID)
+    public function isInstalled($pluginID)
     {
         global $PLUGINS;
         

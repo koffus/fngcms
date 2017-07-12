@@ -18,7 +18,7 @@ if (xmode()) {
 
 function xmode() {
  // check if xfields plugin is active
- return (getPluginStatusActive('xfields')) ? true : false;
+ return (pluginIsActive('xfields')) ? true : false;
 }
 
 function suser_header_show($params) {

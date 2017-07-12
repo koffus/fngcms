@@ -142,14 +142,14 @@ class tpl
         // [isplugin <NAME>] .. [/isplugin] - content will be shown only if plugin <NAME> is active
         if (preg_match_all('/\[isplugin (.+?)\](.+?)\[\/isplugin\]/is', $data, $parr)) {
             foreach ($parr[0] as $k => $v) {
-                $data = str_replace($v, getPluginStatusActive($parr[1][$k]) ? $parr[2][$k] : '', $data);
+                $data = str_replace($v, pluginIsActive($parr[1][$k]) ? $parr[2][$k] : '', $data);
             }
         }
 
         // [isntplugin <NAME>] .. [/ispntlugin] - content will be shown only if plugin <NAME> is NOT active
         if (preg_match_all('/\[isnplugin (.+?)\](.+?)\[\/isnplugin\]/is', $data, $parr)) {
             foreach ($parr[0] as $k => $v) {
-                $data = str_replace($v, getPluginStatusActive($parr[1][$k]) ? '' : $parr[2][$k], $data);
+                $data = str_replace($v, pluginIsActive($parr[1][$k]) ? '' : $parr[2][$k], $data);
             }
         }
 
@@ -160,7 +160,7 @@ class tpl
                 if (preg_match('/^(.+)\_/', $name_parr, $match))
                     $name_parr = $match[1];
 
-                if (!getPluginStatusActive($name_parr)) {
+                if (!pluginIsActive($name_parr)) {
                     $data = str_replace('{' . $v . '}', '', $data);
                 }
             }

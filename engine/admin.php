@@ -50,6 +50,9 @@ if (get_magic_quotes_gpc())
 ini_set('magic_quotes_gpc', 0);
 ini_set('magic_quotes_sybase', 0);
 
+// Basic variables
+@define('tplRoot', dirname(__FILE__) . '/skins/default/tpl');
+
 // LOAD CORE MODULE
 if (file_exists($core = 'core.php'))
     require_once $core;

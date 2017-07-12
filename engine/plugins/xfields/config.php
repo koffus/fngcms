@@ -17,7 +17,7 @@ if ( xmode() and function_exists('xf_configLoad')) {
 
 function xmode() {
  // check if xfields plugin is active
- return (getPluginStatusActive('xfields')) ? true : false;
+ return (pluginIsActive('xfields')) ? true : false;
 }
 
 if (!is_array($xf))

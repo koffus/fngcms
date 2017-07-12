@@ -119,7 +119,7 @@ function top_news(){
 		}
 		
 		$select = array('id', 'alt_name', 'postdate', 'title', 'views', 'catid', 'author_id', 'author');
-		if(getPluginStatusActive('comments'))
+		if(pluginIsActive('comments'))
 			$select[] = 'com';
 		if (pluginGetVariable('top_news', "{$currentVar}_content")) 
 			$select[] = 'content';
@@ -157,7 +157,7 @@ function top_news(){
 				'categories' => GetCategories($row['catid'])
 			);
 			
-			$tvars['regx']['/\[if-uprofile\](.*?)\[\/if-uprofile\]/si'] = getPluginStatusActive('uprofile') ? '$1' : '';
+			$tvars['regx']['/\[if-uprofile\](.*?)\[\/if-uprofile\]/si'] = pluginIsActive('uprofile') ? '$1' : '';
 			
 			if (mb_strlen($row['title'], 'UTF-8') > $maxlength) {
 				$tvars['vars']['title'] = substr(secure_html($row['title']), 0, $maxlength)."...";

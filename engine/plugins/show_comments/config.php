@@ -16,7 +16,7 @@ Lang::loadPlugin($plugin, 'config', '', ':');
 //
 // Prepare configuration parameters
 //
-if (!$cPlugin->getStatusInstalled('comments')) {
+if (!$cPlugin->isInstalled('comments')) {
 	msg(array('type' => 'danger', 'message' => 'Плагин comments не установлен!<br />Вернуться в <a href="admin.php?mod=extras" class="alert-link">Управление плагинами</a>'));
 	echo "<META HTTP-EQUIV='Refresh' Content='3'>";
 	return false;
@@ -101,7 +101,7 @@ function show_comments() {
 		if (mb_strlen($text, 'UTF-8') > $comm_length) {
 			$text = $parse->truncateHTML($text, $comm_length);
 		}
-		if ($prd['author_id'] and getPluginStatusActive('uprofile')) {
+		if ($prd['author_id'] and pluginIsActive('uprofile')) {
 			$author_link = checkLinkAvailable('uprofile', 'show') ?
 			generateLink('uprofile', 'show', array('name' => $prd['author'], 'id' => $prd['author_id'])) :
 			generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('id' => $prd['author_id']));

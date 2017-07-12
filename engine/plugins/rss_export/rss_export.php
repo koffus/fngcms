@@ -77,7 +77,7 @@ function plugin_rss_export_generate($catname = ''){
 	$xFList = array();
 	$encImages = array();
 	$enclosureIsImages = false;
-	if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') and getPluginStatusActive('xfields')) {
+	if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') and pluginIsActive('xfields')) {
 		$xFList = xf_configLoad();
 		$eFieldName = pluginGetVariable('rss_export','xfEnclosure');
 		if (isset($xFList['news'][$eFieldName]) and ($xFList['news'][$eFieldName]['type'] == 'images')) {
@@ -120,7 +120,7 @@ function plugin_rss_export_generate($catname = ''){
 		$enclosure = '';
 
 		// Check if Enclosure `xfields` integration is activated
-		if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') and (true or getPluginStatusActive('xfields'))) {
+		if (pluginGetVariable('rss_export', 'xfEnclosureEnabled') and (true or pluginIsActive('xfields'))) {
 			// Load (if needed XFIELDS plugin
 			include_once(root."/plugins/xfields/xfields.php");
 

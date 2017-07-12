@@ -56,7 +56,7 @@ function admExtrasGetConfig($params)
 // Plugins switch ON/OFF
 function admExtrasOnOff($params)
 {
-    global $userROW, $mysql, $PLUGINS;
+    global $userROW, $mysql;
 
     // Check for permissions
     if (!checkPermission(array('plugin' => '#admin', 'item' => 'extras'), null, 'modify')) {

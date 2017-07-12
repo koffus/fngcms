@@ -489,7 +489,7 @@ function userList(){
             'canModify' => $permModify?1:0,
             'canView' => $permDetails?1:0,
             'canMassAction' => $permMassAction?1:0,
-            'haveComments' => $cPlugin->getStatusInstalled('comments')?1:0,
+            'haveComments' => $cPlugin->isInstalled('comments')?1:0,
             ),
         );
 

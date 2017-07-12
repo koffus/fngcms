@@ -208,7 +208,7 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
         $row['time'] = strftime($format_time, $row['postdate']);
         $row['datetime'] = strftime($format_date, $row['postdate']);
         $row['cdate'] = cDate($row['postdate']);
-        if (getPluginStatusActive('uprofile')) {
+        if (pluginIsActive('uprofile')) {
             $row['profile_link'] = generatePluginLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id']));
         }
 

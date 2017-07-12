@@ -114,7 +114,7 @@ function plugin_nsm(){
  'canEdit' => $canEdit?1:0,
  'canView' => $canView?1:0,
  'canDelete' => $canDelete?1:0,
- 'comments' => $cPlugin->getStatusInstalled('comments')?true:false,
+ 'comments' => $cPlugin->isInstalled('comments')?true:false,
  'status' => ($row['approve'] == 1)?true:false,
  'mainpage' => $row['mainpage']?true:false,
  )

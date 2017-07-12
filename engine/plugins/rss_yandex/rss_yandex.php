@@ -79,7 +79,7 @@ function plugin_rss_yandex_generate($catname = ''){
 	$xFList = array();
 	$encImages = array();
 	$enclosureIsImages = false;
-	if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') and getPluginStatusActive('xfields')) {
+	if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') and pluginIsActive('xfields')) {
 		$xFList = xf_configLoad();
 		$eFieldName = pluginGetVariable('rss_yandex','xfEnclosure');
 		if (isset($xFList['news'][$eFieldName]) and ($xFList['news'][$eFieldName]['type'] == 'images')) {
@@ -110,7 +110,7 @@ function plugin_rss_yandex_generate($catname = ''){
 		$enclosureList = array();
 
 		// Check if Enclosure `xfields` integration is activated
-		if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') and (true or getPluginStatusActive('xfields'))) {
+		if (pluginGetVariable('rss_yandex', 'xfEnclosureEnabled') and (true or pluginIsActive('xfields'))) {
 			// Load (if needed XFIELDS plugin
 			include_once(root."/plugins/xfields/xfields.php");
 

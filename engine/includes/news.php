@@ -250,7 +250,7 @@ function showNews($handlerName, $params)
                 $sortOrder = explode(' ', $callingParams['newsOrder']);
                 foreach ($sortDefault as $key => $value) {
                     $pieces = explode(' ', $value);
-                    if ($pieces[0] == 'com' and !getPluginStatusActive('comments'))
+                    if ($pieces[0] == 'com' and !pluginIsActive('comments'))
                         continue;
                     if ($pieces[0] == $sortOrder[0]) {
                         $tableVars['newsOrder'] .= '<span onclick="newsorder(\'' . $value . '\'); return false;" class="news-order-link active ' . $pieces[1] . '">' . __('news.order.' . $pieces[0]) . '</span>';
