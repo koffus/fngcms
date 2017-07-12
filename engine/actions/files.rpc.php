@@ -27,7 +27,7 @@ function admRPCFilesUpload($params){
 
 	// Check parameters:
 	// - type: file / image
-	$uploadType = $_POST['uploadType'];
+	$uploadType = $params['uploadType'];
 	if (($uploadType != 'file') and ($uploadType != 'image')) {
 		@header('HTTP/1.1 404 Wrong upload type');
 		return;
@@ -35,26 +35,26 @@ function admRPCFilesUpload($params){
 
 	$fmanager->get_limits($uploadType);
 	$dir = $fmanager->dname;
-
+//print json_encode(array( 'status' => 0, 'errorCode' => '-1', 'errorText' =>  var_export($_REQUEST, true) ));
 	$ures = $fmanager->file_upload(array(
 		'rpc' => 1,
 		'dsn' => 0,
-		'category' => ($_REQUEST['category'] == '')?'default':$_REQUEST['category'],
+		'category' => ($params['category'] == '')?'default':$params['category'],
 		'type' => $uploadType,
-		'replace' => $_REQUEST['replace'],
-		'randprefix' => $_REQUEST['rand'],
+		'replace' => $params['replace'],
+		'randprefix' => $params['rand'],
 		'http_var' => 'Filedata',
 	));
 
 	// Return if this is a file or we have upload error
-	if (($uploadType == 'file')||(!$ures['status'])) {
+	if (($uploadType == 'file') or (!$ures['status'])) {
 		return $ures;
 	}
 
 	// For images - we need to transform images
-	$mkThumb = (($config['thumb_mode'] == 2) or (!$config['thumb_mode'] and $_REQUEST['thumb']))?1:0;
-	$mkStamp = (($config['stamp_mode'] == 2) or (!$config['stamp_mode'] and $_REQUEST['stamp']))?1:0;
-	$mkShadow = (($config['shadow_mode'] == 2) or (!$config['shadow_mode'] and $_REQUEST['shadow']))?1:0;
+	$mkThumb = (($config['thumb_mode'] == 2) or (!$config['thumb_mode'] and $params['thumb']))?1:0;
+	$mkStamp = (($config['stamp_mode'] == 2) or (!$config['stamp_mode'] and $params['stamp']))?1:0;
+	$mkShadow = (($config['shadow_mode'] == 2) or (!$config['shadow_mode'] and $params['shadow']))?1:0;
 
     $stamp = '';
 	$stampFileName = '';

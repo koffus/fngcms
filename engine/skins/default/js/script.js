@@ -294,6 +294,8 @@ $(document).on('submit', '#upload-files', function(e){
     } else {
         $formData.append('uploadType', 'file');
     }
+    $formData.append('methodName', 'admin.files.upload');
+    $formData.append('json', '1');
     
     $.each($(this).find("input[type='file']"), function(i, tag) {
         var input, filter, table, tr, td, i;
@@ -303,7 +305,7 @@ $(document).on('submit', '#upload-files', function(e){
             tr = table.find('tr');
             $formData.append('Filedata', file);
             $.ajax({
-                url: 'rpc.php?methodName=admin.files.upload',
+                url: 'rpc.php',
                 data: $formData,
                 processData: false,
                 contentType: false,
@@ -328,8 +330,8 @@ $(document).on('submit', '#upload-files', function(e){
                     tr[i].style.color = 'black';
                     
                     try {
-                        resData = eval(res);
-                        if (typeof(resData['status']))
+                        resData = res;
+                        if (typeof(resData.status))
                             resStatus = 1;
                     } catch (err) {
                         alert('Error parsing JSON output. Result: '+res);
@@ -343,15 +345,15 @@ $(document).on('submit', '#upload-files', function(e){
                     flagRequireReload = 1;
                     
                     // If upload fails
-                    if (resData['status'] < 1) {
+                    if (resData.status < 1) {
                         el = document.createElement('div');
                         el.setAttribute('class', 'text-danger');
-                        el.innerHTML = '('+resData['errorCode']+') '+resData['errorText'];
+                        el.innerHTML = '('+resData.errorCode+') '+resData.errorText;
                         td.appendChild(el);
-                        if (typeof(resData['errorDescription']) !== 'undefined') {
+                        if (typeof(resData.errorDescription) !== 'undefined') {
                             el = document.createElement('div');
                             el.setAttribute('class', 'text-info');
-                            el.innerHTML = resData['errorDescription'];
+                            el.innerHTML = resData.errorDescription;
                             td.appendChild(el);
                         }
                         tr[i].style.color = 'red';
@@ -359,14 +361,14 @@ $(document).on('submit', '#upload-files', function(e){
                     } else {
                         el = document.createElement('div');
                         el.setAttribute('class', 'text-success');
-                        el.innerHTML = resData['errorText'];
+                        el.innerHTML = resData.errorText;
                         td.appendChild(el);
                         //$(tr[i]).fadeOut(3000);
                     }
                     return true;
                 },
                 error : function(res) {
-                    console.log(res.responseText);
+                    console.log(res);
                     $.notify({message:'Error parsing JSON output.'},{type:'danger'});
                     tr[i].style.color = 'red';
                     return false;

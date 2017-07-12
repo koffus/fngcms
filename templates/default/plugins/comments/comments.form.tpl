@@ -6,7 +6,7 @@ function add_comment(news, action) {
     var form = document.getElementById('comment');
     var params = {
         {% if not(global.flags.isLogged) %}
-           "name": form.name.value,
+            "name": form.name.value,
             "mail": form.mail.value,
             {% if (useCaptcha) %}"vcode": form.vcode.value,{% endif %}
         {% endif %}

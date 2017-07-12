@@ -11,7 +11,7 @@
 if (!defined('NGCMS')) die ('HAL');
 
 Lang::load('images', 'admin');
-@include_once root.'includes/inc/file_managment.php';
+include_once root.'includes/inc/file_managment.php';
 
 
 // =======================================

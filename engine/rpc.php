@@ -26,28 +26,32 @@ if (isset($_POST['json']) and isset($_POST['methodName'])) {
 // HTTP/JSON-RPC processor
 function processJSON(){
     global $RPCFUNC, $RPCADMFUNC;
+
     // Set correct content/type
     @header('Content-Type: application/json; charset=UTF-8', true);
-    $methodName = $_POST['methodName'];
+
+    // Scan and Decode incoming params
+    if (isset($_POST['uploadType'])) { // To upload files, images !!!
+        $params = $_POST;
+    } else if (!empty($_POST['params'])) {
+        $params = json_decode($_POST['params'], true);
+        if(json_last_error()) {
+            print json_encode(array( 'status' => 0, 'errorCode' => '-1', 'errorText' => json_last_error()) );
+            coreNormalTerminate(1);
+            exit;
+        }
+    } else {
+        print json_encode(array( 'status' => 0, 'errorCode' => 4, 'errorText' => __('wrong_params_type') ));
+        coreNormalTerminate(1);
+        exit;
+    }
+
+    $methodName = $params['methodName'];
 
     // Check for permissions from ajax
     if(!isset($_SERVER['HTTP_X_REQUESTED_WITH']) or 'xmlhttprequest' != strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])) {
         ngSYSLOG(array('plugin' => '#admin', 'item' => 'RPC'), array('action' => $methodName), null, array(0, 'Non ajax request'));
         print json_encode(array( 'status' => 0, 'errorCode' => -1, 'errorText' => __('access_denied') ));
-        coreNormalTerminate(1);
-        exit;
-    }
-    // Scan and Decode incoming params
-    $params = isset($_POST['params']) ? $_POST['params'] : '';
-    $params = json_decode($params, true);
-    if(json_last_error()) {
-        print json_encode(array( 'status' => 0, 'errorCode' => '-1', 'errorText' => json_last_error()) );
-        coreNormalTerminate(1);
-        exit;
-    }
-
-    if (empty($params)) {
-        print json_encode(array( 'status' => 0, 'errorCode' => 4, 'errorText' => __('wrong_params_type') ));
         coreNormalTerminate(1);
         exit;
     }
