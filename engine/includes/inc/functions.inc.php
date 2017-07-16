@@ -1735,9 +1735,9 @@ function twigIsSet($context, $val)
 {
     //print "call TWIG::isSet(".var_export($context, true)." or ".var_export($val, true).");<br/>";
     //print "call TWIG::isSet(".var_export($val, true).");<br/>";
-    if ((!isset($val)) or (empty($val)) or (is_array($val) and (count($val) == 0)))
-        return false;
-    return true;
+   if ((!isset($val)) or (is_array($val) && (count($val) == 0)))
+		return false;
+	return true;
 }
 
 function twigDebugValue($val)
