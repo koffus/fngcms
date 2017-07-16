@@ -371,7 +371,7 @@ class CPlugin
     // Report if plugin is installed
     public function isInstalled($pluginID)
     {
-        return (isset($this->plugins['installed'][$pluginID]) and $this->plugins['installed'][$pluginID]);
+        return isset($this->plugins['installed'][$pluginID]);
     }
 
     // Return plugin folder

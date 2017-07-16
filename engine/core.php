@@ -57,7 +57,7 @@ spl_autoload_register(function ($className) {
 // ============================================================================
 // Global variables definition
 // ============================================================================
-global $PLUGINS, $EXTRA_HTML_VARS, $EXTRA_CSS;
+global $EXTRA_HTML_VARS, $EXTRA_CSS;
 global $AUTH_METHOD, $AUTH_CAPABILITIES, $PPAGES, $PFILTERS, $RPCFUNC, $TWIGFUNC;
 global $RPCADMFUNC, $SUPRESS_TEMPLATE_SHOW, $SUPRESS_MAINBLOCK_SHOW, $SYSTEM_FLAGS;
 global $DSlist, $PERM, $confPerm, $confPermUser, $systemAccessURL, $cron;
@@ -112,15 +112,6 @@ $DSlist = array(
     'files' => 10,
     'images' => 11,
     '#xfields:tdata' => 51,
-);
-
-$PLUGINS = array(
-    'active' => array(),
-    'active:loaded' => 0,
-    'loaded' => array(),
-    'loaded:files' => array(),
-    'config' => array(),
-    'config:loaded' => 0,
 );
 
 // ===========================================================
@@ -244,9 +235,9 @@ require_once root . 'classes/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 // ** Init our own exception handler
-set_exception_handler('ngExceptionHandler'); // NOT PHP 7
-set_error_handler('ngErrorHandler');
-register_shutdown_function('ngShutdownHandler');
+//set_exception_handler('ngExceptionHandler'); // NOT PHP 7
+//set_error_handler('ngErrorHandler');
+//register_shutdown_function('ngShutdownHandler');
 
 // *** Initialize TWIG engine
 $twigLoader = new Twig_Loader_NGCMS(root);
@@ -272,6 +263,7 @@ $twig->addGlobalRef('system_flags', $SYSTEM_FLAGS);
 $twig->addGlobal('skins_url', skins_url);
 $twig->addGlobal('admin_url', admin_url);
 $twig->addGlobal('home', home);
+$twig->addGlobal('home_title', home_title);
 $twig->addGlobal('currentURL', $systemAccessURL);
 
 // - Define functions
