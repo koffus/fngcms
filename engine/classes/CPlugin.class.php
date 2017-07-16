@@ -95,7 +95,7 @@ class CPlugin
             ];
         $content = '<?php $array = '.var_export($listActive, true).'; ?>';
         fwrite($file, $content);
-        //fclose($file);
+        fclose($file);
         return true;
         
     }
@@ -131,7 +131,7 @@ class CPlugin
     // for all plugins, or one plugin, or one var
     public function getConfig($plugin = false, $var = false)
     {
-        if(!$this->loadConfig()) {
+        if (empty($this->plugins['config:loaded'])) {
             return null;
         }
 
@@ -153,8 +153,8 @@ class CPlugin
     // !!!!!!!!!!!! defined ADMIN
     public function setConfig($pConfig)
     {
-        if(!$this->loadConfig()) {
-            return null;
+        if (empty($this->plugins['config:loaded'])) {
+            return false;
         }
         if (is_array($pConfig)) {
             $this->plugins['config'] = $pConfig;
@@ -167,7 +167,7 @@ class CPlugin
     // !!!!!!!!!!!! defined ADMIN
     public function saveConfig($suppressNotify = false)
     {
-        if (!$this->plugins['config:loaded']) {
+        if (empty($this->plugins['config:loaded'])) {
             if (!$suppressNotify) {
                 msg(array('type' => 'danger', 'title' => str_replace('{name}', conf_pconfig, __('error.config.read')), 'message' => __('error.config.read#desc')));
             }
