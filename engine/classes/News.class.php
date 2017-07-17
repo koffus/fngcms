@@ -324,6 +324,6 @@ class News
         if ($page)
             $params['page'] = $page;
 
-        return generateLink('news', $flagPrint ? 'print' : 'news', $params, array(), false, $absoluteLink);
+        return generateLink('news', $flagPrint ? 'print' : 'news', $params, array(), false, true);
     }
 }
