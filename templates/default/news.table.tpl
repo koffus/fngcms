@@ -6,8 +6,6 @@
 		{% if category.info %}{{ category.info }}<hr />{% endif %}
 	{% endif %}
 
-	{% include 'news-order.tpl' %}
-
 {% else %}
 	 <small class="pull-right">{{ count }}</small>
 	 <h2 class="section-title">{{ lang.news }}</h2>
