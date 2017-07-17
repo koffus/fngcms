@@ -1,0 +1,15 @@
+;
+; Version description file for plugin @@ Next Geration CMS
+;
+
+ID: share
+Name: Блок «Поделиться» новостью
+Version: 0.09
+Acts: news_full, news_short
+File: share.php
+Config: config.php
+Type: plugin
+Description: Блок «Поделиться» новостью в социальных сетях
+Author: RusiQ
+Title: Блок «Поделиться» новостью
+Information: Блок «Поделиться» новостью помогает посетителям быстро публиковать ссылки на интересные им страницы в социальных сетях и блогах. Что в свою очередь ускоряет поисковую индексацию. Также плагин позволяет отправить ссылку на новость по email, WhatsApp или вывести на печать.

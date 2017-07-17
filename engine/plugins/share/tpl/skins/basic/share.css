@@ -1,0 +1,26 @@
+/* Share news
+-------------------------------------------------------------- */
+.post-share {
+  /*margin: 1em 0;
+  text-align: center;*/
+}
+.post-share .share-btn {
+    display: inline-block;
+    padding: 0.4em;
+    text-decoration: none;
+    color: #888;
+    min-width: 40px;
+    text-align: center;
+    border-radius: 4px;
+}
+.post-share .share-btn:hover {
+    color: #fff;
+}
+.post-share .share-btn.facebook:hover {background-color: #4f69a2;}
+.post-share .share-btn.vk:hover {background-color: #48729e;}
+.post-share .share-btn.ok:hover {background-color: #eb722e;}
+.post-share .share-btn.mm:hover {background-color: #168de2;color:#ffa930;}
+.post-share .share-btn.gplus:hover {background-color: #dc4e41;}
+.post-share .share-btn.twitter:hover {background-color: #00aced;}
+.post-share .share-btn.whatsapp:hover {background-color: #65bc54;}
+.post-share .share-btn.print:hover {background-color: #888;}
