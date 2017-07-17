@@ -237,17 +237,17 @@ function showNews($handlerName, $params)
                 $tableVars['category'] = array_shift($tableVars['category']);
 
                 // TABLE - prepare information about sorting block
-                $sortDefault = array('id desc',
+                /*$sortDefault = array('id desc',
                     'postdate desc', 'title desc', 'views desc', 'com desc');
                 //if ( isset($_COOKIE['newsOrder']) and in_array($callingParams['newsOrder'], $sortDefault) ) {
                 $sortKey = array_search($callingParams['newsOrder'], $sortDefault);
                 $sortDefault = array_diff($sortDefault, [$callingParams['newsOrder']]);
                 $sortDefault = $sortDefault + [$sortKey => str_replace('desc', 'asc', $callingParams['newsOrder'])];
                 ksort($sortDefault);
-                //}
+                //}*/
 
                 $tableVars['newsOrder'] = '';
-                $sortOrder = explode(' ', $callingParams['newsOrder']);
+                /*$sortOrder = explode(' ', $callingParams['newsOrder']);
                 foreach ($sortDefault as $key => $value) {
                     $pieces = explode(' ', $value);
                     if ($pieces[0] == 'com' and !pluginIsActive('comments'))
@@ -257,7 +257,7 @@ function showNews($handlerName, $params)
                     } else {
                         $tableVars['newsOrder'] .= '<span onclick="newsorder(\'' . $value . '\'); return false;" class="news-order-link">' . __('news.order.' . $pieces[0]) . '</span>';
                     }
-                }
+                }*/
 
                 // Check if template 'news.table.tpl' exists [first check custom category template (if set), after that - common template for the whole site
                 if ($currentCategory['tpl'])

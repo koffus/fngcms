@@ -561,7 +561,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     $limit_start = $cstart ? ($cstart - 1) * $showNumber : 0;
     $limit_count = $showNumber;
 
-    $orderBy = isset($callingParams['newsOrder']) ? $callingParams['newsOrder'] : 'id desc';
+    /*$orderBy = isset($callingParams['newsOrder']) ? $callingParams['newsOrder'] : 'id desc';
     if (!in_array($orderBy, array('id desc', 'id asc', 'com desc', 'com asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc', 'views desc', 'views asc')))
         $orderBy = 'id desc';
 
@@ -576,6 +576,17 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
             break;
         default:
             $orderBy = 'pinned desc, ' . $orderBy;
+            break;
+    }*/
+    
+    switch ((isset($callingParams['pin']) and $callingParams['pin']) ? $callingParams['pin'] : '') {
+        case 1:
+            $orderBy = 'catpinned desc';
+            break;
+        case 2:
+            break;
+        default:
+            $orderBy = 'pinned desc';
             break;
     }
 
