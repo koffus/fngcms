@@ -399,7 +399,9 @@ function newsProcessFilter($conditions)
 {
     //print "CALL newsProcessFilter(".var_export($conditions, true).")<br/>\n";
 
-    if (!is_array($conditions))
+    $conditions = array_filter($conditions);
+
+    if (empty($conditions))
         return '';
 
     switch (strtoupper($conditions[0])) {
@@ -524,7 +526,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 
     // Make temlate procession - auto/manual overriding
     //->calling style
-    if (!$callingParams['style'])
+    if (empty($callingParams['style']))
         $callingParams['style'] = 'short';
 
     //->desired template - override template if needed

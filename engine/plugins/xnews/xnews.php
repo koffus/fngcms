@@ -33,7 +33,7 @@ include_once root.'includes/inc/libnews.php';
 function xNewsShowBlock($params) {
 	global $CurrentHandler, $twig, $config;
 
-	if (isset($params['id']) and $params['id']) {
+	if (isset($params['id'])) {
 		// Scan blocks
 		$isFound = false;
 
@@ -61,9 +61,40 @@ function xNewsShowBlock($params) {
 		}
 
 	}
+    
+    foreach (array(
+        'categoryMode',
+        'categories',
+        'visibilityMode',
+        'visibilityCList',
+        'mainMode',
+        'pinMode',
+        'favMode',
+        'count',
+        'skip',
+        'maxAge',
+        'order',
+        'showNoNews',
+        'skipCurrent',
+        'extractEmbeddedItems') as $k) {
+        if (empty($params[$k])) {
+            if (empty(pluginGetVariable('xnews', '1_'.$k))) {
+                $params[$k] = null;
+            } else {
+                $params[$k] = pluginGetVariable('xnews', '1_'.$k);
+            }
+        }
+    }
+    if (empty($params['cacheAge'])) {
+        if (empty(pluginGetVariable('xnews', 'cacheExpire'))) {
+            $params['cacheAge'] = 60;
+        } else {
+            $params['cacheAge'] = pluginGetVariable('xnews', 'cacheExpire');
+        }
+    }
 
 	// Convert category list into array
-	if (isset($params['categories']) and (!is_array($params['categories']))) {
+	if (!is_array($params['categories'])) {
 		$params['categories'] = preg_split('# *, *#', $params['categories'], -1, PREG_SPLIT_NO_EMPTY);
 	}
 
@@ -76,7 +107,7 @@ function xNewsShowBlock($params) {
 	//print "<pre>".var_export($CurrentHandler, true)."</pre>";
 	//print "Call params: <pre>".var_export($params, true)."</pre>";
 	// Check if block should be displayed
-	if ($params['visibilityMode'] > 0) {
+	if (isset($params['visibilityMode']) and $params['visibilityMode'] > 0) {
 		if ($CurrentHandler['pluginName'] != 'news')
 			return;
 
@@ -124,6 +155,8 @@ function xNewsShowBlock($params) {
 	$categoryList = array();
 
 	// Category display mode
+    $params['categoryMode'] = isset($params['categoryMode']) ? $params['categoryMode'] : 0;
+    $params['categories'] = isset($params['categoryMode']) ? $params['categoryMode'] : 0;
 	switch ($params['categoryMode']) {
 		// Only selected categories
 		case 0:
@@ -180,9 +213,9 @@ function xNewsShowBlock($params) {
 		}
 	}
 
-	$showCount	= ($params['count'] > 0) ? intval($params['count']) : 10;
-	$showSkip	= ($params['skip'] > 0) ? intval($params['skip']) : 0;
-	$showAge	= ($params['maxAge'] > 0) ? intval($params['maxAge']) : 0;
+	$showCount	= (!empty($params['count']) and $params['count'] > 0) ? intval($params['count']) : 10;
+	$showSkip	= (!empty($params['skip']) and $params['skip'] > 0) ? intval($params['skip']) : 0;
+	$showAge	= (!empty($params['maxAge']) and $params['maxAge'] > 0) ? intval($params['maxAge']) : 0;
 
 	$cacheKeys []= '|count='.$showCount;
 	$cacheKeys []= '|skip='.$showSkip;
@@ -190,13 +223,14 @@ function xNewsShowBlock($params) {
 	$cacheKeys []= '|embed='.intval($params['extractEmbeddedItems']);
 
 	$cacheKeys []= '|categoryMode='.$params['categoryMode'];
-	$cacheKeys []= '|categories='.join(",",$categoryList);
 
 	if ($showAge > 0) {
 		$filterList []= '((unix_timestamp(now()) - postdate) < '.($showAge * 86400).')';
 	}
 
 	if((is_array($categoryList) and count($categoryList))) {
+        
+        $cacheKeys []= '|categories='.join(",",$categoryList);
 		//print "categoryList [".var_export($categoryList, true)."]";
 
 		$catFilter = array();

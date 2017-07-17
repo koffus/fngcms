@@ -21,7 +21,7 @@ function xmode() {
  return (pluginIsActive('xfields')) ? true : false;
 }
 
-function suser_header_show($params) {
+function suser_header_show($params = array()) {
  global $CurrentHandler, $SYSTEM_FLAGS, $template;
  
  if(checkLinkAvailable('suser', 'list')){
@@ -284,7 +284,7 @@ function suser_show($params) {
  'link' => str_replace('%page%',
  "$1",
  str_replace('%link%', 
- checkLinkAvailable('suser')?
+ checkLinkAvailable('suser', '')?
  generatePageLink(array('pluginName' => 'suser', 'params' => array(), 'xparams' => array('username' => $username, 'show_group' => $show_group, 'sort_by' => $sort_by, 'sort_dir' => $sort_dir), 'paginator' => array('page', 1, false)), $prev = floor($limitStart / $limitCount)):
  generatePageLink(array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'suser'), 'xparams' => array('username' => $username, 'show_group' => $show_group, 'sort_by' => $sort_by, 'sort_dir' => $sort_dir), 'paginator' => array('page', 1, false)), $prev = floor($limitStart / $limitCount)), 
  isset($navigations['prevlink'])?$navigations['prevlink']:''
@@ -296,7 +296,7 @@ function suser_show($params) {
  'link' => str_replace('%page%',
  "$1",
  str_replace('%link%', 
- checkLinkAvailable('suser')?
+ checkLinkAvailable('suser', '')?
  generatePageLink(array('pluginName' => 'suser', 'params' => array(), 'xparams' => array('username' => $username, 'show_group' => $show_group, 'sort_by' => $sort_by, 'sort_dir' => $sort_dir), 'paginator' => array('page', 1, false)), $prev+2):
  generatePageLink(array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'suser'), 'xparams' => array('username' => $username, 'show_group' => $show_group, 'sort_by' => $sort_by, 'sort_dir' => $sort_dir), 'paginator' => array('page', 1, false)), $prev+2), 
  isset($navigations['nextlink'])?$navigations['nextlink']:''

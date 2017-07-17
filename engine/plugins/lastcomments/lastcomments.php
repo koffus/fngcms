@@ -182,7 +182,7 @@ function lastcomments($mode = 0) {
             'avatar_url' => $avatar_url,
             'answer' => $answer,
             'name' => $name,
-            'alternating' => ($comnum%2)?"lastcomments_even":"lastcomments_odd",
+            'alternating' => ($comm_num%2)?"lastcomments_even" : "lastcomments_odd",
             'rsslink' => home."?id=".$row['nid'],
             'rssdate' => 	gmstrftime('%a, %d %b %Y %H:%M:%S GMT',$row['postdate']),
             );
