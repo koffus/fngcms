@@ -174,5 +174,5 @@
 
 [debug]{debug_queries}{debug_profiler}[/debug]
 </body>
-</html>
 <!--{% endspaceless %} [/TWIG]-->
+</html>
