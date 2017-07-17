@@ -48,7 +48,7 @@ function rating_rpc_manage($params) {
     $templateName = 'rating';
     $localSkin = pluginGetVariable('rating', 'localSkin');
     if (!$localSkin)
-        $localSkin='ancient';
+        $localSkin='basic';
     $tpath = locatePluginTemplates(array('rating', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
     $cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 
 
