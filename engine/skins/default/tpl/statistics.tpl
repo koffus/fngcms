@@ -269,7 +269,7 @@ $(function(){
             var currentVersion = '{{ currentVersion }}';
             var engineVersionBuild = '{{ engineVersionBuild }}';
             var publish = json.published_at;
-            if (currentVersion === json.tag_name && engineVersionBuild == publish.split('T')[0]) {
+            if (currentVersion >= json.tag_name && engineVersionBuild >= publish.split('T')[0]) {
                 $('#needUpdate').html('Обновление не требуется');
             }
             $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ ' + json.published_at.slice(0, 10) + ' ]');
