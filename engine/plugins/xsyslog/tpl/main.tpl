@@ -133,7 +133,6 @@
 
 <!-- Hidden SUGGEST div -->
 <div id="suggestWindow" class="suggestWindow"><table id="suggestBlock" cellspacing="0" cellpadding="0" width="100%"></table><a href="#" align="right" id="suggestClose">{{ lang['close'] }}</a></div>
-<script src="{{ scriptLibrary }}/admin.js"></script>
 <script src="{{ scriptLibrary }}/libsuggest.js"></script>
 
 <link href=" {{ scriptLibrary }}/datetimepicker-4.15.35/datetimepicker.css" rel="stylesheet">

@@ -58,7 +58,7 @@
 		{{ newsOrder }}
 	</ul>
 </div>
-<hr class="alert-info">
+
 <script>
 	function newsorder(a){setCookie('newsOrder', a); document.location.href=''; return false;}
 </script>

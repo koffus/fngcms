@@ -56,7 +56,7 @@ class Database
 
     public function select_db($db)
     {
-        return (false == $this->query("SHOW DATABASES LIKE " . $this->dbh->quote($db))->fetchColumn(0)) ? 0 : 1;
+        return $this->query("use $db");
     }
 
     public function query($sql)
@@ -93,6 +93,21 @@ class Database
         if ($this->queryTimer) {
             $tX = $timer->stop(4);
         }
+        
+        /*// Достаем из кеша
+		if (!defined('ADMIN')) {
+			$fname = 'sql' . DS . md5($sql) . '.txt';
+			$result = cacheRetrieveFile($fname, '300');
+			if (false !== $result) {
+                if ($this->queryTimer) {
+                    $tX = '[ ' . round($timer->stop(4) - $tX, 4) . ' ] ';
+                    array_push($this->query_list, $tX . ' [from cache] ' . $sql);
+                } else {
+                    $tX = '';
+                }
+				return json_decode($result, true);
+			}
+		}*/
 
         try {
             $query = $this->query($sql);
@@ -126,6 +141,10 @@ class Database
         } else {
             $tX = '';
         }
+        
+        /*// Сохраняем в кеше
+		if (!defined('ADMIN'))
+			cacheStoreFile($fname, json_encode($result));*/
 
         return $result;
     }

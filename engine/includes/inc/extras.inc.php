@@ -229,6 +229,11 @@ function cacheStoreFile($fname, $data, $plugin = '', $hugeMode = 0)
     //	//if (!
     //}
 
+    $dest = pathinfo($dir . $fname)['dirname'];
+    if(!file_exists($dest)) {
+        mkdir($dest, 0777, true);
+    }
+
     // Try to create file
     if (($fn = @fopen($dir . $fname, 'w')) == FALSE) {
         return false;

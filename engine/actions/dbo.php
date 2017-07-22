@@ -234,7 +234,8 @@ function systemDboModify()
 
             // CREATE TABLE SCHEME
             $create_table_scheme = str_ireplace('cp1251', 'utf8', $row1['Create Table']);
-            $create_table_scheme = str_ireplace('ENGINE=MyISAM', 'ENGINE=InnoDB', $create_table_scheme);
+            // ENGINE=MyISAM для импортируемых с другой версии таблиц
+            $create_table_scheme = str_ireplace('ENGINE=InnoDB', 'ENGINE=MyISAM', $create_table_scheme);
             $create_table_scheme .= ' COLLATE utf8_general_ci';
             $mysqli->query($create_table_scheme);
             if ($mysqli->errno) {

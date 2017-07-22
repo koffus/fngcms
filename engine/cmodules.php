@@ -86,10 +86,10 @@ function coreRegisterUser() {
 
         // Check captcha
         if ($config['use_captcha']) {
-            $captcha = $_REQUEST['vcode'];
+            $captcha = md5($_POST['captcha']);
             if (!$captcha or ($_SESSION['captcha'] != $captcha)) {
                 // Fail
-                $msg = __('msge_vcode');
+                $msg = __('msge_captcha');
             }
         }
 
@@ -134,6 +134,8 @@ function generate_reg_page($params, $values = array(), $msg = '') {
     $tVars = array(
         'entries' => array(),
         'flags' => array(),
+        'captcha_url' => $config['use_captcha'] ? admin_url . '/captcha.php' : '',
+        'captcha_rand' => $config['use_captcha'] ? mt_rand() / mt_getrandmax() : '',
     );
     if ($msg) {
         msg(array('type' => 'danger', 'message' => $msg));
@@ -192,7 +194,6 @@ function generate_reg_page($params, $values = array(), $msg = '') {
     }
     if ($config['use_captcha']) {
         $tVars['flags']['hasCaptcha'] = true;
-        $_SESSION['captcha'] = rand(00000, 99999);
     }
     else {
         $tVars['flags']['hasCaptcha'] = false;
@@ -252,10 +253,10 @@ function coreRestorePassword() {
 
         // Check captcha
         if ($config['use_captcha']) {
-            $captcha = $_REQUEST['vcode'];
+            $captcha = md5($_REQUEST['captcha']);
             if (!$captcha or ($_SESSION['captcha'] != $captcha)) {
                 // Fail
-                $msg = __('msge_vcode');
+                $msg = __('msge_captcha');
             }
         }
 
@@ -289,7 +290,7 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
     $tpl->template('lostpassword.entry-full', tpl_site);
 
     if ($msg) {
-        msg(array('message' => $msg));
+        msg(array('type' => 'danger', 'message' => $msg));
     }
 
     foreach($params as $param) {
@@ -299,7 +300,7 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
             'descr' => $param['descr'],
             'error' => '',
             'input' => '',
-            'text' => $param['text']
+            'text' => $param['text'],
         );
 
         if ($param['error']) {
@@ -333,11 +334,11 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
     }
 
     if ($config['use_captcha']) {
-        $_SESSION['captcha'] = rand(00000, 99999);
         $tvars['vars']['captcha'] = '';
         $tvars['regx']["'\[captcha\](.*?)\[/captcha\]'si"] = '$1';
-    }
-    else {
+        $tvars['vars']['captcha_url'] = admin_url . '/captcha.php';
+        $tvars['vars']['captcha_rand'] = mt_rand() / mt_getrandmax();
+    } else {
         $tvars['regx']["'\[captcha\](.*?)\[/captcha\]'si"] = '';
     }
 

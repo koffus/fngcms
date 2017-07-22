@@ -5,7 +5,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 registerActionHandler('index_post', 'plugin_multi_main');
 
-function plugin_multi_main($params) {
+function plugin_multi_main() {
 	global $SYSTEM_FLAGS, $confArray, $CurrentHandler, $catmap, $userROW;
 
 	// ** MAIN PAGE

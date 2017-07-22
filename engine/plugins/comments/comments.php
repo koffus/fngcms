@@ -123,31 +123,28 @@ class CommentsNewsFilter extends NewsFilter
             return 1;
         }
 
-        // ******************************************** //
-        // Yeah, let's show comments here
-        // ******************************************** //
-
-        // Prepare params for call
+        // Set we need to override news template
         $callingCommentsParams = array('outprint' => true, 'total' => $SQLnews['com']);
 
-        // Set default template path
-        $templatePath = tpl_site . 'plugins/comments';
-
+        // Find first category
         $catid = explode(',', $SQLnews['catid']);
         $fcat = array_shift($catid);
-
         // Check if there is a custom mapping
         if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
             // Check if directory exists
-            if (is_dir(tpl_site . 'ncustom/' . $ctname)) {
-                $callingCommentsParams['overrideTemplatePath'] = tpl_site . 'ncustom/' . $ctname;
-                $templatePath = tpl_site . 'ncustom/' . $ctname;
+            if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
+                $callingCommentsParams['overrideTemplatePath'] = $tPath;
+            } else {
+                $tPath = null;
             }
         }
-        //->desired template
+
+        // desired template
         $templateName = 'comments.internal';
-        if (!file_exists($templatePath . DS . $templateName . '.tpl')) {
-            $templatePath = tpl_site . 'plugins/comments';
+
+        if(empty($tPath)) {
+            $tPath = locatePluginTemplates($templateName, 'comments', pluginGetVariable('comments', 'localSource') );
+            $tPath = $tPath[$templateName];
         }
 
         include_once(root . "/plugins/comments/inc/comments.show.php");
@@ -165,7 +162,6 @@ class CommentsNewsFilter extends NewsFilter
                 if (!$multi_mcount)
                     $skipCommShow = true;
             }
-
         }
 
         $tcvars = array();
@@ -197,7 +193,7 @@ class CommentsNewsFilter extends NewsFilter
         }
         $tcvars['regx']['#\[comheader\](.*)\[/comheader\]#is'] = ($SQLnews['com']) ? '$1' : '';
 
-        $tpl->template($templateName, $templatePath);
+        $tpl->template($templateName, $tPath);
         $tpl->vars($templateName, $tcvars);
         $tvars['vars']['plugin_comments'] = $tpl->show($templateName);
     }
@@ -283,24 +279,25 @@ function plugin_comments_show()
     // AJAX is turned off by default
     $callingCommentsParams = array('noajax' => 1, 'outprint' => true);
 
-    // Set default template path [from site template / comments plugin subdirectory]
-    $templatePath = tpl_site . 'plugins/comments';
-
+    // Find first category
     $catid = explode(',', $newsRow['catid']);
-    $fcat = intval(array_shift($catid));
-
+    $fcat = array_shift($catid);
     // Check if there is a custom mapping
     if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
         // Check if directory exists
-        if (is_dir(tpl_site . 'ncustom/' . $ctname)) {
-            $callingCommentsParams['overrideTemplatePath'] = tpl_site . 'ncustom/' . $ctname;
-            $templatePath = tpl_site . 'ncustom/' . $ctname;
+        if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
+            $callingCommentsParams['overrideTemplatePath'] = $tPath;
+        } else {
+            $tPath = null;
         }
     }
-    //->desired template
+
+    // desired template
     $templateName = 'comments.external';
-    if (!file_exists($templatePath . DS . $templateName . '.tpl')) {
-        $templatePath = tpl_site . 'plugins/comments';
+
+    if(empty($tPath)) {
+        $tPath = locatePluginTemplates($templateName, 'comments', pluginGetVariable('comments', 'localSource') );
+        $tPath = $tPath[$templateName];
     }
 
     // Check if we need pagination
@@ -365,7 +362,7 @@ function plugin_comments_show()
     $tcvars['vars']['title'] = secure_html($newsRow['title']);
     $tcvars['regx']['[\[comheader\](.*)\[/comheader\]]'] = ($newsRow['com']) ? '$1' : '';
 
-    $tpl->template($templateName, $templatePath);
+    $tpl->template($templateName, $tPath);
     $tpl->vars($templateName, $tcvars);
     $template['vars']['mainblock'] .= $tpl->show($templateName);
 }

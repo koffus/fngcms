@@ -60,12 +60,12 @@
 					{% endfor %}
 					{% if flags.hasCaptcha %}
 						<div class="form-group row">
-							<label for="vcode" class="col-sm-4 col-form-label">{{lang.theme['captcha_title'] }}</label>
+							<label for="captcha" class="col-sm-4 col-form-label">{{lang.theme['captcha_title'] }}</label>
 							<div class="col-sm-8">
 								<div class="input-group">
-									<input type="text" name="vcode" id="vcode" class="form-control" required />
+									<input type="text" name="captcha" id="captcha" class="form-control" required />
 									<span class="input-group-addon p-0">
-										<img src="{{ admin_url }}/captcha.php" id="img_captcha" onclick="reload_captcha();" alt="Security code" class="captcha"/>
+										<img id="img_captcha" src="{{ captcha_url }}?rand={{ captcha_rand }}" alt="captcha" class="captcha" />
 									</span>
 								</div>
 								<small id="{{ entry.id }}">{{ lang['captcha_desc'] }}</small>
@@ -210,11 +210,5 @@
             return false;
         }
         return true;
-    }
-    function reload_captcha() {
-        var captc = document.getElementById('img_captcha');
-        if (captc != null) {
-            captc.src = "{{ admin_url }}/captcha.php?rand=" + Math.random();
-        }
     }
 </script>

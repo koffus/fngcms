@@ -59,14 +59,11 @@ function comments_rpc_manage($params) {
         }
         // Check captcha for unregistered visitors
         if ($config['use_captcha']) {
-            $vcode = $params['vcode'];
+            $captcha = md5($params['captcha']);
 
-            if ($vcode != $_SESSION['captcha']) {
-                return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.vcode'));
+            if ($captcha != $_SESSION['captcha']) {
+                return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.captcha'));
             }
-
-            // Update captcha
-            $_SESSION['captcha'] = rand(00000, 99999);
         }
 
         if (!$SQL['author']) {
@@ -259,11 +256,8 @@ function comments_rpc_manage($params) {
     @setcookie("com_username", urlencode($SQL['author']), 0, '/');
     @setcookie("com_usermail", urlencode($SQL['mail']), 0, '/');
 
-    // Check if we need to override news template
+    // Set we need to override news template
     $callingCommentsParams = array('outprint' => true);
-
-    // Set default template path
-    $templatePath = tpl_dir . $config['theme'];
 
     // Find first category
     $catid = explode(',', $news_row['catid']);
@@ -271,29 +265,17 @@ function comments_rpc_manage($params) {
     // Check if there is a custom mapping
     if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
         // Check if directory exists
-        if (is_dir($templatePath . '/ncustom/' . $ctname))
-            $callingCommentsParams['overrideTemplatePath'] = $templatePath . '/ncustom/' . $ctname;
+        if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
+            $callingCommentsParams['overrideTemplatePath'] = $tPath;
+        }
     }
-    //if () {
-        return array(
-            'status' => 1,
-            'errorCode' => 0,
-            'content' => comments_show($news_row['id'], $comment_id, $news_row['com'] + 1, $callingCommentsParams),
-            'rev' => intval(pluginGetVariable('comments', 'backorder')),
-        );
-        
-    /*} else {
-        return array(
-            'status' => 0,
-            'data' => $template['vars']['mainblock'],
-        );
-    }*/
 
-    $tpath = locatePluginTemplates(array('ajax.add.remove.links.style'), 'comments', pluginGetVariable('comments', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['ajax.add.remove.links.style'].'ajax.add.remove.links.style.tpl');
-    return array('status' => 1, 'errorCode' => 0, 'content' => $xt->render($tVars));
+    return array(
+        'status' => 1,
+        'errorCode' => 0,
+        'content' => comments_show($news_row['id'], $comment_id, $news_row['com'] + 1, $callingCommentsParams),
+        'rev' => intval(pluginGetVariable('comments', 'backorder')),
+    );
 }
-
-//return array('status' => 0, 'errorCode' => 3, 'errorText' => 'Access denied');
 
 rpcRegisterFunction('plugin.comments.update', 'comments_rpc_manage');

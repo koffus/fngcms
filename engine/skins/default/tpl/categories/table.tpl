@@ -64,8 +64,6 @@
     <!-- List of categories: END -->
 </div>
 
-<script src="{{ scriptLibrary }}/admin.js"></script>
-
 <script>
 // Process RPC requests for categories
 

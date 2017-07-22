@@ -4,7 +4,6 @@
 <head>
     <title>{{ titles }}</title>
     <meta charset="{{ lang['encoding'] }}" />
-    <meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="generator" content="{{ what }} {{ version }}" />
     <meta name="document-state" content="dynamic" />

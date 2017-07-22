@@ -95,6 +95,21 @@ array_push($cfg, array(
 
 $cfgX = array();
 	array_push($cfgX, array(
+		'name' => 'localSource',
+		'title' => __('localSource'),
+		'descr' => __('localSource#desc'),
+		'type' => 'select',
+		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.source'),
+	'entries' => $cfgX,
+	));
+
+$cfgX = array();
+	array_push($cfgX, array(
 		'name' => 'global_default',
 		'title' => "По умолчанию комментарии",
 		'descr' => '<b>разрешены</b> - будут разрешены в новости если они явно не запрещены<br/><b>запрещены</b> - будут запрещены новости если они явно не разрешены',

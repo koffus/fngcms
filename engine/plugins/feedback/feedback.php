@@ -231,9 +231,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 	if (substr($frow['flags'],1,1)) {
 		$tVars['flags']['captcha'] = 1;
 		$tVars['captcha_url'] = admin_url."/captcha.php?id=feedback";
-		$tVars['captcha_rand'] = rand(00000, 99999);
-
-		$_SESSION['captcha.feedback'] = rand(00000, 99999);
+		$tVars['captcha_rand'] = mt_rand() / mt_getrandmax();
 	}
 
 	// Check if we need to show `select destination notification address` menu
@@ -327,8 +325,8 @@ function plugin_feedback_post() {
 
 	// Check if captcha check if needed
 	if (substr($frow['flags'],1,1)) {
-		$vcode = $_REQUEST['vcode'];
-		if ((!$vcode) or ($vcode != $_SESSION['captcha.feedback'])) {
+		$captcha = md5($_POST['captcha']);
+		if ((!$captcha) or ($captcha != $_SESSION['captcha.feedback'])) {
 			// Wrong CAPTCHA code (!!!)
 			plugin_feedback_showScreen(1, __('feedback:sform.captcha.badcode'));
 			return;
@@ -503,7 +501,7 @@ function plugin_feedback_post() {
 
 	// Lock used captcha code if captcha is enabled
 	if (substr($frow['flags'],1,1)) {
-		//		$_SESSION['captcha.feedback'] = rand(00000, 99999);
+		//		$_SESSION['captcha.feedback'] = md5(rand(1000, 9999));
 	}
 
 	// USER notification

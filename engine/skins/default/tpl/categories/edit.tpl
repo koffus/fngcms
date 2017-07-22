@@ -55,7 +55,7 @@
 		<div class="form-group">
 			<div class="col-sm-5">{{ lang['cat_number'] }}</div>
 			<div class="col-sm-7">
-				<input type="text" name="description" value="{{ number }}" class="form-control" />
+				<input type="text" name="number" value="{{ number }}" class="form-control" />
 			</div>
 		</div>
 		<div class="form-group">

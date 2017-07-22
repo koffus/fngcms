@@ -4,7 +4,6 @@
 <head>
     <title>{{ titles }}</title>
     <meta charset="{{ lang['encoding'] }}" />
-    <meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="generator" content="{{ what }} {{ version }}" />
     <meta name="document-state" content="dynamic" />
@@ -77,7 +76,7 @@
                                 {{ categories }}
                             </div>
                         </li>
-                        <li class="nav-item"><a href="{{ home }}/plugin/forum/" class="nav-link">{{ lang.theme.forum }}</a></li>
+                        <li class="nav-item"><a href="{{ home }}/forum.html" class="nav-link">{{ lang.theme.forum }}</a></li>
                         <li class="nav-item"><a href="#" class="nav-link">{{ lang.theme.article }}</a></li>
                         <li class="nav-item"><a href="{{ home }}/static/about.html" class="nav-link">{{ lang.theme.about }}</a></li>
                     </ul>

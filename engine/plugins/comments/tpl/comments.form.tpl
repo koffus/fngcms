@@ -1,14 +1,11 @@
 <script type="text/javascript">
-function reload_captcha() {
-    $('#img_captcha').attr('src', '{{ captcha_url }}?rand=' + Math.random());
-}
 function add_comment(news, action) {
     var form = document.getElementById('comment');
     var params = {
         {% if not(global.flags.isLogged) %}
             "name": form.name.value,
             "mail": form.mail.value,
-            {% if (useCaptcha) %}"vcode": form.vcode.value,{% endif %}
+            {% if (useCaptcha) %}"captcha": form.captcha.value,{% endif %}
         {% endif %}
         "content": form.content.value,
         "newsid": form.newsid.value,
@@ -20,8 +17,8 @@ function add_comment(news, action) {
         $('#new_comments').html(json.content);
         $('html, body').animate({ scrollTop: $('#new_comments').offset().top-87 }, 888);
         $.notify({message:'Комментарий успешно добавлен'},{type: 'success'});
+        {% if (useCaptcha and not(global.flags.isLogged)) %}reload_captcha();{% endif %}
     });
-    {% if (useCaptcha) %}reload_captcha();{% endif %}
 }
 </script>
 
@@ -32,8 +29,8 @@ function add_comment(news, action) {
 
         <fieldset>
             <legend class="">Добавить комментарий</legend>
-            <div class="row">
-                {% if not(global.flags.isLogged) %}
+            {% if not(global.flags.isLogged) %}
+                <div class="row">
                     <div class="col-md-4">
                         <div class="form-group">
                             <input type="text" name="name" value="{{ savedname }}" class="form-control" placeholder="Имя" id="name" required="" />
@@ -47,15 +44,15 @@ function add_comment(news, action) {
                     {% if (useCaptcha) %}
                     <div class="col-md-4">
                         <div class="input-group">
-                            <input type="text" name="vcode" class="form-control" placeholder="Код безопасности" id="captcha" required="" />
+                            <input type="text" name="captcha" class="form-control" placeholder="Код безопасности" id="captcha" required="" />
                             <span class="input-group-addon p-0">
-                                <img id="img_captcha" onclick="reload_captcha();" src="{{ captcha_url }}?rand={{ rand }}" alt="captcha" class="captcha"/>
+                                <img id="img_captcha" src="{{ captcha_url }}?rand={{ captcha_rand }}" alt="captcha" class="captcha" />
                             </span>
                         </div>
                     </div>
                     {% endif %}
-                {% endif %}
-            </div>
+                </div>
+            {% endif %}
             <div class="form-group">
                 {{ bbcodes }}
                 {% if (useSmilies) %}

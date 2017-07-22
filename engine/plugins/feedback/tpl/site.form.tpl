@@ -71,8 +71,8 @@ function FBF_CHECK() {
 {% endfor %}
 {% if (flags.captcha) %}
 	<tr>
-		<td width="30%"><img id="img_captcha" onclick="this.src='{{ captcha_url }}&rand='+Math.random();" src="{{ captcha_url }}&rand={{ captcha_rand }}" alt="captcha" /></td>
-		<td width="70%"><input type="text" name="vcode" style="width:80px" class="input" /></td>
+		<td width="30%"><img id="img_captcha" src="{{ captcha_url }}&rand={{ captcha_rand }}" alt="captcha" class="captcha" /></td>
+		<td width="70%"><input type="text" name="captcha" class="form-control" /></td>
 	</tr>
 {% endif %}
 {% if (flags.recipients) %}

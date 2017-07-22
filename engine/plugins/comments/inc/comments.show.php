@@ -17,7 +17,7 @@ if (!defined('NGCMS')) die ('HAL');
 // $commDisplayNum - [optional] num that is showed in 'show comment' template
 // $callingParams
 //		'plugin' => if is called from plugin - ID of plugin
-//		'overrideTemplateName' => alternative template for display
+//		'overridetName' => alternative template for display
 //		'overrideTemplatePath' => alternative path for searching of template
 //		'limitStart' => order comment no to start (for pagination)
 //		'limitCount' => number of comments to show (for pagination)
@@ -34,17 +34,18 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
     $tplVars = $TemplateCache['site']['#variables'];
     $noAvatarURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noAvatarImage']) and $tplVars['configuration']['noAvatarImage'])?(tpl_url."/".$tplVars['configuration']['noAvatarImage']):(avatars_url."/noavatar.png");
 
-    //->desired template path
-    $templatePath = isset($callingParams['overrideTemplatePath']) ? $callingParams['overrideTemplatePath'] : (tpl_site.'plugins/comments');
-
-    //->desired template
-    $templateName = isset($callingParams['overrideTemplateName']) ? $callingParams['overrideTemplateName'] : 'comments.show';
-
-    if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
-        $templatePath = tpl_site.'plugins/comments';
+    // Desired template path and template name
+    if (!empty($callingParams['overrideTemplatePath']) and !empty($callingParams['overridetName'])) {
+        $tName = $callingParams['overrideTemplatePath'] . DS . $callingParams['overridetName'] . '.tpl';
+    } else if (!empty($callingParams['overrideTemplatePath'])) {
+        $tName = $callingParams['overrideTemplatePath'] . DS . 'comments.show.tpl';
+    }
+    if(empty($tName) or !file_exists($tName)) {
+        $tPath = locatePluginTemplates('comments.show', 'comments', pluginGetVariable('comments', 'localSource') );
+        $tName = $tPath['comments.show'] . 'comments.show.tpl';
     }
 
-    $xt = $twig->loadTemplate($templatePath . DS . $templateName . '.tpl');
+    $xt = $twig->loadTemplate($tName);
 
     $joinFilter = array();
     if ($config['use_avatars']) {
@@ -162,7 +163,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         // RUN interceptors
         if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
             foreach ($PFILTERS['comments'] as $k => $v) {
-                $v->showComments($newsID, $row, $comnum, $tvars);
+                $v->showComments($newsID, $row, $comnum, $tVars);
             }
         }
 
@@ -170,7 +171,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         executeActionHandler('comments');
 
         // Show template
-        $output .= $xt->render($tVars);
+        $output .= $xt->render($tVars);//die(dd($PFILTERS));
     }
 
     unset($rows);
@@ -183,26 +184,25 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
 // $callingParams
 //		'plugin' => if is called from plugin - ID of plugin
-//		'overrideTemplateName' => alternative template for display
+//		'overridetName' => alternative template for display
 //		'overrideTemplatePath' => alternative path for searching of template
 //		'outprint'	 	=> flag: if set, output will be returned, elsewhere - will be added to mainblock
 function comments_showform($newsID, $callingParams = array()){
     global $mysql, $config, $template, $twig, $userROW, $PFILTERS;
 
-    //->desired template path
-    $templatePath = isset($callingParams['overrideTemplatePath'])?$callingParams['overrideTemplatePath']:(tpl_site.'plugins/comments');
-
-    //->desired template
-    if (isset($callingParams['overrideTemplateName'])) {
-        $templateName = $callingParams['overrideTemplateName'];
-    } else {
-        $templateName = 'comments.form';
+    // Desired template path and template name
+    if (!empty($callingParams['overrideTemplatePath']) and !empty($callingParams['overridetName'])) {
+        $tName = $callingParams['overrideTemplatePath'] . DS . $callingParams['overridetName'] . '.tpl';
+    } else if (!empty($callingParams['overrideTemplatePath'])) {
+        $tName = $callingParams['overrideTemplatePath'] . DS . 'comments.form.tpl';
     }
-    if ( !file_exists($templatePath . DS . $templateName . '.tpl') ) {
-        $templatePath = tpl_site.'plugins/comments';
+    if(empty($tName) or !file_exists($tName)) {
+        $tPath = locatePluginTemplates('comments.form', 'comments', pluginGetVariable('comments', 'localSource') );
+        $tName = $tPath['comments.form'] . 'comments.form.tpl';
     }
 
-    $xt = $twig->loadTemplate($templatePath . DS . $templateName . '.tpl');
+    $xt = $twig->loadTemplate($tName);
+
     $tVars = array(
         'useBB' => $config['use_bbcodes'] ? true : false,
         'useSmilies' => $config['use_smilies'] ? true : false,
@@ -211,13 +211,12 @@ function comments_showform($newsID, $callingParams = array()){
         'admin_url' => admin_url,
         'skins_url' => skins_url,
         'post_url' => generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'add')),
-        'rand' => rand(00000, 99999),
         'newsid' => $newsID.'#'.genUToken('comment.add.'.$newsID),
         'request_uri' => secure_html($_SERVER['REQUEST_URI']),
         'bbcodes' => $config['use_bbcodes'] ? BBCodes() : '',
         'smilies' => $config['use_smilies'] ? Smilies('comments', 10) : '',
-        'captcha' => $config['use_captcha'] ? rand(00000, 99999) : '',
         'captcha_url' => $config['use_captcha'] ? admin_url . '/captcha.php' : '',
+        'captcha_rand' => $config['use_captcha'] ? mt_rand() / mt_getrandmax() : '',
         );
 
     if (!empty($_COOKIE['com_username'])) {

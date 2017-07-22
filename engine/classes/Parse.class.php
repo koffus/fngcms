@@ -175,6 +175,8 @@ class Parse
 
         $content = preg_replace("#\[quote\]\s*(.*?)\s*\[/quote\]#is", "<blockquote><b>" . __('bb_quote') . "</b><br />$1</blockquote>", $content);
         $content = preg_replace("#\[quote=(.*?)\]\s*(.*?)\s*\[/quote\]#is", "<blockquote><b>$1</b> " . __('bb_wrote') . "<br />$2</blockquote>", $content);
+        $content = preg_replace("#\[blockquote\](.+?)\[/blockquote\]#is", "<blockquote class='blockquote'>$1</blockquote>", $content);
+        $content = preg_replace("#\[cite\](.+?)\[/cite\]#is", "<footer class='blockquote-footer'><cite>$1</cite></footer>", $content);
 
         $content = preg_replace("#\[acronym\]\s*(.*?)\s*\[/acronym\]#is", "<acronym>$1</acronym>", $content);
         $content = preg_replace('#\[acronym=([^\"]+?)\]\s*(.*?)\s*\[/acronym\]#is', "<acronym title=\"$1\">$2</acronym>", $content);

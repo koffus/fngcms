@@ -77,8 +77,6 @@
 	</div>
 </div>
 
-<script src="{{ scriptLibrary }}/admin.js"></script>
-
 <script>
 <!--
 // Connect to configuration data

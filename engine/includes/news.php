@@ -191,13 +191,13 @@ function showNews($handlerName, $params)
                 if (getIsSet($currentCategory['description']) != '') {
                     $SYSTEM_FLAGS['meta']['description'] = $currentCategory['description'];
                 } else {
-                    $SYSTEM_FLAGS['meta']['description'] = home_title . '. ' . $currentCategory['name'];
+                    $SYSTEM_FLAGS['meta']['description'] = $currentCategory['name'] . '. ' . home_title;
                 }
                 if (getIsSet($currentCategory['keywords']) != '') {
                     $SYSTEM_FLAGS['meta']['keywords'] = $currentCategory['keywords'];
                 } else {
                     // Удаляем все слова меньше 3-х символов
-                    $currentCategory['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', $currentCategory['name']);
+                    $currentCategory['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', $currentCategory['name'] . ' ' . home_title);
                     // Удаляем знаки препинания
                     $currentCategory['keywords'] = preg_replace('#[^\d\w ]+#iu', '', $currentCategory['keywords']);
                     // Удаляем лишние пробельные символы
@@ -205,7 +205,7 @@ function showNews($handlerName, $params)
                     // Заменяем пробелы на запятые
                     $currentCategory['keywords'] = preg_replace('#[\s]#iu', ',', $currentCategory['keywords']);
                     // Выводим для леньтяев
-                    $SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(trim(home_title . ',' . $currentCategory['keywords'], ','));
+                    $SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(trim($currentCategory['keywords'], ','));
                 }
 
                 // Set number of `news per page` if this parameter is filled in category
@@ -237,17 +237,17 @@ function showNews($handlerName, $params)
                 $tableVars['category'] = array_shift($tableVars['category']);
 
                 // TABLE - prepare information about sorting block
-                /*$sortDefault = array('id desc',
+                $sortDefault = array('id desc',
                     'postdate desc', 'title desc', 'views desc', 'com desc');
                 //if ( isset($_COOKIE['newsOrder']) and in_array($callingParams['newsOrder'], $sortDefault) ) {
                 $sortKey = array_search($callingParams['newsOrder'], $sortDefault);
                 $sortDefault = array_diff($sortDefault, [$callingParams['newsOrder']]);
                 $sortDefault = $sortDefault + [$sortKey => str_replace('desc', 'asc', $callingParams['newsOrder'])];
                 ksort($sortDefault);
-                //}*/
+                //}
 
                 $tableVars['newsOrder'] = '';
-                /*$sortOrder = explode(' ', $callingParams['newsOrder']);
+                $sortOrder = explode(' ', $callingParams['newsOrder']);
                 foreach ($sortDefault as $key => $value) {
                     $pieces = explode(' ', $value);
                     if ($pieces[0] == 'com' and !pluginIsActive('comments'))
@@ -257,7 +257,7 @@ function showNews($handlerName, $params)
                     } else {
                         $tableVars['newsOrder'] .= '<span onclick="newsorder(\'' . $value . '\'); return false;" class="news-order-link">' . __('news.order.' . $pieces[0]) . '</span>';
                     }
-                }*/
+                }
 
                 // Check if template 'news.table.tpl' exists [first check custom category template (if set), after that - common template for the whole site
                 if ($currentCategory['tpl'])

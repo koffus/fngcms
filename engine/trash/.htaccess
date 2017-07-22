@@ -7,8 +7,3 @@
 
 Order Deny,Allow
 Deny From All
-
-<files captcha.php>
-Order Allow,Deny
-Allow From All
-</files>

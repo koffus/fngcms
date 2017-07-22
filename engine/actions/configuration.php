@@ -148,7 +148,7 @@ function systemConfigEditForm(){
 		// SYSTEM CONFIG is available via `config` variable
 		'config' => $config,
 		'list' => array(
-			'captcha_font' => ListFiles('trash', 'ttf'),
+			'captcha_font' => ListFiles('../lib/fonts', 'ttf'),
 			'theme' => ListFiles('../templates',''),
 			'skin' => ListFiles('skins/default/themes/','css'),
 			'default_lang' => ListFiles('lang', ''),

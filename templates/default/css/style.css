@@ -434,16 +434,21 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 	padding: 36px 0px 0px 0px;
 }
 .gravatar img {
-	 width: 72px;
-	-webkit-border-radius: 50%;
-	-webkit-background-clip: padding-box;
-	-moz-border-radius: 50%;
-	-moz-background-clip: padding;
-	border-radius: 50%;
-	background-clip: padding-box;
-	margin: 0 auto;
+    width: 80px;
+    -webkit-background-clip: padding-box;
+    -moz-background-clip: padding;
+    background-clip: padding-box;
+    margin: 0 auto;
+    padding: .15rem;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 0;
+    -webkit-transition: all .2s ease-in-out;
+    -o-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+    max-width: 100%;
+    height: auto;
 }
-
 .comment-content .comment-meta {
 	margin-left: 0;
 	padding: 0px 18px 18px 18px;

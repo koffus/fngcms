@@ -96,8 +96,8 @@ class CPlugin
         $content = '<?php $array = '.var_export($listActive, true).'; ?>';
         fwrite($file, $content);
         fclose($file);
+
         return true;
-        
     }
 
     // Load configuration variables for all plugins

@@ -607,70 +607,7 @@ $urlLibrary = array (
       ),
     ),
   ),
-  'gmanager' => 
-  array (
-    '' => 
-    array (
-      'vars' => 
-      array (
-        '' => 
-        array (
-          'matchRegex' => '.+?',
-          'descr' => 
-          array (
-            'russian' => 'Главная',
-          ),
-        ),
-        'page' => 
-        array (
-          'matchRegex' => '\\d{1,4}',
-          'descr' => 
-          array (
-            'russian' => 'Страница',
-          ),
-        ),
-      ),
-      'descr' => 
-      array (
-        'russian' => 'Главная страница плагина',
-      ),
-    ),
-    'gallery' => 
-    array (
-      'vars' => 
-      array (
-        'name' => 
-        array (
-          'matchRegex' => '.+?',
-          'descr' => 
-          array (
-            'russian' => 'Имя галереи',
-          ),
-        ),
-        'id' => 
-        array (
-          'matchRegex' => '\\d{1,4}',
-          'descr' => 
-          array (
-            'russian' => 'Код галереи',
-          ),
-        ),
-        'page' => 
-        array (
-          'matchRegex' => '\\d{1,4}',
-          'descr' => 
-          array (
-            'russian' => 'Страница',
-          ),
-        ),
-      ),
-      'descr' => 
-      array (
-        'russian' => 'Собственная страница галереи',
-      ),
-    ),
-  ),
-  'lastcomments' => 
+  'gsmg' => 
   array (
     '' => 
     array (
@@ -679,17 +616,7 @@ $urlLibrary = array (
       ),
       'descr' => 
       array (
-        'russian' => 'Страница с последними комментариями',
-      ),
-    ),
-    'rss' => 
-    array (
-      'vars' => 
-      array (
-      ),
-      'descr' => 
-      array (
-        'russian' => 'Rss лента последних комментариев',
+        'russian' => 'Лента gsmg',
       ),
     ),
   ),

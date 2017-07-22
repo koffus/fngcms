@@ -364,13 +364,13 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     if (getIsSet($row['description']) != '') {
         $SYSTEM_FLAGS['meta']['description'] = $row['description'];
     } else {
-        $SYSTEM_FLAGS['meta']['description'] = home_title . '. ' . GetCategories($row['catid'], true) . '. ' . secure_html($row['title']);
+        $SYSTEM_FLAGS['meta']['description'] = secure_html($row['title'] . '. ' . GetCategories($row['catid'], true) . '. ' . home_title);
     }
     if (getIsSet($row['keywords']) != '') {
         $SYSTEM_FLAGS['meta']['keywords'] = $row['keywords'];
     } else {
         // Удаляем все слова меньше 3-х символов
-        $row['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', GetCategories($row['catid'], true) . '. ' . secure_html($row['title']));
+        $row['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', secure_html($row['title']) . ' ' . GetCategories($row['catid'], true) . ' ' . home_title);
         // Удаляем знаки препинания
         $row['keywords'] = preg_replace('#[^\d\w ]+#iu', '', $row['keywords']);
         // Удаляем лишние пробельные символы
@@ -378,7 +378,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
         // Заменяем пробелы на запятые
         $row['keywords'] = preg_replace('#[\s]#iu', ',', $row['keywords']);
         // Выводим для леньтяев
-        $SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(home_title . ',' . $row['keywords']);
+        $SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(trim($row['keywords'], ','));
     }
 
     // Prepare title
@@ -563,14 +563,14 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     $limit_start = $cstart ? ($cstart - 1) * $showNumber : 0;
     $limit_count = $showNumber;
 
-    /*$orderBy = isset($callingParams['newsOrder']) ? $callingParams['newsOrder'] : 'id desc';
+    $orderBy = isset($callingParams['newsOrder']) ? $callingParams['newsOrder'] : 'id desc';
     if (!in_array($orderBy, array('id desc', 'id asc', 'com desc', 'com asc', 'postdate desc', 'postdate asc', 'title desc', 'title asc', 'views desc', 'views asc')))
         $orderBy = 'id desc';
 
     if ($orderBy == 'postdate desc')
         $orderBy = 'editdate desc, postdate desc';
 
-    switch ((isset($callingParams['pin']) and $callingParams['pin']) ? $callingParams['pin'] : '') {
+    switch ((!empty($callingParams['pin'])) ? $callingParams['pin'] : '') {
         case 1:
             $orderBy = 'catpinned desc, ' . $orderBy;
             break;
@@ -578,17 +578,6 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
             break;
         default:
             $orderBy = 'pinned desc, ' . $orderBy;
-            break;
-    }*/
-    
-    switch ((isset($callingParams['pin']) and $callingParams['pin']) ? $callingParams['pin'] : '') {
-        case 1:
-            $orderBy = 'catpinned desc';
-            break;
-        case 2:
-            break;
-        default:
-            $orderBy = 'pinned desc';
             break;
     }
 

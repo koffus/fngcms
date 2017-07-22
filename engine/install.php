@@ -771,8 +771,8 @@ function doInstall()
 
         // Stage #02 - Connect to DB
         // Если заказали автосоздание, то подключаемся рутом
-        if ($_POST['reg_autocreate']) {
-            if ($mysql->connect($_POST['reg_dbhost'], $_POST['reg_dbadminuser'], $_POST['reg_dbadminpass'])) {
+        if (!empty($_POST['reg_autocreate'])) {
+            if ($mysql->connect($_POST['reg_dbhost'], $_POST['reg_dbadminuser'], $_POST['reg_dbadminpass'], '', 1)) {
                 // Успешно подключились
                 array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '" ... ' . __('msg.ok'));
 
@@ -809,8 +809,8 @@ function doInstall()
         }
 
         // Подключаемся к серверу используя права пользователя
-        if (!$mysql->connect($_POST['reg_dbhost'], $_POST['reg_dbuser'], $_POST['reg_dbpass'], $_POST['reg_dbname'])) {
-            array_push($ERROR, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" (пароль: "' . $_POST['reg_dbpass'] . '")');
+        if (!$mysql->connect($_POST['reg_dbhost'], $_POST['reg_dbuser'], $_POST['reg_dbpass'],'', 1)) {
+            array_push($ERROR, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" и пароль: "' . $_POST['reg_dbpass'] . '"');
             $error = 1;
             break;
         }
@@ -885,13 +885,14 @@ function doInstall()
 
         // 1.4. Создаём таблицы
         for ($i = 0; $i < count($dbsql); $i++) {
-            $dbCreateString = str_replace('XPREFIX_', $_POST['reg_dbprefix'] . '_', $dbsql[$i]) . $charset;
+            
+            $dbCreateString = str_replace(array('XPREFIX_', 'XENGINE'), array($_POST['reg_dbprefix'] . '_', $_POST['reg_dbengine']), $dbsql[$i]) . $charset;
 
             if ($SUPRESS_CHARSET) {
                 $dbCreateString = str_replace('default charset=utf8', '', $dbCreateString);
             }
             if ($SUPRESS_ENGINE) {
-                $dbCreateString = str_replace('ENGINE=MyISAM', '', $dbCreateString);
+                $dbCreateString = str_replace('ENGINE=' . $_POST['reg_dbengine'], '', $dbCreateString);
             }
 
             if (preg_match('/CREATE TABLE `(.+?)`/', $dbCreateString, $match)) {
@@ -930,7 +931,7 @@ function doInstall()
             array_push($LOG, 'Активация пользователя-администратора ... ' . __('msg.ok'));
         }
         // 1.6 Сохраняем конфигурационную переменную database.engine.version
-        @$mysql->query("insert into `" . $_POST['reg_dbprefix'] . "_config` (name, value) values ('database.engine.version', '0.9.7 RC')");
+        @$mysql->query("insert into `" . $_POST['reg_dbprefix'] . "_config` (name, value) values ('database.engine.version', 'v0.9.6.4-alfa')");
 
         // Вычищаем лишний перевод строки из 'home_url'
         if (substr($_POST['home_url'], -1, 1) == '/')
@@ -938,6 +939,7 @@ function doInstall()
 
         // 1.7. Формируем конфигурационный файл
         $newconf = array(
+            'dbengine' => $_POST['reg_dbengine'],
             'dbhost' => $_POST['reg_dbhost'],
             'dbname' => $_POST['reg_dbname'],
             'dbuser' => $_POST['reg_dbuser'],
@@ -970,7 +972,7 @@ function doInstall()
             'auto_backup_time' => '48',
             'use_gzip' => '0',
             'use_captcha' => '1',
-            'captcha_font' => 'verdana',
+            'captcha_font' => 'blowbrush',
             'use_cookies' => '0',
             'use_sessions' => '1',
             'number' => '9',
@@ -1014,7 +1016,9 @@ function doInstall()
             'auth_db' => 'basic',
             'crypto_salt' => substr(md5(uniqid(rand(), 1)), 0, 8),
             '404_mode' => 0,
-            'debug' => 1,
+            'debug' => 0,
+            'debug_queries' => 0,
+            'debug_profiler' => 0,
             'news_multicat_url' => '1',
             'UUID' => md5(mt_rand() . mt_rand()) . md5(mt_rand() . mt_rand()),
         );

@@ -33,6 +33,12 @@
                 <fieldset>
                     <legend>{{ lang['db_connect'] }}</legend>
                     <div class="form-group">
+                        <div class="col-md-5">{{ lang['dbengine'] }} <span class="help-block">{{ lang['dbengine#desc'] }}</span></div>
+                        <div class="col-md-7">
+                            <input type="text" name="save_con[dbengine]" value="{{ config['dbengine'] }}" class="form-control" readonly />
+                        </div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-md-5">{{ lang['dbhost'] }} <span class="help-block">{{ lang['example'] }} localhost</span></div>
                         <div class="col-md-7">
                             <input type="text" name="save_con[dbhost]" value="{{ config['dbhost'] }}" id="db_dbhost" class="form-control" />
@@ -118,10 +124,6 @@
                     <div class="form-group">
                         <div class="col-md-5">{{ lang['captcha_font'] }} <span class="help-block">{{ lang['captcha_font_desc'] }}</span></div>
                         <div class="col-md-7">{{ mkSelect({'name' : 'save_con[captcha_font]', 'value' : config['captcha_font'], 'values' : list['captcha_font'] }) }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-5">{{ lang['use_cookies'] }} <span class="help-block">{{ lang['use_cookies_desc'] }}</span></div>
-                        <div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[use_cookies]', 'value' : config['use_cookies'] }) }}</div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-5">{{ lang['use_cookies'] }} <span class="help-block">{{ lang['use_cookies_desc'] }}</span></div>
