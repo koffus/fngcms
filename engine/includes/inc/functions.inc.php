@@ -439,44 +439,39 @@ function templateLoadVariables($die = false, $loadMode = 0)
 //			2 - return as result
 function msg($params, $mode = 0, $disp = -1)
 {
-    global $config, $tpl, $template, $PHP_SELF, $TemplateCache;
+    global $twig, $template;
 
     // Set AUTO mode if $disp == -1
     if ($disp == -1)
-        $mode = ($PHP_SELF == 'admin.php') ? 1 : 0;
-
-    if (!templateLoadVariables(false, $mode)) {
-        die('Internal system error: ' . var_export($params, true));
-    }
+        $mode = defined('ADMIN') ? 1 : 0;
 
     // Choose working mode
     $type = isset($params['type']) ? $params['type'] : 'success';
     $title = isset($params['title']) ? $params['title'] : __($type);
     $message = isset($params['message']) ? $params['message'] : '';
 
-    $tmvars = array('vars' => array(
+    $msg = $twig->loadTemplate((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl')->render(array(
         'id' => rand(8, 88),
         'type' => $type,
         'title' => trim(db_squote('<b>'.$title.'</b><br />'), "'"),
         'message' => trim(db_squote($message), "'"),
-    ));
-    $message = $tpl->vars($TemplateCache[$mode ? 'admin' : 'site']['#variables']['messages']['msg'], $tmvars, array('inline' => true));
+        ));
 
-    switch ($disp) {
+    switch($disp) {
         case 0:
-            $template['vars']['mainblock'] .= $message;
+            $template['vars']['mainblock'] .= $msg;
             break;
         case 1:
-            print $message;
+            print $msg;
             break;
         case 2:
-            return $message;
+            return $msg;
             break;
         default:
             if ($mode) {
-                print $message;
+                print $msg;
             } else {
-                $template['vars']['mainblock'] .= $message;
+                $template['vars']['mainblock'] .= $msg;
             }
             break;
     }
