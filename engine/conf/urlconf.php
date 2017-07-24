@@ -607,17 +607,4 @@ $urlLibrary = array (
       ),
     ),
   ),
-  'gsmg' => 
-  array (
-    '' => 
-    array (
-      'vars' => 
-      array (
-      ),
-      'descr' => 
-      array (
-        'russian' => 'Лента gsmg',
-      ),
-    ),
-  ),
 );
