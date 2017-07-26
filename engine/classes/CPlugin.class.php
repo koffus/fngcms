@@ -1,9 +1,10 @@
 <?php
 
-/**
+/*
  * Class CPlugin
  * Description: CORE Plugin - manager configuration and functions
- */
+*/
+
 class CPlugin
 {
     use Singleton;
