@@ -174,7 +174,7 @@ $permissions = array(
     'preview' => '3',
 );
 
-executeActionHandler('admin_header');
+executeActionHandler('admin:header');
 
 // Print skin header (if we're not in preview mode)
 if ($mod != 'preview') {
@@ -250,7 +250,7 @@ if ($mod != 'preview') {
 }
 
 // Check requested module exists
-if (isset($permissions[$mod]) and ($permissions[$mod])) {
+if (!empty($permissions[$mod])) {
     $level = $permissions[$mod];
 
     // If user's status fits - call module. Else - show an error
@@ -282,4 +282,4 @@ if (defined('DEBUG')) {
     echo "SQL queries:<br />\n-------<br />\n " . implode("<br />\n", $mysql->query_list);
 }
 
-executeActionHandler('admin_footer');
+executeActionHandler('admin:footer');
