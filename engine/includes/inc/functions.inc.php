@@ -1219,19 +1219,27 @@ function loadPermissions()
     }
 
     // Scan user's permissions
-    if (is_array($confPermUser))
+    if (is_array($confPermUser)) {
+        // Group
         foreach ($confPermUser as $g => $ginfo) {
-            if (is_array($ginfo))
+            if (is_array($ginfo)) {
+                // Plugin
                 foreach ($ginfo as $p => $ainfo) {
-                    if (is_array($ainfo))
+                    if (is_array($ainfo)) {
+                        // Row
                         foreach ($ainfo as $r => $rinfo) {
-                            if (is_array($rinfo))
+                            if (is_array($rinfo)) {
+                                // Item
                                 foreach ($rinfo as $i => $ivalue) {
                                     $PERM[$g][$p][$r][$i] = $ivalue;
                                 }
+                            }
                         }
+                    }
                 }
+            }
         }
+    }
 }
 
 // SAVE updated user-defined permissions
