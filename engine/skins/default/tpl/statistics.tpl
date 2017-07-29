@@ -286,25 +286,6 @@
 .progress {
     margin: 0;
 }
-body::-webkit-scrollbar {
-	width: 12px;
-}
-/* Let's get this party started */
-::-webkit-scrollbar {
-	width: 8px;
-}
-/* Track */
-::-webkit-scrollbar-track {
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-/* Handle */
-::-webkit-scrollbar-thumb {
-	background:#ddd; 
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
-::-webkit-scrollbar-thumb:window-inactive {
-	background: #ddd; 
-}
 </style>
 <script>
 $(function(){
@@ -358,14 +339,18 @@ $(function(){
                     var params = {'token': '{{ token }}', 'url': curURL, 'name': this.filename, 'action': this.status};
                     
                     $.reqJSON(url, method, params, function(data) {
+                        status.html(current);
+                        --current;
                         if(data.status === 1) {
                             div.append('<li><samp>' + data.msg + '&nbsp;&nbsp;•&nbsp;&nbsp;'+data.file+'</samp></li>');
                         } else {
                             div.append('<li><samp class="text-danger">' + data.errorText + '</samp></li>');
                             thisError = true;
+                            if(data.errorCode < 5) {
+                                //return false;
+                            }
                         }
                         div.scrollTop(div.prop('scrollHeight'));
-                        --current;
                         if (!current) {
                             if(!thisError) {
                                 status.html('Обновление успешно завершено. Список измененных файлов системы:');

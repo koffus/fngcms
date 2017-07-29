@@ -31,9 +31,20 @@ class CSystemUpdate
         try
         {
             Lang::load('files');
+            
+            global $userROW;
+
+            // Check for permissions
+            if (!is_array($userROW) or checkPermission(array('plugin' => '#admin', 'item' => 'configuration'), null, 'modify')) {
+                throw new CSystemUpdateException(__('perm.denied'), 1);
+            }
+
+            if ($params['token'] != genUToken('core.system.update')) {
+                throw new CSystemUpdateException(__('wrong_security_code'), 3);
+            }
 
             if(empty($params['url']) or empty($params['name']) or empty($params['action'])) {
-                throw new CSystemUpdateException('Wrong params type');
+                throw new CSystemUpdateException(__('wrong_params_type'), 2);
             }
 
             ignore_user_abort(true);
@@ -62,8 +73,10 @@ class CSystemUpdate
     {
         try
         {
-        if(('removed' == $this->action) and !$this->fileRemove($this->downloadFile) and is_file($this->downloadFile)) {
-                throw new CSystemUpdateException('Unable to remove destination file');
+            if(('removed' == $this->action)) {
+                if(!$this->fileRemove($this->downloadFile) and is_file($this->downloadFile)) {
+                    throw new CSystemUpdateException('Unable to remove destination file');
+                }
             } else {
                 if(!file_exists($this->downloadDest) and !mkdir($this->downloadDest, 0644, true)) {
                     throw new CSystemUpdateException('Unable to creat destination directory <b>' . $this->downloadDest . '</b>');
@@ -110,7 +123,7 @@ class CSystemUpdate
                 fclose($fdest);
             }
 
-            $this->answer = array( 'status' => 1, 'errorCode' => 0, 'msg' => $this->action, 'file' => $this->downloadFile);
+            $this->answer = array( 'status' => 1, 'errorCode' => 0, 'msg' => $this->action, 'file' => str_replace(site_root, '' , $this->downloadFile));
 
         } catch (CSystemUpdateException $e) {
             return $e->errorMessage();
@@ -137,7 +150,7 @@ class CSystemUpdate
 
 class CSystemUpdateException extends Exception {
     public function errorMessage() {
-        print json_encode(array('status' => 0, 'errorCode' => 999, 'errorText' => $this->getMessage()));
+        die(json_encode(array('status' => 0, 'errorCode' => ($this->getCode() ? $this->getCode() : 999), 'errorText' => $this->getMessage())));
         coreNormalTerminate(1);
         exit;
     }

@@ -168,6 +168,8 @@ $tVars = array(
 	'admin_note' => $note,
 	'pdo_support' => (extension_loaded('PDO') and extension_loaded('pdo_mysql') and class_exists('PDO'))?__('yesa'):('<font color="red">'.__('noa').'</font>'),
 	'opcache_support' => $opcache_support,
+    
+    'token' => genUToken('core.system.update'),
 );
 
 $tVars = $tVars + $STATS;
