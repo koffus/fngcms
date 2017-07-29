@@ -42,7 +42,7 @@ class CSystemUpdate
             // full path to file
             $this->downloadDest = site_root . pathinfo($params['name'])['dirname'];
             // full path to file + fileName
-            $this->downloadFile = $params['name'];
+            $this->downloadFile = site_root . $params['name'];
             // actions performed on the file
             $this->action = $params['action'];
 
