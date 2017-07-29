@@ -151,6 +151,7 @@
 						<td>{{ lang['git_version'] }}</td>
 						<td>
                             <span><a href="https://github.com/russsiq/fngcms/archive/master.zip">Download Zip</a></span> 
+                            <button type="button" id="compare" class="btn btn-primary">Обновить</button>
                             <!--[ <span><a href="#" id="compare">Изменения</a> ]</span-->
                         </td>
 					</tr>
@@ -257,11 +258,155 @@
 	</div>
 </div>
 
+<div class="modal fade update-modal" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title">Обновление системы <small class="timer"></small></h4>
+        </div>
+        <div class="modal-body">
+            <p id="status-files"></p>
+            <ul id="table-files"></ul>
+            <div class="progress">
+                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" disabled>Закрыть</button>
+        </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.modal-title {
+    color: #000;
+}
+#status-files {
+    font-weight: bold;
+}
+#table-files {
+    height: 18px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    white-space: nowrap;
+}
+.progress {
+    margin: 0;
+}
+body::-webkit-scrollbar {
+	width: 12px;
+}
+/* Let's get this party started */
+::-webkit-scrollbar {
+	width: 8px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background:#ddd; 
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+}
+::-webkit-scrollbar-thumb:window-inactive {
+	background: #ddd; 
+}
+</style>
 <script>
 $(function(){
+
     var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/{{ currentVersion }}...master";
     var reqReleas = "https://api.github.com/repos/russsiq/fngcms/releases/latest";
     var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
+
+    $('#compare').on( 'click', function() {
+        $('#status-files').html('Формирование списка файлов ...');
+        var timer = 0, hour = 0, minute = 0, second = 0;
+        window.setInterval(function(){
+            ++timer;
+            hour   = Math.floor(timer / 3600);
+            minute = Math.floor((timer - hour * 3600) / 60);
+            second = timer - hour * 3600 - minute * 60;
+            if (hour < 10) hour = '0' + hour;
+            if (minute < 10) minute = '0' + minute;
+            if (second < 10) second = '0' + second;
+            $('.timer').html(hour + ':' + minute + ':' + second);
+        }, 1000);
+        $('.update-modal').modal({
+            keyboard: false,
+            backdrop: 'static',
+            show: true,
+            });
+        requestJSON(reqCompare, function(json) {
+            if(json.message == "Not Found") {
+                $('#status-files').html('No Info Found');
+            } else {
+                window.onbeforeunload = function (e) {
+                    var e = e || window.event;
+                    var message = "Обновление еще не завершено. Продолжить?";
+                    if (typeof e == "undefined") e = window.event;
+                    if (e) e.returnValue = message;
+                    return message;
+                }
+                var div = $("#table-files"),
+                    status = $('#status-files'),
+                    progress = $('.progress .progress-bar');
+                div.attr('class', 'list-unstyled text-primary');
+                status.html('Выполняется обновление системных файлов. Пожалуйста, подождите ...');
+                var files = json.files,
+                    current = count = files.length,
+                    thisError = false;
+                $(files).each(function(index, value) {
+                    var curURL = this.raw_url;
+                    curURL = curURL.replace('github.com/russsiq/fngcms/raw/', 'raw.githubusercontent.com/russsiq/fngcms/');
+                    
+                    var url = '{{ admin_url }}/rpc.php';
+                    var method = 'core.system.update';
+                    var params = {'token': '{{ token }}', 'url': curURL, 'name': this.filename, 'action': this.status};
+                    
+                    $.reqJSON(url, method, params, function(data) {
+                        if(data.status === 1) {
+                            div.append('<li><samp>' + data.msg + '&nbsp;&nbsp;•&nbsp;&nbsp;'+data.file+'</samp></li>');
+                        } else {
+                            div.append('<li><samp class="text-danger">' + data.errorText + '</samp></li>');
+                            thisError = true;
+                        }
+                        div.scrollTop(div.prop('scrollHeight'));
+                        --current;
+                        if (!current) {
+                            if(!thisError) {
+                                status.html('Обновление успешно завершено. Список измененных файлов системы:');
+                            } else {
+                                status.html('Обновление не удалось');
+                            }
+                            div.css({
+                                'padding': '4px 8px',
+                                'border': '1px solid #e5e5e5',
+                                'overflow-y': 'auto'
+                            }).animate({
+                                height: '292px',
+                                }, 888, function() {
+                                    $('.progress').slideUp(888);
+                                    $('.update-modal .modal-footer button').removeAttr('disabled');
+                                    $('.timer').removeClass('timer');
+                                    window.onbeforeunload = function () {}
+                            });
+                        } else {
+                            var percent = ( ((count - current)/count) * 100).toFixed(2) + '%';
+                            progress.css({'width': percent});
+                        }
+                        
+                    });
+                });
+            }
+        });
+        return false;
+    });
+
+
+
     requestJSON(reqReleas, function(json) {
         if(json.message == "Not Found") {
             $('#lastRelease').html("No Info Found");

@@ -56,14 +56,14 @@ function processJSON(){
         exit;
     }
 
-    // Load CORE Plugin
-    $cPlugin = CPlugin::instance();
-
     switch ($methodName) {
         case 'admin.rewrite.submit': $out = rpcRewriteSubmit($params); break;
         case 'core.users.search': $out = rpcAdminUsersSearch($params); break;
         case 'core.registration.checkParams': $out = coreCheckRegParams($params);break;
+        case 'core.system.update': $manager = new CSystemUpdate($params); $out = $manager->execute();break;
         default:
+            // Load CORE Plugin
+            $cPlugin = CPlugin::instance();
             if (isset($RPCFUNC[$methodName])) {
                 $out = call_user_func($RPCFUNC[$methodName], $params);
             } else if (preg_match('#^plugin\.(.+?)\.#', $methodName, $m) and $cPlugin->loadPlugin($m[1], 'rpc') and isset($RPCFUNC[$methodName])) {
@@ -73,7 +73,7 @@ function processJSON(){
                 // If method "plugin.NAME.something" is called, try to load action "rpc" for plugin "NAME"
                 $out = call_user_func($RPCADMFUNC[$methodName], $params);
             } else {
-                $out = rpcDefault($methodName, $params);
+                $out = rpcUnknown($methodName, $params);
             }
             break;
     }
@@ -83,11 +83,13 @@ function processJSON(){
     }
 
     print $out;
+    coreNormalTerminate(1);
+    exit;
 }
 
-//
-function rpcDefault($methodName = '', $params = array()) {
-    return array('status' => 0, 'errorCode' => 1, 'errorText' => 'rpcDefault: method ['.$methodName.'] is unknown');
+// Method is unknown
+function rpcUnknown($methodName = '', $params = array()) {
+    return array('status' => 0, 'errorCode' => 1, 'errorText' => 'rpcUnknown: method ['.$methodName.'] is unknown');
 }
 
 // Function to preload ADMIN rpc funcs
@@ -204,6 +206,7 @@ function coreCheckRegParams($params){
     $auth = $AUTH_METHOD[$config['auth_module']];
     if (method_exists($auth, 'onlineCheckRegistration')) {
         $output = $auth->onlineCheckRegistration($params);
+        return array('status' => 1, 'errorCode' => 0, 'data' => $output);
     }
-    return array('status' => 1, 'errorCode' => 0, 'data' => $output);
+    return array('status' => 0, 'errorCode' => 999, 'errorText' => 'Method "onlineCheckRegistration" does not exists');
 }
