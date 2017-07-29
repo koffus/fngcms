@@ -149,19 +149,11 @@
 					</tr>
 					<tr>
 						<td>{{ lang['git_version'] }}</td>
-						<td>
-                            <span><a href="https://github.com/russsiq/fngcms/archive/master.zip">Download Zip</a></span> 
-                            <button type="button" id="compare" class="btn btn-primary">Обновить</button>
-                            <!--[ <span><a href="#" id="compare">Изменения</a> ]</span-->
-                        </td>
-					</tr>
-					<tr>
-						<td>{{ lang.lastCommit }}</td>
-						<td><span id="lastCommit">loading..</span></td>
+						<td><a href="#" id="compare">Обновить до Git версии</button></td>
 					</tr>
 					<!--tr>
-						<td></td>
-						<td><span id="lastCommitInfo">loading..</span></td>
+						<td>{{ lang.lastCommit }}</td>
+						<td><span id="lastCommit">loading..</span></td>
 					</tr-->
 				</table>
 			</div>
@@ -265,7 +257,7 @@
             <h4 class="modal-title">Обновление системы <small class="timer"></small></h4>
         </div>
         <div class="modal-body">
-            <p id="status-files"></p>
+            <p id="status-files">Формирование списка файлов ...</p>
             <ul id="table-files"></ul>
             <div class="progress">
                 <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;"></div>
@@ -322,7 +314,6 @@ $(function(){
     var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
 
     $('#compare').on( 'click', function() {
-        $('#status-files').html('Формирование списка файлов ...');
         var timer = 0, hour = 0, minute = 0, second = 0;
         window.setInterval(function(){
             ++timer;
@@ -420,7 +411,7 @@ $(function(){
             $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ ' + json.published_at.slice(0, 10) + ' ]');
         }
     });
-    requestJSON(reqCommit, function(json) {
+    /*requestJSON(reqCommit, function(json) {
         if(json.message == "Not Found") {
             $('#lastCommit').html("No Info Found");
         } else {
@@ -428,7 +419,7 @@ $(function(){
                 <b>@</b> <a href="'+json[0].committer.html_url+'" target="_blank">'+json[0].committer.login+'</a> [ '+
                 json[0].commit.author.date.slice(0, 10) + ' ]');
         }
-    });
+    });*/
     function requestJSON(url, callback) {
         $.ajax({
             url: url,
