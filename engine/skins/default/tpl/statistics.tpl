@@ -339,7 +339,7 @@ $(function(){
                     var params = {'token': '{{ token }}', 'url': curURL, 'name': this.filename, 'action': this.status};
                     
                     $.reqJSON(url, method, params, function(data) {
-                        status.html(current);
+                        //status.html(current);
                         --current;
                         if(data.status === 1) {
                             div.append('<li><samp>' + data.msg + '&nbsp;&nbsp;•&nbsp;&nbsp;'+data.file+'</samp></li>');
