@@ -35,7 +35,7 @@ class CSystemUpdate
             global $userROW;
 
             // Check for permissions
-            if (!is_array($userROW) or checkPermission(array('plugin' => '#admin', 'item' => 'configuration'), null, 'modify')) {
+            if (!is_array($userROW) or !checkPermission(array('plugin' => '#admin', 'item' => 'configuration'), null, 'modify')) {
                 throw new CSystemUpdateException(__('perm.denied'), 1);
             }
 
