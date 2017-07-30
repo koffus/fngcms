@@ -266,6 +266,7 @@
             </div>
         </div>
         <div class="modal-footer">
+            <code class="pull-left">{{ currentVersion }} <i class="fa fa-arrow-circle-right"></i> GIT</code>
             <button type="button" class="btn btn-default" data-dismiss="modal" disabled>Закрыть</button>
         </div>
     </div>
