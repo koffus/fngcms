@@ -300,6 +300,8 @@ $(function(){
             if(json.message == "Not Found") {
                 $('#status-files').html('No Info Found');
                 $.notify({message: 'No Info Found'},{type: 'info'});
+            } else if (0 === json.total_commits) {
+                $.notify({message: 'Нет изменений в версии GIT'},{type: 'info'});
             } else {
                 timerShow('timer');
                 $('.update-modal').modal({keyboard: false, backdrop: 'static', show: true});
