@@ -340,6 +340,7 @@ $(function(){
                         if (!current) {
                             if(!thisError) {
                                 status.html('Обновление успешно завершено. Список измененных файлов системы:');
+                                progress.css({'width': '100%'});
                             } else {
                                 status.html('Обновление не удалось');
                             }
