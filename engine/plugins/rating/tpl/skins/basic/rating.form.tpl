@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script>
 function rating(rating, post_id) {
     var params = {'rating': rating, 'post_id': post_id};
     $.reqJSON('{{ admin_url }}/rpc.php', 'plugin.rating.update', params, function(json) {
@@ -6,18 +6,20 @@ function rating(rating, post_id) {
         $.notify({message: json.msg},{type: 'success'});
     });
 }
+$(document).on('click', '.post-rating li', function() {
+    rating($(this).index(), '{{ post_id }}');
+    return false;
+});
 </script>
 
-<div id="ratingdiv_{{ post_id }}">
-	<div class="rating" style="float:left;">
-		<ul class="uRating">
-		<li class="r{{ rating }}">{{ rating }}</li>
-			<li><a href="#" title="{{ lang['rating_1'] }}" class="r1u" onclick="rating('1', '{{ post_id }}'); return false;"></a></li>
-			<li><a href="#" title="{{ lang['rating_2'] }}" class="r2u" onclick="rating('2', '{{ post_id }}'); return false;"></a></li>
-			<li><a href="#" title="{{ lang['rating_3'] }}" class="r3u" onclick="rating('3', '{{ post_id }}'); return false;"></a></li>
-			<li><a href="#" title="{{ lang['rating_4'] }}" class="r4u" onclick="rating('4', '{{ post_id }}'); return false;"></a></li>
-			<li><a href="#" title="{{ lang['rating_5'] }}" class="r5u" onclick="rating('5', '{{ post_id }}'); return false;"></a></li>
-		</ul>
-	</div>
-	<div class="rating" style="float:left; padding-top:2px;">&nbsp;({{ lang['rating_votes'] }} {{ votes }})</div>
+<div id="ratingdiv_{{ post_id }}" class="post-rating">
+    <ul class="uRating">
+        <li class="r{{ rating }}">{{ rating }}</li>
+        <li><a href="#" title="{{ lang['rating_1'] }}" class="r1u"></a></li>
+        <li><a href="#" title="{{ lang['rating_2'] }}" class="r2u"></a></li>
+        <li><a href="#" title="{{ lang['rating_3'] }}" class="r3u"></a></li>
+        <li><a href="#" title="{{ lang['rating_4'] }}" class="r4u"></a></li>
+        <li><a href="#" title="{{ lang['rating_5'] }}" class="r5u"></a></li>
+    </ul>
+    {{ lang['rating_votes'] }} {{ votes }}
 </div>

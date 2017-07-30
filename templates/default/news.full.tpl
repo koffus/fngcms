@@ -1,4 +1,4 @@
-[TWIG]<article class="full-post">
+[TWIG]<article class="full-post clearfix">
     <div class="btn-group pull-right">
         <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>
         <div class="dropdown-menu dropdown-menu-right">
@@ -37,7 +37,7 @@
     
     <div class="post-full-footer">
         {% if pluginIsActive('tags') %}{% if (p.tags.flags.haveTags) %}<div class="post-full-tags">{{ lang.tags }}: {{ tags }}</div>{% endif %}{% endif %}
-        {% if pluginIsActive('rating') %}<div class="post-rating">{{ lang.rating }}: <span class="post-rating-inner">{{ rating }}</span></div>{% endif %}
+        {% if pluginIsActive('rating') %}{{ rating }}{% endif %}
     </div>
 </article>
 
