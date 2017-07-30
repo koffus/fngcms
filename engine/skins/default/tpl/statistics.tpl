@@ -101,7 +101,7 @@
             </a>
         </div>
     </div>
-         
+
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
@@ -136,7 +136,7 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Next Generation CMS <span id="needUpdate" class="badge bg-success pull-right">Обновите CMS</span></h4>
+                    <h4>Next Generation CMS <span id="needUpdate" class="badge bg-success pull-right">loading..</span></h4>
                 </div>
                 <table class="table table-statistics">
                     <tr>
@@ -294,13 +294,15 @@ $(function(){
 
     {% if(perm.coreSystemUpdate) %}
     $('#compare').on( 'click', function() {
-        timerShow('timer');
-        $('.update-modal').modal({keyboard: false, backdrop: 'static', show: true});
         var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/{{ currentVersion }}...master";
         requestJSON(reqCompare, function(json) {
+            
             if(json.message == "Not Found") {
                 $('#status-files').html('No Info Found');
+                $.notify({message: 'No Info Found'},{type: 'info'});
             } else {
+                timerShow('timer');
+                $('.update-modal').modal({keyboard: false, backdrop: 'static', show: true});
                 window.onbeforeunload = function (e) {
                     var e = e || window.event;
                     var message = "Обновление еще не завершено. Продолжить?";
@@ -369,6 +371,8 @@ $(function(){
             var publish = json.published_at;
             if (currentVersion >= json.tag_name && engineVersionBuild >= publish.split('T')[0]) {
                 $('#needUpdate').html('Обновление не требуется');
+            } else {
+                $('#needUpdate').html('Обновите CMS');
             }
             $('#lastRelease').html('<a href="'+ json.zipball_url +'">' + json.tag_name + '</a> [ ' + json.published_at.slice(0, 10) + ' ]');
         }
@@ -389,7 +393,6 @@ $(function(){
         $.ajax({
             url: url,
             beforeSend: function(jqXHR) {
-                $('#list-files').html('Загрузка списка');
                 jqXHR.overrideMimeType("application/json; charset=UTF-8");
                 // Repeat send header ajax
                 jqXHR.setRequestHeader("X-Requested-With", "XMLHttpRequest");
@@ -401,6 +404,10 @@ $(function(){
             } else {
                 $.notify({message: '<i><b>Bad reply from server</b></i>'},{type: 'danger'});
             }
+        })
+        .catch(function(jqXHR) {
+            if (0  ===  jqXHR.status || jqXHR.status >= 400)
+                $.notify({message: '<i><b>Bad reply from server</b></i>'},{type: 'danger'});
         });
     }
 });
