@@ -342,7 +342,7 @@ $(function(){
                                 .animate({height: '292px',}, 888, function() {
                                     $('.progress').slideUp(888);
                                     $('.update-modal .modal-footer button').removeAttr('disabled');
-                                    $('.timer').removeClass('timer');
+                                    $('#timer').removeAttr('id');
                                     window.onbeforeunload = function () {}
                                 });
                         } else {
