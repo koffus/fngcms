@@ -735,6 +735,8 @@ function doConfig_common()
 function doInstall()
 {
     global $tvars, $tpl, $templateDir, $installDir, $adminDirName, $pluginInstallList, $currentLanguage;
+    
+    $parse = new Parse;
 
     $tvars['vars']['menu_install'] = ' class="hover"';
     printHeader();
@@ -937,7 +939,25 @@ function doInstall()
         if (substr($_POST['home_url'], -1, 1) == '/')
             $_POST['home_url'] = substr($_POST['home_url'], 0, -1);
 
-        // 1.7. Формируем конфигурационный файл
+        // 1.7 Копируем шаблон
+        $tDir = $installDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $_POST['template'];
+        $theme = $parse->translit($_POST['home_title']);
+        $themeDir = $installDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $theme;
+
+        if (!file_exists($themeDir)) {
+            mkdir($themeDir, 0755, true);
+        }
+
+        $dirIterator = new RecursiveDirectoryIterator($tDir, RecursiveDirectoryIterator::SKIP_DOTS);
+        $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::SELF_FIRST);
+
+        foreach ($iterator as $object) {
+            $themePath = $themeDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+            ($object->isDir()) ? mkdir($themePath, 0755, true) : copy($object, $themePath);
+        }
+        array_push($LOG, 'Копирование шаблона в ' .$parse->translit($_POST['home_title']) . ' ...' . __('msg.ok'));
+        
+        // 1.8. Формируем конфигурационный файл
         $newconf = array(
             'dbengine' => $_POST['reg_dbengine'],
             'dbhost' => $_POST['reg_dbhost'],
@@ -966,7 +986,7 @@ function doInstall()
             'description' => 'Здесь описание вашего сайта',
             'keywords' => 'Здесь ключевые слова, через запятую (,)',
             'skin' => 'yeti',
-            'theme' => $_POST['template'],
+            'theme' => $theme,
             'default_lang' => $currentLanguage,
             'auto_backup' => '0',
             'auto_backup_time' => '48',

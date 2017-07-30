@@ -310,10 +310,15 @@ function clearCacheFiles()
 {
     $error = false;
     $listSkip = '';
-    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(root . 'cache/'), RecursiveIteratorIterator::LEAVES_ONLY) as $file) {
-        if ($file->isFile()) {
-            if (!@unlink($file->getPathname())) {
-                $listSkip .= '<br>' . $file->getBasename();
+
+    $cacheDir = root . 'cache/';
+    $dirIterator = new RecursiveDirectoryIterator($cacheDir, RecursiveDirectoryIterator::SKIP_DOTS);
+    $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::LEAVES_ONLY);
+
+    foreach ($iterator as $object) {
+        if ($object->isFile() or $object->isDir()) {
+            if (!@unlink($object->getPathname())) {
+                $listSkip .= '<br>' . $object->getBasename();
                 $error = true;
             }
         }

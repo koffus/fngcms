@@ -80,7 +80,7 @@ class CSystemUpdate
                     throw new CSystemUpdateException('Unable to remove destination file');
                 }
             } else {
-                if(!file_exists($this->downloadDest) and !mkdir($this->downloadDest, 0644, true)) {
+                if(!file_exists($this->downloadDest) and !mkdir($this->downloadDest, 0755, true)) {
                     throw new CSystemUpdateException('Unable to creat destination directory <b>' . $this->downloadDest . '</b>');
                 }
                 if(NULL == ($fdest = $this->fileOpen($this->downloadFile, "w+"))) {
