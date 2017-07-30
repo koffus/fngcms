@@ -170,6 +170,9 @@ $tVars = array(
 	'opcache_support' => $opcache_support,
     
     'token' => genUToken('core.system.update'),
+    'perm' => array(
+        'coreSystemUpdate' => is_array($userROW) and checkPermission(array('plugin' => '#admin', 'item' => 'configuration'), null, 'modify'),
+        ),
 );
 
 $tVars = $tVars + $STATS;

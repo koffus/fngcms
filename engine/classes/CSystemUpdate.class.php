@@ -39,10 +39,12 @@ class CSystemUpdate
                 throw new CSystemUpdateException(__('perm.denied'), 1);
             }
 
+            // Check for security token
             if ($params['token'] != genUToken('core.system.update')) {
                 throw new CSystemUpdateException(__('wrong_security_code'), 3);
             }
 
+            // Scan incoming params
             if(empty($params['url']) or empty($params['name']) or empty($params['action'])) {
                 throw new CSystemUpdateException(__('wrong_params_type'), 2);
             }
@@ -73,7 +75,7 @@ class CSystemUpdate
     {
         try
         {
-            if(('removed' == $this->action)) {
+            if('removed' == $this->action) {
                 if(!$this->fileRemove($this->downloadFile) and is_file($this->downloadFile)) {
                     throw new CSystemUpdateException('Unable to remove destination file');
                 }
