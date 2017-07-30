@@ -21,7 +21,7 @@ uploads/**/**/*.*
 !uploads/avatars/noavatar.png
 !uploads/images/default/.htaccess
 !uploads/files/default/.htaccess
-!uploads/photos/nophoto.gif
+!uploads/photos/nophoto.png
 templates/vlad-stroi
 templates/vlad-stroi/version
 templates/vlad-stroi/*

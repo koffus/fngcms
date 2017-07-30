@@ -64,7 +64,7 @@ function userGetPhoto($urow) {
 	// Use default <nophoto> file
 	// - Check if nophoto is defined on template level
 	$tplVars = $TemplateCache['site']['#variables'];
-	$noPhotoURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noPhotoImage']) and $tplVars['configuration']['noPhotoImage'])?(tpl_url."/".$tplVars['configuration']['noPhotoImage']):(photos_url."/nophoto.gif");
+	$noPhotoURL = (isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['noPhotoImage']) and $tplVars['configuration']['noPhotoImage'])?(tpl_url."/".$tplVars['configuration']['noPhotoImage']):(photos_url."/nophoto.png");
 
 	// If photo is set
 	if ($urow['photo'] != '') {

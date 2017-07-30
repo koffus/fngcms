@@ -1488,7 +1488,7 @@ function coreUserMenu()
         $tVars['addnews_link'] = $config['admin_url'] . '/admin.php?mod=news&amp;action=add';
         $tVars['logout_link'] = generateLink('core', 'logout');
         $tVars['name'] = $userROW['name'];
-        $tVars['phtumb_url'] = photos_url . '/' . (($userROW['photo'] != '') ? 'thumb/' . $userROW['photo'] : 'nophoto.gif');
+        $tVars['phtumb_url'] = photos_url . '/' . (($userROW['photo'] != '') ? 'thumb/' . $userROW['photo'] : 'nophoto.png');
         $tVars['home_url'] = home;
 
         // Generate avatar link
