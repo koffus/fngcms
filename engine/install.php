@@ -329,7 +329,7 @@ function doConfig_db($check)
         'action' => null,
         'stage' => null,
         'reg_dbhost' => 'localhost',
-        'reg_dbname' => null,
+        'reg_dbname' => 'ng',
         'reg_dbuser' => 'root',
         'reg_dbpass' => null,
         'reg_dbprefix' => 'ng',

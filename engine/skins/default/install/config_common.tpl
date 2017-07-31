@@ -46,7 +46,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label">{l_common.parameters.addr}</label>
 						<div class="col-sm-9">
-							<input type="text" name="home_url" value="{home_url}" class="form-control">
+							<input type="text" name="home_url" value="{home_url}" class="form-control" readonly>
 						</div>
 					</div>
 					<div class="form-group">

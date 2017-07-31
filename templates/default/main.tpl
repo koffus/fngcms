@@ -8,13 +8,14 @@
     <meta name="generator" content="{{ what }} {{ version }}" />
     <meta name="document-state" content="dynamic" />
     {{ htmlvars }}
+    <link href="{{ tpl_url }}/img/favicon.ico" rel="icon" />
     <!-- Bootstrap Core CSS -->
-    <link href="{{ scriptLibrary }}/bootstrap-4.0.0/bootstrap.css" rel="stylesheet">
+    <link href="{{ scriptLibrary }}/bootstrap-4.0.0/bootstrap.css" rel="stylesheet" />
     <!-- Additional fonts for this theme -->
     <!--link href="https://fonts.googleapis.com/css?family=Roboto:300" rel="stylesheet" /-->
     <link href="{{ scriptLibrary }}/fontawesome-4.7.0/fontawesome.css" rel="stylesheet"/>
     <!-- Custom styles for this theme -->
-    <link href="{{ tpl_url }}/css/style.css" rel="stylesheet">
+    <link href="{{ tpl_url }}/css/style.css" rel="stylesheet" />
     <!--[if lt IE 9]>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
