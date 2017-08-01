@@ -294,7 +294,7 @@ class Parse
                                 $outkeys[] = $kn . '="' . strtolower($kv) . '"';
                             break;
                         case 'class':
-                            $v = str_replace(array(ord(0), ord(9), ord(10), ord(13), ' ', "'", '"', ";", ":", '<', '>', '&', '[', ']'), '', $kv);
+                            $v = str_replace(array(ord(0), ord(9), ord(10), ord(13),/* ' ',*/ "'", '"', ";", ":", '<', '>', '&', '[', ']'), '', $kv);
                             $outkeys [] = $kn . '="' . $v . '"';
                             break;
                         case 'alt':
