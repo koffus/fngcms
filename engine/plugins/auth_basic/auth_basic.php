@@ -436,14 +436,17 @@ class AuthBasic extends CAuthPlugin {
 
         Lang::loadPlugin('auth_basic', 'auth', 'auth');
         $mode = pluginGetVariable('auth_basic','restorepw');
+        if (NULL === $mode) {
+            $mode = 'email';
+        }
         if (!$mode) {
             return false;
             //array_push($params, array('text' => __('auth_norestore')));
             //return $params;
-     }
+        }
 
         array_push($params, array('text' => __('auth_restore_'.$mode)));
-     if ($mode != 'email') {
+        if ($mode != 'email') {
             array_push($params, array('name' => 'login', title => __('auth_login'),'type' => 'input'));
         }
         if ($mode != 'login') {
@@ -466,7 +469,9 @@ class AuthBasic extends CAuthPlugin {
         $values['login'] = trim($values['login']);
         $values['email'] = trim($values['email']);
         $mode = pluginGetVariable('auth_basic','restorepw');
-
+        if (NULL === $mode) {
+            $mode = 'email';
+        }
         if (!$mode) {
             $msg = __('auth_norestore');
             return 0;

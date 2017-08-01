@@ -4,43 +4,29 @@
 [banned]<div class="alert alert-info">{l_login.banned}</div>[/banned]
 [need.activate]<div class="alert alert-info">{l_login.need.activate}</div>[/need.activate]
 
-<div class="row">
-	<div class="col-sm-6">
-		<div class="card card-block">
+<form name="login" method="post" action="{form_action}">
+    <input type="hidden" name="redirect" value="{redirect}"/>
 
-		<form name="login" method="post" action="{form_action}">
-			<input type="hidden" name="redirect" value="{redirect}"/>
-
-			<div class="form-group">
-				<label for="username">{l_login.username}</label>
-				<input type="text" id="username" name="username" class="form-control" />
-			</div>
-			<div class="form-group">
-				<label for="password">{l_login.password}</label>
-				<input type="password" name="password" class="form-control" />
-			</div>
-
-			<div class="form-group row">
-				<div class="col-sm-6">
-					<a href="{home}/lostpassword/">{l_login.lostpassword}</a>
-				</div>
-				<div class="col-sm-6">
-					<input type="submit" value="{l_login.submit}" class="btn btn-success form-control">
-				</div>
-			</div>
-
-		</form>
-		</div>
-	</div>
-	<div class="col-sm-6">
-		<p class="lead">Зарегистрируйтесь сейчас <span class="text-success">бесплатно</span></p>
-		<ul class="list-unstyled card-block">
-			<li><b class="text-success">✔</b> See all your orders</li>
-			<li><b class="text-success">✔</b> Fast re-order</li>
-			<li><b class="text-success">✔</b> Save your favorites</li>
-			<li><b class="text-success">✔</b> Fast checkout</li>
-			<li><b class="text-success">✔</b> Get a gift <small>(only new customers)</small></li>
-		</ul>
-		<p><a href="{home}/register/" class="btn btn-info btn-block">Зарегистрируйтесь сейчас</a></p>
-	</div>
-</div>
+    <div class="form-group row">
+        <label for="username" class="col-sm-4 col-form-label">{l_login.username}</label>
+        <div class="col-sm-8">
+            <input type="text" id="username" name="username" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="password" class="col-sm-4 col-form-label">{l_login.password}</label>
+        <div class="col-sm-8">
+            <input type="password" name="password" class="form-control" />
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-4 offset-sm-4">
+            <button type="submit" class="btn btn-success">{l_login.submit}</button>
+        </div>
+        <div class="col-sm-4 text-right">
+            <small><a href="{home}/register/">{l_login.register}</a></small>
+            <br>
+            <small><a href="{home}/lostpassword/">{l_login.lostpassword}</a></small>
+        </div>
+    </div>
+</form>

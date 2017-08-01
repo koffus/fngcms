@@ -52,12 +52,12 @@
             </div>
         </div>
     {% endif %}
-    <div class="form-group">
+    <div class="form-group row">
         <div class="col-sm-8 offset-sm-4">
             <p class="checkbox"><label><input type="checkbox" name="agree" /> {{lang.theme['registration_rules'] }}</label></p>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group row">
         <div class="col-sm-8 offset-sm-4">
             <button type="submit" class="btn btn-success">{{ lang.register }}</button>
         </div>

@@ -218,11 +218,11 @@ function coreRestorePassword() {
 
     if (($CurrentHandler['pluginName'] == 'core')&&
         ($CurrentHandler['handlerName'] == 'lostpassword')) {
-        $userid	= isset($CurrentHandler['params']['userid'])?$CurrentHandler['params']['userid']:$_REQUEST['userid'];
-        $code	= isset($CurrentHandler['params']['code'])?$CurrentHandler['params']['code']:$_REQUEST['code'];
+        $userid = isset($CurrentHandler['params']['userid'])?$CurrentHandler['params']['userid']:$_REQUEST['userid'];
+        $code = isset($CurrentHandler['params']['code'])?$CurrentHandler['params']['code']:$_REQUEST['code'];
     } else {
         $userid = $_REQUEST['userid'];
-        $code	= $_REQUEST['code'];
+        $code = $_REQUEST['code'];
     }
 
     // Confirmation

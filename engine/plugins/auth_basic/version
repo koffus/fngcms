@@ -15,7 +15,7 @@ Author: Vitaly A. Ponomarev
 Author_URI: http://ngcms.ru/
 URI: http://no_url.com/
 Permanent: yes
-Preinstall_vars: restorepw="1"; 
+Preinstall_vars: restorepw="email"; 
 Title: Базовый модуль авторизации
 Information: Обеспечивает авторизацию пользователей в системе, обязателен к использованию.
 preinstall: yes
