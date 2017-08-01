@@ -78,7 +78,7 @@ function xNewsShowBlock($params) {
         'skipCurrent',
         'extractEmbeddedItems') as $k) {
         if (empty($params[$k])) {
-            if (empty(pluginGetVariable('xnews', '1_'.$k))) {
+            if (is_null(pluginGetVariable('xnews', '1_'.$k))) {
                 $params[$k] = null;
             } else {
                 $params[$k] = pluginGetVariable('xnews', '1_'.$k);
@@ -86,7 +86,7 @@ function xNewsShowBlock($params) {
         }
     }
     if (empty($params['cacheAge'])) {
-        if (empty(pluginGetVariable('xnews', 'cacheExpire'))) {
+        if (is_null(pluginGetVariable('xnews', 'cacheExpire'))) {
             $params['cacheAge'] = 60;
         } else {
             $params['cacheAge'] = pluginGetVariable('xnews', 'cacheExpire');

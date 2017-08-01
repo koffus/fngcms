@@ -51,7 +51,7 @@ class News
         $nlink = self::generateLink($row);
 
         // Divide into short and full content
-        if ($config['extended_more']) {
+        if (!empty($config['extended_more'])) {
             if (preg_match('#^(.*?)\<\!--more(?:\="(.+?)"){0,1}--\>(.+)$#is', $row['content'], $pres)) {
                 $short = $pres[1];
                 $full = $pres[3];
