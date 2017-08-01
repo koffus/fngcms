@@ -238,18 +238,18 @@ function comments_rpc_manage($params) {
                     News::generateLink($news_row, false, 0, true),
                     $news_row['title'],
                     ),
-            __('notice')
+            __('comments:notice')
         );
 
         if (pluginGetVariable('comments', 'inform_author')) {
             // Determine author's email
             if (is_array($umail=$mysql->record("select * from ".uprefix."_users where id = ".db_squote($news_row['author_id'])))) {
-                sendEmailMessage($umail['mail'], __('newcomment'), $body);
+                sendEmailMessage($umail['mail'], __('comments:newcomment'), $body);
             }
         }
 
         if (pluginGetVariable('comments', 'inform_admin'))
-            sendEmailMessage($config['admin_mail'], __('newcomment'), $body);
+            sendEmailMessage($config['admin_mail'], __('comments:newcomment'), $body);
 
     }
 
