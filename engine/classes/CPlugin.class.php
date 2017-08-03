@@ -83,7 +83,9 @@ class CPlugin
     public function saveListActive()
     {
         if(function_exists('opcache_reset')){
-            opcache_reset(); 
+            if(opcache_reset()) {
+                dd('Отключили');
+            }
         }
         if (!is_file(conf_pactive)) {
             return false;
