@@ -97,9 +97,6 @@ class CPlugin
         $content = '<?php $array = '.var_export($listActive, true).'; ?>';
         fwrite($file, $content);
         fclose($file);
-        if(function_exists('opcache_reset')){
-            opcache_reset(); 
-        }
 
         return true;
     }

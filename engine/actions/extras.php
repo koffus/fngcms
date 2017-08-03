@@ -24,6 +24,9 @@ if (!defined('NGCMS')) die ('HAL');
 // Generate list of plugins
 function admGeneratePluginList()
 {
+    if(function_exists('opcache_reset')){
+        opcache_reset(); 
+    }
     global $twig, $repoPluginInfo, $PHP_SELF;
 
     // Load CORE Plugin
