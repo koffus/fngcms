@@ -47,9 +47,6 @@ class CPlugin
             return $this->plugins;
         }
         if (is_file(conf_pactive)) {
-            if(function_exists('opcache_reset')){
-                opcache_reset(); 
-            }
             include conf_pactive;
             if (is_array($array)) {
                 $this->plugins = $array;
@@ -85,6 +82,9 @@ class CPlugin
     // !!!!!!!!!!!! defined ADMIN
     public function saveListActive()
     {
+        if(function_exists('opcache_reset')){
+            opcache_reset(); 
+        }
         if (!is_file(conf_pactive)) {
             return false;
         }
