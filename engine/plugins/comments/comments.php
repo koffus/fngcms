@@ -285,8 +285,11 @@ function plugin_comments_show()
     // Check if there is a custom mapping
     if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
         // Check if directory exists
-        if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
+        if (is_dir($tPath = tpl_site . '/ncustom/' . $ctname)) {
             $callingCommentsParams['overrideTemplatePath'] = $tPath;
+            if (file_exists($tPath . DS . '/main.tpl')) {
+                $SYSTEM_FLAGS['template.main.path'] = $tPath;
+            }
         } else {
             $tPath = null;
         }

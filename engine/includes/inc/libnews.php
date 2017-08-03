@@ -345,8 +345,8 @@ function news_showone($newsID, $alt_name, $callingParams = array())
             // Check if directory exists
             if (is_dir($templatePath . '/ncustom/' . $ctname)) {
                 $templatePath = $templatePath . '/ncustom/' . $ctname;
-                if (file_exists($templatePath . '/ncustom/' . $ctname . '/main.tpl')) {
-                    $SYSTEM_FLAGS['template.main.path'] = $templatePath . '/ncustom/' . $ctname;
+                if ('full' === $callingParams['style'] and file_exists($templatePath . '/main.tpl')) {
+                    $SYSTEM_FLAGS['template.main.path'] = $templatePath;
                 }
             }
         }
