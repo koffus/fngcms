@@ -82,11 +82,6 @@ class CPlugin
     // !!!!!!!!!!!! defined ADMIN
     public function saveListActive()
     {
-        if(function_exists('opcache_reset')){
-            if(opcache_reset() and clearstatcache()) {
-                dd('Отключили');
-            }
-        }
         if (!is_file(conf_pactive)) {
             return false;
         }
