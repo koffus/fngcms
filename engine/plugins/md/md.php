@@ -13,7 +13,7 @@ class MDNewsFilter extends NewsFilter {
     
     function addNewsForm(&$tvars) {
         $extends = 'js';
-        $tvars['extends']['block'][$extends][] = array(
+        $tvars['extends'][$extends][] = array(
             'header_title' => __('autokeys:header_title'),
             'body' => MDNews(),
             );
@@ -22,7 +22,7 @@ class MDNewsFilter extends NewsFilter {
     
     function editNewsForm($newsID, $SQLold, &$tvars) {
         $extends = 'js';
-        $tvars['extends']['block'][$extends][] = array(
+        $tvars['extends'][$extends][] = array(
             'header_title' => __('autokeys:header_title'),
             'body' => MDNews(),
             );

@@ -37,7 +37,7 @@ class NSchedNewsFilter extends NewsFilter {
 		$extends = pluginGetVariable('nsched','extends') ? pluginGetVariable('nsched','extends') : 'owner';
 		$tpath = locatePluginTemplates(array('news'), 'nsched', 1, 0, 'admin');
 		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('nsched:header_title'),
 			'body' => ($perm['personal.publish'] or $perm['personal.unpublish']) ? $xt->render($ttvars) : '',
 			);
@@ -82,7 +82,7 @@ class NSchedNewsFilter extends NewsFilter {
 		$extends = pluginGetVariable('nsched','extends') ? pluginGetVariable('nsched','extends') : 'owner';
 		$tpath = locatePluginTemplates(array('news'), 'nsched', 1, 0, 'admin');
 		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('nsched:header_title'),
 			'body' => ($perm[$permGroupMode.'.publish'] or $perm[$permGroupMode.'.unpublish']) ? $xt->render($ttvars) : '',
 			);

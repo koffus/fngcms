@@ -330,7 +330,7 @@ class XFieldsNewsFilter extends NewsFilter {
                 $extends = 'owner';
                 $templateName = 'plugins/xfields/tpl/news.tdata.tpl';
                 $xt = $twig->loadTemplate($templateName);
-                $tvars['extends']['block'][$extends][] = array(
+                $tvars['extends'][$extends][] = array(
                     'table' => true,
                     'header_title' => __('xfields:tdata_title'),
                     'body' => $xt->render($txVars),
@@ -353,7 +353,7 @@ class XFieldsNewsFilter extends NewsFilter {
             $txVars['entryCount'] = count($v);
             $txVars['extends'] = $k;
             // Render block
-            $tvars['extends']['block'][$k][] = array(
+            $tvars['extends'][$k][] = array(
                 'header_title' => __('xfields:header_title'),
                 'body' => $xt->render($txVars),
                 );
@@ -362,7 +362,7 @@ class XFieldsNewsFilter extends NewsFilter {
         unset($txVars['extends']);
         // Render general part [with JavaScript]
         $xt = $twig->loadTemplate('plugins/xfields/tpl/news.general.tpl');
-        $tvars['extends']['block']['js'][] = array(
+        $tvars['extends']['js'][] = array(
                 'body' => $xt->render($txVars),
                 );
 
@@ -669,7 +669,7 @@ class XFieldsNewsFilter extends NewsFilter {
                 $extends = 'owner';
                 $templateName = 'plugins/xfields/tpl/news.tdata.tpl';
                 $xt = $twig->loadTemplate($templateName);
-                $tvars['extends']['block'][$extends][] = array(
+                $tvars['extends'][$extends][] = array(
                     'table' => true,
                     'header_title' => __('xfields:tdata_title'),
                     'body' => $xt->render($txVars),
@@ -692,7 +692,7 @@ class XFieldsNewsFilter extends NewsFilter {
             $txVars['entryCount'] = count($v);
             $txVars['extends'] = $k;
             // Render block
-            $tvars['extends']['block'][$k][] = array(
+            $tvars['extends'][$k][] = array(
                 'header_title' => __('xfields:header_title'),
                 'body' => $xt->render($txVars),
                 );
@@ -701,7 +701,7 @@ class XFieldsNewsFilter extends NewsFilter {
         unset($txVars['extends']);
         // Render general part [with JavaScript]
         $xt = $twig->loadTemplate('plugins/xfields/tpl/news.general.tpl');
-        $tvars['extends']['block']['js'][] = array(
+        $tvars['extends']['js'][] = array(
                 'body' => $xt->render($txVars),
                 );
 

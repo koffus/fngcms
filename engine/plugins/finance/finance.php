@@ -42,7 +42,7 @@ class FinanceNewsFilter extends NewsFilter {
 		$extends = pluginGetVariable('finance','extends') ? pluginGetVariable('finance','extends') : 'owner';
 		$tpath = locatePluginTemplates(array('news'), 'finance', 1, 0, 'admin');
 		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('finance:header_title'),
 			'body' => $xt->render($ttvars),
 			);
@@ -67,7 +67,7 @@ class FinanceNewsFilter extends NewsFilter {
 		$extends = pluginGetVariable('finance','extends') ? pluginGetVariable('finance','extends') : 'owner';
 		$tpath = locatePluginTemplates(array('news'), 'finance', 1, 0, 'admin');
 		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('finance:header_title'),
 			'body' => $xt->render($ttvars),
 			);

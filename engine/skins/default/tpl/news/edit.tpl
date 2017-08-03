@@ -123,8 +123,8 @@
 						</div>
 						{% endif %}
 						<!-- PLUGIN IN MAIN BLOCK -->
-						{% if (extends.block.main) %}
-							{% for entry in extends.block.main %}
+						{% if (extends.main) %}
+							{% for entry in extends.main %}
 								{{ entry.body }}
 							{% endfor %}
 						{% endif %}
@@ -133,14 +133,14 @@
 
 				<div class="panel-group" id="accordion">
 					<!-- PLUGIN IN ADDITIONAL BLOCK -->
-					{% if (extends.block.additional or pluginIsActive('xfields')) %}
+					{% if (extends.additional or pluginIsActive('xfields')) %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.additional'] }}</a></h4>
 						</div>
 						<div id="additional" class="panel-collapse collapse">
 							<div class="panel-body">
-								{% for entry in extends.block.additional %}
+								{% for entry in extends.additional %}
 									<legend>{{ entry.header_title }}</legend>
 									{{ entry.body }}
 								{% endfor %}
@@ -150,8 +150,8 @@
 					{% endif %}
 
 					<!-- PLUGIN WITH OWNER BLOCK -->
-					{% if (extends.block.owner) %}
-						{% for entry in extends.block.owner %}
+					{% if (extends.owner) %}
+						{% for entry in extends.owner %}
 						<div class="panel panel-default {% if(entry.table) %}panel-table{% endif %}">
 							<div class="panel-heading">
 								<h4 class="panel-title"><a href="#panel-owner-{{ loop.index }}" data-toggle="collapse" data-parent="#accordion">{{ entry.header_title }}</a></h4>
@@ -409,13 +409,13 @@
 
 <form name="DATA_tmp_storage" action="" id="DATA_tmp_storage"><input type="hidden" name="area" value="" /></form>
 
-{% if (extends.block.css) %}
-	{% for entry in extends.block.css %}
+{% if (extends.css) %}
+	{% for entry in extends.css %}
 		{{ entry.body }}
 	{% endfor %}
 {% endif %}
-{% if (extends.block.js) %}
-	{% for entry in extends.block.js %}
+{% if (extends.js) %}
+	{% for entry in extends.js %}
 		{{ entry.body }}
 	{% endfor %}
 {% endif %}

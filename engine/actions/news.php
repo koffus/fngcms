@@ -105,17 +105,15 @@ function editNewsForm() {
         'smilies' => $config['use_smilies']?Smilies('', 20, 'currentInputAreaID'):'',
         'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
         'approve' => $row['approve'],
-        'token'				=> genUToken('admin.news.edit'),
+        'token' => genUToken('admin.news.edit'),
         'extends' => array(
-            'block' => array(
-                'main' => [],
-                'additional' => [],
-                'owner' => [],
-                'js' => [],
-                'css' => [],
-                ),
+            'main' => [],
+            'additional' => [],
+            'owner' => [],
+            'js' => [],
+            'css' => [],
             ),
-        'flags'				=> array(
+        'flags' => array(
             'edit_split' => $config['news.edit.split']?true:false,
             'meta'				=> $config['meta']?true:false,
             'mainpage' => $row['mainpage']?true:false,
@@ -655,13 +653,11 @@ function addNewsForm($retry = ''){
         'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
         'token'				=> genUToken('admin.news.add'),
         'extends' => array(
-            'block' => array(
-                'main' => [],
-                'additional' => [],
-                'owner' => [],
-                'js' => [],
-                'css' => [],
-                ),
+            'main' => [],
+            'additional' => [],
+            'owner' => [],
+            'js' => [],
+            'css' => [],
             ),
         'flags'				=> array(
             'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],

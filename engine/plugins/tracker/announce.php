@@ -185,7 +185,7 @@ class TrackerNewsFilter extends NewsFilter
             $extends = pluginGetVariable('tracker', 'extends') ? pluginGetVariable('tracker', 'extends') : 'owner';
             $tpath = locatePluginTemplates(array('news'), 'tracker', 1, 0, 'admin');
             $xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-            $tvars['extends']['block'][$extends][] = array(
+            $tvars['extends'][$extends][] = array(
                 'header_title' => __('tracker:header_title'),
                 'body' => $xt->render($ttvars),
             );
@@ -238,7 +238,7 @@ class TrackerNewsFilter extends NewsFilter
             $extends = pluginGetVariable('tracker', 'extends') ? pluginGetVariable('tracker', 'extends') : 'owner';
             $tpath = locatePluginTemplates(array('news'), 'tracker', 1, 0, 'admin');
             $xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-            $tvars['extends']['block'][$extends][] = array(
+            $tvars['extends'][$extends][] = array(
                 'header_title' => __('tracker:header_title'),
                 'body' => $xt->render($ttvars),
             );

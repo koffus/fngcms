@@ -22,7 +22,7 @@ class TagsNewsfilter extends NewsFilter {
 		$extends = pluginGetVariable('tags','extends') ? pluginGetVariable('tags','extends') : 'owner';
 		$tpath = locatePluginTemplates(array('news'), 'tags', 1, 0, 'admin');
 		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('tags:header_title'),
 			'body' => $xt->render($ttvars),
 			);
@@ -91,7 +91,7 @@ class TagsNewsfilter extends NewsFilter {
 		$extends = pluginGetVariable('tags','extends') ? pluginGetVariable('tags','extends') : 'owner';
 		$tpath = locatePluginTemplates(array('news'), 'tags', 1, 0, 'admin');
 		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('tags:header_title'),
 			'body' => $xt->render($ttvars),
 			);

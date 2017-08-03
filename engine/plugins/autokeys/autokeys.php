@@ -34,7 +34,7 @@ class autoKeysNewsFilter extends NewsFilter {
 
 		$tpath = locatePluginTemplates(array('news'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
 		$xt = $twig->loadTemplate($tpath['news'].'/news.tpl');
-        $tvars['extends']['block'][$extends][] = array(
+        $tvars['extends'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
 			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_edit')))),
 			);
@@ -49,7 +49,7 @@ class autoKeysNewsFilter extends NewsFilter {
 
 		$tpath = locatePluginTemplates(array('news'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
 		$xt = $twig->loadTemplate($tpath['news'].'/news.tpl');
-		$tvars['extends']['block'][$extends][] = array(
+		$tvars['extends'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
 			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_add')))),
 			);
