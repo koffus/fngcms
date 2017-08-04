@@ -50,7 +50,7 @@ function showNews($handlerName, $params)
     }
 
     // Set default template path
-    $templatePath = tpl_dir . $config['theme'];
+    $templatePath = tpl_site;
 
     // Check for FULL NEWS mode
     if (($handlerName == 'news') or ($handlerName == 'print')) {

@@ -22,7 +22,6 @@
             <li><a href="#userTabs-users" data-toggle="tab">{{ lang['users'] }}</a></li>
             <li><a href="#userTabs-imgfiles" data-toggle="tab">{{ lang['files'] }}/{{ lang['img'] }}</a></li>
             <li><a href="#userTabs-cache" data-toggle="tab">{{ lang['cache'] }}</a></li>
-            <li><a href="#userTabs-multi" data-toggle="tab">{{ lang['multi'] }}</a></li>
         </ul>
 
         <br>
@@ -602,41 +601,6 @@
                         <div class="col-md-5">&nbsp;</div>
                         <div class="col-md-7"><input type="button" class="btn btn-default" value="{{ lang['btn_checkMemcached'] }}" onclick="ngCheckMemcached(); return false;"/></div>
                     </div>
-                </fieldset>
-            </div>
-
-            <!-- ########################## MULTI TAB ########################## -->
-            <div id="userTabs-multi" class="tab-pane">
-                <fieldset>
-                    <legend>{{ lang['multi_info'] }}</legend>
-                    <div class="form-group">
-                        <div class="col-md-5">{{ lang['mydomains'] }} <span class="help-block">{{ lang['mydomains_desc'] }}</span></div>
-                        <div class="col-md-7"><textarea name="save_con[mydomains]" class="form-control" rows="6">{{ config['mydomains'] }}</textarea></div>
-                    </div>
-                </fieldset>
-                <fieldset>
-                    <legend>{{ lang['multisite'] }}</legend>
-                    <table class="table table-condensed">
-                        <thead>
-                            <tr>
-                                <th>{{ lang['status'] }}</th>
-                                <th>{{ lang['title'] }}</th>
-                                <th>{{ lang['domains'] }}</th>
-                                <th>{{ lang['flags'] }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for MR in multiConfig %}
-                            <tr>
-                                <td>{% if (MR['active']) %}On{% else %}Off{% endif %}</td>
-                                <td>{{ MR['key'] }}</td>
-                                <td>{% for domain in MR['domains'] %}{{ domain }}<br/>{% else %}- {{ lang['not_specified'] }} -{% endfor %}</td>
-                                <td>&nbsp;</td></tr>
-                            {% else %}
-                            <tr><td colspan="4">- {{ lang['not_used'] }} -</td></tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
                 </fieldset>
             </div>
         </div>

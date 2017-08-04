@@ -90,18 +90,18 @@ function showStaticPage($params)
     }
 
     // Check for print mode
-    if ($params['print'] and file_exists(tpl_dir . $config['theme'] . '/static/' . ($row['template'] ? $row['template'] : 'default') . '.print.tpl')) {
+    if ($params['print'] and file_exists(tpl_site . '/static/' . ($row['template'] ? $row['template'] : 'default') . '.print.tpl')) {
         $templateName .= '.print';
         $SUPRESS_TEMPLATE_SHOW = true;
     }
 
     // Check for OWN main.tpl for static page
-    if (($row['flags'] & 4) and file_exists(tpl_dir . $config['theme'] . '/static/' . ($row['template'] ? $row['template'] : 'default') . '.main.tpl')) {
+    if (($row['flags'] & 4) and file_exists(tpl_site . '/static/' . ($row['template'] ? $row['template'] : 'default') . '.main.tpl')) {
         $SYSTEM_FLAGS['template.main.name'] = ($row['template'] ? $row['template'] : 'default') . '.main';
-        $SYSTEM_FLAGS['template.main.path'] = tpl_dir . $config['theme'] . '/static';
+        $SYSTEM_FLAGS['template.main.path'] = tpl_site . '/static';
     }
 
-    $tpl->template($templateName, tpl_dir . $config['theme']);
+    $tpl->template($templateName, tpl_site);
     $tpl->vars($templateName, $tvars);
     $template['vars']['mainblock'] .= $tpl->show($templateName);
 

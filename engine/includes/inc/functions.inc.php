@@ -160,7 +160,7 @@ function Smilies($insert_location, $break_location = false, $area = false)
         $smilies = explode(',', $config['smilies']);
 
         // For smilies in comments, try to use 'smilies.tpl' from site template
-        $templateDir = (($insert_location == 'comments') and is_readable(tpl_dir . $config['theme'] . '/smilies.tpl')) ? tpl_dir . $config['theme'] : tpl_actions;
+        $templateDir = (($insert_location == 'comments') and is_readable(tpl_site . '/smilies.tpl')) ? tpl_site : tpl_actions;
 
         $i = 0;
         $output = '';
@@ -1543,7 +1543,7 @@ function getCurrentNewsCategory()
         return false;
 
     // Return if user is not reading short/full news from categories
-    if (('news' != $CurrentHandler['handlerName']) and ('print' != $CurrentHandler['handlerName']) and ('by.category' != $CurrentHandler['handlerName']))
+    if ((('news' != $CurrentHandler['handlerName']) and ('print' != $CurrentHandler['handlerName'])) or ('by.category' != $CurrentHandler['handlerName']))
         return false;
 
     return array(($CurrentHandler['handlerName'] == 'by.category') ? 'short' : 'full', $SYSTEM_FLAGS['news']['currentCategory.id'], $SYSTEM_FLAGS['news']['db.id']);

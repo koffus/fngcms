@@ -91,14 +91,6 @@ for ($i = 1; $i <= $profile_count; $i++) {
 			'type' => 'input',
 			'value' => pluginGetVariable('switcher','profile'.$i.'_redirect'),
 			));
-		array_push($cfgX, array(
-			'name' => 'profile'.$i.'_domains',
-			'title' =>  __($plugin.':domains'),
-			'descr' =>  __($plugin.':domains#desc'),
-			'type' => 'text',
-			'html_flags' => 'rows="3"',
-			'value' => pluginGetVariable('switcher','profile'.$i.'_domains'),
-			));
 	array_push($cfg, array(
 		'mode' => 'group',
 		'title' => __($plugin.':profile').' №'.$i,

@@ -62,7 +62,7 @@ global $AUTH_METHOD, $AUTH_CAPABILITIES, $PPAGES, $PFILTERS, $RPCFUNC, $TWIGFUNC
 global $RPCADMFUNC, $SUPRESS_TEMPLATE_SHOW, $SUPRESS_MAINBLOCK_SHOW, $SYSTEM_FLAGS;
 global $DSlist, $PERM, $confPerm, $confPermUser, $systemAccessURL, $cron;
 global $mysql, $ip, $parse, $tpl;
-global $TemplateCache, $siteDomainName;
+global $TemplateCache;
 global $currentHandler, $ngTrackID, $ngCookieDomain;
 global $twigGlobal, $twig, $twigLoader, $twigStringLoader;
 
@@ -186,12 +186,8 @@ if (($tmp_pos = strpos($systemAccessURL, '?')) !== FALSE)
 $timer = MicroTimer::instance();
 $timer->start();
 
-// ** Multisite engine
-@include_once root . 'includes/inc/multimaster.php';
-multi_multisites();
-@define('confroot', root . 'conf/' . ($multiDomainName and $multimaster and ($multiDomainName != $multimaster) ? 'multi/' . $multiDomainName . '/' : ''));
-
 // ** Load system config
+@define('confroot', root . 'conf/');
 @include_once confroot . 'config.php';
 
 // [[FIX config variables]]
@@ -200,9 +196,6 @@ if (!isset($config['uprefix']))
 
 // [[MARKER]] Configuration file is loaded
 $timer->registerEvent('Config file is loaded');
-
-// Call multidomains processor
-multi_multidomains();
 
 // Initiate session - take care about right domain name for sites with/without www. prefix
 @session_set_cookie_params(86400, '/', $ngCookieDomain);
@@ -235,9 +228,9 @@ require_once root . 'classes/Twig/Autoloader.php';
 Twig_Autoloader::register();
 
 // ** Init our own exception handler
-set_exception_handler('ngExceptionHandler'); // NOT PHP 7
-set_error_handler('ngErrorHandler');
-register_shutdown_function('ngShutdownHandler');
+//set_exception_handler('ngExceptionHandler'); // NOT PHP 7
+//set_error_handler('ngErrorHandler');
+//register_shutdown_function('ngShutdownHandler');
 
 // *** Initialize TWIG engine
 $twigLoader = new Twig_Loader_NGCMS(root);
@@ -370,13 +363,13 @@ $cron = new CronManager();
 loadActionHandlers('all');
 $timer->registerEvent('ALL core-related plugins are loaded');
 
-// Define last consts
-@define('tpl_site', site_root . 'templates/' . $config['theme'] . '/');
-@define('tpl_url', home . '/templates/' . $config['theme']);
-
 // ** Execute 'core' action handler
 executeActionHandler('core');
 $timer->registerEvent('ALL core-related plugins are executed');
+
+// Define last consts
+@define('tpl_site', site_root . 'templates/' . $config['theme'] . '/');
+@define('tpl_url', home . '/templates/' . $config['theme']);
 
 // - TWIG: Reconfigure allowed template paths - site template is also available
 $twigLoader->setPaths(array(tpl_site, root));

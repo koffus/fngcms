@@ -90,10 +90,8 @@ function executeActionHandler($action)
 
     $timer = MicroTimer::instance();
 
-    $output = '';
-
     // Do not run action if it's disabled
-    if (isset($SYSTEM_FLAGS['actions.disabled'][$action]) and $SYSTEM_FLAGS['actions.disabled'][$action]) {
+    if (!empty($SYSTEM_FLAGS['actions.disabled'][$action])) {
         $timer->registerEvent('disabled executeActionHandler (' . $action . ')');
         return;
     }
@@ -104,9 +102,12 @@ function executeActionHandler($action)
     loadActionHandlers($action);
 
     // Finish if there're no plugins for this action
-    if (!isset($acts[$action]) or !$acts[$action] or !is_array($acts[$action])) {
+    if (empty($acts[$action]) or !is_array($acts[$action])) {
         return true;
     }
+
+    $output = '';
+
     foreach ($acts[$action] as $priority => $functions) {
         if (!is_array($functions))
             continue;
@@ -185,16 +186,8 @@ function get_plugcfg_dir($plugin)
 // Get plugin cache dir
 function get_plugcache_dir($plugin)
 {
-    global $multiDomainName, $multimaster;
-
     $dir = root . 'cache/';
-    if ($multiDomainName and $multimaster and ($multiDomainName != $multimaster)) {
-        $dir .= 'multi/';
-        if ((!is_dir($dir)) and (!mkdir($dir))) {
-            print "Can't create multi cache dir!<br>\n";
-            return '';
-        }
-    }
+
     if ($plugin) {
         $dir .= $plugin . '/';
         if ((!is_dir($dir)) and (!mkdir($dir))) {

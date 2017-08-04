@@ -157,8 +157,6 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     $tX3 = $timer->stop(4);
     $timer->registerEvent('call News::fillVariables() for [ ' . ($tX3 - $tX2) . ' ] sec');
 
-    $tvars['vars']['comnum'] = $row['com'];
-
     // Prepare list of linked files and images
     $callingParams['linkedFiles'] = array();
     $tvars['vars']['_files'] = array();
@@ -241,7 +239,6 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     }
 
     $newsid = $row['id'];
-    $allow_comments = $row['allow_com'];
     $row['views'] = $row['views'] + 1;
 
     // Extract embedded images/files if requested
@@ -328,7 +325,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     }
 
     // Set default template path
-    $templatePath = tpl_dir . $config['theme'];
+    $templatePath = tpl_site;
 
     //->desired template path - override path if needed
     if (getIsSet($callingParams['overrideTemplatePath'])) {
@@ -397,8 +394,6 @@ function news_showone($newsID, $alt_name, $callingParams = array())
 // [PROCESS FILTER]
 function newsProcessFilter($conditions)
 {
-    //print "CALL newsProcessFilter(".var_export($conditions, true).")<br/>\n";
-
     $conditions = array_filter($conditions);
 
     if (empty($conditions))
@@ -410,7 +405,6 @@ function newsProcessFilter($conditions)
             $list = array();
             for ($i = 1; $i < count($conditions); $i++) {
                 $rec = newsProcessFilter($conditions[$i]);
-                //print ".result: ".var_export($rec, true)."<br/>\n";
                 if ($rec != '')
                     $list [] = '(' . $rec . ')';
             }
@@ -448,7 +442,6 @@ function newsProcessFilter($conditions)
                         return '';
                 }
             }
-            //
             break;
         case 'SQL' :
             return '(' . $conditions[1] . ')';
@@ -520,16 +513,17 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 
     // Generate SQL filter for 'WHERE' using filterConditions parameter
     $query['filter'] = newsProcessFilter(array('AND', array('DATA', 'approve', '=', '1'), $filterConditions));
-    //print "CallingParams:<pre>".var_export($callingParams, true)."</pre>";
-    //print "<pre>".var_export($filterConditions, true)."</pre>";
-    //print "<pre>".$query['filter']."</pre>";
+
+    // Set default template path 
+    //tpl_dir . $config['theme']
+    $templatePath = tpl_site;
 
     // Make temlate procession - auto/manual overriding
-    //->calling style
-    if (empty($callingParams['style']))
+    if (empty($callingParams['style'])) {
         $callingParams['style'] = 'short';
+    }
 
-    //->desired template - override template if needed
+    // desired template - override template if needed
     if (isset($callingParams['overrideTemplateName']) and $callingParams['overrideTemplateName']) {
         $templateName = $callingParams['overrideTemplateName'];
     } else {
@@ -545,9 +539,6 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
                 $templateName = '';
         }
     }
-
-    // Set default template path
-    $templatePath = tpl_dir . $config['theme'];
 
     $cstart = $start_from = isset($callingParams['page']) ? intval($callingParams['page']) : 0;
 
@@ -570,15 +561,17 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     if ($orderBy == 'postdate desc')
         $orderBy = 'editdate desc, postdate desc';
 
-    switch ((!empty($callingParams['pin'])) ? $callingParams['pin'] : '') {
-        case 1:
-            $orderBy = 'catpinned desc, ' . $orderBy;
-            break;
-        case 2:
-            break;
-        default:
-            $orderBy = 'pinned desc, ' . $orderBy;
-            break;
+    if (!empty($callingParams['pin'])) {
+        switch ($callingParams['pin']) {
+            case 1:
+                $orderBy = 'catpinned desc, ' . $orderBy;
+                break;
+            case 2:
+                break;
+            default:
+                $orderBy = 'pinned desc, ' . $orderBy;
+                break;
+        }
     }
 
     $query['orderby'] = " order by " . $orderBy . " limit " . $limit_start . "," . $limit_count;
@@ -818,9 +811,6 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
                 $v->showNews($row['id'], $row, $tvars, $callingParams);
         }
 
-        // Set default template path
-        $templatePath = tpl_dir . $config['theme'];
-
         //->desired template path - override path if needed
         if (isset($callingParams['overrideTemplatePath']) and $callingParams['overrideTemplatePath']) {
             $templatePath = $callingParams['overrideTemplatePath'];
@@ -894,7 +884,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
     if (!(isset($callingParams['disablePagination']) and ($callingParams['disablePagination']))) {
         templateLoadVariables(true);
         $navigations = $TemplateCache['site']['#variables']['navigation'];
-        $tpl->template('pages', tpl_dir . $config['theme']);
+        $tpl->template('pages', tpl_site);
 
         // Prev page link
         if ($limit_start and $nCount) {

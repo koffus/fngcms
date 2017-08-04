@@ -181,7 +181,7 @@ function staticTemplateList() {
 	global $config;
 
 	$result = array('');
-	foreach (ListFiles(tpl_dir.$config['theme'].'/static', 'tpl') as $k) {
+	foreach (ListFiles(tpl_site.'/static', 'tpl') as $k) {
 		if (preg_match('#\.(print|main)$#', $k)) { continue; }
 		$result []= $k;
 	}

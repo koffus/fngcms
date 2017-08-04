@@ -14,33 +14,11 @@ function plugin_switcher() {
     global $config;
 
     // Get chosen template
-    $sw_template = isset($_COOKIE['sw_template']) ? intval($_COOKIE['sw_template']): null;
+    $sw_template = isset($_COOKIE['sw_template']) ? intval($_COOKIE['sw_template']): 0;
     $sw_count = intval(pluginGetVariable('switcher', 'count'));
     if ( empty($sw_count) )
         $sw_count = 3;
 
-    // If template is not selected, we can show default value
-    if ( empty($sw_template) ) {
-        // Check if we have default profile for this domain
-        for ($i = 0; $i <= $sw_count; $i++) {
-            $dlist = pluginGetVariable('switcher', 'profile'.$i.'_domains');
-            if (empty($dlist)) continue;
-            if (!is_array($darr=explode("\n",$dlist))) continue;
-            $is_catched = 0;
-            foreach ($darr as $dname) {
-                $dname = trim($dname);
-                if (empty($dname)) continue;
-                // Check if domain fits our domain
-                if (($_SERVER['SERVER_NAME'] == $dname) or ($_SERVER['HTTP_HOST'] == $dname)) {
-                    $is_catched = 1;
-                }
-            }
-            if ($is_catched) {
-                $sw_template = $i;
-                break;
-            }
-        }
-    }
     if ( ($sw_template> 0) and ($sw_template <= $sw_count) and pluginGetVariable('switcher','profile'.$sw_template.'_active') ) {
         if (pluginGetVariable('switcher','profile'.$sw_template.'_template')) {
             $config['theme'] = pluginGetVariable('switcher','profile'.$sw_template.'_template');

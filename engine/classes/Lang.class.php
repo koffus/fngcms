@@ -19,7 +19,7 @@ class Lang
         $this::load('common');
 
         // Загружаем язык темы как сказано в core
-        if (file_exists($dir_lang = tpl_dir . $config['theme'] . '/lang/' . self::$language . '.ini')) {
+        if (file_exists($dir_lang = tpl_site . '/lang/' . self::$language . '.ini')) {
             self::$data['theme'] = parse_ini_file($dir_lang, true);
         }
 

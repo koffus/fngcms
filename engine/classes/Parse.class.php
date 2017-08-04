@@ -388,7 +388,7 @@ class Parse
                 $flagExternalURL = false;
 
                 $dn = parse_url($urlREF);
-                if (strlen($dn['host']) and !in_array($dn['host'], $SYSTEM_FLAGS['mydomains'])) {
+                if (strlen($dn['host']) and ($dn['host'] !== $_SERVER['HTTP_HOST'] or $dn['host'] !== $_SERVER['SERVER_NAME'])) {
                     $flagExternalURL = true;
                 }
 

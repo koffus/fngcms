@@ -166,7 +166,7 @@ function search_news() {
 	}
 
 	// Results of search
-	$sTemplateName =  tpl_dir.$config['theme'] . '/search.table.tpl';
+	$sTemplateName =  tpl_site . '/search.table.tpl';
 	$twigLoader->setDefaultContent($sTemplateName, '{% for entry in data %}{{ entry }}{% else %}' . __('search.notfound') .'{% endfor %} {{ pagination }}');
 	$xt = $twig->loadTemplate($sTemplateName);
 	$template['vars']['mainblock'] .= $xt->render($tableVars);

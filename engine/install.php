@@ -107,11 +107,8 @@ define('NGCMS', 1);
 
 // Basic variables
 @define('root', dirname(__FILE__) . '/');
-@define('tplRoot', dirname(__FILE__) . '/skins/default/install');
-@include_once root . 'includes/inc/multimaster.php';
-
-multi_multisites();
-@define('confroot', root . 'conf/' . ($multiDomainName and $multimaster and ($multiDomainName != $multimaster) ? 'multi/' . $multiDomainName . '/' : ''));
+@define('confroot', root . 'conf/');
+@define('tplRoot',root . '/skins/default/install');
 
 // Check if config file already exists
 if ((@fopen(confroot . 'config.php', 'r')) and (filesize(confroot . 'config.php'))) {

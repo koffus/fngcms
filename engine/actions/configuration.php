@@ -106,7 +106,7 @@ function systemConfigSave(){
 //
 // Show configuration form
 function systemConfigEditForm(){
-	global $AUTH_CAPABILITIES, $PHP_SELF, $twig, $multiconfig;
+	global $AUTH_CAPABILITIES, $PHP_SELF, $twig;
 
     $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
 
@@ -137,13 +137,6 @@ function systemConfigEditForm(){
 	if (($load_profiler < 0) or ($load_profiler > 86400))
 		$config['load_profiler'] = 0;
 
-	$mConfig = array();
-	if(is_array($multiconfig))
-		foreach ($multiconfig as $k => $v) {
-			$v['key'] = $k;
-			$mConfig []= $v;
-		}
-
 	$tVars = array(
 		// SYSTEM CONFIG is available via `config` variable
 		'config' => $config,
@@ -159,20 +152,8 @@ function systemConfigEditForm(){
 		'php_self' => $PHP_SELF,
 		'timestamp_active_now' => Lang::retDate($config['timestamp_active'], time()),
 		'token' => genUToken('admin.configuration'),
-		'multiConfig' => $mConfig,
 	);
 
-	//
-	// Fill parameters for multiconfig
-	$multiList = array();
-	$tmpline = '';
-	if (is_array($multiconfig)) {
-		foreach ($multiconfig as $mid => $mline) {
-			$tmpdom = implode("\n",$mline['domains']);
-			$tmpline .= "<tr class='contentEntry1'><td>".($mline['active']?'On':'Off')."</td><td>$mid</td><td>".($tmpdom?$tmpdom:'-не указано-')."</td><td>&nbsp;</td></tr>\n";
-		}
-	}
-	$tvars['vars']['multilist'] = $tmpline;
 	$tvars['vars']['defaultSection'] = (isset($_REQUEST['selectedOption']) and $_REQUEST['selectedOption'])?htmlspecialchars($_REQUEST['selectedOption'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'news';
 
 	$xt = $twig->loadTemplate('skins/default/tpl/configuration.tpl');
