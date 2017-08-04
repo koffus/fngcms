@@ -344,7 +344,7 @@ $(function(){
                             } else {
                                 status.html('Обновление не удалось');
                             }
-                            div.css({'padding': '4px 8px','border': '1px solid #e5e5e5','overflow-y': 'auto'})
+                            div.css({'padding': '4px 8px','border': '1px solid #e5e5e5','overflow': 'auto'})
                                 .animate({height: '292px',}, 888, function() {
                                     $('.progress').slideUp(888);
                                     $('.update-modal .modal-footer button').removeAttr('disabled');
