@@ -1000,7 +1000,7 @@ function doInstall()
             'add_onsite_guests' => '0',
             'date_adjust' => '0',
             'timestamp_active' => 'j F Y',
-            'smilies' => 'smile, biggrin, tongue, wink, cool, angry, sad, cry, upset, tired, blush, surprise, thinking, shhh, kiss, crazy, undecide, confused, down, up',
+            'smilies' => 'smile,biggrin,confused,cool,crazy,cry,hm,shok,tongue,angry,unsure,wink',
             'blocks_for_reg' => '1',
             'use_smilies' => '1',
             'use_bbcodes' => '1',
