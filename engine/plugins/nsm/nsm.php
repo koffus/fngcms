@@ -480,12 +480,10 @@ function plugin_nsm_addForm($tpl_name = 'news.add', $retry = ''){
  'favorite.disabled' => !$perm['personal.favorite'],
  'pinned.disabled' => !$perm['personal.pinned'],
  'catpinned.disabled' => !$perm['personal.catpinned'],
- 'edit_split' => $config['news.edit.split']?true:false,
  'meta' => $config['meta']?true:false,
  'html.disabled' => !$perm['personal.html'],
  'customdate.disabled' => !$perm['personal.customdate'],
  'multicat.show' => $perm['personal.multicat'],
- 'extended_more' => ($config['extended_more'] or ($tvars['vars']['content.delimiter'] != ''))?true:false,
  'can_publish' => $perm['personal.publish'],
  'mondatory_cat' => (!$perm['personal.nocat'])?true:false,
  ),
@@ -809,7 +807,6 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
  'approve' => $row['approve'],
  'flags' => array(
- 'edit_split' => $config['news.edit.split']?true:false,
  'meta' => $config['meta']?true:false,
  'mainpage' => $row['mainpage']?true:false,
  'favorite' => $row['favorite']?true:false,
@@ -820,7 +817,6 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  'can_catpinned' => $perm[$permGroupMode.'.catpinned']?true:false,
  'raw' => ($row['flags'] & 1),
  'html' => ($row['flags'] & 2),
- 'extended_more' => ($config['extended_more'] or ($tvars['vars']['content.delimiter'] != ''))?true:false,
  'editable' => (($perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) or ($perm[$permGroupMode.'.unpublish']))?true:false,
  'deleteable' => ($perm[$permGroupMode.'.delete'.(($row['approve'] == 1)?'.published':'')])?true:false,
  'html.lost' => (($row['flags'] & 2) and (!$perm[$permGroupMode.'.html']))?1:0,
@@ -851,22 +847,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  $tVars['flags']['params.lost'] = ($tVars['flags']['publish.lost'] or $tVars['flags']['html.lost'] or $tVars['flags']['mainpage.lost'] or $tVars['flags']['pinned.lost'] or $tVars['flags']['catpinned.lost'] or $tVars['flags']['multicat.lost'])?1:0;
 
  // Generate data for content input fields
- if ($config['news.edit.split']) {
- $tVars['content']['delimiter'] = '';
- if (preg_match('#^(.*?)<!--more-->(.*?)$#si', $row['content'], $match)) {
- $tVars['content']['short'] = secure_html($match[1]);
- $tVars['content']['full'] = secure_html($match[2]);
- } else if (preg_match('#^(.*?)<!--more=\"(.*?)\"-->(.*?)$#si', $row['content'], $match)) {
- $tVars['content']['short'] = secure_html($match[1]);
- $tVars['content']['full'] = secure_html($match[3]);
- $tVars['content']['delimiter'] = secure_html($match[2]);
- } else {
- $tVars['content']['short'] = secure_html($row['content']);
- $tVars['content']['full'] = '';
- }
- } else {
- $tVars['content']['short'] = secure_html($row['content']);
- }
+ $tVars['content'] = secure_html($row['content']);
 
  if (is_array($PFILTERS['news']))
  foreach ($PFILTERS['news'] as $k => $v) { $v->editNewsForm($id, $row, $tVars); }

@@ -11,7 +11,7 @@ $(function() {
 });
 
 var autokeysAjaxUpdate = function() {
-    if (form.ng_news_content{% if (flags.edit_split) %}_short{% endif %}.value == '' || form.title.value == '')
+    if (form.ng_news_content.value == '' || form.title.value == '')
         return $.notify({message: '{{ lang.addnews['msge_preview'] }}'},{type: 'danger'});
     var url = '{{ admin_url }}/rpc.php';
     var method = 'plugin.autokeys.generate';

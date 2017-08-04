@@ -27,41 +27,15 @@
  <td>{{ extcat }}</td>
  </tr>
  {% endif %}
- {% if (flags.edit_split) %}
  <tr>
  <td colspan="2">
- <b>Вводная часть материала:</b> (Обязательно!)
+ <b>Текст материала:</b>
  <div>
  <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
- <textarea onclick="changeActive('short');" onfocus="changeActive('short');" name="ng_news_content_short" id="ng_news_content_short" style="width:98%; height: 200px;" class="textarea"></textarea>
+ <textarea name="ng_news_content" id="ng_news_content" class="textarea"></textarea>
  </div>
  </td>
  </tr>
- {% if (flags.extended_more) %} 
- <tr>
- <td>Разделитель:</td>
- <td><input tabindex="2" type="text" name="content_delimiter" class="form-control" value=""/></td>
- </tr>
- {% endif %}
- <tr>
- <td colspan="2">
- <b>Материал полностью:</b> (Необязательно)
- <div>
- <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
- <textarea onclick="changeActive('full');" onfocus="changeActive('full');" name="ng_news_content_full" id="ng_news_content_full" style="width:98%; height: 200px;" class="textarea"></textarea>
- </div>
- </td>
- </tr>
- {% else %}
- <tr>
- <td colspan="2">
- <div>
- <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
- <textarea name="ng_news_content" id="ng_news_content" style="width:98%; height: 400px;" class="textarea"></textarea>
- </div>
- </td>
- </tr>
- {% endif %}
  <tr>
  <td colspan="2">
  <div>
@@ -101,11 +75,11 @@
 
 <script type="text/javascript">
 // Global variable: ID of current active input area
-{% if (flags.edit_split) %}var currentInputAreaID = 'ng_news_content_short';{% else %}var currentInputAreaID = 'ng_news_content';{% endif %}
+var currentInputAreaID = 'ng_news_content';
 
 function preview(){
  var form = document.getElementById("postForm");
- if (form.ng_news_content{% if (flags.edit_split) %}_short{% endif %}.value == '' || form.title.value == '') {
+ if (form.ng_news_content.value == '' || form.title.value == '') {
  alert('{{ lang.nsm['err.preview'] }}');
  return false;
  }
@@ -119,17 +93,6 @@ function preview(){
  return true;
 }
 
-function changeActive(name) {
- if (name == 'full') {
- document.getElementById('container.content.full').className = 'contentActive';
- document.getElementById('container.content.short').className = 'contentInactive';
- currentInputAreaID = 'ng_news_content_full';
- } else {
- document.getElementById('container.content.short').className = 'contentActive';
- document.getElementById('container.content.full').className = 'contentInactive';
- currentInputAreaID = 'ng_news_content_short';
- }
-}
 function approveMode(mode) {
  document.getElementById('approve').value = mode;
  return true;

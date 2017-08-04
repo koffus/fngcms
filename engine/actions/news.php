@@ -81,7 +81,7 @@ function editNewsForm() {
     $row['#images'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
 
     $cats = (strlen($row['catid'])>0)?explode(',', $row['catid']):array();
-    $content = $row['content'];
+
     $tVars = array(
         'php_self' => $PHP_SELF,
         'cdate'				=> date('d.m.Y H:i', $row['postdate']),
@@ -90,7 +90,6 @@ function editNewsForm() {
         'allcats' => resolveCatNames($cats),
         'id'				=> $row['id'],
         'title'				=> secure_html($row['title']),
-        'content' => array(),
         'alt_name' => $row['alt_name'],
         'description' => secure_html($row['description']),
         'keywords' => secure_html($row['keywords']),
@@ -114,8 +113,7 @@ function editNewsForm() {
             'css' => [],
             ),
         'flags' => array(
-            'edit_split' => $config['news.edit.split']?true:false,
-            'meta'				=> $config['meta']?true:false,
+            'meta' => $config['meta']?true:false,
             'mainpage' => $row['mainpage']?true:false,
             'favorite' => $row['favorite']?true:false,
             'pinned' => $row['pinned']?true:false,
@@ -123,9 +121,8 @@ function editNewsForm() {
             'can_mainpage' => $perm[$permGroupMode.'.mainpage']?true:false,
             'can_pinned' => $perm[$permGroupMode.'.pinned']?true:false,
             'can_catpinned' => $perm[$permGroupMode.'.catpinned']?true:false,
-            'raw'				=> ($row['flags'] & 1),
-            'html'				=> ($row['flags'] & 2),
-            'extended_more' => ( $config['extended_more'] or (trim($tvars['vars']['content.delimiter'])) ) ? true : false,
+            'raw' => ($row['flags'] & 1),
+            'html' => ($row['flags'] & 2),
             'editable' => (($perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) or ($perm[$permGroupMode.'.unpublish']))?true:false,
             'deleteable' => ($perm[$permGroupMode.'.delete'.(($row['approve'] == 1)?'.published':'')])?true:false,
             'html.lost' => (($row['flags'] & 2) and (!$perm[$permGroupMode.'.html']))?1:0,
@@ -160,22 +157,7 @@ function editNewsForm() {
     $tVars['flags']['params.lost']		= ($tVars['flags']['publish.lost'] or $tVars['flags']['html.lost'] or $tVars['flags']['mainpage.lost'] or $tVars['flags']['pinned.lost'] or $tVars['flags']['catpinned.lost'] or $tVars['flags']['multicat.lost'])?1:0;
 
     // Generate data for content input fields
-    if ($config['news.edit.split']) {
-        $tVars['content']['delimiter'] = '';
-        if (preg_match('#^(.*?)<!--more-->(.*?)$#si', $row['content'], $match)) {
-            $tVars['content']['short'] = secure_html($match[1]);
-            $tVars['content']['full'] = secure_html($match[2]);
-        } else if (preg_match('#^(.*?)<!--more=\"(.*?)\"-->(.*?)$#si', $row['content'], $match)) {
-            $tVars['content']['short'] = secure_html($match[1]);
-            $tVars['content']['full'] = secure_html($match[3]);
-            $tVars['content']['delimiter'] = secure_html($match[2]);
-        } else {
-            $tVars['content']['short'] = secure_html($row['content']);
-            $tVars['content']['full'] = '';
-        }
-    } else {
-        $tVars['content']['short'] = secure_html($row['content']);
-    }
+    $tVars['content'] = secure_html($row['content']);
 
     // Check for attached files
     $attachEntries = array();
@@ -659,27 +641,25 @@ function addNewsForm($retry = ''){
             'js' => [],
             'css' => [],
             ),
-        'flags'				=> array(
+        'flags' => array(
             'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],
             'favorite' => $perm['add.favorite'] and $perm['personal.favorite'],
             'pinned' => $perm['add.pinned'] and $perm['personal.pinned'],
             'catpinned' => $perm['add.catpinned'] and $perm['personal.catpinned'],
-            'html'				=> $perm['add.html'] and $perm['personal.html'],
-            'raw'				=> $perm['add.raw'] and $perm['personal.html'],
+            'html' => $perm['add.html'] and $perm['personal.html'],
+            'raw' => $perm['add.raw'] and $perm['personal.html'],
             'mainpage.disabled' => !$perm['personal.mainpage'],
             'favorite.disabled' => !$perm['personal.favorite'],
             'pinned.disabled' => !$perm['personal.pinned'],
             'catpinned.disabled' => !$perm['personal.catpinned'],
-            'edit_split' => $config['news.edit.split']?true:false,
-            'meta'				=> $config['meta']?true:false,
+            'meta' => $config['meta']?true:false,
             'html.disabled' => !$perm['personal.html'],
             'customdate.disabled' => !$perm['personal.customdate'],
             'multicat.show' => $perm['personal.multicat'],
-            'extended_more' => ( $config['extended_more'] or (trim(getIsSet($tvars['vars']['content.delimiter']))) ) ? true : false,
             'can_publish' => $perm['personal.publish'],
             'altname.disabled' => (!$perm['personal.altname'])?true:false,
             'mondatory_cat' => (!$perm['personal.nocat'])?true:false,
-        ),
+            ),
     );
 
     // Run interceptors

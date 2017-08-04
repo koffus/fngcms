@@ -53,7 +53,7 @@ class CommentsNewsFilter extends NewsFilter
                 'php_self' => $PHP_SELF,
                 'com_author' => $crow['author'],
                 'com_post' => $crow['post'],
-                'com_url' => ($crow['url']) ? $crow['url'] : $PHP_SELF . '?mod=users&action=edituser&id=' . $crow['author_id'],
+                'com_url' => (!empty($crow['url'])) ? $crow['url'] : $PHP_SELF . '?mod=users&action=edituser&id=' . $crow['author_id'],
                 'com_id' => $crow['id'],
                 'com_ip' => $crow['ip'],
                 'com_time' => Lang::retDate(pluginGetVariable('comments', 'timestamp'), $crow['postdate']),

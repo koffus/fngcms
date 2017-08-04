@@ -540,7 +540,7 @@ a.small-box:hover {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
 }
-textarea[id^="ng_news_content"] {
+textarea[id="ng_news_content"] {
 	font-size: 16px;
 	color: #000;
 }

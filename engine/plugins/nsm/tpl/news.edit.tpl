@@ -41,7 +41,7 @@
 		</div>
 		{% endif %}
 		<div class="form-group row" id="fullwidth">
-				<div class="col-sm-12">
+            <div class="col-sm-12">
 				{{ bbcodes }}
 				<!-- SMILES -->
 				<div id="modal-smiles" class="modal fade" tabindex="-1" role="dialog">
@@ -60,17 +60,15 @@
 						</div>
 					</div>
 				</div>
-				{% if (flags.edit_split) %}
-					Вводная часть материала: (Обязательно!)
-					<textarea onclick="changeActive('short');" onfocus="changeActive('short');" name="ng_news_content_short" id="ng_news_content_short" rows="10" class="form-control message-content">{{ content.short }}</textarea>
-					{% if (flags.extended_more) %} 
-						Разделитель:<input tabindex="2" type="text" name="content_delimiter" class="form-control" value="{{ content.delimiter }}"/>
-					{% endif %}
-					Материал полностью: (Необязательно)
-					<textarea onclick="changeActive('full');" onfocus="changeActive('full');" name="ng_news_content_full" id="ng_news_content_full" rows="10" class="form-control message-content">{{ content.full }}</textarea>
-				{% else %}
-					<textarea name="ng_news_content" id="ng_news_content" rows="10" class="form-control message-content">{{ content.short }}</textarea>
-				{% endif %}
+				<tr>
+                    <td colspan="2">
+                    <b>Текст материала:</b>
+                    <div>
+                    <div>{{ bbcodes }}<br /> {{ smilies }}<br /><br /></div>
+                    <textarea name="ng_news_content" id="ng_news_content" class="textarea">{{ content }}</textarea>
+                    </div>
+                    </td>
+                </tr>
 			</div>
 		</div>
 		{% if not flags['mainpage.disabled'] %}
@@ -172,11 +170,11 @@ $('input[name*=category_], select[name=category]').on('click', function (e) {
 insertselcat();
 
 // Global variable: ID of current active input area
-{% if (flags.edit_split) %}var currentInputAreaID = 'ng_news_content_short';{% else %}var currentInputAreaID = 'ng_news_content';{% endif %}
+var currentInputAreaID = 'ng_news_content_short';
 
 function preview(){
  var form = document.getElementById("postForm");
- if (form.ng_news_content{% if (flags.edit_split) %}_short{% endif %}.value == '' || form.title.value == '') {
+ if (form.ng_news_content.value == '' || form.title.value == '') {
  alert('{{ lang.nsm['err.preview'] }}');
  return false;
  }
@@ -190,17 +188,6 @@ function preview(){
  return true;
 }
 
-function changeActive(name) {
- if (name == 'full') {
- document.getElementById('container.content.full').className = 'contentActive';
- document.getElementById('container.content.short').className = 'contentInactive';
- currentInputAreaID = 'ng_news_content_full';
- } else {
- document.getElementById('container.content.short').className = 'contentActive';
- document.getElementById('container.content.full').className = 'contentInactive';
- currentInputAreaID = 'ng_news_content_short';
- }
-}
 function approveMode(mode) {
  document.getElementById('approve').value = mode;
  return true;

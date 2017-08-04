@@ -51,20 +51,8 @@ class News
         $nlink = self::generateLink($row);
 
         // Divide into short and full content
-        if (!empty($config['extended_more'])) {
-            if (preg_match('#^(.*?)\<\!--more(?:\="(.+?)"){0,1}--\>(.+)$#is', $row['content'], $pres)) {
-                $short = $pres[1];
-                $full = $pres[3];
-                $more = $pres[2];
-            } else {
-                $short = $row['content'];
-                $full = '';
-                $more = '';
-            }
-        } else {
-            list ($short, $full) = array_pad(explode('<!--more-->', $row['content']), 2, '');
-            $more = '';
-        }
+        list ($short, $full) = array_pad(explode('<!--more-->', $row['content']), 2, '');
+
         // Default page number
         $page = 1;
 
@@ -276,21 +264,6 @@ class News
 
             $tvars['regx']['[\[update\](.*)\[/update\]]'] = '';
             $tvars['vars']['update'] = '';
-        }
-
-        if ($more == '') {
-            // [TWIG] news.flags.hasPersonalMore
-            $tvars['vars']['news']['flags']['hasPersonalMore'] = false;
-
-            $tvars['vars']['[more]'] = '';
-            $tvars['vars']['[/more]'] = '';
-        } else {
-            // [TWIG] news.flags.hasPersonalMore, news.personalMore
-            $tvars['vars']['news']['flags']['hasPersonalMore'] = true;
-            $tvars['vars']['news']['personalMore'] = $more;
-
-            $tvars['vars']['personalMore'] = $more;
-            $tvars['regx']['#\[more\](.*?)\[/more\]#is'] = $more;
         }
 
         return $tvars;

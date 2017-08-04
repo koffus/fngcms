@@ -318,10 +318,6 @@
                         <div class="col-md-7">{{ mkSelect({'name' : 'save_con[news_view_counters]', 'value' : config['news_view_counters'], 'values' : { 1 : lang['yesa'], 0 : lang['noa'], 2 : lang['news_view_counters#2'] } }) }}</div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-5">{{ lang['news.edit.split'] }} <span class="help-block">{{ lang['news.edit.split#desc'] }}</span></div>
-                        <div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[news.edit.split]', 'value' : config['news.edit.split'] }) }}</div>
-                    </div>
-                    <div class="form-group">
                         <div class="col-md-5">{{ lang['news_without_content'] }} <span class="help-block">{{ lang['news_without_content_desc'] }}</span></div>
                         <div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[news_without_content]', 'value' : config['news_without_content'] }) }}</div>
                     </div>
@@ -340,10 +336,6 @@
                     <div class="form-group">
                         <div class="col-md-5">{{ lang['blocks_for_reg'] }} <span class="help-block">{{ lang['blocks_for_reg_desc'] }}</span></div>
                         <div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[blocks_for_reg]', 'value' : config['blocks_for_reg'] }) }}</div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-5">{{ lang['extended_more'] }} <span class="help-block">{{ lang['extended_more_desc'] }}</span></div>
-                        <div class="col-md-7">{{ mkSelectNY({'name' : 'save_con[extended_more]', 'value' : config['extended_more'] }) }}</div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-5">{{ lang['use_smilies'] }} <span class="help-block">{{ lang['use_smilies_desc'] }}</span></div>

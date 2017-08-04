@@ -419,21 +419,7 @@ function addNews($mode = array()){
     $title = $_REQUEST['title'];
 
     // Fill content
-    $content	= '';
-
-    // Check if EDITOR SPLIT feature is activated
-    if ($config['news.edit.split']) {
-        // Prepare delimiter
-        $ed = '<!--more-->';
-        if ($config['extended_more'] and ($_REQUEST['content_delimiter'] != '')) {
-            // Disable `new line` + protect from XSS
-            $ed = '<!--more="'.str_replace(array("\r", "\n", '"'), '', $_REQUEST['content_delimiter']).'"-->';
-        }
-        $content = $_REQUEST['ng_news_content_short'].(($_REQUEST['ng_news_content_full'] != '')?$ed.$_REQUEST['ng_news_content_full']:'');
-
-    } else {
-        $content = $_REQUEST['ng_news_content'];
-    }
+    $content = $_REQUEST['ng_news_content'];
 
     // Rewrite `\r\n` to `\n`
     $content = str_replace("\r\n", "\n", $content);
@@ -527,19 +513,26 @@ function addNews($mode = array()){
         $SQL['flags']	= 0;
     }
 
-    $SQL['mainpage']	= intval(intval($_REQUEST['mainpage']) and $perm['personal.mainpage']);
-    $SQL['favorite']	= intval(intval($_REQUEST['favorite']) and $perm['personal.favorite']);
-    $SQL['pinned']		= intval(intval($_REQUEST['pinned']) and $perm['personal.pinned']);
-    $SQL['catpinned']	= intval(intval($_REQUEST['catpinned']) and $perm['personal.catpinned']);
+    $SQL['mainpage'] = intval(intval($_REQUEST['mainpage']) and $perm['personal.mainpage']);
+    $SQL['favorite'] = intval(intval($_REQUEST['favorite']) and $perm['personal.favorite']);
+    $SQL['pinned'] = intval(intval($_REQUEST['pinned']) and $perm['personal.pinned']);
+    $SQL['catpinned'] = intval(intval($_REQUEST['catpinned']) and $perm['personal.catpinned']);
 
     switch (intval($_REQUEST['approve'])) {
-        case -1:	$SQL['approve'] = -1;								break;
-        case 0: $SQL['approve'] = 0;								break;
-        case 1: $SQL['approve'] = $perm['personal.publish']?1:0;	break;
-        default:	$SQL['approve']	= 0;
+        case -1:
+            $SQL['approve'] = -1;
+            break;
+        case 0:
+            $SQL['approve'] = 0;
+            break;
+        case 1:
+            $SQL['approve'] = $perm['personal.publish']?1:0;
+            break;
+        default:
+            $SQL['approve'] = 0;
     }
 
-    $SQL['content']		= $content;
+    $SQL['content'] = $content;
 
     // Dummy parameter for API call
     $tvars = array();
@@ -687,7 +680,7 @@ function editNews($mode = array()) {
         'other.altname',
     ));
 
-    $id			= $_REQUEST['id'];
+    $id = $_REQUEST['id'];
 
     // Check for security token
     if ((!isset($mode['no.token']) or (!$mode['no.token'])) and ((!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.news.edit')))) {
@@ -715,26 +708,12 @@ function editNews($mode = array()) {
     // 1 = HTML enable	[if set, HTML codes may be used in news]
     $SQL = array();
 
-    $SQL['flags']	= ($perm[$permGroupMode.'.html'])?(($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0)):0;
+    $SQL['flags'] = ($perm[$permGroupMode.'.html'])?(($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0)):0;
 
-    $title		= $_REQUEST['title'];
+    $title = $_REQUEST['title'];
 
     // Fill content
-    $content	= '';
-
-    // Check if EDITOR SPLIT feature is activated
-    if ($config['news.edit.split']) {
-        // Prepare delimiter
-        $ed = '<!--more-->';
-        if ($_REQUEST['content_delimiter'] != '') {
-            // Disable `new line` + protect from XSS
-            $ed = '<!--more="'.str_replace(array("\r", "\n", '"'), '', $_REQUEST['content_delimiter']).'"-->';
-        }
-        $content = $_REQUEST['ng_news_content_short'].(($_REQUEST['ng_news_content_full'] != '')?$ed.$_REQUEST['ng_news_content_full']:'');
-
-    } else {
-        $content = $_REQUEST['ng_news_content'];
-    }
+    $content = $_REQUEST['ng_news_content'];
 
     // Rewrite `\r\n` to `\n`
     $content = str_replace("\r\n", "\n", $content);
@@ -1031,26 +1010,12 @@ function showPreview() {
     }
 
     // Fill content
-    $content	= '';
-
-    // Check if EDITOR SPLIT feature is activated
-    if ($config['news.edit.split']) {
-        // Prepare delimiter
-        $ed = '<!--more-->';
-        if ($_REQUEST['content_delimiter'] != '') {
-            // Disable `new line` + protect from XSS
-            $ed = '<!--more="'.str_replace(array("\r", "\n", '"'), '', $_REQUEST['content_delimiter']).'"-->';
-        }
-        $content = $_REQUEST['ng_news_content_short'].(($_REQUEST['ng_news_content_full'] != '')?$ed.$_REQUEST['ng_news_content_full']:'');
-
-    } else {
-        $content = $_REQUEST['ng_news_content'];
-    }
+    $content = $_REQUEST['ng_news_content'];
 
     // Rewrite `\r\n` to `\n`
     $content = str_replace("\r\n", "\n", $content);
 
-    $SQL['content']		= $content;
+    $SQL['content'] = $content;
 
     // Process plugin variables to make proper SQL filling
     $tvx = array();

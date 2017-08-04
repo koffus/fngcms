@@ -84,28 +84,8 @@
 											</div>
 										</div>
 									</div>
-								{% else %}
 								{% endif %}
-								{% if (flags.edit_split) %}
-									<div id="container.content.short" class="contentActive">
-										<textarea onclick="changeActive('short');" onfocus="changeActive('short');" name="ng_news_content_short" {% if (isBBCode) %}class="{{ attributBB }} form-control"{% else %}id="ng_news_content_short" class="form-control"{% endif %} rows="6" tabindex="3">{{ content.short }}</textarea>
-									</div>
-									{% if (flags.extended_more) %}
-										<div class="form-group">
-											<label class="col-sm-3 control-label">{{ lang.addnews['editor.divider'] }}</label>
-											<div class="col-sm-9">
-												<input type="text" name="content_delimiter" value="" tabindex="4" class="form-control"/>
-											</div>
-										</div>
-									{% endif %}
-									<div id="container.content.full" class="contentInactive">
-										<textarea onclick="changeActive('full');" onfocus="changeActive('full');" name="ng_news_content_full" {% if (isBBCode) %}class="{{ attributBB }} form-control"{% else %}id="ng_news_content_full" class="form-control"{% endif %} rows="10" tabindex="5">{{ content.full }}</textarea>
-									</div>
-								{% else %}
-									<div id="container.content" class="contentActive">
-									<textarea name="ng_news_content" {% if (isBBCode) %}class="{{ attributBB }} form-control"{% else %}id="ng_news_content" class="form-control"{% endif %} rows="10" tabindex="5">{{ content.short }}</textarea>
-									</div>
-								{% endif %}
+								<textarea name="ng_news_content" {% if (isBBCode) %}class="{{ attributBB }} form-control"{% else %}id="ng_news_content" class="form-control"{% endif %} rows="10" tabindex="5">{{ content }}</textarea>
 							</div>
 						</div>
 						{% if (flags.meta) %}
@@ -450,12 +430,12 @@ $('#cdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode
 
 //
 // Global variable: ID of current active input area
-var currentInputAreaID = 'ng_news_content{% if (flags.edit_split) %}_short{% endif %}';
+var currentInputAreaID = 'ng_news_content';
 var form = document.getElementById('postForm');
 
 function preview(){
 
-	if (form.ng_news_content{% if (flags.edit_split) %}_short{% endif %}.value == '' || form.title.value == '') {
+	if (form.ng_news_content.value == '' || form.title.value == '') {
 		$.notify({message: '{{ lang.addnews['msge_preview'] }}'},{type: 'danger'});
 		return false;
 	}
@@ -467,18 +447,6 @@ function preview(){
 	form['mod'].value = "news";
 	form.target = "_self";
 	return true;
-}
-
-function changeActive(name) {
-	if (name == 'full') {
-		document.getElementById('container.content.full').className = 'contentActive';
-		document.getElementById('container.content.short').className = 'contentInactive';
-		currentInputAreaID = 'ng_news_content_full';
-	} else {
-		document.getElementById('container.content.short').className = 'contentActive';
-		document.getElementById('container.content.full').className = 'contentInactive';
-		currentInputAreaID = 'ng_news_content_short';
-	}
 }
 
 // Add first row
