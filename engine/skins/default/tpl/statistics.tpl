@@ -150,7 +150,7 @@
                     {% if(perm.coreSystemUpdate) %}
                     <tr>
                         <td>{{ lang['git_version'] }}</td>
-                        <td><a href="#" id="compare">Обновить до Git версии</button></td>
+                        <td><span id="lastCommit">loading..</span></td>
                     </tr>
                     {% endif %}
                     <!--tr>
@@ -294,7 +294,7 @@
 $(function(){
 
     {% if(perm.coreSystemUpdate) %}
-    $('#compare').on( 'click', function() {
+    $(document).on( 'click', '#compare', function() {
         var reqCompare = "https://api.github.com/repos/russsiq/fngcms/compare/{{ currentVersion }}...master";
         requestJSON(reqCompare, function(json) {
             
@@ -382,17 +382,18 @@ $(function(){
         }
     });
 
-    /*var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
+    var reqCommit = "https://api.github.com/repos/russsiq/fngcms/commits";
 
     requestJSON(reqCommit, function(json) {
         if(json.message == "Not Found") {
             $('#lastCommit').html("No Info Found");
         } else {
-            $('#lastCommit').html('<a href="'+json[0].html_url+'" target="_blank">'+json[0].sha.slice(0, 7)+'</a> \
+            /*$('#lastCommit').html('<a href="'+json[0].html_url+'" target="_blank">'+json[0].sha.slice(0, 7)+'</a> \
                 <b>@</b> <a href="'+json[0].committer.html_url+'" target="_blank">'+json[0].committer.login+'</a> [ '+
-                json[0].commit.author.date.slice(0, 10) + ' ]');
+                json[0].commit.author.date.slice(0, 10) + ' ]');*/
+            $('#lastCommit').html('<a href="#" id="compare">Обновить до Git</a> [ '+json[0].commit.author.date.slice(0, 10) + ' ]');
         }
-    });*/
+    });
     function requestJSON(url, callback) {
         $.ajax({
             url: url,
