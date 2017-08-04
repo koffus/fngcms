@@ -220,9 +220,9 @@ if (true === $flagPendingChanges) {
     }
     if ($error) {
         foreach ($ERROR as $errText) {
-            print '<div class="errorDiv"><b><u>' . __('msg.error') . '</u>!</b><br/>' . $errText . '</div>';
+            print '<div class="alert alert-danger"><b><u>' . __('msg.error') . '</u>!</b><br/>' . $errText . '</div>';
         }
-        print '<div class="warningDiv">' . __('msg.errorInfo') . '</div>';
+        print '<div class="alert alert-warning">' . __('msg.errorInfo') . '</div>';
     } else {
         print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName . '/admin.php?action=clearCacheFiles');
     }
@@ -371,14 +371,14 @@ function doConfig_db($check)
         // Try to connect
         if (!$error) {
             if (($link = $mysql->connect($_POST['reg_dbhost'], $_POST['reg_db' . ($ac ? 'admin' : '') . 'user'], $_POST['reg_db' . ($ac ? 'admin' : '') . 'pass'], '', 1)) === FALSE) {
-                $tvars['vars']['error_message'] = '<div class="errorDiv">' . __('error.dbconnect') . ' "' . $_POST['reg_dbhost'] . '" ' . $mysql->db_errno() . ' ' . $mysql->db_error() . '</div>';
+                $tvars['vars']['error_message'] = '<div class="alert alert-danger">' . __('error.dbconnect') . ' "' . $_POST['reg_dbhost'] . '" ' . $mysql->db_errno() . ' ' . $mysql->db_error() . '</div>';
                 $error = 1;
             }
         }
         // Try to fetch SQL version
         if (!$error) {
             if (($sqlf = $mysql->query("show variables like 'version'", $link)) === FALSE) {
-                $tvars['vars']['error_message'] = '<div class="errorDiv">' . __('err.dbversion') . ' "' . $_POST['reg_dbhost'] . '":<br/> (' . $mysql->db_errno() . ') ' . $mysql->db_error() . '</div>';
+                $tvars['vars']['error_message'] = '<div class="alert alert-danger">' . __('err.dbversion') . ' "' . $_POST['reg_dbhost'] . '":<br/> (' . $mysql->db_errno() . ') ' . $mysql->db_error() . '</div>';
                 $error = 1;
             } else {
                 $sqlr = $mysql->record("show variables like 'version'", -1);
@@ -520,10 +520,10 @@ function doConfig_perm()
     }
 
     if ($error) {
-        $tvars['vars']['error_message'] .= '<div class="errorDiv">' . __('perm.error') . '</div>';
+        $tvars['vars']['error_message'] .= '<div class="alert alert-danger">' . __('perm.error') . '</div>';
     }
     if ($warning) {
-        $tvars['vars']['error_message'] .= '<div class="warningDiv">' . __('perm.warning') . '</div>';
+        $tvars['vars']['error_message'] .= '<div class="alert alert-warning">' . __('perm.warning') . '</div>';
     }
 
     $tvars['regx']["'\[error_button\](.*?)\[/error_button\]'si"] = ($error or $warning) ? '$1' : '';
