@@ -13,50 +13,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Load language
 Lang::load('dbo', 'admin', 'dbo');
 
-function ParseQueries($sql)
-{
-    $matches = array();
-    $output = array();
-    $queries = explode(';', $sql);
-    $query_count = sizeof($queries);
-    $sql = '';
-
-    for ($i = 0; $i < $query_count; $i++) {
-        if (($i != ($query_count - 1)) or (strlen($queries[$i]) > 0)) {
-            $total_quotes = preg_match_all("/'/", $queries[$i], $matches);
-            $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $queries[$i], $matches);
-            $unescaped_quotes = $total_quotes - $escaped_quotes;
-
-            if (($unescaped_quotes % 2) == 0) {
-                $output[] = $queries[$i];
-                $queries[$i] = '';
-            } else {
-                $temp = $queries[$i] . ';';
-                $queries[$i] = '';
-                $complete_stmt = false;
-
-                for ($j = $i + 1; (!$complete_stmt and ($j < $query_count)); $j++) {
-                    $total_quotes = preg_match_all("/'/", $queries[$j], $matches);
-                    $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $queries[$j], $matches);
-                    $unescaped_quotes = $total_quotes - $escaped_quotes;
-
-                    if (($unescaped_quotes % 2) == 1) {
-                        $output[] = $temp . $queries[$j];
-                        $queries[$j] = '';
-                        $temp = '';
-                        $complete_stmt = true;
-                        $i = $j;
-                    } else {
-                        $temp .= $queries[$j] . ';';
-                        $queries[$j] = '';
-                    }
-                }
-            }
-        }
-    }
-    return $output;
-}
-
 //
 // Modify data request
 function systemDboModify()
@@ -344,22 +300,20 @@ function systemDboModify()
     if (getIsSet($_REQUEST['restore'])) {
         $filename = str_replace('/', '', $_REQUEST['filename']);
         if (file_exists($filename = root . 'backups/' . $filename . '.gz')) {
-            $fp = gzopen($filename, "r");
-            $query = '';
 
-            while (!gzeof($fp)) {
-                $query .= gzread($fp, 10000);
-            }
-            gzclose($fp);
-            $queries = ParseQueries($query);
-
-            for ($i = 0; $i < sizeof($queries); $i++) {
-                $sql = trim($queries[$i]);
-
-                if (!empty($sql)) {
-                    $mysql->query($sql);
+            $sql  = '';
+            $fp = @gzopen($filename, "r");
+            if ($fp) {
+                while (!gzeof($fp)) {
+                    $sql .= gzgets($fp, 4096);
+                    if (';' == substr(rtrim($sql), -1)) {
+                        $mysql->query($sql);
+                        $sql = '';
+                    }
                 }
+                gzclose($fp);
             }
+
             msg(array('message' => __('dbo')['msgo_restore']));
         } else {
             msg(array('type' => 'danger', 'title' => __('dbo')['msge_restore'], 'message' => __('dbo')['msgi_restore']));
