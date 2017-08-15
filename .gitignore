@@ -9,11 +9,11 @@
 /engine/trash/*.inc.txt
 /logs
 /uploads
-!uploads/.htaccess
-!uploads/avatars/noavatar.png
-!uploads/images/default/.htaccess
-!uploads/files/default/.htaccess
-!uploads/photos/nophoto.png
+!/uploads/.htaccess
+!/uploads/avatars/noavatar.png
+!/uploads/images/default/.htaccess
+!/uploads/files/default/.htaccess
+!/uploads/photos/nophoto.png
 
 #################
 ## phpstorm
