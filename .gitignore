@@ -1,46 +1,24 @@
 # remove files
-engine/errorPHP.txt
-engine/backups/*.gz
-engine/conf/config.php
-engine/conf/plugdata.php
-engine/conf/plugins.php
-engine/conf/perm.php
-engine/conf/extras/*
-engine/conf/extras/**
-engine/conf/extras/*.*
-engine/conf/extras/**/**
-engine/conf/extras/**/*.*
-engine/cache/core/*
-engine/cache/*.*
-engine/cache/**/*.*
-engine/cache/**/**/*.*
-engine/trash/*.inc.txt
-uploads/*.*
-uploads/**/*.*
-uploads/**/**/*.*
+/engine/backups/*.gz
+/engine/conf/config.php
+/engine/conf/plugdata.php
+/engine/conf/plugins.php
+/engine/conf/perm.php
+/engine/conf/extras
+/engine/cache
+/engine/trash/*.inc.txt
+/logs
+/uploads
 !uploads/avatars/noavatar.png
 !uploads/images/default/.htaccess
 !uploads/files/default/.htaccess
 !uploads/photos/nophoto.png
-templates/vlad-stroi
-templates/vlad-stroi/version
-templates/vlad-stroi/*
-templates/vlad-stroi/*.*
-templates/vlad-stroi/**/*.*
-templates/vlad-stroi/**/**/*.*
-templates/blogstatic/*
-templates/blogstatic/*.*
-templates/blogstatic/**/*.*
-templates/blogstatic/**/**/*.*
-templates/blogstatic/**/**/**/*.*
-templates/blogstatic/**/**/**/**/*.*
-templates/blogstatic/**/**/**/**/**/*.*
 
 #################
 ## phpstorm
 #################
 
-.idea/**
+/.idea
 
 #################
 ## Eclipse
