@@ -301,13 +301,14 @@ function create_access_htaccess()
 {
 
     $htaccess_array = array(
-        array('dir' => 'cache', 'data' => "# Lock access\nOrder Deny,Allow\nDeny from all"),
-        array('dir' => 'backups', 'data' => "# Lock access\n\t<FilesMatch .*>\n\tDeny from all\n</FilesMatch>"),
-        array('dir' => 'conf', 'data' => "<files *>\n\tOrder Deny,Allow\n\tDeny from All\n</files>"),
+        array('dir' => site_root . 'logs', 'data' => "# Lock access\nOptions -Indexes\nOrder Deny,Allow\nDeny from all"),
+        array('dir' => root . 'cache', 'data' => "# Lock access\nOrder Deny,Allow\nDeny from all"),
+        array('dir' => root . 'backups', 'data' => "# Lock access\n\t<FilesMatch .*>\n\tDeny from all\n</FilesMatch>"),
+        array('dir' => root . 'conf', 'data' => "<files *>\n\tOrder Deny,Allow\n\tDeny from All\n</files>"),
     );
 
     foreach ($htaccess_array as $result) {
-        $htaccessFile = root . $result['dir'] . '/.htaccess';
+        $htaccessFile = $result['dir'] . '/.htaccess';
         // Try to create file
         if (file_exists($htaccessFile)) {
             continue;
