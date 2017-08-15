@@ -48,7 +48,7 @@ function systemDboModify()
                 }
                 $ncats++;
                 $nmap .= '(' . $row['id'] . ',' . $key . ',from_unixtime(' . (($row['editdate'] > $row['postdate']) ? $row['editdate'] : $row['postdate']) . ')),';
-                if (!$ccount[$key]) {
+                if (empty($ccount[$key])) {
                     $ccount[$key] = 1;
                 } else {
                     $ccount[$key] += 1;
@@ -149,6 +149,7 @@ function systemDboModify()
     if (getIsSet($_REQUEST['massconvert'])) {
         $mode = 'convert';
         $time = microtime(true);
+        $msg_error = [];
 
         $db = $config['dbname'];
         $login = $config['dbuser'];
@@ -157,13 +158,13 @@ function systemDboModify()
 
         $mysqli = new mysqli($host, $login, $passw, $db);
         if ($mysqli->connect_error) {
-            $msg_error [] = secure_html('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error . ' - LINE ' . __LINE__);
+            $msg_error[] = secure_html('Connect Error (' . $mysqli->connect_errno . ') ' . $mysqli->connect_error . ' - LINE ' . __LINE__);
         }
 
         $mysqli->query("SET NAMES 'utf8' COLLATE 'utf8_general_ci';");
         $rs = $mysqli->query("SHOW TABLES;");
         if ($mysqli->errno) {
-            $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+            $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
         }
 
         while ($row = mysqli_fetch_array($rs, MYSQLI_ASSOC)) {
@@ -172,7 +173,7 @@ function systemDboModify()
             $table_name = $row['Tables_in_' . $db];
             $row_create = $mysqli->query('SHOW CREATE TABLE ' . $table_name);
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
             }
 
             $row1 = mysqli_fetch_array($row_create, MYSQLI_ASSOC);
@@ -184,7 +185,7 @@ function systemDboModify()
             // RENAME TABLE;
             $mysqli->query('RENAME TABLE ' . $table_name . ' TO ' . $table_name . '_tmp_export');
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
                 break;
             }
 
@@ -195,32 +196,32 @@ function systemDboModify()
             $create_table_scheme .= ' COLLATE utf8_general_ci';
             $mysqli->query($create_table_scheme);
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
                 break;
             }
 
             $mysqli->query('ALTER TABLE ' . $table_name . ' DISABLE KEYS');
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
                 break;
             }
 
             $mysqli->query('INSERT INTO ' . $table_name . ' SELECT * FROM ' . $table_name . '_tmp_export');
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
                 break;
             }
 
             $mysqli->query('DROP TABLE ' . $table_name . '_tmp_export');
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
                 break;
             }
 
             $time2 = microtime(true);
             $mysqli->query('ALTER TABLE ' . $table_name . ' ENABLE KEYS');
             if ($mysqli->errno) {
-                $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+                $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
                 break;
             }
 
@@ -232,14 +233,14 @@ function systemDboModify()
         $time3 = microtime(true);
         $mysqli->query("ALTER DATABASE $db DEFAULT CHARACTER SET 'utf8';");
         if ($mysqli->errno) {
-            $msg_error [] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
+            $msg_error[] = secure_html('Select Error (' . $mysqli->errno . ') ' . $mysqli->error . ' - LINE ' . __LINE__);
             return;
         } else {
             $slist [] = "<br>Converted database <b>$db</b> to <b>utf8</b>: " . sprintf("%.4f", (microtime(true) - $time3)) . ' sec.';
         }
 
         msg(array('type' => 'success', 'title' => __('dbo')['msgo_' . $mode], 'message' => join("<br>", $slist) . '<hr>Total time: ' . sprintf("%.4f", (microtime(true) - $time))));
-        if (is_array($msg_error))
+        if (count($msg_error))
             msg(array('type' => 'danger', 'title' => __('dbo')['msge_' . $mode], 'message' => join("<br>", $msg_error)));
 
         mysqli_free_result($rs);
