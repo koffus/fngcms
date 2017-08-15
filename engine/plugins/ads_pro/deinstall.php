@@ -10,13 +10,14 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin('ads_pro', 'config');
 
 $db_update = array(
-		array(
-			'table' => 'ads_pro',
-			'action' => 'drop',
-		)
-	);
+        array(
+            'table' => 'ads_pro',
+            'action' => 'drop',
+        )
+    );
 
-if (isset($_REQUEST['action']) and 'commit' == $_REQUEST['action']) {
+// RUN
+if ('commit' == $action) {
     // If submit requested, do config save
     if (fixdb_plugin_install('ads_pro', $db_update, 'deinstall')) {
         plugin_mark_deinstalled('ads_pro');

@@ -9,7 +9,7 @@ Acts: ppages, action.ppages.uprofile, comments:show
 File: loginza.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Description: Аутентификация через Google, Yandex, Twitter, Facebook и т.д.
 Author: Alexey N. Zhukov (Wolverine)

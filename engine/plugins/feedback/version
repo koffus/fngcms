@@ -9,7 +9,7 @@ Acts: ppages
 File: feedback.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Description: Генератор форм обратной связи
 Author: Vitaly A. Ponomarev

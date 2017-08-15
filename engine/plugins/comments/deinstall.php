@@ -31,7 +31,8 @@ $db_update = array(
  )
 );
 
-if (isset($_REQUEST['action']) and 'commit' == $_REQUEST['action']) {
+// RUN
+if ('commit' == $action) {
     // If submit requested, do config save
     if (fixdb_plugin_install('comments', $db_update, 'deinstall')) {
         plugin_mark_deinstalled('comments');

@@ -10,7 +10,7 @@ Actions: rpc;lib/librpc.php
 File: bookmarks.php
 Type: widget
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Config: config.php
 Description: Закладки пользователей
 Author: Wolverine, kt2k

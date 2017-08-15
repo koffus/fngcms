@@ -5,7 +5,7 @@ Acts: ppages, index
 File: faq.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Title: Вопросы и ответы
 Description: Вопросы и ответы

@@ -11,17 +11,20 @@ if (!defined('NGCMS')) die ('HAL');
 
 $db_update = array(
 	array(
-		'table'  => 'faq',
+		'table' => 'subscribe_comments',
+		'action' => 'drop',
+	),
+	array(
+		'table' => 'subscribe_comments_temp',
 		'action' => 'drop',
 	),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
-	// If submit requested, do config save
+// RUN
+if ('commit' == $action) {
 	if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
 		plugin_mark_deinstalled($plugin);
-	}	
+	}
 } else {
-	$text = 'Удаление плагина';
-	generate_install_page($plugin, $text, 'deinstall');
+	generate_install_page($plugin, 'Удаление плагина', 'deinstall');
 }

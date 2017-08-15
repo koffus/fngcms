@@ -12,17 +12,17 @@ if (!defined('NGCMS')) die ('HAL');
 // Generate balance list
 $blist = array('' => 'основной баланс');
 foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary=1 order by id") as $brow) {
-	$blist[$brow['id']] = $brow['id'].($brow['type']?' ('.$brow['type'].')':'');
+    $blist[$brow['id']] = $brow['id'].($brow['type']?' ('.$brow['type'].')':'');
 }
 
 // Fill configuration parameters
 $cfg = array();
 
 array_push($cfg, array('descr' => 'Плагин позволяет получать платежи от посетителей через систему электронных денег WebMoney.<br>В связи с отсутствием встроенных средств конвертации валют, плагин позволяет принимать деньги только в одной валюте.<br/><b><u>Настроечные параметры для сервиса WebMoney:</u></b><br/>'.
-	'<b>Result URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept', 'acceptor' => 'wm')).'<br/>'.
-	'<b>Success URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_ok' => '1')).'<br/>'.
-	'<b>Fail URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_fail' => '1')).'<br/>'
-	));
+    '<b>Result URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept', 'acceptor' => 'wm')).'<br/>'.
+    '<b>Success URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_ok' => '1')).'<br/>'.
+    '<b>Fail URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_fail' => '1')).'<br/>'
+    ));
 
 $cfgX = array();
 array_push($cfgX, array('name' => 'balance_no', 'title' => 'Номер баланса на который начисляются бонусы', 'descr' => 'В списке отображаются только монетарные балансы','type' => 'select', 'values' => $blist, value => pluginGetVariable('fin_wm','balance_no')));
@@ -56,9 +56,9 @@ array_push($cfg, array('mode' => 'group', 'title' => '<b>Приём `WME` (EUR)<
 //array_push($cfgX, array('name' => 'wm_number', 'title' => 'Номер кошелька на которой принимаются пополнения', 'descr' => 'Должен указываться вместе с буквой типа валюты. К примеру, <b>Z349152268411</b>','type' => 'input', value => pluginGetVariable('fin_wm','wm_number')));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
-	// If submit requested, do config save
-	commit_plugin_config_changes($plugin, $cfg);
+if ('commit' == $action) {
+    // If submit requested, do config save
+    commit_plugin_config_changes($plugin, $cfg);
 }
 
 generate_config_page($plugin, $cfg);

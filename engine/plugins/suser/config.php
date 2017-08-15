@@ -11,7 +11,7 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
-switch($_REQUEST['action']) {
+switch($action) {
 	case 'url': url(); break;
 	default: main();
 }
@@ -39,7 +39,11 @@ function url() {
         // Load CORE Plugin
         $cPlugin = CPlugin::instance();
         // Save configuration parameters of plugins
-        $cPlugin->saveConfig();
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=suser&action=url');
 	}
 
@@ -74,8 +78,11 @@ function main() {
         // Load CORE Plugin
         $cPlugin = CPlugin::instance();
         // Save configuration parameters of plugins
-        $cPlugin->saveConfig();
-
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=suser');
 	}
 

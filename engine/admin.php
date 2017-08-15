@@ -78,10 +78,12 @@ else
 if (!defined('NGCMS')) die ('HAL');
 
 // Pre-configure required global variables
-global $action, $subaction, $mod;
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-$subaction = isset($_REQUEST['subaction']) ? $_REQUEST['subaction'] : '';
-$mod = isset($_REQUEST['mod']) ? $_REQUEST['mod'] : '';
+global $PHP_SELF, $action, $subaction, $mod;
+
+$PHP_SELF = 'admin.php';
+$action = isset($_REQUEST['action']) ? secure_html($_REQUEST['action']) : false;
+$subaction = isset($_REQUEST['subaction']) ? secure_html($_REQUEST['subaction']) : false;
+$mod = isset($_REQUEST['mod']) ? secure_html($_REQUEST['mod']) : '';
 
 // Activate output buffer
 ob_start();
@@ -97,18 +99,16 @@ if (defined('DEBUG')) {
     print "</pre><br>\n";
 }
 
-$PHP_SELF = 'admin.php';
-
 //
 // Handle LOGIN
-if (isset($_REQUEST['action']) and ($_REQUEST['action'] == 'login')) {
+if ('login' === $action) {
     include_once root . 'cmodules.php';
     coreLogin();
 }
 
 //
 // Handle LOGOUT
-if (isset($_REQUEST['action']) and ($_REQUEST['action'] == 'logout')) {
+if ('logout' === $action) {
     include_once root . 'cmodules.php';
     coreLogout();
 }

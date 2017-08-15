@@ -9,7 +9,7 @@
 <!-- Info content -->
 <div class="page-main">
 
-		<ul class="nav nav-tabs nav-justified">
+		<ul class="nav nav-tabs">
 			<li class="{{ class['general'] }}"><a href="admin.php?mod=extra-config&plugin=ads_pro">{{ lang['ads_pro:button_general'] }}</a></li>
 			<li class="{{ class['list'] }}"><a href="admin.php?mod=extra-config&plugin=ads_pro&action=list">{{ lang['ads_pro:button_list'] }}</a></li>
 			<li class="{{ class['add_edit'] }}">

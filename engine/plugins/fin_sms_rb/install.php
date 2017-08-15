@@ -62,7 +62,8 @@ $db_update = array(
  ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('fin_sms_rb', $db_update)) {
 		plugin_mark_installed('fin_sms_rb');
@@ -71,5 +72,3 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	$text = "Плагин <b>fin_sms_rb</b> позволяет вводить на ваш сайт средства, полученные от компании-SMS партнёра <a href='http://russianbilling.com/' target='_blank'>RussianBilling.com</a><br/><br/>При установке Вам следует учесть что:<br/><b>1.</b> Перед установкой плагина Вам необходимо установить плагин <b>finance</b> - без него ничего работать не будет.<br/><b>2.</b> Плагин при установке вносит изменения в БД.";
 	generate_install_page('fin_sms_rb', $text);
 }
-
-?>

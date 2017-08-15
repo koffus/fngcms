@@ -64,7 +64,6 @@ function loadActionHandlers($action, $plugin = '')
     return $loadedCount;
 }
 
-
 function registerActionHandler($action, $function, $arguments = 0, $priority = 5)
 {
     global $acts;
@@ -296,31 +295,6 @@ function cacheRetrieveFile($fname, $expire, $plugin = '')
 
     // Return data
     return $data;
-}
-
-
-function clearCacheFiles()
-{
-    $error = false;
-    $listSkip = '';
-
-    $cacheDir = root . 'cache/';
-    $dirIterator = new RecursiveDirectoryIterator($cacheDir, RecursiveDirectoryIterator::SKIP_DOTS);
-    $iterator = new RecursiveIteratorIterator($dirIterator, RecursiveIteratorIterator::LEAVES_ONLY);
-
-    foreach ($iterator as $object) {
-        if ($object->isFile() or $object->isDir()) {
-            if (!@unlink($object->getPathname())) {
-                $listSkip .= '<br>' . $object->getBasename();
-                $error = true;
-            }
-        }
-    }
-    if($error){
-        msg(array('message' => __('msg.cashe_not_clear') . $listSkip, 'type' => 'warning'));
-    } else {
-        msg(array('message' => __('msg.cashe_clear')));
-    }
 }
 
 function create_access_htaccess()

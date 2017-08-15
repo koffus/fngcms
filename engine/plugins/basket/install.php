@@ -27,11 +27,12 @@ $db_update = array(
         ),
     );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
-	// If submit requested, do config save
-	if (fixdb_plugin_install('basket', $db_update)) {
-		plugin_mark_installed('basket');
-	}
+// RUN
+if ('commit' == $action) {
+    // If submit requested, do config save
+    if (fixdb_plugin_install('basket', $db_update)) {
+        plugin_mark_installed('basket');
+    }
 } else {
-	generate_install_page('basket', __('basket:desc_install'));
+    generate_install_page('basket', __('basket:desc_install'));
 }

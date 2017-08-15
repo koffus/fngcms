@@ -21,7 +21,11 @@ function plugin_bb_media_install($action)
             // Load CORE Plugin
             $cPlugin = CPlugin::instance();
             // Save configuration parameters of plugins
-            $cPlugin->saveConfig();
+            if($cPlugin->saveConfig()) {
+                msg(array('message' => __('commited')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
 
             plugin_mark_installed('bb_media');
             break;

@@ -51,7 +51,7 @@ for ($i = 1; $i <= 9; $i++) {
 array_push($cfg, array('type' => 'flat', 'input' => '<table class="content">'));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// 1. Menus
 	pluginSetVariable('xmenu', 'activate', $_REQUEST['activate']);
 	pluginSetVariable('xmenu', 'mode', $_REQUEST['mode']);
@@ -60,7 +60,11 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Save configuration parameters of plugins
-    $cPlugin->saveConfig();
+    if($cPlugin->saveConfig()) {
+        msg(array('message' => __('commited')));
+    } else {
+        msg(array('type' => 'danger', 'message' => __('commited_fail')));
+    }
 
 	// 2. Categories menu mapping
 	if (!is_array($_REQUEST['cmenu'])) {

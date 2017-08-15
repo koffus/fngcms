@@ -13,7 +13,7 @@
 			<i class="fa fa-search form-control-feedback"></i>
 		</div>
 	</div>
-	<ul class="nav nav-tabs nav-justified">
+	<ul class="nav nav-tabs">
 		<li class="active"><a href="#" data-filter="all">{{ lang['list.all'] }} <span class="badge">{{ cntAll }}</span></a></li>
 		<li><a href="#" data-filter="pluginEntryActive">{{ lang['list.active'] }} <span class="badge">{{ cntActive }}</span></a></li>
 		<li><a href="#" data-filter="pluginEntryInactive">{{ lang['list.inactive'] }} <span class="badge">{{ cntInactive }}</span></a></li>
@@ -56,7 +56,7 @@
 
 <script>
 function tabsSwitch(tabs) {
-	var newSelection;
+    var newSelection;
 
     if (tabs.parent('li').hasClass('active')) {
         return ;
@@ -72,13 +72,13 @@ function tabsSwitch(tabs) {
 
 function searchInTable() {
 
-	// Declare variables 
-	var input, filter, table, tr, td, i;
-	input = $('#searchInput');
-	filter = input.val().toUpperCase();
-	table = $('#maincontent');
-	tr = table.find('tr');
-	// Loop through all table rows, and hide those who don't match the search query
+    // Declare variables 
+    var input, filter, table, tr, td, i;
+    input = $('#searchInput');
+    filter = input.val().toUpperCase();
+    table = $('#maincontent');
+    tr = table.find('tr');
+    // Loop through all table rows, and hide those who don't match the search query
     if(tr.length) {
         for (i=0;i<tr.length;i++) {
             td = tr[i].getElementsByTagName('td')[0];

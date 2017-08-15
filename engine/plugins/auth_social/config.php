@@ -5,11 +5,12 @@ if (!defined('NGCMS')) die ('HAL');
 
 Lang::loadPlugin('auth_social', 'config', '', '#');
 
-switch ($_REQUEST['action']) {
+switch ($action) {
     case 'options':
         show_options();
         break;
-    default: show_options();
+    default:
+        show_options();
 }
 
 function show_options()
@@ -49,7 +50,11 @@ global $tpl, $mysql, $twig;
         pluginSetVariable('auth_social', 'twitch_client_secret', secure_html($_REQUEST['twitch_client_secret']));
 
         // Save configuration parameters of plugins
-        $cPlugin->saveConfig();
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
         coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=auth_social');
     }
     

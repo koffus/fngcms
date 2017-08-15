@@ -9,7 +9,7 @@ Acts: ppages
 File: gsmg.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Description: Генерация карты сайта для Google
 Author: Vitaly A. Ponomarev

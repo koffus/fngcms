@@ -607,4 +607,67 @@ $urlLibrary = array (
       ),
     ),
   ),
+  'gallery' => 
+  array (
+    '' => 
+    array (
+      'vars' => 
+      array (
+        '' => 
+        array (
+          'matchRegex' => '.+?',
+          'descr' => 
+          array (
+            'russian' => 'Главная',
+          ),
+        ),
+        'page' => 
+        array (
+          'matchRegex' => '\\d{1,4}',
+          'descr' => 
+          array (
+            'russian' => 'Страница',
+          ),
+        ),
+      ),
+      'descr' => 
+      array (
+        'russian' => 'Главная страница плагина',
+      ),
+    ),
+    'gallery' => 
+    array (
+      'vars' => 
+      array (
+        'name' => 
+        array (
+          'matchRegex' => '.+?',
+          'descr' => 
+          array (
+            'russian' => 'Имя галереи',
+          ),
+        ),
+        'id' => 
+        array (
+          'matchRegex' => '\\d{1,4}',
+          'descr' => 
+          array (
+            'russian' => 'Код галереи',
+          ),
+        ),
+        'page' => 
+        array (
+          'matchRegex' => '\\d{1,4}',
+          'descr' => 
+          array (
+            'russian' => 'Страница',
+          ),
+        ),
+      ),
+      'descr' => 
+      array (
+        'russian' => 'Собственная страница галереи',
+      ),
+    ),
+  ),
 );

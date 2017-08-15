@@ -68,7 +68,7 @@ array_push($cfg, array(
 	));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// Check if we need to purge old messages
 	if ($_REQUEST['purge']) {
 		// Delete all extra records

@@ -12,7 +12,7 @@
 		<input type="hidden" name="token" value="{{ token }}" />
 
 		<!-- Group menu header -->
-		<ul class="nav nav-tabs nav-justified">
+		<ul class="nav nav-tabs">
 			{% for group in GRP %}
 			<li {% if (loop.index == 1) %}class="active"{% endif %}><a href="#userTabs-{{ group.id }}" data-toggle="tab" aria-expanded="{% if (loop.index == 1) %}true{% else %}false{% endif %}">{{ group.title }}</a></li>
 			{% endfor %}

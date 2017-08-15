@@ -91,7 +91,7 @@ array_push($cfg, array(
 	));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// Rebuild index table
 	if ($_REQUEST['rebuild']) {
 		if($mysql->query('UPDATE '.prefix.'_users SET `pm_sync` = 0'))

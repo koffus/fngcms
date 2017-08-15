@@ -11,7 +11,7 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
-switch ($_REQUEST['action']) {
+switch ($action) {
 	case 'list_faq': show_faq(); break;
 	case 'add_faq': show_add_faq(); break;
 	case 'edit_faq': show_edit_faq(); break;

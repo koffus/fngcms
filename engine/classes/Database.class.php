@@ -2,7 +2,7 @@
 
 class Database
 {
-    //use Singleton;
+    //use Singleton; not to PDO
 
     //protected $dbh;
 
@@ -54,9 +54,9 @@ class Database
         }
     }
 
-    public function select_db($db)
+    public function db_select($dbname)
     {
-        return $this->query("use $db");
+        return $this->query("use $dbname");
     }
 
     public function query($sql)
@@ -259,6 +259,12 @@ class Database
         if (!$query) return array();
 
         return $query->fetch(PDO::FETCH_NUM);
+    }
+
+    // check if database exists
+    public function db_exists($dbname)
+    {
+        return (false == $this->query("SHOW DATABASES LIKE " . $this->dbh->quote($dbname))->fetchColumn(0)) ? 0 : 1;
     }
 
     // check if table exists

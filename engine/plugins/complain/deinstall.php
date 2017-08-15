@@ -16,12 +16,11 @@ $db_update = array(
 	),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
 		plugin_mark_deinstalled($plugin);
 	}
 } else {
 	generate_install_page($plugin, __('complain:desc_uninstall'), 'deinstall');
 }
-
-?>

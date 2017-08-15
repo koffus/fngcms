@@ -9,8 +9,9 @@ if (!defined('NGCMS')) die ('HAL');
 
 function plugin_bookmarks_install($action) {
 
-    if ('autoapply' != $action)
-        Lang::loadPlugin('jchat', 'config', '', ':');
+    if ('autoapply' != $action) {
+        Lang::loadPlugin('bookmarks', 'config', '', ':');
+    }
 
     // Fill DB_UPDATE configuration scheme
     $db_update = array(
@@ -39,11 +40,6 @@ function plugin_bookmarks_install($action) {
             } else {
                 return false;
             }
-
-            // Load CORE Plugin
-            $cPlugin = CPlugin::instance();
-            // Save configuration parameters of plugins
-            $cPlugin->saveConfig();
 
             break;
     }

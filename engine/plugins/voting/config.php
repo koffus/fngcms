@@ -36,13 +36,14 @@ function mkVoteList() {
 	return $res;
 }
 
-if ($_REQUEST['action'] == 'newvote') {
+// RUN
+if ('newvote' == $action) {
 	$mysql->query("insert into ".prefix."_vote (name) values (".db_squote(__($plugin.':new.pol')).")");
 	msg(array('message' => __($plugin.':msg.added')));
-
 }
 
-if ($_REQUEST['action'] == 'delvote') {
+// RUN
+if ('delvote' == $action) {
 	$voteid = intval($_REQUEST['id']);
 
 	if ($row = $mysql->record("select * from ".prefix."_vote where id = $voteid")) {
@@ -52,10 +53,11 @@ if ($_REQUEST['action'] == 'delvote') {
 
 	} else {
 		msg(array('type' => 'danger', 'message' => __($plugin.':msg.nof')));
-	};
+	}
 }
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// Let's look what do we need to do.
 
 	// First - process voteline updates/deletes
@@ -231,7 +233,7 @@ foreach ($vrows as $vrow) {
 }
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
 }

@@ -16,6 +16,10 @@ if (!defined('NGCMS')) die ('HAL');
 @include_once root . 'includes/inc/extraconf.inc.php';
 @include_once root . 'includes/inc/httpget.inc.php';
 
+if ('clearCacheFiles' == $action) {
+    clearCacheFiles();
+}
+
 // ==========================================================
 // Functions
 // ==========================================================
@@ -154,22 +158,22 @@ $repoPluginInfo = repoSync();
 // ==============================================================
 $enable = isset($_REQUEST['enable']) ? $_REQUEST['enable'] : '';
 $disable = isset($_REQUEST['disable']) ? $_REQUEST['disable'] : '';
-$manage = (isset($_REQUEST['manageConfig']) and $_REQUEST['manageConfig'] and isset($_REQUEST['action']) and ($_REQUEST['action'] == 'commit')) ? true : false;
+$manage = (isset($_REQUEST['manageConfig']) and '1' === $_REQUEST['manageConfig']) ? true : false;
 
 $id = (isset($_REQUEST['id'])) ? intval($_REQUEST['id']) : 0;
 
 // Check for security token
-if ($enable or $disable or $manage) {
-    if ((!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.extras'))) {
+if ('commit' == $action and ($enable or $disable or $manage)) {
+    if (empty($_REQUEST['token']) or ($_REQUEST['token'] != genUToken('admin.extras'))) {
         msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
         ngSYSLOG(array('plugin' => '#admin', 'item' => 'extras', 'ds_id' => $id), array('action' => 'modify'), null, array(0, 'SECURITY.TOKEN'));
         exit;
     }
 }
 
-if (isset($_REQUEST['manageConfig']) and true == $_REQUEST['manageConfig']) {
+if ($manage) {
 
-    if (isset($_REQUEST['action']) and ('commit' == $_REQUEST['action'])) {
+    if ('commit' == $action) {
         print "TRY COMMIT";
     }
 

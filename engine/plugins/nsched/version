@@ -8,7 +8,7 @@ Version: 0.12
 Acts: cron, admin:mod:news
 File: nsched.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Config: config.php
 Type: plugin
 Description: Публикация/снятие с публикации новостей по расписанию

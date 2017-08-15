@@ -552,11 +552,11 @@ function ListDirs($folder, $category = false, $alllink = true, $elementID = '')
             return false;
     }
 
-    $select = '<select ' . ($elementID ? 'id="' . $elementID . '" ' : '') . 'name="category" class="form-control">' . ($alllink ? '<option value="">- ' . __(all) . ' -</option>' : '');
+    $select = '<select ' . ($elementID ? 'id="' . $elementID . '" ' : '') . 'name="category" class="form-control">' . ($alllink ? '<option value="">- ' . __('all') . ' -</option>' : '');
 
     if (($dir = @opendir($wdir)) === FALSE) {
         msg(array(
-            'type' => 'error',
+            'type' => 'danger',
             'title' => str_replace('{dirname}', $wdir, __('error.nodir#desc')),
             'message' => str_replace('{dirname}', $wdir, __('error.nodir'))),
             1);

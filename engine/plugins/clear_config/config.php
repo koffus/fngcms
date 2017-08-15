@@ -11,7 +11,6 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::load('users', 'admin');
 Lang::loadPlugin('clear_config', 'config', 'с_с', ':');
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
 switch ($action) {
     case 'delete':
         delete();
@@ -145,6 +144,11 @@ function delete() {
     $cPlugin->saveListActive();
     // Save configuration parameters of plugins
     $cPlugin->setConfig($plugins['config']);
-    $cPlugin->saveConfig();
+    // Save configuration parameters of plugins
+    if($cPlugin->saveConfig()) {
+        msg(array('message' => __('commited')));
+    } else {
+        msg(array('type' => 'danger', 'message' => __('commited_fail')));
+    }
     showlist();
 }

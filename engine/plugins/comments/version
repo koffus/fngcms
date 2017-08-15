@@ -10,7 +10,7 @@ Actions: rpc;lib/librpc.php
 File: comments.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Description: Комментарии пользователей
 Author: Vitaly A. Ponomarev

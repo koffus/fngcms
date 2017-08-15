@@ -122,7 +122,7 @@ array_push($cfg, array(
     ));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
     if (($fs = fopen($stopFile, 'w')) !== FALSE) {
         fwrite($fs, $_REQUEST['block'] );
         fclose($fs);

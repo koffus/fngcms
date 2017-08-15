@@ -11,11 +11,11 @@
 </tr>
 {entries}
 <tr><td width="100%" colspan="4">&nbsp;</td></tr>
-<tr>
-<td width="100%" colspan="4" class="contentEdit" align="center">
-<input type="submit" onmousedown="document.forms['options_bar'].action.value = 'clear_cash';" value="{l_cat_description:clear_cash}" class="navbutton" />
-</td>
-</tr>
 </table>
 </form>
+</div>
+
+
+<div class="well text-center">
+    <a href="admin.php?mod=extra-config&plugin=cat_description&action=clearCacheFiles" class="btn btn-primary">{l_btn.clearCacheFiles}</a>
 </div>

@@ -10,7 +10,7 @@ Lang::loadPlugin('feedback', 'config', '', ':');
 include_once(root . "/plugins/feedback/lib/common.php");
 
 // Switch action
-switch ($_REQUEST['action']) {
+switch ($action) {
     case 'addform':
         addForm();
         showList();

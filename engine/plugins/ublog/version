@@ -9,7 +9,7 @@ Acts: ppages, action.ppages.uprofile
 File: ublog.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Description: Показывает все новости пользователя на отдельной странице
 Author: Vitaly A. Ponomarev

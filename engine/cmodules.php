@@ -10,7 +10,8 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-function coreActivateUser() {
+function coreActivateUser()
+{
     global $config, $SYSTEM_FLAGS, $mysql, $CurrentHandler;
 
     Lang::load('activation', 'site');
@@ -49,7 +50,8 @@ function coreActivateUser() {
     }
 }
 
-function coreRegisterUser() {
+function coreRegisterUser()
+{
     global $ip, $config, $AUTH_METHOD, $SYSTEM_FLAGS, $userROW, $PFILTERS, $mysql;
 
     Lang::load('registration', 'site');
@@ -128,7 +130,8 @@ function coreRegisterUser() {
 }
 
 // Registration page generation
-function generate_reg_page($params, $values = array(), $msg = '') {
+function generate_reg_page($params, $values = array(), $msg = '')
+{
     global $tpl, $template, $PHP_SELF, $config, $PFILTERS, $twig, $twigLoader;
 
     $tVars = array(
@@ -205,7 +208,8 @@ function generate_reg_page($params, $values = array(), $msg = '') {
     $template['vars']['mainblock'] .= $xt->render($tVars);
 }
 
-function coreRestorePassword() {
+function coreRestorePassword()
+{
     global $userROW, $config, $AUTH_METHOD, $SYSTEM_FLAGS, $mysql, $CurrentHandler;
 
     Lang::load('lostpassword', 'site');
@@ -284,7 +288,8 @@ function coreRestorePassword() {
 }
 
 // Registration page generation
-function generate_restorepw_page($params, $values = array(), $msg = '') {
+function generate_restorepw_page($params, $values = array(), $msg = '')
+{
     global $tpl, $template, $PHP_SELF, $config;
     $tpl->template('lostpassword.entries', tpl_site);
     $tpl->template('lostpassword.entry-full', tpl_site);
@@ -355,7 +360,8 @@ function generate_restorepw_page($params, $values = array(), $msg = '') {
 // Execute an action for coreLogin() function
 // This is a workaround for 2-stage AUTH functions (like openID)
 // Parameter: user's record [row]
-function coreLoginAction($row = null, $redirect = null){
+function coreLoginAction($row = null, $redirect = null)
+{
     global $auth, $auth_db, $username, $userROW, $is_logged, $is_logged_cookie, $SYSTEM_FLAGS, $HTTP_REFERER;
     global $tpl, $template, $config, $ip;
 
@@ -409,7 +415,8 @@ function coreLoginAction($row = null, $redirect = null){
     }
 }
 
-function coreLogin(){
+function coreLogin()
+{
     global $auth, $auth_db, $username, $userROW, $is_logged, $is_logged_cookie, $SYSTEM_FLAGS, $HTTP_REFERER;
     global $tpl, $template, $config, $ip;
 
@@ -438,7 +445,8 @@ function coreLogin(){
     coreLoginAction($row, $redirect);
 }
 
-function coreLogout(){
+function coreLogout()
+{
     global $auth_db, $userROW, $username, $is_logged, $HTTP_REFERER, $config;
 
     $auth_db->drop_auth();

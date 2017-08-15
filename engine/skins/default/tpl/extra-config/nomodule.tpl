@@ -7,5 +7,5 @@
 
 <!-- Info content -->
 <div class="page-main">
-	<div class="alert alert-danger">{{ action_text }}</div>
+	<div class="alert alert-info">{{ action_text }}</div>
 </div>

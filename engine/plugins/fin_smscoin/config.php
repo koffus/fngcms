@@ -34,7 +34,7 @@ array_push($cfgX, array('name' => 'pay_rate', 'title' => 'Коэффициент
 array_push($cfg, array('mode' => 'group', 'title' => '<b>Интеграционные настройки с сервисом SMSCOIN</b>', 'entries' => $cfgX));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
 }

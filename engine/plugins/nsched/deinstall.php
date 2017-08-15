@@ -25,7 +25,8 @@ $db_update = array(
  ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('nsched', $db_update, 'deinstall')) {
 		plugin_mark_deinstalled('nsched');

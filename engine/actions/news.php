@@ -676,9 +676,6 @@ function addNewsForm($retry = ''){
 // # Action selection #
 // #==============================================================================#
 
-$action		= getIsSet($_REQUEST['action']);
-$subaction	= getIsSet($_REQUEST['subaction']);
-
 // Main execution block
 do {
     // Manage "ADD" mode

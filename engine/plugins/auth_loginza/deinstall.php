@@ -25,19 +25,20 @@
 if (!defined('NGCMS')) die ('HAL');
 
 $db_update = array(
-	array(
-		'table' => 'users',
-		'action' => 'modify',
-		'fields' => array(
-		 array('action' => 'drop', 'name' => 'loginza_id', 'type' => 'varchar(255)'),
-		)
-	),
+    array(
+        'table' => 'users',
+        'action' => 'modify',
+        'fields' => array(
+         array('action' => 'drop', 'name' => 'loginza_id', 'type' => 'varchar(255)'),
+        )
+    ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
-	if (fixdb_plugin_install('auth_loginza', $db_update, 'deinstall')) {
-		plugin_mark_deinstalled('auth_loginza');
-	}
+// RUN
+if ('commit' == $action) {
+    if (fixdb_plugin_install('auth_loginza', $db_update, 'deinstall')) {
+        plugin_mark_deinstalled('auth_loginza');
+    }
 } else {
-	generate_install_page('auth_loginza', 'You are shure?', 'deinstall');
+    generate_install_page('auth_loginza', 'You are shure?', 'deinstall');
 }

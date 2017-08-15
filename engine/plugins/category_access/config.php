@@ -10,8 +10,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
-
 switch ($action) {
     case 'list_user': show_list_user(); break;
     case 'list_category': show_list_category(); break;
@@ -22,7 +20,6 @@ switch ($action) {
     case 'dell_user': delete_user(); break;
     case 'dell_category': delete_category(); break;
     case 'general_submit': general_submit(); main(); break;
-    case 'clear_cash': clear_cash();
     default: main();
 }
 
@@ -128,8 +125,11 @@ function general_submit(){
         pluginSetVariable('category_access', 'message', $message);
 
         // Save configuration parameters of plugins
-        if ($cPlugin->saveConfig())
+        if ($cPlugin->saveConfig()) {
             msg(array('type' => 'info', 'message' => __('category_access:info_save_general')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
     }
 }
 
@@ -173,8 +173,11 @@ function add_user(){
             $users[$user] = $category;
             pluginSetVariable('category_access', 'users', $users);
             // Save configuration parameters of plugins
-            if($cPlugin->saveConfig())
+            if($cPlugin->saveConfig()) {
                 msg(array('type' => 'info', 'message' => __('category_access:info_save_general')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
             show_list_user();
             return;
         }
@@ -226,12 +229,15 @@ function add_category()
                 msg(array('type' => 'danger', 'title' => __('category_access:error_val_title'), 'message' => sprintf(__('category_access:error_category_not_add'), $catz[$catmap[$category]]['name'])));
                 continue;
             }
-            $categorys[] = $category;			
+            $categorys[] = $category;
         }
         pluginSetVariable('category_access', 'categorys', $categorys);
        // Save configuration parameters of plugins
-        if($cPlugin->saveConfig())
+        if($cPlugin->saveConfig()) {
             msg(array('type' => 'info', 'message' => __('category_access:info_save_general')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
         show_list_category();
         return;
     }
@@ -277,8 +283,11 @@ function delete_user()
             unset($users[$user]);
             pluginSetVariable('category_access', 'users', $users);
             // Save configuration parameters of plugins
-            if($cPlugin->saveConfig())
+            if($cPlugin->saveConfig()) {
                 msg(array('type' => 'info', 'message' => __('category_access:info_save_general')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
         }
         show_list_user();
         return;
@@ -311,12 +320,15 @@ function delete_category()
     }
     $category = $_REQUEST['category'];
     if (isset($_POST['commit'])) {
-        if ($_POST['commit'] == 'yes'){
+        if ($_POST['commit'] == 'yes') {
             unset($categorys[array_search($category, $categorys)]);
             pluginSetVariable('category_access', 'categorys', $categorys);
             // Save configuration parameters of plugins
-            if($cPlugin->saveConfig())
+            if($cPlugin->saveConfig()) {
                 msg(array('type' => 'info', 'message' => __('category_access:info_save_general')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
         }
         show_list_category();
         return;

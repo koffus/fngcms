@@ -93,7 +93,7 @@ array_push($cfg, array(
 	));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 
 	// Save changes into DB
 	for ($i = 1; $i < 5; $i++) {

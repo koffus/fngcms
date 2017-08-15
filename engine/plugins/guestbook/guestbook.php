@@ -8,8 +8,6 @@ register_plugin_page('guestbook', 'social', 'guestbook_social');
 
 Lang::loadPlugin('guestbook', 'main');
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
-
 switch ($action) {
     case 'add' :
         msg_add_submit();

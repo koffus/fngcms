@@ -32,7 +32,7 @@ array_push($cfgX, array('name' => 'balance_no', 'title' => 'Номер бала�
 array_push($cfg, array('mode' => 'group', 'title' => '<b>Финансовые настройки</b>', 'entries' => $cfgX));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
 }

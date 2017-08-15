@@ -10,8 +10,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin('guestbook', 'config', '', ':');
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
-
 // Prepare configuration parameters
 switch ($action) {
 	case 'manage_fields' : manage_fields(); break;
@@ -286,8 +284,11 @@ function show_options() {
         // Load CORE Plugin
         $cPlugin = CPlugin::instance();
         // Save configuration parameters of plugins
-        if($cPlugin->saveConfig())
-            msg(array('message' => __('guestbook:msgo_settings_saved')));
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
 	}
 
 	$usmilies = pluginGetVariable('guestbook', 'usmilies');
@@ -607,8 +608,11 @@ function social_config() {
         // Load CORE Plugin
         $cPlugin = CPlugin::instance();
         // Save configuration parameters of plugins
-        if($cPlugin->saveConfig())
-            msg(array('message' => __('guestbook:msgo_settings_saved')));
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
 	}
 
 	$vk_client_id = pluginGetVariable('guestbook', 'vk_client_id');

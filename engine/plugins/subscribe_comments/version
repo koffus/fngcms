@@ -14,5 +14,5 @@ Description: Позволяет подписываться на коммента
 Author: Rostunov Sergey
 Author_URI: http://rostunov.com
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 preinstall: no

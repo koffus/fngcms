@@ -61,7 +61,7 @@ array_push($cfg, array(
 	));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 
 	$regRun = array();
 	switch ($_REQUEST['period']) {
@@ -76,7 +76,7 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 		case '6h' : $regRun = array('0', '0,6,12,18'); break;
 		case '8h' : $regRun = array('0', '0,8,16'); break;
 		case '12h' : $regRun = array('0', '0,12'); break;
-		default	 : $regRun = array('0', '0'); break;
+		default : $regRun = array('0', '0'); break;
 	}
 
 	$cron->unregisterTask($plugin);

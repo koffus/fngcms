@@ -1,18 +1,20 @@
 <?php
 
-if(!defined('NGCMS'))
-{
-	exit('HAL');
-}
+//
+// Configuration file for plugin
+//
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
 
+// Load lang files
 Lang::loadPlugin('subscribe_comments', 'config', '', '#');
 
 $get_params = parse_url($_SERVER['HTTP_REFERER']);
 $get_params = $get_params['query'];
 parse_str($get_params,$get_params);
 
-switch ($_REQUEST['action']) {
+switch ($action) {
 	case 'list_subscribe': show_list_subscribe();		break;
 	case 'list_subscribe_post': show_list_subscribe_post();			break;
 	case 'edit_subscribe': edit_subscribe();			break;
@@ -232,8 +234,11 @@ else{
         // Load CORE Plugin
         $cPlugin = CPlugin::instance();
         // Save configuration parameters of plugins
-        $cPlugin->saveConfig();
-		
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
 		coreRedirectAndTerminate('admin.php?mod=extra-config&plugin=subscribe_comments');
 	}
 	

@@ -9,7 +9,8 @@ if (!defined('NGCMS')) die ('HAL');
 
 Lang::loadPlugin('bb_media', 'config');
 
-if (isset($_REQUEST['action']) and 'commit' == $_REQUEST['action']) {
+// RUN
+if ('commit' == $action) {
     // If submit requested, do config save
     plugin_mark_deinstalled('bb_media');
 } else {

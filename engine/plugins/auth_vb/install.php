@@ -22,14 +22,13 @@ $db_update = array(
  ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('auth_vb', $db_update)) {
 		plugin_mark_installed('auth_vb');
-	}	
+	}
 } else {
 	$text = 'Плагин <b>auth_vb</b> позволяет использовать БД форума vBulletin в качестве основоной БД для авторизации пользователей.<br />Благодаря этому плагину у вас появится возможность для авторизации пользователей<br />';
 	generate_install_page('auth_vb', $text);
 }
-
-?>

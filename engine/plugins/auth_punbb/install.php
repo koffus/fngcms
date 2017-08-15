@@ -26,7 +26,8 @@ $db_update = array(
  ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('auth_punbb', $db_update)) {
 		plugin_mark_installed('auth_punbb');

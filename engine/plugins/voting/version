@@ -9,7 +9,7 @@ Acts: index, ppages
 Actions: rpc;lib/librpc.php
 File: voting.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Config: config.php
 Type: widget
 Description: Управление голосованиями

@@ -27,7 +27,8 @@ $db_update = array(
  ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('nsched', $db_update)) {
 		plugin_mark_installed('nsched');
@@ -36,5 +37,3 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	$text = 'Плагин <b>nsched</b> позволяет публиковать/снимать с публикации новости по расписанию.<br><br>';
 	generate_install_page('nsched', $text);
 }
-
-?>

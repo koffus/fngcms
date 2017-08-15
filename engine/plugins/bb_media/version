@@ -9,7 +9,7 @@ Acts: index, news_short, news_full
 Config: config.php
 File: bb_media.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Title: BB код [MEDIA]
 Description: BB код [MEDIA]

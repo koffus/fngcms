@@ -11,14 +11,13 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Prepare configuration parameters
-switch ($_REQUEST['action']) {
+switch ($action) {
 	case 'list_menu': showlist(); break;
 	case 'add_form': add(); break;
 	case 'move_up': move('up'); showlist(); break;
 	case 'move_down': move('down'); showlist(); break;
 	case 'dell': delete(); break;
 	case 'general_submit': general_submit(); main(); break;
-	case 'clear_cash': clear_cash();
 	default: main();
 }
 
@@ -68,8 +67,11 @@ function general_submit(){
         // Load CORE Plugin
         $cPlugin = CPlugin::instance();
         // Save configuration parameters of plugins
-        if($cPlugin->saveConfig())
-            msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
+        if($cPlugin->saveConfig()) {
+            msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
 	}
 }
 
@@ -153,8 +155,11 @@ function add(){
             // Load CORE Plugin
             $cPlugin = CPlugin::instance();
             // Save configuration parameters of plugins
-            if($cPlugin->saveConfig())
-                msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
+            if($cPlugin->saveConfig()) {
+                msg(array('message' => __('commited')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
 			showlist();
 			return;
 		}
@@ -197,8 +202,11 @@ function delete() {
 			 // Load CORE Plugin
             $cPlugin = CPlugin::instance();
             // Save configuration parameters of plugins
-            if($cPlugin->saveConfig())
-                msg(array('type' => 'info', 'message' => __('multi_main:info_save_general')));
+            if($cPlugin->saveConfig()) {
+                msg(array('message' => __('commited')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
 		}
 		showlist();
 		return;

@@ -7,8 +7,6 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-$action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
-
 switch ($action) {
     case 'edit': case 'add': editform(); break;
     case 'confirm': editform(); break;
@@ -84,7 +82,11 @@ function editform()
             // Load CORE Plugin
             $cPlugin = CPlugin::instance();
             // Save configuration parameters of plugins
-            $cPlugin->saveConfig();
+            if($cPlugin->saveConfig()) {
+                msg(array('message' => __('commited')));
+            } else {
+                msg(array('type' => 'danger', 'message' => __('commited_fail')));
+            }
             $title = 'Такой страницы не сущуствует';
             foreach ($mysql->select('select `title` from '.prefix.'_static where `id`='.$idstat.' limit 1') as $page) $title = $page['title'];
             $ULIB->registerCommand('re_stat', $code, array('vars' => array(), 'descr' => array ($config['default_lang'] => $title)));
@@ -133,7 +135,11 @@ function delete()
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Save configuration parameters of plugins
-    $cPlugin->saveConfig();
+    if($cPlugin->saveConfig()) {
+        msg(array('message' => __('commited')));
+    } else {
+        msg(array('type' => 'danger', 'message' => __('commited_fail')));
+    }
     showlist();
 }
 

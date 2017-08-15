@@ -22,7 +22,8 @@ $db_update = array(
 // ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('voting', $db_update, 'deinstall')) {
 		plugin_mark_deinstalled('voting');
@@ -31,5 +32,3 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	$text = 'Внимание! Удаление плагина приведёт к удалению всех созданных на сайте опросов!<br><br>';
 	generate_install_page('voting', $text, 'deinstall');
 }
-
-?>

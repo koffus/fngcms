@@ -50,6 +50,6 @@
 
 	<div class="well text-center">
 		<input type="submit" value="{{ lang['ads_pro:general_submit'] }}" class="btn btn-success">
-		<a href="admin.php?mod=extra-config&plugin=ads_pro&action=clear_cash" class="btn btn-primary">{{ lang['ads_pro:button_clear_cash'] }}</a>
+		<a href="admin.php?mod=extra-config&plugin=ads_pro&action=clearCacheFiles" class="btn btn-primary">{{ lang['btn.clearCacheFiles'] }}</a>
 	</div>
 </form>

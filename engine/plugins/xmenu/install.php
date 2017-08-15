@@ -17,7 +17,8 @@ $db_update = array(
  )
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+// RUN
+if ('commit' == $action) {
 	// If submit requested, do config save
 	if (fixdb_plugin_install('xmenu', $db_update)) {
 		plugin_mark_installed('xmenu');
@@ -26,5 +27,3 @@ if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
 	$text = "Плагин <b>xmenu</b> реализует расширенные возможности генерации меню.<br /><br />Внимание! При установке плагин производит изменения в БД системы!";
 	generate_install_page('finance', $text);
 }
-
-?>

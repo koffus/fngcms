@@ -10,42 +10,36 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin('ads_pro', 'config', '', ':');
 
-if (isset($_REQUEST['action'])) {
-    switch ($_REQUEST['action']) {
-        case 'list':
-            showlist();
-            break;
-        case 'add':
-            add();
-            break;
-        case 'edit':
-            add();
-            break;
-        case 'add_submit':
-            add_submit();
-            break;
-        case 'edit_submit':
-            add_submit();
-            break;
-        case 'move_up':
-            move('up');
-            break;
-        case 'move_down':
-            move('down');
-            break;
-        case 'dell':
-            delete();
-            break;
-        case 'main_submit':
-            main_submit();
-            break;
-        case 'clear_cash':
-            clear_cash();
-        default:
-            main();
-    }
-} else {
-    main();
+switch ($action) {
+    case 'list':
+        showlist();
+        break;
+    case 'add':
+        add();
+        break;
+    case 'edit':
+        add();
+        break;
+    case 'add_submit':
+        add_submit();
+        break;
+    case 'edit_submit':
+        add_submit();
+        break;
+    case 'move_up':
+        move('up');
+        break;
+    case 'move_down':
+        move('down');
+        break;
+    case 'dell':
+        delete();
+        break;
+    case 'main_submit':
+        main_submit();
+        break;
+    default:
+        main();
 }
 
 function main()
@@ -109,8 +103,11 @@ function main_submit()
     }
     if ($chg) {
         // Save configuration parameters of plugins
-        if ($cPlugin->saveConfig())
+        if($cPlugin->saveConfig()) {
             msg(array('message' => __('commited')));
+        } else {
+            msg(array('type' => 'danger', 'message' => __('commited_fail')));
+        }
     }
     main();
 }
@@ -355,10 +352,13 @@ function add_submit()
     pluginSetVariable('ads_pro', 'data', $var);
 
     // Save configuration parameters of plugins
-    if($cPlugin->saveConfig())
+    if($cPlugin->saveConfig()) {
         msg(array('message' => __('commited')));
+    } else {
+        msg(array('type' => 'danger', 'message' => __('commited_fail')));
+    }
 
-    clear_cash();
+    clearCacheFiles($plugin);
     showlist();
 }
 
@@ -414,8 +414,11 @@ function move($action)
     }
     pluginSetVariable('ads_pro', 'data', $var);
     // Save configuration parameters of plugins
-    if($cPlugin->saveConfig())
+    if($cPlugin->saveConfig()) {
         msg(array('message' => __('commited')));
+    } else {
+        msg(array('type' => 'danger', 'message' => __('commited_fail')));
+    }
     showlist();
 }
 
@@ -479,28 +482,11 @@ function delete()
     pluginSetVariable('ads_pro', 'data', $var);
 
     // Save configuration parameters of plugins
-    if ($cPlugin->saveConfig())
+    if($cPlugin->saveConfig()) {
         msg(array('type' => 'success', 'message' => sprintf(__('ads_pro:info_delete'), $title)));
-    clear_cash();
-    showlist();
-}
-
-function clear_cash()
-{
-    if (($dir = get_plugcache_dir('ads_pro'))) {
-        if ($handle = opendir($dir)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file == "." or $file == "..")
-                    continue;
-                unlink($dir . $file);
-            }
-            closedir($handle);
-            if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'clear_cash') {
-                msg(array('type' => 'info', 'message' => __('ads_pro:msg.clear_cash')));
-            } else {
-                msg(array('message' => __('commited')));
-            }
-
-        }
+    } else {
+        msg(array('type' => 'danger', 'message' => __('commited_fail')));
     }
+    clearCacheFiles($plugin);
+    showlist();
 }

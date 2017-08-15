@@ -12,8 +12,6 @@ if (!defined('NGCMS')) die ('HAL');
 
 Lang::load('perm', 'admin');
 
-@include_once root.'includes/inc/extrainst.inc.php';
-
 $pManager = new PermissionRuleManager();
 $pManager->load();
 

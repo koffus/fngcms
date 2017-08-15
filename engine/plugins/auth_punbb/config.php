@@ -42,9 +42,9 @@ array_push($cfgX, array('name' => 'autocreate_punbb', 'title' => __('auth_auto_p
 array_push($cfg, array('mode' => 'group', 'title' => __('auth_auto'), 'entries' => $cfgX));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
-	// If submit requested, do config save
-	commit_plugin_config_changes($plugin, $cfg);
+if ('commit' == $action) {
+    // If submit requested, do config save
+    commit_plugin_config_changes($plugin, $cfg);
 }
 
 generate_config_page($plugin, $cfg);

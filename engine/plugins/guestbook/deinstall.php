@@ -7,8 +7,6 @@ if (!defined('NGCMS')) die ('HAL');
 // Configuration file for plugin
 //
 
-
-
 $db_update = array(
  array(
  'table' => 'guestbook',
@@ -20,12 +18,11 @@ $db_update = array(
  ),
 );
 
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
- if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
- plugin_mark_deinstalled($plugin);
- }
+// RUN
+if ('commit' == $action) {
+    if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
+        plugin_mark_deinstalled($plugin);
+    }
 } else {
- generate_install_page($plugin, '', 'deinstall');
+    generate_install_page($plugin, '', 'deinstall');
 }
-
-?>

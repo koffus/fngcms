@@ -160,9 +160,6 @@ if (isset($_POST['action']) and !isset($_POST['agree'])) {
     notAgree();
 }
 
-// Flag if we need to do some configuration actions after install
-$flagPendingChanges = false;
-
 //
 // Determine required action
 //
@@ -172,7 +169,7 @@ if (isset($_POST['action'])) {
             doConfig();
             break;
         case 'install':
-            $flagPendingChanges = doInstall();
+            doInstall();
             break;
         default:
             doWelcome();
@@ -180,53 +177,6 @@ if (isset($_POST['action'])) {
     }
 } else {
     doWelcome();
-}
-
-// If we made installations and have some pending changes
-if (true === $flagPendingChanges) {
-
-    include_once root . 'core.php';
-    include_once root . 'includes/inc/extraconf.inc.php';
-    include_once root . 'includes/inc/extrainst.inc.php';
-
-    $LOG = array();
-    $ERROR = array();
-    $error = 0;
-
-    // Now let's install plugins
-    // Load CORE Plugin
-    $cPlugin = CPlugin::instance();
-    // First: Load informational `version` files
-    $list = $cPlugin->getInfo();
-    foreach ($pluginInstallList as $pName) {
-        if (isset($list[$pName]['install'])) {
-            include_once root . 'plugins/' . $pName . '/' . $list[$pName]['install'];
-            $res = call_user_func('plugin_' . $pName . '_install', 'autoapply');
-
-            if ($res) {
-                array_push($LOG, __('msg.plugin.installation') . ' <b>' . $pName . '</b> ... ' . __('msg.ok'));
-            } else {
-                array_push($ERROR, __('msg.plugin.installation') . ' <b>' . $pName . '</b> ... ' . __('msg.error'));
-                $error = 1;
-                break;
-            }
-        }
-        array_push($LOG, __('msg.plugin.activation') . ' <b>' . $pName . '</b> ... ' . (pluginSwitch($pName, 'on') ? __('msg.ok') : __('msg.error')));
-    }
-
-    print '<div class="body"><p>';
-    foreach ($LOG as $line) {
-        print $line . "<br />\n";
-    }
-    if ($error) {
-        foreach ($ERROR as $errText) {
-            print '<div class="alert alert-danger"><b><u>' . __('msg.error') . '</u>!</b><br/>' . $errText . '</div>';
-        }
-        print '<div class="alert alert-warning">' . __('msg.errorInfo') . '</div>';
-    } else {
-        print sprintf('</div>'.'</div>'.'</div>'.__('msg.complete'), $homeURL . $adminDirName . '/admin.php?action=clearCacheFiles');
-    }
-    print '</p></div>';
 }
 
 function printHeader()
@@ -750,13 +700,13 @@ function doInstall()
     $frec = array();
     $error = 0;
     $LOG = array();
-    $ERROR = array();
+    $ERROR_LOG = array();
     do {
 
         // Stage #01 - Try to create config files
         foreach (array('config.php', 'plugins.php', 'plugdata.php') as $k) {
             if (($frec[$k] = fopen(confroot . $k, 'w')) == NULL) {
-                array_push($ERROR, __('err.createconfig1') . ' <b>' . $k . '</b><br/>' . __('err.createconfig2'));
+                array_push($ERROR_LOG, __('err.createconfig1') . ' <b>' . $k . '</b><br/>' . __('err.createconfig2'));
                 $error = 1;
                 break;
             }
@@ -776,11 +726,11 @@ function doInstall()
                 array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '" ... ' . __('msg.ok'));
 
                 // 1. Создание БД
-                if (!$mysql->select_db($_POST['reg_dbname'])) {
+                if (!$mysql->db_exists($_POST['reg_dbname'])) {
                     // БД нет. Пытаемся создать
                     if (!$mysql->query('CREATE DATABASE IF NOT EXISTS ' . $_POST['reg_dbname'] . ' CHARACTER SET utf8 COLLATE utf8_general_ci')) {
                         // Не удалось создать. Фатально.
-                        array_push($ERROR, 'Не удалось создать БД "' . $_POST['reg_dbname'] . '" используя административную учётную запись. Скорее всего у данной учётной записи нет прав на создание баз данных.');
+                        array_push($ERROR_LOG, 'Не удалось создать БД "' . $_POST['reg_dbname'] . '" используя административную учётную запись. Скорее всего у данной учётной записи нет прав на создание баз данных.');
                         $error = 1;
                         break;
                     } else {
@@ -792,14 +742,14 @@ function doInstall()
 
                 // 2. Предоставление доступа к БД
                 if (!$mysql->query("grant all privileges on " . $_POST['reg_dbname'] . ".* to '" . $_POST['reg_dbuser'] . "'@'" . $_POST['reg_dbhost'] . "' identified by '" . $_POST['reg_dbpass'] . "'")) {
-                    array_push($ERROR, 'Невозможно обеспечить доступ пользователя "' . $_POST['reg_dbuser'] . '" к БД "' . $_POST['reg_dbname'] . '" используя административные права.');
+                    array_push($ERROR_LOG, 'Невозможно обеспечить доступ пользователя "' . $_POST['reg_dbuser'] . '" к БД "' . $_POST['reg_dbname'] . '" используя административные права.');
                     $error = 1;
                     break;
                 } else {
                     array_push($LOG, 'Предоставление доступа пользователю "' . $_POST['reg_dbuser'] . '" к БД "' . $_POST['reg_dbname'] . '" ... ' . __('msg.ok'));
                 }
             } else {
-                array_push($ERROR, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '"');
+                array_push($ERROR_LOG, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя административный логин "' . $_POST['reg_dbadminuser'] . '"');
                 $error = 1;
                 break;
             }
@@ -809,15 +759,15 @@ function doInstall()
 
         // Подключаемся к серверу используя права пользователя
         if (!$mysql->connect($_POST['reg_dbhost'], $_POST['reg_dbuser'], $_POST['reg_dbpass'],'', 1)) {
-            array_push($ERROR, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" и пароль: "' . $_POST['reg_dbpass'] . '"');
+            array_push($ERROR_LOG, 'Невозможно подключиться к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" и пароль: "' . $_POST['reg_dbpass'] . '"');
             $error = 1;
             break;
         }
         array_push($LOG, 'Подключение к серверу БД "' . $_POST['reg_dbhost'] . '" используя логин "' . $_POST['reg_dbuser'] . '" ... ' . __('msg.ok'));
 
         // Открываем нужную БД
-        if (!$mysql->select_db($_POST['reg_dbname'])) {
-            array_push($ERROR, 'Невозможно открыть БД "' . $_POST['reg_dbname'] . '"<br/>Вам необходимо создать эту БД самостоятельно.');
+        if (!$mysql->db_exists($_POST['reg_dbname']) or !$mysql->db_select($_POST['reg_dbname'])) {
+            array_push($ERROR_LOG, 'Невозможно открыть БД "<b>' . $_POST['reg_dbname'] . '</b>". Вам необходимо создать эту БД самостоятельно.');
             $error = 1;
             break;
         }
@@ -829,7 +779,7 @@ function doInstall()
             $charsetEngine = 1;
         }
         $charset = $charsetEngine ? ' default charset=utf8' : '';
-        array_push($LOG, 'Ваша версия сервера БД mySQL ' . ((!$charsetEngine) ? 'не' : '') . 'поддерживает множественные кодировки.');
+        array_push($LOG, 'Версия сервера БД mySQL ' . ((!$charsetEngine) ? 'не' : '') . 'поддерживает множественные кодировки.');
 
         // Создаём таблицы в mySQL
         // 1. Проверяем наличие пересекающихся таблиц
@@ -838,7 +788,7 @@ function doInstall()
         $list = array();
 
         if (!($query = $mysql->query("show tables"))) {
-            array_push($ERROR, 'Внутренняя ошибка SQL при получении списка таблиц БД. Обратитесь к автору проект за разъяснениями.');
+            array_push($ERROR_LOG, 'Внутренняя ошибка SQL при получении списка таблиц БД. Обратитесь к автору проекта за разъяснениями.');
             $error = 1;
             break;
         }
@@ -864,12 +814,12 @@ function doInstall()
             if (preg_match('/CREATE TABLE `(.+?)`/', $dbCreateString, $match)) {
                 $tname = str_replace('XPREFIX_', $_POST['reg_dbprefix'] . '_', $match[1]);
                 if (isset($SQL_table[$tname])) {
-                    array_push($ERROR, 'В БД "' . $_POST['reg_dbname'] . '" уже существует таблица "' . $tname . '"<br/>Используйте другой префикс для создания таблиц!');
+                    array_push($ERROR_LOG, 'В БД "' . $_POST['reg_dbname'] . '" уже существует таблица "' . $tname . '"<br/>Используйте другой префикс для создания таблиц!');
                     $error = 1;
                     break;
                 }
             } else {
-                array_push($ERROR, 'Внутренняя ошибка парсера SQL. Обратитесь к автору проект за разъяснениями [' . $dbCreateString . ']');
+                array_push($ERROR_LOG, 'Внутренняя ошибка парсера SQL. Обратитесь к автору проект за разъяснениями [' . $dbCreateString . ']');
                 $error = 1;
                 break;
             }
@@ -912,7 +862,7 @@ function doInstall()
                         $i--;
                         continue;
                     }
-                    array_push($ERROR, 'Не могу создать таблицу "' . $tname . '"!<br>Обратитесь к автору проекта за разъяснениями<br>Код SQL запроса:<br>' . $dbCreateString);
+                    array_push($ERROR_LOG, 'Не могу создать таблицу "' . $tname . '"!<br>Обратитесь к автору проекта за разъяснениями<br>Код SQL запроса:<br>' . $dbCreateString);
                     $error = 1;
                     break;
                 }
@@ -942,7 +892,7 @@ function doInstall()
         $themeDir = $installDir . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR . $theme;
 
         if (!file_exists($themeDir)) {
-            mkdir($themeDir, 0755, true);
+            @mkdir($themeDir, 0755, true);
         }
 
         $dirIterator = new RecursiveDirectoryIterator($tDir, RecursiveDirectoryIterator::SKIP_DOTS);
@@ -950,7 +900,7 @@ function doInstall()
 
         foreach ($iterator as $object) {
             $themePath = $themeDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
-            ($object->isDir()) ? mkdir($themePath, 0755, true) : copy($object, $themePath);
+            ($object->isDir()) ? @mkdir($themePath, 0755, true) : copy($object, $themePath);
         }
         array_push($LOG, 'Копирование шаблона в ' .$parse->translit($_POST['home_title']) . ' ...' . __('msg.ok'));
         
@@ -1046,7 +996,7 @@ function doInstall()
         $confData = "<?php\n" . '$config = ' . var_export($newconf, true) . ";\n";
 
         if (!fwrite($frec['config.php'], $confData)) {
-            array_push($ERROR, 'Ошибка записи конфигурационного файла!');
+            array_push($ERROR_LOG, 'Ошибка записи конфигурационного файла!');
             $error = 1;
             break;
         }
@@ -1065,7 +1015,7 @@ function doInstall()
 
         $plugData = "<?php\n" . '$array = ' . var_export($plugConf, true) . ";\n";
         if (!fwrite($frec['plugins.php'], $plugData)) {
-            array_push($ERROR, 'Ошибка записи конфигурационного файла [список активных плагинов]!');
+            array_push($ERROR_LOG, 'Ошибка записи конфигурационного файла [список активных плагинов]!');
             $error = 1;
             break;
         }
@@ -1076,11 +1026,6 @@ function doInstall()
 
         array_push($LOG, 'Сохранение конфигурационного файла ... ' . __('msg.ok'));
 
-        // А теперь - включаем необходимые плагины
-        include_once root . 'core.php';
-        include_once root . 'includes/inc/extraconf.inc.php';
-        include_once root . 'includes/inc/extrainst.inc.php';
-
         // Подготавливаем список плагинов для установки
         $pluginInstallList = array();
         foreach ($_POST as $k => $v) {
@@ -1090,24 +1035,59 @@ function doInstall()
         }
     } while (0);
 
+    /*
+     * STOP this step, If error occured !!!
+     */
+    if (!$error) {
+
+        // Now let's install plugins
+        include_once root . 'core.php';
+        include_once root . 'includes/inc/extraconf.inc.php';
+
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // First: Load informational `version` files
+        $list = $cPlugin->getInfo();
+        foreach ($pluginInstallList as $pName) {
+            if (isset($list[$pName]['install'])) {
+                include_once root . 'plugins/' . $pName . '/' . $list[$pName]['install'];
+                $res = call_user_func('plugin_' . $pName . '_install', 'autoapply');
+
+                if ($res) {
+                    array_push($LOG, __('msg.plugin.installation') . ' <b>' . $pName . '</b> ... ' . __('msg.ok'));
+                } else {
+                    array_push($ERROR_LOG, __('msg.plugin.installation') . ' <b>' . $pName . '</b> ... ' . __('msg.error'));
+                    $error = 1;
+                    break;
+                }
+            }
+            array_push($LOG, __('msg.plugin.activation') . ' <b>' . $pName . '</b> ... ' . (pluginSwitch($pName, 'on') ? __('msg.ok') : __('msg.error')));
+        }
+    }
+
     $output = join("<br/>\n", $LOG);
 
     if ($error) {
-        $output .= "<br/>\n";
-        foreach ($ERROR as $errText) {
-            $output .= '<div class="alert alert-danger"><b>' . __('msg.error') . '!</b><br/>' . $errText . '</div>';
+        foreach ($ERROR_LOG as $errText) {
+            $output .= '<div class="alert alert-danger"><b><u>' . __('msg.error') . '</u>!</b><br/>' . $errText . '</div>';
         }
-        // Make navigation menu
+        if (!count($ERROR_LOG)) {
+            $output .= '<div class="alert alert-warning">' . __('msg.errorInfo') . '</div>';
+        }
+
+        // TRY to config DB
         $output .= '<div class="alert alert-warning">Если Вы что-то неверно ввели в настройках БД, то Вы можете исправить ошибку. <a href="#" onclick="document.getElementById(\'stage\').value=\'0\'; document.getElementById(\'db\').submit();">Вернуться к настройке БД</a></div>';
         $output .= '<div class="alert alert-warning">Если Вы самостоятельно устранили ошибку, то попробуйте еще раз. <a href="#" onclick="document.getElementById(\'action\').value=\'install\'; document.getElementById(\'db\').submit();">Попробовать ещё раз</a></div>';
     }
 
     $tvars['vars']['actions'] = $output;
+    $tvars['regx']["'\[complete\](.*?)\[/complete\]'si"] = $error ? '' : '$1';
+    $tvars['vars']['complete_link'] = $_POST['home_url'] . '/' . $adminDirName;
 
-    // Выводим форму проверки
+    // Выводим форму
     $tpl->template('config_process', $templateDir);
     $tpl->vars('config_process', $tvars);
     print $tpl->show('config_process');
 
-    return $error ? false : true;
 }
+

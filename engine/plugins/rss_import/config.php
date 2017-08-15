@@ -125,7 +125,7 @@ array_push($cfg, array(
 	));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 	// If submit requested, do config save
 	commit_plugin_config_changes($plugin, $cfg);
 }

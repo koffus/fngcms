@@ -489,8 +489,6 @@ function editStatic(){
 // # Action selection #
 // #=======================================#
 
-$action		= isset($_REQUEST['action'])?$_REQUEST['action']:'';
-
 switch ($action) {
 	case 'add': 	if ($id = addStatic()) {
 							addEditStaticForm(3, $id);

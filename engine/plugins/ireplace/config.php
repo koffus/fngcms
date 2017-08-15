@@ -37,7 +37,7 @@ array_push($cfg, array(
 ));
 
 // RUN
-if (isset($_REQUEST['action']) and $_REQUEST['action'] == 'commit') {
+if ('commit' == $action) {
 
     // Perform a replace
     $query = '';

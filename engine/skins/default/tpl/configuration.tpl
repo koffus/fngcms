@@ -14,7 +14,7 @@
         <input type="hidden" name="subaction" value="save" />
         <input type="hidden" name="save" value="" />
 
-        <ul class="nav nav-tabs nav-justified">
+        <ul class="nav nav-tabs">
             <li class="active"><a href="#userTabs-db" data-toggle="tab">{{ lang['db'] }}</a></li>
             <li><a href="#userTabs-security" data-toggle="tab">{{ lang['security'] }}</a></li>
             <li><a href="#userTabs-system" data-toggle="tab">{{ lang['syst'] }}</a></li>

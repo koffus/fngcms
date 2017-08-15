@@ -4,7 +4,7 @@ Version: 0.6
 Actions: core; ads_pro.php
 Config: config.php
 Install: install.php
-Deinstall: uninstall.php
+Deinstall: deinstall.php
 Type: plugin
 Title: Отображение произвольных блоков на сайте
 Description: Реклама на сайте
