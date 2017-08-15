@@ -280,8 +280,10 @@ class News
         if ($row['catid']) {
             $ccats = array();
             $icats = array();
-            foreach (explode(',', $row['catid']) as $ccatid) {
-                if (trim($catmap[$ccatid])) {
+            $fcat = explode(',', $row['catid']);
+            foreach ($fcat as $ccatid) {
+                $ccatid = (int)$ccatid;
+                if (isset($catmap[$ccatid])) {
                     $ccats[] = $catmap[$ccatid];
                     $icats[] = $ccatid;
                 }

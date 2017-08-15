@@ -824,12 +824,12 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
                 // Find first category
                 if (getIsSet($row['catid'])) {
                     $fcat = explode(',', $row['catid']);
-                    $fcat = intval(array_shift($fcat));
+                    $fcat = (int)array_shift($fcat);
                 }
             }
 
             // Check if there is a custom mapping
-            if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+            if ($fcat and isset($catmap[$fcat]) and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
                 // Check if directory exists
                 if (is_dir($templatePath . '/ncustom/' . $ctname))
                     $templatePath = $templatePath . '/ncustom/' . $ctname;
