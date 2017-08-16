@@ -67,7 +67,6 @@ class CPlugin
     }
 
     // Set list of active plugins and required files
-    // !!!!!!!!!!!! defined ADMIN
     public function setList($plugins)
     {
         if (is_array($plugins)) {
@@ -79,7 +78,6 @@ class CPlugin
     }
 
     // Save list of active plugins and required files
-    // !!!!!!!!!!!! defined ADMIN
     public function saveListActive()
     {
         if (!is_file(conf_pactive)) {
@@ -151,7 +149,6 @@ class CPlugin
 
     // Set configuration variables
     // for all plugins
-    // !!!!!!!!!!!! defined ADMIN
     public function setConfig($pConfig)
     {
         if (empty($this->plugins['config:loaded'])) {
@@ -165,7 +162,6 @@ class CPlugin
     }
 
     // Save configuration parameters of plugins (should be called after pluginSetVariable)
-    // !!!!!!!!!!!! defined ADMIN
     public function saveConfig($suppressNotify = false)
     {
         if (empty($this->plugins['config:loaded'])) {
@@ -395,6 +391,29 @@ class CPlugin
         if (is_dir($dir)) {
             return $dir;
         }
+        return false;
+    }
+
+    // Return plugin skin list folderS
+    public function getFoldersSkin($plugin)
+    {
+
+        if ($skinDir = $this->getFolder($plugin)) {
+            $skinDir .= '/tpl/skins';
+
+            if (is_dir($skinDir)) {
+                $skList = array();
+                $skinDir = opendir($skinDir);
+                while ($skFile = readdir($skinDir)) {
+                    if (!preg_match('/^\./', $skFile)) {
+                        $skList[$skFile] = $skFile;
+                    }
+                }
+                closedir($skinDir);
+                return $skList;
+            }
+        }
+        // Exit if no skin dir
         return false;
     }
 
