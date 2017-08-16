@@ -10,22 +10,17 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
 // Prepare configuration parameters
+$skList = $cPlugin->getFoldersSkin($plugin);
+
 /*switch ($_REQUEST['action']) {
 	case 'edit_form': add(); break;
 	case 'dell': delete(); break;
 	default: main();
 }*/
-
-$skList = array();
-if ($skDir = opendir(extras_dir.'/'.$plugin.'/tpl/skins')) {
-	while ($skFile = readdir($skDir)) {
-		if (!preg_match('/^\./', $skFile)) {
-			$skList[$skFile] = $skFile;
-		}
-	}
-	closedir($skDir);
-}
 
 function mkVoteList() {
 	global $mysql;
@@ -110,7 +105,12 @@ if ('commit' == $action) {
 }
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(

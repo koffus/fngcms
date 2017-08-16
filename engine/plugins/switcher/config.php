@@ -21,8 +21,12 @@ $profile_count = intval(pluginGetVariable('switcher','count'));
 if (!$profile_count) { $profile_count = 3; }
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
-
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array(

@@ -25,5 +25,5 @@ if ('commit' == $action) {
 	}
 } else {
 	$text = "Плагин <b>xmenu</b> реализует расширенные возможности генерации меню.<br /><br />Внимание! При установке плагин производит изменения в БД системы!";
-	generate_install_page('finance', $text);
+	generate_install_page('xmenu', $text);
 }

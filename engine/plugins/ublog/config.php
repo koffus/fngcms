@@ -16,7 +16,12 @@ if (($personalCount < 2)||($personalCount > 100))
 	$personalCount = 10;
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин показывает новости конкретного пользователя');
+$cfg = array(
+    'description' => 'Плагин показывает новости конкретного пользователя',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(

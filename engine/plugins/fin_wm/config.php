@@ -16,13 +16,15 @@ foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary
 }
 
 // Fill configuration parameters
-$cfg = array();
-
-array_push($cfg, array('descr' => 'Плагин позволяет получать платежи от посетителей через систему электронных денег WebMoney.<br>В связи с отсутствием встроенных средств конвертации валют, плагин позволяет принимать деньги только в одной валюте.<br/><b><u>Настроечные параметры для сервиса WebMoney:</u></b><br/>'.
+$cfg = array(
+    'description' => 'Плагин позволяет получать платежи от посетителей через систему электронных денег WebMoney.<br>В связи с отсутствием встроенных средств конвертации валют, плагин позволяет принимать деньги только в одной валюте.<br/><b><u>Настроечные параметры для сервиса WebMoney:</u></b><br/>'.
     '<b>Result URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept', 'acceptor' => 'wm')).'<br/>'.
     '<b>Success URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_ok' => '1')).'<br/>'.
-    '<b>Fail URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_fail' => '1')).'<br/>'
-    ));
+    '<b>Fail URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'wm', 'result_fail' => '1')).'<br/>',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array('name' => 'balance_no', 'title' => 'Номер баланса на который начисляются бонусы', 'descr' => 'В списке отображаются только монетарные балансы','type' => 'select', 'values' => $blist, value => pluginGetVariable('fin_wm','balance_no')));

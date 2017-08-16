@@ -13,13 +13,15 @@ foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary
 }
 
 // Fill configuration parameters
-$cfg = array();
-
-array_push($cfg, array('descr' => 'Плагин позволяет получать платежи от посетителей через SMS при помощи сервиса smscoin.com.<br>Для приёма средств исполизуется сервис <b>смс:банк</b>.<br/><b><u>Настроечные параметры для сервиса SMSCOIN:</u></b><br/>'.
+$cfg = array(
+    'description' => 'Плагин позволяет получать платежи от посетителей через SMS при помощи сервиса smscoin.com.<br>Для приёма средств исполизуется сервис <b>смс:банк</b>.<br/><b><u>Настроечные параметры для сервиса SMSCOIN:</u></b><br/>'.
 	'<b>Result URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept', 'acceptor' => 'smscoin')).'<br/>'.
 	'<b>Success URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'smscoin', 'result_ok' => '1')).'<br/>'.
-	'<b>Fail URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'smscoin', 'result_fail' => '1')).'<br/>'
-	));
+	'<b>Fail URL:</b> '.home.generateLink('core', 'plugin', array('plugin' => 'finance'), array('mode' => 'pay_accept_form', 'acceptor' => 'smscoin', 'result_fail' => '1')).'<br/>',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array('name' => 'balance_no', 'title' => 'Номер баланса на который начисляются бонусы', 'descr' => 'В списке отображаются только монетарные балансы<br/><font color="red"><b>Для разделения <u>реальных</u> платежей (например, из WEBMONEY) и <u>виртуальных</u> платежей (из SMSCOIN) настоятельно рекомендуется для платежей из SMSCOIN создавать выделенный дополнительный монетарный баланс - это позволит более точно учитывать поступления средств от посетителей.</b><br/>Балансы настраиваются в настройках плагина finance</font>','type' => 'select', 'values' => $blist, value => pluginGetVariable('fin_smscoin','balance_no')));

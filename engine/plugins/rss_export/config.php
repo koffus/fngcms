@@ -36,7 +36,12 @@ foreach ($catz as $scanCat) {
 }
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин экспорта новостей в формате RSS<br>Полная лента новостей доступна по адресу: <b>'.generatePluginLink('rss_export', '', array(), array(), true, true).(($demoCategory != '')?'</b><br/>Лента новостей для категории <i>'.$catz[$demoCategory]['name'].'</i>: <b>'.generatePluginLink('rss_export', 'category', array('category' => $demoCategory), array(), true, true).'</b>':''));
+$cfg = array('description' => 'Плагин экспорта новостей в формате RSS<br>Полная лента новостей доступна по адресу: <b>'.generatePluginLink('rss_export', '', array(), array(), true, true).(($demoCategory != '')?'</b><br/>Лента новостей для категории <i>'.$catz[$demoCategory]['name'].'</i>: <b>'.generatePluginLink('rss_export', 'category', array('category' => $demoCategory), array(), true, true).'</b>':''),
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
     array_push($cfgX, array(

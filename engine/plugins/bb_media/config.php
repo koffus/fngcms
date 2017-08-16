@@ -24,7 +24,12 @@ function getPlayersNames($path) {
 $dirNames = getPlayersNames(__DIR__.'/players/');
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин добавляет поддержку BB кода [MEDIA]');
+$cfg = array(
+    'description' => 'Плагин добавляет поддержку BB кода [MEDIA]',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
     array_push($cfgX, array(

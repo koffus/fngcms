@@ -25,7 +25,14 @@ $count = intval(pluginGetVariable($plugin, 'count'));
 if ($count < 1 or $count > 50)
 	$count = 1;
 
-$cfg = array('description' => __($plugin.':description'));
+// Fill configuration parameters
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(
@@ -37,6 +44,28 @@ $cfgX = array();
 array_push($cfg, array(
 	'mode' => 'group',
 	'title' => __('group.config'),
+	'entries' => $cfgX,
+	));
+
+$cfgX = array();
+	array_push($cfgX, array(
+		'name' => 'cache',
+		'title' => __('cache'),
+		'descr' => __('cache#desc'),
+		'type' => 'select',
+		'values' => array('1' => __('yesa'), '0' => __('noa')),
+		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
+		));
+	array_push($cfgX, array(
+		'name' => 'cacheExpire',
+		'title' => __('cacheExpire'),
+		'descr' => __('cacheExpire#desc'),
+		'type' => 'input',
+		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
+		));
+array_push($cfg, array(
+	'mode' => 'group',
+	'title' => __('group.cache'),
 	'entries' => $cfgX,
 	));
 
@@ -63,8 +92,8 @@ for ($i = 1; $i <= $count; $i++) {
 		array_push($cfgX, array(
 			'name' => "{$currentVar}_template",
 			'title' => 'Используемый шаблон',
-			'type' => 'input',
-			//'values' => $templateDirectories,
+			'type' => 'select',
+			'values' => $templateDirectories,
 			'value' => pluginGetVariable($plugin, "{$currentVar}_template"),
 			));
 
@@ -197,28 +226,6 @@ for ($i = 1; $i <= $count; $i++) {
 		'entries' => $cfgX,
 		));
 }
-
-$cfgX = array();
-	array_push($cfgX, array(
-		'name' => 'cache',
-		'title' => __('cache'),
-		'descr' => __('cache#desc'),
-		'type' => 'select',
-		'values' => array('1' => __('yesa'), '0' => __('noa')),
-		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
-		));
-	array_push($cfgX, array(
-		'name' => 'cacheExpire',
-		'title' => __('cacheExpire'),
-		'descr' => __('cacheExpire#desc'),
-		'type' => 'input',
-		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
-		));
-array_push($cfg, array(
-	'mode' => 'group',
-	'title' => __('group.cache'),
-	'entries' => $cfgX,
-	));
 
 // RUN
 if ('commit' == $action) {

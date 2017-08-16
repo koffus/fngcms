@@ -1,6 +1,13 @@
+;
+; Version description file for plugin @@ Next Generation CMS
+;
+
 ID: xmenu
 Name: eXtended menus
 Version: 0.1
+Config: config.php
+Install: install.php
+Deinstall: deinstall.php
 Type: plugin
 Description: Расширенное меню
 Author: Vitaly A. Ponomarev

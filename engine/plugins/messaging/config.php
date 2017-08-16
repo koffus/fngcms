@@ -11,7 +11,13 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, $plugin, '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
+
 array_push($cfg, array(
     'name' => 'subject',
     'title' => __($plugin.':subject'),

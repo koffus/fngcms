@@ -13,12 +13,16 @@ if (xmode() and function_exists('xf_configLoad')) {
     $xf = xf_configLoad();
 } else {
     msg(array('type' => 'danger', 'message' => 'XFields plugin is not loaded now!'));
+    exit;
 }
 
 function xmode()
 {
+
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
     // check if xfields plugin is active
-    return (pluginIsActive('xfields')) ? true : false;
+    return $cPlugin->isInstalled('xfields');
 }
 
 if (!is_array($xf))

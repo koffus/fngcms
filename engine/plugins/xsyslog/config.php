@@ -1,11 +1,13 @@
 <?php
 
-if(!defined('NGCMS'))
-{
-	exit('HAL');
-}
+//
+// Configuration file for plugin
+//
 
+// Protect against hack attempts
+if (!defined('NGCMS')) die ('HAL');
 
+// Load lang files
 Lang::loadPlugin('xsyslog', 'config', '', '#');
 
 show_xsyslog();

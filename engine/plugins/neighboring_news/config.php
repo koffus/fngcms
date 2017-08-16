@@ -11,7 +11,12 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин генерирует ссылки на следующую и предыдущую новости.');
+$cfg = array(
+    'description' => 'Плагин генерирует ссылки на следующую и предыдущую новости.',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
     array_push($cfgX, array(

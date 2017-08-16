@@ -20,7 +20,12 @@ if ( file_exists($allowFile = $cPlugin->getFolder('autokeys') .'/config/allow-wo
     $allowText  = file_get_contents( $allowFile );
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 array_push($cfg, array(
     'name' => 'activate_add',

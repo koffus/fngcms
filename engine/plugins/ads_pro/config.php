@@ -52,7 +52,7 @@ function main()
     $s_multidisplay = pluginGetVariable('ads_pro', 'multidisplay_mode');
 
     $ttvars = array(
-        'action' => __('ads_pro:button_general'),
+        'action' => __('ads_pro:btn.general'),
         's_news_0' => ($s_news ? '' : ' selected'),
         's_news_1' => ($s_news ? ' selected' : ''),
         's_news_sort_0' => ($s_news_sort ? '' : ' selected'),
@@ -65,7 +65,7 @@ function main()
     $xt = $twig->loadTemplate($tpath['conf.general'] . 'conf.general.tpl');
 
     $tVars['entries'] = $xt->render($ttvars);
-    $tVars['action'] = __('ads_pro:button_general');
+    $tVars['action'] = __('ads_pro:btn.general');
     $tVars['class'] = array(
         'general' => 'active',
         'list' => '',
@@ -145,7 +145,7 @@ function showlist()
 
     $xt = $twig->loadTemplate($tpath['conf.list'] . 'conf.list.tpl');
     $tvars['entries'] = $xt->render($ttvars);
-    $tvars['action'] = __('ads_pro:button_list');
+    $tvars['action'] = __('ads_pro:btn.list');
     $tvars['class'] = array(
         'general' => '',
         'list' => 'active',
@@ -283,7 +283,7 @@ function add()
     $tvars = array(
         'id' => $id,
         'entries' => $xt->render($ttvars),
-        'action' => $id ? __('ads_pro:button_edit') : __('ads_pro:button_add'),
+        'action' => $id ? __('ads_pro:btn.edit') : __('ads_pro:btn.add'),
         'class' => array(
             'general' => '',
             'list' => '',
@@ -358,7 +358,7 @@ function add_submit()
         msg(array('type' => 'danger', 'message' => __('commited_fail')));
     }
 
-    clearCacheFiles($plugin);
+    clearCacheFiles('ads_pro');
     showlist();
 }
 
@@ -487,6 +487,6 @@ function delete()
     } else {
         msg(array('type' => 'danger', 'message' => __('commited_fail')));
     }
-    clearCacheFiles($plugin);
+    clearCacheFiles('ads_pro');
     showlist();
 }

@@ -8,10 +8,14 @@
 Lang::loadPlugin('auth_vb', 'config', 'auth');
 
 // Fill configuration parameters
-$cfg = array();
+$cfg = array(
+    'description' => __('auth_description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
-array_push($cfg, array('descr' => __('auth_description')));
 array_push($cfgX, array('descr' => __('auth_extdb_fulldesc')));
 array_push($cfgX, array('name' => 'extdb', 'title' => __('auth_extdb_extdb'), 'descr' => __('auth_extdb_extdb_desc'), 'type' => 'select', 'values' => array('1' => __('yesa'), '0' => __('noa')), 'value' => pluginGetVariable('auth_vb','extdb')));
 array_push($cfgX, array('name' => 'dbhost', 'title' => __('auth_extdb_dbhost'), 'type' => 'input', value => pluginGetVariable('auth_vb','dbhost')));

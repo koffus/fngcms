@@ -11,7 +11,13 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин отображает новости, для которых выставлен флаг "добавить в закладки"');
+$cfg = array(
+    'description' => 'Плагин отображает новости, для которых выставлен флаг "добавить в закладки"',
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(

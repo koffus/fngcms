@@ -19,10 +19,10 @@
 			<td>{{ entry.online }}</td>
 			<td class="text-right">
 				<div class="btn-group">
-					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=edit&id={{ entry.id }}" title="{{ lang['ads_pro:button_edit'] }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
-					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=move_up&id={{ entry.id }}" title="{{ lang['ads_pro:button_up'] }}" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
-					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=move_down&id={{ entry.id }}" title="{{ lang['ads_pro:button_down'] }}" class="btn btn-default"><i class="fa fa-arrow-down"></i></a>
-					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=dell&id={{ entry.id }}" title="{{ lang['ads_pro:button_dell'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=edit&id={{ entry.id }}" title="{{ lang['ads_pro:btn.edit'] }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=move_up&id={{ entry.id }}" title="{{ lang['ads_pro:btn.up'] }}" class="btn btn-default"><i class="fa fa-arrow-up"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=move_down&id={{ entry.id }}" title="{{ lang['ads_pro:btn.down'] }}" class="btn btn-default"><i class="fa fa-arrow-down"></i></a>
+					<a href="admin.php?mod=extra-config&plugin=ads_pro&action=dell&id={{ entry.id }}" title="{{ lang['ads_pro:btn.dell'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></a>
 				</div>
 			</td>
 		</tr>

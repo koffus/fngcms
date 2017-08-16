@@ -10,16 +10,17 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
+/*// Check to dependence plugin
+$dependence = [];
+if (!$cPlugin->isInstalled('xfields')) {
+    $dependence[] = 'xfields';
+}*/
+
 // Prepare configuration parameters
-$skList = array();
-if ($skDir = opendir(extras_dir.'/'.$plugin.'/tpl/skins')) {
-	while ($skFile = readdir($skDir)) {
-		if (!preg_match('/^\./', $skFile)) {
-			$skList[$skFile] = $skFile;
-		}
-	}
-	closedir($skDir);
-}
+$skList = $cPlugin->getFoldersSkin($plugin);
 
 $orderby = array(
 	'id_desc' => __($plugin.':orderby_iddesc'), 
@@ -31,7 +32,13 @@ $orderby = array(
 	);
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    //'dependence' => $dependence,
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(

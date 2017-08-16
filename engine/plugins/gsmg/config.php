@@ -10,8 +10,24 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
+// Check to dependence plugin
+$dependence = [];
+if (!$cPlugin->isInstalled('rss_export')) {
+    $dependence['rss_export'] = 'rss_export';
+}
+
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description') . ' <a href="' . home . '/gsmg.xml" target="_blank">' . home . '/gsmg.xml</a>',
+    'dependence' => $dependence,
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
     array_push($cfgX, array(

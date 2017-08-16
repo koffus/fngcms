@@ -17,9 +17,12 @@ foreach ($mysql->select("select * from ".prefix."_balance_manager where monetary
 }
 
 // Fill configuration parameters
-$cfg = array();
-
-array_push($cfg, array('descr' => 'Плагин позволяет получать платежи абонентов операторов сотовой связи, совершаемые посредством SMS сообщений (при помощи сервиса <a href="http://russianbilling.com/" target="_blank">RussianBilling.com</a>).<br />Данный плагин является дополнением к плагину <b>finance</b>.<br /><br />'));
+$cfg = array(
+    'description' => 'Плагин позволяет получать платежи абонентов операторов сотовой связи, совершаемые посредством SMS сообщений (при помощи сервиса <a href="http://russianbilling.com/" target="_blank">RussianBilling.com</a>).<br />Данный плагин является дополнением к плагину <b>finance</b>.<br /><br />',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array('name' => 'passkey', 'title' => 'Ключ-пароль сервиса', 'descr' => '<font color="red">Этот параметр необходимо заполнять для обеспечения безопасности!</font><br/>Параметр соответствует аналогичному параметру в настройках сервиса RussianBilling','type' => 'input', value => pluginGetVariable('fin_sms_rb','passkey')));

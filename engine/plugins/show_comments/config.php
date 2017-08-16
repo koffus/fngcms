@@ -7,18 +7,15 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-// Load CORE Plugin
-$cPlugin = CPlugin::instance();
-
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
-//
-// Prepare configuration parameters
-//
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+$dependence = [];
+// Check to dependence plugin
 if (!$cPlugin->isInstalled('comments')) {
-    msg(array('type' => 'danger', 'message' => 'Плагин comments не установлен!<br />Вернуться в <a href="admin.php?mod=extras" class="alert-link">Управление плагинами</a>'));
-    return false;
+    $dependence['comments'] = 'comments';
 }
 
 function show_comments() {
@@ -214,8 +211,15 @@ function show_comments() {
     echo '<table><tr><td>' . $startpage . $page2left . $page1left . '<strong>' . $page . '</strong>' . $page1right . $page2right . $endpage . '&nbsp;&nbsp;&nbsp;&nbsp;</td><td style="align:right"><input class="button" type="submit" value="Удалить"></td></tr></table></form>';
 
 }
+
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин выводит список всех комментариев на сайте.');
+$cfg = array(
+    'description' => 'Плагин выводит список всех комментариев на сайте.',
+    'dependence' => $dependence,
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
     array_push($cfgX, array(

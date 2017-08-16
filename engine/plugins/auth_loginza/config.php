@@ -10,15 +10,33 @@ if (!defined('NGCMS')) die ('HAL');
 # preload config file
 
 
-$cfg = array();
+// Fill configuration parameters
+$cfg = array(
+    //'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
+
 $cfgX = array();
-array_push($cfgX, array('name' => 'localSource', 'title' => 'Выберите каталог из которого плагин будет брать шаблоны для отображения<br /><small><b>Шаблон сайта</b> - плагин будет пытаться взять шаблоны из общего шаблона сайта; в случае недоступности - шаблоны будут взяты из собственного каталога плагина<br /><b>Плагин</b> - шаблоны будут браться из собственного каталога плагина</small>', 'type' => 'select', 'values' => array('0' => 'Шаблон сайта', '1' => 'Плагин'), 'value' => intval(pluginGetVariable($plugin,'localSource'))));
-array_push($cfg, array('mode' => 'group', 'title' => '<b>Настройки отображения</b>', 'entries' => $cfgX));
+    array_push($cfgX, array(
+        'name' => 'localSource',
+        'title' => __('localSource'),
+        'descr' => __('localSource#desc'),
+        'type' => 'select',
+        'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
+        'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
+        ));
+array_push($cfg, array(
+    'mode' => 'group',
+    'title' => __('group.source'),
+    'entries' => $cfgX,
+    ));
 
 // RUN
 if ('commit' == $action) {
-	// If submit requested, do config save
-	commit_plugin_config_changes($plugin, $cfg);
+    // If submit requested, do config save
+    commit_plugin_config_changes($plugin, $cfg);
 }
 
 generate_config_page($plugin, $cfg);

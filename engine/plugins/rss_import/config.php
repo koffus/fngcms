@@ -17,7 +17,13 @@ if ( (intval($count) < 1) or (intval($count) > 20) )
 	$count = 1;
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин RSS новостей.');
+$cfg = array(
+    'description' => 'Плагин RSS новостей.',
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array(

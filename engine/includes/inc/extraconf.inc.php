@@ -188,10 +188,15 @@ function generate_config_page($module, $params)
 
         return $tvars;
     }
-    $entries = array();
-    $description = $params['description'];
-    unset($params['description']);
 
+    // Make description, dependence, navigation panel and submit footer to page plugin config
+    $settings = ['description', 'dependence', 'navigation', 'submit'];
+    foreach ($settings as $set) {
+        $$set = isset($params[$set]) ? $params[$set] : false;
+        unset($params[$set]);
+    }
+
+    $entries = array();
     // For each param do
     foreach ($params as $param) {
         if (isset($param['mode']) and 'group' == $param['mode']) {
@@ -213,9 +218,12 @@ function generate_config_page($module, $params)
     }
 
     $tVars = array(
-        'description' => $description,
-        'entries' => $entries,
         'plugin' => $module,
+        'description' => $description,
+        'dependence' => $dependence,
+        'navigation' => $navigation,
+        'entries' => $entries,
+        'submit' => $submit,
         'php_self' => $PHP_SELF,
         'token' => genUToken('admin.extra-config'),
     );

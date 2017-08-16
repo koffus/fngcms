@@ -14,7 +14,12 @@ Lang::loadPlugin($plugin, 'config', '', ':');
 include_once('inc/similar.php');
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array(

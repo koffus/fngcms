@@ -11,7 +11,12 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => 'Замена слов на адрес страниц');
+$cfg = array(
+    'description' => 'Замена слов на адрес страниц',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(

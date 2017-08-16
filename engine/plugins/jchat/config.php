@@ -14,7 +14,12 @@ Lang::loadPlugin($plugin, 'config', '', ':');
 $jcRowCount = $mysql->result("select count(*) from ".prefix."_jchat");
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array('name' => 'jcRowCount','title' => 'Всего записей','descr' => '','type' => 'input','html_flags' => 'readonly','value' => intval($jcRowCount),));

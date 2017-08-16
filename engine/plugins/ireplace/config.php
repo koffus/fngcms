@@ -6,10 +6,17 @@
 
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
+
+// Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin . ':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 array_push($cfg, array(
     'name' => 'area',

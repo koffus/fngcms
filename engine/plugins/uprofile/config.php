@@ -11,7 +11,12 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin($plugin, 'config', '', ':');
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин позволяет пользователям просматривать чужие профили и редактировать свой');
+$cfg = array(
+    'description' => 'Плагин позволяет пользователям просматривать чужие профили и редактировать свой',
+    'submit' => array(
+        array('type' => 'default'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(

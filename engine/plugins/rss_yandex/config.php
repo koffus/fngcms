@@ -36,7 +36,13 @@ foreach ($catz as $scanCat) {
 }
 
 // Fill configuration parameters
-$cfg = array('description' => 'Плагин экспорта ленты новостей для поисковой системы Яndex<br>Полная лента новостей доступна по адресу: <b>'.generatePluginLink('rss_yandex', '', array(), array(), true, true).(($demoCategory != '') ? '</b><br/>Лента новостей для категории <i>'.$catz[$demoCategory]['name'].'</i>: <b>'.generatePluginLink('rss_yandex', 'category', array('category' => $demoCategory), array(), true, true).'</b>' : ''));
+$cfg = array(
+    'description' => 'Плагин экспорта ленты новостей для поисковой системы Яndex<br>Полная лента новостей доступна по адресу: <b>'.generatePluginLink('rss_yandex', '', array(), array(), true, true).(($demoCategory != '') ? '</b><br/>Лента новостей для категории <i>'.$catz[$demoCategory]['name'].'</i>: <b>'.generatePluginLink('rss_yandex', 'category', array('category' => $demoCategory), array(), true, true).'</b>' : ''),
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
 array_push($cfgX, array(
@@ -57,7 +63,8 @@ array_push($cfgX, array(
         'title' => 'Формат генерации полного текста новости для ленты Яndex',
         'descr' => '<code>Полная</code> - выводится только полная часть новости<br><code>Короткая+полная</code> - выводится короткая + полная часть новости',
         'type' => 'select',
-        'values' => array('0' => 'Полная', '1' => 'Полная+короткая'), value => pluginGetVariable('rss_yandex','full_format'),
+        'values' => array('0' => 'Полная', '1' => 'Полная+короткая'),
+        'value' => pluginGetVariable('rss_yandex','full_format'),
         ));
 array_push($cfgX, array(
         'name' => 'news_age',

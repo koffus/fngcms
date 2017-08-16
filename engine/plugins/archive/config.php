@@ -15,7 +15,7 @@ foreach (array(
     'maxnum' => 12,
     'counter' => 1,
     'tcounter' => 1,
-    'localSource' => 0,
+    'localSource' => 1,
     'cache' => 1,
     'cacheExpire' => 60,
     ) as $k => $v) {
@@ -24,7 +24,13 @@ foreach (array(
 }
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
     array_push($cfgX, array(
@@ -63,7 +69,7 @@ $cfgX = array();
         'descr' => __('localSource#desc'),
         'type' => 'select',
         'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-        'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
+        'value' => intval(pluginGetVariable($plugin, 'localSource'))
         ));
 array_push($cfg, array(
     'mode' => 'group',
@@ -78,14 +84,14 @@ $cfgX = array();
         'descr' => __('cache#desc'),
         'type' => 'select',
         'values' => array('1' => __('yesa'), '0' => __('noa')),
-        'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
+        'value' => intval(pluginGetVariable($plugin, 'cache'))
         ));
     array_push($cfgX, array(
         'name' => 'cacheExpire',
         'title' => __('cacheExpire'),
         'descr' => __('cacheExpire#desc'),
         'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
+        'value' => intval(pluginGetVariable($plugin, 'cacheExpire'))
         ));
 array_push($cfg, array(
     'mode' => 'group',

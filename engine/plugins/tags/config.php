@@ -10,19 +10,20 @@ if (!defined('NGCMS')) die ('HAL');
 // Load lang files
 Lang::loadPlugin($plugin, 'config', '', ':');
 
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
 // Prepare configuration parameters
-$skList = array();
-if ($skDir = opendir(extras_dir.'/'.$plugin.'/tpl/skins')) {
-	while ($skFile = readdir($skDir)) {
-		if (!preg_match('/^\./', $skFile)) {
-			$skList[$skFile] = $skFile;
-		}
-	}
-	closedir($skDir);
-}
+$skList = $cPlugin->getFoldersSkin($plugin);
 
 // Fill configuration parameters
-$cfg = array('description' => __($plugin.':description'));
+$cfg = array(
+    'description' => __($plugin.':description'),
+    'submit' => array(
+        array('type' => 'default'),
+        array('type' => 'clearCacheFiles'),
+    )
+    );
 
 $cfgX = array();
 	array_push($cfgX, array(
