@@ -19,6 +19,7 @@ $skList = $cPlugin->getFoldersSkin($plugin);
 // Fill configuration parameters
 $navigation[] = array(
     'class' => 'active',
+    'data' => 'data-toggle="tab"',
     'href' => '#configTabs-menu_0',
     'title' => 'Категории',
 );
@@ -27,6 +28,7 @@ $var = pluginGetVariable('xmenu','activate');
 for ($i = 1; $i <= 9; $i++) {
     $navigation[] = array(
         'class' => $var[$i] ? '': 'disabled', // Make an activity array - to mark menu's that are activated
+        'data' => 'data-toggle="tab"',
         'href' => '#configTabs-menu_' . $i,
         'title' => 'Меню ' . $i,
     );

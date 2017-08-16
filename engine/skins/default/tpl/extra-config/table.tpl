@@ -28,7 +28,7 @@
     {% if navigation %}
         <ul class="nav nav-tabs">
         {% for link in navigation %}
-            <li class="{{ link.class }}"><a href="{{ link.href }}" data-toggle="tab">{{ link.title }}</a></li>
+            <li class="{{ link.class }}"><a href="{{ link.href }}" {{ link.data }}>{{ link.title }}</a></li>
         {% endfor %}
         </ul>
         <br/>
