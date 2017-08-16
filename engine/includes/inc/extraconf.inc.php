@@ -145,6 +145,7 @@ function generate_config_page($module, $params)
         if ('flat' == $param['type']) {
             $tvars['type'] = 'flat';
             $tvars['input'] = $param['input'];
+
             return $tvars;
         }
 
