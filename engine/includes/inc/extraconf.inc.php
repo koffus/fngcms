@@ -175,18 +175,25 @@ function generate_config_page($module, $params)
 
         if ('input' == $param['type']) {
             $tvars['input'] = '<input type="text" name="' . $param['name'] . '" ' . $html_flags . ' value="' . secure_html($param['value']) . '" class="form-control" />';
+            $tvars['type'] = 'input';
         } elseif ('button' == $param['type']) {
             $tvars['input'] = '<input type="button" name="' . $param['name'] . '" ' . $html_flags . ' value="' . secure_html($param['value']) . '" class="btn btn-default" />';
+            $tvars['type'] = 'button';
         } elseif ('checkbox' == $param['type']) {
             $tvars['input'] = '<input type="checkbox" name="' . $param['name'] . '" ' . $html_flags . ' value="1"' . ($param['value'] ? ' checked' : '') . ' />';
+            $tvars['type'] = 'checkbox';
         } elseif ('hidden' == $param['type']) {
             $tvars['input'] = '<input type="hidden" name="' . $param['name'] . '" value="' . secure_html($param['value']) . '" class="form-control" />';
+            $tvars['type'] = 'hidden';
         } elseif ('text' == $param['type']) {
             $tvars['input'] = '<textarea name="' . $param['name'] . '" ' . $html_flags . ' class="form-control">' . secure_html($param['value']) . '</textarea>';
+            $tvars['type'] = 'text';
         } elseif ('select' == $param['type']) {
             $tvars['input'] = MakeDropDown($param['values'], $param['name'], $param['value']);
+            $tvars['type'] = 'select';
         } elseif ('manual' == $param['type']) {
             $tvars['input'] = $param['input'];
+            $tvars['type'] = 'manual';
         }
 
         return $tvars;
