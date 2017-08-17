@@ -15,7 +15,7 @@ $cPlugin = CPlugin::instance();
 
 // Check to dependence plugin
 $dependence = [];
-if (!$cPlugin->isInstalled('rss_export')) {
+if (!$cPlugin->isActive('rss_export')) {
     $dependence['rss_export'] = 'rss_export';
 }
 

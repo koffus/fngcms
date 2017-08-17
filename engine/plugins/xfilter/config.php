@@ -15,7 +15,7 @@ $cPlugin = CPlugin::instance();
 
 /*// Check to dependence plugin
 $dependence = [];
-if (!$cPlugin->isInstalled('xfields')) {
+if (!$cPlugin->isActive('xfields')) {
     $dependence[] = 'xfields';
 }*/
 

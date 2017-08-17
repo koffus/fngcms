@@ -14,7 +14,7 @@ Lang::loadPlugin($plugin, 'config', '', ':');
 $cPlugin = CPlugin::instance();
 $dependence = [];
 // Check to dependence plugin
-if (!$cPlugin->isInstalled('comments')) {
+if (!$cPlugin->isActive('comments')) {
     $dependence['comments'] = 'comments';
 }
 

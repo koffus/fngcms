@@ -12,10 +12,10 @@ $cPlugin = CPlugin::instance();
 
 // Check to dependence plugin
 $dependence = [];
-if (!$cPlugin->isInstalled('xfields')) {
+if (!$cPlugin->isActive('xfields')) {
     $dependence['xfields'] = 'xfields';
 }
-if (!$cPlugin->isInstalled('feedback')) {
+if (!$cPlugin->isActive('feedback')) {
     $dependence['feedback'] = 'feedback';
 }
 

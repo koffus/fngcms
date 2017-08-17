@@ -22,7 +22,7 @@ function xmode()
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // check if xfields plugin is active
-    return $cPlugin->isInstalled('xfields');
+    return $cPlugin->isActive('xfields');
 }
 
 if (!is_array($xf))
