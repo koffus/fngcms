@@ -10,25 +10,25 @@ if (!defined('NGCMS')) die ('HAL');
 Lang::loadPlugin('comments', 'config', '', ':');
 
 $db_update = array(
- array(
- 'table' => 'news',
- 'action' => 'modify',
- 'fields' => array(
- array('action' => 'drop', 'name' => 'com'),
- array('action' => 'drop', 'name' => 'allow_com'),
- )
- ),
- array(
- 'table' => 'users',
- 'action' => 'modify',
- 'fields' => array(
- array('action' => 'drop', 'name' => 'com'),
- )
- ),
- array(
- 'table' => 'comments',
- 'action' => 'drop',
- )
+    array(
+        'table' => 'news',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'com'),
+            array('action' => 'drop', 'name' => 'allow_com'),
+            )
+    ),
+    array(
+        'table' => 'users',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'com'),
+            )
+    ),
+    array(
+        'table' => 'comments',
+        'action' => 'drop',
+    )
 );
 
 // RUN
