@@ -44,7 +44,7 @@
                     <legend>{{ entry.groupTitle }}{% if entry.flags.toggle %} <a href="#" title="{{ lang['group.toggle'] }}" class="adm-group-toggle"><i class="fa fa-caret-square-o-down"></i></a>{% endif %}</legend>
                     <div class="adm-group-content"{% if entry.flags.toggle %} style="display:none;"{% endif %}>
                         {% for subentry in entry.subentries %}
-                            {% if subentry.type == 'flat' %}
+                            {% if ('flat' == subentry.type or 'hidden' == subentry.type) %}
                                 {{ subentry.input }}
                             {% else %}
                             <div class="form-group">
@@ -64,7 +64,7 @@
                     </div>
                 </fieldset>
             {% else %}
-                {% if entry.type == 'flat' %}
+                {% if ('flat' == entry.type or 'hidden' == entry.type) %}
                     {{ entry.input }}
                 {% else %}
                     <div class="form-group">
