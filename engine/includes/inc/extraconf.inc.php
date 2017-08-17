@@ -62,9 +62,15 @@ function pluginSwitch($pluginID, $mode = 'on')
                     unset($plugins['actions'][$key][$pluginID]);
                 }
             }
+            
+            if (isset($plugins['config'][$pluginID])) {
+                unset($plugins['config'][$pluginID]);
+                // Save configuration parameters of plugins
+                $cPlugin->setConfig($plugins['config']);
+            }
 
-            // update active extra list in memory: SET and SAVEACTIVE
-            return ($cPlugin->setList($plugins) and $cPlugin->saveListActive());
+            // update active extra list in memory: SET and SAVEACTIVE and SAVECONFIG
+            return ($cPlugin->setList($plugins) and $cPlugin->saveListActive() and $cPlugin->saveConfig());
     }
     return false;
 }
