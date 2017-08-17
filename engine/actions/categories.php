@@ -438,7 +438,7 @@ function admCategoryEdit(){
 
 if ($action == 'edit') {
     admCategoryEditForm();
-} else if ($action == 'add') {
+} elseif ($action == 'add') {
     admCategoryAddForm();
 } else {
     $dosort = 1;
