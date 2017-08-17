@@ -192,8 +192,8 @@ function generate_config_page($module, $params)
         return $tvars;
     }
 
-    // Make description, dependence, navigation panel and submit footer to page plugin config
-    $settings = ['description', 'dependence', 'navigation', 'submit'];
+    // Make action (POST form), description, dependence, navigation panel and submit footer to page plugin config
+    $settings = ['action', 'description', 'dependence', 'navigation', 'submit'];
     foreach ($settings as $set) {
         $$set = isset($params[$set]) ? $params[$set] : false;
         unset($params[$set]);
@@ -223,6 +223,7 @@ function generate_config_page($module, $params)
     $tVars = array(
         'plugin' => $module,
         'description' => $description,
+        'action' => $action,
         'dependence' => $dependence,
         'navigation' => $navigation,
         'entries' => $entries,

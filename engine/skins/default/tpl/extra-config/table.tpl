@@ -34,9 +34,8 @@
         <br/>
     {% endif %}
 
-    <form id="postForm" name="form" action="admin.php?mod=extra-config&plugin={{ plugin }}" method="post">
+    <form id="postForm" name="form" action="{% if action %}{{ action }}{% else %}admin.php?mod=extra-config&plugin={{ plugin }}&action=commit{% endif %}" method="post">
         <input type="hidden" name="token" value="{{ token }}" />
-        <input type="hidden" name="action" value="commit" />
 
         <div id="configTabs" class="tab-content">
         {% for entry in entries %}
