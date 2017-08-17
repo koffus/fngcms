@@ -152,7 +152,7 @@ function breadcrumbs() {
                 $location_last = $SYSTEM_FLAGS['info']['title']['group'].' '.$SYSTEM_FLAGS['info']['title']['item'];
             } elseif ( $pluginName == 'core' and (in_array($CurrentHandler['handlerName'], array('registration', 'lostpassword', 'login'))) ) {
                 $location_last = $SYSTEM_FLAGS['info']['title']['group'];
-            } elseif ( $params['plugin'] or $pluginName ) {
+            } elseif ( isset($params['plugin']) or isset($pluginName) ) {
                 # if plugin provide put some info
                 if( isset($SYSTEM_FLAGS['info']['breadcrumbs']) ) {
                     # plugin name becomes link
