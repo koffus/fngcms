@@ -371,6 +371,13 @@ class CPlugin
         return isset($this->plugins['installed'][$pluginID]);
     }
 
+    // pluginIsActive
+    // Report if plugin is active and anabled
+    public function isActive($pluginID)
+    {
+        return isset($this->plugins['active'][$pluginID]);
+    }
+
     // Return plugin folder
     public function getFolder($plugin)
     {
