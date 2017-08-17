@@ -184,11 +184,7 @@ function generate_config_page($module, $params)
         } elseif ('text' == $param['type']) {
             $tvars['input'] = '<textarea name="' . $param['name'] . '" ' . $html_flags . ' class="form-control">' . secure_html($param['value']) . '</textarea>';
         } elseif ('select' == $param['type']) {
-            $tvars['input'] = '<select name="' . $param['name'] . '" ' . $html_flags . ' class="form-control">';
-            foreach ($param['values'] as $oid => $oval) {
-                $tvars['input'] .= '<option value="' . secure_html($oid) . '"' . ($param['value'] == secure_html($oid) ? ' selected' : '') . '>' . secure_html($oval) . '</option>';
-            }
-            $tvars['input'] .= '</select>';
+            $tvars['input'] = MakeDropDown($param['values'], $param['name'], $param['value']);
         } elseif ('manual' == $param['type']) {
             $tvars['input'] = $param['input'];
         }
