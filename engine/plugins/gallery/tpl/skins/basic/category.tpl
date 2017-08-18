@@ -5,7 +5,7 @@
     <div class="widget-body">
         <ul class="list-unstyled">
             {% for gallery in galleries %}
-                <li><a href="{{ gallery.link }}" title="{{ gallery.title }}">{{ gallery.title }} <span class="pull-right">{{ gallery.count }}</span></a></li>
+                <li><a href="{{ gallery.url }}" title="{{ gallery.title }}">{{ gallery.title }} <span class="pull-right">{{ gallery.count }}</span></a></li>
             {% endfor %}
         </ul>
     </div>

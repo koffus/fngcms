@@ -77,6 +77,7 @@ function plugin_gallery_main($params = [])
         $galleries[] = [
             'id' => $id,
             'name' => $name,
+            'title' => secure_html($row['title']),
             'url' => generatePluginLink('gallery', 'gallery', array('id' => $id, 'name' => $name)),
             'count' => $row['count'],
             'description' => secure_html($row['description']),

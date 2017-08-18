@@ -4,10 +4,10 @@
     <div class="card-columns">
         {% for gallery in galleries %}
         <div class="card card-inverse">
-            <a href="{{ gallery.url }}" title="{{ gallery.name }}">
-                <img src="{{ gallery.src }}" alt="{{ gallery.name }}" class="card-img-top img-fluid" />
+            <a href="{{ gallery.url }}" title="{{ gallery.title }}">
+                <img src="{{ gallery.src }}" alt="{{ gallery.title }}" class="card-img-top img-fluid" />
                 <div class="card-img-overlay">
-                    <h4 class="card-title">{{ gallery.name }}</h4>
+                    <h4 class="card-title">{{ gallery.title }}</h4>
                     <p class="card-text">{{ gallery.count }}</p>
                 </div>
             </a>
