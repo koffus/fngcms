@@ -472,7 +472,7 @@ function showWidgetList($plugin, $action)
     // RUN
     do {
         if ('widget_edit_submit' == $action) {
-            if (empty($_POST['name']) or empty($_POST['title']) or empty($_POST['if_active'])  or empty($_POST['skin']) or empty($_POST['image_count']) or empty($_POST['if_rand'])) {
+            if (empty($_POST['name']) or empty($_POST['title']) or empty($_POST['if_active'])  or empty($_POST['skin']) or empty($_POST['image_count']) or !isset($_POST['if_rand'])) {
                 msg(array('type' => 'danger', 'message' => 'Не все параметры заданы' . '<br><a href="#" onClick="history.back(1);" class="alert-link">Вернуться назад</a>'));
                 break;
             }
