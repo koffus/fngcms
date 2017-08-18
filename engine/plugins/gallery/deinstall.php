@@ -30,7 +30,7 @@ $db_update = array(
 if ('commit' == $action) {
     fixdb_plugin_install($plugin, $db_update, 'deinstall');
 
-    $ULIB = new urlLibrary();
+    $ULIB = new UrlLibrary();
     $ULIB->loadConfig();
     $ULIB->removeCommand('gallery', '');
     $ULIB->removeCommand('gallery', 'gallery');

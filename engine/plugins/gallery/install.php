@@ -46,7 +46,7 @@ function plugin_gallery_install($action)
         ),
     );
 
-    $ULIB = new urlLibrary();
+    $ULIB = new UrlLibrary();
     $ULIB->loadConfig();
     $ULIB->registerCommand('gallery', 'gallery',
         array ('vars' => array(
