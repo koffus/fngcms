@@ -156,8 +156,8 @@ function generate_config_page($module, $params)
         }
 
         $tvars = array(
-            'name' => $param['name'],
-            'title' => $param['title'],
+            'name' => isset($param['name']) ? $param['name'] : '',
+            'title' => isset($param['title']) ? $param['title'] : '',
             'descr' => isset($param['descr']) ? $param['descr'] : '',
             'error' => isset($param['error']) ? (str_replace('%error%', $param['error'], __('param_error'))) : '',
             'input' => '',

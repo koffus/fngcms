@@ -7,36 +7,43 @@
 // Author: Vitaly Ponomarev
 //
 
-include_once "../core.php";
+if ('plugin' == $_REQUEST['mode']) {
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+    header('Content-Type: text/html; charset=UTF-8');
+    include_once "../core.php";
 
-header('Content-Type: text/html; charset=UTF-8');
+    // Protect against hack attempts
+    if (!defined('NGCMS')) die ('HAL');
 
-if ($_REQUEST['mode'] == 'plugin') {
-    
-	// Load CORE Plugin
+    // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     // Load plugin list
     $extras = $cPlugin->getInfo();
-    
-	$plugin = str_replace(array('/', '\\', '..'), '', $_REQUEST['plugin']);
-	if (!is_array($extras[$plugin]))
-		return;
 
-	if ($_REQUEST['item'] == 'readme') {
-		if (file_exists(root.'plugins/'.$plugin.'/readme')) {
-			print "<pre>";
-			print file_get_contents(root.'plugins/'.$plugin.'/readme');
-			print "</pre>";
-		}
-	}
-	if ($_REQUEST['item'] == 'history') {
-		if (file_exists(root.'plugins/'.$plugin.'/history')) {
-			print "<pre>";
-			print file_get_contents(root.'plugins/'.$plugin.'/history');
-			print "</pre>";
-		}
-	}
+    $plugin = str_replace(array('/', '\\', '..'), '', secure_html($_REQUEST['plugin']));
+    if (!is_array($extras[$plugin]))
+        return;
+
+    if ('readme' == $_REQUEST['item']) {
+        if (file_exists(root.'plugins/'.$plugin.'/readme')) {
+            print "<pre>";
+            print file_get_contents(root.'plugins/'.$plugin.'/readme');
+            print "</pre>";
+        }
+    }
+    if ('history' == $_REQUEST['item']) {
+        if (file_exists(root . 'plugins/' . $plugin . '/history')) {
+            print "<pre>";
+            print file_get_contents(root . 'plugins/' . $plugin . '/history');
+            print "</pre>";
+        }
+    }
+    
+    /*?>
+    <script src="<?php echo scriptLibrary ?>/js/showdown-1.7.1.js"></script>
+    <script>
+        var converter = new showdown.Converter();
+        document.getElementsByTagName("pre")[0].innerHTML = converter.makeHtml(document.getElementsByTagName("pre")[0].innerHTML);
+    </script>
+    <?php*/
 }

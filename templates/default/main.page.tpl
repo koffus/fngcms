@@ -9,6 +9,11 @@
 
 		<aside class="sidebar col-lg-3 offset-lg-1">
 
+            {% if pluginIsActive('gallery') %}
+                {{ plugin_gallery_category }}
+                {{ plugin_gallery_widget_gallery }}
+			{% endif %}
+
 			{% if pluginIsActive('archive') %}
 				{{ callPlugin('archive.show', {'maxnum' : 12, 'counter' : 1, 'tcounter' : 1, 'template': 'archive', 'cacheExpire': 60}) }}
 			{% endif %}

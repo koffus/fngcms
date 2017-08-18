@@ -114,9 +114,10 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
     padding-right: 8px;
 }
 .breadcrumb {
-	padding: .563rem .75rem;
-    font-size: 1rem;
+    padding: .563rem .75rem;
+    font-size: .8rem;
     line-height: 1.25;
+    font-weight: 100;
 }
 .breadcrumb > li a, .breadcrumb > li i {
     color: #888;

@@ -417,8 +417,10 @@ class CPlugin
                     }
                 }
                 closedir($skinDir);
-                return $skList;
+                return count($skList) ? $skList : false;
             }
+            // Exit if no skin dir
+            return false;
         }
         // Exit if no skin dir
         return false;
