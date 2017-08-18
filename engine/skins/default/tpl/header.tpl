@@ -9,6 +9,7 @@
     <link href="{{ scriptLibrary }}/fontawesome-4.7.0/fontawesome.css" rel="stylesheet"/>
     <link href="{{ skin }}" rel="stylesheet"/>
     <link href="{{ skins_url }}/css/style.css" rel="stylesheet"/>
+    <link href="{{ tpl_url }}/img/favicon.ico" rel="icon" />
 
     <script src="{{ scriptLibrary }}/js/jquery-3.2.1.js"></script>
     <script src="{{ scriptLibrary }}/bootstrap-3.3.7/bootstrap.js"></script>
