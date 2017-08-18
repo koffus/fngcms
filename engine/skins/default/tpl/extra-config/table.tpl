@@ -8,11 +8,7 @@
 <!-- Info content -->
 <div class="page-main">
 
-    {% if description %}
-        <div class="well">{{ description }}</div>
-    {% else %}
-        <div class="well">{{ lang.no_description }}</div>
-    {% endif %}
+    {% if description %}<div class="well">{{ description }}</div>{% else %}<div class="well">{{ lang.no_description }}</div>{% endif %}
 
     {% if dependence %}
         <div class="alert alert-warning">
