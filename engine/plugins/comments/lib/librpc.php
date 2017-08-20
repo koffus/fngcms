@@ -237,10 +237,10 @@ function comments_rpc_manage($params) {
                     '{newslink}',
                     '{newstitle}'),
             array($SQL['author'],
-                    ($SQL['author_id'])?'<a href="'.$alink.'">':'',
-                    ($SQL['author_id'])?'</a>':'',
+                    ($SQL['author_id']) ? '<a href="'.$alink.'">' : '',
+                    ($SQL['author_id']) ? '</a>' : '',
                     $parse->bbcodes($parse->smilies(secure_html($SQL['text']))),
-                    ('news' == $params['table']) ? News::generateLink($postRow, false, 0, true) : secure_html($_POST['reqReferer']),
+                    (('news' == $params['table']) ? News::generateLink($postRow, false, 0, true) : secure_html($_POST['reqReferer'])),
                     isset($postRow['title']) ? $postRow['title'] : $postRow['name'],
                     ),
             __('comments:notice')
