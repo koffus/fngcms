@@ -452,6 +452,7 @@ function coreLogout()
     $auth_db->drop_auth();
     @header("Location: ".(preg_match('#^http\:\/\/#', $HTTP_REFERER, $tmp)?$HTTP_REFERER:$config['home_url']));
 
+    // if header(); does not work
     unset($userROW);
     unset($username);
     $is_logged = false;
