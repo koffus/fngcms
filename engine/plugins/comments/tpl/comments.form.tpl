@@ -8,7 +8,9 @@ function add_comment(news, action) {
             {% if (useCaptcha) %}"captcha": form.captcha.value,{% endif %}
         {% endif %}
         "content": form.content.value,
-        "newsid": form.newsid.value,
+        "tokken": form.tokken.value,
+        "plugin": form.plugin.value,
+        "postid": form.postid.value,
         "ajax": "1",
         "json": "1",
         };
@@ -24,7 +26,9 @@ function add_comment(news, action) {
 
 <div class="respond card card-block">
     <form id="comment" method="post" action="{{ post_url }}" name="form" onsubmit="add_comment(); return false;" novalidate>
-        <input type="hidden" name="newsid" value="{{ newsid }}" />
+        <input type="hidden" name="tokken" value="{{ tokken }}" />
+        <input type="hidden" name="plugin" value="{{ plugin }}" />
+        <input type="hidden" name="postid" value="{{ postid }}" />
         <input type="hidden" name="referer" value="{{ request_uri }}" />
 
         <fieldset>

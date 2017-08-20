@@ -772,7 +772,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
         $tvars['vars']['news']['embed']['imgCount'] = count($tvars['vars']['news']['embed']['images']);
 
         // Print icon if only one parent category
-        if (isset($row['catid']) and !stristr(",", $row['catid']) and isset($catmap[$row['catid']]) and ($catalt = $catmap[$row['catid']]) and isset($catz[$catalt]['icon']) and $catz[$catalt]['icon']) {
+        if (!empty($row['catid']) and !stristr(",", $row['catid']) and isset($catmap[$row['catid']]) and ($catalt = $catmap[$row['catid']]) and isset($catz[$catalt]['icon']) and $catz[$catalt]['icon']) {
             // [TWIG] news.flags.hasCategoryIcon
             $tvars['news']['flags']['hasCategoryIcon'] = true;
             $tvars['vars']['icon'] = $catz[$catalt]['icon'];

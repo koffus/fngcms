@@ -6,8 +6,19 @@ function comments_rpc_manage($params) {
     // Connect library
     include_once(root . "/plugins/comments/inc/comments.show.php");
     Lang::loadPlugin('comments', 'main', '', ':');
-    
+
     $SQL = array();
+
+    if (!empty($params['postid'])) {
+        $SQL['post'] = (int)$params['postid'];
+    } else {
+        return array('status' => 0, 'errorCode' => 999, 'errorText' => 'Не задан ID записи');
+    }
+
+    // CSRF protection variables
+    if (empty($params['tokken']) or $params['tokken'] != genUToken('comment.add.' . $SQL['post'])) {
+        return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.regonly'));
+    }
 
     // Check membership
     // If login/pass is entered (either logged or not)
@@ -38,17 +49,6 @@ function comments_rpc_manage($params) {
         $SQL['author_id'] = 0;
         $SQL['mail'] = isset($params['mail']) ? secure_html($params['mail']) : 0;
         $is_member = 0;
-    }
-
-    // CSRF protection variables
-    $sValue = '';
-    if (preg_match('#^(\d+)\#(.+)$#', $params['newsid'], $m)) {
-        $SQL['post'] = intval($m[1]);
-        $sValue = intval($m[2]);
-    }
-
-    if (empty($SQL['post']) or $sValue != genUToken('comment.add.'.$SQL['post'])) {
-        return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.regonly'));
     }
 
     // If user is not logged, make some additional tests
@@ -110,16 +110,26 @@ function comments_rpc_manage($params) {
         }
     }
 
+    // Check plugin table
+    if (!empty($params['plugin'])) {
+        $params['table'] = secure_html($params['plugin']);
+        $SQL['module'] = $params['table'];
+    } else {
+        $params['table'] = 'news';
+    }
+
     // Locate news
-    if ($news_row = $mysql->record("select * from ".prefix."_news where id = ".db_squote($SQL['post']))) {
+    if ($postRow = $mysql->record("SELECT * FROM ".prefix."_" . $params['table'] . " WHERE id = ".db_squote($SQL['post']))) {
         // Determine if comments are allowed in this specific news
-        $allowCom = $news_row['allow_com'];
+        $allowCom = $postRow['allow_com'];
         if ($allowCom == 2) {
-            // `Use default` - check master category
-            $catid = explode(',', $news_row['catid']);
-            $masterCat = intval(array_shift($catid));
-            if ($masterCat and isset($catmap[$masterCat])) {
-                $allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
+            if ('news' == $params['table']) {
+                // `Use default` - check master category
+                $catid = explode(',', $postRow['catid']);
+                $masterCat = intval(array_shift($catid));
+                if ($masterCat and isset($catmap[$masterCat])) {
+                    $allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
+                }
             }
 
             // If we still have 2 (no master category or master category also have 'default' - fetch plugin's config
@@ -138,19 +148,15 @@ function comments_rpc_manage($params) {
     $multiCheck = 0;
 
     // Make tests only for non-admins
-    if (!is_array($userROW)) {
+    if (is_array($userROW) and $userROW['status'] != 1 and isset($postRow['author_id'])) {
+        // Logged. Skip admins
+        $multiCheck = !intval(pluginGetVariable('comments', (($userROW['id'] == $postRow['author_id']) ? 'author_' : '') . 'multi'));
+    } else {
         // Not logged
         $multiCheck = !intval(pluginGetVariable('comments', 'multi'));
-    } else {
-        // Logged. Skip admins
-        if ($userROW['status'] != 1) {
-            // Check for author
-            $multiCheck = !intval(pluginGetVariable('comments', (($userROW['id'] == $news_row['author_id'])?'author_':'').'multi'));
-        }
     }
 
     if ($multiCheck) {
-
         // Locate last comment for this news
         if (is_array($lpost = $mysql->record("select author_id, author, ip, mail from ".prefix."_comments where post=".db_squote($SQL['post'])." order by id desc limit 1"))) {
             // Check for post from the same user
@@ -159,7 +165,6 @@ function comments_rpc_manage($params) {
                     return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.multilock'));
                 }
             } else {
-                //print "Last post: ".$lpost['id']."<br>\n";
                 if (($lpost['author'] == $SQL['author']) or ($lpost['mail'] == $SQL['mail'])) {
                     return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.multilock'));
                 }
@@ -185,7 +190,7 @@ function comments_rpc_manage($params) {
 
     if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
         foreach ($PFILTERS['comments'] as $k => $v) {
-            $pluginResult = $v->addComments($memberRec, $news_row, $tvars, $SQL);
+            $pluginResult = $v->addComments($memberRec, $postRow, $tvars, $SQL);
             if ((is_array($pluginResult) and ($pluginResult['result'])) or (!is_array($pluginResult) and $pluginResult))
                 continue;
 
@@ -204,7 +209,7 @@ function comments_rpc_manage($params) {
     $comment_id = $mysql->result("select LAST_INSERT_ID() as id");
 
     // Update comment counter in news
-    $mysql->query("update ".prefix."_news set com=com+1 where id=".db_squote($SQL['post']));
+    $mysql->query("update ".prefix."_" . $params['table'] . " set com=com+1 where id=".db_squote($SQL['post']));
 
     // Update counter for user
     if ($SQL['author_id']) {
@@ -217,7 +222,7 @@ function comments_rpc_manage($params) {
     // RUN interceptors
     if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
         foreach ($PFILTERS['comments'] as $k => $v) {
-            $v->addCommentsNotify($memberRec, $news_row, $tvars, $SQL, $comment_id);
+            $v->addCommentsNotify($memberRec, $postRow, $tvars, $SQL, $comment_id);
         }
     }
 
@@ -225,55 +230,56 @@ function comments_rpc_manage($params) {
     if (pluginGetVariable('comments', 'inform_author') or pluginGetVariable('comments', 'inform_admin')) {
         $alink = ($SQL['author_id']) ? generatePluginLink('uprofile', 'show', array('name' => $SQL['author'], 'id' => $SQL['author_id']), array(), false, true) : '';
         $body = str_replace(
-            array( '{username}',
+            array('{username}',
                     '[userlink]',
                     '[/userlink]',
                     '{comment}',
                     '{newslink}',
                     '{newstitle}'),
-            array( $SQL['author'],
+            array($SQL['author'],
                     ($SQL['author_id'])?'<a href="'.$alink.'">':'',
                     ($SQL['author_id'])?'</a>':'',
                     $parse->bbcodes($parse->smilies(secure_html($SQL['text']))),
-                    News::generateLink($news_row, false, 0, true),
-                    $news_row['title'],
+                    ('news' == $params['table']) ? News::generateLink($postRow, false, 0, true) : secure_html($_POST['reqReferer']),
+                    isset($postRow['title']) ? $postRow['title'] : $postRow['name'],
                     ),
             __('comments:notice')
         );
-
+        if (pluginGetVariable('comments', 'inform_admin')) {
+            sendEmailMessage($config['admin_mail'], __('comments:newcomment'), $body);
+        }
         if (pluginGetVariable('comments', 'inform_author')) {
             // Determine author's email
-            if (is_array($umail=$mysql->record("select * from ".uprefix."_users where id = ".db_squote($news_row['author_id'])))) {
-                sendEmailMessage($umail['mail'], __('comments:newcomment'), $body);
+            if (is_array($umail = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($SQL['author_id'])))) {
+                if ($umail['mail'] != $config['admin_mail'])
+                    sendEmailMessage($umail['mail'], __('comments:newcomment'), $body);
             }
         }
-
-        if (pluginGetVariable('comments', 'inform_admin'))
-            sendEmailMessage($config['admin_mail'], __('comments:newcomment'), $body);
-
     }
 
     @setcookie("com_username", urlencode($SQL['author']), 0, '/');
     @setcookie("com_usermail", urlencode($SQL['mail']), 0, '/');
 
     // Set we need to override news template
-    $callingCommentsParams = array('outprint' => true);
+    $callingCommentsParams = array('outprint' => true, 'plugin' => $params['table']);
 
-    // Find first category
-    $catid = explode(',', $news_row['catid']);
-    $fcat = array_shift($catid);
-    // Check if there is a custom mapping
-    if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-        // Check if directory exists
-        if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
-            $callingCommentsParams['overrideTemplatePath'] = $tPath;
+    // Find first category in news
+    if (!empty($postRow['catid'])) {
+        $catid = explode(',', $postRow['catid']);
+        $fcat = array_shift($catid);
+        // Check if there is a custom mapping
+        if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+            // Check if directory exists
+            if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
+                $callingCommentsParams['overrideTemplatePath'] = $tPath;
+            }
         }
     }
 
     return array(
         'status' => 1,
         'errorCode' => 0,
-        'content' => comments_show($news_row['id'], $comment_id, $news_row['com'] + 1, $callingCommentsParams),
+        'content' => comments_show($postRow['id'], $comment_id, $postRow['com'] + 1, $callingCommentsParams),
         'rev' => intval(pluginGetVariable('comments', 'backorder')),
     );
 }

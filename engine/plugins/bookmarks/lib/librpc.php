@@ -1,6 +1,7 @@
 <?php
 
-function bookmarks_rpc_manage($params) {
+function bookmarks_rpc_manage($params)
+{
     global $mysql, $config, $userROW, $bookmarksList, $bookmarksLoaded, $twig;
 
     Lang::loadPlugin('bookmarks', 'main', '', ':');

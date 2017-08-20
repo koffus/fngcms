@@ -42,6 +42,7 @@ function plugin_gallery_install($action)
             'fields' => array(
                 array('action' => 'cmodify', 'name' => 'com', 'type' => 'int(11)', 'params' => "default 0"),
                 array('action' => 'cmodify', 'name' => 'views', 'type' => 'int(11)', 'params' => "default 0"),
+                array('action' => 'cmodify', 'name' => 'allow_com', 'type' => 'tinyint(1)', 'params' => "default '2'"),
             )
         ),
     );

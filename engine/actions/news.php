@@ -91,6 +91,7 @@ function editNewsForm() {
         'id'				=> $row['id'],
         'title'				=> secure_html($row['title']),
         'alt_name' => $row['alt_name'],
+        'link' => ((1 == $row['approve']) ? News::generateLink($row, false, 0, true) : ''),
         'description' => secure_html($row['description']),
         'keywords' => secure_html($row['keywords']),
         'views'				=> $row['views'],

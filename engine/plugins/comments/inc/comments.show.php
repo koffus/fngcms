@@ -53,13 +53,14 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
     }
 
     // RUN interceptors
-    if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
+    if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
         foreach ($PFILTERS['comments'] as $k => $v) {
             $xcfg = $v->commentsJoinFilter();
             if (is_array($xcfg) and isset($xcfg['users']) and isset($xcfg['users']['fields']) and is_array($xcfg['users']['fields'])) {
                 $joinFilter['users']['fields'] = array_unique(array_merge($joinFilter['users']['fields'], $xcfg['users']['fields']));
             }
         }
+    }
 
     function _cs_am($k){ return 'u.'.$k.' as `users_'.$k.'`';	}
     if (isset($joinFilter['users']) and isset($joinFilter['users']['fields']) and is_array($joinFilter['users']['fields']) and (count($joinFilter['users']['fields']) > 0)) {
@@ -68,7 +69,14 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
             ' from '.prefix.'_comments c'.
             ' left join '.uprefix.'_users u on c.author_id = u.id where c.post='.db_squote($newsID).($commID?(" and c.id=".db_squote($commID)):'');
     } else {
-        $sql = "select c.* from ".prefix."_comments c WHERE c.post=".db_squote($newsID).($commID?(" and c.id=".db_squote($commID)):'');
+        $sql = "select c.* from ".prefix."_comments c WHERE c.post=".db_squote($newsID).($commID ? (" and c.id=".db_squote($commID)) : '');
+    }
+
+    // Check plugin table
+    if (!empty($callingParams['plugin'])) {
+        $sql .= " and c.module=" . db_squote(secure_html($callingParams['plugin']));
+    } else {
+        $sql .= " and c.module='news'";
     }
 
     $sql .= " order by c.id".(pluginGetVariable('comments', 'backorder')?' desc':'');
@@ -182,12 +190,13 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
     $template['vars']['mainblock'] .= $output;
 }
 
+// postid => ID in news DB table or in $callingParams['plugin'] DB table, example images (plugin gallery)
 // $callingParams
-//		'plugin' => if is called from plugin - ID of plugin
+//		'plugin' => if is called from plugin - table DB of plugin
 //		'overridetName' => alternative template for display
 //		'overrideTemplatePath' => alternative path for searching of template
 //		'outprint'	 	=> flag: if set, output will be returned, elsewhere - will be added to mainblock
-function comments_showform($newsID, $callingParams = array()){
+function comments_showform($postid, $callingParams = array()){
     global $mysql, $config, $template, $twig, $userROW, $PFILTERS;
 
     // Desired template path and template name
@@ -211,7 +220,9 @@ function comments_showform($newsID, $callingParams = array()){
         'admin_url' => admin_url,
         'skins_url' => skins_url,
         'post_url' => generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'add')),
-        'newsid' => $newsID.'#'.genUToken('comment.add.'.$newsID),
+        'plugin' => isset($callingParams['plugin']) ? $callingParams['plugin'] : 'news',
+        'postid' => $postid,
+        'tokken' => genUToken('comment.add.' . $postid),
         'request_uri' => secure_html($_SERVER['REQUEST_URI']),
         'bbcodes' => $config['use_bbcodes'] ? BBCodes() : '',
         'smilies' => $config['use_smilies'] ? Smilies('comments', 10) : '',
@@ -228,9 +239,11 @@ function comments_showform($newsID, $callingParams = array()){
     }
 
     // RUN interceptors
-    if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
-        foreach ($PFILTERS['comments'] as $k => $v)
+    if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
+        foreach ($PFILTERS['comments'] as $k => $v) {
             $v->addCommentsForm($newsID, $tvars);
+        }
+    }
 
     // RUN interceptors ( OLD-style )
     executeActionHandler('comments_form');

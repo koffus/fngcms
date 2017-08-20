@@ -251,6 +251,9 @@ function plugin_gallery_image($params = [])
         array('link' => generatePluginLink('gallery', 'image', array('gallery' => $gallery['name'], 'name' => $imageName)),'text' => $imageName),
         );
 
+    // Need to update count views
+    $mysql->query('UPDATE '.prefix.'_images SET views=views+1 WHERE name='.db_squote($imageName));
+
     if (pluginGetVariable('gallery', 'cache')) {
         $cacheFileName = md5('gallery' . $gallery['id'] . $gallery['name'] . $imageName) . '.txt';
         $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('gallery', 'cacheExpire'), 'gallery');
@@ -260,7 +263,6 @@ function plugin_gallery_image($params = [])
     }
 
     $row = $mysql->record('SELECT * FROM '.prefix.'_images WHERE folder='.db_squote($gallery['name']).' and name='.db_squote($imageName).' ORDER BY date LIMIT 1');
-    $mysql->query('UPDATE '.prefix.'_images SET views=views+1 WHERE name='.db_squote($imageName));
 
     $row['id'] = (int)$row['id'];
     $row['com'] = (int)$row['com'];
@@ -270,16 +272,18 @@ function plugin_gallery_image($params = [])
     $row['name'] = secure_html($row['name']);
     $row['description'] = secure_html($row['description']);
 
-    if (pluginGetVariable('gallery', 'if_description')) $SYSTEM_FLAGS['meta']['description'] = $row['description']; // Reload meta-description of page
+
+    // Reload meta-description of page
+    if (pluginGetVariable('gallery', 'if_description')) $SYSTEM_FLAGS['meta']['description'] = $row['description'];
 
     // Prepare date to generate output Prev and Next
     templateLoadVariables(true); 
     $nav = $TemplateCache['site']['#variables']['navigation'];
 
     // Prev image, if isset
-    $pimage = $mysql->select('select name from '.prefix.'_images where folder='.db_squote($gallery['name']).' and id<='.$row['id'].' order by date desc, id desc limit 2');
-    if (isset($pimage[1])) {
-        $imageName = secure_html($pimage[1]['name']);
+    $pimage = $mysql->select('SELECT name FROM '.prefix.'_images WHERE folder='.db_squote($gallery['name']).' AND id<'.db_squote($row['id']).' order by `id` desc limit 1');
+    if (isset($pimage[0])) {
+        $imageName = secure_html($pimage[0]['name']);
         $paginationParams = array(
             'pluginName' => 'gallery','pluginHandler' => 'image',
             'params' => array('id' => $gallery['id'],'gallery' => $gallery['name'],'name' => $imageName),'xparams' => array(),
@@ -290,9 +294,9 @@ function plugin_gallery_image($params = [])
     }
 
     // Next image, if isset
-    $nimage = $mysql->select('select name from '.prefix.'_images where folder='.db_squote($gallery['name']).' and id>='.$row['id'].' order by date asc, id asc limit 2');
-    if (isset($nimage[1])) {
-        $imageName = secure_html($nimage[1]['name']);
+    $nimage = $mysql->select('select name from '.prefix.'_images where folder='.db_squote($gallery['name']).' and id>'.db_squote($row['id']).' order by `id` asc limit 1');
+    if (isset($nimage[0])) {
+        $imageName = secure_html($nimage[0]['name']);
         $paginationParams = array(
             'pluginName' => 'gallery','pluginHandler' => 'image',
             'params' => array('galleryID' => $gallery['id'],'gallery' => $gallery['name'],'name' => $imageName),'xparams' => array(),
@@ -306,7 +310,8 @@ function plugin_gallery_image($params = [])
     // Вернуться и доделать. Эй, куда пошел
     if ($cPlugin->isActive('comments')) {
         // Prepare params for call
-        $callingCommentsParams = array('outprint' => true, 'total' => $row['com'], 'module' => 'images');
+        // plugin - DB table images
+        $callingCommentsParams = array('outprint' => true, 'total' => $row['com'], 'plugin' => 'images');
 
         include_once(root."/plugins/comments/inc/comments.show.php");
 
@@ -325,9 +330,12 @@ function plugin_gallery_image($params = [])
             }
         }
 
+        $callingCommentsParams['plugin'] = 'images';
+
         $tcvars = array();
         // Show comments [ if not skipped ]
-        $tcvars['vars']['entries'] = $skipCommShow?'':comments_show($row['id'], 0, 0, $callingCommentsParams);
+        $tcvars['vars']['entries'] = $skipCommShow ? '':comments_show($row['id'], 0, 0, $callingCommentsParams);
+        $tcvars['vars']['comnum'] = $row['com'];
 
         // If multipage is used and we have more comments - show
         if ($flagMoreComments) {
