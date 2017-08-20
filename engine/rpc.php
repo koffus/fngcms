@@ -7,6 +7,12 @@
 // Author: Vitaly Ponomarev
 //
 
+// Configure error display mode
+error_reporting(E_ALL);
+ini_set('display_errors', 0);
+ini_set('error_log', '../logs/errorPHP.log');
+ini_set('log_errors', 1);
+
 @include_once 'core.php';
 
 // Protect against hack attempts
