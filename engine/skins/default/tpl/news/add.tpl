@@ -249,9 +249,9 @@
                     <div class="panel-heading">{{ lang['comments:mode.header'] }}</div>
                     <div class="panel-body">
                         <select name="allow_com" class="form-control">
-                            <option value="0"{{ plugin.comments['acom:0'] }}>{{ lang['comments:mode.disallow'] }}
-                            <option value="1"{{ plugin.comments['acom:1'] }}>{{ lang['comments:mode.allow'] }}
-                            <option value="2"{{ plugin.comments['acom:2'] }}>{{ lang['comments:mode.default'] }}
+                            <option value="0"{{ plugin.comments['acom:0'] }}>{{ lang['comments:mode.disallow'] }}</option>
+                            <option value="1"{{ plugin.comments['acom:1'] }}>{{ lang['comments:mode.allow'] }}</option>
+                            <option value="2"{{ plugin.comments['acom:2'] }}>{{ lang['comments:mode.default'] }}</option>
                         </select>
                     </div>
                 </div>
