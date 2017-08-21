@@ -15,8 +15,12 @@ ini_set('log_errors', 1);
 
 @include_once 'core.php';
 
+// Set correct content/type
+@header('Content-Type: application/json; charset=UTF-8', true);
+
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('NGCMS'))
+    die (json_encode(array( 'status' => 0, 'errorCode' => 1, 'errorText' => 'HALL')));
 
 // Load additional handlers [ common ]
 loadActionHandlers('rpc');
@@ -30,11 +34,9 @@ if (isset($_POST['json']) and isset($_POST['methodName'])) {
 }
 
 // HTTP/JSON-RPC processor
-function processJSON(){
+function processJSON()
+{
     global $RPCFUNC, $RPCADMFUNC;
-
-    // Set correct content/type
-    @header('Content-Type: application/json; charset=UTF-8', true);
 
     // Scan and Decode incoming params
     if (isset($_POST['uploadType'])) { // To upload files, images !!!
