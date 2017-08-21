@@ -122,12 +122,12 @@ $template['vars']["[/sitelock]"] = '';
 
 $timer->registerEvent('Search route for URL "' . $systemAccessURL . '"');
 
-// Give domainName to URL handler engine for generating absolute links
+/*// Give domainName to URL handler engine for generating absolute links
 $UHANDLER->setOptions(array('domainPrefix' => $config['home_url']));
 
 // Check if engine is installed in subdirectory
 if (preg_match('#^http\:\/\/([^\/])+(\/.+)#', $config['home_url'], $match))
-    $UHANDLER->setOptions(array('localPrefix' => $match[2]));
+    $UHANDLER->setOptions(array('localPrefix' => $match[2]));*/
 $runResult = $UHANDLER->run($systemAccessURL, array('debug' => false));
 
 // [[MARKER]] URL handler execution is finished
