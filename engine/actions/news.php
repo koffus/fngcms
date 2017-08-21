@@ -15,9 +15,96 @@ Lang::load('editnews', 'admin', 'editnews');
 Lang::load('addnews', 'admin', 'addnews');
 
 // ======================================================================================================
+// Add news form
+// ======================================================================================================
+function addNewsForm($retry = '')
+{
+    global $mysql, $config, $userROW, $PFILTERS, $twig, $PHP_SELF;
+
+    // Load permissions
+    $perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array(
+        'add',
+        'add.approve',
+        'add.mainpage',
+        'add.pinned',
+        'add.catpinned',
+        'add.favorite',
+        'add.html',
+        'add.raw',
+        'personal.view',
+        'personal.modify',
+        'personal.modify.published',
+        'personal.publish',
+        'personal.unpublish',
+        'personal.delete',
+        'personal.delete.published',
+        'personal.html',
+        'personal.mainpage',
+        'personal.pinned',
+        'personal.catpinned',
+        'personal.favorite',
+        'personal.setviews',
+        'personal.multicat',
+        'personal.nocat',
+        'personal.customdate',
+        'personal.altname',
+    ));
+
+    // Check permissions
+    if (!$perm['add']) {
+        msg(array('type' => 'danger', 'message' => __('perm.denied')));
+        return;
+    }
+
+    $tVars = array(
+        'php_self' => $PHP_SELF,
+        'mastercat' => makeCategoryList(array('doempty' => 1, 'greyempty' => !$perm['personal.nocat'],'nameval' => 0)),
+        'extcat' => makeCategoryList(array('nameval' => 0, 'checkarea' => 1)),
+        'JEV'				=> $retry?$retry:'{}',
+        'smilies' => ($config['use_smilies'])?Smilies('', 20, 'currentInputAreaID'):'',
+        'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
+        'token'				=> genUToken('admin.news.add'),
+        'extends' => array(
+            'main' => [],
+            'additional' => [],
+            'owner' => [],
+            'js' => [],
+            'css' => [],
+            ),
+        'flags' => array(
+            'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],
+            'favorite' => $perm['add.favorite'] and $perm['personal.favorite'],
+            'pinned' => $perm['add.pinned'] and $perm['personal.pinned'],
+            'catpinned' => $perm['add.catpinned'] and $perm['personal.catpinned'],
+            'html' => $perm['add.html'] and $perm['personal.html'],
+            'raw' => $perm['add.raw'] and $perm['personal.html'],
+            'mainpage.disabled' => !$perm['personal.mainpage'],
+            'favorite.disabled' => !$perm['personal.favorite'],
+            'pinned.disabled' => !$perm['personal.pinned'],
+            'catpinned.disabled' => !$perm['personal.catpinned'],
+            'meta' => $config['meta']?true:false,
+            'html.disabled' => !$perm['personal.html'],
+            'customdate.disabled' => !$perm['personal.customdate'],
+            'multicat.show' => $perm['personal.multicat'],
+            'can_publish' => $perm['personal.publish'],
+            'altname.disabled' => (!$perm['personal.altname'])?true:false,
+            'mondatory_cat' => (!$perm['personal.nocat'])?true:false,
+            ),
+    );
+
+    // Run interceptors
+    if (is_array($PFILTERS['news']))
+        foreach ($PFILTERS['news'] as $k => $v) { $v->addNewsForm($tVars); }
+
+    $xt = $twig->loadTemplate('skins/default/tpl/news/add.tpl');
+    echo $xt->render($tVars);
+}
+
+// ======================================================================================================
 // Edit news form
 // ======================================================================================================
-function editNewsForm() {
+function editNewsForm()
+{
     global $parse, $mysql, $config, $PFILTERS, $tvars, $userROW, $twig, $PHP_SELF;
 
     // Load permissions
@@ -207,14 +294,14 @@ function editNewsForm() {
 
 //
 // Mass comment delete
-//
-function massCommentDelete(){
+function massCommentDelete()
+{
     global $mysql, $userROW;
 
     $delcomid = $_REQUEST['delcomid'];
 
     // Check for security token
-    if ($permCheck and (!isset($_REQUEST['token']))||($_REQUEST['token'] != genUToken('admin.news.edit'))) {
+    if ($permCheck and (!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.news.edit'))) {
         msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
         return;
     }
@@ -269,18 +356,19 @@ function massCommentDelete(){
     }
 }
 
-//
-// Mass news flags modifier
-// $setValue - what to change in table (array with field => value)
-// $langParam - name of variable in lang file to show on success
-// $auto - flag: automatic mode is used, nothing should be printed
-//
-function massNewsModify($setValue, $langParam, $auto = false) {
+/*
+ * Mass news flags modifier
+ * $setValue - what to change in table (array with field => value)
+ * $langParam - name of variable in lang file to show on success
+ * $auto - flag: automatic mode is used, nothing should be printed
+ */
+function massNewsModify($setValue, $langParam, $auto = false)
+{
     global $mysql, $PFILTERS, $catmap;
 
     $selected_news = getIsSet($_REQUEST['selected_news']);
 
-    if ((!is_array($selected_news))||(!count($selected_news))) {
+    if ((!is_array($selected_news)) or (!count($selected_news))) {
         msg(array('type' => 'danger', 'title' => __('msge_selectnews'), 'message' => __('msgi_selectnews')));
         return;
     }
@@ -291,7 +379,6 @@ function massNewsModify($setValue, $langParam, $auto = false) {
 
 //
 // Mass news delete
-//
 function massNewsDelete() {
     massDeleteNews(getIsSet($_REQUEST['selected_news']));
 }
@@ -306,10 +393,10 @@ function makeSortList($selected) {
             '<option value="title"'.($selected == "title"?' selected':'').">".__('sort_title')."</option>";
 }
 
-// ======================================================================================================
+//
 // List news
-// ======================================================================================================
-function listNewsForm() {
+function listNewsForm()
+{
     global $mysql, $twig, $catz, $catmap, $userROW, $PHP_SELF, $config;
 
     // Load CORE Plugin
@@ -341,25 +428,25 @@ function listNewsForm() {
     $admCookie = admcookie_get();
 
     // Search filters
-    $fSearchLine		= getIsSet($_REQUEST['sl']);
-    $fSearchType		= intval(getIsSet($_REQUEST['st']));
+    $fSearchLine = getIsSet($_REQUEST['sl']);
+    $fSearchType = intval(getIsSet($_REQUEST['st']));
     
     // Author filter (by name)
-    $fAuthorName		= getIsSet($_REQUEST['an']);
+    $fAuthorName = getIsSet($_REQUEST['an']);
 
     // Date range
-    $fDateStart			= '';
-    $fDateStartText		= '';
+    $fDateStart = '';
+    $fDateStartText = '';
     if (preg_match('#^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$#', getIsSet($_REQUEST['dr1']), $match)) {
         $fDateStartText = getIsSet($_REQUEST['dr1']);
-        $fDateStart		= mktime(0, 0, 0, $match[2], $match[1], $match[3]);
+        $fDateStart = mktime(0, 0, 0, $match[2], $match[1], $match[3]);
     }
 
-    $fDateStop			= '';
-    $fDateStopText		= '';
+    $fDateStop = '';
+    $fDateStopText = '';
     if (preg_match('#^(\d{1,2})\.(\d{1,2})\.(\d{2,4})$#', getIsSet($_REQUEST['dr2']), $match)) {
-        $fDateStopText	= getIsSet($_REQUEST['dr2']);
-        $fDateStop		= mktime(0, 0, 0, $match[2], $match[1], $match[3]);
+        $fDateStopText = getIsSet($_REQUEST['dr2']);
+        $fDateStop = mktime(0, 0, 0, $match[2], $match[1], $match[3]);
     }
 
     // Category
@@ -373,14 +460,14 @@ function listNewsForm() {
     // Sort mode
     $fSort = '';
     switch(getIsSet($_REQUEST['sort'])){
-        case 'id': 		$fSort = 'id';				break;
-        case 'id_desc': 	$fSort = 'id desc';			break;
-        case 'postdate': $fSort = 'postdate';		break;
-        case 'postdate_desc':	$fSort = 'postdate desc';	break;
-        case 'title': 	$fSort = 'title';			break;
-        case 'title_desc': $fSort = 'title desc';		break;
+        case 'id': $fSort = 'id'; break;
+        case 'id_desc': $fSort = 'id desc'; break;
+        case 'postdate': $fSort = 'postdate'; break;
+        case 'postdate_desc': $fSort = 'postdate desc'; break;
+        case 'title': $fSort = 'title'; break;
+        case 'title_desc': $fSort = 'title desc'; break;
     }
-    $fSort = ' order by '.($fSort?$fSort:'id desc');
+    $fSort = ' order by '.($fSort ? $fSort : 'id desc');
 
     // Check if user selected personal filter
     $fAuthorId = 0;
@@ -396,7 +483,7 @@ function listNewsForm() {
     // - Load
     $fRPP = isset($_REQUEST['rpp'])?intval($_REQUEST['rpp']):intval($admCookie['news']['pp']);
     // - Set default value for `Records Per Page` parameter
-    if (($fRPP < 2)||($fRPP > 2000))
+    if (($fRPP < 2) or ($fRPP > 2000))
         $fRPP = 8;
 
     // - Save into cookies current value
@@ -404,7 +491,7 @@ function listNewsForm() {
     admcookie_set($admCookie);
 
     // Determine requested page number
-    $pageNo		= getIsSet($_REQUEST['page'])?intval($_REQUEST['page']):0;
+    $pageNo = getIsSet($_REQUEST['page'])?intval($_REQUEST['page']):0;
     if ($pageNo < 1)
         $pageNo = 1;
 
@@ -486,7 +573,7 @@ function listNewsForm() {
                 'comments' => $cPlugin->isInstalled('comments')?true:false,
                 'status' => ($row['approve'] == 1)?true:false,
                 'mainpage' => $row['mainpage']?true:false,
-                'editable' => ($row['author_id'] == $userROW['id'])&&($perm['personal.view'])||($row['author_id'] != $userROW['id'])&&($perm['other.view']),
+                'editable' => ($row['author_id'] == $userROW['id'])&&($perm['personal.view']) or ($row['author_id'] != $userROW['id'])&&($perm['other.view']),
                 'isActive' => ($row['approve'] == 1)?true:false,
             )
         );
@@ -586,93 +673,6 @@ function listNewsForm() {
     echo $xt->render($tVars);
 }
 
-// ======================================================================================================
-// Add news form
-// ======================================================================================================
-function addNewsForm($retry = ''){
-    global $mysql, $config, $userROW, $PFILTERS, $twig, $PHP_SELF;
-
-    // Load permissions
-    $perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array(
-        'add',
-        'add.approve',
-        'add.mainpage',
-        'add.pinned',
-        'add.catpinned',
-        'add.favorite',
-        'add.html',
-        'add.raw',
-        'personal.view',
-        'personal.modify',
-        'personal.modify.published',
-        'personal.publish',
-        'personal.unpublish',
-        'personal.delete',
-        'personal.delete.published',
-        'personal.html',
-        'personal.mainpage',
-        'personal.pinned',
-        'personal.catpinned',
-        'personal.favorite',
-        'personal.setviews',
-        'personal.multicat',
-        'personal.nocat',
-        'personal.customdate',
-        'personal.altname',
-    ));
-
-    // Check permissions
-    if (!$perm['add']) {
-        msg(array('type' => 'danger', 'message' => __('perm.denied')));
-        return;
-    }
-
-    $tVars = array(
-        'php_self' => $PHP_SELF,
-        'mastercat' => makeCategoryList(array('doempty' => 1, 'greyempty' => !$perm['personal.nocat'],'nameval' => 0)),
-        'extcat' => makeCategoryList(array('nameval' => 0, 'checkarea' => 1)),
-        'JEV'				=> $retry?$retry:'{}',
-        'smilies' => ($config['use_smilies'])?Smilies('', 20, 'currentInputAreaID'):'',
-        'bbcodes' => ($config['use_bbcodes'])?BBCodes('currentInputAreaID', 'news'):'',
-        'token'				=> genUToken('admin.news.add'),
-        'extends' => array(
-            'main' => [],
-            'additional' => [],
-            'owner' => [],
-            'js' => [],
-            'css' => [],
-            ),
-        'flags' => array(
-            'mainpage' => $perm['add.mainpage'] and $perm['personal.mainpage'],
-            'favorite' => $perm['add.favorite'] and $perm['personal.favorite'],
-            'pinned' => $perm['add.pinned'] and $perm['personal.pinned'],
-            'catpinned' => $perm['add.catpinned'] and $perm['personal.catpinned'],
-            'html' => $perm['add.html'] and $perm['personal.html'],
-            'raw' => $perm['add.raw'] and $perm['personal.html'],
-            'mainpage.disabled' => !$perm['personal.mainpage'],
-            'favorite.disabled' => !$perm['personal.favorite'],
-            'pinned.disabled' => !$perm['personal.pinned'],
-            'catpinned.disabled' => !$perm['personal.catpinned'],
-            'meta' => $config['meta']?true:false,
-            'html.disabled' => !$perm['personal.html'],
-            'customdate.disabled' => !$perm['personal.customdate'],
-            'multicat.show' => $perm['personal.multicat'],
-            'can_publish' => $perm['personal.publish'],
-            'altname.disabled' => (!$perm['personal.altname'])?true:false,
-            'mondatory_cat' => (!$perm['personal.nocat'])?true:false,
-            ),
-    );
-
-    // Run interceptors
-    if (is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->addNewsForm($tVars); }
-
-    $xt = $twig->loadTemplate('skins/default/tpl/news/add.tpl');
-    echo $xt->render($tVars);
-}
-
-
-
 // #==============================================================================#
 // # Action selection #
 // #==============================================================================#
@@ -704,17 +704,33 @@ do {
 
     if ($action == 'manage') {
         switch($subaction) {
-            case 'mass_currdate'	:	$curdate = time() + ($config['date_adjust'] * 60);
-                                        massNewsModify( array('postdate' => $curdate),	'msgo_currdate',	'capprove');	break;
-            case 'mass_approve' :	massNewsModify( array('approve' => 1),	'msgo_approved',	'approve');			break;
-            case 'mass_mainpage' :	massNewsModify( array('mainpage' => 1),	'msgo_mainpaged',	'mainpage');		break;
-            case 'mass_unmainpage' :	massNewsModify( array('mainpage' => 0),	'msgo_unmainpage',	'unmainpage');		break;
-            case 'mass_forbidden' :	massNewsModify( array('approve' => 0),	'msgo_forbidden',	'forbidden');		break;
-            case 'mass_com_forbidden':	massNewsModify( array('allow_com' => 0),	'msgo_cforbidden',	'cforbidden');		break;
-            case 'mass_com_approve' :	massNewsModify( array('allow_com' => 1),	'msgo_capproved',	'capprove');		break;
-            case 'mass_delete' :	massNewsDelete();	break;
+            case 'mass_currdate':
+                $curdate = time() + ($config['date_adjust'] * 60);
+                massNewsModify(array('postdate' => $curdate), 'msgo_currdate', 'capprove');
+                break;
+            case 'mass_approve':
+                massNewsModify(array('approve' => 1), 'msgo_approved', 'approve');
+                break;
+            case 'mass_mainpage':
+                massNewsModify( array('mainpage' => 1), 'msgo_mainpaged', 'mainpage');
+                break;
+            case 'mass_unmainpage':
+                massNewsModify( array('mainpage' => 0), 'msgo_unmainpage', 'unmainpage');
+                break;
+            case 'mass_forbidden':
+                massNewsModify( array('approve' => 0), 'msgo_forbidden', 'forbidden');
+                break;
+            case 'mass_com_forbidden':
+                massNewsModify( array('allow_com' => 0), 'msgo_cforbidden', 'cforbidden');
+                break;
+            case 'mass_com_approve':
+                massNewsModify( array('allow_com' => 1), 'msgo_capproved', 'capprove');
+                break;
+            case 'mass_delete':
+                massNewsDelete();
+                break;
         }
     }
     listNewsForm();
 
-} while (false);
+} while (0);
