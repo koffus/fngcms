@@ -150,7 +150,7 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 			'voteid' => $row['id'],
 			'votelines' => $votelines,
 			'votedescr' => $row['descr'],
-			'REFERER' => isset($REQUEST_URI)?$REQUEST_URI:'',
+			'redirect' => isset($REQUEST_URI) ? $REQUEST_URI:'',
 			'home' => home,
 			'vcount' => $tcount,
 			'post_url' => $post_url,

@@ -38,7 +38,7 @@ function make_vote(mode, voteid) {
         <form action="{post_url}" method="post" id="voteForm_{voteid}">
             <input type="hidden" name="mode" value="vote" />
             <input type="hidden" name="voteid" value="{voteid}" />
-            <input type="hidden" name="referer" value="{referer}" />
+            <input type="hidden" name="redirect" value="{redirect}" />
             {votelines}
             <a href="#" onclick="make_vote(1, {voteid}); return false;" class="btn btn-outline-primary btn-sm mt-3">Голосовать</a>
         </form>

@@ -4,7 +4,8 @@
 if (!defined('NGCMS')) die ('HAL');
 
 // Index screen for side panel
-function plugin_jchat_index() {
+function plugin_jchat_index()
+{
     global $template, $tpl, $SUPRESS_TEMPLATE_SHOW, $userROW, $CurrentHandler;
 
     // Load CORE Plugin
@@ -67,7 +68,8 @@ function plugin_jchat_index() {
 }
 
 // Index screen for self window
-function plugin_jchat_win() {
+function plugin_jchat_win()
+{
     global $template, $tpl, $SUPRESS_TEMPLATE_SHOW, $userROW;
 
     // Load CORE Plugin
@@ -135,7 +137,8 @@ function plugin_jchat_win() {
 }
 
 // Show current chat state
-function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
+function jchat_show($lastEventID, $maxLoadedID, $commands = array())
+{
     global $userROW, $mysql, $tpl;
 
     // Check permissions [ guests do not see chat ]
@@ -239,7 +242,8 @@ function jchat_show($lastEventID, $maxLoadedID, $commands = array()){
     return $bundle;
 }
 
-function jchat_rpc_add($params) {
+function jchat_rpc_add($params)
+{
     global $userROW, $mysql, $ip;
 
     $SQL = [];
@@ -314,7 +318,8 @@ function jchat_rpc_add($params) {
     exit;
 }
 
-function jchat_rpc_del($params) {
+function jchat_rpc_del($params)
+{
     global $userROW, $mysql, $ip;
 
     // Only ADMINS can delete items from chat
@@ -346,7 +351,8 @@ function jchat_rpc_del($params) {
     exit;
 }
 
-function jchat_rpc_show($params){
+function jchat_rpc_show($params)
+{
     return array('status' => 1, 'errorCode' => 999, 'bundle' => jchat_show(intval($params['lastEvent']), intval($params['start']), $params));
     coreNormalTerminate(2);
     exit;
