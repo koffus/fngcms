@@ -8,7 +8,7 @@
                 <img src="{{ gallery.src }}" alt="{{ gallery.title }}" class="card-img-top img-fluid" />
                 <div class="card-img-overlay">
                     <h4 class="card-title">{{ gallery.title }}</h4>
-                    <p class="card-text">{{ gallery.count }}</p>
+                    <p class="card-text"><i class="fa fa-files-o"></i> {{ gallery.count }}</p>
                 </div>
             </a>
         </div>

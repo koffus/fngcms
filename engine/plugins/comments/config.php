@@ -18,6 +18,8 @@ foreach (array(
     'multipage' => 1,
     'inform_admin' => 1,
     'inform_author' => 1,
+    'minlen' => 4,
+    'maxlen' => 500,
     ) as $k => $v ) {
     if ( pluginGetVariable($plugin, $k) == null )
         pluginSetVariable($plugin, $k, $v);
@@ -30,7 +32,7 @@ $cfg = array(
         array('type' => 'default'),
         //array('type' => 'clearCacheFiles'),
     )
-    );
+);
 
 $cfgX = array();
     array_push($cfgX, array(
@@ -56,6 +58,13 @@ $cfgX = array();
         'type' => 'select',
         'values' => array('0' => 'Прямая', '1' => 'Обратная'),
         'value' => intval(pluginGetVariable($plugin,'backorder')),
+        ));
+    array_push($cfgX, array(
+        'name' => 'minlen',
+        'title' => "Минимальный размер",
+        'descr' => "Укажите минимальное кол-во символов для комментариев (например: <b>10</b>)",
+        'type' => 'input',
+        'value' => pluginGetVariable($plugin, 'minlen'),
         ));
     array_push($cfgX, array(
         'name' => 'maxlen',

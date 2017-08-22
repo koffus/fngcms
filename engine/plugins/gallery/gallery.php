@@ -310,45 +310,18 @@ function plugin_gallery_image($params = [])
     // Вернуться и доделать. Эй, куда пошел
     if ($cPlugin->isActive('comments')) {
         // Prepare params for call
-        // plugin - DB table images
-        $callingCommentsParams = array('outprint' => true, 'total' => $row['com'], 'plugin' => 'images');
+        // module - DB table images
+        $callingCommentsParams = array('outprint' => true, 'total' => $row['com'], 'module' => 'images');
 
         include_once(root."/plugins/comments/inc/comments.show.php");
 
-        // Check if we need pagination
-        $flagMoreComments = false;
-        $skipCommShow = false;
-
-        if (pluginGetVariable('comments', 'multipage')) {
-            $multi_mcount = intval(pluginGetVariable('comments', 'multi_mcount'));
-            // If we have comments more than for one page - activate pagination
-            if (($multi_mcount >= 0) && ($row['com'] > $multi_mcount)) {
-                $callingCommentsParams['limitCount'] = $multi_mcount;
-                $flagMoreComments = true;
-                if (!$multi_mcount)
-                    $skipCommShow = true;
-            }
-        }
-
-        $callingCommentsParams['plugin'] = 'images';
-
         $tcvars = array();
         // Show comments [ if not skipped ]
-        $tcvars['vars']['entries'] = $skipCommShow ? '':comments_show($row['id'], 0, 0, $callingCommentsParams);
+        $tcvars['vars']['entries'] = comments_show($row['id'], 0, 0, $callingCommentsParams);
         $tcvars['vars']['comnum'] = $row['com'];
 
-        // If multipage is used and we have more comments - show
-        if ($flagMoreComments) {
-            $link = checkLinkAvailable('comments', 'show')?
-                        generateLink('comments', 'show', array('news_id' => $row['id'], 'module' => 'images')):
-                        generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'show'), array('news_id' => $row['id'], 'module' => 'images'));
-
-            $tcvars['vars']['more_comments'] = str_replace(array('{link}', '{count}'), array($link, $row['com']), __('comments:link.more'));
-            $tcvars['regx']['#\[more_comments\](.*?)\[\/more_comments\]#is'] = '$1';
-        } else {
-            $tcvars['vars']['more_comments'] = '';
-            $tcvars['regx']['#\[more_comments\](.*?)\[\/more_comments\]#is'] = '';
-        }
+        $tcvars['vars']['more_comments'] = '';
+        $tcvars['regx']['#\[more_comments\](.*?)\[\/more_comments\]#is'] = '';
 
         // Show form for adding comments
         if (!pluginGetVariable('comments', 'regonly') or is_array($userROW)) {
@@ -402,7 +375,8 @@ function plugin_gallery_image($params = [])
     }
 }
 
-function plugin_gallery_widget($params = []){
+function plugin_gallery_widget($params = [])
+{
     global $template, $twig, $mysql, $TemplateCache, $SYSTEM_FLAGS;
 
     if (!is_array($widgets = pluginGetVariable('gallery', 'widgets')))

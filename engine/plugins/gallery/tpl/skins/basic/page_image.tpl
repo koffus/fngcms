@@ -7,7 +7,7 @@
         <p class="card-text">{{ img.description }}</p>
         <p class="card-text">
             <small class="text-muted pull-left">Загружено: {{ img.dateStamp | cdate }}</small>
-            <small class="text-muted pull-right">Просмотров: {{ img.views }}</small>
+            <small class="text-muted pull-right"><i class="fa fa-comments"></i> {{ img.com }} • <i class="fa fa-eye"></i> {{ img.views }}</small>
         </p>
         </div>
     </div>

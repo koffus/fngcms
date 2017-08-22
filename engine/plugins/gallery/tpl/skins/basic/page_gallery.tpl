@@ -9,6 +9,7 @@
                 <img src="{{ img.src_thumb }}" alt="{{ img.name }}" class="card-img img-fluid" />
                 <div class="card-img-overlay">
                     <h4 class="card-title">{{ img.name }}</h4>
+                    <p class="card-text"><i class="fa fa-comments"></i> {{ img.com }} • <i class="fa fa-eye"></i> {{ img.views }}</p>
                     <p class="card-text">{{ img.description }}</p>
                 </div>
             </a>

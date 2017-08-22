@@ -913,6 +913,33 @@ function generateCategoryArray($categories)
 }
 
 //
+// Get custom category template, if is set and exist dir with template file
+function getCatTemplate($catid, $templateName)
+{
+    global $catz, $catmap;
+
+    if(empty($catid))
+        return tpl_site;
+
+    if (!is_array($catid))
+        $catid = explode(',', $catid);
+
+    // Find first category in news
+    $fcat = (int)array_shift($catid);
+
+    // Check if there is a custom mapping
+    if ($fcat and isset($catmap[$fcat]) and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
+        // Check if directory exists
+        $tPath = tpl_site . 'ncustom' . DS . $ctname;
+        if (is_dir($tPath) and file_exists($tPath . DS . $templateName . '.tpl')) {
+            return $tPath;
+        }
+    }
+
+    return tpl_site;
+}
+
+//
 // make a SQL filter for specified array
 function generateCategoryFilter()
 {

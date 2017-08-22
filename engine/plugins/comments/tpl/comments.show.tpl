@@ -1,9 +1,7 @@
 <li class="comment clearfix {{ alternating }}" itemscope="" itemtype="http://schema.org/Comment">
     <a id="comment_{{ id }}"></a>
     <div class="comment-content post-content" itemprop="text">
-        <figure class="gravatar">
-            {{ avatar }}
-        </figure>
+        <img src="{{ avatar }}" alt="" class="rounded-circle pull-left" width="80" />
         <div class="comment-meta">
             {% if (useBB) %}
                 <a href="#" rel="nofollow" onmouseover="copy_quote('{{ author }}');" onclick="quote();return false;" class="comment-reply-link"><span>{{ lang['comments:quote'] }}</span></a>
@@ -19,7 +17,7 @@
                     <span itemprop="author">{{ author }}</span>
                 {% endif %}
             </div>
-            <span title="{{ date }}">&nbsp;{{ dateStamp | cdate  }}</span>
+            <small title="{{ date }}">&nbsp;•&nbsp;{{ dateStamp | cdate  }}</small>
             <p>{{ comment }}</p>
             {% if (hasAnswer) %}<p class="well well-sm text-muted">{{ lang['comments:answer'] }} <b>{{ name }}</b>:<br />{{ answer }}</p>{% endif %}
         </div>

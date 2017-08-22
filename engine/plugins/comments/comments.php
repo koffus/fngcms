@@ -33,7 +33,8 @@ class CommentsNewsFilter extends NewsFilter
         $comments = '';
         $tpl->template('comments', tpl_actions . 'news');
 
-        foreach ($mysql->select("select * from " . prefix . "_comments where post='" . $newsID . "' order by id") as $crow) {
+        $crows = $mysql->select("select * from " . prefix . "_comments where post='" . $newsID . "' order by id");
+        foreach ($crows as $crow) {
             $text = $crow['text'];
 
             if ($config['blocks_for_reg']) {
@@ -126,23 +127,13 @@ class CommentsNewsFilter extends NewsFilter
         // Set we need to override news template
         $callingCommentsParams = array('outprint' => true, 'total' => $SQLnews['com']);
 
-        // Find first category
-        $catid = explode(',', $SQLnews['catid']);
-        $fcat = array_shift($catid);
-        // Check if there is a custom mapping
-        if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-            // Check if directory exists
-            if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
-                $callingCommentsParams['overrideTemplatePath'] = $tPath;
-            } else {
-                $tPath = null;
-            }
-        }
-
         // desired template
         $templateName = 'comments.internal';
 
-        if(empty($tPath)) {
+        // Check if isset custom template for category in news
+        if(tpl_site != ($tPath = getCatTemplate($SQLnews['catid'], $templateName))) {
+            $callingCommentsParams['overrideTemplatePath'] = $tPath;
+        } else {
             $tPath = locatePluginTemplates($templateName, 'comments', pluginGetVariable('comments', 'localSource') );
             $tPath = $tPath[$templateName];
         }
@@ -171,8 +162,8 @@ class CommentsNewsFilter extends NewsFilter
         // If multipage is used and we have more comments - show
         if ($flagMoreComments) {
             $link = checkLinkAvailable('comments', 'show') ?
-                generateLink('comments', 'show', array('news_id' => $newsID)) :
-                generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'show'), array('news_id' => $newsID));
+                generateLink('comments', 'show', array('post_id' => $newsID)) :
+                generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'show'), array('post_id' => $newsID));
 
             $tcvars['vars']['more_comments'] = str_replace(array('{link}', '{count}'), array($link, $SQLnews['com']), __('comments:link.more'));
             $tcvars['regx']['#\[more_comments\](.*?)\[\/more_comments\]#is'] = '$1';
@@ -267,9 +258,16 @@ function plugin_comments_show()
     include_once(root . '/plugins/comments/inc/comments.show.php');
 
     // Try to fetch news
-    $newsID = intval($_REQUEST['news_id']);
+    $postID = intval($_REQUEST['post_id']);
 
-    if (!$newsID or !is_array($newsRow = $mysql->record("select * from " . prefix . "_news where id = " . $newsID))) {
+    // Check module table
+    if (!empty($_REQUEST['module']) and in_array($_REQUEST['module'], ['news','images']) ) {
+        $table = secure_html($_REQUEST['module']);
+    } else {
+        $table = 'news';
+    }
+
+    if (!$postID or !is_array($newsRow = $mysql->record("select * from " . prefix . "_" . $table . " where id = " . $postID))) {
         error404();
         return;
     }
@@ -279,26 +277,16 @@ function plugin_comments_show()
     // AJAX is turned off by default
     $callingCommentsParams = array('noajax' => 1, 'outprint' => true);
 
-    // Find first category
-    $catid = explode(',', $newsRow['catid']);
-    $fcat = array_shift($catid);
-    // Check if there is a custom mapping
-    if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-        // Check if directory exists
-        if (is_dir($tPath = tpl_site . '/ncustom/' . $ctname)) {
-            $callingCommentsParams['overrideTemplatePath'] = $tPath;
-            if (file_exists($tPath . DS . '/main.tpl')) {
-                $SYSTEM_FLAGS['template.main.path'] = $tPath;
-            }
-        } else {
-            $tPath = null;
-        }
-    }
-
     // desired template
     $templateName = 'comments.external';
 
-    if(empty($tPath)) {
+    // Check if isset custom template for category in news
+    if(tpl_site != ($tPath = getCatTemplate($newsRow['catid'], $templateName))) {
+        $callingCommentsParams['overrideTemplatePath'] = $tPath;
+        if (file_exists($tPath . DS . 'main.tpl')) {
+            $SYSTEM_FLAGS['template.main.path'] = $tPath;
+        }
+    } else {
         $tPath = locatePluginTemplates($templateName, 'comments', pluginGetVariable('comments', 'localSource') );
         $tPath = $tPath[$templateName];
     }
@@ -327,12 +315,12 @@ function plugin_comments_show()
 
     // Show comments
     $tcvars = array();
-    $tcvars['vars']['entries'] = comments_show($newsID, 0, 0, $callingCommentsParams);
+    $tcvars['vars']['entries'] = comments_show($postID, 0, 0, $callingCommentsParams);
 
     if ($pageCount > 1) {
         $paginationParams = checkLinkAvailable('comments', 'show') ?
-            array('pluginName' => 'comments', 'pluginHandler' => 'show', 'params' => array('news_id' => $newsID), 'xparams' => array(), 'paginator' => array('page', 0, false)) :
-            array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'comments', 'handler' => 'show'), 'xparams' => array('news_id' => $newsID), 'paginator' => array('page', 1, false));
+            array('pluginName' => 'comments', 'pluginHandler' => 'show', 'params' => array('post_id' => $postID), 'xparams' => array(), 'paginator' => array('page', 0, false)) :
+            array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'comments', 'handler' => 'show'), 'xparams' => array('post_id' => $postID), 'paginator' => array('page', 1, false));
 
         templateLoadVariables(true);
         $navigations = $TemplateCache['site']['#variables']['navigation'];
@@ -351,7 +339,7 @@ function plugin_comments_show()
 
     // Show form for adding comments
     if ($newsRow['allow_com'] and (!pluginGetVariable('comments', 'regonly') or is_array($userROW))) {
-        $tcvars['vars']['form'] = comments_showform($newsID, $callingCommentsParams);
+        $tcvars['vars']['form'] = comments_showform($postID, $callingCommentsParams);
         $tcvars['regx']['#\[regonly\](.*?)\[\/regonly\]#is'] = '';
         $tcvars['regx']['#\[commforbidden\](.*?)\[\/commforbidden\]#is'] = '';
     } else {
@@ -373,7 +361,7 @@ function plugin_comments_show()
 // Delete comment
 function plugin_comments_delete()
 {
-    global $mysql, $config, $userROW, $tpl, $template, $SUPRESS_MAINBLOCK_SHOW, $SUPRESS_TEMPLATE_SHOW;
+    global $mysql, $config, $userROW, $tpl, $template, $SUPRESS_MAINBLOCK_SHOW, $SUPRESS_TEMPLATE_SHOW, $HTTP_REFERER;
 
     $output = array();
     $params = array();
@@ -387,14 +375,21 @@ function plugin_comments_delete()
         // Second: check if this comment exists
         $comid = intval($_REQUEST['id']);
 
+        // Check module table
+        if (!empty($_REQUEST['module']) and in_array($_REQUEST['module'], ['news','images']) ) {
+            $table = secure_html($_REQUEST['module']);
+        } else {
+            $table = 'news';
+        }
+
         if (($comid) and ($row = $mysql->record("select * from " . prefix . "_comments where id=" . db_squote($comid)))) {
             $mysql->query("delete from " . prefix . "_comments where id=" . db_squote($comid));
             $mysql->query("update " . uprefix . "_users set com=com-1 where id=" . db_squote($row['author_id']));
-            $mysql->query("update " . prefix . "_news set com=com-1 where id=" . db_squote($row['post']));
+            $mysql->query("update " . prefix . "_" . $table . " set com=com-1 where id=" . db_squote($row['post']));
 
             $output['status'] = 1;
             $output['data'] = __('comments:deleted.text');
-            $params['newsid'] = $row['post'];
+            $params['postID'] = $row['post'];
         } else {
             $output['status'] = 0;
             $output['data'] = __('comments:err.nocomment');
@@ -410,11 +405,12 @@ function plugin_comments_delete()
         // NON-AJAX mode
 
         // Fetch news record
-        if ($nrow = $mysql->record("select * from " . prefix . "_news where id = " . db_squote($params['newsid']))) {
+        /*if ($nrow = $mysql->record("select * from " . prefix . "_news where id = " . db_squote($params['postID']))) {
             $url = News::generateLink($nrow);
         } else {
             $url = $config['home_url'];
-        }
+        }*/
+        $url = $HTTP_REFERER;
 
         $tavars = array('vars' => array(
             'message' => $output['data'],

@@ -330,22 +330,11 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     //->desired template path - override path if needed
     if (getIsSet($callingParams['overrideTemplatePath'])) {
         $templatePath = $callingParams['overrideTemplatePath'];
-    } else if ($callingParams['customCategoryTemplate']) {
-        //->check for custom category templates
-        // Find first category
-        if (getIsSet($row['catid'])) {
-            $fcat = explode(',', $row['catid']);
-            $fcat = intval(array_shift($fcat));
-        }
-        // Check if there is a custom mapping
-        if (getIsSet($fcat) and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-            // Check if directory exists
-            if (is_dir($templatePath . '/ncustom/' . $ctname)) {
-                $templatePath = $templatePath . '/ncustom/' . $ctname;
-                if ('full' === $callingParams['style'] and file_exists($templatePath . '/main.tpl')) {
-                    $SYSTEM_FLAGS['template.main.path'] = $templatePath;
-                }
-            }
+    } elseif ($callingParams['customCategoryTemplate']) {
+        // Check if isset custom template for category in news
+        $templatePath = getCatTemplate($row['catid'], $templateName);
+        if ('full' === $callingParams['style'] and file_exists($templatePath . DS . 'main.tpl')) {
+            $SYSTEM_FLAGS['template.main.path'] = $templatePath;
         }
     }
 
@@ -811,29 +800,16 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
                 $v->showNews($row['id'], $row, $tvars, $callingParams);
         }
 
-        //->desired template path - override path if needed
-        if (isset($callingParams['overrideTemplatePath']) and $callingParams['overrideTemplatePath']) {
-            $templatePath = $callingParams['overrideTemplatePath'];
-        } else if (isset($callingParams['customCategoryTemplate']) and $callingParams['customCategoryTemplate']) {
-            //->check for custom category templates
-            // Check mode:
-            // 1 - Master category
-            // 2 - Current category
-            $fcat = getIsSet($callingParams['currentCategoryId']);
-            if ($callingParams['customCategoryTemplate'] == 1) {
-                // Find first category
-                if (getIsSet($row['catid'])) {
-                    $fcat = explode(',', $row['catid']);
-                    $fcat = (int)array_shift($fcat);
-                }
-            }
 
-            // Check if there is a custom mapping
-            if ($fcat and isset($catmap[$fcat]) and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-                // Check if directory exists
-                if (is_dir($templatePath . '/ncustom/' . $ctname))
-                    $templatePath = $templatePath . '/ncustom/' . $ctname;
-            }
+        //->desired template path - override path if needed
+        if (isset($callingParams['overrideTemplatePath'])) {
+            $templatePath = $callingParams['overrideTemplatePath'];
+        } elseif (isset($callingParams['customCategoryTemplate']) and isset($callingParams['currentCategoryId'])) {
+            // Check if isset custom template for category in news
+            $templatePath = getCatTemplate($callingParams['currentCategoryId'], $templateName);
+        } else {
+            // Set default template path
+            $templatePath = tpl_site;
         }
 
         // Hack for 'automatic search mode'

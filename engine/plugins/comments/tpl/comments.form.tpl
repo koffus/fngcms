@@ -1,5 +1,5 @@
 <script type="text/javascript">
-function add_comment(news, action) {
+function update_comment(postid, action) {
     var form = document.getElementById('comment');
     var params = {
         {% if not(global.flags.isLogged) %}
@@ -9,8 +9,10 @@ function add_comment(news, action) {
         {% endif %}
         "content": form.content.value,
         "tokken": form.tokken.value,
-        "plugin": form.plugin.value,
-        "postid": form.postid.value,
+        "module": form.module.value,
+        "redirect": form.redirect.value,
+        "postid": postid,
+        "action": action,
         "ajax": "1",
         "json": "1",
         };
@@ -25,11 +27,10 @@ function add_comment(news, action) {
 </script>
 
 <div class="respond card card-block">
-    <form id="comment" method="post" action="{{ post_url }}" name="form" onsubmit="add_comment(); return false;" novalidate>
+    <form id="comment" method="post" action="" name="form" onsubmit="update_comment('{{ postid }}', 'add'); return false;" novalidate>
         <input type="hidden" name="tokken" value="{{ tokken }}" />
-        <input type="hidden" name="plugin" value="{{ plugin }}" />
-        <input type="hidden" name="postid" value="{{ postid }}" />
-        <input type="hidden" name="referer" value="{{ request_uri }}" />
+        <input type="hidden" name="module" value="{{ module }}" />
+        <input type="hidden" name="redirect" value="{{ redirect }}" />
 
         <fieldset>
             <legend class="">Добавить комментарий</legend>
@@ -77,7 +78,7 @@ function add_comment(news, action) {
                     </div>
                 </div>
                 {% endif %}
-                <textarea onkeypress="if(event.keyCode==10 || (event.ctrlKey && event.keyCode==13)) {add_comment();}" name="content" id="content" rows="8" class="form-control message-content" placeholder="Комментарий" required=""></textarea>
+                <textarea onkeypress="if(event.keyCode==10 || (event.ctrlKey && event.keyCode==13)) {update_comment('{{ postid }}','add');}" name="content" id="content" rows="8" class="form-control message-content" placeholder="Комментарий" required=""></textarea>
             </div>
             <div class="form-group">
                 <p>Ваш e-mail не будет опубликован. Убедительная просьба соблюдать правила этики. Администрация оставляет за собой право удалять сообщения без объяснения причин.</p>

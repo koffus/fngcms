@@ -17,13 +17,15 @@ if (!defined('NGCMS')) die ('HAL');
 // $commDisplayNum - [optional] num that is showed in 'show comment' template
 // $callingParams
 //		'plugin' => if is called from plugin - ID of plugin
+//		'module' => table of DB
 //		'overridetName' => alternative template for display
 //		'overrideTemplatePath' => alternative path for searching of template
 //		'limitStart' => order comment no to start (for pagination)
 //		'limitCount' => number of comments to show (for pagination)
 //		'outprint'	 => flag: if set, output will be returned, elsewhere - will be added to mainblock
 //		'total' => total number of comments in this news
-function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams = array()){
+function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams = array())
+{
     global $mysql, $twig, $template, $config, $userROW, $parse, $PFILTERS, $TemplateCache;
 
     // Preload template configuration variables
@@ -62,22 +64,26 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         }
     }
 
-    function _cs_am($k){ return 'u.'.$k.' as `users_'.$k.'`';	}
+    function _cs_am($k){
+        return 'u.'.$k.' AS `users_'.$k.'`';
+    }
     if (isset($joinFilter['users']) and isset($joinFilter['users']['fields']) and is_array($joinFilter['users']['fields']) and (count($joinFilter['users']['fields']) > 0)) {
-        $sql = "select c.*, ".
+        $sql = "SELECT c.*, ".
             join(", ", array_map('_cs_am', $joinFilter['users']['fields'])).
-            ' from '.prefix.'_comments c'.
-            ' left join '.uprefix.'_users u on c.author_id = u.id where c.post='.db_squote($newsID).($commID?(" and c.id=".db_squote($commID)):'');
+            ' FROM '.prefix.'_comments c'.
+            ' LEFT JOIN '.uprefix.'_users u ON c.author_id = u.id WHERE c.post='.db_squote($newsID).($commID?(" AND c.id=".db_squote($commID)):'');
     } else {
-        $sql = "select c.* from ".prefix."_comments c WHERE c.post=".db_squote($newsID).($commID ? (" and c.id=".db_squote($commID)) : '');
+        $sql = "SELECT c.* FROM ".prefix."_comments c WHERE c.post=".db_squote($newsID).($commID ? (" AND c.id=".db_squote($commID)) : '');
     }
 
-    // Check plugin table
-    if (!empty($callingParams['plugin'])) {
-        $sql .= " and c.module=" . db_squote(secure_html($callingParams['plugin']));
+    // Check module table exist
+    if (!empty($callingParams['module']) and in_array($callingParams['module'], ['news', 'images']) ) {
+        $module = secure_html($callingParams['module']);
     } else {
-        $sql .= " and c.module='news'";
+        $module = 'news';
     }
+
+    $sql .= " AND c.module=" . db_squote($module);
 
     $sql .= " order by c.id".(pluginGetVariable('comments', 'backorder')?' desc':'');
 
@@ -85,8 +91,8 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
     $comnum = 0;
 
     // Check if we need to use limits
-    $limitStart = isset($callingParams['limitStart'])?intval($callingParams['limitStart']):0;
-    $limitCount = isset($callingParams['limitCount'])?intval($callingParams['limitCount']):0;
+    $limitStart = isset($callingParams['limitStart']) ? intval($callingParams['limitStart']) : 0;
+    $limitCount = isset($callingParams['limitCount']) ? intval($callingParams['limitCount']) : 0;
     if ($limitStart or $limitCount) {
         $sql .= ' limit '.$limitStart.", ".$limitCount;
         $comnum = $limitStart;
@@ -96,6 +102,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
     $output = '';
     $rows = $mysql->select($sql);
+
     foreach ($rows as $row) {
         $comnum++;
 
@@ -148,14 +155,14 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
         if ($config['use_avatars']) {
             if ($row['users_avatar']) {
-                $tVars['avatar'] = "<img src=\"".avatars_url."/".$row['users_avatar']."\" alt=\"".$row['author']."\" />";
+                $tVars['avatar'] = avatars_url."/".$row['users_avatar'];
             } else {
                 // If gravatar integration is active, show avatar from GRAVATAR.COM
 
                 if ($config['avatars_gravatar']) {
-                    $tVars['avatar'] = '<img src="http://www.gravatar.com/avatar/'.md5(strtolower($row['mail'])).'.jpg?s='.$config['avatar_wh'].'&amp;d='.urlencode($noAvatarURL).'" alt=""/>';
+                    $tVars['avatar'] = 'http://www.gravatar.com/avatar/'.md5(strtolower($row['mail'])).'.jpg?s='.$config['avatar_wh'].'&amp;d='.urlencode($noAvatarURL);
                 } else {
-                    $tVars['avatar'] = "<img src=\"".$noAvatarURL."\" alt=\"\" />";
+                    $tVars['avatar'] = $noAvatarURL;
                 }
             }
         } else {
@@ -164,7 +171,10 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
         if ($tVars['havePerm']) {
             $tVars['edit_link'] = admin_url."/admin.php?mod=editcomments&amp;newsid=".$newsID."&amp;comid=".$row['id'];
-            $tVars['delete_link'] = generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'delete'), array('id' => $row['id'], 'uT' => genUToken($row['id'])), true);
+            $tVars['delete_link'] = generateLink('core', 'plugin', 
+                    array('plugin' => 'comments', 'handler' => 'delete'),
+                    array('id' => $row['id'], 'module' => $module, 'uT' => genUToken($row['id'])),
+                    true);
             $tVars['ip'] = "<a href=\"http://www.nic.ru/whois/?ip=$row[ip]\" title=\"".__('whois')."\">".__('whois').'</a>';
         }
 
@@ -192,12 +202,13 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
 
 // postid => ID in news DB table or in $callingParams['plugin'] DB table, example images (plugin gallery)
 // $callingParams
-//		'plugin' => if is called from plugin - table DB of plugin
+//		'plugin' => if is called from plugin - table DB of plugin - TABLE not PLUGIN name
 //		'overridetName' => alternative template for display
 //		'overrideTemplatePath' => alternative path for searching of template
-//		'outprint'	 	=> flag: if set, output will be returned, elsewhere - will be added to mainblock
-function comments_showform($postid, $callingParams = array()){
-    global $mysql, $config, $template, $twig, $userROW, $PFILTERS;
+//		'outprint' => flag: if set, output will be returned, elsewhere - will be added to mainblock
+function comments_showform($postid, $callingParams = array())
+{
+    global $mysql, $config, $template, $twig, $userROW, $PFILTERS, $REQUEST_URI;
 
     // Desired template path and template name
     if (!empty($callingParams['overrideTemplatePath']) and !empty($callingParams['overridetName'])) {
@@ -220,10 +231,10 @@ function comments_showform($postid, $callingParams = array()){
         'admin_url' => admin_url,
         'skins_url' => skins_url,
         'post_url' => generateLink('core', 'plugin', array('plugin' => 'comments', 'handler' => 'add')),
-        'plugin' => isset($callingParams['plugin']) ? $callingParams['plugin'] : 'news',
+        'module' => isset($callingParams['module']) ? $callingParams['module'] : 'news',
         'postid' => $postid,
         'tokken' => genUToken('comment.add.' . $postid),
-        'request_uri' => secure_html($_SERVER['REQUEST_URI']),
+        'redirect' => $REQUEST_URI,
         'bbcodes' => $config['use_bbcodes'] ? BBCodes() : '',
         'smilies' => $config['use_smilies'] ? Smilies('comments', 10) : '',
         'captcha_url' => $config['use_captcha'] ? admin_url . '/captcha.php' : '',

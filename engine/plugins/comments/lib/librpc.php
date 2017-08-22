@@ -1,10 +1,11 @@
 <?php
 
-function comments_rpc_manage($params) {
-    global $mysql, $config, $AUTH_METHOD, $userROW, $ip, $parse, $catmap, $catz, $PFILTERS;
+function comments_rpc_manage($params)
+{
+    global $mysql, $config, $AUTH_METHOD, $userROW, $ip, $parse, $catmap, $catz, $PFILTERS, $REQUEST_URI;
 
-    // Connect library
-    include_once(root . "/plugins/comments/inc/comments.show.php");
+    // TO DO Action: add,edit,delete
+
     Lang::loadPlugin('comments', 'main', '', ':');
 
     $SQL = array();
@@ -82,18 +83,23 @@ function comments_rpc_manage($params) {
         }
         // Check if guest wants to use email of already registered user
         if (pluginGetVariable('comments', 'guest_edup_lock')) {
-            if (is_array($mysql->record("select * from ".uprefix."_users where mail = ".db_squote($SQL['mail'])." limit 1"))) {
-            return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.edupmail'));
+            if (is_array($mysql->record("SELECT id FROM `".uprefix."_users` WHERE mail=".db_squote($SQL['mail'])." LIMIT 1"))) {
+                return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.edupmail'));
             }
         }
     }
 
     $SQL['text'] = secure_html($params['content']);
-    $maxlen = intval(pluginGetVariable('comments', 'maxlen'));
-    $maxlen = ($maxlen > 2) ? $maxlen : 500;
-    if (mb_strlen($SQL['text'], 'UTF-8') > $maxlen or mb_strlen($SQL['text'], 'UTF-8') < 2) {
-        return array('status' => 0, 'errorCode' => 999, 'errorText' => str_replace('{maxlen}', pluginGetVariable('comments', 'maxlen'), __('comments:err.badtext')));
+    $maxlen = (int)pluginGetVariable('comments', 'maxlen');
+    $maxlen = ($maxlen > 4) ? $maxlen : 500;
+    $minlen = (int)pluginGetVariable('comments', 'minlen');
+    $minlen = ($minlen > 0 and $minlen < $maxlen) ? $minlen : 4;
+    $curlen = (int)mb_strlen($SQL['text'], 'UTF-8');
+    if (!filter_var($curlen, FILTER_VALIDATE_INT, ['options' => ['min_range' => $minlen, 'max_range' => $maxlen]])) {
+        $errorText = strtr(__('comments:err.badtext'), array('{minlen}' => $minlen,'{maxlen}' => $maxlen));
+        return array('status' => 0, 'errorCode' => 999, 'errorText' => $errorText);
     }
+    unset($maxlen,$minlen,$curlen);
 
     // Check for flood
     if (checkFlood(0, $ip, 'comments', 'add', $is_member?$memberRec:null, $is_member?null:$SQL['author'])) {
@@ -110,32 +116,27 @@ function comments_rpc_manage($params) {
         }
     }
 
-    // Check plugin table
-    if (!empty($params['plugin'])) {
-        $params['table'] = secure_html($params['plugin']);
-        $SQL['module'] = $params['table'];
+    // Check module table
+    if (!empty($params['module']) and in_array($params['module'], ['news','images']) ) {
+        $params['table'] = $SQL['module'] = secure_html($params['module']);
     } else {
-        $params['table'] = 'news';
+        return array('status' => 0, 'errorCode' => 999, 'errorText' => 'WTF');
     }
 
     // Locate news
-    if ($postRow = $mysql->record("SELECT * FROM ".prefix."_" . $params['table'] . " WHERE id = ".db_squote($SQL['post']))) {
+    if ($postRow = $mysql->record("SELECT * FROM `" . prefix . "_" . $params['table'] . "` WHERE id=" . db_squote($SQL['post']))) {
         // Determine if comments are allowed in this specific news
         $allowCom = $postRow['allow_com'];
-        if ($allowCom == 2) {
-            if ('news' == $params['table']) {
-                // `Use default` - check master category
-                $catid = explode(',', $postRow['catid']);
-                $masterCat = intval(array_shift($catid));
-                if ($masterCat and isset($catmap[$masterCat])) {
-                    $allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
-                }
+        if ($allowCom == 2 and 'news' == $params['table']) {
+            // `Use default` - check master category
+            $catid = explode(',', $postRow['catid']);
+            $masterCat = intval(array_shift($catid));
+            if ($masterCat and isset($catmap[$masterCat])) {
+                $allowCom = intval($catz[$catmap[$masterCat]]['allow_com']);
             }
-
+        } elseif ($allowCom == 2) {
             // If we still have 2 (no master category or master category also have 'default' - fetch plugin's config
-            if ($allowCom == 2) {
-                $allowCom = pluginGetVariable('comments', 'global_default');
-            }
+            $allowCom = pluginGetVariable('comments', 'global_default');
         }
         if (!$allowCom) {
             return array('status' => 0, 'errorCode' => 999, 'errorText' => __('comments:err.forbidden'));
@@ -158,7 +159,9 @@ function comments_rpc_manage($params) {
 
     if ($multiCheck) {
         // Locate last comment for this news
-        if (is_array($lpost = $mysql->record("select author_id, author, ip, mail from ".prefix."_comments where post=".db_squote($SQL['post'])." order by id desc limit 1"))) {
+        if (is_array($lpost = $mysql->record("
+            SELECT author_id, author, ip, mail FROM ".prefix."_comments WHERE post=".db_squote($SQL['post'])." AND module=" . $SQL['module'] ." ORDER BY id desc LIMIT 1
+            "))) {
             // Check for post from the same user
             if (is_array($userROW)) {
                  if ($userROW['id'] == $lpost['author_id']) {
@@ -200,16 +203,17 @@ function comments_rpc_manage($params) {
     // Create comment
     $vnames = array(); $vparams = array();
     foreach ($SQL as $k => $v) {
-        $vnames[] = $k; $vparams[] = db_squote($v);
+        $vnames[] = $k;
+        $vparams[] = db_squote($v);
     }
 
-    $mysql->query("insert into ".prefix."_comments (".implode(",",$vnames).") values (".implode(",",$vparams).")");
+    $mysql->query("insert into `".prefix."_comments` (".implode(",",$vnames).") values (".implode(",",$vparams).")");
 
     // Retrieve comment ID
     $comment_id = $mysql->result("select LAST_INSERT_ID() as id");
 
     // Update comment counter in news
-    $mysql->query("update ".prefix."_" . $params['table'] . " set com=com+1 where id=".db_squote($SQL['post']));
+    $mysql->query("update `".prefix."_" . $params['table'] . "` set com=com+1 where id=".db_squote($SQL['post']));
 
     // Update counter for user
     if ($SQL['author_id']) {
@@ -240,7 +244,7 @@ function comments_rpc_manage($params) {
                     ($SQL['author_id']) ? '<a href="'.$alink.'">' : '',
                     ($SQL['author_id']) ? '</a>' : '',
                     $parse->bbcodes($parse->smilies(secure_html($SQL['text']))),
-                    (('news' == $params['table']) ? News::generateLink($postRow, false, 0, true) : secure_html($_POST['reqReferer'])),
+                    (('news' == $params['table']) ? News::generateLink($postRow, false, 0, true) : $REQUEST_URI),
                     isset($postRow['title']) ? $postRow['title'] : $postRow['name'],
                     ),
             __('comments:notice')
@@ -261,20 +265,20 @@ function comments_rpc_manage($params) {
     @setcookie("com_usermail", urlencode($SQL['mail']), 0, '/');
 
     // Set we need to override news template
-    $callingCommentsParams = array('outprint' => true, 'plugin' => $params['table']);
+    $callingCommentsParams = array('outprint' => true, 'module' => $params['table']);
 
-    // Find first category in news
-    if (!empty($postRow['catid'])) {
-        $catid = explode(',', $postRow['catid']);
-        $fcat = array_shift($catid);
-        // Check if there is a custom mapping
-        if ($fcat and $catmap[$fcat] and ($ctname = $catz[$catmap[$fcat]]['tpl'])) {
-            // Check if directory exists
-            if (is_dir($tPath = tpl_site . 'ncustom/' . $ctname)) {
-                $callingCommentsParams['overrideTemplatePath'] = $tPath;
-            }
-        }
+    // desired template
+    $templateName = 'comments.show';
+
+    // Check if isset custom template for category in news
+    if (!empty($postRow['catid']) and $tPath = getCatTemplate($postRow['catid'], $templateName)) {
+        $callingCommentsParams['overrideTemplatePath'] = $tPath;
     }
+    
+
+    // Connect library
+    include_once(root . "/plugins/comments/inc/comments.show.php");
+    
 
     return array(
         'status' => 1,

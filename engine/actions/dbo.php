@@ -40,7 +40,7 @@ function systemDboModify()
         // Обновляем счётчики в категориях
         $ccount = array();
         $nmap = '';
-        foreach ($mysql->select("select id, catid, postdate, editdate from " . prefix . "_news where approve=1") as $row) {
+        foreach ($mysql->select("SELECT id, catid, postdate, editdate FROM " . prefix . "_news WHERE approve=1") as $row) {
             $ncats = 0;
             foreach (explode(',', $row['catid']) as $key) {
                 if (!$key) {
@@ -63,26 +63,27 @@ function systemDboModify()
         $mysql->query("truncate table " . prefix . "_news_map");
 
         if (strlen($nmap))
-            $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values " . substr($nmap, 0, -1));
+            $mysql->query("INSERT into " . prefix . "_news_map (newsID, categoryID, dt) values " . substr($nmap, 0, -1));
 
         // Update category news counters
         foreach ($catz as $key) {
-            $mysql->query("update " . prefix . "_category set posts = " . intval(getIsSet($ccount[$key['id']])) . " where id = " . $key['id']);
+            $mysql->query("UPDATE " . prefix . "_category SET posts = " . intval(getIsSet($ccount[$key['id']])) . " WHERE id = " . $key['id']);
         }
 
         // Check if we can update comments counters
         $haveComments = $mysql->table_exists(prefix . "_comments") ? true : false;
 
         if ($haveComments) {
-            foreach ($mysql->select("select n.id, count(c.id) as cid from " . prefix . "_news n left join " . prefix . "_comments c on c.post=n.id group by n.id") as $row) {
-                $mysql->query("update " . prefix . "_news set com=" . $row['cid'] . " where id = " . $row['id']);
+            $rows = $mysql->select("SELECT n.id, count(c.id) AS cid FROM " . prefix . "_news n LEFT JOIN " . prefix . "_comments c on c.post=n.id  AND module='news' GROUP BY n.id");
+            foreach ($rows as $row) {
+                $mysql->query("UPDATE " . prefix . "_news SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
             }
         }
 
         // Обновляем счетчик постов у юзеров
-        $mysql->query("update " . prefix . "_users set news = 0" . ($haveComments ? ", com = 0" : ''));
-        foreach ($mysql->select("select author_id, count(*) as cnt from " . prefix . "_news group by author_id") as $row) {
-            $mysql->query("update " . uprefix . "_users set news=" . $row['cnt'] . " where id = " . $row['author_id']);
+        $mysql->query("UPDATE " . prefix . "_users SET news = 0" . ($haveComments ? ", com = 0" : ''));
+        foreach ($mysql->select("SELECT author_id, count(*) AS cnt FROM " . prefix . "_news GROUP BY author_id") as $row) {
+            $mysql->query("UPDATE " . uprefix . "_users SET news=" . $row['cnt'] . " WHERE id = " . $row['author_id']);
         }
 
         if ($haveComments) {

@@ -152,11 +152,11 @@ function showNews($handlerName, $params)
                 $category = '';
                 if (isset($params['catid'])) {
                     $category = $params['catid'];
-                } else if (isset($params['category']) and isset($catz[$params['category']])) {
+                } elseif (isset($params['category']) and isset($catz[$params['category']])) {
                     $category = $catz[$params['category']]['id'];
-                } else if (isset($_REQUEST['catid'])) {
+                } elseif (isset($_REQUEST['catid'])) {
                     $category = $params['catid'];
-                } else if (isset($_REQUEST['category']) and isset($catz[$_REQUEST['category']])) {
+                } elseif (isset($_REQUEST['category']) and isset($catz[$_REQUEST['category']])) {
                     $category = $catz[$_REQUEST['category']]['id'];
                 }
 
