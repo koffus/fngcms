@@ -95,7 +95,7 @@ function comments_rpc_manage($params)
     $minlen = (int)pluginGetVariable('comments', 'minlen');
     $minlen = ($minlen > 0 and $minlen < $maxlen) ? $minlen : 4;
     $curlen = (int)mb_strlen($SQL['text'], 'UTF-8');
-    if (!filter_var($curlen, FILTER_VALIDATE_INT, ['options' => ['min_range' => $minlen, 'max_range' => $maxlen]])) {
+    if ($minlen > $curlen or $curlen > $maxlen) {
         $errorText = strtr(__('comments:err.badtext'), array('{minlen}' => $minlen,'{maxlen}' => $maxlen));
         return array('status' => 0, 'errorCode' => 999, 'errorText' => $errorText);
     }

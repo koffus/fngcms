@@ -410,6 +410,8 @@ class UrlHandler
             }
         }
 
+        $url = urldecode($url);
+
         // Merge flags with default options
         foreach ($this->options as $optName => $optValue) {
             if (!isset($flags[$optName]))
