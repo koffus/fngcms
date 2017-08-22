@@ -605,6 +605,11 @@ function clearCacheFiles($plugin = false)
             msg(array('message' => __('msg.cashe_clear')));
         }
     }
+    
+    // Clear cache OPCache
+    if(function_exists('opcache_get_status')) {
+        opcache_reset();
+    }
 
     // Create a protective .htaccess
     create_access_htaccess();
