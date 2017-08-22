@@ -3,7 +3,7 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin('gallery', 'config', '', ':');
 
 $db_update = array(
     array(
@@ -28,33 +28,34 @@ $db_update = array(
 );
 
 if ('commit' == $action) {
-    fixdb_plugin_install($plugin, $db_update, 'deinstall');
+    if (fixdb_plugin_install('gallery', $db_update, 'deinstall')) {
 
-    $ULIB = new UrlLibrary();
-    $ULIB->loadConfig();
-    $ULIB->removeCommand('gallery', '');
-    $ULIB->removeCommand('gallery', 'gallery');
-    $ULIB->removeCommand('gallery', 'image');
+        $ULIB = new UrlLibrary();
+        $ULIB->loadConfig();
+        $ULIB->removeCommand('gallery', 'image');
+        $ULIB->removeCommand('gallery', 'gallery');
+        $ULIB->removeCommand('gallery', '');
 
-    $UHANDLER = new UrlHandler();
-    $UHANDLER->loadConfig();
-    $UHANDLER->removePluginHandlers('gallery', '');
-    $UHANDLER->removePluginHandlers('gallery', 'gallery');
-    $UHANDLER->removePluginHandlers('gallery', 'image');
-    $UHANDLER->saveConfig();
+        $UHANDLER = new UrlHandler();
+        $UHANDLER->loadConfig();
+        $UHANDLER->removePluginHandlers('gallery', 'image');
+        $UHANDLER->removePluginHandlers('gallery', 'gallery');
+        $UHANDLER->removePluginHandlers('gallery', '');
 
-    // Load CORE Plugin
-    $cPlugin = CPlugin::instance();
-    // Load list of active plugins
-    $plugins = $cPlugin->getList();
-	unset($plugins['config'][$plugin]);
-    // Save configuration parameters of plugins
-    $cPlugin->setConfig($plugins['config']);
-    // Save configuration parameters of plugins
-    $cPlugin->saveConfig();
-    
-	$ULIB->saveConfig();
-	plugin_mark_deinstalled($plugin);
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Load list of active plugins
+        $plugins = $cPlugin->getList();
+        unset($plugins['config']['gallery']);
+        // Save configuration parameters of plugins
+        $cPlugin->setConfig($plugins['config']);
+        // Save configuration parameters of plugins
+        $cPlugin->saveConfig();
+        $ULIB->saveConfig();
+        $UHANDLER->saveConfig();
+
+        plugin_mark_deinstalled('gallery');
+    }
 } else {
-	generate_install_page($plugin, __('gallery:desc_deinstall'), 'deinstall');
+	generate_install_page('gallery', __('gallery:desc_deinstall'), 'deinstall');
 }

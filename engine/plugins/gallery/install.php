@@ -49,6 +49,25 @@ function plugin_gallery_install($action)
 
     $ULIB = new UrlLibrary();
     $ULIB->loadConfig();
+    $ULIB->registerCommand('gallery', '',
+        array ('vars' => array(
+                '' => array(
+                    'matchRegex' => '.+?', 
+                    'descr' => array(
+                        $config['default_lang'] => __('gallery:ULIB_main')
+                    )
+                ),
+                'page' => array(
+                    'matchRegex' => '\d{1,4}', 
+                    'descr' => array(
+                        $config['default_lang'] => __('gallery:ULIB_page')
+                    )
+                ),
+            ),
+            'descr' => array ($config['default_lang'] => __('gallery:ULIB_main_d')),
+        )
+    );
+
     $ULIB->registerCommand('gallery', 'gallery',
         array ('vars' => array(
                 'name' => array(
@@ -99,25 +118,6 @@ function plugin_gallery_install($action)
         )
     );
 
-    $ULIB->registerCommand('gallery', '',
-        array ('vars' => array(
-                '' => array(
-                    'matchRegex' => '.+?', 
-                    'descr' => array(
-                        $config['default_lang'] => __('gallery:ULIB_main')
-                    )
-                ),
-                'page' => array(
-                    'matchRegex' => '\d{1,4}', 
-                    'descr' => array(
-                        $config['default_lang'] => __('gallery:ULIB_page')
-                    )
-                ),
-            ),
-            'descr' => array ($config['default_lang'] => __('gallery:ULIB_main_d')),
-        )
-    );
-
     $ULIB->registerCommand('gallery', 'widget',
         array ('vars' => array(
                 'name' => array(
@@ -155,8 +155,8 @@ function plugin_gallery_install($action)
     'flagDisabled' => false,
     'rstyle' => 
     array (
-      'rcmd' => '/plugin/gallery[/{page}]/',
-      'regex' => '#^/plugin/gallery(?:/(\\d{1,4})){0,1}/$#',
+      'rcmd' => '/plugin/gallery[/page/{page}]/',
+      'regex' => '#^/plugin/gallery(?:/page/(\\d{1,4})){0,1}/$#',
       'regexMap' => 
       array (
         1 => 'page',
@@ -178,7 +178,7 @@ function plugin_gallery_install($action)
         1 => 
         array (
           0 => 0,
-          1 => '/',
+          1 => '/page/',
           2 => 1,
         ),
         2 => 
@@ -199,130 +199,134 @@ function plugin_gallery_install($action)
     );
 
     $UHANDLER->registerHandler(0,
-        array(
-            'pluginName' => 'gallery',
-            'handlerName' => 'gallery',
-            'flagPrimary' => true,
-            'flagFailContinue' => false,
-            'flagDisabled' => false,
-            'rstyle' =>
-                array(
-                    'rcmd' => '/plugin/gallery/{name}[/{page}]/',
-                    'regex' => '#^/plugin/gallery/(.+?)(?:/(\\d{1,4})){0,1}/$#',
-                    'regexMap' =>
-                        array(
-                            1 => 'name',
-                            2 => 'page',
-                        ),
-                    'reqCheck' =>
-                        array(),
-                    'setVars' =>
-                        array(),
-                    'genrMAP' =>
-                        array(
-                            0 =>
-                                array(
-                                    0 => 0,
-                                    1 => '/plugin/gallery/',
-                                    2 => 0,
-                                ),
-                            1 =>
-                                array(
-                                    0 => 1,
-                                    1 => 'name',
-                                    2 => 0,
-                                ),
-                            2 =>
-                                array(
-                                    0 => 0,
-                                    1 => '/',
-                                    2 => 1,
-                                ),
-                            3 =>
-                                array(
-                                    0 => 1,
-                                    1 => 'page',
-                                    2 => 1,
-                                ),
-                            4 =>
-                                array(
-                                    0 => 0,
-                                    1 => '/',
-                                    2 => 0,
-                                ),
-                        ),
-                ),
-        )
+        array (
+    'pluginName' => 'gallery',
+    'handlerName' => 'image',
+    'flagPrimary' => true,
+    'flagFailContinue' => false,
+    'flagDisabled' => false,
+    'rstyle' => 
+    array (
+      'rcmd' => '/plugin/gallery/{gallery}/image/{name}[/{page}]/',
+      'regex' => '#^/plugin/gallery/(.+?)/image/(.+?)(?:/()){0,1}/$#',
+      'regexMap' => 
+      array (
+        1 => 'gallery',
+        2 => 'name',
+        3 => 'page',
+      ),
+      'reqCheck' => 
+      array (
+      ),
+      'setVars' => 
+      array (
+      ),
+      'genrMAP' => 
+      array (
+        0 => 
+        array (
+          0 => 0,
+          1 => '/plugin/gallery/',
+          2 => 0,
+        ),
+        1 => 
+        array (
+          0 => 1,
+          1 => 'gallery',
+          2 => 0,
+        ),
+        2 => 
+        array (
+          0 => 0,
+          1 => '/image/',
+          2 => 0,
+        ),
+        3 => 
+        array (
+          0 => 1,
+          1 => 'name',
+          2 => 0,
+        ),
+        4 => 
+        array (
+          0 => 0,
+          1 => '/',
+          2 => 1,
+        ),
+        5 => 
+        array (
+          0 => 1,
+          1 => 'page',
+          2 => 1,
+        ),
+        6 => 
+        array (
+          0 => 0,
+          1 => '/',
+          2 => 0,
+        ),
+      ),
+    ),
+  )
     );
 
     $UHANDLER->registerHandler(0,
         array (
-        'pluginName' => 'gallery',
-        'handlerName' => 'image',
-        'flagPrimary' => true,
-        'flagFailContinue' => false,
-        'flagDisabled' => false,
-        'rstyle' => 
-            array (
-                'rcmd' => '/plugin/gallery/{gallery}/image/{name}[/{page}]/',
-                'regex' => '#^/plugin/gallery/(.+?)/image/(.+?)(?:/()){0,1}/$#',
-                'regexMap' => 
-                    array (
-                        1 => 'gallery',
-                        2 => 'name',
-                        3 => 'page',
-                    ),
-                'reqCheck' => 
-                    array (),
-                'setVars' => 
-                    array (),
-                'genrMAP' => 
-                    array (
-                        0 => 
-                            array (
-                                0 => 0,
-                                1 => '/plugin/gallery/',
-                                2 => 0,
-                            ),
-                        1 => 
-                            array (
-                                0 => 1,
-                                1 => 'gallery',
-                                2 => 0,
-                            ),
-                        2 => 
-                            array (
-                                0 => 0,
-                                1 => '/image/',
-                                2 => 0,
-                            ),
-                        3 => 
-                            array (
-                                0 => 1,
-                                1 => 'name',
-                                2 => 0,
-                            ),
-                        4 => 
-                            array (
-                                0 => 0,
-                                1 => '/',
-                                2 => 1,
-                            ),
-                        5 => 
-                            array (
-                                0 => 1,
-                                1 => 'page',
-                                2 => 1,
-                            ),
-                        6 => 
-                            array (
-                                0 => 0,
-                                1 => '/',
-                                2 => 0,
-                            ),
-                    ),
-            ),
-        )
+    'pluginName' => 'gallery',
+    'handlerName' => 'gallery',
+    'flagPrimary' => true,
+    'flagFailContinue' => false,
+    'flagDisabled' => false,
+    'rstyle' => 
+    array (
+      'rcmd' => '/plugin/gallery/{name}[/{page}]/',
+      'regex' => '#^/plugin/gallery/(.+?)(?:/(\\d{1,4})){0,1}/$#',
+      'regexMap' => 
+      array (
+        1 => 'name',
+        2 => 'page',
+      ),
+      'reqCheck' => 
+      array (
+      ),
+      'setVars' => 
+      array (
+      ),
+      'genrMAP' => 
+      array (
+        0 => 
+        array (
+          0 => 0,
+          1 => '/plugin/gallery/',
+          2 => 0,
+        ),
+        1 => 
+        array (
+          0 => 1,
+          1 => 'name',
+          2 => 0,
+        ),
+        2 => 
+        array (
+          0 => 0,
+          1 => '/',
+          2 => 1,
+        ),
+        3 => 
+        array (
+          0 => 1,
+          1 => 'page',
+          2 => 1,
+        ),
+        4 => 
+        array (
+          0 => 0,
+          1 => '/',
+          2 => 0,
+        ),
+      ),
+    ),
+  )
     );
 
     // Apply requested action
@@ -334,6 +338,7 @@ function plugin_gallery_install($action)
         case 'apply':
             if (fixdb_plugin_install('gallery', $db_update, 'install', ('autoapply' == $action) ? true : false)) {
 
+                // Обновляем поле module в комментариях, если не задано
                 $mysql->query("update ".prefix."_comments set module='news' where module=''");
 
                 $params = array(
@@ -356,6 +361,7 @@ function plugin_gallery_install($action)
                 $cPlugin->saveConfig();
                 $ULIB->saveConfig();
                 $UHANDLER->saveConfig();
+
                 plugin_mark_installed('gallery');
             } else {
                 return false;

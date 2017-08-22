@@ -54,6 +54,7 @@ function plugin_gallery_main($params = [])
     global $userROW, $template, $twig, $mysql, $TemplateCache, $SYSTEM_FLAGS;
 
     $page = isset($params['page']) ? intval($params['page']) : 1;
+    if ($page < 1) $page = 1;
 
     $SYSTEM_FLAGS['info']['title']['group'] = __('gallery:title');
     $SYSTEM_FLAGS['info']['title']['item'] = __('gallery:page').' ' . $page;
@@ -99,7 +100,9 @@ function plugin_gallery_main($params = [])
             $paginationParams = array('pluginName' => 'gallery', 'pluginHandler' => '', 'params' => array(), 'xparams' => array(), 'paginator' => array('page', 0, false));
             templateLoadVariables(true); 
             $navigations = $TemplateCache['site']['#variables']['navigation'];
+            $pagesss .= ($page > 1)?str_replace('%page%', __('gallery:paginator.prev'),str_replace('%link%',generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])):'';
             $pagesss .= generatePagination($page, 1, $page_count, 10, $paginationParams, $navigations);
+            $pagesss .= ($page < $page_count)?str_replace('%page%', __('gallery:paginator.next'),str_replace('%link%',generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])):'';
         }
     }
     
@@ -112,6 +115,7 @@ function plugin_gallery_main($params = [])
         ];
 
     $template['vars']['mainblock'] = $output = $twig->loadTemplate($tpath['page_main'] . 'page_main.tpl')->render($tVars);
+
     if (pluginGetVariable('gallery', 'cache')){
         cacheStoreFile($cacheFileName, $output, 'gallery');
     }
@@ -122,7 +126,8 @@ function plugin_gallery_gallery($params = [])
     global $userROW, $template, $twig, $mysql, $TemplateCache, $SYSTEM_FLAGS;
 
     $page = isset($params['page']) ? intval($params['page']) : 1;
-    $gallery['name'] = isset($params['name']) ? secure_html($params['name']) : false;
+    if ($page < 1) $page = 1;
+    $gallery['name'] = isset($params['name']) ? secure_html($params['name']) : (isset($_REQUEST['name']) ? secure_html($_REQUEST['name']): false);
 
     if (!$gallery['name']) {
         msg(array('type' => 'danger', 'message' => 'Не все параметры заданы'));
@@ -189,7 +194,9 @@ function plugin_gallery_gallery($params = [])
             $paginationParams = array('pluginName' => 'gallery', 'pluginHandler' => 'gallery', 'params' => array('id' => $gallery['id'], 'name' => $gallery['name']), 'xparams' => array(), 'paginator' => array('page', 0, false));
             templateLoadVariables(true); 
             $navigations = $TemplateCache['site']['#variables']['navigation'];
+            $pagesss .= ($page > 1)?str_replace('%page%', __('gallery:paginator.prev'),str_replace('%link%',generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])):'';
             $pagesss .= generatePagination($page, 1, $page_count, 10, $paginationParams, $navigations);
+            $pagesss .= ($page < $page_count)?str_replace('%page%', __('gallery:paginator.next'),str_replace('%link%',generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])):'';
         }
     }
 

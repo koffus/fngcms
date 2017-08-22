@@ -302,6 +302,10 @@
                         <div class="col-md-7">{{ mkSelect({'name' : 'save_con[news_multicat_url]', 'value' : config['news_multicat_url'], 'values' : { 0 : lang['news_multicat:0'], 1 : lang['news_multicat:1'] } }) }}</div>
                     </div>
                     <div class="form-group">
+                        <div class="col-md-5">{{ lang['news_translit'] }} <span class="help-block">{{ lang['news_translit#desc'] }}</span></div>
+                        <div class="col-md-7">{{ mkSelect({'name' : 'save_con[news_translit]','value' : config['news_translit'],'values' : { 1 : lang['yesa'], 0 : lang['noa'] } }) }}</div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-md-5">{{ lang['nnavigations'] }}<br/><span class="help-block">{{ lang['nnavigations_desc'] }}</span></div>
                         <div class="col-md-7"><input type="text" class="form-control" name="save_con[newsNavigationsCount]" value="{{ config['newsNavigationsCount'] }}" /></div>
                     </div>

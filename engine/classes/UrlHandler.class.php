@@ -163,7 +163,7 @@ class UrlHandler
                     if ($closeit) {
                         $closeit = false;
                         if ($pos > $dataStartPos) {
-                            $text = substr($rcmd, $dataStartPos, $pos - $dataStartPos);
+                            $text = mb_substr($rcmd, $dataStartPos, $pos - $dataStartPos, 'UTF-8');
                             $genmap[] = array(0, $text, $variative);
                         }
                         $variative = $newVariative;
@@ -174,7 +174,7 @@ class UrlHandler
                 case '1':
                     if ($rcmd[$pos] == '}') {
                         // End of the variable
-                        $text = substr($rcmd, $dataStartPos, $pos - $dataStartPos);
+                        $text = mb_substr($rcmd, $dataStartPos, $pos - $dataStartPos, 'UTF-8');
                         $genmap[] = array(getIsSet($cmd['vars'][$text]['isSecure']) ? 2 : 1, $text, $variative);
                         $dataStartPos = $pos + 1;
                         $state = 0;
@@ -194,7 +194,7 @@ class UrlHandler
             return array(array(3, 'Variative block is not closed'), false);
         } else {
             if ($dataStartPos < $pos) {
-                $text = substr($rcmd, $dataStartPos, $pos - $dataStartPos);
+                $text = mb_substr($rcmd, $dataStartPos, $pos - $dataStartPos, 'UTF-8');
                 $genmap[] = array(0, $text, 0);
             }
         }
@@ -404,13 +404,13 @@ class UrlHandler
     {
         // Init URL if it's not passed in params
         if ($url == null) {
-            $url = $_SERVER['REQUEST_URI'];
+            $url = urldecode($_SERVER['REQUEST_URI']);
             if (($tmp_pos = strpos($url, '?')) !== FALSE) {
-                $url = substr($url, 0, $tmp_pos);
+                $url = mb_substr($url, 0, $tmp_pos, 'UTF-8');
             }
+        } else {
+            $url = urldecode($url);
         }
-
-        $url = urldecode($url);
 
         // Merge flags with default options
         foreach ($this->options as $optName => $optValue) {
@@ -560,8 +560,6 @@ class UrlHandler
             $this->options['domainPrefix'] :
             ((isset($this->options['localPrefix']) and (trim($this->options['localPrefix']))) ? $this->options['localPrefix'] : '');
 
-        return $linkPrefix .
-            join('', $url) .
-            (count($uparams) ? '?' . join('&' . ($intLink ? 'amp;' : ''), $uparams) : '');
+        return urldecode($linkPrefix . join('', $url) . (count($uparams) ? '?' . join('&' . ($intLink ? 'amp;' : ''), $uparams) : ''));
     }
 }

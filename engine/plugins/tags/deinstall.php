@@ -3,22 +3,17 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-//
-
-
-Lang::loadPlugin($plugin, 'main');
+Lang::loadPlugin('tags', 'config', '', ':');
 
 $db_update = array(
-	array(
-		'table' => 'tags',
-		'action' => 'drop',
-	),
-	array(
-		'table' => 'tags_index',
-		'action' => 'drop',
-	),
+    array(
+        'table' => 'tags',
+        'action' => 'drop',
+    ),
+    array(
+        'table' => 'tags_index',
+        'action' => 'drop',
+    ),
 //	array(
 //		'table' => 'news',
 //		'action' => 'modify',
@@ -30,9 +25,32 @@ $db_update = array(
 
 // RUN
 if ('commit' == $action) {
-	if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
-		plugin_mark_deinstalled($plugin);
-	}
+    if (fixdb_plugin_install('tags', $db_update, 'deinstall')) {
+        
+        $ULIB = new UrlLibrary();
+        $ULIB->loadConfig();
+        $ULIB->removeCommand('tags', 'tag');
+        $ULIB->removeCommand('tags', '');
+
+        $UHANDLER = new UrlHandler();
+        $UHANDLER->loadConfig();
+        $UHANDLER->removePluginHandlers('tags', 'tag');
+        $UHANDLER->removePluginHandlers('tags', '');
+
+        // Load CORE Plugin
+        $cPlugin = CPlugin::instance();
+        // Load list of active plugins
+        $plugins = $cPlugin->getList();
+        unset($plugins['config'][$plugin]);
+        // Save configuration parameters of plugins
+        $cPlugin->setConfig($plugins['config']);
+        // Save configuration parameters of plugins
+        $cPlugin->saveConfig();
+        $ULIB->saveConfig();
+        $UHANDLER->saveConfig();
+
+        plugin_mark_deinstalled('tags');
+    }
 } else {
-	generate_install_page($plugin, '', 'deinstall');
+    generate_install_page('tags', 'Сейчас плагин будет удален', 'deinstall');
 }

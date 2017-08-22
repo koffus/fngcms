@@ -78,7 +78,8 @@ function admCategoryAddForm(){
 // Processing functions :: add new category
 // ///////////////////////////////////////////////////////////////////////////
 //
-function admCategoryAdd() {
+function admCategoryAdd()
+{
     global $mysql, $mod, $parse, $config, $AFILTERS;
 
     $SQL = array();
@@ -118,7 +119,7 @@ function admCategoryAdd() {
     // IF alt name is set:
     if ( trim($SQL['alt']) ) {
         // - check for allowed chars
-        if (!$parse->nameCheck($SQL['alt'])) {
+        if ($parse->nameCheck($SQL['alt'])) {
             // ERROR
             msg(array('type' => 'danger', 'title' => __('category.err.wrongalt'), 'message' => __('category.err.wrongalt#desc')));
             return;
@@ -131,13 +132,13 @@ function admCategoryAdd() {
         }
     } else {
         // alt name was not set, generate new alt name in automatic mode
-        $SQL['alt'] = strtolower($parse->translit($SQL['name']));
+        $SQL['alt'] = $parse->translit($SQL['name'], $config['news_translit']);
 
         $i = '';
         while ( is_array($mysql->record("select id from ".prefix."_category where alt = ".db_squote($SQL['alt'].$i)." limit 1")) ) {
             $i++;
         }
-        $SQL['alt'] = $SQL['alt'].$i;
+        $SQL['alt'] = $SQL['alt'] . $i;
     }
 
     if ($config['meta']) {
@@ -302,7 +303,7 @@ function admCategoryEdit(){
     $SQL = array();
     $SQL['name'] = secure_html($_POST['name']);
     $SQL['info'] = $_POST['info'];
-    $SQL['alt'] = trim($_POST['alt']);
+    $SQL['alt'] = secure_html($_POST['alt']);
     $SQL['parent'] = intval($_POST['parent']);
     $SQL['icon'] = $_POST['icon'];
     $SQL['alt_url'] = $_POST['alt_url'];
@@ -338,21 +339,24 @@ function admCategoryEdit(){
         return;
     }
 
-    // Check alt name in case it was changed
-    if ($SQL['alt'] != $catid) {
-        // - check for allowed chars
-        if (!$parse->nameCheck($SQL['alt'])) {
-            // ERROR
-            msg(array('type' => 'danger', 'title' => __('category.err.wrongalt'), 'message' => __('category.err.wrongalt#desc')));
-            return;
-        }
+    // Manage alt name
+    if (empty($SQL['alt'])) {
+        $SQL['alt'] = $parse->translit($SQL['name'], $config['news_translit']);
+    }
 
-        // - check for duplicate alt name
+    // Check for allowed chars
+    if ($parse->nameCheck($SQL['alt'])) {
+        // ERROR
+        msg(array('type' => 'danger', 'title' => __('category.err.wrongalt'), 'message' => __('category.err.wrongalt#desc')));
+        return;
+    }
+
+    // Check for duplicate alt name
+    if ($SQL['alt'] != $catz[$catmap[$catid]]['alt']) {
         if (is_array($mysql->record("select * from ".prefix."_category where (id <> ".db_squote($catid).") and (lower(alt) = ".db_squote($SQL['alt']).")"))) {
             msg(array('type' => 'danger', 'title' => __('category.err.dupalt'), 'message' => __('category.err.dupalt#desc')));
             return;
         }
-
     }
 
     if ($config['meta']) {
@@ -370,7 +374,7 @@ function admCategoryEdit(){
     }
 
     // Check if new image was attached
-    if (isset($_FILES) and (!$SQL['image_id']) and isset($_FILES['image']) and is_array($_FILES['image']) and isset($_FILES['image']['error']) and ($_FILES['image']['error'] == 0)) {
+    if (isset($_FILES) and (!isset($SQL['image_id'])) and isset($_FILES['image']) and is_array($_FILES['image']) and isset($_FILES['image']['error']) and ($_FILES['image']['error'] == 0)) {
         // new file is uploaded
         $up = $fmanager->file_upload(array('dsn' => true, 'linked_ds' => 2, 'linked_id' => $catid, 'type' => 'image', 'http_var' => 'image', 'http_varnum' => 0));
         //print "OUT: <pre>".var_export($up, true)."</pre>";

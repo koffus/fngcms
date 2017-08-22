@@ -1508,7 +1508,7 @@ function coreUserMenu()
         $tVars['redirect'] = isset($SYSTEM_FLAGS['module.usermenu']['redirect']) ? $SYSTEM_FLAGS['module.usermenu']['redirect'] : $_SERVER['REQUEST_URI'];
         $tVars['reg_link'] = generateLink('core', 'registration');
         $tVars['lost_link'] = generateLink('core', 'lostpassword');
-        $tVars['form_action'] = generateLink('core', 'login');
+        $tVars['form_action'] = $tVars['login_link'] = generateLink('core', 'login');
     } else {
         // User is logged in
         $tVars['profile_link'] = generateLink('uprofile', 'edit');

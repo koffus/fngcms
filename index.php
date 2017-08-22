@@ -120,7 +120,7 @@ $template['vars']["[/sitelock]"] = '';
 // You may modify variable $systemAccessURL here (for hacks) //
 // /////////////////////////////////////////////////////////// //
 
-$timer->registerEvent('Search route for URL "' . $systemAccessURL . '"');
+$timer->registerEvent('Search route for URL "' . urldecode($systemAccessURL) . '"');
 
 /*// Give domainName to URL handler engine for generating absolute links
 $UHANDLER->setOptions(array('domainPrefix' => $config['home_url']));

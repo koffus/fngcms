@@ -21,23 +21,28 @@ class Parse
         return preg_replace("#\[hide\]\s*(.*?)\s*\[/hide\]#is", is_array($userROW) ? "$1" : str_replace("{text}", __('not_logged'), __('not_logged_html')), $content);
     }
 
-    function translit($content, $allowDash = 0, $allowSlash = 0)
+    function translit($content, $useTranslit = true)
     {
-        // $allowDash is not used any more
+        global $config;
 
         $utf2enS = array('А' => 'a', 'Б' => 'b', 'В' => 'v', 'Г' => 'g', 'Ґ' => 'g', 'Д' => 'd', 'Е' => 'e', 'Ё' => 'jo', 'Є' => 'e', 'Ж' => 'zh', 'З' => 'z', 'И' => 'i', 'І' => 'i', 'Й' => 'J', 'Ї' => 'i', 'К' => 'k', 'Л' => 'l', 'М' => 'm', 'Н' => 'n', 'О' => 'o', 'П' => 'p', 'Р' => 'r', 'С' => 's', 'Т' => 't', 'У' => 'u', 'Ў' => 'u', 'Ф' => 'f', 'Х' => 'h', 'Ц' => 'c', 'Ч' => 'ch', 'Ш' => 'sh', 'Щ' => 'sz', 'Ъ' => '', 'Ы' => 'y', 'Ь' => '', 'Э' => 'e', 'Ю' => 'yu', 'Я' => 'ya');
-        $utf2enB = array('а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'ґ' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'jo', 'є' => 'e', 'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'і' => 'i', 'й' => 'j', 'ї' => 'i', 'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ў' => 'u', 'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sz', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu', 'я' => 'ya', '&quot;' => '', '&amp;' => '', 'µ' => 'u', '№' => 'num');
+        $utf2enB = array('а' => 'a', 'б' => 'b', 'в' => 'v', 'г' => 'g', 'ґ' => 'g', 'д' => 'd', 'е' => 'e', 'ё' => 'jo', 'є' => 'e', 'ж' => 'zh', 'з' => 'z', 'и' => 'i', 'і' => 'i', 'й' => 'j', 'ї' => 'i', 'к' => 'k', 'л' => 'l', 'м' => 'm', 'н' => 'n', 'о' => 'o', 'п' => 'p', 'р' => 'r', 'с' => 's', 'т' => 't', 'у' => 'u', 'ў' => 'u', 'ф' => 'f', 'х' => 'h', 'ц' => 'c', 'ч' => 'ch', 'ш' => 'sh', 'щ' => 'sz', 'ъ' => '', 'ы' => 'y', 'ь' => '', 'э' => 'e', 'ю' => 'yu', 'я' => 'ya');
 
+        $content = (string) $content;
         $content = trim(strip_tags($content));
-        $content = strtr($content, $utf2enS);
-        $content = strtr($content, $utf2enB);
+        $content = strtr($content, array('&quot;' => '', '&amp;' => '', 'µ' => 'u', '№' => 'num', '_-' => '-', ' - ' => '-', '.' => ''));
+        
+        if ($useTranslit) {
+            $content = mb_strtolower($content, 'UTF-8');
+            $content = strtr($content, $utf2enS);
+            $content = strtr($content, $utf2enB);
+        }
 
-        $content = str_replace(array(' - ', '_-'), array('-','-'), $content);
-        $content = preg_replace("/\s+/ms", "-", $content);
-        $content = preg_replace("/[ ]+/", "-", $content);
-
-        $content = preg_replace("/[^a-z0-9_\-\." . ($allowSlash ? '\/' : '') . "]+/mi", '', $content);
-        $content = preg_replace("#-(-)+#", "-", $content);
+        //$content = str_replace(array("\n", "\r"), " ", $content);
+        $content = preg_replace("/\s+/msu", "-", $content);
+        $content = preg_replace("/[ ]+/u", "-", $content);
+        $content = preg_replace("/-(-)+/u", "-", $content);
+        $content = preg_replace("/[^A-Za-z0-9ёЁА-Яа-я\_\-\.]+/miu", '', $content);
 
         return trim($content);
     }
@@ -520,7 +525,7 @@ class Parse
 
     function nameCheck($name)
     {
-        return preg_match('#^[a-z0-9\_\-\.]+$#mi', $name);
+        return preg_match('/[^A-Za-z0-9ёЁА-Яа-я\_\-]+/mu', $name);
     }
 
     function color($arr)

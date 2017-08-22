@@ -1,12 +1,11 @@
 {% if (handler == 'by.category') %}
     <small class="pull-right">{{ count }}</small>
     <h2 class="section-title">{{ category.name }}</h2>
+    {% include 'news-order.tpl' %}
     {% if (pages.current == 1) %}
         {% if category.icon.purl %}<img src="{{ category.icon.purl }}" />{% endif %}
-        {% if category.info %}{{ category.info }}<hr />{% endif %}
+        {% if category.info %}{{ category.info }}<hr class="alert-info" />{% endif %}
     {% endif %}
-
-    {% include 'news-order.tpl' %}
 
 {% else %}
      <small class="pull-right">{{ count }}</small>

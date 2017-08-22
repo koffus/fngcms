@@ -18,8 +18,10 @@
                 {% endif %}
                 <li class="nav-item"><a href="{{ logout_link }}" class="dropdown-item">{{ lang['log_out'] }}</a></li>
             {% else %}
-                <li class="nav-item"><a href="{{ home }}/register/" class="dropdown-item">{{ lang['registration'] }}</a></li>
-                <li class="nav-item"><a href="{{ home }}/login/" class="dropdown-item">{{ lang['login'] }}</a></li>
+                <li class="nav-item"><a href="{{ login_link }}" class="dropdown-item">{{ lang['login'] }}</a></li>
+                <li class="nav-item"><a href="{{ reg_link }}" class="dropdown-item">{{ lang['registration'] }}</a></li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item"><a href="{{ lost_link }}" class="dropdown-item">{{ lang['lostpassword'] }}</a></li>
             {% endif %}
         </ul>
     </li>

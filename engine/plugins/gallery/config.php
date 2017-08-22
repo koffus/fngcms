@@ -205,7 +205,7 @@ function showList($plugin, $action)
             }
 
             $title = secure_html($_POST['title']);
-            $skin = $parse->translit(trim($_POST['skin']), 1);
+            $skin = $parse->translit($_POST['skin']);
             $image_count = intval($_POST['image_count']);
             $if_active = intval($_POST['if_active']);
             $icon = secure_html($_POST['icon']);
@@ -480,7 +480,7 @@ function showWidgetList($plugin, $action)
             $widgets = pluginGetVariable('gallery', 'widgets');
 
             $id = isset($_POST['id']) ? intval($_POST['id']) : count($widgets);
-            $name = $parse->translit(trim($_POST['name']), 1);
+            $name = $parse->translit($_POST['name']);
             $title = secure_html($_POST['title']);
             $if_active = intval($_POST['if_active']);
             $skin = secure_html(trim($_POST['skin']));

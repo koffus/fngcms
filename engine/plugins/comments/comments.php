@@ -232,6 +232,7 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
         }
         $ms .= '</select>';
 
+        $tvars['extend'] = isset($tvars['extend']) ? $tvars['extend'] :'';
         $tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">' . __('comments:categories.comments') . '<span class="help-block">' . __('comments:categories.comments#desc') . '</span></div><div class="col-sm-7">' . $ms . '</div></div>';
         return 1;
     }

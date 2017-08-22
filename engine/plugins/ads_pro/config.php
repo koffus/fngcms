@@ -305,12 +305,12 @@ function add_submit()
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
 
-    $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
     $name = $parse->translit(secure_html($_REQUEST['name']));
     if (!$name) $name = 0;
     $description = secure_html($_REQUEST['description']);
     $type = intval($_REQUEST['type']);
-    $location = isset($_REQUEST['location']) ? $_REQUEST['location'] : NULL;
+    $location = !empty($_REQUEST['location']) ? $_REQUEST['location'] : NULL;
     $state = intval($_REQUEST['state']);
     $start_view = !empty($_REQUEST['start_view']) ? GetTimeStamp(secure_html($_REQUEST['start_view'])) : 0;
     $end_view = !empty($_REQUEST['end_view']) ? GetTimeStamp(secure_html($_REQUEST['end_view'])) : 0;

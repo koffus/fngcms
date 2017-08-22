@@ -433,7 +433,7 @@ function addNews($mode = array()){
     $SQL['title'] = $title;
 
     // Check for dup if alt_name is specified
-    $alt_name = ($perm['personal.altname'] and isset($_REQUEST['alt_name']))?$parse->translit(trim($_REQUEST['alt_name']), 1):'';
+    $alt_name = ($perm['personal.altname'] and isset($_REQUEST['alt_name'])) ? $parse->translit($_REQUEST['alt_name'], $config['news_translit']) : '';
 
     if ($alt_name) {
         if ( is_array($mysql->record("select id from ".prefix."_news where alt_name = ".db_squote($alt_name)." limit 1")) ) {
@@ -443,7 +443,7 @@ function addNews($mode = array()){
         $SQL['alt_name'] = $alt_name;
     } else {
         // Generate uniq alt_name if no alt_name specified
-        $alt_name = strtolower($parse->translit(trim($title), 1));
+        $alt_name = $parse->translit($title, $config['news_translit']);
         // Make a conversion:
         // * '.' to '_'
         // * '__' to '_' (several to one)
@@ -726,15 +726,10 @@ function editNews($mode = array()) {
 
     // Manage alt name
     if ($perm[$permGroupMode.'.altname'] and isset($_REQUEST['alt_name'])) {
-        $alt_name	= $_REQUEST['alt_name'];
+        $alt_name = $_REQUEST['alt_name'];
         // Check if alt name should be generated again
-        if (trim($alt_name) == '') {
-            $alt_name = strtolower($parse->translit(trim($title), 1));
-            // Make a conversion:
-            // * '.' to '_'
-            // * '__' to '_' (several to one)
-            // * Delete leading/finishing '_'
-            $alt_name = preg_replace(array('/\./', '/(_{2,20})/', '/^(_+)/', '/(_+)$/'), array('_', '_'), $alt_name);
+        if ('' == trim($alt_name)) {
+            $alt_name = $parse->translit($title, $config['news_translit']);
 
             // Make alt_name equal to '_' if it appear to be blank after conversion
             if ($alt_name == '') $alt_name = '_';
@@ -746,13 +741,10 @@ function editNews($mode = array()) {
             $alt_name = $alt_name.$i;
         }
 
-        // Check if alt name was changed
-        if ($alt_name != $row['alt_name']) {
-            // Check for allowed chars in alt name
-            if (!$parse->nameCheck($alt_name)) {
-                msg(array('type' => 'danger', 'message' => __('editnews')['err.altname.wrong']));
-                return;
-            }
+        // Check Always for allowed chars in alt name
+        if ($parse->nameCheck($alt_name)) {
+            msg(array('type' => 'danger', 'message' => __('editnews')['err.altname.wrong']));
+            return;
         }
 
         // Check if we try to use duplicate alt_name
@@ -830,11 +822,17 @@ function editNews($mode = array()) {
     $SQL['favorite'] = ($perm[$permGroupMode.'.favorite'] && intval($_REQUEST['favorite']))?1:0;
 
     switch (intval($_REQUEST['approve'])) {
-        case -1:	$SQL['approve'] = -1;								break;
-        case 0: $SQL['approve'] = 0;								break;
-        case 1: $SQL['approve'] = (($row['approve'] == 1) or (($row['approve'] < 1) and ($perm[$permGroupMode.'.publish'])))?1:0;
+        case -1:
+            $SQL['approve'] = -1;
             break;
-        default:	$SQL['approve']	= 0;
+        case 0:
+            $SQL['approve'] = 0;
+            break;
+        case 1:
+            $SQL['approve'] = (($row['approve'] == 1) or (($row['approve'] < 1) and ($perm[$permGroupMode.'.publish'])))?1:0;
+            break;
+        default:
+            $SQL['approve'] = 0;
     }
 
     if ($perm[$permGroupMode.'.setviews'] and $_REQUEST['setViews']) {
@@ -842,8 +840,8 @@ function editNews($mode = array()) {
     }
 
     // Load list of attached images/files
-    $row['#files']	= $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_files where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
-    $row['#images']	= $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
+    $row['#files'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_files where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
+    $row['#images'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
 
     // Dummy parameter for API call
     $tvars = array();
@@ -949,18 +947,21 @@ function editNews($mode = array()) {
     }
 }
 
-function admcookie_get(){
+function admcookie_get()
+{
     if (isset($_COOKIE['ng_adm']) and is_array($x = unserialize($_COOKIE['ng_adm'])))
         return $x;
 
     return array();
 }
 
-function admcookie_set($x = array()) {
+function admcookie_set($x = array())
+{
     return setcookie('ng_adm', serialize($x), time() + 365*86400);
 }
 
-function showPreview() {
+function showPreview()
+{
     global $userROW, $EXTRA_CSS, $EXTRA_HTML_VARS, $PFILTERS, $tpl, $parse, $mysql, $config, $catmap;
 
     // Load permissions
@@ -977,7 +978,7 @@ function showPreview() {
         $SQL['postdate'] = time() + ($config['date_adjust'] * 60);
     }
     $SQL['title'] = $_REQUEST['title'];
-    $SQL['alt_name'] = $parse->translit(trim($_REQUEST['alt_name']?$_REQUEST['alt_name']:$_REQUEST['title']));
+    $SQL['alt_name'] = $parse->translit(($_REQUEST['alt_name'] ? $_REQUEST['alt_name'] : $_REQUEST['title']), $config['news_translit']);
 
     // Fetch MASTER provided categories
     $catids = [];

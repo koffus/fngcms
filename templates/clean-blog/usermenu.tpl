@@ -37,6 +37,7 @@
 						</div>
 						<div class="modal-footer">
 							<a href="{{ lost_link }}">{{ lang['lostpassword'] }}</a>
+							<a href="{{ reg_link }}">{{ lang['registration'] }}</a>
 							<button type="submit" class="btn btn-primary">{{ lang['login'] }}</button>
 						</div>
 					</fieldset>
