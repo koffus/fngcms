@@ -623,7 +623,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0, $params 
         $pages = '';
     }
 
-    $tvars = array('vars' => array('entries' => $tagList, 'tag' => __('tags:taglist'), 'pages' => $pages));
+    $tvars = array('vars' => array('entries' => $tagList, 'tag' => __('tags:taglist'), 'pages' => $pages, 'url_main' => generatePluginLink('tags', null)));
     if (pluginGetVariable('tags', 'cloud3d'))
         $tvars['vars']['cloud3d'] = urlencode('<tags>'.join(' ', $cloud3d).'</tags>');
     $tvars['regx']['#\[paginator\](.*?)\[\/paginator\]#is'] = ($pages != '')?'$1':'';
