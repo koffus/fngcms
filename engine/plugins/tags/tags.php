@@ -396,7 +396,7 @@ function plugin_tags_tag($params = [])
         $entries = __('tags:nonews');
     } else {
         $entries = '';
-        $SYSTEM_FLAGS['info']['title']['secure_html'] = secure_html($tag) . __('tags:page').' ' . $page;
+        $SYSTEM_FLAGS['info']['title']['secure_html'] = secure_html($tag) . ' ' . __('tags:page').' ' . $page;
 
         // Set page display limit
         $perPage = intval(pluginGetVariable('tags', 'tpage_limit'));
