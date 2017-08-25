@@ -25,7 +25,7 @@
 @define('uprefix',$config['uprefix']);
 @define('home', $config['home_url']);
 @define('scriptLibrary', $config['home_url'].'/lib');
-@define('localPrefix', (preg_match('#^(http|https)\:\/\/([^\/])+(\/.+)#', $config['home_url'], $tempMatch))?$tempMatch[2]:'');
+@define('localPrefix', (preg_match('#^(http|https)\:\/\/([^\/])+(\/.+)#', $config['home_url'], $tempMatch))?$tempMatch[3]:'');
 
 @define('home_title', $config['home_title']);
 @define('admin_url', $config['admin_url']);
