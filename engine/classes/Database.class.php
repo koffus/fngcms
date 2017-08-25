@@ -40,9 +40,9 @@ class Database
 
         // Connect to the database
         try {
-            $this->dbh = new PDO("mysql:host=" . $this->dbhost . ";dbname=" . $this->dbname, $this->dbuser, $this->dbpasswd);
+            $this->dbh = new PDO("mysql:host=" . $this->dbhost . ";charset=utf8;dbname=" . $this->dbname, $this->dbuser, $this->dbpasswd);
             $this->dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->dbh->exec('SET CHARACTER SET utf8');
+            $this->dbh->exec("SET NAMES 'utf8' COLLATE 'utf8_general_ci'");
             return true;
         } catch (\PDOException $e) {
             if (!$noerror) {

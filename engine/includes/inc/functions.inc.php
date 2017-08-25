@@ -459,7 +459,7 @@ function msg($params, $mode = 0, $disp = -1)
 
     switch($disp) {
         case 0:
-            $template['vars']['mainblock'] .= $msg;
+            $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
             break;
         case 1:
             print $msg;
@@ -471,7 +471,7 @@ function msg($params, $mode = 0, $disp = -1)
             if ($mode) {
                 print $msg;
             } else {
-                $template['vars']['mainblock'] .= $msg;
+                $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
             }
             break;
     }

@@ -92,6 +92,7 @@
 			<div class="row">
 				<div class="col col-md-6">
 					{{restore}} 
+                    <label for="cp1251"><input type="checkbox" name="cp1251" id="cp1251" value="1" />Архив БД в кодировке cp1251</label>
 				</div>
 				<div class="col col-md-3">
 					<input class="btn btn-default form-control" type="submit" value="{{ lang.dbo.restore }}" onclick="document.forms['backups'].restore.value = 'true';" />

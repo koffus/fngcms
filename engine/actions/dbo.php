@@ -35,8 +35,12 @@ function systemDboModify()
         return false;
     }
 
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
     // Update message counters
-    if (getIsSet($_REQUEST['cat_recount'])) {
+    if (getIsSet($_REQUEST['cat_recount']))
+    {
         // Обновляем счётчики в категориях
         $ccount = array();
         $nmap = '';
@@ -71,27 +75,43 @@ function systemDboModify()
         }
 
         // Check if we can update comments counters
-        $haveComments = $mysql->table_exists(prefix . "_comments") ? true : false;
+        if ($cPlugin->isActive('comments')) {
+            $haveComments = $mysql->table_exists(prefix . "_comments") ? true : false;
 
-        if ($haveComments) {
-            $rows = $mysql->select("SELECT n.id, count(c.id) AS cid FROM " . prefix . "_news n LEFT JOIN " . prefix . "_comments c on c.post=n.id  AND module='news' GROUP BY n.id");
-            foreach ($rows as $row) {
-                $mysql->query("UPDATE " . prefix . "_news SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
+            if ($haveComments) {
+                // Обновляем счетчик комментариев в новостях
+                $rows = $mysql->select("SELECT n.id, count(c.id) AS cid FROM " . prefix . "_news n LEFT JOIN " . prefix . "_comments c on c.post=n.id  AND module='news' GROUP BY n.id");
+                foreach ($rows as $row) {
+                    $mysql->query("UPDATE " . prefix . "_news SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
+                }
+
+                // Обновляем счетчик комментариев в плагине gallery
+                if ($cPlugin->isActive('gallery')) {
+                    $rows = $mysql->select("SELECT i.id, count(c.id) AS cid FROM " . prefix . "_images i LEFT JOIN " . prefix . "_comments c on c.post=i.id  AND module='news' GROUP BY i.id");
+                    foreach ($rows as $row) {
+                        $mysql->query("UPDATE " . prefix . "_images SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
+                    }
+                }
             }
+
+            if ($haveComments) {
+                // ОбнУляем счетчик постов и комментариев у юзеров
+                $mysql->query("UPDATE " . prefix . "_users SET news = 0, com = 0");
+                // Обновляем счетчик комментариев у юзеров
+                foreach ($mysql->select("select author_id, count(*) as cnt from " . prefix . "_comments group by author_id") as $row) {
+                    $mysql->query("update " . uprefix . "_users set com=" . $row['cnt'] . " where id = " . $row['author_id']);
+                }
+            }
+        } else {
+            // ОбнУляем счетчик постов у юзеров
+            $mysql->query("UPDATE " . prefix . "_users SET news = 0");
         }
 
         // Обновляем счетчик постов у юзеров
-        $mysql->query("UPDATE " . prefix . "_users SET news = 0" . ($haveComments ? ", com = 0" : ''));
         foreach ($mysql->select("SELECT author_id, count(*) AS cnt FROM " . prefix . "_news GROUP BY author_id") as $row) {
             $mysql->query("UPDATE " . uprefix . "_users SET news=" . $row['cnt'] . " WHERE id = " . $row['author_id']);
         }
 
-        if ($haveComments) {
-            // Обновляем счетчик комментариев у юзеров
-            foreach ($mysql->select("select author_id, count(*) as cnt from " . prefix . "_comments group by author_id") as $row) {
-                $mysql->query("update " . uprefix . "_users set com=" . $row['cnt'] . " where id = " . $row['author_id']);
-            }
-        }
         // Обновляем кол-во приложенных файлов/изображений к новостям
         $mysql->query("update " . prefix . "_news set num_files = 0, num_images = 0");
         foreach ($mysql->select("select linked_id, count(id) as cnt from " . prefix . "_files where (storage=1) and (linked_ds=1) group by linked_id") as $row) {
@@ -106,7 +126,8 @@ function systemDboModify()
     }
 
     // Delete specific backup file
-    if (getIsSet($_REQUEST['delbackup'])) {
+    if (getIsSet($_REQUEST['delbackup']))
+    {
         $filename = str_replace('/', '', $_REQUEST['filename']);
         if (!$filename) {
             msg(array('type' => 'danger', 'message' => __('dbo')['msge_delbackup']));
@@ -117,7 +138,8 @@ function systemDboModify()
     }
 
     // MASS: Check/Repair/Optimize tables
-    if (getIsSet($_REQUEST['masscheck']) or getIsSet($_REQUEST['massrepair']) or getIsSet($_REQUEST['massoptimize'])) {
+    if (getIsSet($_REQUEST['masscheck']) or getIsSet($_REQUEST['massrepair']) or getIsSet($_REQUEST['massoptimize']))
+    {
         $mode = 'check';
         if ($_REQUEST['massrepair'])
             $mode = 'repair';
@@ -147,7 +169,8 @@ function systemDboModify()
     }
 
     // MASS: Convert cp1251 to utf8
-    if (getIsSet($_REQUEST['massconvert'])) {
+    if (getIsSet($_REQUEST['massconvert']))
+    {
         $mode = 'convert';
         $time = microtime(true);
         $msg_error = [];
@@ -248,7 +271,8 @@ function systemDboModify()
     }
 
     // MASS: Delete tables
-    if (getIsSet($_REQUEST['massdelete'])) {
+    if (getIsSet($_REQUEST['massdelete']))
+    {
         $tables = getIsSet($_REQUEST['tables']);
         if (!$tables) {
             msg(array('type' => 'danger', 'title' => __('dbo')['msge_tables'], 'message' => __('dbo')['msgi_tables']));
@@ -265,7 +289,8 @@ function systemDboModify()
     }
 
     // MASS: Backup tables
-    if (getIsSet($_REQUEST['massbackup'])) {
+    if (getIsSet($_REQUEST['massbackup']))
+    {
         $tables = getIsSet($_REQUEST['tables']);
         if (!$tables) {
             msg(array('type' => 'danger', 'title' => __('dbo')['msge_tables'], 'message' => __('dbo')['msgi_tables']));
@@ -287,7 +312,8 @@ function systemDboModify()
     }
 
     //MASS: Delete backup files
-    if (getIsSet($_REQUEST['massdelbackup'])) {
+    if (getIsSet($_REQUEST['massdelbackup']))
+    {
         $backup_dir = opendir(root . 'backups');
         while ($bf = readdir($backup_dir)) {
             if (($bf == '.') or ($bf == '..'))
@@ -299,23 +325,24 @@ function systemDboModify()
     }
 
     // RESTORE DB backup
-    if (getIsSet($_REQUEST['restore'])) {
+    if (getIsSet($_REQUEST['restore']))
+{
         $filename = str_replace('/', '', $_REQUEST['filename']);
         if (file_exists($filename = root . 'backups/' . $filename . '.gz')) {
-
             $sql  = '';
-            $fp = @gzopen($filename, "r");
-            if ($fp) {
-                while (!gzeof($fp)) {
-                    $sql .= gzgets($fp, 4096);
-                    if (';' == substr(rtrim($sql), -1)) {
+            $gzp = @gzopen($filename, "r");
+            if ($gzp) {
+                if (!empty($_POST['cp1251']))
+                    $mysql->query("SET NAMES 'cp1251'");
+                while (!gzeof($gzp)) {
+                    $sql .= gzgets($gzp, 4096);
+                    if (';' == mb_substr(rtrim($sql), -1)) {
                         $mysql->query($sql);
                         $sql = '';
                     }
                 }
-                gzclose($fp);
+                gzclose($gzp);
             }
-
             msg(array('message' => __('dbo')['msgo_restore']));
         } else {
             msg(array('type' => 'danger', 'title' => __('dbo')['msge_restore'], 'message' => __('dbo')['msgi_restore']));
