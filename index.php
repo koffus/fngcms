@@ -126,8 +126,8 @@ $timer->registerEvent('Search route for URL "' . urldecode($systemAccessURL) . '
 $UHANDLER->setOptions(array('domainPrefix' => $config['home_url']));
 
 // Check if engine is installed in subdirectory
-if (preg_match('#^http\:\/\/([^\/])+(\/.+)#', $config['home_url'], $match))
-    $UHANDLER->setOptions(array('localPrefix' => $match[2]));*/
+if (preg_match('#^(http|https)\:\/\/([^\/])+(\/.+)#', $config['home_url'], $match))
+    $UHANDLER->setOptions(array('localPrefix' => $match[3]));*/
 $runResult = $UHANDLER->run($systemAccessURL, array('debug' => false));
 
 // [[MARKER]] URL handler execution is finished

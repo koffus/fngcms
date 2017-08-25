@@ -166,7 +166,7 @@ function bbMediaProcess($content)
             }
 
             // - preview image
-            if (isset($keys['preview']) and preg_match("#^http\:\/\/.*?\.(png|jpg|gif)$#i", $keys['preview'], $m)) {
+            if (isset($keys['preview']) and preg_match("#^(http|https)\:\/\/.*?\.(png|jpg|gif)$#i", $keys['preview'], $m)) {
                 $poster = "poster='" . $keys['preview'] . "'";
             } else {
                 $poster = "";

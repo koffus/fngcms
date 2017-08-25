@@ -431,7 +431,7 @@ function coreLogin()
     $redirect = '';
     if (isset($_POST['redirect']) and $_POST['redirect']) {							$redirect = $_POST['redirect'];
     } else if (isset($_REQUEST['redirect_home']) and $_REQUEST['redirect_home']) {	$redirect = $config['home_url'];
-    } else if (preg_match('#^http\:\/\/#', $HTTP_REFERER, $tmp)) {					$redirect = $HTTP_REFERER;
+    } else if (preg_match('#^(http|https)\:\/\/#', $HTTP_REFERER, $tmp)) {					$redirect = $HTTP_REFERER;
     } else {																		$redirect = $config['home_url']; }
 
     // Auth can work ONLY via POST method
@@ -450,7 +450,7 @@ function coreLogout()
     global $auth_db, $userROW, $username, $is_logged, $HTTP_REFERER, $config;
 
     $auth_db->drop_auth();
-    @header("Location: ".(preg_match('#^http\:\/\/#', $HTTP_REFERER, $tmp)?$HTTP_REFERER:$config['home_url']));
+    @header("Location: ".(preg_match('#^(http|https)\:\/\/#', $HTTP_REFERER, $tmp)?$HTTP_REFERER:$config['home_url']));
 
     // if header(); does not work
     unset($userROW);
