@@ -16,8 +16,8 @@
 @define('NGCMS', true);
 
 @define('engineName', 'FNGCMS');
-@define('engineVersion', 'v0.9.6.4.3');
-@define('engineVersionBuild', '2017-08-20');
+@define('engineVersion', 'v0.9.6.4.4');
+@define('engineVersionBuild', '2017-08-25');
 
 @define('DS', DIRECTORY_SEPARATOR );
 

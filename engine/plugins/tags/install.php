@@ -10,12 +10,12 @@ if (!defined('NGCMS')) die ('HAL');
 //
 // Install script for plugin.
 // $action: possible action modes
-// 	confirm		- screen for installation confirmation
-//	apply		- apply installation, with handy confirmation
-//	autoapply - apply installation in automatic mode [INSTALL script]
-//
-function plugin_tags_install($action) {
-    
+// * confirm		- screen for installation confirmation
+// * apply		- apply installation, with handy confirmation
+// * autoapply - apply installation in automatic mode [INSTALL script]
+function plugin_tags_install($action)
+{
+
     global $mysql, $config;
 
     if ($action != 'autoapply') {
@@ -105,8 +105,8 @@ function plugin_tags_install($action) {
     'flagDisabled' => false,
     'rstyle' => 
     array (
-      'rcmd' => '/plugin/tags/{tag}[/{page}]/',
-      'regex' => '#^/plugin/tags/(.+?)(?:/(\\d{1,4})){0,1}/$#',
+      'rcmd' => '/plugin/tags/{tag}[/page-{page}]/',
+      'regex' => '#^/plugin/tags/(.+?)(?:/page-(\\d{1,4})){0,1}/$#',
       'regexMap' => 
       array (
         1 => 'tag',
@@ -135,7 +135,7 @@ function plugin_tags_install($action) {
         2 => 
         array (
           0 => 0,
-          1 => '/',
+          1 => '/page-',
           2 => 1,
         ),
         3 => 
@@ -164,8 +164,8 @@ function plugin_tags_install($action) {
     'flagDisabled' => false,
     'rstyle' => 
     array (
-      'rcmd' => '/plugin/tags[/{page}]/',
-      'regex' => '#^/plugin/tags(?:/(\\d{1,4})){0,1}/$#',
+      'rcmd' => '/plugin/tags[/page-{page}]/',
+      'regex' => '#^/plugin/tags(?:/page-(\\d{1,4})){0,1}/$#',
       'regexMap' => 
       array (
         1 => 'page',
@@ -187,7 +187,7 @@ function plugin_tags_install($action) {
         1 => 
         array (
           0 => 0,
-          1 => '/',
+          1 => '/page-',
           2 => 1,
         ),
         2 => 
@@ -222,7 +222,8 @@ function plugin_tags_install($action) {
                     'orderby' => 4,
                     'ppage_limit' => 0,
                     'ppage_orderby' => 1,
-                    'localSource' => 0,
+                    'localSource' => 1,
+                    'localSkin' => 'basic',
                     'cache' => 1,
                     'cacheExpire' => 120,
                 );

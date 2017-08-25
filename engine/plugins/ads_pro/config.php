@@ -306,7 +306,7 @@ function add_submit()
     $cPlugin = CPlugin::instance();
 
     $id = !empty($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
-    $name = $parse->translit(secure_html($_REQUEST['name']));
+    $name = $parse->translit($_REQUEST['name']);
     if (!$name) $name = 0;
     $description = secure_html($_REQUEST['description']);
     $type = intval($_REQUEST['type']);

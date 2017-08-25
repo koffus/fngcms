@@ -29,7 +29,7 @@
             </td>
         </tr>
     {% else %}
-        <tr><td colspan="9" class="text-center"><h4>{{ lang['not_found'] }}</h4></td></tr>
+        <tr><td colspan="9">{{ lang['not_found'] }}</td></tr>
     {% endfor %}
     </tbody>
 </table>

@@ -902,7 +902,7 @@ function doInstall()
             $themePath = $themeDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
             ($object->isDir()) ? @mkdir($themePath, 0755, true) : copy($object, $themePath);
         }
-        array_push($LOG, 'Копирование шаблона в ' .$parse->translit($_POST['home_title']) . ' ...' . __('msg.ok'));
+        array_push($LOG, 'Копирование шаблона в ' . $theme . ' ...' . __('msg.ok'));
         
         // 1.8. Формируем конфигурационный файл
         $newconf = array(

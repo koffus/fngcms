@@ -205,12 +205,12 @@ function showList($plugin, $action)
             }
 
             $title = secure_html($_POST['title']);
-            $skin = $parse->translit($_POST['skin']);
+            $skin = secure_html($_POST['skin']);
             $image_count = intval($_POST['image_count']);
             $if_active = intval($_POST['if_active']);
             $icon = secure_html($_POST['icon']);
-            $description = trim($_POST['description']);
-            $keywords = trim(secure_html($_POST['keywords']));
+            $description = secure_html(str_replace(array("\r\n", "\n", '  '), array(' '), $_POST['description']));
+            $keywords = secure_html($_POST['keywords']);
 
             $t_update = '';
             if ($title != $gallery['title']) 
@@ -483,7 +483,7 @@ function showWidgetList($plugin, $action)
             $name = $parse->translit($_POST['name']);
             $title = secure_html($_POST['title']);
             $if_active = intval($_POST['if_active']);
-            $skin = secure_html(trim($_POST['skin']));
+            $skin = secure_html($_POST['skin']);
             $image_count = intval($_POST['image_count']);
             $if_rand = intval($_POST['if_rand']);
             $gallery = secure_html($_POST['gallery']);

@@ -256,7 +256,7 @@ function commit_plugin_config_changes($module, $params)
         if (isset($param['mode']) and 'group' == $param['mode']) {
             if (is_array($param['entries'])) {
                 foreach ($param['entries'] as $gparam) {
-                    if (isset($gparam['name']) and empty($gparam['nosave'])) {
+                    if (isset($gparam['name']) and isset($_POST[$gparam['name']]) and empty($gparam['nosave'])) {
                         pluginSetVariable($module, $gparam['name'], $_POST[$gparam['name']]);
                         $cfgUpdate[$gparam['name']] = $_POST[$gparam['name']];
                     }

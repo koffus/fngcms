@@ -5,7 +5,7 @@
 <table width="1000" border="0" cellspacing="0" cellpadding="0" class="editfilter">
  <tr>
  <td valign="top" width="100%">
- &nbsp; Поиск: <input name="sl" type="text" class="bfsearch" size="60" value="{{ sl }}"/> <input type="submit" value="{{ lang.editnews['do_show'] }}" />
+ &nbsp; Поиск: <input name="sl" type="text" class="bfsearch" size="60" value="{{ sl }}"/> <input type="submit" value="{{ lang.news['do_show'] }}" />
  </td>
 </tr>
 </table>
@@ -33,7 +33,7 @@
 <thead>
 <tr align="left" class="contHead">
 <td width="16">&nbsp;</td>
-<td>{{ lang.editnews['title'] }}</td>
+<td>{{ lang.news['title'] }}</td>
 <td width="5%">&nbsp;</td>
 <td width="5%"><input type="checkbox" class="select-all" title="{{ lang.select_all }}"></td>
 </tr>
@@ -47,7 +47,7 @@
 	<td class="contentEntry1"><input name="selected_news[]" value="{{ entry.newsid }}" class="check" type="checkbox" /></td>
 </tr>
 {% else %}
-<tr><td colspan="6"><p>- {{ lang.editnews['not_found'] }} -</p></td></tr>
+<tr><td colspan="6">{{ lang['not_found'] }}</td></tr>
 {% endfor %}
 </tbody>
 <tfoot>
@@ -59,22 +59,22 @@
 <tr align="center">
 <td colspan="8" class="contentEdit" align="right" valign="top">
 <div style="text-align: left;">
-{{ lang.editnews['action'] }}: <select name="subaction" style="font: 12px Verdana, Courier, Arial; width: 230px;">
+{{ lang.news['action'] }}: <select name="subaction" style="font: 12px Verdana, Courier, Arial; width: 230px;">
 <option value="">-- {{ lang['action'] }} --</option>
-<option value="mass_approve">{{ lang.editnews['approve'] }}</option>
-<option value="mass_forbidden">{{ lang.editnews['forbidden'] }}</option>
+<option value="mass_approve">{{ lang.news['approve'] }}</option>
+<option value="mass_forbidden">{{ lang.news['forbidden'] }}</option>
 <option value="" style="background-color: #E0E0E0;" disabled="disabled">===================</option>
-<option value="mass_mainpage">{{ lang.editnews['massmainpage'] }}</option>
-<option value="mass_unmainpage">{{ lang.editnews['massunmainpage'] }}</option>
+<option value="mass_mainpage">{{ lang.news['massmainpage'] }}</option>
+<option value="mass_unmainpage">{{ lang.news['massunmainpage'] }}</option>
 <option value="" style="background-color: #E0E0E0;" disabled="disabled">===================</option>
-<option value="mass_currdate">{{ lang.editnews['modify.mass.currdate'] }}</option>
+<option value="mass_currdate">{{ lang.news['modify.mass.currdate'] }}</option>
 <option value="" style="background-color: #E0E0E0;" disabled="disabled">===================</option>
-{% if flags.comments %}<option value="do_mass_com_approve">{{ lang.editnews['com_approve'] }}</option>
-<option value="mass_com_forbidden">{{ lang.editnews['com_forbidden'] }}</option>
+{% if flags.comments %}<option value="do_mass_com_approve">{{ lang.news['com_approve'] }}</option>
+<option value="mass_com_forbidden">{{ lang.news['com_forbidden'] }}</option>
 <option value="" style="background-color: #E0E0E0;" disabled="disabled">===================</option>{% endif %}
-<option value="mass_delete">{{ lang.editnews['delete'] }}</option>
+<option value="mass_delete">{{ lang.news['delete'] }}</option>
 </select>
-<input type="submit" value="{{ lang.editnews['submit'] }}" class="button" />
+<input type="submit" value="{{ lang.news['submit'] }}" class="button" />
 <input type="hidden" name="mod" value="news" />
 <input type="hidden" name="action" value="manage" />
 <br/>

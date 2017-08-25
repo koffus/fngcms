@@ -526,11 +526,11 @@ function _MASTER_URL_PROCESSOR($pluginName, $handlerName, $params, $skip, $handl
             break;
 
         case 'static':
-            $CurrentHandler = array('pluginName' => $pluginName, 'handlerName' => $handlerName, 'params' => $params, 'FFC' => $SKIP['FFC'], 'handlerParams' => $handlerParams);
+            $CurrentHandler = array('pluginName' => $pluginName, 'handlerName' => $handlerName, 'params' => $params, 'FFC' => $skip['FFC'], 'handlerParams' => $handlerParams);
             switch ($handlerName) {
                 default:
                     include_once root . 'includes/static.php';
-                    $cResult = showStaticPage(array('id' => intval($params['id']), 'altname' => $params['altname'], 'FFC' => $skip['FFC'], 'print' => (($handlerName == 'print') ? true : false)));
+                    $cResult = showStaticPage(array('id' => (isset($params['id']) ? intval($params['id']) : null), 'altname' => $params['altname'], 'FFC' => $skip['FFC'], 'print' => (($handlerName == 'print') ? true : false)));
                     if (!$cResult and $skip['FFC']) {
                         $skip['fail'] = 1;
                     }
@@ -587,7 +587,7 @@ function _MASTER_URL_PROCESSOR($pluginName, $handlerName, $params, $skip, $handl
     }
 
     // Return according to SKIP value
-    if (isset($skip['fail']) and $skip['fail'])
+    if (!empty($skip['fail']))
         return array('fail' => $skip['fail']);
 
     return;

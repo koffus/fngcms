@@ -1,8 +1,8 @@
 <!-- Navigation bar -->
 <ul class="breadcrumb">
 	<li><a href="admin.php">{{ lang['home'] }}</a></li>
-	<li><a href="admin.php?mod=news">{{ lang['news_title'] }}</a></li>
-	<li class="active">{{ lang.editnews['editnews_title'] }} <b>{{ title }}</b></li>
+	<li><a href="admin.php?mod=news">{{ lang.news['news_title'] }}</a></li>
+	<li class="active">{{ lang.news['editnews_title'] }} <b>{{ title }}</b></li>
 </ul>
 
 <!-- Info content -->
@@ -24,7 +24,7 @@
 					</div>
 					<div id="maincontent" class="panel-body">
 						<div class="form-group">
-							<label class="col-sm-3 control-label">{{ lang.addnews['title'] }}</label>
+							<label class="col-sm-3 control-label">{{ lang.news['title'] }}</label>
 							<div class="col-sm-9">
 								<div class="input-group">
 									<input type="text" name="title" id="newsTitle" value="{{ title }}" tabindex="1" class="form-control"/>
@@ -36,7 +36,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label class="col-sm-3 control-label">{{ lang.editnews['alt_name'] }}</label>
+							<label class="col-sm-3 control-label">{{ lang.news['alt_name'] }}</label>
 							<div class="col-sm-9">
 								<input type="text" name="alt_name" value="{{ alt_name }}" tabindex="2" class="form-control"{% if flags['altname.disabled'] %} disabled {% endif %}/>
 							</div>
@@ -56,7 +56,7 @@
 						{% endif %}
 						<div class="form-group">
 							<label class="col-sm-3 control-label">
-								{{ lang.editnews['category'] }}
+								{{ lang.news['category'] }}
 								{% if (flags.mondatory_cat) %} <span class="text-danger"><b>*</b></span>{% endif %}
 							</label>
 							<div class="col-sm-9">{{ mastercat }}</div>
@@ -90,13 +90,13 @@
 						</div>
 						{% if (flags.meta) %}
 						<div class="form-group">
-							<label class="col-sm-3 control-label">{{ lang.addnews['description'] }}</label>
+							<label class="col-sm-3 control-label">{{ lang.news['description'] }}</label>
 							<div class="col-sm-9">
 								<textarea name="description" class="form-control" rows="4" tabindex="6">{{ description }}</textarea>
 							</div>
 						</div>
 						<div id="form-keywords" class="form-group">
-							<label class="col-sm-3 control-label">{{ lang.addnews['keywords'] }}</label>
+							<label class="col-sm-3 control-label">{{ lang.news['keywords'] }}</label>
 							<div class="col-sm-9">
 								<input type="text" name="keywords" id="newsKeywords" value="{{ keywords }}" tabindex="7" class="form-control" maxlength="255" />
 							</div>
@@ -116,7 +116,7 @@
 					{% if (extends.additional or pluginIsActive('xfields')) %}
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.additional'] }}</a></h4>
+							<h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.news['bar.additional'] }}</a></h4>
 						</div>
 						<div id="additional" class="panel-collapse collapse">
 							<div class="panel-body">
@@ -145,7 +145,7 @@
 					<div class="panel panel-default panel-table">
 						<div class="panel-heading">
 							<h4 class="panel-title">
-								<a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.attaches'] }} {% if (attachCount>0) %}({{ attachCount }}){% endif %}</a>
+								<a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.news['bar.attaches'] }} {% if (attachCount>0) %}({{ attachCount }}){% endif %}</a>
 							</h4>
 						</div>
 						<div id="attaches" class="panel-collapse collapse">
@@ -155,9 +155,9 @@
 										<tr>
 											<th>ID</th>
 											<th><i class="fa fa-paperclip fa-2x"></i></th>
-											<th>{{ lang.editnews['attach.filename'] }}</th>
-											<th>{{ lang.editnews['attach.size'] }}</th>
-											<th>{{ lang.editnews['attach.date'] }}</th>
+											<th>{{ lang.news['attach.filename'] }}</th>
+											<th>{{ lang.news['attach.size'] }}</th>
+											<th>{{ lang.news['attach.date'] }}</th>
 											<th class="text-center">{{ lang['action'] }}</th>
 										</tr>
 									</thead>
@@ -174,7 +174,7 @@
 											<td class="text-center"><input type="checkbox" name="delfile_{{ entry.id }}" value="1" /></td>
 										</tr>
 									{% else %}
-										<tr><td colspan="5">{{ lang.editnews['attach.no_files_attached'] }}</td></tr>
+										<tr><td colspan="5">{{ lang.news['attach.no_files_attached'] }}</td></tr>
 									{% endfor %}
 										<tr>
 											<td colspan="5"></td>
@@ -214,26 +214,26 @@
 						<div class="col col-xs-6">
 							<select name="approve" id="approve" class="form-control">
 								{% if flags.can_publish %}
-									<option value="1" {% if (approve == 1) %}selected="selected"{% endif %}>{{ lang.addnews['publish'] }}</option>
+									<option value="1" {% if (approve == 1) %}selected="selected"{% endif %}>{{ lang.news['publish'] }}</option>
 								{% endif %}
 								{% if flags.can_unpublish %}
-									<option value="0" {% if (approve == 0) %}selected="selected"{% endif %}>{{ lang.addnews['send_moderation'] }}</option>
+									<option value="0" {% if (approve == 0) %}selected="selected"{% endif %}>{{ lang.news['send_moderation'] }}</option>
 								{% endif %}
 								{% if flags.can_draft %}
-									<option value="-1" {% if (approve == -1) %}selected="selected"{% endif %}>{{ lang.addnews['save_draft'] }}</option>
+									<option value="-1" {% if (approve == -1) %}selected="selected"{% endif %}>{{ lang.news['save_draft'] }}</option>
 								{% endif %}
 							</select>
 						</div>
 						<div class="col col-xs-6 text-right">
 							{% if flags.editable %}
-								<button type="submit" title="Ctrl+S {{ lang.editnews['do_editnews'] }}" class="btn btn-success">
+								<button type="submit" title="Ctrl+S {{ lang.news['do_editnews'] }}" class="btn btn-success">
 									<span class="visible-sm-block visible-xs-block"><i class="fa fa-floppy-o"></i></span>
-									<span class="hidden-sm hidden-xs">{{ lang.editnews['do_editnews'] }}</span>
+									<span class="hidden-sm hidden-xs">{{ lang.news['do_editnews'] }}</span>
 								</button>
 							{% endif %}
-							<button type="button" onClick="return preview();" title="{{ lang.editnews['preview'] }}" class="btn btn-primary"><i class="fa fa-eye"></i></button>
+							<button type="button" onClick="return preview();" title="{{ lang.news['preview'] }}" class="btn btn-primary"><i class="fa fa-eye"></i></button>
 							{% if flags.deleteable %}
-								<button type="button" onClick="confirmIt('admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;selected_news[]={{ id }}&amp;token={{ token }}', '{{ lang['sure_del'] }}')" title="{{ lang.editnews['delete'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+								<button type="button" onClick="confirmIt('admin.php?mod=news&amp;action=manage&amp;subaction=mass_delete&amp;selected_news[]={{ id }}&amp;token={{ token }}', '{{ lang['sure_del'] }}')" title="{{ lang.news['delete'] }}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
 							{% endif %}
 						</div>
 					</div>
@@ -254,23 +254,23 @@
 									<b><span id="news-author">{{ author }}</span></b>
 									<div class="pull-right">
 									{% if (pluginIsActive('uprofile')) %}
-									<a href="{{ author_page }}" target="_blank" title="{{ lang.editnews['site.viewuser'] }}" class="btn-sm btn-default"><i class="fa fa-eye"></i></a>&nbsp;
+									<a href="{{ author_page }}" target="_blank" title="{{ lang.news['site.viewuser'] }}" class="btn-sm btn-default"><i class="fa fa-eye"></i></a>&nbsp;
 									{% endif %}
 									<a href="admin.php?mod=users&amp;action=editForm&amp;id={{ authorid }}" target="_blank" class="btn-sm btn-default"><i class="fa fa-pencil"></i></a>&nbsp;
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td>{{ lang['editor.dcreate'] }}</td>
-								<td>{{ createdate }}</td>
+								<td>{{ lang['editor.postdate'] }}</td>
+								<td>{{ postdateStamp|cdate }}</td>
 							</tr>
-							<tr>
-								<td>{{ lang['editor.dedit'] }}</td>
-								<td>{{ editdate }}</td>
-							</tr>
+							{% if editdate %}<tr>
+								<td>{{ lang['editor.editdate'] }}</td>
+								<td>{{ editdateStamp|cdate }}</td>
+							</tr>{% endif %}
 							<tr>
 								<td>{{ lang['state'] }}</td>
-								<td><b>{% if (approve == -1) %}<span class="text-danger">{{ lang['state.draft'] }}</span>{% elseif (approve == 0) %}<span class="text-danger">{{ lang['state.unpublished'] }}</span>{% else %}<span class="text-success">{{ lang['state.published'] }}{% endif %}</span></b>
+								<td><b>{% if (approve == -1) %}<span class="text-danger">{{ lang.news['state.draft'] }}</span>{% elseif (approve == 0) %}<span class="text-danger">{{ lang.news['state.unpublished'] }}</span>{% else %}<span class="text-success">{{ lang.news['state.published'] }}{% endif %}</span></b>
 								</td>
 							</tr>
 						</tbody>
@@ -293,37 +293,37 @@
 						<h4 class="panel-title">{{ lang['editor.configuration'] }}</h4>
 					</div>
 					<div class="panel-body">
-						<label><input type="checkbox" name="mainpage" value="1" {% if (flags.mainpage) %}checked="checked"{% endif %} id="mainpage" {% if (flags['mainpage.disabled']) %}disabled{% endif %} /> {{ lang.editnews['mainpage'] }}</label><br />
-						<label><input type="checkbox" name="pinned" value="1" {% if (flags.pinned) %}checked="checked"{% endif %} id="pinned" {% if (flags['pinned.disabled']) %}disabled{% endif %} /> {{ lang.editnews['add_pinned'] }}</label><br />
-						<label><input type="checkbox" name="catpinned" value="1" {% if (flags.catpinned) %}checked="checked"{% endif %} id="catpinned" {% if (flags['catpinned.disabled']) %}disabled{% endif %} /> {{ lang.editnews['add_catpinned'] }}</label><br />
-						<label><input type="checkbox" name="favorite" value="1" {% if (flags.favorite) %}checked="checked"{% endif %} id="favorite" {% if (flags['favorite.disabled']) %}disabled{% endif %} /> {{ lang.editnews['add_favorite'] }}</label><br />
-						<label><input name="flag_HTML" type="checkbox" id="flag_HTML" value="1" {% if (flags.html) %}checked="checked"{% endif %} {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.editnews['flag_html'] }}</label><br />
-						<label><input type="checkbox" name="flag_RAW" value="1" {% if (flags.raw) %}checked="checked"{% endif %} id="flag_RAW" {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.editnews['flag_raw'] }}</label> {% if (flags['raw.disabled']) %}[<font color=red>{{ lang.editnews['flags_lost'] }}</font>]{% endif %}
+						<label><input type="checkbox" name="mainpage" value="1" {% if (flags.mainpage) %}checked="checked"{% endif %} id="mainpage" {% if (flags['mainpage.disabled']) %}disabled{% endif %} /> {{ lang.news['mainpage'] }}</label><br />
+						<label><input type="checkbox" name="pinned" value="1" {% if (flags.pinned) %}checked="checked"{% endif %} id="pinned" {% if (flags['pinned.disabled']) %}disabled{% endif %} /> {{ lang.news['add_pinned'] }}</label><br />
+						<label><input type="checkbox" name="catpinned" value="1" {% if (flags.catpinned) %}checked="checked"{% endif %} id="catpinned" {% if (flags['catpinned.disabled']) %}disabled{% endif %} /> {{ lang.news['add_catpinned'] }}</label><br />
+						<label><input type="checkbox" name="favorite" value="1" {% if (flags.favorite) %}checked="checked"{% endif %} id="favorite" {% if (flags['favorite.disabled']) %}disabled{% endif %} /> {{ lang.news['add_favorite'] }}</label><br />
+						<label><input name="flag_HTML" type="checkbox" id="flag_HTML" value="1" {% if (flags.html) %}checked="checked"{% endif %} {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.news['flag_html'] }}</label><br />
+						<label><input type="checkbox" name="flag_RAW" value="1" {% if (flags.raw) %}checked="checked"{% endif %} id="flag_RAW" {% if (flags['html.disabled']) %}disabled{% endif %} /> {{ lang.news['flag_raw'] }}</label> {% if (flags['raw.disabled']) %}[<font color=red>{{ lang.news['flags_lost'] }}</font>]{% endif %}
 					</div>
 				</div>
 
 				{% if not flags['customdate.disabled'] %}
 				<div class="panel panel-default">
-					<div class="panel-heading">{{ lang.editnews['date.manage'] }}</div>
+					<div class="panel-heading">{{ lang.news['date.manage'] }}</div>
 					<div class="panel-body">
 						<div class="input-group">
 							<span class="input-group-addon">
 								<input type="checkbox" name="setdate_current" id="setdate_current" value="1" onclick="document.getElementById('setdate_custom').checked=false;" />
 							</span>
-							<input type="text" value="{{ lang.editnews['date.setcurrent'] }}" class="form-control"/>
+							<input type="text" value="{{ lang.news['date.setcurrent'] }}" class="form-control"/>
 						</div>
 						&nbsp;
-						<div class="input-group" title="{{ lang.editnews['date.setdate'] }}">
+						<div class="input-group" title="{{ lang.news['date.setdate'] }}">
 							<span class="input-group-addon">
 								<input type="checkbox" name="setdate_custom" id="setdate_custom" value="1" onclick="document.getElementById('setdate_current').checked=false;" />
 							</span>
-							<input type="text" id="cdate" name="cdate" value="{{ cdate }}" class="form-control"/>
+							<input type="text" id="postdate" name="postdate" value="{{ postdate }}" class="form-control"/>
 						</div>
 					</div>
 				</div>
 				{% endif %}
 				<div class="panel panel-default">
-					<div class="panel-heading">{{ lang.editnews['set_views'] }}</div>
+					<div class="panel-heading">{{ lang.news['set_views'] }}</div>
 					<div class="panel-body">
 						<div class="input-group">
 							<span class="input-group-addon">
@@ -362,7 +362,7 @@
 				<!-- MAIN CONTENT -->
 				<div id="comments" class="panel panel-default">
 					<div class="panel-heading">
-						<h4 class="panel-title"> {{ lang.editnews['bar.comments'] }} ({% if plugin.comments.count > 0 %}{{ plugin.comments.count }}{% else %}{{ lang['noa'] }}{% endif %})</h4>
+						<h4 class="panel-title"> {{ lang.news['bar.comments'] }} ({% if plugin.comments.count > 0 %}{{ plugin.comments.count }}{% else %}{{ lang['noa'] }}{% endif %})</h4>
 					</div>
 					{% if plugin.comments.count > 0 %}
 					<table class="table table-">
@@ -374,7 +374,7 @@
 					</tbody>
 					</table>
 					<div class="panel-footer text-right">
-						<button type="submit" title="{{ lang.editnews['comdelete'] }}" onClick="if (!confirm('{{ lang['sure_del'] }}')) {return false;}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
+						<button type="submit" title="{{ lang.news['comdelete'] }}" onClick="if (!confirm('{{ lang['sure_del'] }}')) {return false;}" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
 					</div>
 					{% endif %}
 				</div>
@@ -426,7 +426,7 @@ $('input[name*=category_], select[name=category]').on('click', function (e) {
 });
 insertselcat();
 
-$('#cdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
+$('#postdate').datetimepicker({format:'DD.MM.YYYY HH:mm',locale: "{{ lang['langcode'] }}"});
 
 //
 // Global variable: ID of current active input area
@@ -436,7 +436,7 @@ var form = document.getElementById('postForm');
 function preview(){
 
 	if (form.ng_news_content.value == '' || form.title.value == '') {
-		$.notify({message: '{{ lang.addnews['msge_preview'] }}'},{type: 'danger'});
+		$.notify({message: '{{ lang.news['msge_preview'] }}'},{type: 'danger'});
 		return false;
 	}
 
@@ -467,7 +467,7 @@ document.onkeydown = function(e) {
 <script>
 var searchDouble = function() {
     if ($.trim($('#newsTitle').val()).length < 4)
-        return $.notify({message: '{{ lang.addnews['msge_title'] }}'},{type: 'danger'});
+        return $.notify({message: '{{ lang.news['msge_title'] }}'},{type: 'danger'});
     var url = '{{ admin_url }}/rpc.php';
     var method = 'admin.news.double';
     var params = {'token': '{{ token }}','title': $('#newsTitle').val(),'news_id': '{{ id }}','mode': 'edit',};

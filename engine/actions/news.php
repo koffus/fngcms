@@ -10,9 +10,9 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::load('editnews', 'admin');
-Lang::load('editnews', 'admin', 'editnews');
-Lang::load('addnews', 'admin', 'addnews');
+Lang::load('news', 'admin', 'news');
+// !!! NB Дублируем язык, после вернуться и переделать
+Lang::load('news', 'admin');
 
 // ======================================================================================================
 // Add news form
@@ -171,24 +171,25 @@ function editNewsForm()
 
     $tVars = array(
         'php_self' => $PHP_SELF,
-        'cdate'				=> date('d.m.Y H:i', $row['postdate']),
         'mastercat' => makeCategoryList(array('doempty' => ($perm[$permGroupMode.'.nocat'] or !count($cats))?1:0, 'greyempty' => !$perm['personal.nocat'], 'nameval' => 0, 'selected' => count($cats)?$cats[0]:0)),
         'extcat' => makeCategoryList(array('nameval' => 0, 'checkarea' => 1, 'selected' => (count($cats)>1)?array_slice($cats,1):array(), 'disabledarea' => !$perm[$permGroupMode.'.multicat'])),
         'allcats' => resolveCatNames($cats),
-        'id'				=> $row['id'],
-        'title'				=> secure_html($row['title']),
+        'id' => $row['id'],
+        'title' => secure_html($row['title']),
         'alt_name' => $row['alt_name'],
         'link' => ((1 == $row['approve']) ? News::generateLink($row, false, 0, true) : ''),
         'description' => secure_html($row['description']),
         'keywords' => secure_html($row['keywords']),
-        'views'				=> $row['views'],
+        'views' => $row['views'],
         'author' => $row['author'],
         'authorid' => $row['author_id'],
-        'createdate' => strftime('%d.%m.%Y %H:%M', $row['postdate']),
-        'editdate' => ($row['editdate'] > $row['postdate'])?strftime('%d.%m.%Y %H:%M', $row['editdate']):'-',
+        'postdate' => date('d.m.Y H:i', $row['postdate']),
+        'postdateStamp' => $row['postdate'],
+        'editdate' => ($row['editdate'] > $row['postdate']) ? strftime('%d.%m.%Y %H:%M', $row['editdate']) : '',
+        'editdateStamp' => ($row['editdate'] > $row['postdate']) ? $row['editdate'] : '',
         'author_page' => checkLinkAvailable('uprofile', 'show')?
-                                    generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
-                                    generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['author'], 'id' => $row['author_id'])),
+                            generateLink('uprofile', 'show', array('name' => $row['author'], 'id' => $row['author_id'])):
+                            generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'show'), array('name' => $row['author'], 'id' => $row['author_id'])),
         'smilies' => $config['use_smilies']?Smilies('', 20, 'currentInputAreaID'):'',
         'bbcodes' => $config['use_bbcodes']?BBCodes('currentInputAreaID', 'news'):'',
         'approve' => $row['approve'],
@@ -552,7 +553,7 @@ function listNewsForm()
 
     $sqlResult = $sqlQ." LIMIT ".(($pageNo - 1)* $fRPP).",".$fRPP;
     foreach ($mysql->select($sqlResult) as $row) {
-        $cats		= explode(',', $row['catid']);
+        $cats = explode(',', $row['catid']);
 
         $newsEntry = array(
             'php_self' => $PHP_SELF,
@@ -565,6 +566,7 @@ function listNewsForm()
             'attach_count' => $row['num_files'],
             'images_count' => $row['num_images'],
             'itemdate' => date("d.m.Y",$row['postdate']),
+            'dateStamp' => intval($row['postdate']),
             'allcats' => resolveCatNames($cats).' &nbsp;',
             'title' => secure_html((mb_strlen($row['title'], 'UTF-8') > 70) ? mb_substr($row['title'],0,70, 'UTF-8') . " ..." : $row['title']),
             'link' => News::generateLink($row, false, 0, true),
@@ -678,7 +680,8 @@ function listNewsForm()
 // #==============================================================================#
 
 // Main execution block
-do {
+do
+{
     // Manage "ADD" mode
     if ($action == "add") {
         $replay = false;

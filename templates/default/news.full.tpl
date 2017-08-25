@@ -36,7 +36,7 @@
     {% endif %}
     
     <div class="post-full-footer">
-        {% if pluginIsActive('tags') %}{% if (p.tags.flags.haveTags) %}<div class="post-full-tags">{{ lang.tags }}: {{ tags }}</div>{% endif %}{% endif %}
+        {% if (pluginIsActive('tags') and news.haveTags) %}<div class="post-full-tags">{{ lang.tags }}: {{ tags }}</div>{% endif %}
         {% if pluginIsActive('rating') %}{{ rating }}{% endif %}
     </div>
 </article>

@@ -145,21 +145,21 @@ function plugin_gallery_install($action)
 
     $UHANDLER = new UrlHandler();
     $UHANDLER->loadConfig();
-
     $UHANDLER->registerHandler(0,
         array (
     'pluginName' => 'gallery',
-    'handlerName' => '',
+    'handlerName' => 'gallery',
     'flagPrimary' => true,
     'flagFailContinue' => false,
     'flagDisabled' => false,
     'rstyle' => 
     array (
-      'rcmd' => '/plugin/gallery[/page/{page}]/',
-      'regex' => '#^/plugin/gallery(?:/page/(\\d{1,4})){0,1}/$#',
+      'rcmd' => '/plugin/gallery/{name}[/page-{page}]/',
+      'regex' => '#^/plugin/gallery/(.+?)(?:/page-(\\d{1,4})){0,1}/$#',
       'regexMap' => 
       array (
-        1 => 'page',
+        1 => 'name',
+        2 => 'page',
       ),
       'reqCheck' => 
       array (
@@ -172,22 +172,28 @@ function plugin_gallery_install($action)
         0 => 
         array (
           0 => 0,
-          1 => '/plugin/gallery',
+          1 => '/plugin/gallery/',
           2 => 0,
         ),
         1 => 
         array (
-          0 => 0,
-          1 => '/page/',
-          2 => 1,
+          0 => 1,
+          1 => 'name',
+          2 => 0,
         ),
         2 => 
+        array (
+          0 => 0,
+          1 => '/page-',
+          2 => 1,
+        ),
+        3 => 
         array (
           0 => 1,
           1 => 'page',
           2 => 1,
         ),
-        3 => 
+        4 => 
         array (
           0 => 0,
           1 => '/',
@@ -207,8 +213,8 @@ function plugin_gallery_install($action)
     'flagDisabled' => false,
     'rstyle' => 
     array (
-      'rcmd' => '/plugin/gallery/{gallery}/image/{name}[/{page}]/',
-      'regex' => '#^/plugin/gallery/(.+?)/image/(.+?)(?:/()){0,1}/$#',
+      'rcmd' => '/plugin/gallery/{gallery}/image/{name}[/page-{page}]/',
+      'regex' => '#^/plugin/gallery/(.+?)/image/(.+?)(?:/page-()){0,1}/$#',
       'regexMap' => 
       array (
         1 => 'gallery',
@@ -250,7 +256,7 @@ function plugin_gallery_install($action)
         4 => 
         array (
           0 => 0,
-          1 => '/',
+          1 => '/page-',
           2 => 1,
         ),
         5 => 
@@ -273,18 +279,17 @@ function plugin_gallery_install($action)
     $UHANDLER->registerHandler(0,
         array (
     'pluginName' => 'gallery',
-    'handlerName' => 'gallery',
+    'handlerName' => '',
     'flagPrimary' => true,
     'flagFailContinue' => false,
     'flagDisabled' => false,
     'rstyle' => 
     array (
-      'rcmd' => '/plugin/gallery/{name}[/{page}]/',
-      'regex' => '#^/plugin/gallery/(.+?)(?:/(\\d{1,4})){0,1}/$#',
+      'rcmd' => '/plugin/gallery[/page-{page}]/',
+      'regex' => '#^/plugin/gallery(?:/page-(\\d{1,4})){0,1}/$#',
       'regexMap' => 
       array (
-        1 => 'name',
-        2 => 'page',
+        1 => 'page',
       ),
       'reqCheck' => 
       array (
@@ -297,28 +302,22 @@ function plugin_gallery_install($action)
         0 => 
         array (
           0 => 0,
-          1 => '/plugin/gallery/',
+          1 => '/plugin/gallery',
           2 => 0,
         ),
         1 => 
         array (
-          0 => 1,
-          1 => 'name',
-          2 => 0,
-        ),
-        2 => 
-        array (
           0 => 0,
-          1 => '/',
+          1 => '/page-',
           2 => 1,
         ),
-        3 => 
+        2 => 
         array (
           0 => 1,
           1 => 'page',
           2 => 1,
         ),
-        4 => 
+        3 => 
         array (
           0 => 0,
           1 => '/',

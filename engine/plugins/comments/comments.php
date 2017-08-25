@@ -7,6 +7,9 @@ Lang::loadPlugin('comments', 'main', '', ':');
 
 class CommentsNewsFilter extends NewsFilter
 {
+
+    protected $countDeleted = 0;
+
     function addNewsForm(&$tvars)
     {
 
@@ -33,7 +36,7 @@ class CommentsNewsFilter extends NewsFilter
         $comments = '';
         $tpl->template('comments', tpl_actions . 'news');
 
-        $crows = $mysql->select("select * from " . prefix . "_comments where post='" . $newsID . "' order by id");
+        $crows = $mysql->select("SELECT * FROM " . prefix . "_comments WHERE post='" . $newsID . "' AND module='news' ORDER BY id");
         foreach ($crows as $crow) {
             $text = $crow['text'];
 
@@ -187,6 +190,37 @@ class CommentsNewsFilter extends NewsFilter
         $tpl->template($templateName, $tPath);
         $tpl->vars($templateName, $tcvars);
         $tvars['vars']['plugin_comments'] = $tpl->show($templateName);
+
+        return 1;
+    }
+
+    // Delete news call
+    public function deleteNews($newsID, $SQLnews)
+    {
+        global $mysql;
+
+        // Delete comments (with updating user's comment counter)
+        if ($SQLnews['author_id']) {
+            foreach ($mysql->select("SELECT * FROM ".prefix."_comments WHERE post=" . db_squote(intval($newsID)) . " AND author_id=".db_squote(intval($SQLnews['author_id'])) . " AND module='news'") as $crow) {
+                if ($crow['author_id']) {
+                    $mysql->query("UPDATE ".uprefix."_users set com=com-1 WHERE id=" . db_squote(intval($crow['author_id'])));
+                }
+            }
+        }
+
+        $result = $mysql->query("DELETE FROM ".prefix."_comments WHERE post=".db_squote($newsID) . " AND module='news'");
+        $this->countDeleted = $mysql->num_rows($result);
+        return 1;
+    }
+
+    // Delete news notifier [ after news is deleted ]
+    function deleteNewsNotify($newsID, $SQLnews)
+    {
+        if ($this->countDeleted) {
+            Lang::loadPlugin('comments', 'config', '', ':');
+            msg(array('type' => 'info', 'message' => sprintf(__('comments:msg.countDeleted'), $this->countDeleted)));
+        }
+        return 1;
     }
 }
 
@@ -194,7 +228,7 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
 {
     function addCategory(&$tvars, &$SQL)
     {
-        $SQL['allow_com'] = intval($_REQUEST['allow_com']);
+        $SQL['allow_com'] = intval($_POST['allow_com']);
         return 1;
     }
 
@@ -203,16 +237,10 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
 
         Lang::loadPlugin('comments', 'config', '', ':');
 
-        $allowCom = pluginGetVariable('comments', 'default_categories');
+        $ac = MakeDropDown(array('0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию'), 'allow_com', pluginGetVariable('comments', 'default_categories'));
 
-        $ms = '<select name="allow_com" class="form-control">';
-        $cv = array('0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию');
-        for ($i = 0; $i < 3; $i++) {
-            $ms .= '<option value="' . $i . '"' . (($allowCom == $i) ? ' selected="selected"' : '') . '>' . $cv[$i] . '</option>';
-        }
-        $ms .= '</select>';
-
-        $tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">' . __('comments:categories.comments') . '<span class="help-block">' . __('comments:categories.comments#desc') . '</span></div><div class="col-sm-7">' . $ms . '</div></div>';
+        $tvars['extend'] = isset($tvars['extend']) ? $tvars['extend'] :'';
+        $tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">' . __('comments:categories.comments') . '<span class="help-block">' . __('comments:categories.comments#desc') . '</span></div><div class="col-sm-7">' . $ac . '</div></div>';
         return 1;
     }
 
@@ -225,21 +253,16 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
             $SQL['allow_com'] = pluginGetVariable('comments', 'default_categories');
         }
 
-        $ms = '<select name="allow_com" class="form-control">';
-        $cv = array('0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию');
-        for ($i = 0; $i < 3; $i++) {
-            $ms .= '<option value="' . $i . '"' . (($SQL['allow_com'] == $i) ? ' selected="selected"' : '') . '>' . $cv[$i] . '</option>';
-        }
-        $ms .= '</select>';
+        $ac = MakeDropDown(array('0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию'), 'allow_com', $SQL['allow_com']);
 
         $tvars['extend'] = isset($tvars['extend']) ? $tvars['extend'] :'';
-        $tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">' . __('comments:categories.comments') . '<span class="help-block">' . __('comments:categories.comments#desc') . '</span></div><div class="col-sm-7">' . $ms . '</div></div>';
+        $tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">' . __('comments:categories.comments') . '<span class="help-block">' . __('comments:categories.comments#desc') . '</span></div><div class="col-sm-7">' . $ac . '</div></div>';
         return 1;
     }
 
     function editCategory($categoryID, $SQL, &$SQLnew, &$tvars)
     {
-        $SQLnew['allow_com'] = intval($_REQUEST['allow_com']);
+        $SQLnew['allow_com'] = intval($_POST['allow_com']);
         return 1;
     }
 

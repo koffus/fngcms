@@ -38,11 +38,11 @@ class Parse
             $content = strtr($content, $utf2enB);
         }
 
-        //$content = str_replace(array("\n", "\r"), " ", $content);
+        $content = str_replace(["\r\n", "\n"], ' ', $content);
         $content = preg_replace("/\s+/msu", "-", $content);
         $content = preg_replace("/[ ]+/u", "-", $content);
         $content = preg_replace("/-(-)+/u", "-", $content);
-        $content = preg_replace("/[^A-Za-z0-9ёЁА-Яа-я\_\-\.]+/miu", '', $content);
+        $content = preg_replace("/[^A-Za-z0-9ёЁА-Яа-я\_\-]+/miu", '', $content);
 
         return trim($content);
     }

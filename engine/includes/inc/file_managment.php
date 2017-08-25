@@ -336,7 +336,7 @@ function manage_showlist($type) {
     }
 
     if (!$nCount) {
-        $entries = "<tr><td colspan=7><p align=center><b>".__('not_found')."</b></p></td></tr>";
+        $entries = "<tr><td colspan=7>".__('not_found')."</td></tr>";
     }
 
     // Check if dir exists

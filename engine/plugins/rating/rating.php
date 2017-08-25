@@ -3,7 +3,8 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-function rating_show($newsID, $rating, $votes){
+function rating_show($newsID, $rating, $votes)
+{
     global $twig, $userROW;
 
     // Load CORE Plugin

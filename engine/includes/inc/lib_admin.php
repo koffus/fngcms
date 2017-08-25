@@ -16,8 +16,8 @@
 // $permCheck	- flag if permissions should be checked (0 - don't check, 1 - check if current user have required rights)
 //
 // Return value: number of successfully updated news
-//
-function massModifyNews($list, $setValue, $permCheck = true) {
+function massModifyNews($list, $setValue, $permCheck = true)
+{
     global $mysql, $PFILTERS, $catmap, $userROW;
 
     // Check if we have anything to update
@@ -62,12 +62,12 @@ function massModifyNews($list, $setValue, $permCheck = true) {
 
     if (isset($list['data'])) {
         $recList = $list['data'];
-    } else if (isset($list['id'])) {
+    } elseif (isset($list['id'])) {
         $SNQ = array();
         foreach ($list['id'] as $id)
             $SNQ [] = db_squote($id);
 
-        $recList = $mysql->select("select * from ".prefix."_news where id in (".join(", ", $SNQ).")");
+        $recList = $mysql->select("select * from " . prefix . "_news where id in (" . join(", ", $SNQ) . ")");
     } else {
         return array();
     }
@@ -76,15 +76,16 @@ function massModifyNews($list, $setValue, $permCheck = true) {
     foreach ($recList as $rec) {
         // SKIP records if user has not enougt permissions
         if ($permCheck) {
-            $isOwn = ($rec['author_id'] == $userROW['id'])?1:0;
-            $permGroupMode = $isOwn?'personal':'other';
+            $isOwn = ($rec['author_id'] == $userROW['id']) ? 1 : 0;
+            $permGroupMode = $isOwn ? 'personal' : 'other';
 
             // Manage `PUBLISHED` field
             $ic = 0;
             if (isset($setValue['approve'])) {
-                if ((($rec['approve'] == 1)&&($setValue['approve'] != 1) and (!$perm[$permGroupMode.'.unpublish'])) or 
-                    (($rec['approve'] < 1)&&($setValue['approve'] == 1) and (!$perm[$permGroupMode.'.publish']))) {
-                    $results []= '#'.$rec['id'].' ('.secure_html($rec['title']).') - '.__('perm.denied');
+                if ((($rec['approve'] == 1) and ($setValue['approve'] != 1) and (!$perm[$permGroupMode . '.unpublish'])) or
+                    (($rec['approve'] < 1) and ($setValue['approve'] == 1) and (!$perm[$permGroupMode . '.publish']))
+                ) {
+                    $results [] = '#' . $rec['id'] . ' (' . secure_html($rec['title']) . ') - ' . __('perm.denied');
                     continue;
                 }
                 $ic++;
@@ -92,8 +93,8 @@ function massModifyNews($list, $setValue, $permCheck = true) {
 
             // Manage `MAINPAGE` flag
             if (isset($setValue['mainpage'])) {
-                if (!$perm[$permGroupMode.'.mainpage']) {
-                    $results []= '#'.$rec['id'].' ('.secure_html($rec['title']).') - '.__('perm.denied');
+                if (!$perm[$permGroupMode . '.mainpage']) {
+                    $results [] = '#' . $rec['id'] . ' (' . secure_html($rec['title']) . ') - ' . __('perm.denied');
                     continue;
                 }
                 $ic++;
@@ -101,8 +102,8 @@ function massModifyNews($list, $setValue, $permCheck = true) {
 
             // Check if we have other options except MAINPAGE/APPROVE
             if (count($setValue) > $ic) {
-                if (!$perm[$permGroupMode.'.modify'.(($rec['approve'] == 1)?'.published':'')]) {
-                    $results []= '#'.$rec['id'].' ('.secure_html($rec['title']).') - '.__('perm.denied');
+                if (!$perm[$permGroupMode . '.modify' . (($rec['approve'] == 1) ? '.published' : '')]) {
+                    $results [] = '#' . $rec['id'] . ' (' . secure_html($rec['title']) . ') - ' . __('perm.denied');
                     continue;
                 }
             }
@@ -110,9 +111,9 @@ function massModifyNews($list, $setValue, $permCheck = true) {
 //			if (($rec['status'] > 1) and ($rec['author_id'] != $userROW['id']))
 //				continue;
         }
-        $results []= '#'.$rec['id'].' ('.secure_html($rec['title']).') - Ok';
+        $results [] = '#' . $rec['id'] . ' (' . secure_html($rec['title']) . ') - Ok';
 
-        $nList[]= $rec['id'];
+        $nList[] = $rec['id'];
         $nData[$rec['id']] = $rec;
     }
 
@@ -122,36 +123,38 @@ function massModifyNews($list, $setValue, $permCheck = true) {
     // Convert $setValue into SQL string
     $sqllSET = array();
     foreach ($setValue as $k => $v)
-        $sqllSET[] = $k." = ".db_squote($v);
+        $sqllSET[] = $k . " = " . db_squote($v);
 
     $sqlSET = join(", ", $sqllSET);
 
     // Call plugin filters
     if (is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->massModifyNews($nList, $setValue, $nData); }
+        foreach ($PFILTERS['news'] as $k => $v) {
+            $v->massModifyNews($nList, $setValue, $nData);
+        }
 
-    $mysql->query("UPDATE ".prefix."_news SET $sqlSET WHERE id in (".join(", ", $nList).")");
+    $mysql->query("UPDATE " . prefix . "_news SET $sqlSET WHERE id in (" . join(", ", $nList) . ")");
 
     // Some activity if we change APPROVE flag for news
     if (isset($setValue['approve'])) {
         // Update user's news counters
         foreach ($nData as $nid => $ndata) {
             if (($ndata['approve'] == 1) and ($setValue['approve'] != 1)) {
-                $mysql->query("update ".uprefix."_users set news=news-1 where id = ".intval($ndata['author_id']));
+                $mysql->query("update " . uprefix . "_users set news=news-1 where id = " . intval($ndata['author_id']));
             } else if (($ndata['approve'] != 1) and ($setValue['approve'] == 1)) {
-                $mysql->query("update ".uprefix."_users set news=news+1 where id = ".intval($ndata['author_id']));
+                $mysql->query("update " . uprefix . "_users set news=news+1 where id = " . intval($ndata['author_id']));
             }
         }
 
         // DeApprove news
         if ($setValue['approve'] < 1) {
             // Count categories & counters to decrease - we have this news currently in _news_map because this news are marked as published
-            foreach ($mysql->select("select categoryID, count(newsID) as cnt from ".prefix."_news_map where newsID in (".join(", ", $nList).") and categoryID > 0 group by categoryID") as $crec) {
-                $mysql->query("update ".prefix."_category set posts=posts-".intval($crec['cnt'])." where id = ".intval($crec['categoryID']));
+            foreach ($mysql->select("select categoryID, count(newsID) as cnt from " . prefix . "_news_map where newsID in (" . join(", ", $nList) . ") and categoryID > 0 group by categoryID") as $crec) {
+                $mysql->query("update " . prefix . "_category set posts=posts-" . intval($crec['cnt']) . " where id = " . intval($crec['categoryID']));
             }
 
             // Delete news map
-            $mysql->query("delete from ".prefix."_news_map where newsID in (".join(", ", $nList).")");
+            $mysql->query("delete from " . prefix . "_news_map where newsID in (" . join(", ", $nList) . ")");
         } else if ($setValue['approve'] == 1) {
             // Approve news
             $clist = array();
@@ -165,22 +168,24 @@ function massModifyNews($list, $setValue, $permCheck = true) {
                     if (!isset($catmap[$cid])) continue;
                     $clist[$cid]++;
                     $ncats++;
-                    $mysql->query("insert into ".prefix."_news_map (newsID, categoryID, dt) values (".intval($nr['id']).", ".intval($cid).", from_unixtime(".(($nr['editdate']>$nr['postdate'])?$nr['editdate']:$nr['postdate'])."))");
+                    $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values (" . intval($nr['id']) . ", " . intval($cid) . ", from_unixtime(" . (($nr['editdate'] > $nr['postdate']) ? $nr['editdate'] : $nr['postdate']) . "))");
                 }
                 // Also put news without category into special category with ID = 0
                 if (!$ncats) {
-                    $mysql->query("insert into ".prefix."_news_map (newsID, categoryID, dt) values (".intval($nr['id']).", 0, from_unixtime(".(($nr['editdate']>$nr['postdate'])?$nr['editdate']:$nr['postdate'])."))");
+                    $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values (" . intval($nr['id']) . ", 0, from_unixtime(" . (($nr['editdate'] > $nr['postdate']) ? $nr['editdate'] : $nr['postdate']) . "))");
                 }
             }
             foreach ($clist as $cid => $cv) {
-                $mysql->query("update ".prefix."_category set posts=posts+".intval($cv)." where id = ".intval($cid));
+                $mysql->query("update " . prefix . "_category set posts=posts+" . intval($cv) . " where id = " . intval($cid));
             }
         }
     }
 
     // Call plugin filters [ NOTIFY ABOUT MODIFICATION ]
     if (is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->massModifyNewsNotify($nList, $setValue, $nData); }
+        foreach ($PFILTERS['news'] as $k => $v) {
+            $v->massModifyNewsNotify($nList, $setValue, $nData);
+        }
 
     //return count($nList);
     return $results;
@@ -192,13 +197,13 @@ function massModifyNews($list, $setValue, $permCheck = true) {
 // $permCheck	- flag if permissions should be checked (0 - don't check, 1 - check if current user have required rights)
 //
 // Return value: number of successfully updated news
-//
-function massDeleteNews($list, $permCheck = true) {
+function massDeleteNews($list, $permCheck = true)
+{
     global $mysql, $PFILTERS, $userROW;
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
-    
+
     $selected_news = $_REQUEST['selected_news'];
 
     // Check for security token
@@ -225,75 +230,71 @@ function massDeleteNews($list, $permCheck = true) {
     // Scan list of news to be deleted
     foreach ($list as $id) {
         // Fetch news
-        if (!is_array($nrow = $mysql->record("select * from ".prefix."_news where id = ".db_squote($id)))) {
+        if (!is_array($nrow = $mysql->record("select * from " . prefix . "_news where id = " . db_squote($id)))) {
             // Skip ID's of non-existent news
             continue;
         }
 
         // Check for permissions
-        $isOwn = ($nrow['author_id'] == $userROW['id'])?1:0;
-        $permGroupMode = $isOwn?'personal':'other';
+        $isOwn = ($nrow['author_id'] == $userROW['id']) ? 1 : 0;
+        $permGroupMode = $isOwn ? 'personal' : 'other';
 
-        if ((!$perm[$permGroupMode.'.delete'.(($nrow['approve'] == 1)?'.published':'')]) and $permCheck) {
-            $results []= '#'.$nrow['id'].' ('.secure_html($nrow['title']).') - '.__('perm.denied');
+        if ((!$perm[$permGroupMode . '.delete' . (($nrow['approve'] == 1) ? '.published' : '')]) and $permCheck) {
+            $results [] = '#' . $nrow['id'] . ' (' . secure_html($nrow['title']) . ') - ' . __('perm.denied');
             continue;
         }
 
-        if (is_array($PFILTERS['news']))
-            foreach ($PFILTERS['news'] as $k => $v) { $v->deleteNews($nrow['id'], $nrow); }
+        if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
+            foreach ($PFILTERS['news'] as $k => $v) {
+                $v->deleteNews($nrow['id'], $nrow);
+            }
+        }
 
         // Update counters only if news is published
         if ($nrow['approve'] == 1) {
             if ($nrow['catid']) {
                 $oldcatsql = array();
-                foreach(explode(',',$nrow['catid']) as $key) {
-                    $oldcatsql[] = "id = ".db_squote($key);
+                foreach (explode(',', $nrow['catid']) as $key) {
+                    $oldcatsql[] = "id = " . db_squote($key);
                 }
-                $mysql->query("update ".prefix."_category set posts=posts-1 where ".implode(" or ",$oldcatsql));
+                $mysql->query("update " . prefix . "_category set posts=posts-1 where " . implode(" or ", $oldcatsql));
             }
 
             // Update user's posts counter
             if ($nrow['author_id']) {
-                $mysql->query("update ".uprefix."_users set news=news-1 where id=".$nrow['author_id']);
+                $mysql->query("update " . uprefix . "_users set news=news-1 where id=" . $nrow['author_id']);
             }
         }
 
-        // Delete comments (with updating user's comment counter) [ if plugin comments is installed ]
-        if ($cPlugin->isInstalled('comments')) {
-            foreach ($mysql->select("select * from ".prefix."_comments where post=".$nrow['id']) as $crow) {
-                if ($nrow['author_id']) {
-                    $mysql->query("update ".uprefix."_users set com=com-1 where id=".$crow['author_id']);
-                }
-            }
-            $mysql->query("delete from ".prefix."_comments WHERE post=".db_squote($nrow['id']));
-        }
-
-        $mysql->query("delete from ".prefix."_news where id=".db_squote($nrow['id']));
-        $mysql->query("delete from ".prefix."_news_map where newsID = ".db_squote($nrow['id']));
+        $mysql->query("delete from " . prefix . "_news where id=" . db_squote($nrow['id']));
+        $mysql->query("delete from " . prefix . "_news_map where newsID = " . db_squote($nrow['id']));
 
         // Notify plugins about news deletion
         if (is_array($PFILTERS['news']))
-            foreach ($PFILTERS['news'] as $k => $v) { $v->deleteNewsNotify($nrow['id'], $nrow); }
+            foreach ($PFILTERS['news'] as $k => $v) {
+                $v->deleteNewsNotify($nrow['id'], $nrow);
+            }
 
         // Delete attached news/files if any
         $fmanager = new FileManagment();
         // ** Files
-        foreach ($mysql->select("select * from ".prefix."_files where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($nrow['id']).")") as $frec) {
+        foreach ($mysql->select("select * from " . prefix . "_files where (storage=1) and (linked_ds=1) and (linked_id=" . db_squote($nrow['id']) . ")") as $frec) {
             $fmanager->file_delete(array('type' => 'file', 'id' => $frec['id']));
         }
 
         // ** Images
-        foreach ($mysql->select("select * from ".prefix."_images where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($nrow['id']).")") as $frec) {
+        foreach ($mysql->select("select * from " . prefix . "_images where (storage=1) and (linked_ds=1) and (linked_id=" . db_squote($nrow['id']) . ")") as $frec) {
             $fmanager->file_delete(array('type' => 'image', 'id' => $frec['id']));
         }
 
-        $results []= '#'.$nrow['id'].' ('.secure_html($nrow['title']).') - Ok';
+        $results [] = '#' . $nrow['id'] . ' (' . secure_html($nrow['title']) . ') - Ok';
     }
-    msg(array('title' => __('editnews')['msgo_deleted'], 'message' => join("<br/>\n", $results)));
+    msg(array('title' => __('news')['msgo_deleted'], 'message' => join("<br/>\n", $results)));
 }
 
 // Generate backup for table list. If no list is given - backup ALL tables with system prefix
-function dbBackup($fname, $gzmode, $tlist = ''){
+function dbBackup($fname, $gzmode, $tlist = '')
+{
     global $mysql;
 
     if ($gzmode and (!function_exists('gzopen')))
@@ -311,57 +312,57 @@ function dbBackup($fname, $gzmode, $tlist = ''){
     if (!is_array($tlist)) {
         $tlist = array();
 
-        foreach ($mysql->select("show tables like '".prefix."_%'", 0) as $tn)
+        foreach ($mysql->select("show tables like '" . prefix . "_%'", 0) as $tn)
             $tlist [] = $tn[0];
     }
 
     // Now make a header
-    $out = "# ".str_repeat('=', 60)."\n# Backup file for `Next Generation CMS`\n# ".str_repeat('=', 60)."\n# DATE: ".gmdate("d-m-Y H:i:s", time())." GMT\n# VERSION: ".engineVersion."\n#\n";
-    $out .= "# List of tables for backup: ".join(", ", $tlist)."\n#\n";
+    $out = "# " . str_repeat('=', 60) . "\n# Backup file for `Next Generation CMS`\n# " . str_repeat('=', 60) . "\n# DATE: " . gmdate("d-m-Y H:i:s", time()) . " GMT\n# VERSION: " . engineVersion . "\n#\n";
+    $out .= "# List of tables for backup: " . join(", ", $tlist) . "\n#\n";
 
     // Write a header
-    if ($gzmode)	gzwrite($fh, $out);
-    else			fwrite($fh, $out);
+    if ($gzmode) gzwrite($fh, $out);
+    else            fwrite($fh, $out);
 
     // Now, let's scan tables
     foreach ($tlist as $tname) {
         // Fetch create syntax for table and after - write table's content
-        if (is_array($csql = $mysql->record("show create table `".$tname."`", -1))) {
-            $out = "\n#\n# Table `".$tname."`\n#\n";
-            $out .= "DROP TABLE IF EXISTS `".$tname."`;\n";
-            $out .= $csql[1].";\n";
+        if (is_array($csql = $mysql->record("show create table `" . $tname . "`", -1))) {
+            $out = "\n#\n# Table `" . $tname . "`\n#\n";
+            $out .= "DROP TABLE IF EXISTS `" . $tname . "`;\n";
+            $out .= $csql[1] . ";\n";
 
-            if ($gzmode)	gzwrite($fh, $out);
-            else			fwrite($fh, $out);
+            if ($gzmode) gzwrite($fh, $out);
+            else            fwrite($fh, $out);
 
             // Now let's make content of the table
-            $query = $mysql->query("select * from `".$tname."`");
+            $query = $mysql->query("select * from `" . $tname . "`");
             $rowNo = 0;
             while ($row = $mysql->fetch_row($query)) {
-                $out = "insert into `".$tname."` values (";
+                $out = "insert into `" . $tname . "` values (";
                 $rowNo++;
                 $colNo = 0;
                 foreach ($row as $v)
-                    $out .= (($colNo++)?', ':'').db_squote($v);
+                    $out .= (($colNo++) ? ', ' : '') . db_squote($v);
                 $out .= ");\n";
 
-                if ($gzmode)	gzwrite($fh, $out);
-                else			fwrite($fh, $out);
+                if ($gzmode) gzwrite($fh, $out);
+                else            fwrite($fh, $out);
             }
 
             $out = "# Total records: $rowNo\n";
 
-            if ($gzmode)	gzwrite($fh, $out);
-            else			fwrite($fh, $out);
+            if ($gzmode) gzwrite($fh, $out);
+            else            fwrite($fh, $out);
         } else {
             $out = "#% Error fetching information for table `$tname`\n";
 
-            if ($gzmode)	gzwrite($fh, $out);
-            else			fwrite($fh, $out);
+            if ($gzmode) gzwrite($fh, $out);
+            else            fwrite($fh, $out);
         }
     }
-    if ($gzmode)	gzclose($fh);
-    else			fclose($fh);
+    if ($gzmode) gzclose($fh);
+    else            fclose($fh);
 
     return 1;
 }
@@ -369,16 +370,17 @@ function dbBackup($fname, $gzmode, $tlist = ''){
 // ======================================================================================================
 // Add news
 // ======================================================================================================
-// $mode - calling mode
-//	*	'no.meta'	- disable metatags
-//	*	'no.files'	- disable files
-//	*	'no.token'	- do not check for security token
-//	*	'no.editurl'	- do now show URL (in admin panel) for edit news
-function addNews($mode = array()){
+// $mode - calling mode - !!! NOT COMPATABLE
+//  * 'no.meta' - disable metatags
+//  * 'no.files' - disable files
+//  * 'no.token' - do not check for security token
+//  * 'no.editurl' - do now show URL (in admin panel) for edit news
+function addNews($mode = array())
+{
     global $mysql, $userROW, $parse, $PFILTERS, $config, $catz, $catmap;
 
     // Check for security token
-    if ((!isset($mode['no.token']) or (!$mode['no.token'])) and ((!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.news.add')))) {
+    if (!isset($_POST['token']) or $_POST['token'] != genUToken('admin.news.add')) {
         msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
         return;
     }
@@ -410,63 +412,61 @@ function addNews($mode = array()){
         'personal.altname',
     ));
 
-    // Check permissions
+    // Check for modify permissions
     if (!$perm['add']) {
         msg(array('type' => 'danger', 'message' => __('perm.denied')));
         return 0;
     }
 
-    $title = $_REQUEST['title'];
+    /*
+     * Now, prepare data
+     */
+    $SQL = array();
+    $SQL['title'] = secure_html($_POST['title']);
+    $SQL['alt_name'] = empty($_POST['alt_name']) ? $SQL['title'] : secure_html($_POST['alt_name']);
+    // in any case, do new alt name in automatic mode
+    $SQL['alt_name'] = $parse->translit($SQL['alt_name'], $config['news_translit']);
+    $SQL['content'] = trim(str_replace("\r\n", "\n", $_POST['ng_news_content']));
+    $_POST['description'] = isset($_POST['description']) ? secure_html(str_replace(["\r\n", "\n"], ' ', $_POST['description'])) : '';
+    $_POST['keywords'] = isset($_POST['keywords']) ? secure_html($_POST['keywords']) : '';
 
-    // Fill content
-    $content = $_REQUEST['ng_news_content'];
+    // Metatags (only for adding via admin panel)
+    if ($config['meta']) {
+        $SQL['description'] = $_POST['description'];
+        $SQL['keywords'] = $_POST['keywords'];
+    }
 
-    // Rewrite `\r\n` to `\n`
-    $content = str_replace("\r\n", "\n", $content);
+    $SQL['author'] = secure_html($userROW['name']);
+    $SQL['author_id'] = intval($userROW['id']);
+
+    $SQL['approve'] = (isset($_POST['approve']) and $perm['personal.publish']) ? intval($_POST['approve']) : 0;
+    $SQL['mainpage'] = (isset($_POST['mainpage']) and $perm['personal.mainpage']) ? (intval($_POST['mainpage'])) : 0;
+    $SQL['pinned'] = (isset($_POST['pinned']) and $perm['personal.pinned']) ? (intval($_POST['pinned'])) : 0;
+    $SQL['catpinned'] = (isset($_POST['catpinned']) and $perm['personal.catpinned']) ? (intval($_POST['catpinned'])) : 0;
+    $SQL['favorite'] = (isset($_POST['favorite']) and $perm['personal.favorite']) ? (intval($_POST['favorite'])) : 0;
+
+    $_POST['flag_RAW'] = isset($_POST['flag_RAW']) ? intval($_POST['flag_RAW']) : 0;
+    $_POST['flag_HTML'] = isset($_POST['flag_HTML']) ? intval($_POST['flag_HTML']) : 0;
+    $_POST['postdate'] = secure_html($_POST['postdate']);
+    $_POST['customdate'] = isset($_POST['customdate']) ? intval($_POST['customdate']) : 0;
 
     // Check title
-    if ((!mb_strlen(trim($title), 'UTF-8')) or ((!mb_strlen(trim($content), 'UTF-8')) and (!$config['news_without_content']))) {
-        msg(array('type' => 'danger', 'title' => __('addnews')['msge_fields'], 'message' => __('addnews')['msgi_fields']));
+    if ((!mb_strlen($SQL['title'], 'UTF-8') or !mb_strlen($SQL['content'], 'UTF-8')) and (!$config['news_without_content'])) {
+        msg(array('type' => 'danger', 'title' => __('news')['msge_fields'], 'message' => __('news')['msgi_fields']));
         return 0;
     }
 
-    $SQL['title'] = $title;
-
-    // Check for dup if alt_name is specified
-    $alt_name = ($perm['personal.altname'] and isset($_REQUEST['alt_name'])) ? $parse->translit($_REQUEST['alt_name'], $config['news_translit']) : '';
-
-    if ($alt_name) {
-        if ( is_array($mysql->record("select id from ".prefix."_news where alt_name = ".db_squote($alt_name)." limit 1")) ) {
-            msg(array('type' => 'danger', 'title' => __('addnews')['msge_alt_name'], 'message' => __('addnews')['msgi_alt_name']));
-            return 0;
-        }
-        $SQL['alt_name'] = $alt_name;
-    } else {
-        // Generate uniq alt_name if no alt_name specified
-        $alt_name = $parse->translit($title, $config['news_translit']);
-        // Make a conversion:
-        // * '.' to '_'
-        // * '__' to '_' (several to one)
-        // * Delete leading/finishing '_'
-        $alt_name = preg_replace(array('/\./', '/(_{2,20})/', '/^(_+)/', '/(_+)$/'), array('_', '_'), $alt_name);
-
-        // Make alt_name equal to '_' if it appear to be blank after conversion
-        if ($alt_name == '') $alt_name = '_';
-
-        $i = '';
-        while ( is_array($mysql->record("select id from ".prefix."_news where alt_name = ".db_squote($alt_name.$i)." limit 1")) ) {
-            $i++;
-        }
-        $SQL['alt_name'] = $alt_name.$i;
+    // check for empty or duplicate alt_name
+    if (empty($SQL['alt_name']) or is_array($mysql->record("select id from ".prefix."_news where alt_name = ".db_squote($SQL['alt_name'])." limit 1"))) {
+        msg(array('type' => 'info', 'title' => __('news')['msge_alt_name'], 'message' => __('news')['msgi_alt_name']));
+        $SQL['alt_name'] .= '_' . date("Y-m-d-H-i-s");
     }
 
     // Custom date[ only while adding via admin panel ]
-    if (isset($_REQUEST['customdate']) and $_REQUEST['customdate'] and $perm['personal.customdate']) {
-        if (preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', $_REQUEST['cdate'], $m)) {
+    if ($_POST['customdate'] and $perm['personal.customdate']) {
+        if (preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', $_POST['postdate'], $m)) {
             $SQL['postdate'] = mktime($m[4], $m[5], 0, $m[2], $m[1], $m[3]) + ($config['date_adjust'] * 60);
         }
-
-        //$SQL['postdate'] = mktime(intval($_REQUEST['c_hour']), intval($_REQUEST['c_minute']), 0, intval($_REQUEST['c_month']), intval($_REQUEST['c_day']), intval($_REQUEST['c_year'])) + ($config['date_adjust'] * 60);
     } else {
         $SQL['postdate'] = time() + ($config['date_adjust'] * 60);
     }
@@ -489,50 +489,20 @@ function addNews($mode = array()){
 
     // Check if no categories specified and user can post news without categories
     if ((!count($catids)) and (!$perm['personal.nocat'])) {
-        msg(array('type' => 'danger', 'title' => __('addnews')['error.nocat'], 'message' => __('addnews')['error.nocat#desc']));
+        msg(array('type' => 'danger', 'title' => __('news')['error.nocat'], 'message' => __('news')['error.nocat#desc']));
         return 0;
     }
 
-    // Metatags (only for adding via admin panel)
-    if ($config['meta'] and (!isset($mode['no.meta']) or !$mode['no.meta'])) {
-        $SQL['description']	= $_REQUEST['description'];
-        $SQL['keywords']	= $_REQUEST['keywords'];
-    }
-
-    $SQL['author']		= $userROW['name'];
-    $SQL['author_id']	= $userROW['id'];
-    $SQL['catid']		= implode(",", array_keys($catids));
+    $SQL['catid'] = implode(',', array_keys($catids));
 
     // Variable FLAGS is a bit-variable:
-    // 0 = RAW mode		[if set, no conversion "\n" => "<br />" will be done]
-    // 1 = HTML enable	[if set, HTML codes may be used in news]
-
+    // 0 = RAW mode [if set, no conversion "\n" => "<br />" will be done]
+    // 1 = HTML enable [if set, HTML codes may be used in news]
     if ($perm['personal.html']) {
-        $SQL['flags']	= ($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0);
+        $SQL['flags'] = ($_POST['flag_RAW'] ? 1 : 0) + ($_POST['flag_HTML'] ? 2 : 0);
     } else {
-        $SQL['flags']	= 0;
+        $SQL['flags'] = 0;
     }
-
-    $SQL['mainpage'] = intval(intval($_REQUEST['mainpage']) and $perm['personal.mainpage']);
-    $SQL['favorite'] = intval(intval($_REQUEST['favorite']) and $perm['personal.favorite']);
-    $SQL['pinned'] = intval(intval($_REQUEST['pinned']) and $perm['personal.pinned']);
-    $SQL['catpinned'] = intval(intval($_REQUEST['catpinned']) and $perm['personal.catpinned']);
-
-    switch (intval($_REQUEST['approve'])) {
-        case -1:
-            $SQL['approve'] = -1;
-            break;
-        case 0:
-            $SQL['approve'] = 0;
-            break;
-        case 1:
-            $SQL['approve'] = $perm['personal.publish']?1:0;
-            break;
-        default:
-            $SQL['approve'] = 0;
-    }
-
-    $SQL['content'] = $content;
 
     // Dummy parameter for API call
     $tvars = array();
@@ -543,7 +513,7 @@ function addNews($mode = array()){
     if (is_array($PFILTERS['news']))
         foreach ($PFILTERS['news'] as $k => $v) {
             if (!($pluginNoError = $v->addNews($tvars, $SQL))) {
-                msg(array('type' => 'danger', 'message' => str_replace('{plugin}', $k, __('addnews')['msge_pluginlock'])));
+                msg(array('type' => 'danger', 'message' => str_replace('{plugin}', $k, __('news')['msge_pluginlock'])));
                 break;
             }
         }
@@ -552,34 +522,34 @@ function addNews($mode = array()){
         return 0;
     }
 
-    $vnames = array(); $vparams = array();
-    foreach ($SQL as $k => $v) { $vnames[] = $k; $vparams[] = db_squote($v); }
+    $vnames = array();
+    $vparams = array();
+    foreach ($SQL as $k => $v) {
+        $vnames[] = $k;
+        $vparams[] = db_squote($v);
+    }
 
-    $mysql->query("insert into ".prefix."_news (".implode(",",$vnames).") values (".implode(",",$vparams).")");
+    $mysql->query("insert into " . prefix . "_news (" . implode(",", $vnames) . ") values (" . implode(",", $vparams) . ")");
     $id = $mysql->result("SELECT LAST_INSERT_ID() as id");
 
     // Update category / user posts counter [ ONLY if news is approved ]
     if ($SQL['approve'] == 1) {
         if (count($catids)) {
-            $mysql->query("update ".prefix."_category set posts=posts+1 where id in (".implode(", ",array_keys($catids)).")");
+            $mysql->query("update " . prefix . "_category set posts=posts+1 where id in (" . implode(", ", array_keys($catids)) . ")");
             foreach (array_keys($catids) as $catid) {
-                $mysql->query("insert into ".prefix."_news_map (newsID, categoryID, dt) values (".db_squote($id).", ".db_squote($catid).", now())");
+                $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values (" . db_squote($id) . ", " . db_squote($catid) . ", now())");
             }
         } else {
-            $mysql->query("insert into ".prefix."_news_map (newsID, categoryID, dt) values (".db_squote($id).", 0, now())");
+            $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values (" . db_squote($id) . ", 0, now())");
         }
-
-        $mysql->query("update ".uprefix."_users set news=news+1 where id=".$SQL['author_id']);
+        $mysql->query("update " . uprefix . "_users set news=news+1 where id=" . db_squote($SQL['author_id']));
     }
 
-    // Attaches are available only for admin panel
-    if (!$mode['no.files']) {
-
-        // Now let's manage attached files
+    // Now let's manage attached files
+    if (true)
+    {
         $fmanager = new FileManagment();
-
         $flagUpdateAttachCount = false;
-
         // Delete files (if needed)
         foreach ($_POST as $k => $v) {
             if (preg_match('#^delfile_(\d+)$#', $k, $match)) {
@@ -587,45 +557,41 @@ function addNews($mode = array()){
                 $flagUpdateAttachCount = true;
             }
         }
-
-        //print "<pre>".var_export($_FILES, true)."</pre>";
         // PREPARE a list for upload
-        if (is_array($_FILES['userfile']['name']))
-            foreach($_FILES['userfile']['name'] as $i => $v) {
-                if ($v == '')
-                    continue;
-
+        if (is_array($_FILES['userfile']['name'])) {
+            foreach ($_FILES['userfile']['name'] as $i => $v) {
+                if ($v == '') continue;
                 $flagUpdateAttachCount = true;
-                //
                 $up = $fmanager->file_upload(array('dsn' => true, 'linked_ds' => 1, 'linked_id' => $id, 'type' => 'file', 'http_var' => 'userfile', 'http_varnum' => $i));
-                //print "OUT: <pre>".var_export($up, true)."</pre>";
                 if (!is_array($up)) {
                     // Error uploading file
                     // ... show error message ...
                 }
             }
+        }
+        // Update attach count if we need this
+        $numFiles = $mysql->result("select count(*) as cnt from " . prefix . "_files where (storage=1) and (linked_ds=1) and (linked_id=" . db_squote($id) . ")");
+        if ($numFiles) {
+            $mysql->query("update " . prefix . "_news set num_files = " . intval($numFiles) . " where id = " . db_squote($id));
+        }
+        $numImages = $mysql->result("select count(*) as cnt from " . prefix . "_images where (storage=1) and (linked_ds=1) and (linked_id=" . db_squote($id) . ")");
+        if ($numImages) {
+            $mysql->query("update " . prefix . "_news set num_images = " . intval($numImages) . " where id = " . db_squote($id));
+        }
     }
 
     // Notify plugins about adding new news
-    if (is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->addNewsNotify($tvars, $SQL, $id); }
-
-    // Update attach count if we need this
-    $numFiles = $mysql->result("select count(*) as cnt from ".prefix."_files where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($id).")");
-    if ($numFiles) {
-        $mysql->query("update ".prefix."_news set num_files = ".intval($numFiles)." where id = ".db_squote($id));
-    }
-
-    $numImages = $mysql->result("select count(*) as cnt from ".prefix."_images where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($id).")");
-    if ($numImages) {
-        $mysql->query("update ".prefix."_news set num_images = ".intval($numImages)." where id = ".db_squote($id));
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
+        foreach ($PFILTERS['news'] as $k => $v) {
+            $v->addNewsNotify($tvars, $SQL, $id);
+        }
     }
 
     executeActionHandler('addnews_');
 
-    $msgInfo = array('title' => __('addnews')['msgo_added']);
-    if (!$mode['no.editurl']) {
-        $msgInfo['message'] = sprintf(__('addnews')['msgi_added'], admin_url.'/admin.php?mod=news&action=edit&id='.$id, admin_url.'/admin.php?mod=news');
+    $msgInfo = array('title' => __('news')['msgo_added']);
+    if ($perm['personal.modify']) {
+        $msgInfo['message'] = sprintf(__('news')['msgi_added'], admin_url . '/admin.php?mod=news&action=edit&id=' . $id, admin_url . '/admin.php?mod=news');
     }
     msg($msgInfo);
 
@@ -639,8 +605,15 @@ function addNews($mode = array()){
 //	*	'no.meta'	- disable changing metatags
 //	*	'no.files'	- disable updating files
 //	*	'no.token'	- do not check for security token
-function editNews($mode = array()) {
+function editNews($mode = array())
+{
     global $parse, $mysql, $config, $PFILTERS, $userROW, $catmap;
+
+    // Check for security token
+    if (!isset($_POST['token']) or $_POST['token'] != genUToken('admin.news.edit')) {
+        msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
+        return;
+    }
 
     // Load permissions
     $perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array(
@@ -680,148 +653,101 @@ function editNews($mode = array()) {
         'other.altname',
     ));
 
-    $id = $_REQUEST['id'];
-
-    // Check for security token
-    if ((!isset($mode['no.token']) or (!$mode['no.token'])) and ((!isset($_REQUEST['token'])) or ($_REQUEST['token'] != genUToken('admin.news.edit')))) {
-        msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
-        return;
-    }
-
     // Try to find news that we're trying to edit
-    if (!is_array($row = $mysql->record("select * from ".prefix."_news where id=".db_squote($id)))) {
-        msg(array('type' => 'danger', 'message' => __('editnews')['msge_not_found']));
+    $id = isset($_REQUEST['id']) ? intval($_REQUEST['id']) : 0;
+    if (!$id or !is_array($row = $mysql->record("SELECT * FROM " . prefix . "_news WHERE id=" . db_squote($id)))) {
+        msg(array('type' => 'danger', 'message' => __('news')['msge_not_found']));
         return;
     }
-
-    $isOwn = ($row['author_id'] == $userROW['id'])?1:0;
-    $permGroupMode = $isOwn?'personal':'other';
 
     // Check permissions
-    if (!$perm[$permGroupMode.'.modify'.(($row['approve'] == 1)?'.published':'')]) {
+    $isOwn = ($row['author_id'] == $userROW['id']) ? 1 : 0;
+    $permGroupMode = $isOwn ? 'personal' : 'other';
+    if (!$perm[$permGroupMode . '.modify' . (($row['approve'] == 1) ? '.published' : '')]) {
         msg(array('type' => 'danger', 'message' => __('perm.denied')));
         return;
     }
 
-    // Variable FLAGS is a bit-variable:
-    // 0 = RAW mode		[if set, no conversion "\n" => "<br />" will be done]
-    // 1 = HTML enable	[if set, HTML codes may be used in news]
+    /*
+     * Now, prepare data
+     */
     $SQL = array();
-
-    $SQL['flags'] = ($perm[$permGroupMode.'.html'])?(($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0)):0;
-
-    $title = $_REQUEST['title'];
-
-    // Fill content
-    $content = $_REQUEST['ng_news_content'];
-
-    // Rewrite `\r\n` to `\n`
-    $content = str_replace("\r\n", "\n", $content);
-
-    // Check if we have content
-    if ((!mb_strlen(trim($title), 'UTF-8')) or ((!mb_strlen(trim($content), 'UTF-8')) and (!$config['news_without_content']))) {
-        msg(array('type' => 'danger', 'title' => __('msge_fields'), 'message' => __('msgi_fields')));
-        return;
+    $SQL['title'] = secure_html($_POST['title']);
+    $SQL['content'] = trim(str_replace("\r\n", "\n", $_POST['ng_news_content']));
+    // Check title and content
+    if ((!mb_strlen($SQL['title'], 'UTF-8') or !mb_strlen($SQL['content'], 'UTF-8')) and (!$config['news_without_content'])) {
+        msg(array('type' => 'danger', 'title' => __('news')['msge_fields'], 'message' => __('news')['msgi_fields']));
+        return -1;
     }
 
-    // Manage alt name
-    if ($perm[$permGroupMode.'.altname'] and isset($_REQUEST['alt_name'])) {
-        $alt_name = $_REQUEST['alt_name'];
-        // Check if alt name should be generated again
-        if ('' == trim($alt_name)) {
-            $alt_name = $parse->translit($title, $config['news_translit']);
-
-            // Make alt_name equal to '_' if it appear to be blank after conversion
-            if ($alt_name == '') $alt_name = '_';
-
-            $i = '';
-            while ( is_array($mysql->record("select id from ".prefix."_news where alt_name = ".db_squote($alt_name.$i)." limit 1")) ) {
-                $i++;
-            }
-            $alt_name = $alt_name.$i;
-        }
-
-        // Check Always for allowed chars in alt name
-        if ($parse->nameCheck($alt_name)) {
-            msg(array('type' => 'danger', 'message' => __('editnews')['err.altname.wrong']));
-            return;
-        }
-
-        // Check if we try to use duplicate alt_name
-        if (is_array($mysql->record("select * from ".prefix."_news where alt_name=".db_squote($alt_name)." and id <> ".db_squote($row['id'])." limit 1"))) {
-            msg(array('type' => 'danger', 'message' => __('editnews')['err.altname.dup']));
-            return;
-        }
-    } else {
-        // Alt name was not modified or modification is not allowed
-        $alt_name = $row['alt_name'];
+    // In any case, do new alt name in automatic mode
+    // !$perm[$permGroupMode . '.altname']
+    $SQL['alt_name'] = empty($_POST['alt_name']) ? $SQL['title'] : secure_html($_POST['alt_name']);
+    $SQL['alt_name'] = $parse->translit($SQL['alt_name'], $config['news_translit']);
+    // Check for empty or duplicate alt_name
+    if (empty($SQL['alt_name']) or is_array($mysql->record("SELECT id FROM ".prefix."_news WHERE alt_name = ".db_squote($SQL['alt_name'])." AND id <> ".intval($id)." LIMIT 1"))) {
+        msg(array('type' => 'info', 'title' => __('news')['msge_alt_name'], 'message' => __('news')['msgi_alt_name']));
+        $SQL['alt_name'] .= '_' . date("Y-m-d-H-i-s");
+    }
+    if ($config['meta'] and isset($_POST['description'])) {
+        $SQL['description'] = secure_html(str_replace(["\r\n", "\n"], ' ', $_POST['description']));
+    }
+    if ($config['meta'] and isset($_POST['keywords'])) {
+        $SQL['keywords'] = secure_html($_POST['keywords']);
     }
 
     // Generate SQL old cats list
     $oldcatids = array();
-    foreach (explode(',', $row['catid']) as $cat)
-        if (preg_match('#^(\d+)$#', trim($cat), $cmatch))
+    foreach (explode(',', $row['catid']) as $cat) {
+        if (preg_match('#^(\d+)$#', trim($cat), $cmatch)) {
             $oldcatids[$cmatch[1]] = 1;
-
+        }
+    }
     // Fetch MASTER provided categories
     $catids = [];
     if (intval($_POST['category']) and isset($catmap[intval($_POST['category'])])) {
         $catids[intval($_POST['category'])] = 1;
     }
-
     // Fetch ADDITIONAL provided categories [if allowed]
-    if ($perm[$permGroupMode.'.multicat']) {
+    if ($perm[$permGroupMode . '.multicat']) {
         foreach ($_POST as $k => $v) {
             if (preg_match('#^category_(\d+)$#', $k, $match) and $v and isset($catmap[intval($match[1])]))
                 $catids[$match[1]] = 1;
         }
     }
-
     // Check if no categories specified and user can post news without categories
-    if ((!count($catids)) and (!$perm[$permGroupMode.'.nocat'])) {
-        msg(array('type' => 'danger', 'title' => __('editnews')['error.nocat'], 'message' => __('addnews')['error.nocat#desc']));
+    if (!count($catids) and !$perm[$permGroupMode . '.nocat']) {
+        msg(array('type' => 'danger', 'title' => __('news')['error.nocat'], 'message' => __('news')['error.nocat#desc']));
         return 0;
     }
+    $SQL['catid'] = implode(",", array_keys($catids));
 
-    if ($config['meta'] and (!isset($mode['no.meta']) or !$mode['no.meta'])) {
-        $SQL['description'] = $_REQUEST['description'];
-        $SQL['keywords'] = $_REQUEST['keywords'];
-    } else {
-        $SQL['description'] = $row['description'];
-        $SQL['keywords'] = $row['keywords'];
-    }
-
-    if ($perm[$permGroupMode.'.customdate']) {
-        if ($_REQUEST['setdate_custom']) {
-            if (preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', $_REQUEST['cdate'], $m)) {
+    // Generate info about custom date news
+    if ($perm[$permGroupMode . '.customdate']) {
+        if (isset($_POST['setdate_custom'])) {
+            if (preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', secure_html($_POST['postdate']), $m)) {
                 $SQL['postdate'] = mktime($m[4], $m[5], 0, $m[2], $m[1], $m[3]);
             }
-
-            //$SQL['postdate'] = mktime(intval($_REQUEST['c_hour']), intval($_REQUEST['c_minute']), 0, intval($_REQUEST['c_month']), intval($_REQUEST['c_day']), intval($_REQUEST['c_year'])) + ($config['date_adjust'] * 60);
-        } else if ($_REQUEST['setdate_current']) {
+        } elseif (isset($_POST['setdate_current'])) {
             $SQL['postdate'] = time() + ($config['date_adjust'] * 60);
         }
     }
-
-    $SQL['title'] = $title;
-    $SQL['content'] = $content;
-
-    // Check if user can modify altname
-    if ($perm[$permGroupMode.'.altname']) {
-        $SQL['alt_name'] = $alt_name;
-    } else {
-        $SQL['alt_name'] = $row['alt_name'];
-    }
     $SQL['editdate'] = time() + ($config['date_adjust'] * 60);
-    $SQL['catid'] = implode(",", array_keys($catids));
 
     // Change this parameters if user have enough access level
-    $SQL['mainpage'] = ($perm[$permGroupMode.'.mainpage'] && intval($_REQUEST['mainpage']))?1:0;
-    $SQL['pinned'] = ($perm[$permGroupMode.'.pinned'] && intval($_REQUEST['pinned']))?1:0;
-    $SQL['catpinned'] = ($perm[$permGroupMode.'.catpinned'] && intval($_REQUEST['catpinned']))?1:0;
-    $SQL['favorite'] = ($perm[$permGroupMode.'.favorite'] && intval($_REQUEST['favorite']))?1:0;
+    $_POST['mainpage'] = isset($_POST['mainpage']) ? intval($_POST['mainpage']) : 0;
+    $_POST['pinned'] = isset($_POST['pinned']) ? intval($_POST['pinned']) : 0;
+    $_POST['catpinned'] = isset($_POST['catpinned']) ? intval($_POST['catpinned']) : 0;
+    $_POST['favorite'] = isset($_POST['favorite']) ? intval($_POST['favorite']) : 0;
+    
+    $SQL['mainpage'] = ($perm[$permGroupMode . '.mainpage'] and $_POST['mainpage']) ? 1 : 0;
+    $SQL['pinned'] = ($perm[$permGroupMode . '.pinned'] and $_POST['pinned']) ? 1 : 0;
+    $SQL['catpinned'] = ($perm[$permGroupMode . '.catpinned'] and $_POST['catpinned']) ? 1 : 0;
+    $SQL['favorite'] = ($perm[$permGroupMode . '.favorite'] and $_POST['favorite']) ? 1 : 0;
+    
+    $_POST['approve'] = isset($_POST['approve']) ? intval($_POST['approve']) : 0;
 
-    switch (intval($_REQUEST['approve'])) {
+    switch ($_POST['approve']) {
         case -1:
             $SQL['approve'] = -1;
             break;
@@ -829,19 +755,26 @@ function editNews($mode = array()) {
             $SQL['approve'] = 0;
             break;
         case 1:
-            $SQL['approve'] = (($row['approve'] == 1) or (($row['approve'] < 1) and ($perm[$permGroupMode.'.publish'])))?1:0;
+            $SQL['approve'] = (($row['approve'] == 1) or (($row['approve'] < 1) and ($perm[$permGroupMode . '.publish']))) ? 1 : 0;
             break;
         default:
             $SQL['approve'] = 0;
     }
 
-    if ($perm[$permGroupMode.'.setviews'] and $_REQUEST['setViews']) {
-        $SQL['views'] = intval($_REQUEST['views']);
+    // Variable FLAGS is a bit-variable:
+    // 0 = RAW mode		[if set, no conversion "\n" => "<br />" will be done]
+    // 1 = HTML enable	[if set, HTML codes may be used in news]
+    $_POST['flag_RAW'] = isset($_POST['flag_RAW']) ? intval($_POST['flag_RAW']) : 0;
+    $_POST['flag_HTML'] = isset($_POST['flag_HTML']) ? intval($_POST['flag_HTML']) : 0;
+    $SQL['flags'] = ($perm[$permGroupMode . '.html']) ? (($_POST['flag_RAW'] ? 1 : 0) + ($_POST['flag_HTML'] ? 2 : 0)) : 0;
+
+    if ($perm[$permGroupMode . '.setviews'] and isset($_POST['setViews'])) {
+        $SQL['views'] = intval($_POST['views']);
     }
 
     // Load list of attached images/files
-    $row['#files'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_files where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
-    $row['#images'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from ".prefix."_images where (linked_ds = 1) and (linked_id = ".db_squote($row['id']).')', 1);
+    $row['#files'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from " . prefix . "_files where (linked_ds = 1) and (linked_id = " . db_squote($row['id']) . ')', 1);
+    $row['#images'] = $mysql->select("select *, date_format(from_unixtime(date), '%d.%m.%Y') as date from " . prefix . "_images where (linked_ds = 1) and (linked_id = " . db_squote($row['id']) . ')', 1);
 
     // Dummy parameter for API call
     $tvars = array();
@@ -852,7 +785,7 @@ function editNews($mode = array()) {
     if (is_array($PFILTERS['news']))
         foreach ($PFILTERS['news'] as $k => $v) {
             if (!($pluginNoError = $v->editNews($id, $row, $SQL, $tvars))) {
-                msg(array('type' => 'danger', 'message' => str_replace('{plugin}', $k, __('editnews')['msge_pluginlock'])));
+                msg(array('type' => 'danger', 'message' => str_replace('{plugin}', $k, __('news')['msge_pluginlock'])));
                 break;
             }
         }
@@ -862,35 +795,38 @@ function editNews($mode = array()) {
     }
 
     $SQLparams = array();
-    foreach ($SQL as $k => $v) { $SQLparams[] = $k.' = '.db_squote($v); }
+    foreach ($SQL as $k => $v) {
+        $SQLparams[] = $k . ' = ' . db_squote($v);
+    }
 
-    $mysql->query("update ".prefix."_news set ".implode(", ",$SQLparams)." where id = ".db_squote($id));
+    $mysql->query("update " . prefix . "_news set " . implode(", ", $SQLparams) . " where id = " . db_squote($id));
 
     // Update category posts counters
     if (($row['approve'] == 1) and sizeof($oldcatids)) {
-        $mysql->query("update ".prefix."_category set posts=posts-1 where id in (".implode(",",array_keys($oldcatids)).")");
+        $mysql->query("update " . prefix . "_category set posts=posts-1 where id in (" . implode(",", array_keys($oldcatids)) . ")");
     }
 
-    $mysql->query("delete from ".prefix."_news_map where newsID = ".db_squote($id));
+    $mysql->query("delete from " . prefix . "_news_map where newsID = " . db_squote($id));
 
     // Check if we need to update user's counters [ only if news was or will be published ]
     if (($row['approve'] != $SQL['approve']) and (($row['approve'] == 1) or ($SQL['approve'] == 1))) {
-        $mysql->query("update ".uprefix."_users set news=news".(($row['approve'] == 1)?'-':'+')."1 where id=".$row['author_id']);
+        $mysql->query("update " . uprefix . "_users set news=news" . (($row['approve'] == 1) ? '-' : '+') . "1 where id=" . $row['author_id']);
     }
 
     if ($SQL['approve'] == 1) {
         if (sizeof($catids)) {
-            $mysql->query("update ".prefix."_category set posts=posts+1 where id in (".implode(",",array_keys($catids)).")");
+            $mysql->query("update " . prefix . "_category set posts=posts+1 where id in (" . implode(",", array_keys($catids)) . ")");
             foreach (array_keys($catids) as $catid) {
-                $mysql->query("insert into ".prefix."_news_map (newsID, categoryID, dt) values (".db_squote($id).", ".db_squote($catid).", from_unixtime(".intval($SQL['editdate'])."))");
+                $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values (" . db_squote($id) . ", " . db_squote($catid) . ", from_unixtime(" . intval($SQL['editdate']) . "))");
             }
         } else {
-            $mysql->query("insert into ".prefix."_news_map (newsID, categoryID, dt) values (".db_squote($id).", 0, from_unixtime(".intval($SQL['editdate'])."))");
+            $mysql->query("insert into " . prefix . "_news_map (newsID, categoryID, dt) values (" . db_squote($id) . ", 0, from_unixtime(" . intval($SQL['editdate']) . "))");
         }
     }
 
-    // Skip file processing (if requested)
-    if (!(isset($params['no.files']) and $params['no.files'])) {
+    // Now let's manage attached files
+    if (true)
+    {
 
         // Now let's manage attached files
         $fmanager = new FileManagment();
@@ -906,8 +842,8 @@ function editNews($mode = array()) {
         }
 
         // PREPARE a list for upload
-        if (is_array($_FILES['userfile']['name']))
-            foreach($_FILES['userfile']['name'] as $i => $v) {
+        if (is_array($_FILES['userfile']['name'])) {
+            foreach ($_FILES['userfile']['name'] as $i => $v) {
                 if ($v == '')
                     continue;
 
@@ -921,30 +857,35 @@ function editNews($mode = array()) {
                 }
 
             }
+        }
+
+        // Update attach count if we need this
+        $numFiles = $mysql->result("select count(*) as cnt from " . prefix . "_files where (storage=1) and (linked_ds=1) and (linked_id=" . db_squote($id) . ")");
+        if ($numFiles != $row['num_files']) {
+            $mysql->query("update " . prefix . "_news set num_files = " . intval($numFiles) . " where id = " . db_squote($id));
+        }
+
+        $numImages = $mysql->result("select count(*) as cnt from " . prefix . "_images where (storage=1) and (linked_ds=1) and (linked_id=" . db_squote($id) . ")");
+        if ($numImages != $row['num_images']) {
+            $mysql->query("update " . prefix . "_news set num_images = " . intval($numImages) . " where id = " . db_squote($id));
+        }
     }
 
     // Notify plugins about news edit completion
-    if (is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->editNewsNotify($id, $row, $SQL, $tvars); }
-
-    // Update attach count if we need this
-    $numFiles	= $mysql->result("select count(*) as cnt from ".prefix."_files where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($id).")");
-    if ($numFiles != $row['num_files']) {
-        $mysql->query("update ".prefix."_news set num_files = ".intval($numFiles)." where id = ".db_squote($id));
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
+        foreach ($PFILTERS['news'] as $k => $v) {
+            $v->editNewsNotify($id, $row, $SQL, $tvars);
+        }
     }
 
-    $numImages	= $mysql->result("select count(*) as cnt from ".prefix."_images where (storage=1) and (linked_ds=1) and (linked_id=".db_squote($id).")");
-    if ($numImages != $row['num_images']) {
-        $mysql->query("update ".prefix."_news set num_images = ".intval($numImages)." where id = ".db_squote($id));
-    }
-
-    // Fetch again news record and show it's link if news is published now
-    if (is_array($row = $mysql->record("select * from ".prefix."_news where id=".db_squote($id))) and ($row['approve'] > 0)) {
-        $nlink = News::generateLink($row, false, 0, true);
-        msg(array('title' => __('editnews')['msgo_edited'], 'message' => str_replace('{link}', $nlink, __('msgo_edited#link'))));
+    // Fetch again news record
+    if (is_array($row = $mysql->record("select id from " . prefix . "_news where id=" . db_squote($id)))) {
+        msg(array('message' => __('news')['msgo_edited']));
     } else {
-        msg(array('message' => __('editnews')['msgo_edited']));
+        msg(array('type' => 'danger', 'message' => 'Щто-то пожло не таг'));
     }
+
+    return 1;
 }
 
 function admcookie_get()
@@ -957,7 +898,7 @@ function admcookie_get()
 
 function admcookie_set($x = array())
 {
-    return setcookie('ng_adm', serialize($x), time() + 365*86400);
+    return setcookie('ng_adm', serialize($x), time() + 365 * 86400);
 }
 
 function showPreview()
@@ -969,59 +910,70 @@ function showPreview()
         'personal.html',
     ));
 
-    $SQL = array( 'id' => -1 );
-    // Эмулируем работу всех штатных средств отвечающих за отображение новости.
-    // Заполняем соответствующие поля
-    if ($_REQUEST['customdate']) {
-        $SQL['postdate'] = mktime(intval($_REQUEST['c_hour']), intval($_REQUEST['c_minute']), 0, intval($_REQUEST['c_month']), intval($_REQUEST['c_day']), intval($_REQUEST['c_year'])) + ($config['date_adjust'] * 60);
+    // Now, prepare data
+    $SQL = array('id' => -1);
+    $SQL['title'] = secure_html($_POST['title']);
+    $SQL['alt_name'] = empty($_POST['alt_name']) ? $SQL['title'] : secure_html($_POST['alt_name']);
+    // in any case, do new alt name in automatic mode
+    $SQL['alt_name'] = $parse->translit($SQL['alt_name'], $config['news_translit']);
+    $SQL['content'] = trim(str_replace("\r\n", "\n", $_POST['ng_news_content']));
+    $SQL['author'] = secure_html($userROW['name']);
+    $SQL['author_id'] = intval($userROW['id']);
+    if ($config['meta']) {
+        $SQL['description'] = secure_html(str_replace(["\r\n", "\n"], ' ', $_POST['description']));
+        $SQL['keywords'] = secure_html($_POST['keywords']);
+    }
+    // This actions are allowed only for admins & Edtiors
+    if (($userROW['status'] == 1) or ($userROW['status'] == 2)) {
+        $SQL['mainpage'] = isset($_POST['mainpage']) ? intval($_POST['mainpage']) : 0;
+        $SQL['approve'] = isset($_POST['mainpage']) ? intval($_POST['mainpage']) : 0;
+        $SQL['favorite'] = isset($_POST['mainpage']) ? intval($_POST['mainpage']) : 0;
+        $SQL['pinned'] = isset($_POST['mainpage']) ? intval($_POST['mainpage']) : 0;
+    }
+    $SQL['allow_com'] = isset($_POST['allow_com']) ? intval($_POST['allow_com']) : 0;
+
+    // Calibre to date
+    $_POST['postdate'] = secure_html($_POST['postdate']);
+    $_POST['setdate_custom'] = isset($_POST['setdate_custom']) ? intval($_POST['setdate_custom']) : 0;
+    if ($_POST['setdate_custom'] and preg_match('#^(\d+)\.(\d+)\.(\d+) +(\d+)\:(\d+)$#', $_POST['postdate'], $m)) {
+        $SQL['postdate'] = mktime($m[4], $m[5], 0, $m[2], $m[1], $m[3]);
     } else {
         $SQL['postdate'] = time() + ($config['date_adjust'] * 60);
     }
-    $SQL['title'] = $_REQUEST['title'];
-    $SQL['alt_name'] = $parse->translit(($_REQUEST['alt_name'] ? $_REQUEST['alt_name'] : $_REQUEST['title']), $config['news_translit']);
+    $SQL['editdate'] = '';
+
+    // Variable FLAGS is a bit-variable:
+    // 0 = RAW mode		[if set, no conversion "\n" => "<br />" will be done]
+    // 1 = HTML enable	[if set, HTML codes may be used in news]
+    $SQL['flag_RAW'] = isset($_POST['flag_RAW']) ? intval($_POST['allow_com']) : 0;
+    $SQL['flag_HTML'] = isset($_POST['flag_HTML']) ? intval($_POST['flag_HTML']) : 0;
+    $SQL['flags'] = $perm['personal.html'] ? (($SQL['flag_RAW'] ? 1 : 0) + ($SQL['flag_HTML'] ? 2 : 0)) : 0;
 
     // Fetch MASTER provided categories
     $catids = [];
     if (intval($_POST['category']) and isset($catmap[intval($_POST['category'])])) {
         $catids[intval($_POST['category'])] = 1;
     }
-
     // Fetch ADDITIONAL provided categories
     foreach ($_POST as $k => $v) {
         if (preg_match('#^category_(\d+)$#', $k, $match) and $v and isset($catmap[intval($_POST['category'])]))
             $catids[$match[1]] = 1;
     }
+    $SQL['catid'] = implode(",", array_keys($catids));
 
-    $SQL['author']		= $userROW['name'];
-    $SQL['author_id']	= $userROW['id'];
-    $SQL['catid']		= implode(",", array_keys($catids));
-    $SQL['allow_com']	= $_REQUEST['allow_com'];
-
-    // Variable FLAGS is a bit-variable:
-    // 0 = RAW mode		[if set, no conversion "\n" => "<br />" will be done]
-    // 1 = HTML enable	[if set, HTML codes may be used in news]
-    $SQL['flags']	= ($perm['personal.html'])?(($_REQUEST['flag_RAW']?1:0) + ($_REQUEST['flag_HTML']?2:0)):0;
-
-    // This actions are allowed only for admins & Edtiors
-    if (($userROW['status'] == 1) or ($userROW['status'] == 2)) {
-        $SQL['mainpage']	= $_REQUEST['mainpage'];
-        $SQL['approve']		= $_REQUEST['approve'];
-        $SQL['favorite']	= $_REQUEST['favorite'];
-        $SQL['pinned']		= $_REQUEST['pinned'];
-    }
-
-    // Fill content
-    $content = $_REQUEST['ng_news_content'];
-
-    // Rewrite `\r\n` to `\n`
-    $content = str_replace("\r\n", "\n", $content);
-
-    $SQL['content'] = $content;
+    // Make a fantasy data
+    $SQL['com'] = rand(88, 888);
+    $SQL['views'] = rand(88, 888);
+    $SQL['rating'] = '5';
+    $SQL['votes'] = rand(88, 888);
 
     // Process plugin variables to make proper SQL filling
     $tvx = array();
-    if (is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->editNews(-1, $SQL, $SQL, $tvx); }
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
+        foreach ($PFILTERS['news'] as $k => $v) {
+            $v->editNews(-1, $SQL, $SQL, $tvx);
+        }
+    }
 
     $tvx = array();
     $tvx['vars']['short'] = news_showone(-1, '', array('emulate' => $SQL, 'style' => 'short'));
@@ -1048,10 +1000,18 @@ function showPreview()
         $dupCheck[] = $htmlvar['data'];
 
         switch ($htmlvar['type']) {
-            case 'css': $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="stylesheet" />'; break;
-            case 'js': $htmlrow[] = '<script src="' . $htmlvar['data'] . '"></script>'; break;
-            case 'rss': $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="alternate" type="application/rss+xml" title="RSS" />'; break;
-            case 'plain': $htmlrow[] = $htmlvar['data']; break;
+            case 'css':
+                $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="stylesheet" />';
+                break;
+            case 'js':
+                $htmlrow[] = '<script src="' . $htmlvar['data'] . '"></script>';
+                break;
+            case 'rss':
+                $htmlrow[] = '<link href="' . $htmlvar['data'] . '" rel="alternate" type="application/rss+xml" title="RSS" />';
+                break;
+            case 'plain':
+                $htmlrow[] = $htmlvar['data'];
+                break;
         }
     }
 

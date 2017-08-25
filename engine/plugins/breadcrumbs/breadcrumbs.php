@@ -9,16 +9,17 @@
 
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::loadPlugin('breadcrumbs', 'main', 'bc', ':');
-
-function breadcrumbs() {
+function breadcrumbs()
+{
     global $catz, $catmap, $CurrentHandler, $config, $SYSTEM_FLAGS, $systemAccessURL, $twig;
+
+    Lang::loadPlugin('breadcrumbs', 'main', 'bc', ':');
 
     $location = array();
     $location_last = '';
 
     # processing 404 page
-    if ( $SYSTEM_FLAGS['info']['title']['group'] == __('404.title') ) {
+    if (isset($SYSTEM_FLAGS['info']['title']['group']) and __('404.title') == $SYSTEM_FLAGS['info']['title']['group']) {
 
         $link = str_replace(
             array(

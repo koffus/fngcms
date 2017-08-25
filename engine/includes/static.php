@@ -10,104 +10,124 @@
 // Protect against hack attempts
 if (!defined('NGCMS')) die ('HAL');
 
-Lang::load('static', 'site');
-
 // Params - Static page characteristics
 // * id			- page ID
 // * altname	- alt. name of the page
-function showStaticPage($params)
+function showStaticPage($params = [])
 {
-    global $config, $tpl, $mysql, $userROW, $parse, $template, $SYSTEM_FLAGS, $PFILTERS, $SUPRESS_TEMPLATE_SHOW;
+    global $config, $twig, $mysql, $userROW, $parse, $template, $SYSTEM_FLAGS, $PFILTERS, $SUPRESS_TEMPLATE_SHOW;
+
+    Lang::load('static', 'site');
 
     loadActionHandlers('static');
 
-    $limit = '';
+    $where = '';
     if (intval($params['id'])) {
-        $limit = 'id = ' . db_squote($params['id']);
+        $where = 'i =' . db_squote($params['id']);
     } elseif ($params['altname']) {
-        $limit = 'alt_name = ' . db_squote($params['altname']);
+        $where = 'alt_name=' . db_squote($params['altname']);
     }
 
-    if ((!$limit) or (!is_array($row = $mysql->record("select * from " . prefix . "_static where approve = 1 and " . $limit)))) {
+    if (empty($where) or (!is_array($row = $mysql->record("SELECT * FROM " . prefix . "_static WHERE approve=1 AND " . $where)))) {
         if (!$params['FFC']) {
             error404();
         }
         return false;
     }
 
+    // If isset static page we now, validate and prepare data
+    $row['title'] = secure_html($row['title']);
+    $row['alt_name'] = secure_html($row['alt_name']);
+    $row['content'] = trim($row['content']);
+
+    $row['description'] = secure_html(str_replace(["\r\n", "\n"], ' ', $row['description']));
+    $row['keywords'] = secure_html($row['keywords']);
+
+    $row['template'] = tpl_site . (!empty($row['template']) ? 'static/' . secure_html($row['template']) : 'static/default');
+    $row['postdate'] = isset($row['postdate']) ? intval($row['postdate']) : null;
+
     // Save some significant news flags for plugin processing
     $SYSTEM_FLAGS['static']['db.id'] = $row['id'];
 
-    if (is_array($PFILTERS['static']))
+    if (isset($PFILTERS['static']) and is_array($PFILTERS['static'])) {
         foreach ($PFILTERS['static'] as $k => $v) {
             $v->showStaticPre($row['id'], $row, array());
         }
-
-    $content = $row['content'];
-
-    // If HTML code is not permitted - LOCK it
-    if (!($row['flags'] == 2))
-        $content = str_replace('<', '&lt;', $content);
-
-    if ($config['blocks_for_reg']) $content = $parse->userblocks($content);
-    if ($config['use_htmlformatter'] and (!($row['flags'] & 1))) $content = $parse->htmlformatter($content);
-    if ($config['use_bbcodes']) $content = $parse->bbcodes($content);
-    if ($config['use_smilies']) $content = $parse->smilies($content);
-
-    $SYSTEM_FLAGS['info']['title']['item'] = secure_html($row['title']);
-
-    $template['vars']['titles'] .= ' — ' . $row['title'];
-    $tvars['vars'] = array(
-        'title' => $row['title'],
-        'content' => $content,
-        'postdate' => ($row['postdate'] > 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
-    );
-
-    if (is_array($userROW) and ($userROW['status'] == 1 or $userROW['status'] == 2)) {
-        $tvars['vars']['[edit-static]'] = '<a href="' . admin_url . '/admin.php?mod=static&action=edit&id=' . $row['id'] . '" target="_blank">';
-        $tvars['vars']['[/edit-static]'] = '</a>';
-        $tvars['vars']['[del-static]'] = '<a onclick="confirmIt(\'' . admin_url . '/admin.php?mod=static&subaction=do_mass_delete&selected[]=' . $row['id'] . '\', \'' . __('sure_del') . '\');" target="_blank" style="cursor: pointer;">';
-        $tvars['vars']['[/del-static]'] = '</a>';
-    } else {
-        $tvars['regx']["'\\[edit-static\\].*?\\[/edit-static\\]'si"] = '';
-        $tvars['regx']["'\\[del-static\\].*?\\[/del-static\\]'si"] = '';
     }
 
-    $tvars['vars']['[print-link]'] = '<a href="' . generatePluginLink('static', 'print', array('id' => $row['id'], 'altname' => $params['altname']), array(), true) . '">';
-    $tvars['vars']['[/print-link]'] = '</a>';
+    // If HTML code is not permitted - LOCK it
+    if (!($row['flags'] & 2)) {
+        $row['content'] = secure_html($row['content']);
+    }
 
-    if (is_array($PFILTERS['static']))
+    if ($config['blocks_for_reg']) $row['content'] = $parse->userblocks($row['content']);
+    if ($config['use_htmlformatter'] and (!($row['flags'] & 1))) $row['content'] = $parse->htmlformatter($row['content']);
+    if ($config['use_bbcodes']) $row['content'] = $parse->bbcodes($row['content']);
+    if ($config['use_smilies']) $row['content'] = $parse->smilies($row['content']);
+
+    $SYSTEM_FLAGS['info']['title']['item'] = $row['title'];
+
+    $template['vars']['titles'] .= ' — ' . $row['title'];
+    $tVars = array(
+        'staticTitle' => $row['title'],
+        'staticContent' => $row['content'],
+        'staticDate' => ($row['postdate'] > 0) ? strftime('%d.%m.%Y %H:%M', $row['postdate']) : '',
+        'staticDateStamp' => $row['postdate'],
+        'staticPrintLink' => generatePluginLink('static', 'print', array('id' => $row['id'], 'altname' => $row['alt_name']), array(), true),
+    );
+
+    if (checkPermission(array('plugin' => '#admin', 'item' => 'static'), null, 'modify')) {
+        $tVars['havePermission'] = true;
+        $tVars['staticEditLink'] = admin_url . '/admin.php?mod=static&action=editForm&id=' . $row['id'];
+    } else {
+        $tVars['havePermission'] = false;
+        $tVars['staticEditLink'] = '';
+    }
+
+    if (isset($PFILTERS['static']) and is_array($PFILTERS['static'])) {
         foreach ($PFILTERS['static'] as $k => $v) {
             $v->showStatic($row['id'], $row, $tvars, array());
         }
+    }
 
     executeActionHandler('static');
 
-    if ($row['template']) {
-        $templateName = 'static/' . $row['template'];
-    } else {
-        $templateName = 'static/default';
-    }
-
     // Check for print mode
-    if ($params['print'] and file_exists(tpl_site . '/static/' . ($row['template'] ? $row['template'] : 'default') . '.print.tpl')) {
-        $templateName .= '.print';
+    if ($params['print'] and file_exists($row['template'] . '.print.tpl')) {
+        $row['template'] .= '.print';
         $SUPRESS_TEMPLATE_SHOW = true;
     }
 
     // Check for OWN main.tpl for static page
-    if (($row['flags'] & 4) and file_exists(tpl_site . '/static/' . ($row['template'] ? $row['template'] : 'default') . '.main.tpl')) {
-        $SYSTEM_FLAGS['template.main.name'] = ($row['template'] ? $row['template'] : 'default') . '.main';
+    if (($row['flags'] & 4) and file_exists($row['template'] . '.main.tpl')) {
+        $SYSTEM_FLAGS['template.main.name'] = $row['template'] . '.main';
         $SYSTEM_FLAGS['template.main.path'] = tpl_site . '/static';
     }
 
-    $tpl->template($templateName, tpl_site);
-    $tpl->vars($templateName, $tvars);
-    $template['vars']['mainblock'] .= $tpl->show($templateName);
+    $template['vars']['mainblock'] .= $twig->loadTemplate($row['template'] . '.tpl')->render($tVars);
 
-    // Set meta tags for news page
-    $SYSTEM_FLAGS['meta']['description'] = $row['description'];
-    $SYSTEM_FLAGS['meta']['keywords'] = $row['keywords'];
+    // Set meta tags for static page
+    if ($config['meta']) {
+        if (!empty($row['description'])) {
+            $SYSTEM_FLAGS['meta']['description'] = $row['description'];
+        } else {
+            $SYSTEM_FLAGS['meta']['description'] = secure_html($row['title'] . '. ' . home_title);
+        }
+        if (!empty($row['keywords'])) {
+            $SYSTEM_FLAGS['meta']['keywords'] = $row['keywords'];
+        } else {
+            // Удаляем все слова меньше 3-х символов
+            $row['keywords'] = preg_replace('#\b[\d\w]{1,3}\b#iu', '', secure_html($row['title']) . ' ' . home_title);
+            // Удаляем знаки препинания
+            $row['keywords'] = preg_replace('#[^\d\w ]+#iu', '', $row['keywords']);
+            // Удаляем лишние пробельные символы
+            $row['keywords'] = preg_replace('#[\s]+#iu', ' ', $row['keywords']);
+            // Заменяем пробелы на запятые
+            $row['keywords'] = preg_replace('#[\s]#iu', ',', $row['keywords']);
+            // Выводим для леньтяев
+            $SYSTEM_FLAGS['meta']['keywords'] = mb_strtolower(trim($row['keywords'], ','));
+        }
+    }
 
     return true;
 }

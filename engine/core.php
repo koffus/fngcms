@@ -42,7 +42,6 @@ if (!function_exists('__')) {
 
 // Автозагрузка классов
 spl_autoload_register(function ($className) {
-
     if (file_exists($file = root . 'classes/' . $className . '.class.php')) {
         require_once($file); // !!! require once !!!
         return;
@@ -154,7 +153,7 @@ $confArray = array(
     'predefined' => array(
         'HTTP_REFERER' => isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '',
         'PHP_SELF' => isset($_SERVER['PHP_SELF']) ? $_SERVER['PHP_SELF'] : '',
-        'REQUEST_URI' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '',
+        'REQUEST_URI' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : home,
         'config' => array(),
         'catz' => array(),
         'catmap' => array(),

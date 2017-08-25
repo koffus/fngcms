@@ -36,7 +36,7 @@
 						<td>{% if flags.permModify %}<a href="admin.php?mod=ipban&amp;action=del&amp;id={{ entry.id }}&amp;token={{ token }}"><img src="{{skins_url}}/images/delete.gif" hspace="8" alt="{{ lang.ipban['act.unblock'] }}" title="{{ lang.ipban['act.unblock'] }}" /></a>{% endif %}</td>
 					</tr>
 					{% else %}
-					<tr><td colspan="5"><p>{{ lang['not_found'] }}</p></td></tr>
+					<tr><td colspan="5">{{ lang['not_found'] }}</td></tr>
 					{% endfor %}
 				</tbody>
 			</table>

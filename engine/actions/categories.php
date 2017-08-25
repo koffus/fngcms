@@ -54,7 +54,7 @@ function admCategoryAddForm(){
 
     $tVars = array(
         'php_self' => $PHP_SELF,
-        'parent' => makeCategoryList(array('name' => 'parent', 'doempty' => 1, 'resync' => ($_POST['action']?1:0))),
+        'parent' => makeCategoryList(array('name' => 'parent', 'doempty' => 1, 'resync' => 1)),
         'orderlist' => OrderList(''),
         'token' => genUToken('admin.categories'),
         'tpl_list' => $tpl_list,
@@ -84,8 +84,8 @@ function admCategoryAdd()
 
     $SQL = array();
     $SQL['name'] = secure_html($_POST['name']);
-    $SQL['info'] = $_POST['info'];
     $SQL['alt'] = trim($_POST['alt']);
+    $SQL['info'] = $_POST['info'];
     $SQL['parent'] = intval($_POST['parent']);
     $SQL['icon'] = $_POST['icon'];
     $SQL['alt_url'] = $_POST['alt_url'];
@@ -106,7 +106,7 @@ function admCategoryAdd()
     }
 
     // Check for security token
-    if ((!isset($_POST['token']))||($_POST['token'] != genUToken('admin.categories'))) {
+    if ((!isset($_POST['token'])) or ($_POST['token'] != genUToken('admin.categories'))) {
         msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
         return;
     }
@@ -116,33 +116,17 @@ function admCategoryAdd()
         return;
     }
 
-    // IF alt name is set:
-    if ( trim($SQL['alt']) ) {
-        // - check for allowed chars
-        if ($parse->nameCheck($SQL['alt'])) {
-            // ERROR
-            msg(array('type' => 'danger', 'title' => __('category.err.wrongalt'), 'message' => __('category.err.wrongalt#desc')));
-            return;
-        }
+    // in any case, do new alt name in automatic mode
+    $SQL['alt'] = $parse->translit((empty($SQL['alt']) ? $SQL['name'] : $SQL['alt']), $config['news_translit']);
 
-        // - check for duplicate alt name
-        if (is_array($mysql->record("select * from ".prefix."_category where lower(alt) = ".db_squote($SQL['alt'])))) {
-            msg(array('type' => 'danger', 'title' => __('category.err.dupalt'), 'message' => __('category.err.dupalt#desc')));
-            return;
-        }
-    } else {
-        // alt name was not set, generate new alt name in automatic mode
-        $SQL['alt'] = $parse->translit($SQL['name'], $config['news_translit']);
-
-        $i = '';
-        while ( is_array($mysql->record("select id from ".prefix."_category where alt = ".db_squote($SQL['alt'].$i)." limit 1")) ) {
-            $i++;
-        }
-        $SQL['alt'] = $SQL['alt'] . $i;
+    // check for duplicate alt name
+    if (is_array($mysql->record("SELECT id FROM ".prefix."_category WHERE LOWER(alt) = " . db_squote($SQL['alt'])))) {
+        msg(array('type' => 'info', 'title' => __('category.err.dupalt'), 'message' => __('category.err.dupalt#desc')));
+        $SQL['alt'] .= '_' . date("Y-m-d-H-i-s");
     }
 
     if ($config['meta']) {
-        $SQL['description'] = $_POST['description'] ? secure_html($_POST['description']) : '';
+        $SQL['description'] = secure_html(str_replace(array("\r\n", "\n", '  '), array(' '), $_POST['description']));
         $SQL['keywords'] = $_POST['keywords'] ? secure_html($_POST['keywords']) : '';
     }
 
@@ -193,7 +177,7 @@ function admCategoryAdd()
                 $img_height = $sz[2];
 
                 $tsz = intval($config['thumb_size']);
-                if (($tsz < 10)||($tsz > 1000)) $tsz = 150;
+                if (($tsz < 10) or ($tsz > 1000)) $tsz = 150;
                 $thumb = $imanager->create_thumb($config['attach_dir'].$up[2], $up[1], $tsz,$tsz, $config['thumb_quality']);
                 if ($thumb) {
                     $img_preview = 1;
@@ -220,7 +204,8 @@ function admCategoryAdd()
 // Processing functions :: form for editing category
 // ///////////////////////////////////////////////////////////////////////////
 //
-function admCategoryEditForm(){
+function admCategoryEditForm()
+{
     global $mysql, $mod, $config, $twig, $AFILTERS, $PHP_SELF;
 
     // Check for permissions
@@ -302,8 +287,8 @@ function admCategoryEdit(){
 
     $SQL = array();
     $SQL['name'] = secure_html($_POST['name']);
-    $SQL['info'] = $_POST['info'];
     $SQL['alt'] = secure_html($_POST['alt']);
+    $SQL['info'] = $_POST['info'];
     $SQL['parent'] = intval($_POST['parent']);
     $SQL['icon'] = $_POST['icon'];
     $SQL['alt_url'] = $_POST['alt_url'];
@@ -324,7 +309,7 @@ function admCategoryEdit(){
     }
 
     // Check for security token
-    if ((!isset($_POST['token']))||($_POST['token'] != genUToken('admin.categories'))) {
+    if ((!isset($_POST['token'])) or ($_POST['token'] != genUToken('admin.categories'))) {
         msg(array('type' => 'danger', 'title' => __('error.security.token'), 'message' => __('error.security.token#desc')));
         return;
     }
@@ -339,29 +324,18 @@ function admCategoryEdit(){
         return;
     }
 
-    // Manage alt name
-    if (empty($SQL['alt'])) {
-        $SQL['alt'] = $parse->translit($SQL['name'], $config['news_translit']);
-    }
+    // in any case, do new alt name in automatic mode
+    $SQL['alt'] = $parse->translit((empty($SQL['alt']) ? $SQL['name'] : $SQL['alt']), $config['news_translit']);
 
-    // Check for allowed chars
-    if ($parse->nameCheck($SQL['alt'])) {
-        // ERROR
-        msg(array('type' => 'danger', 'title' => __('category.err.wrongalt'), 'message' => __('category.err.wrongalt#desc')));
-        return;
-    }
-
-    // Check for duplicate alt name
-    if ($SQL['alt'] != $catz[$catmap[$catid]]['alt']) {
-        if (is_array($mysql->record("select * from ".prefix."_category where (id <> ".db_squote($catid).") and (lower(alt) = ".db_squote($SQL['alt']).")"))) {
-            msg(array('type' => 'danger', 'title' => __('category.err.dupalt'), 'message' => __('category.err.dupalt#desc')));
-            return;
-        }
+    // check for duplicate alt name
+    if ($SQL['alt'] != $catz[$catmap[$catid]]['alt'] and is_array($mysql->record("SELECT id FROM ".prefix."_category WHERE LOWER(alt) = " . db_squote($SQL['alt'])))) {
+        msg(array('type' => 'info', 'title' => __('category.err.dupalt'), 'message' => __('category.err.dupalt#desc')));
+        $SQL['alt'] .= '_' . date("Y-m-d-H-i-s");
     }
 
     if ($config['meta']) {
-        $SQL['description']	= $_POST['description'] ? secure_html($_POST['description']) : '';
-        $SQL['keywords']	= $_POST['keywords'] ? secure_html($_POST['keywords']) : '';
+        $SQL['description'] = $_POST['description'] ? secure_html($_POST['description']) : '';
+        $SQL['keywords'] = $_POST['keywords'] ? secure_html($_POST['keywords']) : '';
     }
 
     $fmanager = new FileManagment();
@@ -395,7 +369,7 @@ function admCategoryEdit(){
                 $img_height = $sz[2];
 
                 $tsz = intval($config['thumb_size']);
-                if (($tsz < 10)||($tsz > 1000)) $tsz = 150;
+                if (($tsz < 10) or ($tsz > 1000)) $tsz = 150;
                 $thumb = $imanager->create_thumb($config['attach_dir'].$up[2], $up[1], $tsz,$tsz, $config['thumb_quality']);
                 if ($thumb) {
                     $img_preview = 1;

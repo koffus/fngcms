@@ -10,7 +10,8 @@ class xmenu_adm_categories extends FilterAdminCategories {
 		for ($i = 1; $i <= 9; $i++) {
 			$line .= '<label><input type=checkbox value="1" name="xmenu['.$i.']"> <b>'.$i.'</b></label> &nbsp; ';
 		}
-		$tvars['vars']['extend'] .= '<tr><td class="contentEntry1">Номера блоков меню</td><td class="contentEntry2">' . $line . '</td></tr>';
+		$tvars['extend'] = isset($tvars['extend']) ? $tvars['extend'] :'';
+		$tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">Номера блоков меню</div><div class="col-sm-7">' . $line . '</div></div>';
 		return 1;
 	}
 	function addCategory(&$tvars, &$SQL) {
@@ -28,7 +29,8 @@ class xmenu_adm_categories extends FilterAdminCategories {
 		for ($i = 1; $i <= 9; $i++) {
 			$line .= '<label><input type=checkbox value="1" name="xmenu['.$i.']"'.(($xmenu{$i-1} == '#')?' checked':'').'> <b>'.$i.'</b></label> &nbsp; ';
 		}
-		$tvars['vars']['extend'] .= '<tr><td class="contentEntry1">Номера блоков меню</td><td class="contentEntry2">' . $line . '</td></tr>';
+        $tvars['extend'] = isset($tvars['extend']) ? $tvars['extend'] :'';
+		$tvars['extend'] .= '<div class="form-group"><div class="col-sm-5">Номера блоков меню</div><div class="col-sm-7">' . $line . '</div></div>';
 		return 1;
 	}
 	function editCategory($categoryID, $SQL, &$SQLnew, &$tvars) {
@@ -43,4 +45,3 @@ class xmenu_adm_categories extends FilterAdminCategories {
 }
 
 register_admin_filter('categories', 'xmenu', new xmenu_adm_categories);
-

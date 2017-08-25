@@ -35,7 +35,7 @@
 						<td>{{ entry.displayNew }}</td>
 					</tr>
 				{% else %}
-					<tr><td colspan="5"><p>{{ lang['not_found'] }}</p></td></tr>
+					<tr><td colspan="5">{{ lang['not_found'] }}</td></tr>
 				{% endfor %}
 				</tbody>
 			</table>

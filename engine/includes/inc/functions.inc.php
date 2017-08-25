@@ -627,26 +627,29 @@ function makeCategoryList($params = array())
     if (!isset($params['checkarea']) or !$params['checkarea']) {
         if (empty($params['noHeader'])) {
             $out = '<select name="' . $name . '" id="catmenu"' .
-                ((isset($params['style']) and (trim($params['style']))) ? ' style="' . $params['style'] . '"' : '') .
-                ((isset($params['class']) and (trim($params['class']))) ? ' class="' . $params['class'] . '" class="form-control"' : ' class="form-control"') .
+                (!empty($params['style']) ? ' style="' . $params['style'] . '"' : '') .
+                ' class="' . (!empty($params['class']) ? $params['class'] : '') . ' form-control"' .
                 '>';
         }
-        if (isset($params['doempty']) and $params['doempty']) {
+        if (!empty($params['doempty'])) {
             $out .= '<option ' . (((isset($params['greyempty']) and $params['greyempty'])) ? 'style="background: #c41e3a;" ' : '') . 'value="0">' . __('no_cat') . '</option>';
             $optList [] = array('k' => 0, 'v' => __('no_cat'));
         }
-        if (isset($params['doall']) and $params['doall']) {
+        if (!empty($params['doall'])) {
             $out .= '<option value="' . (isset($params['allmarker']) ? $params['allmarker'] : '') . '">' . __('sh_all') . '</option>';
             $optList [] = array('k' => (isset($params['allmarker']) ? $params['allmarker'] : ''), 'v' => __('sh_all'));
         }
-        if (isset($params['dowithout']) and $params['dowithout']) {
+        if (!empty($params['dowithout'])) {
             $out .= '<option value="0"' . (((!is_null($params['selected'])) and ($params['selected'] == 0)) ? ' selected' : '') . '>' . __('sh_empty') . '</option>';
             $optList [] = array('k' => 0, 'v' => __('sh_empty'));
         }
     }
-    if (isset($params['resync']) and $params['resync']) {
+
+    // Reload category list
+    if (!empty($params['resync'])) {
         $catz = array();
-        foreach ($mysql->select("select * from `" . prefix . "_category` order by posorder asc", 1) as $row) {
+        $rows = $mysql->select("SELECT * FROM `" . prefix."_category` ORDER BY posorder ASC", 1);
+        foreach ($rows as $row) {
             $catz[$row['alt']] = $row;
             $catmap[$row['id']] = $row['alt'];
         }
@@ -656,10 +659,10 @@ function makeCategoryList($params = array())
         if (in_array($v['id'], $params['skip'])) {
             continue;
         }
-        if (isset($params['skipDisabled']) and $params['skipDisabled'] and (trim($v['alt_url']))) {
+        if (!empty($params['skipDisabled']) and trim($v['alt_url'])) {
             continue;
         }
-        if (isset($params['checkarea']) and $params['checkarea']) {
+        if (!empty($params['checkarea'])) {
             $out .= str_repeat('&#8212; ', $v['poslevel']) .
                 '<label><input type="checkbox" name="' .
                 $name .
@@ -676,7 +679,7 @@ function makeCategoryList($params = array())
             $optList [] = array('k' => ((isset($params['nameval']) and $params['nameval']) ? $v['name'] : $v['id']), 'v' => str_repeat('&#8212; ', $v['poslevel']) . $v['name']);
         }
     }
-    if (!isset($params['checkarea']) or !$params['checkarea']) {
+    if (empty($params['checkarea'])) {
         if (empty($params['noHeader'])) {
             $out .= '</select>';
         }
@@ -1083,7 +1086,7 @@ function checkPermission($identity, $user = null, $mode = '', $way = '')
     }
 
     // Determine user's groups
-    $uGroup = (isset($user) and isset($user['status'])) ? $user['status'] : $userROW['status'];
+    $uGroup = isset($user['status']) ? $user['status'] : $userROW['status'];
 
     // Check if permissions for this group exists. Break if no.
     if (!isset($PERM[$uGroup])) {
@@ -1884,6 +1887,7 @@ function dd($obj)
 function cDate($date, $format = timestamp, $itemprop = false)
 {
 
+    if (empty($date)) return '&ndash;';
     $itemprop = ' itemprop="'.($itemprop ? $itemprop : 'datePublished').'"';
 
     return '<time datetime="' . date('c', $date) . '" data-type="'. $format .'"'. $itemprop . '>' . Lang::retDate($format, $date) . '</time>';
@@ -1891,7 +1895,7 @@ function cDate($date, $format = timestamp, $itemprop = false)
 
 /**
  *
- * Не понятно, что это, зачем
+ * 
  *
  */
 $letters = array('%A8' => '%D0%81', '%B8' => '%D1%91', '%C0' => '%D0%90', '%C1' => '%D0%91', '%C2' => '%D0%92', '%C3' => '%D0%93', '%C4' => '%D0%94', '%C5' => '%D0%95', '%C6' => '%D0%96', '%C7' => '%D0%97', '%C8' => '%D0%98', '%C9' => '%D0%99', '%CA' => '%D0%9A', '%CB' => '%D0%9B', '%CC' => '%D0%9C', '%CD' => '%D0%9D', '%CE' => '%D0%9E', '%CF' => '%D0%9F', '%D0' => '%D0%A0', '%D1' => '%D0%A1', '%D2' => '%D0%A2', '%D3' => '%D0%A3', '%D4' => '%D0%A4', '%D5' => '%D0%A5', '%D6' => '%D0%A6', '%D7' => '%D0%A7', '%D8' => '%D0%A8', '%D9' => '%D0%A9', '%DA' => '%D0%AA', '%DB' => '%D0%AB', '%DC' => '%D0%AC', '%DD' => '%D0%AD', '%DE' => '%D0%AE', '%DF' => '%D0%AF', '%E0' => '%D0%B0', '%E1' => '%D0%B1', '%E2' => '%D0%B2', '%E3' => '%D0%B3', '%E4' => '%D0%B4', '%E5' => '%D0%B5', '%E6' => '%D0%B6', '%E7' => '%D0%B7', '%E8' => '%D0%B8', '%E9' => '%D0%B9', '%EA' => '%D0%BA', '%EB' => '%D0%BB', '%EC' => '%D0%BC', '%ED' => '%D0%BD', '%EE' => '%D0%BE', '%EF' => '%D0%BF', '%F0' => '%D1%80', '%F1' => '%D1%81', '%F2' => '%D1%82', '%F3' => '%D1%83', '%F4' => '%D1%84', '%F5' => '%D1%85', '%F6' => '%D1%86', '%F7' => '%D1%87', '%F8' => '%D1%88', '%F9' => '%D1%89', '%FA' => '%D1%8A', '%FB' => '%D1%8B', '%FC' => '%D1%8C', '%FD' => '%D1%8D', '%FE' => '%D1%8E', '%FF' => '%D1%8F',);

@@ -95,14 +95,14 @@ function plugin_gallery_main($params = [])
         $count = 0;
         if (is_array($pcnt = $mysql->record('SELECT count(*) AS cnt FROM '.prefix.'_gallery WHERE if_active=1')))
             $count = $pcnt['cnt'];
-        $page_count = ceil($count / pluginGetVariable('gallery', 'image_count'));
-        if ($page_count > 1) {
+        $pagesCount = ceil($count / pluginGetVariable('gallery', 'image_count'));
+        if ($pagesCount > 1) {
             $paginationParams = array('pluginName' => 'gallery', 'pluginHandler' => '', 'params' => array(), 'xparams' => array(), 'paginator' => array('page', 0, false));
             templateLoadVariables(true); 
             $navigations = $TemplateCache['site']['#variables']['navigation'];
-            $pagesss .= ($page > 1)?str_replace('%page%', __('gallery:paginator.prev'),str_replace('%link%',generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])):'';
-            $pagesss .= generatePagination($page, 1, $page_count, 10, $paginationParams, $navigations);
-            $pagesss .= ($page < $page_count)?str_replace('%page%', __('gallery:paginator.next'),str_replace('%link%',generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])):'';
+            $pagesss .= ($page > 1)?str_replace('%page%', __('previous_page'),str_replace('%link%',generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])):'';
+            $pagesss .= generatePagination($page, 1, $pagesCount, 10, $paginationParams, $navigations);
+            $pagesss .= ($page < $pagesCount)?str_replace('%page%', __('next_page'),str_replace('%link%',generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])):'';
         }
     }
     
@@ -189,14 +189,14 @@ function plugin_gallery_gallery($params = [])
         $count = 0;
         if (is_array($pcnt = $mysql->record('select count(*) as cnt from '.prefix.'_images where folder='.db_squote($gallery['name']))))
             $count = $pcnt['cnt'];
-        $page_count = ceil($count / $gallery['image_count']);
-        if ($page_count > 1) {
+        $pagesCount = ceil($count / $gallery['image_count']);
+        if ($pagesCount > 1) {
             $paginationParams = array('pluginName' => 'gallery', 'pluginHandler' => 'gallery', 'params' => array('id' => $gallery['id'], 'name' => $gallery['name']), 'xparams' => array(), 'paginator' => array('page', 0, false));
             templateLoadVariables(true); 
             $navigations = $TemplateCache['site']['#variables']['navigation'];
-            $pagesss .= ($page > 1)?str_replace('%page%', __('gallery:paginator.prev'),str_replace('%link%',generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])):'';
-            $pagesss .= generatePagination($page, 1, $page_count, 10, $paginationParams, $navigations);
-            $pagesss .= ($page < $page_count)?str_replace('%page%', __('gallery:paginator.next'),str_replace('%link%',generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])):'';
+            $pagesss .= ($page > 1)?str_replace('%page%', __('previous_page'),str_replace('%link%',generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])):'';
+            $pagesss .= generatePagination($page, 1, $pagesCount, 10, $paginationParams, $navigations);
+            $pagesss .= ($page < $pagesCount)?str_replace('%page%', __('next_page'),str_replace('%link%',generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])):'';
         }
     }
 

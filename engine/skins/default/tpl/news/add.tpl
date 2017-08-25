@@ -1,8 +1,8 @@
 <!-- Navigation bar -->
 <ul class="breadcrumb">
     <li><a href="admin.php">{{ lang['home'] }}</a></li>
-    <li><a href="admin.php?mod=news">{{ lang['news_title'] }}</a></li>
-    <li class="active">{{ lang.addnews['addnews_title'] }}</li>
+    <li><a href="admin.php?mod=news">{{ lang.news['news_title'] }}</a></li>
+    <li class="active">{{ lang.news['addnews_title'] }}</li>
 </ul>
 
 <!-- Info content -->
@@ -22,7 +22,7 @@
                     <div id="maincontent" class="panel-body">
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
-                                {{ lang.addnews['title'] }}
+                                {{ lang.news['title'] }}
                                 </label>
                             <div class="col-sm-9">
                                 <div class="input-group">
@@ -36,7 +36,7 @@
                         </div>
                         {% if not flags['altname.disabled'] %}
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{ lang.addnews['alt_name'] }}</label>
+                            <label class="col-sm-3 control-label">{{ lang.news['alt_name'] }}</label>
                             <div class="col-sm-9">
                                 <input type="text" name="alt_name" value="" tabindex="2" class="form-control"/>
                             </div>
@@ -44,7 +44,7 @@
                         {% endif %}
                         <div class="form-group">
                             <label class="col-sm-3 control-label">
-                                {{ lang.editnews['category'] }}
+                                {{ lang.news['category'] }}
                                 {% if (flags.mondatory_cat) %} <span class="text-danger"><b>*</b></span>{% endif %}
                             </label>
                             <div class="col-sm-9">{{ mastercat }}</div>
@@ -77,13 +77,13 @@
                         </div>
                         {% if (flags.meta) %}
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{ lang.addnews['description'] }}</label>
+                            <label class="col-sm-3 control-label">{{ lang.news['description'] }}</label>
                             <div class="col-sm-9">
                                 <textarea name="description" class="form-control" rows="4" tabindex="6"></textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-3 control-label">{{ lang.addnews['keywords'] }}</label>
+                            <label class="col-sm-3 control-label">{{ lang.news['keywords'] }}</label>
                             <div class="col-sm-9">
                                 <input type="text" name="keywords" id="newsKeywords" value="" tabindex="7" class="form-control" maxlength="255" />
                             </div>
@@ -103,7 +103,7 @@
                     {% if (extends.additional or pluginIsActive('xfields')) %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.editnews['bar.additional'] }}</a></h4>
+                            <h4 class="panel-title"><a href="#additional" data-toggle="collapse" data-parent="#accordion">{{ lang.news['bar.additional'] }}</a></h4>
                         </div>
                         <div id="additional" class="panel-collapse collapse">
                             <div class="panel-body">
@@ -132,7 +132,7 @@
                     <div class="panel panel-default panel-table">
                         <div class="panel-heading">
                             <h4 class="panel-title">
-                                <a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.addnews['bar.attaches'] }}</a>
+                                <a href="#attaches" data-toggle="collapse" data-parent="#accordion">{{ lang.news['bar.attaches'] }}</a>
                             </h4>
                         </div>
                         <div id="attaches" class="panel-collapse collapse" aria-expanded="false">
@@ -164,18 +164,18 @@
                         <div class="col col-xs-6">
                             <select name="approve" class="form-control">
                                 {% if flags['can_publish'] %}
-                                    <option value="1">{{ lang.addnews['publish'] }}</option>
+                                    <option value="1">{{ lang.news['publish'] }}</option>
                                 {% endif %}
-                                <option value="0">{{ lang.addnews['send_moderation'] }}</option>
-                                <option value="-1">{{ lang.addnews['save_draft'] }}</option>
+                                <option value="0">{{ lang.news['send_moderation'] }}</option>
+                                <option value="-1">{{ lang.news['save_draft'] }}</option>
                             </select>
                         </div>
                         <div class="col col-xs-6 text-right">
-                            <button type="submit" title="Ctrl+S {{ lang.addnews['publish'] }}" class="btn btn-success">
+                            <button type="submit" title="Ctrl+S {{ lang.news['publish'] }}" class="btn btn-success">
                                 <span class="visible-sm-block visible-xs-block"><i class="fa fa-floppy-o"></i></span>
                                 <span class="hidden-sm hidden-xs">{{ lang['add'] }}</span>
                             </button>
-                            <button type="button" title="{{ lang.addnews['preview'] }}" onclick="return preview();" class="btn btn-primary"><i class="fa fa-eye"></i></button>
+                            <button type="button" title="{{ lang.news['preview'] }}" onclick="return preview();" class="btn btn-primary"><i class="fa fa-eye"></i></button>
                         </div>
                     </div>
                 </div>
@@ -202,38 +202,38 @@
                     <div class="panel-body">
                             <label>
                                 <input type="checkbox" name="mainpage" value="1" id="mainpage" {% if (flags.mainpage) %}checked="checked" {% endif %}{% if flags['mainpage.disabled'] %}disabled {% endif %}/>&nbsp;
-                                {{ lang.addnews['mainpage'] }}
+                                {{ lang.news['mainpage'] }}
                             </label>
                             <br />
                             <label>
                                 <input type="checkbox" name="pinned" value="1" id="pinned" {% if (flags.pinned) %}checked="checked" {% endif %}{% if flags['pinned.disabled'] %}disabled {% endif %} />&nbsp;
-                                {{ lang.addnews['add_pinned'] }}
+                                {{ lang.news['add_pinned'] }}
                             </label>
                             <br />
                             <label>
                                 <input type="checkbox" name="catpinned" value="1" id="catpinned" {% if (flags.catpinned) %}checked="checked" {% endif %}{% if flags['catpinned.disabled'] %}disabled {% endif %} />&nbsp;
-                                {{ lang.addnews['add_catpinned'] }}
+                                {{ lang.news['add_catpinned'] }}
                             </label>
                             <br />
                             <label>
                                 <input type="checkbox" name="favorite" value="1" id="favorite" {% if (flags.favorite) %}checked="checked" {% endif %}{% if flags['favorite.disabled'] %}disabled {% endif %} />&nbsp;
-                                {{ lang.addnews['add_favorite'] }}
+                                {{ lang.news['add_favorite'] }}
                             </label>
                             <br />
                             <label>
                                 <input name="flag_HTML" type="checkbox" id="flag_HTML" value="1" {% if (flags['html.disabled']) %}disabled {% endif %} {% if (flags['html']) %}checked="checked"{% endif %}/>&nbsp;
-                                {{ lang.addnews['flag_html'] }}
+                                {{ lang.news['flag_html'] }}
                             </label>
                             <br />
                             <label>
                                 <input type="checkbox" name="flag_RAW" value="1" id="flag_RAW" {% if (flags['html.disabled']) %}disabled {% endif %} {% if (flags['raw']) %}checked="checked"{% endif %}/>&nbsp;
-                                {{ lang.addnews['flag_raw'] }}
+                                {{ lang.news['flag_raw'] }}
                             </label>
                     </div>
                 </div>
                 {% if not flags['customdate.disabled'] %}
                 <div class="panel panel-default">
-                    <div class="panel-heading">{{ lang.addnews['custom_date'] }}</div>
+                    <div class="panel-heading">{{ lang.news['custom_date'] }}</div>
                     <div class="panel-body">
                         <div class="input-group">
                             <span class="input-group-addon">
@@ -316,7 +316,7 @@ $('input[name*=category_], select[name=category]').on('click', function (e) {
 function preview(){
 
     if (form.ng_news_content.value == '' || form.title.value == '') {
-        $.notify({message: '{{ lang.addnews['msge_preview'] }}'},{type: 'danger'});
+        $.notify({message: '{{ lang.news['msge_preview'] }}'},{type: 'danger'});
         return false;
     }
 
@@ -373,7 +373,7 @@ for (i in jev) {
 <script>
 var searchDouble = function() {
     if ($.trim($('#newsTitle').val()).length < 4)
-        return $.notify({message: '{{ lang.addnews['msge_title'] }}'},{type: 'danger'});
+        return $.notify({message: '{{ lang.news['msge_title'] }}'},{type: 'danger'});
     var url = '{{ admin_url }}/rpc.php';
     var method = 'admin.news.double';
     var params = {'token': '{{ token }}','title': $('#newsTitle').val(),'mode': 'add',};

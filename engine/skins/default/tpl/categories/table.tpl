@@ -54,7 +54,7 @@
                             </td>
                         </tr>
                         {% else %}
-                        <tr><td colspan="7"><p>- {{ lang['not_found'] }} -</p></td></tr>
+                        <tr><td colspan="7">{{ lang['not_found'] }}</td></tr>
                         {% endfor %}
                     </tbody>
                 </table>
