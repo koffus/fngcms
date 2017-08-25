@@ -285,8 +285,8 @@ $timer->registerEvent('Template engine is activated');
 $UHANDLER->setOptions(array('domainPrefix' => $config['home_url']));
 
 // Check if engine is installed in subdirectory
-if (preg_match('#^http\:\/\/([^\/])+(\/.+)#', $config['home_url'], $match))
-    $UHANDLER->setOptions(array('localPrefix' => $match[2]));
+if (preg_match('#^(http|https)\:\/\/([^\/])+(\/.+)#', $config['home_url'], $match))
+    $UHANDLER->setOptions(array('localPrefix' => $match[3]));
 
 // ** Load DB
 $mysql = new Database;

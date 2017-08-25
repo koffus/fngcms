@@ -145,7 +145,9 @@ $installDir = ((substr(root, 0, 1) == '/') ? '/' : '') . join("/", array_slice($
 $templateDir = root . 'skins/default/install';
 
 // Determine installation URL
-$homeURL = 'http://' . $_SERVER['HTTP_HOST'] . '/' . ($a = join("/", array_slice(preg_split('/(\\\|\/)/', $_SERVER['REQUEST_URI'], -1, PREG_SPLIT_NO_EMPTY), 0, -2))) . ($a ? '/' : '');
+$scheme = isset($_SERVER['HTTP_SCHEME']) ? 'https://' :
+    (((isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] !== 'off') or 443 == $_SERVER['SERVER_PORT']) ? 'https://' : 'http://');
+$homeURL = $scheme . $_SERVER['HTTP_HOST'] . '/' . ($a = join("/", array_slice(preg_split('/(\\\|\/)/', $_SERVER['REQUEST_URI'], -1, PREG_SPLIT_NO_EMPTY), 0, -2))) . ($a ? '/' : '');
 $templateURL = $homeURL . $adminDirName . '/skins/default/install';
 $scriptLibrary = $homeURL . 'lib';
 $ERR = array();
