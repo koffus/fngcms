@@ -156,7 +156,7 @@ function xNewsShowBlock($params) {
 
 	// Category display mode
     $params['categoryMode'] = isset($params['categoryMode']) ? $params['categoryMode'] : 0;
-    $params['categories'] = isset($params['categoryMode']) ? $params['categoryMode'] : 0;
+    $params['categories'] = isset($params['categories']) ? $params['categories'] : 0;
 	switch ($params['categoryMode']) {
 		// Only selected categories
 		case 0:
