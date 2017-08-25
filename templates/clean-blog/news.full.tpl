@@ -22,7 +22,7 @@
 				<p>{{ news.short|striptags }}</p>
 				<p class="post-meta clearfix">
 					<span class="pull-left">
-						{% if pluginIsActive('uprofile') %}<a href="{{ news.author.url }}">{% endif %}{{ news.author.name }}{% if pluginIsActive('uprofile') %}</a>{% endif %}&nbsp;&nbsp;•&nbsp;&nbsp;{{ news.date }}
+						{% if pluginIsActive('uprofile') %}<a href="{{ news.author.url }}">{% endif %}{{ news.author.name }}{% if pluginIsActive('uprofile') %}</a>{% endif %}&nbsp;&nbsp;•&nbsp;&nbsp;{{ news.dateStamp|cdate }}
 					</span>
 					<span class="pull-right">
 						<i class="fa fa-eye" title="{{ lang.views }}"></i> {{ news.views }} &nbsp;&nbsp;•&nbsp;&nbsp; {% if pluginIsActive('comments') %} <i class="fa fa-comments" title="{{ lang.com }}"></i> {comments-num}{% endif %}
