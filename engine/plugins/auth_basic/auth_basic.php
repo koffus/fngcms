@@ -5,19 +5,31 @@ if (!defined('NGCMS')) die ('HAL');
 
 //
 // Прописываем свой модуль
-//
 global $AUTH_METHOD;
 global $AUTH_CAPABILITIES;
 global $config;
 
 class AuthBasic extends CAuthPlugin {
 
+    //
+    // Вернуть массив параметров, необходимых при авторизации
+    function get_login_params()
+    {
+        global $config;
+        $params = array();
+        Lang::loadPlugin('auth_basic', 'auth', 'auth');
+        array_push($params, array('name' => 'username', 'id' => 'auth_login', 'title' => __('auth_login'), 'type' => 'input'));
+        array_push($params, array('name' => 'password', 'id' => 'auth_password', 'title' => __('auth_pass'), 'type' => 'password'));
+        return $params;
+    }
+
     // Осуществить вход
     // $username	= логин
     // $password	= пароль
     // $auto_scan	= если 1, то функция сама должна найти нужные параметры среди POST'ов
-    function login($auto_scan = 1, $username = '', $password = '') {
-        global $mysql;
+    function login($auto_scan = 1, $username = '', $password = '')
+    {
+        global $mysql, $ip;
 
         if ($auto_scan) {
             $username = $_REQUEST['username'];
@@ -48,6 +60,11 @@ class AuthBasic extends CAuthPlugin {
             return 'ERR:NEED.ACTIVATE ['.$username.']';
         }
 
+        // Check is activation is required
+        if ($ban_mode = checkBanned($ip, 'users', 'auth', $row, $row['name'])) {
+            return 'ERR:USER.BANNED ['.$username.']';
+        }
+
         // Return user's record
         return $row;
 
@@ -55,8 +72,9 @@ class AuthBasic extends CAuthPlugin {
 
     //
     // Сохранить в БД информацию о том, что пользователь авторизовался
-    // $dbrow	= строка из нашей таблицы пользователей
-    function save_auth($dbrow) {
+    // $dbrow = строка из нашей таблицы пользователей
+    function save_auth($dbrow)
+    {
         global $config, $mysql, $ip, $ngCookieDomain;
 
         // создаём random cookie
@@ -94,7 +112,8 @@ class AuthBasic extends CAuthPlugin {
 
     //
     // Проверить авторизацию пользователя
-    function check_auth() {
+    function check_auth()
+    {
         global $config, $mysql, $ip;
 
         $auth_cookie = isset($_COOKIE['zz_auth'])?$_COOKIE['zz_auth']:'';
@@ -145,7 +164,8 @@ class AuthBasic extends CAuthPlugin {
 
     //
     // Отменить авторизацию
-    function drop_auth() {
+    function drop_auth()
+    {
         global $config, $mysql, $userROW;
 
         $auth_cookie = $_COOKIE['zz_auth'];
@@ -164,7 +184,8 @@ class AuthBasic extends CAuthPlugin {
 
     //
     // Вернуть массив параметров, необходимых при регистрации
-    function get_reg_params() {
+    function get_reg_params()
+    {
         global $config;
         $params = array();
         Lang::loadPlugin('auth_basic', 'auth', 'auth');
@@ -173,7 +194,9 @@ class AuthBasic extends CAuthPlugin {
             array_push($params, array('id' => 'reg_password', 'name' => 'password', 'title' => __('auth_pass'), 'descr' => __('auth_pass_descr'), 'type' => 'password'));
             array_push($params, array('id' => 'reg_password2', 'name' => 'password2', 'title' => __('auth_pass2'), 'descr' => __('auth_pass2_descr'),'type' => 'password'));
         }
-        array_push($params, array('name' => 'email', 'id' => 'reg_email', 'title' => __('auth_email'), 'descr' => __('auth_email_descr'),'type' => 'input'));
+        array_push($params, array('name' => 'email', 'id' => 'reg_email', 'title' => __('auth_email'), 'descr' => __('auth_email_descr'),'type' => 'email'));
+        if ($config['use_captcha']) 
+            array_push($params, array('name' => 'captcha', 'id' => 'captcha', 'title' => __('captcha_title'), 'descr' => __('captcha_code'),'type' => 'captcha'));
         return $params;
     }
 
@@ -185,7 +208,8 @@ class AuthBasic extends CAuthPlugin {
     // Возвращаемые значения:
     // 0 - ошибка
     // 1 - всё ok
-    function register(&$params, $values, &$msg) {
+    function register(&$params, $values, &$msg)
+    {
         global $config, $mysql, $tpl;
 
         // Load CORE Plugin
@@ -207,23 +231,23 @@ class AuthBasic extends CAuthPlugin {
         $csError = false;
         switch (pluginGetVariable('auth_basic', 'regcharset')) {
             case 0:
-                if (!preg_match('#^[A-Za-z0-9\.\_\-]+$#s', $values['login'])) {
+                if (!preg_match('#^[A-Za-z0-9\.\_\- ]+$#ius', $values['login'])) {
                     $csError = true;
                 }
                 break;
             case 1:
-                if (!preg_match('#^[А-Яа-яёЁ0-9\.\_\-]+$#s', $values['login'])) {
+                if (!preg_match('#^[А-Яа-яёЁ0-9\.\_\- ]+$#ius', $values['login'])) {
                     $csError = true;
                 }
                 break;
             case 2:
-                if (!preg_match('#^[А-Яа-яёЁA-Za-z0-9\.\_\-]+$#s', $values['login'])) {
+                if (!preg_match('#^[А-Яа-яёЁA-Za-z0-9\.\_\- ]+$#ius', $values['login'])) {
                     print "CASE2-err [".$values['login']."]";
                     $csError = true;
                 }
                 break;
             case 3:
-                if (!preg_match('#^[\x21-\x7e\xc0-\xffёЁ]+$#s', $values['login'])) {
+                if (!preg_match('#^[\x21-\x7e\xc0-\xffёЁ ]+$#ius', $values['login'])) {
                     $csError = true;
                 }
                 break;
@@ -292,21 +316,22 @@ class AuthBasic extends CAuthPlugin {
             case 0:
                 $newpassword = MakeRandomPassword();
                 $mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '')");
-                $userid			= $mysql->result('select LAST_INSERT_ID()');
+                $userid = $mysql->result('select LAST_INSERT_ID()');
                 msg(array(
                     'title' => __('msgo_registered'),
                     'message' => str_replace(array('{login}', '{password}'), array($values['login'], $newpassword), __('auth_reg.success0'))
-                ));
+                ), 1, 3);
                 break;
 
             // 1 - Простая [автогенерация пароля, с email нотификацией]
             case 1:
                 $newpassword = MakeRandomPassword();
                 $mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($newpassword)).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '')");
-                $userid			= $mysql->result('select LAST_INSERT_ID()');
+                $userid = $mysql->result('select LAST_INSERT_ID()');
 
                 $tvars['vars'] = array( 'login' => $values['login'],
                                         'home' => home,
+                                        'home_title' => home_title,
                                         'password' => $newpassword);
                 $tvars['regx'] = array(
                     '#\[activation\].+?\[\/activation]#is' => '',
@@ -327,7 +352,7 @@ class AuthBasic extends CAuthPlugin {
                 msg(array(
                     'title' => __('msgo_registered'),
                     'message' => str_replace(array('{login}', '{password}', '{email}'), array($values['login'], $newpassword, $values['email']), __('auth_reg.success1'))
-            ));
+            ), 1, 3);
                 break;
 
             // 2 - С подтверждением [автогенерация пароля, пароль отправляется на email адрес и не показывается в админке]
@@ -343,6 +368,7 @@ class AuthBasic extends CAuthPlugin {
                 $tvars['vars'] = array(
                     'login' => $values['login'],
                     'home' => home,
+                    'home_title' => home_title,
                     'password' => $newpassword,
                     'activate_url' => $link,
                     );
@@ -363,14 +389,15 @@ class AuthBasic extends CAuthPlugin {
                 msg(array(
                     'title' => __('msgo_registered'),
                     'message' => str_replace(array('{login}', '{password}', '{email}'), array($values['login'], $newpassword, $values['email']), __('auth_reg.success2'))
-                    ));
+                    ), 1, 3);
                 break;
 
             // 3 - Ручная с нотификацией [ручная генерация пароля, email нотификация]
             case 3:
                 $mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($values['password'])).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '')");
-                $userid			= $mysql->result('select LAST_INSERT_ID()');
+                $userid = $mysql->result('select LAST_INSERT_ID()');
                 $tvars['vars'] = array( 'login' => $values['login'],
+                                        'home_title' => home_title,
                                         'home' => home,
                                         'password' => $values['password']);
                 $tvars['regx'] = array(
@@ -388,18 +415,19 @@ class AuthBasic extends CAuthPlugin {
                 msg(array(
                     'title' => __('msgo_registered'),
                     'message' => str_replace(array('{login}', '{password}', '{email}'), array($values['login'], $values['password'], $values['email']), __('auth_reg.success3'))
-                ));
+                ), 1, 3);
                 break;
 
             // 4 - Ручная с подтверждением [ручная генерация пароля, подтверждение email адреса]
             case 4:
-                $actcode		= MakeRandomPassword();
+                $actcode = MakeRandomPassword();
                 $mysql->query("INSERT INTO ".uprefix."_users (name, pass, mail, status, reg, last, activation) VALUES (".db_squote($values['login']).", ".db_squote(EncodePassword($values['password'])).", ".db_squote($values['email']).", ".$regGroup.", '".$add_time."', '', ".db_squote($actcode).")");
-                $userid			= $mysql->result('select LAST_INSERT_ID()');
-                $link			= generatePluginLink('core', 'activation', array('userid' => $userid, 'code' => $actcode), array(), false, true);
+                $userid = $mysql->result('select LAST_INSERT_ID()');
+                $link = generatePluginLink('core', 'activation', array('userid' => $userid, 'code' => $actcode), array(), false, true);
 
                 $tvars['vars'] = array( 'login' => $values['login'],
                                         'home' => home,
+                                        'home_title' => home_title,
                                         'password' => $values['password'],
                                         'activate_url' => $link);
 
@@ -420,7 +448,7 @@ class AuthBasic extends CAuthPlugin {
                 msg(array(
                     'title' => __('msgo_registered'),
                     'message' => str_replace(array('{login}', '{password}', '{email}'), array($values['login'], $values['password'], $values['email']), __('auth_reg.success4'))
-                ));
+                ), 1, 3);
             //print "<pre>".var_export($lang, true)."</pre>";
         }
 
@@ -430,7 +458,8 @@ class AuthBasic extends CAuthPlugin {
 
     //
     // Вернуть массив параметров, необходимых для восстановления пароля
-    function get_restorepw_params() {
+    function get_restorepw_params()
+    {
         global $config;
         $params = array();
 
@@ -447,17 +476,20 @@ class AuthBasic extends CAuthPlugin {
 
         array_push($params, array('text' => __('auth_restore_'.$mode)));
         if ($mode != 'email') {
-            array_push($params, array('name' => 'login', title => __('auth_login'),'type' => 'input'));
+            array_push($params, array('name' => 'login', 'id' => 'reg_login', 'title' => __('auth_login'), 'descr' => __('auth_login_require'),'type' => 'input'));
         }
         if ($mode != 'login') {
-            array_push($params, array('name' => 'email', title => __('auth_email'),'type' => 'input'));
+            array_push($params, array('name' => 'email', 'id' => 'reg_email', 'title' => __('auth_email'), 'descr' => __('auth_email_require'),'type' => 'email'));
         }
+        if ($config['use_captcha']) 
+            array_push($params, array('name' => 'captcha', 'id' => 'captcha', 'title' => __('captcha_title'), 'descr' => __('captcha_code'),'type' => 'captcha'));
         return $params;
     }
 
     //
     // Восстановить пароль
-    function restorepw(&$params, $values, &$msg) {
+    function restorepw(&$params, $values, &$msg)
+    {
         global $config, $mysql, $tpl;
 
         // Load CORE Plugin
@@ -504,14 +536,15 @@ class AuthBasic extends CAuthPlugin {
 
             $tvars['vars'] = array( 'login' => $row['name'],
                         'home' => home,
+                        'home_title' => home_title,
                         'newpw' => $newpassword);
             $tvars['vars']['pwurl'] = generatePluginLink('core', 'lostpassword', array('userid' => $row['id'], 'code' => EncodePassword($newpassword)), array(), false, true);
 
             $tpl->template('restorepw', $cPlugin->getFolderLang('auth_basic'));
             $tpl->vars('restorepw', $tvars);
 
-            sendEmailMessage($row['mail'],__('auth_mail_subj'),$tpl->show('restorepw'));
-            msg(array('message' => __('msgo_sent')));
+            sendEmailMessage($row['mail'], __('auth_mail_subj'), $tpl->show('restorepw'));
+            msg(array('message' => __('msgo_sent')), 1, 3);
 
             return 1;
 
@@ -532,7 +565,8 @@ class AuthBasic extends CAuthPlugin {
     // 2	- Incorrect length
     // 3	- Incorrect format
     // 100	- Available for registration
-    function onlineCheckRegistration($params) {
+    function onlineCheckRegistration($params)
+    {
         global $config, $mysql;
 
         // Prepare basic reply array
@@ -551,23 +585,23 @@ class AuthBasic extends CAuthPlugin {
             $csError = false;
             switch (pluginGetVariable('auth_basic', 'regcharset')) {
                 case 0:
-                    if (!preg_match('#^[A-Za-z0-9\.\_\-]+$#s', $params['login'])) {
+                    if (!preg_match('#^[A-Za-z0-9\.\_\- ]+$#ius', $params['login'])) {
                         $csError = true;
                     }
                     break;
                 case 1:
-                    if (!preg_match('#^[А-Яа-яёЁ0-9\.\_\-]+$#s', $params['login'])) {
+                    if (!preg_match('#^[А-Яа-яёЁ0-9\.\_\- ]+$#ius', $params['login'])) {
                         $csError = true;
                     }
                     break;
                 case 2:
-                    if (!preg_match('#^[А-Яа-яёЁA-Za-z0-9\.\_\-]+$#s', $params['login'])) {
+                    if (!preg_match('#^[А-Яа-яёЁA-Za-z0-9\.\_\- ]+$#ius', $params['login'])) {
                         print "CASE2-err [".$params['login']."]";
                         $csError = true;
                     }
                     break;
                 case 3:
-                    if (!preg_match('#^[\x21-\x7e\xc0-\xffёЁ]+$#s', $params['login'])) {
+                    if (!preg_match('#^[\x21-\x7e\xc0-\xffёЁ ]+$#ius', $params['login'])) {
                         $csError = true;
                     }
                     break;
@@ -617,7 +651,8 @@ class AuthBasic extends CAuthPlugin {
 
     //
     // Подтверждение восстановления пароля
-    function confirm_restorepw(&$msg, $reqid = NULL, $reqsecret = NULL) {
+    function confirm_restorepw(&$msg, $reqid = NULL, $reqsecret = NULL)
+{
         global $config, $mysql, $tpl;
         Lang::loadPlugin('auth_basic', 'auth', 'auth');
             $row = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($reqid));

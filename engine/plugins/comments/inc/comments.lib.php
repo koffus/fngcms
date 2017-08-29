@@ -7,7 +7,8 @@ if (!defined('NGCMS')) die ('HAL');
 // Comments actions interceptors
 // ==================================================================
 
-class FilterComments {
+class FilterComments
+{
 	// Form generator
 	function addCommentsForm($newsID, &$tvars) { return 1;}
 

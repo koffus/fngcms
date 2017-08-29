@@ -125,6 +125,10 @@
                         <div class="col-md-7">{{ mkSelect({'name' : 'save_con[captcha_font]', 'value' : config['captcha_font'], 'values' : list['captcha_font'] }) }}</div>
                     </div>
                     <div class="form-group">
+                        <div class="col-md-5">{{ lang['use_crypto_salt'] }} <span class="help-block">{{ lang['use_crypto_salt_desc'] }}</span></div>
+                        <div class="col-md-7"><input type="text" name="save_con[crypto_salt]" value="{{ config['crypto_salt'] }}" class="form-control" /></div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-md-5">{{ lang['use_cookies'] }} <span class="help-block">{{ lang['use_cookies_desc'] }}</span></div>
                         <div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[use_cookies]', 'value' : config['use_cookies'] }) }}</div>
                     </div>

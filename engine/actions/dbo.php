@@ -77,29 +77,32 @@ function systemDboModify()
         // Check if we can update comments counters
         if ($cPlugin->isActive('comments')) {
             $haveComments = $mysql->table_exists(prefix . "_comments") ? true : false;
+            $moderate = (1 == pluginGetVariable('comments', 'moderate')) ? true : false;
 
             if ($haveComments) {
+                $approve = ($moderate) ? " AND c.approve='1'": '';
                 // Обновляем счетчик комментариев в новостях
-                $rows = $mysql->select("SELECT n.id, count(c.id) AS cid FROM " . prefix . "_news n LEFT JOIN " . prefix . "_comments c on c.post=n.id  AND module='news' GROUP BY n.id");
+                $rows = $mysql->select("SELECT n.id, count(c.id) AS cid FROM `".prefix."_news` n LEFT JOIN " . prefix . "_comments c on c.post=n.id AND c.module='news'".$approve." GROUP BY n.id");
                 foreach ($rows as $row) {
-                    $mysql->query("UPDATE " . prefix . "_news SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
+                    $mysql->query("UPDATE `".prefix."_news` SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
                 }
 
                 // Обновляем счетчик комментариев в плагине gallery
                 if ($cPlugin->isActive('gallery')) {
-                    $rows = $mysql->select("SELECT i.id, count(c.id) AS cid FROM " . prefix . "_images i LEFT JOIN " . prefix . "_comments c on c.post=i.id  AND module='news' GROUP BY i.id");
+                    $rows = $mysql->select("SELECT i.id, count(c.id) AS cid FROM `".prefix."_images` i LEFT JOIN " . prefix . "_comments c on c.post=i.id AND c.module='images'".$approve." GROUP BY i.id");
                     foreach ($rows as $row) {
-                        $mysql->query("UPDATE " . prefix . "_images SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
+                        $mysql->query("UPDATE `".prefix."_images` SET com=" . $row['cid'] . " WHERE id = " . $row['id']);
                     }
                 }
             }
 
             if ($haveComments) {
+                $approve = ($moderate) ? " WHERE approve='1'": '';
                 // ОбнУляем счетчик постов и комментариев у юзеров
                 $mysql->query("UPDATE " . prefix . "_users SET news = 0, com = 0");
                 // Обновляем счетчик комментариев у юзеров
-                foreach ($mysql->select("select author_id, count(*) as cnt from " . prefix . "_comments group by author_id") as $row) {
-                    $mysql->query("update " . uprefix . "_users set com=" . $row['cnt'] . " where id = " . $row['author_id']);
+                foreach ($mysql->select("select author_id, count(*) as cnt from `".prefix."_comments` ".$approve."group by author_id") as $row) {
+                    $mysql->query("update `".uprefix."_users` set com=" . $row['cnt'] . " where id = " . $row['author_id']);
                 }
             }
         } else {
@@ -365,18 +368,15 @@ function systemDboForm()
         return false;
     }
 
-    $tableList = array();
     foreach ($mysql->select("SHOW TABLES FROM `" . $config['dbname'] . "` LIKE '" . prefix . "_%'", 0) as $table) {
         $info = $mysql->record("SHOW TABLE STATUS LIKE '" . $table[0] . "'");
 
-        $tableInfo = array(
+        $tableList [] = [
             'table' => $info['Name'],
             'rows' => $info['Rows'],
             'data' => formatSize($info['Data_length'] + $info['Index_length'] + $info['Data_free']),
             'overhead' => ($info['Data_free'] > 0) ? '<span style="color:red;">' . formatSize($info['Data_free']) . '</span>' : 0,
-        );
-
-        $tableList [] = $tableInfo;
+        ];
 
     }
 
@@ -387,8 +387,7 @@ function systemDboForm()
         'token' => genUToken('admin.dbo'),
     );
 
-    $xt = $twig->loadTemplate('skins/default/tpl/dbo.tpl');
-    echo $xt->render($tVars);
+    echo $twig->loadTemplate('skins/default/tpl/dbo.tpl')->render($tVars);
 }
 
 //

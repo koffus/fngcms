@@ -261,11 +261,13 @@ function plugin_gallery_image($params = [])
     // Need to update count views
     $mysql->query('UPDATE '.prefix.'_images SET views=views+1 WHERE name='.db_squote($imageName));
 
+    // Temporaly disabled cached
     if (pluginGetVariable('gallery', 'cache')) {
+        //$havePerm = (is_array($userROW) and (($userROW['status'] == 1) or ($userROW['status'] == 2) or ($row['author_id'] == $userROW['id'])));
         $cacheFileName = md5('gallery' . $gallery['id'] . $gallery['name'] . $imageName) . '.txt';
         $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('gallery', 'cacheExpire'), 'gallery');
         if ($cacheData != false) {
-            return $template['vars']['mainblock'] = $cacheData;
+            //return $template['vars']['mainblock'] = $cacheData;
         }
     }
 

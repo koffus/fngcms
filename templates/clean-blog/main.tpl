@@ -63,6 +63,8 @@
                         {% else %}
                             <a href="{{ home }}/register/" class="dropdown-item">{{ lang['registration'] }}</a>
                             <a href="{{ home }}/login/" class="dropdown-item" data-toggle="modal" data-target="#auth-modal">{{ lang['login'] }}</a>
+                            <div class="dropdown-divider"></div>
+                            <a href="{{ home }}/lostpassword/" class="dropdown-item">{{ lang['lostpassword'] }}</a>
                         {% endif %}
                         </div>
                     </li>

@@ -60,14 +60,14 @@ function main($plugin, $action)
 
     // Fill configuration parameters
     $cfg = array(
-        'description' => __('gallery:description'),
+        'description' => __($plugin.':description'),
         'dependence' => $dependence,
         'navigation' => array(
             array('class' => 'active','href' => 'admin.php?mod=extra-config&plugin=gallery','title' => __('group.config')),
             array('href' => 'admin.php?mod=extra-config&plugin=gallery&action=list','title' => __('gallery:button_list')),
             array('href' => 'admin.php?mod=extra-config&plugin=gallery&action=widget_list','title' => __('gallery:button_widget_list')),
         ),
-        'submit' => array(array('type' => 'default'),array('type' => 'clearCacheFiles'))
+        'submit' => array(array('type' => 'default'),array('type' => 'reinstall'),array('type' => 'clearCacheFiles'))
     );
 
     $cfgX = array();
@@ -96,7 +96,7 @@ function main($plugin, $action)
             ));
     array_push($cfg, array(
         'mode' => 'group',
-        'title' => __('group.config'),
+        'title' => __('group.general'),
         'entries' => $cfgX,
         ));
 
@@ -160,7 +160,7 @@ function showList($plugin, $action)
 
     // Fill configuration parameters
     $cfg = array(
-        'description' => __('gallery:description'),
+        'description' => __($plugin.':description'),
         'navigation' => array(
             array('href' => 'admin.php?mod=extra-config&plugin=gallery','title' => __('group.config')),
             array('class' => 'active','href' => 'admin.php?mod=extra-config&plugin=gallery&action=list','title' => __('gallery:button_list')),
@@ -237,7 +237,7 @@ function showList($plugin, $action)
 
         } elseif ('move_up' == $action or 'move_down' == $action) {
 
-            if (!isset($_REQUEST['id'])) {
+            if (empty($_REQUEST['id'])) {
                 msg(array('type' => 'danger', 'message' => __('gallery:msg.no_gallery')));
                 break;
             }
@@ -276,7 +276,7 @@ function showList($plugin, $action)
             msg(array('type' => 'info', 'message' => __('gallery:info_update_record')));
 
         } elseif ('dell' == $action) {
-            if (!isset($_REQUEST['id'])) {
+            if (empty($_REQUEST['id'])) {
                 msg(array('type' => 'danger', 'message' => __('gallery:msg.no_gallery')));
                 break;
             }
@@ -335,7 +335,7 @@ function edit($plugin, $action)
         $skList = [];
         msg(array( 'type' => 'danger', 'message' => __('gallery:msg.no_skin')));
     }
-    if (!isset($_REQUEST['id'])) {
+    if (empty($_REQUEST['id'])) {
         msg(array('type' => 'danger', 'message' => __('gallery:msg.no_gallery')));
         return;
     }
@@ -351,7 +351,7 @@ function edit($plugin, $action)
 
     // Fill configuration parameters
     $cfg = array(
-        'description' => __('gallery:description'),
+        'description' => __($plugin.':description'),
         'navigation' => array(
             array('href' => 'admin.php?mod=extra-config&plugin=gallery','title' => __('group.config')),
             array('class' => 'active','href' => 'admin.php?mod=extra-config&plugin=gallery&action=list','title' => __('gallery:button_list')),
@@ -458,7 +458,7 @@ function showWidgetList($plugin, $action)
 
     // Fill configuration parameters
     $cfg = array(
-        'description' => __('gallery:description'),
+        'description' => __($plugin.':description'),
         'navigation' => array(
             array('href' => 'admin.php?mod=extra-config&plugin=gallery','title' => __('group.config')),
             array('href' => 'admin.php?mod=extra-config&plugin=gallery&action=list','title' => __('gallery:button_list')),
@@ -504,7 +504,7 @@ function showWidgetList($plugin, $action)
 
             msg(array('message' => __('gallery:info_update_record')));
         } elseif ('widget_dell' == $action) {
-            if (!isset($_REQUEST['id'])) {
+            if (empty($_REQUEST['id'])) {
                 msg(array('type' => 'danger', 'message' => __('gallery:msg.no_widget')));
                 break;
             }
@@ -575,7 +575,7 @@ function editWidget($plugin, $action)
     $image_count = 12;
     $if_rand = 0;
     $gallery = '';
-    if (isset($_REQUEST['id'])){
+    if (isset($_REQUEST['id'])) {
         $id = intval($_REQUEST['id']);
         $widgets = pluginGetVariable('gallery', 'widgets');
         if (empty($widgets[$id])) {
@@ -593,7 +593,7 @@ function editWidget($plugin, $action)
 
     // Fill configuration parameters
     $cfg = array(
-        'description' => __('gallery:description'),
+        'description' => __($plugin.':description'),
         'navigation' => array(
             array('href' => 'admin.php?mod=extra-config&plugin=gallery','title' => __('group.config')),
             array('href' => 'admin.php?mod=extra-config&plugin=gallery&action=list','title' => __('gallery:button_list')),

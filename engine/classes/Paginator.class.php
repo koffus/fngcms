@@ -28,14 +28,12 @@ class Paginator
     public function get($param)
     {
 
-        global $tpl, $TemplateCache;
+        global $tpl, $TemplateCache, $config;
 
         if ($param['count'] < 2) return '';
 
         templateLoadVariables(true, 1);
         $nav = $TemplateCache['admin']['#variables']['navigation'];
-
-        $tpl->template('pages', tpl_actions);
 
         // Prev page link
         if ($param['current'] > 1) {
@@ -52,9 +50,9 @@ class Paginator
         if (isset($param['maxNavigations']) and ($param['maxNavigations'] > 3) and ($param['maxNavigations'] < 500)) {
             $maxNavigations = intval($param['maxNavigations']);
         } else {
-            $maxNavigations = 8;
+            $maxNavigations = !(empty($config['newsNavigationsAdminCount']) or $config['newsNavigationsAdminCount'] < 1) ? $config['newsNavigationsAdminCount'] : 8;
         }
-
+            
         $sectionSize = floor($maxNavigations / 3);
         if ($param['count'] > $maxNavigations) {
             // We have more than 10 pages. Let's generate 3 parts
@@ -87,6 +85,8 @@ class Paginator
             $tvars['regx']["'\[next-link\](.*?)\[/next-link\]'si"] = '';
             $no_next = true;
         }
+
+        $tpl->template('pages', tpl_actions);
         $tpl->vars('pages', $tvars);
         return $tpl->show('pages');
 

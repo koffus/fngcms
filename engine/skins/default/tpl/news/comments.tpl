@@ -14,7 +14,9 @@
 				<div class="panel panel-default arrow left">
 					<div class="panel-body">
 						<header class="text-left">
-							<p class="pull-right"><a href="admin.php?mod=editcomments&newsid={com_post}&comid={com_id}" title="{l_edit_comm}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i></a></p>
+							<p class="pull-right">
+                                <a href="admin.php?mod=extra-config&plugin=comments&action=edit&comid={com_id}" title="{l_edit_comm}" class="btn btn-sm btn-primary"><i class="fa fa-reply"></i></a>
+                            </p>
 							<p><time class="comment-date">{com_time}</time></p>
 						</header>
 						<div class="comment-post">

@@ -12,7 +12,7 @@ if (!defined('NGCMS')) die ('HAL');
 
 //
 // Show comments for a news
-// $newsID - [required] ID of the news for that comments should be showed
+// $postid - [required] ID of the news for that comments should be showed
 // $commID - [optional] ID of comment for showing in case if we just added it
 // $commDisplayNum - [optional] num that is showed in 'show comment' template
 // $callingParams
@@ -24,7 +24,7 @@ if (!defined('NGCMS')) die ('HAL');
 //		'limitCount' => number of comments to show (for pagination)
 //		'outprint'	 => flag: if set, output will be returned, elsewhere - will be added to mainblock
 //		'total' => total number of comments in this news
-function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams = array())
+function comments_show($postid, $commID = 0, $commDisplayNum = 0, $callingParams = array())
 {
     global $mysql, $twig, $template, $config, $userROW, $parse, $PFILTERS, $TemplateCache;
 
@@ -71,9 +71,9 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         $sql = "SELECT c.*, ".
             join(", ", array_map('_cs_am', $joinFilter['users']['fields'])).
             ' FROM '.prefix.'_comments c'.
-            ' LEFT JOIN '.uprefix.'_users u ON c.author_id = u.id WHERE c.post='.db_squote($newsID).($commID?(" AND c.id=".db_squote($commID)):'');
+            ' LEFT JOIN '.uprefix.'_users u ON c.author_id = u.id WHERE c.post='.db_squote($postid).($commID?(" AND c.id=".db_squote($commID)):'');
     } else {
-        $sql = "SELECT c.* FROM ".prefix."_comments c WHERE c.post=".db_squote($newsID).($commID ? (" AND c.id=".db_squote($commID)) : '');
+        $sql = "SELECT c.* FROM ".prefix."_comments c WHERE c.post=".db_squote($postid).($commID ? (" AND c.id=".db_squote($commID)) : '');
     }
 
     // Check module table exist
@@ -84,6 +84,11 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
     }
 
     $sql .= " AND c.module=" . db_squote($module);
+
+    $moderate = (1 == pluginGetVariable('comments', 'moderate')) ? true : false;
+    if ($moderate) {
+        $sql .= " AND c.approve='1'";
+    }
 
     $sql .= " order by c.id".(pluginGetVariable('comments', 'backorder')?' desc':'');
 
@@ -107,8 +112,9 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         $comnum++;
 
         $tVars = array(
-            'havePerm' => (is_array($userROW) and (($userROW['status'] == 1) or ($userROW['status'] == 2))) ? true : false,
-            'isProfile' => (!empty($row['reg']) and pluginIsActive('uprofile')) ? true : false,
+            //'havePerm' => (is_array($userROW) and (($userROW['status'] == 1) or ($userROW['status'] == 2) or ($row['author_id'] == $userROW['id']))) ? true : false,
+            'havePerm' => (is_array($userROW) and 1 == $userROW['status']) ? true : false,
+            'isProfile' => (0 != $row['author_id'] and pluginIsActive('uprofile')) ? true : false,
             'useBB' => $config['use_bbcodes'] ? true : false,
             'hasAnswer' => !empty($row['answer']) ? true : false,
             
@@ -133,6 +139,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         if ($config['use_smilies']) { $text = $parse->smilies($text); }
         $tVars['comment'] = $text;
 
+        // Здесь ДЕЛАЕМ ДРЕВОВИДНУЮ СТРУКТУРУ
         if($tVars['hasAnswer']){
             $answer = $row['answer'];
             if ($config['blocks_for_reg']) { $answer = $parse->userblocks($row['answer']); }
@@ -170,7 +177,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         }
 
         if ($tVars['havePerm']) {
-            $tVars['edit_link'] = admin_url."/admin.php?mod=editcomments&amp;newsid=".$newsID."&amp;comid=".$row['id'];
+            $tVars['edit_link'] = admin_url."/admin.php?mod=extra-config&plugin=comments&action=edit&comid=".$row['id'];
             $tVars['delete_link'] = generateLink('core', 'plugin', 
                     array('plugin' => 'comments', 'handler' => 'delete'),
                     array('id' => $row['id'], 'module' => $module, 'uT' => genUToken($row['id'])),
@@ -181,7 +188,7 @@ function comments_show($newsID, $commID = 0, $commDisplayNum = 0, $callingParams
         // RUN interceptors
         if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
             foreach ($PFILTERS['comments'] as $k => $v) {
-                $v->showComments($newsID, $row, $comnum, $tVars);
+                $v->showComments($postid, $row, $comnum, $tVars);
             }
         }
 
@@ -252,7 +259,7 @@ function comments_showform($postid, $callingParams = array())
     // RUN interceptors
     if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
         foreach ($PFILTERS['comments'] as $k => $v) {
-            $v->addCommentsForm($newsID, $tvars);
+            $v->addCommentsForm($postid, $tvars);
         }
     }
 

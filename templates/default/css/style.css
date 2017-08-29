@@ -486,6 +486,9 @@ input[type=radio],input[type=checkbox]{font-weight:700;border:1px solid #bbb;col
 .comment-content .comment-meta p {
 	margin: 9px 0px 0px 0px;
 }
+.comment-content:hover p {
+    color: #000;
+}
 .comment-content .comment-reply-link {
 	font-weight: 600;
 	letter-spacing: 0.05em;

@@ -20,7 +20,7 @@ function update_comment(postid, action) {
         form.content.value = '';
         $('#new_comments').html(json.content);
         $('html, body').animate({ scrollTop: $('#new_comments').offset().top-87 }, 888);
-        $.notify({message:'Комментарий успешно добавлен'},{type: 'success'});
+        $.notify({message: json.message},{type: 'success'});
         {% if (useCaptcha and not(global.flags.isLogged)) %}reload_captcha();{% endif %}
     });
 }

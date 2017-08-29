@@ -2,66 +2,28 @@
 
 <form name="register" action="{{ form_action }}" method="post" onsubmit="return validate();">
     <input type="hidden" name="type" value="doregister" />
-    {% for entry in entries %}
-        {% if entry.type == 'input' %}
-        <div class="form-group row">
-            <label for="{{ entry.id }}" class="col-sm-4 col-form-label">{{ entry.title }}</label>
-            <div class="col-sm-8">
-                <input id="{{ entry.id }}" type="{{ entry.type }}" name="{{ entry.name }}" value="{{ entry.value }}" class="form-control">
-                <small id="{{ entry.id }}">{{ entry.descr }}</small>
-            </div>
-        </div>
-        {% endif %}
-        {% if entry.type == 'password' %}
-        <div class="form-group row">
-            <label for="{{ entry.id }}" class="col-sm-4 col-form-label">{{ entry.title }}</label>
-            <div class="col-sm-8">
-                <input id="{{ entry.id }}" type="{{ entry.type }}" name="{{ entry.name }}" value="{{ entry.value }}" class="form-control">
-                <small id="{{ entry.id }}">{{ entry.descr }}</small>
-            </div>
-        </div>
-        {% endif %}
-        {% if entry.type == 'text' %}
-        <div class="form-group row">
-            <label for="{{ entry.id }}" class="col-sm-4 col-form-label">{{ entry.title }}</label>
-            <div class="col-sm-8">
-                <textarea name="{{ entry.name }}" class="form-control" rows="5"></textarea>
-            </div>
-        </div>
-        {% endif %}
-        {% if entry.type == 'select' %}
+    <fieldset>
+        {% for entry in entries %}
             <div class="form-group row">
                 <label for="{{ entry.id }}" class="col-sm-4 col-form-label">{{ entry.title }}</label>
                 <div class="col-sm-8">
-                    <select class="form-control" type="{{ entry.type }}" name="{{ entry.name }}">{% for key,value in entry.values %}<option value="{{ key }}">{{ value }}</option>{% endfor %}</select>
+                    {{ entry.input }}
+                    {% if entry.descr %}<small id="{{ entry.id }}">{{ entry.descr }}</small>{% endif %}
+                    {% if entry.error %}<span class="help-block">{{ entry.error }}</span>{% endif %}
                 </div>
             </div>
-        {% endif %}
-    {% endfor %}
-    {% if flags.hasCaptcha %}
+        {% endfor %}
         <div class="form-group row">
-            <label for="captcha" class="col-sm-4 col-form-label">{{lang.theme['captcha_title'] }}</label>
-            <div class="col-sm-8">
-                <div class="input-group">
-                    <input type="text" name="captcha" id="captcha" class="form-control" required />
-                    <span class="input-group-addon p-0">
-                        <img id="img_captcha" src="{{ captcha_url }}?rand={{ captcha_rand }}" alt="captcha" class="captcha" />
-                    </span>
-                </div>
-                <small id="{{ entry.id }}">{{ lang['captcha_desc'] }}</small>
+            <div class="col-sm-8 offset-sm-4">
+                <p class="checkbox"><label><input type="checkbox" name="agree" /> {{lang.theme['registration_rules'] }}</label></p>
             </div>
         </div>
-    {% endif %}
-    <div class="form-group row">
-        <div class="col-sm-8 offset-sm-4">
-            <p class="checkbox"><label><input type="checkbox" name="agree" /> {{lang.theme['registration_rules'] }}</label></p>
+        <div class="form-group row">
+            <div class="col-sm-8 offset-sm-4">
+                <button type="submit" class="btn btn-success">{{ lang.register }}</button>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <div class="col-sm-8 offset-sm-4">
-            <button type="submit" class="btn btn-success">{{ lang.register }}</button>
-        </div>
-    </div>
+    </fieldset>
 </form>
 
 <script type="text/javascript">
@@ -71,10 +33,7 @@
                 $("#reg_login").change(function() {
                     if ($('#reg_login').val() == '') {
                         $("#reg_login").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
                             "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
                         });
                         $("small#reg_login").html("{{ lang.auth_login_descr }}");
                         return;
@@ -96,10 +55,7 @@
                 $("#reg_email").change(function() {
                     if ($('#reg_email').val() == '') {
                         $("#reg_email").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
                             "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
                         });
                         $("small#reg_email").html("<span>{{ lang.auth_email_descr }}</span>");
                         return;
@@ -121,16 +77,10 @@
                 $("#reg_password2").change(function() {
                     if ($('#reg_password2').val() == '' && $('#reg_password').val() == '') {
                         $("#reg_password").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
                             "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
                         });
                         $("#reg_password2").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
                             "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
                         });
                         $("small#reg_password2").html("<span>{{ lang.auth_pass2_descr }}</span>");
                         return;
@@ -148,16 +98,10 @@
                 $("#reg_password").change(function() {
                     if ($('#reg_password2').val() == '' && $('#reg_password').val() == '') {
                         $("#reg_password").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
                             "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
                         });
                         $("#reg_password2").css({
-                            "display": "table-cell",
-                            "background": "#f9f9f9",
                             "border": "1px solid #e2e2e2",
-                            "box-shadow": "inset 2px 3px 3px -2px #e2e2e2"
                         });
                         $("small#reg_password2").html("<span>{{ lang.auth_pass2_descr }}</span>");
                         return;

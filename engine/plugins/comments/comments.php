@@ -36,7 +36,7 @@ class CommentsNewsFilter extends NewsFilter
         $comments = '';
         $tpl->template('comments', tpl_actions . 'news');
 
-        $crows = $mysql->select("SELECT * FROM " . prefix . "_comments WHERE post='" . $newsID . "' AND module='news' ORDER BY id");
+        $crows = $mysql->select("SELECT * FROM " . prefix . "_comments WHERE post=" . db_squote($newsID) . " AND module='news' ORDER BY id");
         foreach ($crows as $crow) {
             $text = $crow['text'];
 
@@ -64,7 +64,7 @@ class CommentsNewsFilter extends NewsFilter
                 'com_part' => $text
             );
 
-            if ($crow['reg']) {
+            if (!is_null($crow['author_id'])) {
                 $txvars['vars']['[userlink]'] = '';
                 $txvars['vars']['[/userlink]'] = '';
             } else {
@@ -291,7 +291,7 @@ function plugin_comments_show()
         $table = 'news';
     }
 
-    if (!$postID or !is_array($newsRow = $mysql->record("select * from " . prefix . "_" . $table . " where id = " . $postID))) {
+    if (!$postID or !is_array($newsRow = $mysql->record("select * from " . prefix . "_" . $table . " where id = " . db_squote($postID)))) {
         error404();
         return;
     }
@@ -428,32 +428,13 @@ function plugin_comments_delete()
     } else {
         // NON-AJAX mode
 
-        // Fetch news record
-        /*if ($nrow = $mysql->record("select * from " . prefix . "_news where id = " . db_squote($params['postID']))) {
-            $url = News::generateLink($nrow);
-        } else {
-            $url = $config['home_url'];
-        }*/
-        $url = $HTTP_REFERER;
-
-        $tavars = array('vars' => array(
-            'message' => $output['data'],
-            'link' => $url,
-        ));
-
         // If ok - redirect to news
         if ($output['status']) {
-            $tavars['vars']['title'] = __('comments:deleted.title');
-            $tavars['vars']['linktext'] = __('comments:deleted.url');
+            msg(['type' => 'info', 'title' => __('comments:deleted.title'), 'message' => $output['data'], 'referer' => $HTTP_REFERER], 1, 3);
         } else {
             // Print error messag
-            // NON-AJAX MODE
-            $tavars['vars']['title'] = __('comments:err.redir.title');
-            $tavars['vars']['linktext'] = __('comments:err.redir.url');
+            msg(['type' => 'danger', 'title' => __('comments:err.redir.title'), 'message' => $output['data'], 'referer' => $HTTP_REFERER], 1, 3);
         }
-        $tpl->template('redirect', tpl_site);
-        $tpl->vars('redirect', $tavars);
-        $template['vars']['mainblock'] = $tpl->show('redirect');
     }
 }
 

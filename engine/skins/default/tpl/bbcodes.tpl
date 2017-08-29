@@ -10,6 +10,8 @@
 			<li class="nav-item"><a href="#" onclick="insertext('[u]','[/u]', {area})" class="dropdown-item"><i class="fa fa-underline"></i> {l_bb.underline}</a></li>
 			<li class="nav-item"><a href="#" onclick="insertext('[i]','[/i]', {area})" class="dropdown-item"><i class="fa fa-italic"></i> {l_bb.italic}</a></li>
 			<li class="nav-item"><a href="#" onclick="insertext('[s]','[/s]', {area})" class="dropdown-item"><i class="fa fa-strikethrough"></i>{l_bb.crossline}</a></li>
+            <li role="separator" class="dropdown-divider"></li>
+            <li class="nav-item"><a href="#" onclick="insertext('[color=]','[/color]', {area})" class="dropdown-item"><i class="fa fa-paint-brush"></i>{l_bb.color}</a>
 		</ul>
 	</div>
 	
@@ -47,9 +49,8 @@
 		[/news]
 	[/perm]
 
-	<a href="#" class="btn btn-sm btn-secondary btn-default" onclick="insertext('[color=]','[/color]', {area})" title='{l_bb.color}'><i class="fa fa-paint-brush"></i></a>
 	<a href="#modal-smiles" class="btn btn-sm btn-secondary btn-default" data-toggle="modal"><i class="fa fa-smile-o"></i></a>
-	
+
 </div>
 
 <!-- URL LINK -->

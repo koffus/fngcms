@@ -239,11 +239,10 @@ function editNewsForm()
         $tVars['link'] = News::generateLink($row, false, 0, true);
     }
 
-    $tVars['flags']['can_publish']		= ((($row['approve'] == 1) and ($perm[$permGroupMode.'.modify.published'])) or (($row['approve'] < 1) and $perm[$permGroupMode.'.publish']))?1:0;
-    $tVars['flags']['can_unpublish']	= (($row['approve'] < 1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
-    $tVars['flags']['can_draft']		= (($row['approve'] == -1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
-
-    $tVars['flags']['params.lost']		= ($tVars['flags']['publish.lost'] or $tVars['flags']['html.lost'] or $tVars['flags']['mainpage.lost'] or $tVars['flags']['pinned.lost'] or $tVars['flags']['catpinned.lost'] or $tVars['flags']['multicat.lost'])?1:0;
+    $tVars['flags']['can_publish'] = ((($row['approve'] == 1) and ($perm[$permGroupMode.'.modify.published'])) or (($row['approve'] < 1) and $perm[$permGroupMode.'.publish']))?1:0;
+    $tVars['flags']['can_unpublish'] = (($row['approve'] < 1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
+    $tVars['flags']['can_draft'] = (($row['approve'] == -1) or ($perm[$permGroupMode.'.unpublish']))?1:0;
+    $tVars['flags']['params.lost'] = ($tVars['flags']['publish.lost'] or $tVars['flags']['html.lost'] or $tVars['flags']['mainpage.lost'] or $tVars['flags']['pinned.lost'] or $tVars['flags']['catpinned.lost'] or $tVars['flags']['multicat.lost'])?1:0;
 
     // Generate data for content input fields
     $tVars['content'] = secure_html($row['content']);
@@ -286,8 +285,11 @@ function editNewsForm()
         executeActionHandler('editnews_entry');
     executeActionHandler('editnews_form');
 
-    if (isset($PFILTERS['news']) and is_array($PFILTERS['news']))
-        foreach ($PFILTERS['news'] as $k => $v) { $v->editNewsForm($id, $row, $tVars); }
+    if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
+        foreach ($PFILTERS['news'] as $k => $v) {
+            $v->editNewsForm($id, $row, $tVars);
+        }
+    }
 
     $xt = $twig->loadTemplate('skins/default/tpl/news/edit.tpl');
     echo $xt->render($tVars);

@@ -25,7 +25,7 @@
 						<td>{{ lang.uprofile['status'] }}</td><td>{{ user.status }}</td>
 					</tr>
 					<tr>
-						<td>{{ lang.uprofile['regdate'] }}</td><td>{{ user.regdate }}</td>
+						<td>{{ lang.uprofile['regdate'] }}</td><td>{{ user.reg }}</td>
 					</tr>
 					<tr>
 						<td>{{ lang.uprofile['last'] }}</td><td>{{ user.last }}</td>
@@ -34,7 +34,7 @@
 						<td>{{ lang.uprofile['all_news'] }}</td><td>{{ user.news }}</td>
 					</tr>
 					<tr>
-						<td>{{ lang.uprofile['all_comments'] }}</td><td>{{ user.comments }}</td>
+						<td>{{ lang.uprofile['all_comments'] }}</td><td>{{ user.com }}</td>
 					</tr>
 					<tr>
 						<td><label class="control-label">{{ lang.uprofile['site'] }}</label></td><td><input type="text" name="editsite" value="{{ user.site }}" class="form-control input-sm" /></td>

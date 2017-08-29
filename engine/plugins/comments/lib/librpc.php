@@ -2,7 +2,7 @@
 
 function comments_rpc_manage($params)
 {
-    global $mysql, $config, $AUTH_METHOD, $userROW, $ip, $parse, $catmap, $catz, $PFILTERS, $REQUEST_URI;
+    global $mysql, $config, $AUTH_METHOD, $userROW, $ip, $parse, $catmap, $catz, $PFILTERS, $HTTP_REFERER;
 
     // TO DO Action: add,edit,delete
 
@@ -39,7 +39,7 @@ function comments_rpc_manage($params)
         $SQL['mail'] = $user['mail'];
         $is_member = 1;
         $memberRec = $user;
-    } else if (is_array($userROW)) {
+    } elseif (is_array($userROW)) {
         $SQL['author'] = $userROW['name'];
         $SQL['author_id'] = $userROW['id'];
         $SQL['mail'] = $userROW['mail'];
@@ -160,7 +160,11 @@ function comments_rpc_manage($params)
     if ($multiCheck) {
         // Locate last comment for this news
         if (is_array($lpost = $mysql->record("
-            SELECT author_id, author, ip, mail FROM ".prefix."_comments WHERE post=".db_squote($SQL['post'])." AND module=" . $SQL['module'] ." ORDER BY id desc LIMIT 1
+            SELECT 
+                author_id, author, ip, mail 
+            FROM ".prefix."_comments 
+            WHERE 
+                post=".db_squote($SQL['post'])." AND module=" . $SQL['module'] ." ORDER BY id desc LIMIT 1
             "))) {
             // Check for post from the same user
             if (is_array($userROW)) {
@@ -186,12 +190,12 @@ function comments_rpc_manage($params)
     }
     $SQL['text'] = str_replace("\r\n", "<br />", $SQL['text']);
     $SQL['ip'] = $ip;
-    $SQL['reg'] = ($is_member) ? '1' : '0';
+    //$SQL['reg'] = ($is_member) ? '1' : '0';
 
     // RUN interceptors
     loadActionHandlers('comments:add');
 
-    if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments']))
+    if (isset($PFILTERS['comments']) and is_array($PFILTERS['comments'])) {
         foreach ($PFILTERS['comments'] as $k => $v) {
             $pluginResult = $v->addComments($memberRec, $postRow, $tvars, $SQL);
             if ((is_array($pluginResult) and ($pluginResult['result'])) or (!is_array($pluginResult) and $pluginResult))
@@ -199,9 +203,17 @@ function comments_rpc_manage($params)
 
             return array('status' => 0, 'errorCode' => 999, 'errorText' => str_replace(array('{plugin}', '{errorText}'), array($k, (is_array($pluginResult) and isset($pluginResult['errorText'])?$pluginResult['errorText']:'')), __('comments:err.'.((is_array($pluginResult) and isset($pluginResult['errorText']))?'e':'').'pluginlock')));
         }
+    }
+
+    $moderate = (1 == pluginGetVariable('comments', 'moderate') and (empty($userROW['status']) or $userROW['status'] > 1)) ? true : false;
+
+    if (!$moderate) {
+        $SQL['approve'] = 1;
+    }
 
     // Create comment
-    $vnames = array(); $vparams = array();
+    $vnames = array();
+    $vparams = array();
     foreach ($SQL as $k => $v) {
         $vnames[] = $k;
         $vparams[] = db_squote($v);
@@ -212,11 +224,13 @@ function comments_rpc_manage($params)
     // Retrieve comment ID
     $comment_id = $mysql->result("select LAST_INSERT_ID() as id");
 
-    // Update comment counter in news
-    $mysql->query("update `".prefix."_" . $params['table'] . "` set com=com+1 where id=".db_squote($SQL['post']));
+    // Update comment counter in news if NOT moderate
+    if (!$moderate) {
+        $mysql->query("update `".prefix."_" . $params['table'] . "` set com=com+1 where id=".db_squote($SQL['post']));
+    }
 
     // Update counter for user
-    if ($SQL['author_id']) {
+    if ($SQL['author_id'] and !$moderate) {
         $mysql->query("update ".prefix."_users set com=com+1 where id = ".db_squote($SQL['author_id']));
     }
 
@@ -231,7 +245,7 @@ function comments_rpc_manage($params)
     }
 
     // Email informer
-    if (pluginGetVariable('comments', 'inform_author') or pluginGetVariable('comments', 'inform_admin')) {
+    if (pluginGetVariable('comments', 'inform_author') or pluginGetVariable('comments', 'inform_admin') or $moderate) {
         $alink = ($SQL['author_id']) ? generatePluginLink('uprofile', 'show', array('name' => $SQL['author'], 'id' => $SQL['author_id']), array(), false, true) : '';
         $body = str_replace(
             array('{username}',
@@ -244,17 +258,17 @@ function comments_rpc_manage($params)
                     ($SQL['author_id']) ? '<a href="'.$alink.'">' : '',
                     ($SQL['author_id']) ? '</a>' : '',
                     $parse->bbcodes($parse->smilies(secure_html($SQL['text']))),
-                    (('news' == $params['table']) ? News::generateLink($postRow, false, 0, true) : $REQUEST_URI),
+                    (preg_match('#^(http|https)\:\/\/#', $HTTP_REFERER, $tmp) ? $HTTP_REFERER : $config['home_url']),
                     isset($postRow['title']) ? $postRow['title'] : $postRow['name'],
                     ),
             __('comments:notice')
         );
-        if (pluginGetVariable('comments', 'inform_admin')) {
+        if (pluginGetVariable('comments', 'inform_admin') or $moderate) {
             sendEmailMessage($config['admin_mail'], __('comments:newcomment'), $body);
         }
-        if (pluginGetVariable('comments', 'inform_author')) {
+        if (pluginGetVariable('comments', 'inform_author') or $moderate) {
             // Determine author's email
-            if (is_array($umail = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($SQL['author_id'])))) {
+            if (is_array($umail = $mysql->record("select * from ".uprefix."_users where id = ".db_squote($postRow['author_id'])))) {
                 if ($umail['mail'] != $config['admin_mail'])
                     sendEmailMessage($umail['mail'], __('comments:newcomment'), $body);
             }
@@ -278,12 +292,12 @@ function comments_rpc_manage($params)
 
     // Connect library
     include_once(root . "/plugins/comments/inc/comments.show.php");
-    
 
     return array(
         'status' => 1,
         'errorCode' => 0,
         'content' => comments_show($postRow['id'], $comment_id, $postRow['com'] + 1, $callingCommentsParams),
+        'message' => ($moderate) ? __('comments:msg_add_moderate') : __('comments:msg_add_success'),
         'rev' => intval(pluginGetVariable('comments', 'backorder')),
     );
 }

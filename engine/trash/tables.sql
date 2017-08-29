@@ -114,6 +114,7 @@ CREATE TABLE `XPREFIX_images` (
  `folder` varchar(100) NOT NULL default '',
  `date` int(10) NOT NULL default '0',
  `user` varchar(100) NOT NULL default '',
+ `user_id` int(10) NOT NULL default '0',
  `width` int(10) default 0,
  `height` int(10) default 0,
  `preview` tinyint(1) default '0',

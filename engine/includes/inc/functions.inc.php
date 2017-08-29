@@ -187,7 +187,7 @@ function Smilies($insert_location, $break_location = false, $area = false)
 
 function BBCodes($area = false, $template = false)
 {
-    global $config, $tpl, $mod;
+    global $config, $tpl, $mod, $userROW;
 
     if ($config['use_bbcodes']) {
         Lang::load('bbcodes');
@@ -198,7 +198,7 @@ function BBCodes($area = false, $template = false)
             if ($template and !in_array($template, array('pmmes', 'editcom', 'news', 'static')))
                 return false;
             $tvars['regx']['#\[news\](.+?)\[/news\]#is'] = ($mod == 'news') ? '$1' : '';
-            $tvars['regx']['#\[perm\](.+?)\[/perm\]#is'] = ($mod == 'static' or $mod == 'news') ? '$1' : '';
+            $tvars['regx']['#\[perm\](.+?)\[/perm\]#is'] = ($mod == 'news' or $mod == 'static' or (isset($userROW) and $userROW['status'] < 3)) ? '$1' : '';
             $tplDir = tpl_actions;
         } else {
             $tplDir = tpl_site;
@@ -437,9 +437,10 @@ function templateLoadVariables($die = false, $loadMode = 0)
 //			0 - add into mainblock
 //			1 - print
 //			2 - return as result
+//          3 - redirect
 function msg($params, $mode = 0, $disp = -1)
 {
-    global $twig, $template;
+    global $twig, $template, $SUPRESS_TEMPLATE_SHOW;
 
     // Set AUTO mode if $disp == -1
     if ($disp == -1)
@@ -449,13 +450,27 @@ function msg($params, $mode = 0, $disp = -1)
     $type = isset($params['type']) ? $params['type'] : 'success';
     $title = isset($params['title']) ? $params['title'] : __($type);
     $message = isset($params['message']) ? $params['message'] : '';
+    $referer = isset($params['referer']) ? $params['referer'] : null;
 
-    $msg = $twig->loadTemplate((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl')->render(array(
-        'id' => rand(8, 88),
-        'type' => $type,
-        'title' => trim(db_squote('<b>'.$title.'</b><br />'), "'"),
-        'message' => trim(db_squote($message), "'"),
-        ));
+    if (3 == $disp) {
+        $tVars = array(
+            'title' => $title,
+            'type' => $type,
+            'message' => trim(db_squote($message), "'"),
+            'linktext' => home_title,
+            'link' => !empty($referer) ? trim(db_squote($referer), "'") : home,
+        );
+        $SUPRESS_TEMPLATE_SHOW = 1;
+        $template['vars']['mainblock'] = $twig->loadTemplate('redirect.tpl')->render($tVars);
+        return 1;
+    } else {
+        $msg = $twig->loadTemplate((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl')->render(array(
+            'id' => rand(8, 88),
+            'type' => $type,
+            'title' => trim(db_squote('<b>'.$title.'</b><br />'), "'"),
+            'message' => trim(db_squote($message), "'"),
+            ));
+    }
 
     switch($disp) {
         case 0:
@@ -475,6 +490,103 @@ function msg($params, $mode = 0, $disp = -1)
             }
             break;
     }
+}
+
+// TO DO: Need to new class HtmlHelper
+function mkParamLine($param)
+{
+
+    if ('flat' == $param['type']) {
+        $tvars['type'] = 'flat';
+        $tvars['input'] = $param['input'];
+
+        return $tvars;
+    }
+
+    if (!empty($_POST[$param['name']])) {
+        $param['value'] = secure_html($_POST[$param['name']]);
+    }
+
+    $name = isset($param['name']) ? secure_html($param['name']) : '';
+    $id = isset($param['id']) ? secure_html($param['id']) : false;
+    $title = isset($param['title']) ? $param['title'] : '';
+    $html_flags = isset($param['html_flags'] ) ? $param['html_flags'] : '';
+    $value = isset($param['value']) ? secure_html($param['value']) : '';
+    $values = (isset($param['values']) and count($param['values'])) ? $param['values'] : array();
+
+    $tvars = array(
+        'name' => $name,
+        'id' => $id,
+        'title' => $title,
+        'descr' => isset($param['descr']) ? $param['descr'] : false,
+        'error' => isset($param['error']) ? (str_replace('%error%', $param['error'], __('param_error'))) : false,
+        'input' => '',
+        'value' => $value,
+        'values' => $values,
+    );
+
+    // default type="text"
+    if ('input' == $param['type']) {
+        $tvars['input'] = '<input type="text" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="' . $value . '" class="form-control" />';
+        $tvars['type'] = 'input';
+
+    // type="email"
+    } elseif ('email' == $param['type']) {
+        $tvars['input'] = '<input type="email" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
+        $tvars['type'] = 'email';
+
+    // type="password"
+    } elseif ('password' == $param['type']) {
+        $tvars['input'] = '<input type="password" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
+        $tvars['type'] = 'password';
+
+    // type="number"
+    } elseif ('number' == $param['type']) {
+        $tvars['input'] = '<input type="number" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
+        $tvars['type'] = 'number';
+
+    // type="hidden"
+    } elseif ('hidden' == $param['type']) {
+        $tvars['input'] = '<input type="hidden" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
+        $tvars['type'] = 'hidden';
+
+    // type="captcha"
+    } elseif ('captcha' == $param['type']) {
+        $tvars['input'] = ' <div class="input-group">
+                                <input type="text" name="captcha" pattern="[0-9]{4,4}" id="captcha" class="form-control" required />
+                                <span class="input-group-addon p-0">
+                                    <img id="img_captcha" src="'.admin_url .'/captcha.php'.'?rand='.mt_rand() / mt_getrandmax().'" alt="captcha" class="captcha" />
+                                </span>
+                            </div>';
+        $tvars['type'] = 'captcha';
+
+    // type="button"
+    } elseif ('button' == $param['type']) {
+        $tvars['input'] = '<input type="button" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="' . $value . '" class="btn btn-default" />';
+        $tvars['type'] = 'button';
+
+    // type="checkbox"
+    } elseif ('checkbox' == $param['type']) {
+        $tvars['input'] = '<input type="checkbox" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="1"' . ($value ? ' checked' : '') . ' />';
+        $tvars['type'] = 'checkbox';
+
+    // textarea
+    } elseif ('text' == $param['type']) {
+        $tvars['input'] = '<textarea name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' class="form-control">' . (isset($param['value']) ? $param['value'] : '') . '</textarea>';
+        $tvars['type'] = 'text';
+
+    // select
+    } elseif ('select' == $param['type']) {
+        $tvars['input'] = MakeDropDown($param['values'], $name, $value, ($id ? 'id="'.$id.'" ': '' ));
+        $tvars['type'] = 'select';
+
+    // manual
+    } elseif ('manual' == $param['type']) {
+        $tvars['input'] = $param['input'];
+        $tvars['type'] = 'manual';
+    }
+
+    return $tvars;
 }
 
 function OrderList($value, $showDefault = false)
@@ -580,9 +692,9 @@ function ListDirs($folder, $category = false, $alllink = true, $elementID = '')
     return $select;
 }
 
-function MakeDropDown($options, $name, $selected = "FALSE")
+function MakeDropDown($options, $name, $selected = "FALSE", $id = false)
 {
-    $output = '<select name="' . $name . '" class="form-control">';
+    $output = '<select name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). 'class="form-control">';
     foreach ($options as $k => $v)
         $output .= '<option value="' . $k . '"' . (($selected == $k) ? ' selected="selected"' : '') . '>' . $v . '</option>';
     $output .= '</select>';

@@ -353,15 +353,15 @@ margin-left: 240px;
  * BBCODES && SMILES
 */
 
-.bbcodes .btn {
-	border: 0;
-	font-size: 1em;
-	padding: 8px 1px;
-}
 .bbcodes {
 	border: 1px solid #ccc;
 	border-radius: 4px 4px 0 0;
 	border-bottom: none;
+}
+.bbcodes .btn {
+	border: 0;
+	padding: 8px 1px;
+    font-size: 12px;
 }
 .bbcodes .btn:last-child:not(:first-child) {
 	border-bottom-right-radius: 0;

@@ -145,60 +145,6 @@ function generate_config_page($module, $params)
 {
     global $twig, $PHP_SELF;
 
-    function mkParamLine($param)
-    {
-
-        if ('flat' == $param['type']) {
-            $tvars['type'] = 'flat';
-            $tvars['input'] = $param['input'];
-
-            return $tvars;
-        }
-
-        $tvars = array(
-            'name' => isset($param['name']) ? $param['name'] : '',
-            'title' => isset($param['title']) ? $param['title'] : '',
-            'descr' => isset($param['descr']) ? $param['descr'] : '',
-            'error' => isset($param['error']) ? (str_replace('%error%', $param['error'], __('param_error'))) : '',
-            'input' => '',
-            'flags' => array(
-                'descr' => isset($param['descr']) ? true : false,
-                'error' => isset($param['error']) ? true : false
-            )
-        );
-
-        if (!empty($_POST[$param['name']])) {
-            $param['value'] = $_POST[$param['name']];
-        }
-
-        $html_flags = isset($param['html_flags'] ) ? $param['html_flags'] : '';
-
-        if ('input' == $param['type']) {
-            $tvars['input'] = '<input type="text" name="' . $param['name'] . '" ' . $html_flags . ' value="' . secure_html($param['value']) . '" class="form-control" />';
-            $tvars['type'] = 'input';
-        } elseif ('button' == $param['type']) {
-            $tvars['input'] = '<input type="button" name="' . $param['name'] . '" ' . $html_flags . ' value="' . secure_html($param['value']) . '" class="btn btn-default" />';
-            $tvars['type'] = 'button';
-        } elseif ('checkbox' == $param['type']) {
-            $tvars['input'] = '<input type="checkbox" name="' . $param['name'] . '" ' . $html_flags . ' value="1"' . ($param['value'] ? ' checked' : '') . ' />';
-            $tvars['type'] = 'checkbox';
-        } elseif ('hidden' == $param['type']) {
-            $tvars['input'] = '<input type="hidden" name="' . $param['name'] . '" value="' . secure_html($param['value']) . '" class="form-control" />';
-            $tvars['type'] = 'hidden';
-        } elseif ('text' == $param['type']) {
-            $tvars['input'] = '<textarea name="' . $param['name'] . '" ' . $html_flags . ' class="form-control">' . secure_html($param['value']) . '</textarea>';
-            $tvars['type'] = 'text';
-        } elseif ('select' == $param['type']) {
-            $tvars['input'] = MakeDropDown($param['values'], $param['name'], $param['value']);
-            $tvars['type'] = 'select';
-        } elseif ('manual' == $param['type']) {
-            $tvars['input'] = $param['input'];
-            $tvars['type'] = 'manual';
-        }
-
-        return $tvars;
-    }
-
     // Make action (POST form), description, dependence, navigation panel and submit footer to page plugin config
     $settings = ['action', 'description', 'dependence', 'navigation', 'submit'];
     foreach ($settings as $set) {
