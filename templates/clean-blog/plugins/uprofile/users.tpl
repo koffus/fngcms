@@ -1,8 +1,8 @@
 <!-- Page Header -->
 <header class="intro-header" style="background-image: url('{{ tpl_url }}/img/home-bg.jpg')">
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+		<div class="row justify-content-center">
+			<div class="col-lg-8 col-md-10">
 				<div class="post-heading">
 					<h1>{{ user.name }}</h1>
 					<hr class="small">
@@ -12,11 +12,10 @@
 		</div>
 	</div>
 </header>
-
 <!-- Page Content -->
 <div class="container">
-	<div class="row">
-		<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+	<div class="row justify-content-center">
+		<div class="col-lg-8 col-md-10">
 			<div class="row">
 				<div class="col-md-3 text-center">
 					<a href="{{ user.avatar }}" target="_blank"><img src="{{ user.avatar }}" alt="{{ user.name }}" class="img-circle img-responsive" /></a>

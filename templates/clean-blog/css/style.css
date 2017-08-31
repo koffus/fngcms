@@ -103,7 +103,6 @@ button, input, optgroup, select, textarea {
   background-color: white;
   border: 0;
   position: absolute;
-  padding: 0;
   box-shadow: 0 6px 12px rgba(0,0,0,0.175);  }
   #mainNav .navbar-brand {
 	color: #777777;
@@ -128,7 +127,7 @@ button, input, optgroup, select, textarea {
 		padding: 20px; } }
   @media only screen and (min-width: 1170px) {
 	  body {
-		  padding-top: 70px;
+		  padding-top: 86px;
 	  }
 	#mainNav {
 	  -webkit-transition: background-color 0.2s;
@@ -145,7 +144,7 @@ button, input, optgroup, select, textarea {
 	  #mainNav.is-fixed {
 		/* when the user scrolls down, we hide the header right above the viewport */
 		position: fixed;
-		top: -70px;
+		top: -86px;
 		background-color: rgba(255, 255, 255, 0.9);
 		-webkit-transition: -webkit-transform 0.2s;
 		-moz-transition: -moz-transform 0.2s;

@@ -1,8 +1,8 @@
 <!-- Page Header -->
 <header class="intro-header" style="background-image: url('{{ tpl_url }}/img/home-bg.jpg')">
 	<div class="container">
-		<div class="row">
-			<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+		<div class="row justify-content-center">
+			<div class="col-lg-8 col-md-10">
 				<div class="post-heading">
 					<h1>{{ user.name }}</h1>
 					<hr class="small">
@@ -15,13 +15,13 @@
 
 <!-- Page Content -->
 <div class="container">
-	<div class="row">
-		<div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+	<div class="row justify-content-center">
+		<div class="col-lg-8 col-md-10">
 			<form id="profileForm" action="{{ form_action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
 				<input type="hidden" name="token" value="{{ token }}" />
 
 				<div class="row">
-					<div class="col-md-3">
+					<div class="col-md-3 text-center">
 						{% if (flags.avatarAllowed) %}
 							<a href="{{ user.avatar }}" target="_blank"><img src="{{ user.avatar }}" alt="{{ user.name }}" class="img-circle img-responsive" /></a>
 							{% if (user.flags.hasAvatar) %}
@@ -42,7 +42,7 @@
                                     <td>{{ lang.uprofile['status'] }}</td><td>{{ user.status }}</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ lang.uprofile['regdate'] }}</td><td>{{ user.regdate }}</td>
+                                    <td>{{ lang.uprofile['regdate'] }}</td><td>{{ user.reg }}</td>
                                 </tr>
                                 <tr>
                                     <td>{{ lang.uprofile['last'] }}</td><td>{{ user.last }}</td>
@@ -51,7 +51,7 @@
                                     <td>{{ lang.uprofile['all_news'] }}</td><td>{{ user.news }}</td>
                                 </tr>
                                 <tr>
-                                    <td>{{ lang.uprofile['all_comments'] }}</td><td>{{ user.comments }}</td>
+                                    <td>{{ lang.uprofile['all_comments'] }}</td><td>{{ user.com }}</td>
                                 </tr>
 								<tr>
 									<td><label class="control-label">{{ lang.uprofile['site'] }}</label></td><td><input type="text" name="editsite" value="{{ user.site }}" class="form-control input-sm" /></td>

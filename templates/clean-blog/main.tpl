@@ -34,11 +34,11 @@
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar fixed-top navbar-toggleable-md navbar-light" id="mainNav">
+    <!-- Navigation navbar navbar-expand-md navbar-dark bg-dark-->
+    <nav class="navbar fixed-top navbar-expand-md navbar-light" id="mainNav">
         <div class="container">
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i></button>
-            <a class="navbar-brand page-scroll" href="{{ home }}">{{ home_title }}</a>
+            <a class="navbar-brand" href="{{ home }}">{{ home_title }}</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarResponsive">
                 <ul class="navbar-nav ml-auto">
                     <li class="nav-item">
@@ -84,8 +84,8 @@
     <!-- Footer -->
     <footer>
         <div class="container">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2 col-md-10 offset-md-1">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
                     <ul class="list-inline text-center">
                         <li class="list-inline-item">
                             <a href="#">
