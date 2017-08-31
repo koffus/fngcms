@@ -99,9 +99,12 @@
 							{% endif %}
 						{% endfor %}
 					{% endif %}
+					<tr>
+						<td>&nbsp;</td>
+                        <td><input type="submit" onclick="return validate_form();" value="{{ lang.uprofile['save'] }}" class="btn btn-success" /></td>
+					</tr>
 				</tbody>
 			</table>
-			<input type="submit" onclick="return validate_form();" value="{{ lang.uprofile['save'] }}" class="btn btn-success" />
 		</div>
 	</div>
 </form>

@@ -100,9 +100,12 @@
 									<td><input type="password" name="oldpass" value="" class="form-control input-sm" />
 									<span class="help-block">{{ lang.uprofile['oldpass#desc'] }}</span></td>
 								</tr>
+                                <tr>
+                                    <td>&nbsp;</td>
+                                    <td><input type="submit" onclick="return validate_form();" value="{{ lang.uprofile['save'] }}" class="btn btn-success" /></td>
+                                </tr>
 							</tbody>
 						</table>
-						<input type="submit" onclick="return validate_form();" value="{{ lang.uprofile['save'] }}" class="btn btn-success" />
 					</div>
 				</div>
 			</form>
