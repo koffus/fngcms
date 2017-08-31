@@ -8,7 +8,7 @@
 	<input type="hidden" name="subaction" value="submit" />
 	<input type="hidden" name="id" value="{{ id }}" />
 
-	<div class="card card-block">
+	<div class="card card-body">
 		<div class="form-group row">
 			<label for="title" class="col-sm-4 col-form-label">{{ lang.editnews['title'] }}</label>
 			<div class="col-sm-8">
@@ -35,7 +35,7 @@
 			<div class="col-sm-8">
 				<div class="btn-group" style="width: 100%;" onclick="$('.cat-list').toggle();">
 						<a href="#"id="catSelector" class="btn btn-secondary dropdown-toggle" value="{{ lang['no_cat'] }}" hidefocus="" autocomplete="off" data-toggle="dropdown"style="white-space: pre-wrap;height: auto; text-align: left;" >{{ lang['no_cat'] }}</a>
-						<div class="cat-list dropdown-menu card-block " style="display: none; width: 100%;">{{ extcat }}</div>
+						<div class="cat-list dropdown-menu card-body " style="display: none; width: 100%;">{{ extcat }}</div>
 					</div>
 			</div>
 		</div>

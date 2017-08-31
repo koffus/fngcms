@@ -26,7 +26,8 @@ function update_comment(postid, action) {
 }
 </script>
 
-<div class="respond card card-block">
+<div class="respond card card-body">
+
     <form id="comment" method="post" action="" name="form" onsubmit="update_comment('{{ postid }}', 'add'); return false;" novalidate>
         <input type="hidden" name="tokken" value="{{ tokken }}" />
         <input type="hidden" name="module" value="{{ module }}" />

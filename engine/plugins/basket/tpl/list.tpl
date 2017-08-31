@@ -1,7 +1,7 @@
 <h2 class="section-title">Моя корзина</h2>
 
 <section class="section">
-    <div class="card card-block">
+    <div class="card card-body">
         {% if (recs > 0) %}
         <form method="post" action="{{ home }}/plugin/basket/update/">
             <table class="table">

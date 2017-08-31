@@ -15,7 +15,7 @@
 
 		<div class="col-md-8">
 			<div class="form-group">
-				<div class="card"><div class="card-block"><p class="card-text">{{ content }}</p></div></div>
+				<div class="card"><div class="card-body"><p class="card-text">{{ content }}</p></div></div>
 			</div>
 			<div class="form-group">
 				<input type="submit" value="{{ lang['pm:delete_one'] }}" class="btn btn-danger">

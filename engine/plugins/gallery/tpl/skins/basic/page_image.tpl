@@ -3,7 +3,7 @@
 <section class="section">
     <div class="card">
         <img src="{{ img.src }}" alt="{{ img.name }}" class="card-img-top img-fluid" />
-        <div class="card-block">
+        <div class="card-body">
         <p class="card-text">{{ img.description }}</p>
         <p class="card-text">
             <small class="text-muted pull-left">Загружено: {{ img.dateStamp | cdate }}</small>

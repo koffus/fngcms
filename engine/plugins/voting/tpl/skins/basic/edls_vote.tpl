@@ -1,6 +1,6 @@
 
 <div id="voting_{voteid}" class="card mb-3">
-  <div class="card-block">
+  <div class="card-body">
     <h4 class="card-title">{votename}</h4>
     [votedescr]<p>Описание: {votedescr}</p>[/votedescr]
     <form action="{post_url}" method="get" id="voteForm_{voteid}">

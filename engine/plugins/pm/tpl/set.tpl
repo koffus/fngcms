@@ -14,7 +14,7 @@
 
 		<div class="col-md-8">
 			<div class="form-group">
-				<div class="card card-block">
+				<div class="card card-body">
 					<label><input type="checkbox" name="email" id="email" {{ checked }} />&nbsp;{{ lang['pm:email_set'] }}</label>
 				</div>
 			</div>

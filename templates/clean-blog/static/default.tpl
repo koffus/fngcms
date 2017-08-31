@@ -6,6 +6,7 @@
                 <div class="post-heading">
                     {% if havePermission %}<a href="{{ staticEditLink }}" class="pull-right "><i class="fa fa-pencil"></i></a>{% endif %}
                     <h1>{{ staticTitle }}</h1>
+                    <hr class="small">
                 </div>
             </div>
         </div>

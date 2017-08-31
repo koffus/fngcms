@@ -49,7 +49,7 @@
         </div>
 
         <div class="container">
-            <div class="row card-block align-items-center">
+            <div class="row card-body align-items-center">
                 <div class="col-6">
                     <h1 class="site-title-heading">
                         <a href="{{ home }}" title="{{ home_title }}" rel="home">{{ home_title }}</a>
