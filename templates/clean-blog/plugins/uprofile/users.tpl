@@ -57,7 +57,8 @@
 							</tr>
 							{% if (user.flags.isOwnProfile) %}
 							<tr>
-								<td colspan="2"><a href="{{ home }}/profile.html" class="btn btn-primary">{{ lang.uprofile['edit_profile'] }}</a></td>
+								<td>&nbsp;</td>
+                                <td><a href="{{ home }}/profile.html" class="btn btn-primary">{{ lang.uprofile['edit_profile'] }}</a></td>
 							</tr>
 							{% endif %}
 						</tbody>
