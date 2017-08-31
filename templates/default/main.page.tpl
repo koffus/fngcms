@@ -7,7 +7,7 @@
             {{ mainblock }}
         </main>
 
-        <aside class="sidebar col-lg-3 offset-lg-1">
+        <aside class="sidebar col-lg-3 ml-auto">
             {% if pluginIsActive('tags') %}
                 {{ plugin_tags }}
             {% endif %}

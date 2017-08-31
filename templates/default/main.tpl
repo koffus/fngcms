@@ -35,7 +35,7 @@
 <body>
 {% block body %}
     <header>
-        <div class="header-top navbar-inverse bg-inverse">
+        <div class="header-top navbar-dark bg-dark">
             <div class="container">
                 <div class="row">
                     <div class="col-6 text-left">
@@ -67,9 +67,9 @@
         <div class="container">
             <div class="row"><div class="col-md-12">
             
-            <nav id="mainNav" class="navbar navbar-toggleable-md  navbar-inverse bg-inverse">
-                <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
+            <nav id="mainNav" class="navbar navbar-expand-md navbar-dark bg-dark">
                 <a class="navbar-brand" href="{{ home }}" title="{{ home_title }}" rel="home">{{ home_title }}</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse justify-content-end" id="navbarCollapse">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item dropdown">
