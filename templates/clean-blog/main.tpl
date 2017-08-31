@@ -23,7 +23,7 @@
     <!-- jQuery first, then Tether, then Popper, then Bootstrap JS. -->
     <script src="{{ scriptLibrary }}/js/jquery-3.2.1.js"></script>
     <script src="{{ scriptLibrary }}/js/tether-1.4.0.js"></script>
-    <script src="{{ scriptLibrary }}/js/popper-1.11.0"></script>
+    <script src="{{ scriptLibrary }}/js/popper-1.11.0.js"></script>
     <script src="{{ scriptLibrary }}/bootstrap-4.0.0/bootstrap.js"></script>
     <script src="{{ scriptLibrary }}/js/notify-3.1.5.js"></script>
     <!-- Theme JavaScript -->
