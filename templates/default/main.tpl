@@ -21,9 +21,10 @@
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <!-- jQuery first, then Tether, then Bootstrap JS. -->
+    <!-- jQuery first, then Tether, then Popper, then Bootstrap JS. -->
     <script src="{{ scriptLibrary }}/js/jquery-3.2.1.js"></script>
-    <script src="{{ scriptLibrary }}/tether-1.4.0/tether.js"></script>
+    <script src="{{ scriptLibrary }}/js/tether-1.4.0.js"></script>
+    <script src="{{ scriptLibrary }}/js/popper-1.11.0"></script>
     <script src="{{ scriptLibrary }}/bootstrap-4.0.0/bootstrap.js"></script>
     <script src="{{ scriptLibrary }}/js/notify-3.1.5.js"></script>
     <!-- Theme JavaScript -->
