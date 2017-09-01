@@ -89,10 +89,6 @@ RewriteEngine On
 
 # DO NOT UNCOMMENT BELLOW STRING - FORBID TO VIEW FOLDER
 # RewriteCond %{REQUEST_FILENAME} !-d
-# RewriteCond %{REQUEST_FILENAME} !-f
-# RewriteCond %{REQUEST_FILENAME} !-l
-
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [S=1]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^.+$ index.php?$1 [QSA,L]

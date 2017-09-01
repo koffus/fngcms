@@ -6,7 +6,7 @@
 #
 
 Options -Indexes
-DirectoryIndex index.html
+DirectoryIndex admin.php
 
 <files .htaccess>
 Order Deny,Allow
