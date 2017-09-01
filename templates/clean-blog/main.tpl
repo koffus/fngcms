@@ -45,10 +45,10 @@
                         <a class="nav-link page-scroll" href="{{ home }}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="about.html">About</a>
+                        <a class="nav-link page-scroll" href="{{ home }}/static/about.html">About</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link page-scroll" href="contact.html">Contact</a>
+                        <a class="nav-link page-scroll" href="{{ home }}/static/contact.html">Contact</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a href="{{ home }}#" class="nav-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Categories </a>
