@@ -75,11 +75,20 @@ deny from all
 </FilesMatch>
 
 RewriteEngine On
-#RewriteBase /
+# RewriteBase /
 
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^.*$ - [S=35]
+# www to w/o www
+# RewriteCond %{HTTP_HOST} ^www\.(.*) [NC]
+# RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+# END www to w/o www
 
-# Editable links
+# http to https
+# RewriteCond %{SERVER_PORT} !^443$
+# RewriteRule .* https://%{SERVER_NAME}%{REQUEST_URI} [R,L]
+# END http to https
+
+# DO NOT UNCOMMENT BELLOW STRING - FORBID TO VIEW FOLDER
+# RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-l
 RewriteRule ^.+$ index.php?$1 [QSA,L]
