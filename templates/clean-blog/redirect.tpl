@@ -4,8 +4,10 @@
     <title>{{ title }}</title>
     <meta charset="{{ lang['encoding'] }}" />
     <meta http-equiv="content-language" content="{{ lang['langcode'] }}" />
+    <meta http-equiv="Cache-Control" content="no-cache"/>
+    <meta name="document-state" content="dynamic" />
+    <meta name="generator" content="{{ what }} {{ version }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="Document-State" content="dynamic" />
     <style type="text/css">
         body {
             background: #fff;

@@ -207,6 +207,10 @@
                         <div class="col-md-7"><input type="text" class="form-control" name="save_con[lock_reason]" value="{{ config['lock_reason'] }}" maxlength="200" /></div>
                     </div>
                     <div class="form-group">
+                        <div class="col-md-5">{{ lang['lock_retry'] }} <span class="help-block">{{ lang['lock_retry_desc'] }}</span></div>
+                        <div class="col-md-7"><input type="number" class="form-control" name="save_con[lock_retry]" value="{{ config['lock_retry'] }}" maxlength="200" /></div>
+                    </div>
+                    <div class="form-group">
                         <div class="col-md-5">{{ lang['theme'] }} <span class="help-block">{{ lang['theme_desc'] }}</span></div>
                         <div class="col-md-7">{{ mkSelect({'name' : 'save_con[theme]', 'value' : config['theme'], 'values' : list['theme'] }) }}</div>
                     </div>

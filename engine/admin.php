@@ -50,20 +50,15 @@ if (get_magic_quotes_gpc())
 ini_set('magic_quotes_gpc', 0);
 ini_set('magic_quotes_sybase', 0);
 
-// Для админ. панели отключаем кеширование
-// т.к. возникают проблемы с сохранением конфигурационного файла в PHP > 5.5
-header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
-header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache'); // HTTP/1.0
-
-if (function_exists('opcache_get_status'))
-    ini_set('opcache.enable', 0);
-if (function_exists('opcache_get_status'))
-    ini_set('opcache.enable_cli', 0);
-if (function_exists('xcache_get'))
-    ini_set('xcache.cacher', 0);
+// Disable cache
+@header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
+@header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
+@header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
+@header('Cache-Control: post-check=0, pre-check=0', false);
+@header('Pragma: no-cache'); // HTTP/1.0
+if (function_exists('opcache_get_status')) ini_set('opcache.enable', 0);
+if (function_exists('opcache_get_status')) ini_set('opcache.enable_cli', 0);
+if (function_exists('xcache_get')) ini_set('xcache.cacher', 0);
 
 // Basic variables
 @define('tplRoot', dirname(__FILE__) . '/skins/default/tpl');

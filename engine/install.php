@@ -54,6 +54,16 @@ if (get_magic_quotes_gpc())
 ini_set('magic_quotes_gpc', 0);
 ini_set('magic_quotes_sybase', 0);
 
+// Disable cache
+@header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
+@header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
+@header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
+@header('Cache-Control: post-check=0, pre-check=0', false);
+@header('Pragma: no-cache'); // HTTP/1.0
+if (function_exists('opcache_get_status')) ini_set('opcache.enable', 0);
+if (function_exists('opcache_get_status')) ini_set('opcache.enable_cli', 0);
+if (function_exists('xcache_get')) ini_set('xcache.cacher', 0);
+
 // Автозагрузка классов
 spl_autoload_register(function ($className) {
     $file = __DIR__ . '/classes/' . $className . '.class.php';
@@ -73,21 +83,6 @@ function __($key, $default_value = '')
 {
     return Lang::get($key, $default_value = '');
 }
-
-// Для установки отключаем кеширование
-// т.к. возникают проблемы с сохранением конфигурационного файла в PHP > 5.5
-header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
-header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
-header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
-header('Cache-Control: post-check=0, pre-check=0', false);
-header('Pragma: no-cache'); // HTTP/1.0
-
-if (function_exists('opcache_get_status'))
-    ini_set('opcache.enable', 0);
-if (function_exists('opcache_get_status'))
-    ini_set('opcache.enable_cli', 0);
-if (function_exists('xcache_get'))
-    ini_set('xcache.cacher', 0);
 
 // Задаем дефолт константы для tpl.class.php
 // чтобы не ругался php об asumed
@@ -112,8 +107,7 @@ define('NGCMS', 1);
 
 // Check if config file already exists
 if ((@fopen(confroot . 'config.php', 'r')) and (filesize(confroot . 'config.php'))) {
-    echo "<font color=red><b>Error: configuration file already exists!</b></font><br />Delete it and continue.<br />\n";
-    return;
+    die('<font color="red"><b>Error: configuration file already exists!</b></font><br />Delete it and continue.<br />\n');
 }
 
 // =============================================================
@@ -930,6 +924,7 @@ function doInstall()
             'admin_mail' => $_POST['admin_email'],
             'lock' => '0',
             'lock_reason' => 'Сайт на реконструкции!',
+            'lock_retry' => 3600,
             'meta' => '1',
             'meta_title' => 'Главная страница',
             'description' => 'Здесь описание вашего сайта',
