@@ -81,6 +81,7 @@ class Database
         } else {
             $tX = '';
         }
+
         array_push($this->query_list, $tX . $sql);
 
         return $query;
@@ -88,23 +89,12 @@ class Database
 
     public function select($sql, $assocMode = 1)
     {
-        $timer = MicroTimer::instance();
 
-        if ($this->queryTimer) {
-            $tX = $timer->stop(4);
-        }
-        
         /*// Достаем из кеша
 		if (!defined('ADMIN')) {
 			$fname = 'sql' . DS . md5($sql) . '.txt';
 			$result = cacheRetrieveFile($fname, '300');
 			if (false !== $result) {
-                if ($this->queryTimer) {
-                    $tX = '[ ' . round($timer->stop(4) - $tX, 4) . ' ] ';
-                    array_push($this->query_list, $tX . ' [from cache] ' . $sql);
-                } else {
-                    $tX = '';
-                }
 				return json_decode($result, true);
 			}
 		}*/
@@ -135,12 +125,6 @@ class Database
                 $result[] = $item;
             }
         }
-
-        if ($this->queryTimer) {
-            $tX = '[ ' . round($timer->stop(4) - $tX, 4) . ' ] ';
-        } else {
-            $tX = '';
-        }
         
         /*// Сохраняем в кеше
 		if (!defined('ADMIN'))
@@ -151,11 +135,6 @@ class Database
 
     public function record($sql, $assocMode = 1)
     {
-        $timer = MicroTimer::instance();
-
-        if ($this->queryTimer) {
-            $tX = $timer->stop(4);
-        }
 
         try {
             $query = $this->query($sql);
@@ -181,34 +160,16 @@ class Database
         if (count($query))
             $item = $query->fetch($am);
 
-        if ($this->queryTimer) {
-            $tX = '[ ' . round($timer->stop(4) - $tX, 4) . ' ] ';
-        } else {
-            $tX = '';
-        }
-
         return $item;
     }
 
     public function result($sql)
     {
-        $timer = MicroTimer::instance();
-
-        if ($this->queryTimer) {
-            $tX = $timer->stop(4);
-        }
-
         try {
             $query = $this->query($sql);
         } catch (\PDOException $e) {
             $this->errorReport('result', $sql, $e);
             return false;
-        }
-
-        if ($this->queryTimer) {
-            $tX = '[ ' . ($timer->stop(4) - $tX) . ' ] ';
-        } else {
-            $tX = '';
         }
 
         if ($query) {
