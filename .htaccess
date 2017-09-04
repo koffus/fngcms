@@ -6,8 +6,7 @@
 # Author: NGCMS project team
 #
 
-AddDefaultCharset UTF-8
-CharsetSourceEnc UTF-8
+AddDefaultCharset utf-8
 
 Options -Indexes
 DirectoryIndex index.php
