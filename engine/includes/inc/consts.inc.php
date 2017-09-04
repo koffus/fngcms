@@ -15,7 +15,7 @@
 
 @define('NGCMS', true);
 
-@define('engineName', 'FNGCMS');
+@define('engineName', 'BixBite');
 @define('engineVersion', 'v0.9.6.5.5');
 @define('engineVersionBuild', '2017-08-29');
 

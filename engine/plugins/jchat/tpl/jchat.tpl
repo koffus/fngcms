@@ -19,7 +19,7 @@
             <div class="input-group">
                 <input id="jChatText" name="text" rows="3" onfocus="jchatCalculateMaxLen(this,'jchatWLen', {maxlen});" onkeyup="jchatCalculateMaxLen(this,'jchatWLen', {maxlen});" class="form-control" />
                 <span class="input-group-btn">
-                    <button id="jChatSubmit" type="submit" title="{l_jchat:button.post}" class="btn btn-outline-primary"><i class="fa fa-envelope-o"></i></button>
+                    <button id="jChatSubmit" type="submit" title="{l_jchat:button.post}" class="btn btn-outline-primary"><i class="fa fa-paper-plane-o"></i></button>
                 </span>
             </div>
         </form>

@@ -28,7 +28,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand hidden-xs" href="admin.php" title="{{ lang['mainpage_t'] }}">Next Generation CMS</a>
+                <a class="navbar-brand hidden-xs" href="admin.php" title="{{ lang['mainpage_t'] }}">BixBite CMS</a>
             </div>
 
             <div class="navbar-custom-menu">
@@ -133,9 +133,8 @@
                 <a href="#active_help" data-toggle="collapse" {{ h_active.help }}>
                     <i class="fa fa-leanpub"></i> {{ lang['help'] }} <span class="caret"></span></a>
                 <ul id="active_help" class="navbar-nav panel-collapse collapse">
-                    <li><a href="http://ngcms.ru/forum/" target="_blank"> Форум поддержки</a></li>
-                    <li><a href="http://wiki.ngcms.ru/" target="_blank"> Wiki NG CMS</a></li>
-                    <li><a href="http://ngcms.ru/" target="_blank"> Официальный сайт</a></li>
+                    <li><a href="http://bixbite.site/" target="_blank"> Официальный сайт</a></li>
+                    <li><a href="http://bixbite.site/forum/" target="_blank"> Форум поддержки</a></li>
                 </ul>
             </li>
         </ul>

@@ -2,7 +2,7 @@
 
 class Database
 {
-    //use Singleton; not to PDO
+    //use Singleton; NOT to PDO
 
     //protected $dbh;
 
@@ -66,6 +66,7 @@ class Database
         if ($this->queryTimer) {
             $tX = $timer->stop(4);
         }
+
         $this->queries++;
 
         try {
@@ -125,7 +126,7 @@ class Database
                 $result[] = $item;
             }
         }
-        
+
         /*// Сохраняем в кеше
 		if (!defined('ADMIN'))
 			cacheStoreFile($fname, json_encode($result));*/

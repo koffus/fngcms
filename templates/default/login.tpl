@@ -2,6 +2,7 @@
 
 <div class="row">
     <div class="col-md-8">
+
         <form name="login" method="post" action="{{ form_action }}">
             <input type="hidden" name="redirect" value="{{ redirect }}"/>
             <fieldset>
@@ -16,11 +17,13 @@
                     </div>
                 {% endfor %}
                 <div class="form-group row">
-                    <div class="col-sm-8 offset-sm-4">
+                    <div class="col-sm-4"></div>
+                    <div class="col-sm-8">
                         <button type="submit" class="btn btn-success">{{ lang['login.submit'] }}</button>
                     </div>
                 </div>
             </fieldset>
         </form>
+
     </div>
 </div>

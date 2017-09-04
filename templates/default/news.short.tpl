@@ -2,11 +2,7 @@
 <article class="article-item-wrapper">
     <div class="article-item-img">
         <a href="{{ news.url.full }}">
-            {% if (news.embed.imgCount > 0) %}
-                <img src="{{ news.embed.images[0] }}" alt="{{ news.title }}" />
-            {% else %}
-                <img src="{{ tpl_url }}/img/img-none.png" alt="{{ news.title }}" />
-            {% endif %}
+            <img src="{{ (news.embed.imgCount > 0) ? news.embed.images[0] : tpl_url ~ '/img/img-none.png' }}" alt="{{ news.title }}" />
         </a>
     </div>
     <div class="article-item-text clearfix">

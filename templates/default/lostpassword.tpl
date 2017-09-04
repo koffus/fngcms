@@ -15,7 +15,8 @@
             </div>
         {% endfor %}
         <div class="form-group row">
-            <div class="col-sm-8 offset-sm-4">
+            <div class="col-sm-4"></div>
+            <div class="col-sm-8">
                 <button type="submit" class="btn btn-success">{{ lang['send_pass'] }}</button>
             </div>
         </div>

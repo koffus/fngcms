@@ -136,7 +136,7 @@
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4>Next Generation CMS <span id="needUpdate" class="badge bg-success pull-right">loading..</span></h4>
+                    <h4>BixBite CMS <span id="needUpdate" class="badge bg-success pull-right">loading..</span></h4>
                 </div>
                 <table class="table table-statistics">
                     <tr>
