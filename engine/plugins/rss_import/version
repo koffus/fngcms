@@ -1,17 +1,16 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: rss_import
 Name: RSS news importer
-Version: 0.01
+Version: 0.9.6.6
 Acts: index, ppages 
 File: rss_import.php
 Config: config.php
 Type: plugin
-Description: Импорт новостей через RSS
-Author: Dzmitry Khadorkin
+Description: Импорт новостей через RSS-канал
+Author: RusiQ
+Author_URI: http://bixbite.site
 Title: RSS news importer
-Information: Импорт новостей через RSS
-Preinstall: default_no
-Preinstall_vars: cache="1"; cacheExpire="3600";
+Information: Импорт новостей через RSS-канал
