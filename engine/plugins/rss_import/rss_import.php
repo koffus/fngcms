@@ -23,7 +23,7 @@ function plugin_rss_import($params = [])
 
         // Generate cache file name [ we should take into account SWITCHER plugin ]
         if ($widget['cache']) {
-            $cacheFileName = md5($config['theme'] . $config['default_lang'] . 'rss_import' . $widget['skin'] . $widgetName) . '.txt';
+            $cacheFileName = md5($config['theme'] . $config['default_lang'] . $widget['skin'] . $widgetName) . '.txt';
             $cacheData = cacheRetrieveFile($cacheFileName, $widget['cache_expire'], 'rss_import');
             if ($cacheData != false) {
                 // We got data from cache. Return it and stop

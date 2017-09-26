@@ -151,7 +151,7 @@ function showList()
 
     $tVars['entries'] = $tForms;
 
-    echo $twig->render('plugins/feedback/tpl/conf.forms.tpl', $tVars);
+    echo $twig->render('plugins/feedback/tpl/admin/conf.forms.tpl', $tVars);
 }
 
 function showForm($edMode)
@@ -167,7 +167,7 @@ function showForm($edMode)
     if (!is_array($frow = $mysql->record("select * from " . prefix . "_feedback where id = " . $id))) {
         $tVars['content'] = "Указанная форма [" . $id . "] не существует!";
 
-        echo $twig->render('plugins/feedback/tpl/conf.notify.tpl'$tVars);
+        echo $twig->render('plugins/feedback/tpl/admin/conf.notify.tpl', $tVars);
         return false;
     }
 
@@ -251,7 +251,7 @@ function showForm($edMode)
     // Show template files
     $tVars['tfiles'] = feedback_locateTemplateFiles($frow['template'], substr($frow['flags'], 2, 1) ? true : false);
 
-    echo $twig->render('plugins/feedback/tpl/conf.form.tpl', $tVars);
+    echo $twig->render('plugins/feedback/tpl/admin/conf.form.tpl', $tVars);
 
 }
 
@@ -343,9 +343,7 @@ function showFormRow()
         $recordFound = 1;
     } while (0);
 
-    $templateName = 'plugins/feedback/tpl/' . ($recordFound ? 'conf.form.editrow' : 'conf.notify') . '.tpl';
-
-    echo $twig->render($templateName, $tVars);
+    echo $twig->render('plugins/feedback/tpl/admin/' . ($recordFound ? 'conf.form.editrow' : 'conf.notify') . '.tpl', $tVars);
 }
 
 function editFormRow()
@@ -470,7 +468,7 @@ function editFormRow()
     } while (0);
 
     // Show template
-    echo $twig->render('plugins/feedback/tpl/conf.notify.tpl', $tVars);
+    echo $twig->render('plugins/feedback/tpl/admin/conf.notify.tpl', $tVars);
 }
 
 //
@@ -510,7 +508,7 @@ function doUpdate()
 
     if (!$enabled) {
         // Show template
-        echo $twig->render('plugins/feedback/tpl/conf.notify.tpl', $tVars);
+        echo $twig->render('plugins/feedback/tpl/admin/conf.notify.tpl', $tVars);
 
         return false;
     }

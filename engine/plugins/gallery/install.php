@@ -341,17 +341,16 @@ function plugin_gallery_install($action)
                 // Обновляем поле module в комментариях, если не задано
                 $mysql->query("update ".prefix."_comments set module='news' where module=''");
 
-                $params = array(
-                    'if_description'=> 1,
+                // Set default values if values are not set [for new variables]
+                foreach ([
+                    'if_description' => 1,
                     'if_keywords' => 1,
-                    'images_count' => 12,
+                    'galleries_count' => 6,
                     'skin' => 'basic',
                     'cache' => 1,
                     'cache_expire' => 60,
-                );
-
-                foreach ($params as $k => $v) {
-                    pluginSetVariable('gallery', $k, $v);
+                    ] as $k => $v ) {
+                        pluginSetVariable('gallery', $k, $v);
                 }
 
                 // Load CORE Plugin

@@ -94,20 +94,24 @@ class PluginGallery
 
     public function widgetAction()
     {
-        global $template, $twig, $mysql, $TemplateCache, $SYSTEM_FLAGS;
+        global $template, $twig, $mysql, $config;
 
         if (empty($this->options['widgets']) or !is_array($widgets = $this->options['widgets']))
             return;
 
-        foreach($widgets as $id=>$widget){
+        foreach($widgets as $id => $widget){
             if (!$widget['if_active'])
                 continue;
 
+            $widgetName = 'plugin_gallery_'.$widget['name'];
+
             if ($this->options['cache']) {
-                $cacheFileName = md5('gallery' . 'widget' . $widget['title'] . $id).'.txt';
+                $cacheFileName = md5($config['theme'] . $config['default_lang'] . $widget['skin'] . $widgetName).'.txt';
                 $cacheData = cacheRetrieveFile($cacheFileName, $this->options['cache_expire'], 'gallery');
                 if ($cacheData != false) {
-                    return $template['vars']['plugin_gallery_' . $widget['name']] = $cacheData;
+                    // We got data from cache. Return it and stop
+                    $template['vars'][$widgetName] = $cacheData;
+                    continue;
                 }
             }
 
@@ -170,9 +174,10 @@ class PluginGallery
                 'widget_title' => $widget['title'],
                 ];
 
-            $template['vars']['plugin_gallery_' . $widget['name']] = $output = $twig->render($tpath['widget'] . 'widget.tpl', $tVars);
+            $template['vars'][$widgetName] = $twig->render($tpath['widget'] . 'widget.tpl', $tVars);
+
             if ($this->options['cache']){
-                cacheStoreFile($cacheFileName, $output, 'gallery');
+                cacheStoreFile($cacheFileName, $template['vars'][$widgetName], 'gallery');
             }
         }
     }
@@ -181,8 +186,7 @@ class PluginGallery
     {
         global $userROW, $template, $twig, $mysql, $TemplateCache, $SYSTEM_FLAGS;
 
-        $page = isset($params['page']) ? intval($params['page']) : 1;
-        if ($page < 1) $page = 1;
+        $page = isset($params['page']) ? abs(intval($params['page'])) : 1;
 
         $SYSTEM_FLAGS['info']['title']['group'] = $this->pluginTitle;
         $SYSTEM_FLAGS['info']['title']['item'] = __('gallery:page').' ' . $page;
@@ -200,6 +204,7 @@ class PluginGallery
 
         // Work with array galleries, below we [SLICE] array
         $galleries = $this->galleries;
+
         $pagesss = '';
         if ($this->options['galleries_count']) {
             $pagesCount = ceil(count($galleries) / $this->options['galleries_count']);
