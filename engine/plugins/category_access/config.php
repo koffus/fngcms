@@ -2,13 +2,13 @@
 
 /*
  * Configuration file for plugin
-*/
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 switch ($action) {
     case 'list_user': show_list_user(); break;
@@ -34,7 +34,7 @@ function validate($string){
 
 function main(){
     global $tpl;
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.general.form'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.general.form'));
     
     $guest = pluginGetVariable('category_access', 'guest');
     $coment = pluginGetVariable('category_access', 'coment');
@@ -62,7 +62,7 @@ function main(){
 
 function show_list_user(){
     global $tpl, $catz, $catmap;
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.list.user', 'conf.list.user.row'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.list.user', 'conf.list.user.row'));
     $users = pluginGetVariable('category_access', 'users');
     $output = '';
     foreach ($users as $user=>$category) {
@@ -84,7 +84,7 @@ function show_list_user(){
 
 function show_list_category(){
     global $tpl, $catz, $catmap;
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.list', 'conf.list.row'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.list', 'conf.list.row'));
     $categorys = pluginGetVariable('category_access', 'categorys');
     $output = '';
     foreach ($categorys as $cat) {
@@ -194,7 +194,7 @@ function add_user(){
         $user_list[$row['name']] = $row['name'];
     }
     
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.add_edit_user.form'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.add_edit_user.form'));
     $ttvars['vars']['user'] = $user;
     $ttvars['vars']['user_list'] = MakeDropDown($user_list, 'user', $user);
     $ttvars['vars']['category_list'] = MakeDropDown($category_list, 'category', $category);
@@ -242,7 +242,7 @@ function add_category()
         return;
     }
 
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.add_edit.category', 'conf.add_edit.category.row'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.add_edit.category', 'conf.add_edit.category.row'));
     
     $entries = '';
     foreach($catmap as $key=>$val){
@@ -293,7 +293,7 @@ function delete_user()
         return;
     }
     
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.commit.user'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.commit.user'));
     $tvars['vars']['user'] = $user;
     $tvars['vars']['commit'] = sprintf(__('category_access:desc_commit_user'), $user);
     $tpl->template('conf.commit.user', $tpath['conf.commit.user']);
@@ -334,7 +334,7 @@ function delete_category()
         return;
     }
     
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.commit.form'), 'category_access', 1);
+    $tpath = plugin_locateTemplates('category_access', array('conf.main', 'conf.commit.form'));
     $tvars['vars']['category'] = $category;
     $tvars['vars']['commit'] = sprintf(__('category_access:desc_commit_category'), $catz[$catmap[$category]]['name']);
     $tpl->template('conf.commit.form', $tpath['conf.commit.form']);

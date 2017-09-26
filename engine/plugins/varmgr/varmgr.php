@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class VarMgrNewsFilter extends NewsFilter {
 	function showNews($newsID, $SQLnews, &$tvars) {

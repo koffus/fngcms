@@ -1,4 +1,3 @@
-[TWIG]
 <article class="article-item-wrapper">
     <div class="article-item-img">
         <a href="{{ news.url.full }}">
@@ -7,7 +6,7 @@
     </div>
     <div class="article-item-text clearfix">
         <div class="btn-group pull-right">
-            <button type="button" class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>
+            <button type="button" class="btn btn-outline-secondary btn-sm dropdown-toggle" data-toggle="dropdown"><i class="fa fa-cog"></i></button>
             <div class="dropdown-menu dropdown-menu-right">
                 <a href="{{ news.url.print }}" class="dropdown-item"><i class="fa fa-print"></i> {{ lang.print }}</a>
                 {% if (news.flags.canEdit) %}<a href="{{ news.url.edit }}" class="dropdown-item"><i class="fa fa-pencil"></i> {{ lang.editnews }}</a>{% endif %}
@@ -22,11 +21,10 @@
         <h4>{{ news.categories.masterText }}</h4>
         <p>{{ news.short|truncateHTML(200,' ...')|striptags }}</p>
         <div class="article-one-footer">
-            <span class="mr-auto"><i class="fa fa-calendar"></i>&nbsp;{{ news.dateStamp | cdate  }}</span>
+            <span class="mr-auto"><i class="fa fa-calendar"></i>&nbsp;{{ news.dateStamp | cdate }}</span>
             {% if (news.flags.isUpdated) %}<span class="mr-auto"><i class="fa fa-refresh"></i>&nbsp;{{ news.updateStamp | cdate }}</span>{% endif %}
             
             <span><i class="fa fa-eye"></i> {{ news.views }}</span>
         </div>
     </div>
 </article>
-[/TWIG]

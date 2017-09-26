@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: search.php
 // Description: News search
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('search', 'site');
 include_once root.'includes/news.php';
@@ -116,10 +116,10 @@ function search_news() {
 
 	// Preload template configuration variables
 	templateLoadVariables();
+
 	// Check if template requires extracting embedded images
-	$tplVars = $TemplateCache['site']['#variables'];
-	if ( isset($tplVars['configuration']) and is_array($tplVars['configuration']) and isset($tplVars['configuration']['extractEmbeddedItems']) and $tplVars['configuration']['extractEmbeddedItems'] ) {
-		$callingParams['extractEmbeddedItems'] = true;
+	if (!empty($config['extract_images'])) {
+		$callingParams['extractImages'] = true;
 	}
 
 	// Call SEARCH only if search words are entered
@@ -168,6 +168,6 @@ function search_news() {
 	// Results of search
 	$sTemplateName =  tpl_site . '/search.table.tpl';
 	$twigLoader->setDefaultContent($sTemplateName, '{% for entry in data %}{{ entry }}{% else %}' . __('search.notfound') .'{% endfor %} {{ pagination }}');
-	$xt = $twig->loadTemplate($sTemplateName);
-	$template['vars']['mainblock'] .= $xt->render($tableVars);
+
+	$template['vars']['mainblock'] .= $twig->render($sTemplateName, $tableVars);
 }

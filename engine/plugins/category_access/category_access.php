@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class CategoryAccessNewsFilter extends NewsFilter {
 	function __construct() {
@@ -70,13 +70,13 @@ class CategoryAccessNewsFilter extends NewsFilter {
 	
 	function onAfterShow($mode) { 
 		global $template;
-		if ($this->flag and !$this->flag2) $template['vars']['mainblock'] = pluginGetVariable('category_access', 'message');
+		if ($this->flag and !$this->flag2) $template['vars']['mainblock'] .= pluginGetVariable('category_access', 'message');
 		return 1; 
 	}
 	
 	function onAfterNewsShow ($newsID, $SQLnews, $mode = array()) { 
 		global $template;
-		if ($this->flag and !$this->flag2) $template['vars']['mainblock'] = pluginGetVariable('category_access', 'message');
+		if ($this->flag and !$this->flag2) $template['vars']['mainblock'] .= pluginGetVariable('category_access', 'message');
 		return 1; 
 	}
 }

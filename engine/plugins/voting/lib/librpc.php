@@ -1,14 +1,11 @@
 <?php
 
-function voting_rpc_manage($params) {
+function voting_rpc_manage($params)
+{
     global $mysql, $tpl, $template, $SUPRESS_TEMPLATE_SHOW, $userROW, $ip;
 
     include_once(extras_dir.'/voting/voting.php');
 	$votedList = (isset($_COOKIE['voting'])) ? (explode('|', $_COOKIE['voting'])) : array();
-
-	// Get current skin
-	$skin = pluginGetVariable('voting','localSkin');
-	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin)) or (!$skin)) { $skin = 'basic'; }
 
 	// ========================================
 	// MODE: Vote request
@@ -44,7 +41,7 @@ function voting_rpc_manage($params) {
 				}
 				// Check returning mode for template
 				//$retMode = ($flagPanel) ? 6 : 3;
-				$content = plugin_showvote($skin, 6, $vrow['id']);
+				$content = plugin_showvote(6, $vrow['id']);
 			}
 		} else {
 			// No such vote line
@@ -52,10 +49,10 @@ function voting_rpc_manage($params) {
 		}
 	} else if (isset($params['mode']) and ($params['mode'] == 'show') and ($voteid = intval($params['voteid']))) {
         //$retMode = ($flagPanel) ? 6 : 3;
-		$content = plugin_showvote($skin, 6, $voteid);
+		$content = plugin_showvote(6, $voteid);
 	} else {
 	 	// SHOW REQUEST
-		$content = plugin_showvote($skin, 0, 0, 0, $votedList);
+		$content = plugin_showvote(0, 0, 0, $votedList);
 	}
 
     return array('status' => 1, 'errorCode' => 0, 'content' => $content);

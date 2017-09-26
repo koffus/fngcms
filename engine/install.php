@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: install.php
 // Description: System installer
 // Author: Vitaly Ponomarev
@@ -35,7 +35,7 @@ date_default_timezone_set('UTC');
 // Configure error display mode
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-ini_set('error_log', '../logs/errorPHP.log');
+ini_set('error_log', 'cache/errorPHP.log');
 ini_set('log_errors', 1);
 
 // Чтобы было, хоть и не работает
@@ -96,7 +96,7 @@ if (!defined('skins_url'))
     define('skins_url', 'skins/default');
 
 // Пошла система
-define('NGCMS', 1);
+@define('BBCMS', true);
 
 // !!! Переписать это установочное дерьмо
 

@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Prepare configuration parameters
 switch ($action) {
@@ -77,7 +77,7 @@ function general_submit(){
 
 function main(){
 	global $tpl;
-	$tpath = locatePluginTemplates(array('conf.main', 'conf.general.form'), 'multi_main', 1);
+	$tpath = plugin_locateTemplates('multi_main', array('conf.main', 'conf.general.form'));
 	$ttvars['vars']['main'] = isset($_POST['main'])?$_POST['main']:pluginGetVariable('multi_main', 'main');
 	$ttvars['vars']['guest'] = isset($_POST['guest'])?$_POST['guest']:pluginGetVariable('multi_main', 'guest');
 	$ttvars['vars']['coment'] = isset($_POST['coment'])?$_POST['coment']:pluginGetVariable('multi_main', 'coment');
@@ -96,7 +96,7 @@ function main(){
 
 function showlist(){
 	global $tpl, $catz;
-	$tpath = locatePluginTemplates(array('conf.main', 'conf.list', 'conf.list.row'), 'multi_main', 1);
+	$tpath = plugin_locateTemplates('multi_main', array('conf.main', 'conf.list', 'conf.list.row'));
 	$category = pluginGetVariable('multi_main', 'category');
 	$output = '';
 	foreach ($category as $cat=>$tpll) {
@@ -170,7 +170,7 @@ function add(){
 		$cat_list[$key] = $val['name'];
 	}
 	
-	$tpath = locatePluginTemplates(array('conf.main', 'conf.add_edit.form'), 'multi_main', 1);
+	$tpath = plugin_locateTemplates('multi_main', array('conf.main', 'conf.add_edit.form'));
 	$ttvars['vars']['cat'] = $cat;
 	$ttvars['vars']['cat_list'] = MakeDropDown($cat_list, 'cat', $cat);
 	$ttvars['vars']['tpl'] = $tpll;		
@@ -212,7 +212,7 @@ function delete() {
 		return;
 	}
 	
-	$tpath = locatePluginTemplates(array('conf.main', 'conf.commit.form'), 'multi_main', 1);
+	$tpath = plugin_locateTemplates('multi_main', array('conf.main', 'conf.commit.form'));
 	$tvars['vars']['cat'] = $cat;
 	$tvars['vars']['commit'] = sprintf(__('multi_main:desc_commit'), $catz[$cat]['name']);
 	$tpl->template('conf.commit.form', $tpath['conf.commit.form']);

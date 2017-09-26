@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: cron.php
 // Description: Manage scheduled jobs
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('cron', 'admin', 'cron');
 
@@ -90,8 +90,7 @@ function cronShowForm() {
 		'entries' => $entries,
 	);
 
-	$xt = $twig->loadTemplate('skins/default/tpl/cron.tpl');
-	echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'cron.tpl', $tVars);
 }
 
 // ================================

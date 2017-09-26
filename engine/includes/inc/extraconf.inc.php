@@ -1,19 +1,20 @@
 <?php
 
 //
-// Copyright (C) 2006-2017 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: extraconf.inc.php
 // Description: Plugin configuration manager AND Functions required for plugin managment scripts
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Switch plugin ON/OFF
 function pluginSwitch($pluginID, $mode = 'on')
 {
+    global $config;
 
     // Load list of active plugins
     $cPlugin = CPlugin::instance();
@@ -184,8 +185,8 @@ function generate_config_page($module, $params)
         'php_self' => $PHP_SELF,
         'token' => genUToken('admin.extra-config'),
     );
-    $xt = $twig->loadTemplate(tpl_actions . 'extra-config/table.tpl');
-    echo $xt->render($tVars);
+
+    echo $twig->render(tpl_actions . 'extra-config/table.tpl', $tVars);
 }
 
 // Automatic save values into module parameters DB
@@ -463,10 +464,8 @@ function fixdb_plugin_install($module, $params, $mode = 'install', $silent = fal
         ),
     );
 
-    $xt = $twig->loadTemplate(tpl_actions . 'extra-config/install-process.tpl');
-
     if (!$silent) {
-        print $xt->render($tVars);
+        print $twig->render(tpl_actions . 'extra-config/install-process.tpl', $tVars);
     }
 
     if ($publish_error) {
@@ -485,12 +484,11 @@ function generate_install_page($plugin, $text, $stype = 'install')
         'stype' => $stype,
         'install_text' => $text,
         'mode_text' => ($stype == 'install') ? __('install_text') : __('deinstall_text'),
-        'mode_commit' => ($stype == 'install') ? __('commit_install') : __('commit_deinstall'),
+        'mode_commit' => ($stype == 'install') ? __('install_commit') : __('deinstall_commit'),
         'php_self' => $PHP_SELF,
     );
 
-    $xt = $twig->loadTemplate(tpl_actions . 'extra-config/install.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'extra-config/install.tpl', $tVars);
 
 }
 

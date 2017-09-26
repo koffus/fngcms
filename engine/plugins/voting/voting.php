@@ -1,58 +1,57 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 registerActionHandler('index', 'plugin_voting');
 register_plugin_page('voting','panel','plugin_voting_panel',0);
 register_plugin_page('voting','','plugin_voting_page',0);
 
-Lang::loadPlugin('voting', 'main', '', ':');
+Lang::loadPlugin('voting', 'site', '', ':');
 
-function plugin_voting_panel() {
+function plugin_voting_panel()
+{
 	plugin_voting_screen(true);
 }
 
-function plugin_voting_page() {
+function plugin_voting_page()
+{
 	plugin_voting_screen(false);
 }
 
-function plugin_voting() {
+function plugin_voting()
+{
 	global $template;
 
 	$voteid = intval(pluginGetVariable('voting','active'));
 	$rand = pluginGetVariable('voting','rotate');
 	$voted = isset($_COOKIE['voting']) ? explode('|', $_COOKIE['voting']) : array();
     $voted = array_flip($voted);
-	$skin = pluginGetVariable('voting','localSkin');
-	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin)) or (!$skin)) {
-        $skin = 'basic';
-    }
 
-	$template['vars']['voting'] = plugin_showvote($skin, 4, $voteid, $rand, $voted);
+	$template['vars']['voting'] = plugin_showvote(4, $voteid, $rand, $voted);
 }
 
 //
 // Show selected vote with chosen skin/prefix
 // Params:
-// 1. Skin
 // 2. Mode:
 //		0 - [list] show list [auto],
 //		1 - [list] show one [auto]
 //		2 - [list] force show/edit one
 //		3 - [list] force show/show one
-// 		4 - [one] show one [auto],
+//		4 - [one] show one [auto],
 //		5 - [one] force show/edit one,
 //		6 - [one] force show/show one
 //	3. voteid - vote id (in show one mode)
-// 4. rand - rand flag (in show one mode)
+//	4. rand - rand flag (in show one mode)
 //	5. votedList - list of voted (in show list mode)
-function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = array()) {
+function plugin_showvote($mode, $voteid = 0, $rand = 0, $votedList = array())
+{
 	global $tpl, $mysql, $username, $userROW, $ip, $REQUEST_URI, $TemplateCache, $SYSTEM_FLAGS;
 
 	$result = '';
 
-	$tpath = locatePluginTemplates(array('shls_vote', 'edls_vote', 'shls_vline', 'edls_vline', 'lshdr', 'sh_vote', 'ed_vote', 'sh_vline', 'ed_vline'), 'voting', pluginGetVariable('voting', 'localSource'), $tpl_skin);
+	$tpath = plugin_locateTemplates('voting', array('shls_vote', 'edls_vote', 'shls_vline', 'edls_vline', 'lshdr', 'sh_vote', 'ed_vote', 'sh_vline', 'ed_vline'));
 	// Preload templates
 	if ($mode<4) {
 		$post_url = generateLink('core', 'plugin', array('plugin' => 'voting'), array());
@@ -138,7 +137,7 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 		 	'count' => $lrow['cnt'],
 		 	'perc' => round($lrow['cnt']*100/$cnt, 1),
 		 	'post_url' => $post_url,
-		 	'tpl_dir' => admin_url.'/plugins/voting/tpl/skins/'.$tpl_skin);
+            );
 			$tpl->vars($tpl_prefix.'_vline', $tvars);
 			$votelines .= $tpl->show($tpl_prefix.'_vline');
 			$num++;
@@ -154,7 +153,7 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 			'home' => home,
 			'vcount' => $tcount,
 			'post_url' => $post_url,
-			'tpl_dir' => admin_url.'/plugins/voting/tpl/skins/'.$tpl_skin);
+			);
 		$tvars['regx']['#\[votedescr](.*?)\[/votedescr]#is'] = (mb_strlen($row['descr'], 'UTF-8') > 0) ? '$1' : '';
 		$tpl->vars($tpl_prefix.'_vote', $tvars);
 		$result .= $tpl->show($tpl_prefix.'_vote');
@@ -183,7 +182,8 @@ function plugin_showvote($tpl_skin, $mode, $voteid = 0, $rand = 0, $votedList = 
 
 //
 //
-function plugin_voting_screen($flagPanel = false) {
+function plugin_voting_screen($flagPanel = false)
+{
 	global $mysql, $tpl, $template, $SUPRESS_TEMPLATE_SHOW, $userROW, $ip;
 
 	// Determine calling mode
@@ -195,10 +195,6 @@ function plugin_voting_screen($flagPanel = false) {
 	}
 
 	$votedList = isset($_COOKIE['voting']) ? explode('|', $_COOKIE['voting']) : array();
-
-	// Get current skin
-	$skin = pluginGetVariable('voting','localSkin');
-	if ((!is_dir(extras_dir.'/voting/tpl/skins/'.$skin)) or (!$skin)) { $skin = 'basic'; }
 
 	// ========================================
 	// MODE: Vote request
@@ -218,7 +214,7 @@ function plugin_voting_screen($flagPanel = false) {
 			// Report an error if user tries to take part twice
 			if ($dup) {
 				// Inform that vote is already accepted
-				$template['vars']['mainblock'] = __('voting:msg.already');
+				$template['vars']['mainblock'] .= __('voting:msg.already');
 				if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 			} else {
 				$mysql->query("update ".prefix."_voteline set cnt=cnt+1 where id = ".$row['id']);
@@ -240,19 +236,19 @@ function plugin_voting_screen($flagPanel = false) {
 					$retMode = 6;
 				}
 
-				$template['vars']['mainblock'] = plugin_showvote($skin,$retMode,$vrow['id']);
+				$template['vars']['mainblock'] .= plugin_showvote($retMode,$vrow['id']);
 				if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 			}
 		} else {
 			// No such vote line
-			$template['vars']['mainblock'] = __('voting:msg.norec');
+			$template['vars']['mainblock'] .= __('voting:msg.norec');
 			if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 		}
 	 } else if (isset($_REQUEST['mode']) and ($_REQUEST['mode'] == 'show') and ($voteid = intval($_REQUEST['voteid']))) {
-		$template['vars']['mainblock'] = plugin_showvote($skin, $flagPanel?6:3, $voteid);
+		$template['vars']['mainblock'] .= plugin_showvote($flagPanel?6:3, $voteid);
 		if ($is_ajax) { $SUPRESS_TEMPLATE_SHOW = 1; }
 	 } else {
 	 	// SHOW REQUEST
-		$template['vars']['mainblock'] = plugin_showvote($skin, 0, 0, 0, $votedList);
+		$template['vars']['mainblock'] .= plugin_showvote(0, 0, 0, $votedList);
 	 }
 }

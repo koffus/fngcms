@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Prepare configuration parameters
 switch ($action) {
@@ -21,7 +21,7 @@ switch ($action) {
 function showlist()
 {
     global $mysql, $tpl;
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.button', 'conf.list', 'conf.list.row', 'conf.add_edit.form'), 'cat_description', 1);
+    $tpath = plugin_locateTemplates('cat_description', array('conf.main', 'conf.button', 'conf.list', 'conf.list.row', 'conf.add_edit.form'));
     
     $is_null = false;
     foreach ($mysql->select('select '.prefix.'_cat_description.id, '.prefix.'_cat_description.catid, '.prefix.'_cat_description.is_on, '.prefix.'_category.name from '.prefix.'_cat_description left join '.prefix.'_category on '.prefix.'_cat_description.catid='.prefix.'_category.id order by `catid`') as $row)
@@ -75,7 +75,7 @@ function editform()
 
     $id = intval($_REQUEST['id']);
 
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.add_edit.form'), 'cat_description', 1);
+    $tpath = plugin_locateTemplates('cat_description', array('conf.main', 'conf.add_edit.form'));
     
     $qwer = $mysql->select('select `id`, `catid`, `is_on`, `description` from '.prefix.'_cat_description where `id`='.db_squote($id).' limit 1');
     if (!$qwer) return; 

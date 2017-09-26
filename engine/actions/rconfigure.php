@@ -3,7 +3,7 @@
 @include_once '..\core.php';
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 $ULIB = new UrlLibrary();
 $ULIB->loadConfig();

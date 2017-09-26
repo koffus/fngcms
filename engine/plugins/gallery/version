@@ -1,15 +1,18 @@
+;
+; Version description file for plugin @@ BixBite CMS
+;
+
 ID: gallery
 Name: Gallery Manager
-Version: 0.1
+Version: 0.9.7-alpha
 Actions: ppages; gallery.php
 Actions: index; gallery.php
 Install: install.php
 Deinstall: deinstall.php
 Config: config.php
-Type: plugin
+Type: module
 Title: Gallery Manager
 Description: Позволяет управлять галереями на сайте
 Information: Позволяет управлять галереями на сайте
-Author: Amarelius, RusiQ
+Author: RusiQ
 Author_URI: http://bixbite.site/
-Preinstall: default_no

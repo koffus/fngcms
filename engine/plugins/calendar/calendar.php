@@ -1,10 +1,10 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang file
-Lang::loadPlugin('calendar', 'main', '', ':');
+Lang::loadPlugin('calendar', 'site', '', ':');
 
 // Check execution mode
 if (!pluginGetVariable('calendar', 'mode')) {
@@ -37,10 +37,10 @@ function plugin_calendar()
         $month = date('m', $lt);
         $year = date('Y', $lt);
     }
-    $template['vars']['plugin_calendar'] = plug_calgen($month, $year, false, array(), pluginGetVariable('calendar', 'cache') ? pluginGetVariable('calendar', 'cacheExpire') : 0);
+    $template['vars']['plugin_calendar'] = plug_calgen($month, $year, false, array(), pluginGetVariable('calendar', 'cache') ? pluginGetVariable('calendar', 'cache_expire') : 0);
 }
 
-function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList = array(), $cacheExpire = 0, $flagAJAX = false)
+function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList = array(), $cache_expire = 0, $flagAJAX = false)
 {
     global $config, $mysql, $tpl, $template, $twig, $twigLoader;
 
@@ -50,8 +50,8 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
     // Generate cache file name [ we should take into account SWITCHER plugin ]
     $cacheFileName = md5('calendar' . $config['theme'] . '|' . join(',', $categoryList) . $overrideTemplateName . $config['default_lang'] . $year . $month) . '.txt';
 
-    if ($cacheExpire > 0) {
-        $cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'calendar');
+    if ($cache_expire > 0) {
+        $cacheData = cacheRetrieveFile($cacheFileName, $cache_expire, 'calendar');
         if ($cacheData != false) {
             // We got data from cache. Return it and stop
             return $cacheData;
@@ -81,9 +81,6 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
     foreach ($rows as $row) {
         $counters[$row['day']] = $row['count'];
     }
-
-    // Determine paths for all template files
-    $tpath = locatePluginTemplates(array('entries', 'calendar'), 'calendar', pluginGetVariable('calendar', 'localSource'));
 
     $dt = mktime(0, 0, 0, $month, 1, $year);
     $prevdt = mktime(0, 0, 0, $month - 1, 1, $year);
@@ -157,7 +154,7 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
     );
 
     // If cache is activated - calculate MIN and MAX dates for news
-    if ($cacheExpire > 0) {
+    if ($cache_expire > 0) {
         //
         $mmx = $mysql->record("select (select postdate from " . prefix . "_news use key(news_postdate) where mainpage=1 order by postdate limit 1) as min, (select postdate from " . prefix . "_news use key(news_postdate) where approve=1 order by postdate desc limit 1) as max", 1);
 
@@ -196,10 +193,12 @@ function plug_calgen($month, $year, $overrideTemplateName = false, $categoryList
     if (isset($tpath['entries']))
         $twig->loadTemplate($tpath['entries'] . 'entries.tpl');
 
-    $xt = $twig->loadTemplate($tpath['calendar'] . 'calendar.tpl');
-    $output = $xt->render($tVars);
 
-    if ($cacheExpire > 0) {
+    // Determine paths for all template files
+    $tpath = plugin_locateTemplates('calendar', array('calendar'));
+    $output = $twig->render($tpath['calendar'] . 'calendar.tpl', $tVars);
+
+    if ($cache_expire > 0) {
         cacheStoreFile($cacheFileName, $output, 'calendar');
     }
 

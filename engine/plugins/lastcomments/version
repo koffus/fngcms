@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: lastcomments
@@ -16,4 +16,4 @@ Author: SwiZZeR, EsCaPeR, Vitaly, Megaket4up
 Title: Последние комментарии
 Information: Отображение последних комментариев, оставленных на страницах сайта
 Preinstall: default_no
-Preinstall_vars: cache="1"; cacheExpire="3600";
+Preinstall_vars: cache="1"; cache_expire="3600";

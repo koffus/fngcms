@@ -3,7 +3,7 @@
 /*
  * Class CPlugin
  * Description: CORE Plugin - manager configuration and functions
-*/
+ */
 
 class CPlugin
 {
@@ -402,28 +402,33 @@ class CPlugin
     }
 
     // Return plugin skin list folderS
-    public function getFoldersSkin($plugin)
+    public function getThemeSkin($plugin)
     {
 
-        if ($skinDir = $this->getFolder($plugin)) {
-            $skinDir .= '/tpl/skins';
-
-            if (is_dir($skinDir)) {
-                $skList = array();
-                $skinDir = opendir($skinDir);
-                while ($skFile = readdir($skinDir)) {
-                    if (!preg_match('/^\./', $skFile)) {
-                        $skList[$skFile] = $skFile;
-                    }
+        $skList = array();
+        if (is_dir($skinDir = tpl_site . "plugins/$plugin")) {
+            $skinDir = opendir($skinDir);
+            while ($skFile = readdir($skinDir)) {
+                if (!preg_match('/^\./', $skFile)) {
+                    $skList[$skFile] = $skFile;
                 }
-                closedir($skinDir);
-                return count($skList) ? $skList : false;
             }
-            // Exit if no skin dir
-            return false;
+            closedir($skinDir);
+        } elseif (is_dir($skinDir = extras_dir . "/$plugin/tpl/site/basic")) {
+            // Copy basic skin from plugin dir to theme
+            @mkdir($themeDir = tpl_site . "plugins/$plugin/basic", 0755, true);
+            $dirIterator = new \RecursiveDirectoryIterator($skinDir, \RecursiveDirectoryIterator::SKIP_DOTS);
+            $iterator = new \RecursiveIteratorIterator($dirIterator, \RecursiveIteratorIterator::SELF_FIRST);
+            foreach ($iterator as $object) {
+                $themePath = $themeDir . DIRECTORY_SEPARATOR . $iterator->getSubPathName();
+                ($object->isDir()) ? @mkdir($themePath, 0755, true) : copy($object, $themePath);
+            }
+            $skList['basic'] = 'basic';
+        } else {
+            return array();
         }
-        // Exit if no skin dir
-        return false;
+
+        return $skList;
     }
 
     // Return plugin lang folder
@@ -451,7 +456,7 @@ class CPlugin
     }
 
     // Get plugin variable
-    function getVar($pluginID, $var)
+    function getVar($pluginID, $var = null)
     {
         if (!$this->plugins['config:loaded'])
             return false;
@@ -459,9 +464,16 @@ class CPlugin
         if (!isset($this->plugins['config'][$pluginID])) {
             return null;
         }
+
+        // Return all avalaible variables of plugin
+        if (empty($var)) {
+            return $this->plugins['config'][$pluginID];
+        }
+
         if (!isset($this->plugins['config'][$pluginID][$var])) {
             return null;
         }
+
         return $this->plugins['config'][$pluginID][$var];
     }
 

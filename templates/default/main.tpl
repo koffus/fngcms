@@ -161,7 +161,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6 text-md-left">
-                    <p class="copyright">&copy; <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>, {{ lang.all_right_reserved }} Powered by <a title="Next Generation CMS" target="_blank" href="http://ngcms.ru/">NG CMS</a> 2007 — {{ now|date("Y") }}.</p>
+                    <p class="copyright">&copy; <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>, {{ lang.all_right_reserved }} Powered by <a title="BixBite CMS" target="_blank" href="http://bixbite.site/">BixBite CMS</a> 2006-{{ now|date("Y") }}.</p>
                 </div>
                 <div class="col-md-6 text-md-right">
                     {{ lang.sql_queries }}: <b>{{ queries }}</b>&nbsp;&nbsp;•&nbsp;&nbsp;{{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }}&nbsp;&nbsp;•&nbsp;&nbsp;<b>{{ memPeakUsage }}</b> Mb&nbsp;

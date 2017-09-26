@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: admin.php
 // Description: administration panel
 // Author: Vitaly Ponomarev, Alexey Zinchenko
@@ -31,7 +31,7 @@ date_default_timezone_set('UTC');
 // Configure error display mode
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-ini_set('error_log', '../logs/errorPHP.log');
+ini_set('error_log', 'cache/errorPHP.log');
 ini_set('log_errors', 1);
 
 // Чтобы было, хоть и не работает
@@ -70,7 +70,7 @@ else
     die('Unable to load CORE!');
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Pre-configure required global variables
 global $PHP_SELF, $action, $subaction, $mod;
@@ -240,8 +240,7 @@ if ($mod != 'preview') {
         'newpmText' => $newpmText,
     );
 
-    $xt = $twig->loadTemplate('skins/default/tpl/header.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'header.tpl', $tVars);
 }
 
 // Check requested module exists
@@ -269,8 +268,7 @@ if ($mod != 'preview') {
         'year' => date('Y'),
     );
 
-    $xt = $twig->loadTemplate('skins/default/tpl/footer.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'footer.tpl', $tVars);
 }
 
 if (defined('DEBUG')) {

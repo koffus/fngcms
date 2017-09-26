@@ -2,14 +2,14 @@
 
 /*
  * Configuration file for plugin
-*/
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function plugin_guestbook_install($action) {
     if ($action != 'autoapply')
-        Lang::loadPlugin('guestbook', 'config', '', ':');
+        Lang::loadPlugin('guestbook', 'admin', '', ':');
 
     // Fill DB_UPDATE configuration scheme
     $db_update = array(

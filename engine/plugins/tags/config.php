@@ -1,20 +1,22 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
 
 // Prepare configuration parameters
-$skList = $cPlugin->getFoldersSkin($plugin);
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+}
 
 // Fill configuration parameters
 $cfg = array(
@@ -173,21 +175,13 @@ array_push($cfg, array(
 $cfgX = array();
 	$cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localSource',
-		'title' => __('localSource'),
-		'descr' => __('localSource#desc'),
-		'type' => 'select',
-		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
-		));
-	array_push($cfgX, array(
-		'name' => 'localSkin',
-		'title' => __('localSkin'),
-		'descr' => __('localSkin#desc'),
-		'type' => 'select',
-		'values' => $skList,
-		'value' => pluginGetVariable($plugin,'localSkin') ? pluginGetVariable($plugin,'localSkin') : 'basic',
-		));
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
+        'type' => 'select',
+        'values' => $skList,
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
 	array_push($cfgX, array('name' => 'cloud3d', 'title' => __($plugin.':cloud3d'), 'descr' => __($plugin.':cloud3d#desc'), 'type' => 'select', 'values' => array( '0' => __('noa'), '1' => __('yesa') ), 'value' => pluginGetVariable('tags','cloud3d')));
 	array_push($cfgX, array('name' => 'show_always', 'title' => __($plugin.':show_always'), 'descr' => __($plugin.':show_always#desc'), 'type' => 'select', 'values' => array( '0' => __('noa'), '1' => __('yesa') ), 'value' => pluginGetVariable('tags','show_always')));
 	array_push($cfgX, array(
@@ -220,11 +214,11 @@ $cfgX = array();
 		'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
 		));
 	array_push($cfgX, array(
-		'name' => 'cacheExpire',
-		'title' => __('cacheExpire'),
-		'descr' => __('cacheExpire#desc'),
+		'name' => 'cache_expire',
+		'title' => __('cache_expire'),
+		'descr' => __('cache_expire#desc'),
 		'type' => 'input',
-		'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 60,
+		'value' => intval(pluginGetVariable($plugin, 'cache_expire')) ? intval(pluginGetVariable($plugin, 'cache_expire')) : 60,
 		));
 array_push($cfg, array(
 	'mode' => 'group',

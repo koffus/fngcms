@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class WPingerNewsfilter extends NewsFilter {
 	function addNewsNotify(&$tvars, $SQL, $newsid) {
@@ -69,7 +69,7 @@ function plugin_wpinger_servicePing() {
 		'</params>'.
 		'</methodCall>';
 
-		$RPC_Service_URL = 'http://ngcms.ru/services/RPC/01/';
+		$RPC_Service_URL = 'http://bixbite.site/services/RPC/01/';
 
 		$vms = $req->request('POST', $RPC_Service_URL, $content, 5);
 	} else {

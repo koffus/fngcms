@@ -8,7 +8,8 @@ $XF = array();		// $XF - array with configuration
 $XF_loaded = 0;		// $XF_loaded - flag if config is loaded
 
 // Load fields definition
-function xf_configLoad() {
+function xf_configLoad()
+{
 	global $XF, $XF_loaded;
 
 	if ($XF_loaded) return $XF;
@@ -25,7 +26,8 @@ function xf_configLoad() {
 }
 
 // Save fields definition
-function xf_configSave($xf = null) {
+function xf_configSave($xf = null)
+{
 	global $XF, $XF_loaded;
 
 	if (!$XF_loaded) return false;
@@ -41,7 +43,8 @@ function xf_configSave($xf = null) {
 }
 
 // Decode fields from text
-function xf_decode($text){
+function xf_decode($text)
+{
 
 	if ($text == '') return array();
 
@@ -63,12 +66,14 @@ function xf_decode($text){
 }
 
 // Encode fields into text
-function xf_encode($fields){
+function xf_encode($fields)
+{
 	if (!is_array($fields)) return '';
 	return 'SER|'.serialize($fields);
 }
 
-function xf_getTableBySectionID($sectionID) {
+function xf_getTableBySectionID($sectionID)
+{
 	switch ($sectionID) {
 		case 'news':	return prefix.'_news';
 		case 'users':	return prefix.'_users';
@@ -79,7 +84,8 @@ function xf_getTableBySectionID($sectionID) {
 
 //
 // Class for managing xfields data processing
-class XFieldsFilter {
+class XFieldsFilte
+ {
 	//
 	function showTableEntry($newsID, $SQLnews, $rowData, &$rowVars) {
 

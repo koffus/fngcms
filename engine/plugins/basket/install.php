@@ -1,12 +1,14 @@
 <?php
 
+/*
+ * Configuration file for plugin
+ */
+
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-
-Lang::loadPlugin('basket', 'config', '', ':');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
     array(
@@ -30,9 +32,9 @@ $db_update = array(
 // RUN
 if ('commit' == $action) {
     // If submit requested, do config save
-    if (fixdb_plugin_install('basket', $db_update)) {
-        plugin_mark_installed('basket');
+    if (fixdb_plugin_install($plugin, $db_update)) {
+        plugin_mark_installed($plugin);
     }
 } else {
-    generate_install_page('basket', __('basket:desc_install'));
+    generate_install_page($plugin, __($plugin.':desc_install'));
 }

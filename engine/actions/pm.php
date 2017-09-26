@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2008 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: pm.php
 // Description: adding news
 // Author: Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('pm', 'admin');
 
@@ -66,9 +66,8 @@ function pm_list () {
 			'link' => $author,
 			'viewed' => $row['viewed'] = ($row['viewed'] == 1 ? __('viewed') : '<font color="green"><b>'. __('unviewed') . '</b></font>')
 		);
-		$xt = $twig->loadTemplate(tpl_actions.$mod.'/entries.tpl');
-		$entries .= $xt->render($tVars);
-		
+		$entries .= $twig->render(tpl_actions.$mod.'/entries.tpl', $tVars);
+
 	}
 
 	$tVars = array(

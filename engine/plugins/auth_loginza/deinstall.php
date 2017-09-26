@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Uninstall plugin "auth_loginza" for NextGeneration CMS (http://ngcms.ru/)
+ * Uninstall plugin "auth_loginza" for NextGeneration CMS (http://bixbite.site/)
  * Copyright (C) 2011 Alexey N. Zhukov (http://digitalplace.ru)
  * http://digitalplace.ru
  * 
@@ -22,7 +22,7 @@
  */
  
 # protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 $db_update = array(
     array(

@@ -1,26 +1,34 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Set default values if values are not set [for new variables]
 foreach (array(
     'maxnum' => 12,
     'counter' => 1,
     'tcounter' => 1,
-    'localSource' => 1,
+    'skin' => 'basic',
     'cache' => 1,
-    'cacheExpire' => 60,
+    'cache_expire' => 60,
     ) as $k => $v) {
     if ( pluginGetVariable($plugin, $k) == null )
         pluginSetVariable($plugin, $k, $v);
+}
+
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
+// Prepare configuration parameters
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
 }
 
 // Fill configuration parameters
@@ -64,13 +72,13 @@ array_push($cfg, array(
 
 $cfgX = array();
     array_push($cfgX, array(
-        'name' => 'localSource',
-        'title' => __('localSource'),
-        'descr' => __('localSource#desc'),
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
         'type' => 'select',
-        'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-        'value' => intval(pluginGetVariable($plugin, 'localSource'))
-        ));
+        'values' => $skList,
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
 array_push($cfg, array(
     'mode' => 'group',
     'title' => __('group.source'),
@@ -87,11 +95,11 @@ $cfgX = array();
         'value' => intval(pluginGetVariable($plugin, 'cache'))
         ));
     array_push($cfgX, array(
-        'name' => 'cacheExpire',
-        'title' => __('cacheExpire'),
-        'descr' => __('cacheExpire#desc'),
+        'name' => 'cache_expire',
+        'title' => __('cache_expire'),
+        'descr' => __('cache_expire#desc'),
         'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'cacheExpire'))
+        'value' => intval(pluginGetVariable($plugin, 'cache_expire'))
         ));
 array_push($cfg, array(
     'mode' => 'group',

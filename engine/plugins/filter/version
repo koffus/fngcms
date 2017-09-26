@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: filter
@@ -11,4 +11,4 @@ Config: config.php
 Type: filter
 Description: Фильтрация нежелательных слов в комментариях
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/

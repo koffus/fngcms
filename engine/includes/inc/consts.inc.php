@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2015 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: consts.inc.php
 // Description: Initializing global consts
 // Author: Vitaly Ponomarev
@@ -13,11 +13,11 @@
 	define('adminDirName', array_pop($tempVariable));
 	unset($tempVariable);
 
-@define('NGCMS', true);
+@define('BBCMS', true);
 
 @define('engineName', 'BixBite');
-@define('engineVersion', 'v0.9.6.5.5');
-@define('engineVersionBuild', '2017-08-29');
+@define('engineVersion', 'v0.9.7-alpha');
+@define('engineVersionBuild', '2017-09-26');
 
 @define('DS', DIRECTORY_SEPARATOR );
 

@@ -1,14 +1,14 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Configuration file for plugin
+ */
 
-//
-// Configuration file for plugin
-//
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin('auth_punbb', 'config', 'auth');
+Lang::loadPlugin($plugin, 'admin', 'auth');
 
 // Fill configuration parameters
 $cfg = array(

@@ -58,7 +58,7 @@ class News
 
         // Check if long part is divided into several pages
         if ($full and (!$disablePagination) and (mb_strpos($full, '<!--nextpage-->', 0, 'UTF-8') !== false)) {
-            $page = intval(isset($CurrentHandler['params']['page']) ? $CurrentHandler['params']['page'] : (intval($_REQUEST['page']) ?: 0));
+            $page = intval(isset($CurrentHandler['params']['page']) ? $CurrentHandler['params']['page'] : (isset($_REQUEST['page']) ? intval($_REQUEST['page']): 0));
             if ($page < 1) $page = 1;
 
             $pagination = '';
@@ -74,7 +74,8 @@ class News
 
             if ($pcount > 1) {
                 // Prepare VARS for pagination
-                $catid = intval(array_shift(explode(',', $row['catid'])));
+                $catid = explode(',', $row['catid']);
+                $catid = intval(array_shift($catid));
                 $cname = 'none';
                 if ($catid and isset($catmap[$catid]))
                     $cname = $catmap[$catid];

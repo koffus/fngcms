@@ -15,19 +15,17 @@
  Данный код защищен авторскими правами
 =====================================================
 */
-if (!defined('NGCMS'))
-	die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 registerActionHandler('index', 'k_online');
-Lang::loadPlugin('k_online', 'main', '', '#');
+Lang::loadPlugin('k_online', 'site', '', '#');
 
 function k_online()
-{global $config, $twig, $template, $userROW, $ip, $mysql;
+{
+    global $config, $twig, $template, $userROW, $ip, $mysql;
 
 $time = time() + ($config['date_adjust'] * 60);
 $last_time = $time - 500;
-$tpath = locatePluginTemplates(array('k_online'), 'k_online', pluginGetVariable('k_online', 'localSource'));
-$xt = $twig->loadTemplate($tpath['k_online'].'k_online.tpl');
 
 $bot = filter_bots($_SERVER['HTTP_USER_AGENT']);
 
@@ -329,7 +327,8 @@ $tVars = array (
 	),
 );
 
-	$template['vars']['k_online'] = $xt->render($tVars);
+    $tpath = plugin_locateTemplates('k_online');
+	$template['vars']['k_online'] .= $twig->render($tpath['k_online'].'k_online.tpl', $tVars);
 }
 
 function filter_bots($u_agent){

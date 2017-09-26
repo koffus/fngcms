@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: rpc.php
 // Description: Remote Procedure Call (Service functions controller)
 // Author: Vitaly Ponomarev
@@ -19,7 +19,7 @@ ini_set('log_errors', 1);
 @header('Content-Type: application/json; charset=UTF-8', true);
 
 // Protect against hack attempts
-if (!defined('NGCMS'))
+if (!defined('BBCMS'))
     die (json_encode(array( 'status' => 0, 'errorCode' => 1, 'errorText' => 'HALL')));
 
 // Load additional handlers [ common ]
@@ -30,7 +30,7 @@ loadActionHandlers('rpc:'.((isset($userROW) and is_array($userROW)) ? 'active' :
 if (isset($_POST['json']) and isset($_POST['methodName'])) {
     processJSON();
 } else {
-    print json_encode(array( 'status' => 0, 'errorCode' => 4, 'errorText' => 'Method ' . secure_html($_POST['methodName']) . ' is not supported.') );
+    die (json_encode(array( 'status' => 0, 'errorCode' => 4, 'errorText' => 'Method ' . secure_html($_POST['methodName']) . ' is not supported.')));
 }
 
 // HTTP/JSON-RPC processor

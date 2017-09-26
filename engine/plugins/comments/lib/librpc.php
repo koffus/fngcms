@@ -6,7 +6,7 @@ function comments_rpc_manage($params)
 
     // TO DO Action: add,edit,delete
 
-    Lang::loadPlugin('comments', 'main', '', ':');
+    Lang::loadPlugin('comments', 'site', '', ':');
 
     $SQL = array();
 
@@ -164,7 +164,7 @@ function comments_rpc_manage($params)
                 author_id, author, ip, mail 
             FROM ".prefix."_comments 
             WHERE 
-                post=".db_squote($SQL['post'])." AND module=" . $SQL['module'] ." ORDER BY id desc LIMIT 1
+                post=".db_squote($SQL['post'])." AND module=" . db_squote($SQL['module']) ." ORDER BY id desc LIMIT 1
             "))) {
             // Check for post from the same user
             if (is_array($userROW)) {

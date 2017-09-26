@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 include_once root."/includes/news.php";
 
@@ -44,7 +44,7 @@ function plugin_rss_yandex_generate($catname = ''){
 	$cacheFileName = md5('rss_yandex'.$config['theme'].$config['home_url'].$config['default_lang'].(is_array($xcat)?$xcat['id']:'').pluginGetVariable('rss_yandex','use_hide').is_array($userROW)).'.txt';
 
 	if (pluginGetVariable('rss_yandex','cache')) {
-		$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('rss_yandex','cacheExpire'), 'rss_yandex');
+		$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('rss_yandex','cache_expire'), 'rss_yandex');
 		if ($cacheData != false) {
 			// We got data from cache. Return it and stop
 			print $cacheData;
@@ -105,7 +105,7 @@ function plugin_rss_yandex_generate($catname = ''){
 
 	foreach ($sqlData as $row) {
 		// Make standart system call in 'export' mode
- $newsVars = news_showone($row['id'], '', array( 'emulate' => $row, 'style' => 'exportVars', 'extractEmbeddedItems' => pluginGetVariable('rss_yandex', 'textEnclosureEnabled')?1:0, 'plugin' => 'rss_yandex' ));
+ $newsVars = news_showone($row['id'], '', array( 'emulate' => $row, 'style' => 'exportVars', 'extractImages' => pluginGetVariable('rss_yandex', 'textEnclosureEnabled')?1:0, 'plugin' => 'rss_yandex' ));
 
 		$enclosureList = array();
 
@@ -218,9 +218,9 @@ function plugin_rss_yandex_mk_header($xcat) {
 
 	// Image
 	$imgInfo = array(
-		'url' => pluginGetVariable('rss_yandex','feed_image_url')?pluginGetVariable('rss_yandex','feed_image_url'):'http://ngcms.ru/templates/ngcms2/images/logo.png',
-		'title' => pluginGetVariable('rss_yandex','feed_image_title')?pluginGetVariable('rss_yandex','feed_image_title'):'Next generation CMS demo RSS feed',
-		'link' => pluginGetVariable('rss_yandex','feed_image_link')?pluginGetVariable('rss_yandex','feed_image_link'):'http://ngcms.ru/',
+		'url' => pluginGetVariable('rss_yandex','feed_image_url')?pluginGetVariable('rss_yandex','feed_image_url'):'http://bixbite.site/templates/ngcms2/images/logo.png',
+		'title' => pluginGetVariable('rss_yandex','feed_image_title')?pluginGetVariable('rss_yandex','feed_image_title'):'BixBite CMS demo RSS feed',
+		'link' => pluginGetVariable('rss_yandex','feed_image_link')?pluginGetVariable('rss_yandex','feed_image_link'):'http://bixbite.site/',
 	);
 
 	$line.= " <image>\n";
@@ -229,6 +229,6 @@ function plugin_rss_yandex_mk_header($xcat) {
 	$line.= " <link>".$imgInfo['link']."</link>\n";
 	$line.= " </image>\n";
 
-	$line.= " <generator><![CDATA[Plugin rss_yandex (0.01) // Next Generation CMS (".engineVersion.")]]></generator>\n";
+	$line.= " <generator><![CDATA[Plugin rss_yandex (0.01) // BixBite CMS (".engineVersion.")]]></generator>\n";
 	return $line;
 }

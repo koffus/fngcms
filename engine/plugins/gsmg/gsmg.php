@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 register_plugin_page('gsmg','','plugin_gsmg_screen',0);
 
@@ -22,7 +22,7 @@ function plugin_gsmg_screen() {
  );
 
  if (pluginGetVariable('gsmg','cache')) {
- $cacheData = cacheRetrieveFile('gsmg.txt', pluginGetVariable('gsmg','cacheExpire'), 'gsmg');
+ $cacheData = cacheRetrieveFile('gsmg.txt', pluginGetVariable('gsmg','cache_expire'), 'gsmg');
  if ($cacheData != false) {
  // We got data from cache. Return it and stop
  print $cacheData;

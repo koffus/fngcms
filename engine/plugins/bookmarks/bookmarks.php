@@ -1,20 +1,20 @@
 <?php
 
 /*
- * bookmarks for NextGeneration CMS (http://ngcms.ru/)
+ * bookmarks for NextGeneration CMS (http://bixbite.site/)
  */
  
 // protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
 //$cPlugin->regHtmlVar('js', admin_url.'/plugins/bookmarks/js/bookmarks.js');
 //$cPlugin->regHtmlVar('plain', $bookmarks_script);
-//$tpath = locatePluginTemplates(array(':bookmarks.css'), 'bookmarks', intval(pluginGetVariable('bookmarks', 'localSource')));
+//$tpath = plugin_locateTemplates('bookmarks', array(':bookmarks.css'));
 //$cPlugin->regHtmlVar('css', $tpath['url::bookmarks.css'].'/bookmarks.css'); 
 
-Lang::loadPlugin('bookmarks', 'main', '', ':');
+Lang::loadPlugin('bookmarks', 'site', '', ':');
 
 registerActionHandler('index', 'bookmarks_view');
 register_plugin_page('bookmarks', 'update' , 'update', 0);
@@ -30,13 +30,15 @@ $bookmarksLoaded = 0;
 $bookmarksList = array();
 
 // generate links for add/remove bookmark 
-class BookmarksNewsFilter extends NewsFilter {
+class BookmarksNewsFilter extends NewsFilter
+{
 
-    function showNews($newsID, $SQLnews, &$tvars, $mode = array()) {
+    function showNews($newsID, $SQLnews, &$tvars, $mode = array())
+    {
         global $bookmarksLoaded, $bookmarksList, $userROW, $tpl, $mysql, $twig;
 
         // determine paths for template files
-        $tpath = locatePluginTemplates(array('add.remove.links.style', 'not.logged.links'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
+        $tpath = plugin_locateTemplates('bookmarks', array('add.remove.links.style', 'not.logged.links'));
         
         // exit if user is not logged in
         if (!is_array($userROW)) {
@@ -45,8 +47,7 @@ class BookmarksNewsFilter extends NewsFilter {
                 $tVars['counter'] = $mysql->result('SELECT COUNT(*) FROM '.prefix.'_bookmarks WHERE news_id='.$newsID);
                 $tVars['counter'] = $tVars['counter'] ? $tVars['counter'] : '';
                 //$tVars['text'] = __('bookmarks:act_delete');
-                $xg = $twig->loadTemplate($tpath['not.logged.links'].'not.logged.links.tpl');
-                $tvars['vars']['plugin_bookmarks_news'] = $xg->render($tVars);
+                $tvars['vars']['plugin_bookmarks_news'] = $twig->render($tpath['not.logged.links'].'not.logged.links.tpl', $tVars);
             }
             else $tvars['vars']['plugin_bookmarks_news'] = '';
             return;
@@ -78,15 +79,14 @@ class BookmarksNewsFilter extends NewsFilter {
         } else {
             $tVars['counter'] = '';
         }
-        
-        $xg = $twig->loadTemplate($tpath['add.remove.links.style'].'add.remove.links.style.tpl');
-        $tvars['vars']['plugin_bookmarks_news'] = $xg->render($tVars);
+        $tvars['vars']['plugin_bookmarks_news'] = $twig->render($tpath['add.remove.links.style'].'add.remove.links.style.tpl', $tVars);
 
     }
 }
 
 // function for fetching SQL bookmarks data
-function bookmarks_sql(){
+function bookmarks_sql()
+{
     global $mysql, $config, $userROW, $bookmarksLoaded, $bookmarksList;
 
     $bookmarksLoaded = 1;
@@ -96,7 +96,8 @@ function bookmarks_sql(){
 }
 
 // view bookmarks on sidebar
-function bookmarks_view(){
+function bookmarks_view()
+{
     global $template, $tpl, $mysql, $config, $parse, $userROW, $bookmarksLoaded, $bookmarksList, $twig;
 
     // view on sidebar?
@@ -109,7 +110,7 @@ function bookmarks_view(){
     $cacheFileName = md5('bookmarks'.$config['theme'].$config['default_lang']).$userROW['id'].'.txt';
 
     if (pluginGetVariable('bookmarks','cache')) {
-        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('bookmarks','cacheExpire'), 'bookmarks');
+        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('bookmarks','cache_expire'), 'bookmarks');
         if ($cacheData != false) {
             // we got data from cache. Return it and stop
             $template['vars']['plugin_bookmarks'] = $cacheData;
@@ -118,7 +119,7 @@ function bookmarks_view(){
     }
 
     // determine paths for all template files
-    $tpath = locatePluginTemplates(array('entries', 'bookmarks'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
+    $tpath = plugin_locateTemplates('bookmarks', array('entries', 'bookmarks'));
 
     $maxlength = intval(pluginGetVariable('bookmarks','maxlength'));
     if (!$maxlength) { $maxlength = 100; }
@@ -161,8 +162,7 @@ function bookmarks_view(){
         'count' => $count,
         );
 
-    $xt = $twig->loadTemplate($tpath['bookmarks'].'bookmarks.tpl');
-    $output = $xt->render($tVars);
+    $output = $twig->render($tpath['bookmarks'].'bookmarks.tpl', $tVars);
     $template['vars']['plugin_bookmarks'] = $output;
 
     // create cache file
@@ -172,7 +172,8 @@ function bookmarks_view(){
 }
 
 // personal plugin pages for display all user's bookmarks
-function bookmarksPage() {
+function bookmarksPage()
+{
     global $SYSTEM_FLAGS, $userROW, $bookmarksLoaded, $bookmarksList, $template, $config, $template, $tpl, $twig;
 
     // process bookmarks only for logged in users
@@ -188,7 +189,7 @@ function bookmarksPage() {
     }
 
     // determine paths for template files
-    $tpath = locatePluginTemplates(array('bookmarks.page', 'news.short'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
+    $tpath = plugin_locateTemplates('bookmarks', array('bookmarks.page', 'news.short'));
 
     $SYSTEM_FLAGS['info']['title']['group'] = __('bookmarks:pp_title');
 
@@ -227,8 +228,7 @@ function bookmarksPage() {
         'count' => count($bookmarksList),
     );
 
-    $xt = $twig->loadTemplate($tpath['bookmarks.page'].'bookmarks.page.tpl');
-    $template['vars']['mainblock'] = $xt->render($tVars);
+    $template['vars']['mainblock'] .= $twig->render($tpath['bookmarks.page'].'bookmarks.page.tpl', $tVars);
 }
 
 pluginRegisterFilter('news', 'bookmarks', new BookmarksNewsFilter);

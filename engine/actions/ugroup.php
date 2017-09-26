@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: ugroup.php
 // Description: User group management
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 Lang::load('ugroup', 'admin');
 
 function ugroupList(){
@@ -55,8 +55,7 @@ function ugroupList(){
 		),
 	);
 
-	$xt = $twig->loadTemplate('skins/default/tpl/ugroup/list.tpl');
-	echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'ugroup/list.tpl', $tVars);
 }
 
 function ugroupForm(){
@@ -114,8 +113,7 @@ function ugroupForm(){
 		'canModify' => $permModify,
 	);
 
-	$xt = $twig->loadTemplate('skins/default/tpl/ugroup/addEdit.tpl');
-	echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'ugroup/addEdit.tpl', $tVars);
 }
 
 function ugroupCommit(){

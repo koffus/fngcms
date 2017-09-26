@@ -1,18 +1,16 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Configuration file for plugin
+ */
 
-Lang::loadPlugin('gallery', 'config', '', ':');
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
+
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
-    array(
-        'table' => 'comments',
-        'action' => 'modify',
-        'fields' => array(
-            array('action' => 'drop', 'name' => 'module'),
-            )
-    ),
     array(
         'table' => 'images',
         'action' => 'modify',

@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: configuration.rpc.php
 // Description: RPC library for CONFIGURATION module
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load library
 Lang::load('configuration', 'admin');
@@ -116,14 +116,14 @@ function admConfigurationTestEMail($params)
     // Init $mail client
     $mail = new PHPMailer();
 
-    $fromName = ($params['from']['name'] ? $params['from']['name'] : 'NGCMS Mail Agent');
+    $fromName = ($params['from']['name'] ? $params['from']['name'] : 'BixBite CMS Mail Agent');
 
     $mail->setFrom($params['from']['email'], $fromName);
     $mail->CharSet = 'UTF-8';
-    $mail->Subject = 'NGCMS Sending test message from admin panel [' . $_SERVER['SERVER_NAME'] . ']';
+    $mail->Subject = 'BixBite CMS Sending test message from admin panel [' . $_SERVER['SERVER_NAME'] . ']';
     $mail->AddAddress($params['to']['email'], $params['to']['email']);
     $mail->ContentType = 'text/html';
-    $mail->Body = 'Привет, ' . $params['to']['email'] . "!<br/><br/>\nАдминистратор сайта [" . $_SERVER['SERVER_NAME'] . "] только что отправил тебе тестовое email сообщение.<br/>\nЕсли ты получил это сообщение, то всё в порядке!<br/><br/>\n---<br/>\nС уважением,<br/>\nМодуль отправки писем NGCMS.";
+    $mail->Body = 'Привет, ' . $params['to']['email'] . "!<br/><br/>\nАдминистратор сайта [" . $_SERVER['SERVER_NAME'] . "] только что отправил тебе тестовое email сообщение.<br/>\nЕсли ты получил это сообщение, то всё в порядке!<br/><br/>\n---<br/>\nС уважением,<br/>\nМодуль отправки писем BixBite CMS.";
 
     $sendResult = false;
     switch ($params['mode']) {

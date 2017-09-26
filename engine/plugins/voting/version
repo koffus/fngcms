@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: voting
@@ -14,6 +14,6 @@ Config: config.php
 Type: widget
 Description: Управление голосованиями
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Голосование на сайте
 Information: Добавляет блок голосований на сайте, позволяет одновременно проводить несколько голосований и видеть результаты голосований на отдельной странице.

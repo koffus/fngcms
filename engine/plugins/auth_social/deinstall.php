@@ -1,7 +1,7 @@
 <?php
 
 # protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 $db_update = array(
     array(

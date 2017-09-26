@@ -7,7 +7,7 @@
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function plugin_tracker_announce()
 {
@@ -176,18 +176,17 @@ class TrackerNewsFilter extends NewsFilter
 
         if (pluginGetVariable('tracker', 'smagnet')) {
 
-            Lang::loadPlugin('tracker', 'config', '', ':');
+            Lang::loadPlugin('tracker', 'admin', '', ':');
 
             $ttvars = array(
                 'tracker_magnet' => '',
             );
 
             $extends = pluginGetVariable('tracker', 'extends') ? pluginGetVariable('tracker', 'extends') : 'owner';
-            $tpath = locatePluginTemplates(array('news'), 'tracker', 1, 0, 'admin');
-            $xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+            $tpath = plugin_locateTemplates('tracker', array('news'));
             $tvars['extends'][$extends][] = array(
                 'header_title' => __('tracker:header_title'),
-                'body' => $xt->render($ttvars),
+                'body' => $twig->render($tpath['news'] . 'news.tpl', $ttvars),
             );
         }
 
@@ -223,7 +222,7 @@ class TrackerNewsFilter extends NewsFilter
 
         if (pluginGetVariable('tracker', 'smagnet')) {
 
-            Lang::loadPlugin('tracker', 'config', '', ':');
+            Lang::loadPlugin('tracker', 'admin', '', ':');
 
             // Check if we have joined magnet link
             $tracker_magnet = '';
@@ -236,11 +235,10 @@ class TrackerNewsFilter extends NewsFilter
             );
 
             $extends = pluginGetVariable('tracker', 'extends') ? pluginGetVariable('tracker', 'extends') : 'owner';
-            $tpath = locatePluginTemplates(array('news'), 'tracker', 1, 0, 'admin');
-            $xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+            $tpath = plugin_locateTemplates('tracker', array('news'));
             $tvars['extends'][$extends][] = array(
                 'header_title' => __('tracker:header_title'),
-                'body' => $xt->render($ttvars),
+                'body' => $twig->render($tpath['news'] . 'news.tpl', $ttvars),
             );
         }
 
@@ -309,7 +307,7 @@ class TrackerNewsFilter extends NewsFilter
             return;
 
         // Determine paths for all template files
-        $tpath = locatePluginTemplates(array('news.full'), 'tracker', pluginGetVariable('tracker', 'localSource'));
+        $tpath = plugin_locateTemplates('tracker', array('news.full'));
         $tdata = array();
 
         // Check if we have MAGNET link in this news
@@ -379,4 +377,4 @@ include_once "lib/basic.php";
 register_plugin_page('tracker', 'announce', 'plugin_tracker_announce');
 pluginRegisterFilter('news', 'tracker', new TrackerNewsFilter);
 
-Lang::loadPlugin('tracker', 'main', '', ':');
+Lang::loadPlugin('tracker', 'site', '', ':');

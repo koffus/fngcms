@@ -1,9 +1,9 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-Lang::loadPlugin('comments', 'main', '', ':');
+Lang::loadPlugin('comments', 'site', '', ':');
 
 class CommentsNewsFilter extends NewsFilter
 {
@@ -13,7 +13,7 @@ class CommentsNewsFilter extends NewsFilter
     function addNewsForm(&$tvars)
     {
 
-        Lang::loadPlugin('comments', 'config', '', ':');
+        Lang::loadPlugin('comments', 'admin', '', ':');
 
         for ($ix = 0; $ix <= 2; $ix++) {
             $tvars['plugin']['comments']['acom:' . $ix] = (pluginGetVariable('comments', 'default_news') == $ix) ? 'selected="selected"' : '';
@@ -30,7 +30,7 @@ class CommentsNewsFilter extends NewsFilter
     {
         global $mysql, $config, $parse, $tpl, $PHP_SELF;
 
-        Lang::loadPlugin('comments', 'config', '', ':');
+        Lang::loadPlugin('comments', 'admin', '', ':');
 
         // List comments
         $comments = '';
@@ -137,7 +137,7 @@ class CommentsNewsFilter extends NewsFilter
         if(tpl_site != ($tPath = getCatTemplate($SQLnews['catid'], $templateName))) {
             $callingCommentsParams['overrideTemplatePath'] = $tPath;
         } else {
-            $tPath = locatePluginTemplates($templateName, 'comments', pluginGetVariable('comments', 'localSource') );
+            $tPath = plugin_locateTemplates('comments', $templateName);
             $tPath = $tPath[$templateName];
         }
 
@@ -217,7 +217,7 @@ class CommentsNewsFilter extends NewsFilter
     function deleteNewsNotify($newsID, $SQLnews)
     {
         if ($this->countDeleted) {
-            Lang::loadPlugin('comments', 'config', '', ':');
+            Lang::loadPlugin('comments', 'admin', '', ':');
             msg(array('type' => 'info', 'message' => sprintf(__('comments:msg.countDeleted'), $this->countDeleted)));
         }
         return 1;
@@ -235,7 +235,7 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
     function addCategoryForm(&$tvars)
     {
 
-        Lang::loadPlugin('comments', 'config', '', ':');
+        Lang::loadPlugin('comments', 'admin', '', ':');
 
         $ac = MakeDropDown(array('0' => 'запретить', '1' => 'разрешить', '2' => 'по умолчанию'), 'allow_com', pluginGetVariable('comments', 'default_categories'));
 
@@ -247,7 +247,7 @@ class CommentsFilterAdminCategories extends FilterAdminCategories
     function editCategoryForm($categoryID, $SQL, &$tvars)
     {
 
-        Lang::loadPlugin('comments', 'config', '', ':');
+        Lang::loadPlugin('comments', 'admin', '', ':');
 
         if (!isset($SQL['allow_com'])) {
             $SQL['allow_com'] = pluginGetVariable('comments', 'default_categories');
@@ -311,7 +311,7 @@ function plugin_comments_show()
             $SYSTEM_FLAGS['template.main.path'] = $tPath;
         }
     } else {
-        $tPath = locatePluginTemplates($templateName, 'comments', pluginGetVariable('comments', 'localSource') );
+        $tPath = plugin_locateTemplates('comments', $templateName);
         $tPath = $tPath[$templateName];
     }
 
@@ -424,7 +424,7 @@ function plugin_comments_delete()
 
     // Check if we run AJAX request
     if (isset($_REQUEST['ajax'])) {
-        $template['vars']['mainblock'] = json_encode($output);
+        $template['vars']['mainblock'] .= json_encode($output);
     } else {
         // NON-AJAX mode
 
@@ -438,7 +438,7 @@ function plugin_comments_delete()
     }
 }
 
-Lang::loadPlugin('comments', 'main', '', ':');
+Lang::loadPlugin('comments', 'site', '', ':');
 pluginRegisterFilter('news', 'comments', new CommentsNewsFilter);
 register_admin_filter('categories', 'comments', new CommentsFilterAdminCategories);
 

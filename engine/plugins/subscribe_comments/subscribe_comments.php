@@ -1,9 +1,9 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-Lang::loadPlugin('subscribe_comments', 'main', '', ':');
+Lang::loadPlugin('subscribe_comments', 'site', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -259,7 +259,7 @@ $unsubscribe = secure_html($_REQUEST['unsubscribe_me']);
 /*
 	$tpl->template('subscribe_comments', tpl_site.'plugins/subscribe_comments');
 	$tpl->vars('subscribe_comments', $tcvars);
-	$template['vars']['mainblock'] = $tpl->show('comments.subscribe');
+	$template['vars']['mainblock'] .= $tpl->show('comments.subscribe');
 */
 
 }

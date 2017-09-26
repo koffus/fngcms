@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: configuration.php
 // Description: Configuration managment
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load language
 Lang::load('configuration', 'admin');
@@ -40,7 +40,8 @@ $twig->addFunction('mkSelectNY',	new Twig_Function_Function('twigmkSelectNY'));
 
 //
 // Save system config
-function systemConfigSave(){
+function systemConfigSave()
+{
 	global $config, $mysql;
 
     $id = (getIsSet($_REQUEST['id']))?intval($_REQUEST['id']):0;
@@ -156,8 +157,7 @@ function systemConfigEditForm(){
 
 	$tvars['vars']['defaultSection'] = (isset($_REQUEST['selectedOption']) and $_REQUEST['selectedOption'])?htmlspecialchars($_REQUEST['selectedOption'], ENT_COMPAT | ENT_HTML401, 'UTF-8'):'news';
 
-	$xt = $twig->loadTemplate('skins/default/tpl/configuration.tpl');
-	echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'configuration.tpl', $tVars);
 }
 
 //

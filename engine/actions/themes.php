@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('themes', 'admin', 'themes');
 
@@ -22,5 +22,4 @@ $tVars = array(
 	),
 );
 
-$xt = $twig->loadTemplate('skins/default/tpl/themes.tpl');
-echo $xt->render($tVars);
+print $twig->render(tpl_actions . 'themes.tpl', $tVars);

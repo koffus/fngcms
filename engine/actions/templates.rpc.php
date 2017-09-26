@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2012 BixBite CMS (http://bixbite.site/)
 // Name: templates.rpc.php
 // Description: Externally available library for TEMPLATES manipulation
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load library
 Lang::load('templates', 'admin');

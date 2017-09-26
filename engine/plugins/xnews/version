@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: xnews
@@ -11,7 +11,7 @@ Config: config.php
 Type: widget
 Description: Вывод блоков новостей
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Вывод блоков новостей
 Information: Вывод информационных блоков новостей по заданным вами критериям
 Preinstall: no

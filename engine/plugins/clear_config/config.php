@@ -1,15 +1,15 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
 Lang::load('users', 'admin');
-Lang::loadPlugin('clear_config', 'config', 'с_с', ':');
+Lang::loadPlugin($plugin, 'admin', 'с_с', ':');
 
 switch ($action) {
     case 'delete':
@@ -57,7 +57,7 @@ function showlist() {
         foreach($ULIB->CMD as $key => $row) {
             if ($key != 'core' and $key != 'static' and $key != 'search' and $key != 'news' and !in_array($key, $plug)) $plug[] = $key;
             $conf[$key][] = 'urlcmd'; } }
-    $tpath = locatePluginTemplates(array('conf.list', 'conf.list.row'), 'clear_config');
+    $tpath = plugin_locateTemplates('clear_config', array('conf.list', 'conf.list.row'));
     $output = '';
     sort($plug);
     foreach($plug as $key => $row) {
@@ -75,9 +75,8 @@ function showlist() {
         }
         $tvars['entries'][] = $pvars;
     }
-    
-    $xt = $twig->loadTemplate('plugins/clear_config/tpl/conf.list.tpl');
-    echo $xt->render($tvars);
+
+    echo $twig->render('plugins/clear_config/tpl/conf.list.tpl', $tvars);
 }
 
 function delete() {

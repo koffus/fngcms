@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Configuration file for plugin
@@ -17,7 +17,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_feedback_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('feedback', 'config', '', ':');
+		Lang::loadPlugin('feedback', 'admin', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(

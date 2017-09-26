@@ -1,46 +1,45 @@
 <?php
 
+/*
+ * Deinstall file for plugin
+ */
+
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-//
-
-
-Lang::loadPlugin('xfields', 'config');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
- array(
- 'table' => 'news',
- 'action' => 'modify',
- 'fields' => array(
- array('action' => 'drop', 'name' => 'xfields', 'type' => 'text'),
- )
- ),
- array(
- 'table' => 'category',
- 'action' => 'modify',
- 'fields' => array(
- array('action' => 'drop', 'name' => 'xf_group', 'type' => 'text'),
- )
- ),
- array(
- 'table' => 'users',
- 'action' => 'modify',
- 'fields' => array(
- array('action' => 'drop', 'name' => 'xfields', 'type' => 'text'),
- )
- )
+    array(
+        'table' => 'news',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'xfields', 'type' => 'text'),
+        )
+    ),
+    array(
+        'table' => 'category',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'xf_group', 'type' => 'text'),
+        )
+    ),
+    array(
+        'table' => 'users',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'xfields', 'type' => 'text'),
+        )
+    )
 );
 
 // RUN
 if ('commit' == $action) {
-	// If submit requested, do config save
-	if (fixdb_plugin_install('xfields', $db_update, 'deinstall')) {
-		plugin_mark_deinstalled('xfields');
-	}	
+    // If submit requested, do config save
+    if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
+        plugin_mark_deinstalled($plugin);
+    }
 } else {
-	$text = __('xfields_desc_uninstall');
-	generate_install_page('xfields', $text, 'deinstall');
+    generate_install_page($plugin, __($plugin.':desc_uninstall'), 'deinstall');
 }

@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: parse.class.php
 // Description: Parsing and formatting routines
 // Author: Vitaly Ponomarev, Alexey Zinchenko
@@ -550,7 +550,7 @@ class Parse
         return join(' ', $alist);
     }
 
-    function truncateHTML($text, $size = 50, $finisher = '&nbsp;...')
+    function cleanHTML($text)
     {
 
         $text = preg_replace("/\>(\\x20|\t|\r|\n)+\</", '> <', $text);
@@ -559,7 +559,16 @@ class Parse
         $text = str_replace(' ', ' ', $text);
         $text = trim($text);
 
-        if (mb_strlen($text, 'UTF-8') <= $size)
+        return $text;
+
+    }
+
+    function truncateHTML($text, $size = 50, $finisher = '&nbsp;...')
+    {
+
+        $text = $this->cleanHTML($text);
+
+        if ((mb_strlen($text, 'UTF-8') <= $size) or (0 == $size))
             return $text;
 
         $text = mb_substr($text, 0, $size, 'UTF-8');
@@ -684,5 +693,23 @@ class Parse
 
         return $content;
 
+    }
+
+    public function extractImages($text)
+    {
+        // Scan for <img> tag
+        if (preg_match_all('/\<img (.+?)(?: *\/?)\>/i', $text, $m)) {
+            $images = [];
+            // Analyze all found <img> tags for parameters
+            foreach ($m[1] as $kl) {
+                $klp = $this->parseBBCodeParams($kl);
+                // Add record if src="" parameter is set
+                if (isset($klp['src'])) {
+                    $images[] = $klp['src'];
+                }
+            }
+            return $images;
+        }
+        return null;
     }
 }

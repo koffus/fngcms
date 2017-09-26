@@ -8,17 +8,22 @@
         </main>
 
         <aside class="sidebar col-lg-3 ml-auto">
+
+            {% if pluginIsActive('gallery') %}
+                {{ plugin_gallery_category }}
+                {{ plugin_gallery_widget }}
+            {% endif %}
+
+            {% if pluginIsActive('rss_import') %}
+                {{ plugin_rss_import_widget }}
+            {% endif %}
+
             {% if pluginIsActive('tags') %}
                 {{ plugin_tags }}
             {% endif %}
 
-            {% if pluginIsActive('gallery') %}
-                {{ plugin_gallery_category }}
-                {{ plugin_gallery_widget_gallery }}
-            {% endif %}
-
             {% if pluginIsActive('archive') %}
-                {{ callPlugin('archive.show', {'maxnum' : 12, 'counter' : 1, 'tcounter' : 1, 'template': 'archive', 'cacheExpire': 60}) }}
+                {{ plugin_archive }}
             {% endif %}
 
             {% if pluginIsActive('calendar') %}
@@ -46,25 +51,7 @@
             {% endif %}
 
             {% if pluginIsActive('xnews') %}
-                <div class="widget widget-popular">
-                    <h4 class="widget-title">{{ lang.theme.popular_article }}</h4>
-                    <ul class="nav tabs" id="myTab">
-                        <li class="nav-item"><a class="nav-link active" id="day_1" data-toggle="tab" href="#tab-1">{{ lang.theme.day_1 }}</a></li>
-                        <li class="nav-item"><a class="nav-link" id="day_2" data-toggle="tab" href="#tab-2">{{ lang.theme.day_2 }}</a></li>
-                        <li class="nav-item"><a class="nav-link" id="day_3" data-toggle="tab" href="#tab-3">{{ lang.theme.day_3 }}</a></li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane fade active show" id="tab-1">
-                            {{ callPlugin('xnews.show', {'order' : 'viewed', 'count': '5', 'template' : 'xnews1', 'maxAge' : '7'}) }}
-                        </div>
-                        <div class="tab-pane fade" id="tab-2">
-                            {{ callPlugin('xnews.show', {'order' : 'viewed', 'count': '5', 'template' : 'xnews1', 'maxAge' : '30'}) }}
-                        </div>
-                        <div class="tab-pane fade" id="tab-3">
-                            {{ callPlugin('xnews.show', {'order' : 'viewed', 'count': '5', 'template' : 'xnews1'}) }}
-                        </div>
-                    </div>
-                </div>
+                {{ callPlugin('xnews.show', {'order' : 'viewed', 'count': '5', 'skin' : 'basic'}) }}
             {% endif %}
 
             {% if pluginIsActive('switcher') %}
@@ -72,7 +59,11 @@
             {% endif %}
 
             {% if pluginIsActive('top_users') %}
-                {{ callPlugin('top_users.show', {'number' : 12, 'mode' : 'news', 'template': 'top_users', 'cacheExpire': 60}) }}
+                {{ callPlugin('top_users.show', {'number' : 12, 'mode' : 'news', 'template': 'top_users', 'cache_expire': 60}) }}
+            {% endif %}
+
+            {% if pluginIsActive('k_online') %}
+                {{ k_online }}
             {% endif %}
 
             <div class="widget widget-pages">

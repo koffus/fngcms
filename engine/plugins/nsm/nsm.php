@@ -1,9 +1,9 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-Lang::loadPlugin('nsm', 'main', '', '#');
+Lang::loadPlugin('nsm', 'site', '', '#');
 register_plugin_page('nsm','','plugin_nsm');
 register_plugin_page('nsm','add','plugin_nsm_add_proxy');
 register_plugin_page('nsm','edit','plugin_nsm_edit_proxy');
@@ -127,7 +127,7 @@ function plugin_nsm(){
  $tVars['flags']['canAdd'] = (($permPlugin['add']) and ($perm['add']))?1:0;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('news.list'), 'nsm', pluginGetVariable('nsm', 'localSource'));
+ $tpath = plugin_locateTemplates('nsm', array('news.list'));
 
  $xt = $twig->loadTemplate($tpath['news.list'].'news.list.tpl');
  $template['vars']['mainblock'] .= $xt->render($tVars);
@@ -490,7 +490,7 @@ function plugin_nsm_addForm($tpl_name = 'news.add', $retry = ''){
  );
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array($tpl_name), 'nsm', pluginGetVariable('nsm', 'localSource'));
+ $tpath = plugin_locateTemplates('nsm', array($tpl_name));
 
  $xt = $twig->loadTemplate($tpath[$tpl_name].$tpl_name.'.tpl');
 
@@ -853,7 +853,7 @@ function plugin_nsm_editForm($tpl_name = 'news.edit',$retry = ''){
  foreach ($PFILTERS['news'] as $k => $v) { $v->editNewsForm($id, $row, $tVars); }
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array($tpl_name), 'nsm', pluginGetVariable('nsm', 'localSource'));
+ $tpath = plugin_locateTemplates('nsm', array($tpl_name));
 
  $xt = $twig->loadTemplate($tpath[$tpl_name].$tpl_name.'.tpl');
  $template['vars']['mainblock'] .= $xt->render($tVars);

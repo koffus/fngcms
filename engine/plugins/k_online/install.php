@@ -15,7 +15,7 @@
  Данный код защищен авторскими правами
 =====================================================
 */
-if (!defined('NGCMS'))
+if (!defined('BBCMS'))
 {
 	die ('HAL');
 }
@@ -49,7 +49,7 @@ function plugin_k_online_install($action) {
 	switch ($action) {
 		case 'confirm':
 			if($check)
-				generate_install_page('k_online', 'Тыкай установить');
+				generate_install_page('k_online', __('install_desc'));
 			else
 				msg(array('type' => 'danger', 'message' => "Версия CMS не соответствует допустимой<br />У вас установлена ".$checkVer['0'].".".$checkVer['1'].".<b>".$checkVer['2']."</b>. Требуется 0.9.3!"));
 			break;

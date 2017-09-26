@@ -8,7 +8,7 @@
     <title>{l_header.title}</title>
 
     <link href="{scriptLibrary}/bootstrap-3.3.7/bootstrap.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Roboto:400,100,300,500" rel="stylesheet">
+    <link href="http://fonts.googleapis.com/css?family=Ubuntu:100,300" rel="stylesheet">
     <link href="{templateURL}/style.css" rel="stylesheet">
 
     <script src="{scriptLibrary}/js/jquery-3.2.1.js"></script>

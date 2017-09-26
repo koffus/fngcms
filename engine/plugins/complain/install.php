@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Configuration file for plugin
@@ -17,7 +17,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_complain_install($action) {
 
 	if ($action != 'autoapply')
-		Lang::loadPlugin('complain', 'config', '', ':');
+		Lang::loadPlugin('complain', 'admin', '', ':');
 
 	$db_update = array(
 	 array(
@@ -57,7 +57,7 @@ function plugin_complain_install($action) {
 
 			// Now we need to set some default params
 			$params = array(
-				'localSource' => 1,
+				'skin' => 'basic',
 				'extform' => 1,
 				'errlist' => "1|Неверная ссылка\n2|Ссылка удалена\n3|Другая ошибка",
 				'inform_author' => 1,

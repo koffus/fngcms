@@ -2,7 +2,7 @@
 
 // #====================================================================================#
 // # Наименование плагина: finance [ Finance manager ] #
-// # Разрешено к использованию с: Next Generation CMS #
+// # Разрешено к использованию с: BixBite CMS #
 // # Автор: Vitaly A Ponomarev, vp7@mail.ru #
 // #====================================================================================#
 
@@ -10,7 +10,7 @@
 // # Ядро плагина #
 // #====================================================================================#
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Загрузка библиотеки
 include_once(root."/plugins/finance/inc/finance.php");
@@ -19,7 +19,7 @@ include_once(root."/plugins/finance/inc/finance.php");
 financeInitCache();
 
 // Подгружаем языковой файл
-Lang::loadPlugin('finance', 'main', '', ':');
+Lang::loadPlugin('finance', 'site', '', ':');
 
 //
 // Фильтр новостей (для управления ценой)
@@ -33,18 +33,17 @@ class FinanceNewsFilter extends NewsFilter {
 	function addNewsForm(&$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('finance', 'config', '', ':');
+		Lang::loadPlugin('finance', 'admin', '', ':');
 
 		$ttvars = array(
 			'fin_price' => '',
 			);
 
 		$extends = pluginGetVariable('finance','extends') ? pluginGetVariable('finance','extends') : 'owner';
-		$tpath = locatePluginTemplates(array('news'), 'finance', 1, 0, 'admin');
-		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tpath = plugin_locateTemplates('finance', array('news'));
 		$tvars['extends'][$extends][] = array(
 			'header_title' => __('finance:header_title'),
-			'body' => $xt->render($ttvars),
+			'body' => $twig->render($tpath['news'] . 'news.tpl', $ttvars),
 			);
 
 		return 1;
@@ -58,18 +57,17 @@ class FinanceNewsFilter extends NewsFilter {
 	function editNewsForm($newsID, $SQLold, &$tvars) {
 		global $twig;
 
-		Lang::loadPlugin('finance', 'config', '', ':');
+		Lang::loadPlugin('finance', 'admin', '', ':');
 
 		$ttvars = array(
 			'fin_price' => $SQLold['fin_price'],
 			);
 
 		$extends = pluginGetVariable('finance','extends') ? pluginGetVariable('finance','extends') : 'owner';
-		$tpath = locatePluginTemplates(array('news'), 'finance', 1, 0, 'admin');
-		$xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+		$tpath = plugin_locateTemplates('finance', array('news'));
 		$tvars['extends'][$extends][] = array(
 			'header_title' => __('finance:header_title'),
-			'body' => $xt->render($ttvars),
+			'body' => $twig->render($tpath['news'] . 'news.tpl', $ttvars),
 			);
 
 		return 1;
@@ -205,25 +203,25 @@ function plugin_finance_pay() {
 	// Новость найдена. Проверяем, не оплачивали ли мы уже к ней доступ?
 	if ($prow = $mysql->record("select * from ".prefix."_subscribe_manager where user_id = ".$userROW['id'].' and access_element_id = '.$access_element_id)) {
 		// Уже проплачено!
-		$template['vars']['mainblock'] = 'Вы уже оплатили данный доступ.';
+		$template['vars']['mainblock'] .= 'Вы уже оплатили данный доступ.';
 		return;
 	}
 
 	if (!$row['fin_price']) {
-		$template['vars']['mainblock'] = 'Доступ к данной новости бесплатен.';
+		$template['vars']['mainblock'] .= 'Доступ к данной новости бесплатен.';
 		return;
 	}
 	// Пытаемся оплатить
 	if (finance_pay(array('id' => $userROW['id']), array('type' => 'money', 'value' => array( 'money' => $row['fin_price'] * 100), 'description' => 'Payment for access'))) {
 		// Платёж прошел успешно. Предоставляем доступ
 		$mysql->query("insert into ".prefix."_subscribe_manager(user_id, special_access_type, access_element_id) values(".db_squote($userROW['id']).", $access_type, $access_element_id)");
-		$template['vars']['mainblock'] = 'Платеж успешно проведён, доступ открыт.'.($_REQUEST['back']?'<br /><a href="'.$_REQUEST['back'].'">Вернуться назад</a>':'');
+		$template['vars']['mainblock'] .= 'Платеж успешно проведён, доступ открыт.'.($_REQUEST['back']?'<br /><a href="'.$_REQUEST['back'].'">Вернуться назад</a>':'');
 	} else {
 		// Платёж не прошел
-		$template['vars']['mainblock'] = 'У вас на счету недостаточно денег для проведения платежа.';
+		$template['vars']['mainblock'] .= 'У вас на счету недостаточно денег для проведения платежа.';
 	}
  } else {
-	$template['vars']['mainblock'] = 'Новость, доступ к которой вы хотите оплатить, не найдена.';
+	$template['vars']['mainblock'] .= 'Новость, доступ к которой вы хотите оплатить, не найдена.';
  }
 }
 
@@ -234,11 +232,11 @@ function plugin_finance_report() {
 global $template, $tpl, $userROW, $username, $FINANCE_MONEY_ACCEPTORS;
 
 	if (!is_array($userROW)) {
-		$template['vars']['mainblock'] = 'Финансовая информация доступна только зарегистрированным пользователям!';
+		$template['vars']['mainblock'] .= 'Финансовая информация доступна только зарегистрированным пользователям!';
 	}
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('screen', 'screen.entries'), 'finance', pluginGetVariable('finance', 'localSource'));
+	$tpath = plugin_locateTemplates('finance', array('screen', 'screen.entries'));
 
 	$entries = '';
 	$tpl->template('screen.entries', $tpath['screen.entries']);
@@ -270,13 +268,13 @@ function plugin_finance_pay_accept($need_form=0) {
 			// Определяем что надо сделать
 			if ($need_form) {
 				// Выводим форму от аксептора
-				$template['vars']['mainblock'] = $acceptor->paymentAcceptForm(isset($_REQUEST['needsum'])?secure_html($_REQUEST['needsum']):'');
+				$template['vars']['mainblock'] .= $acceptor->paymentAcceptForm(isset($_REQUEST['needsum'])?secure_html($_REQUEST['needsum']):'');
 			} else {
 				// Автоматизированное проведение платежа
-				$template['vars']['mainblock'] = $acceptor->paymentAccept();
+				$template['vars']['mainblock'] .= $acceptor->paymentAccept();
 			}
 			return;
 		}
 	}
-	$template['vars']['mainblock'] = 'Ошибка: указанный finance acceptor ('.$acceptor_id	.') не найден';
+	$template['vars']['mainblock'] .= 'Ошибка: указанный finance acceptor ('.$acceptor_id	.') не найден';
 }

@@ -1,10 +1,10 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang file
-Lang::loadPlugin('switcher', 'main', '', ':');
+Lang::loadPlugin('switcher', 'site', '', ':');
 
 registerActionHandler('core', 'plugin_switcher');
 registerActionHandler('index', 'plugin_switcher_menu');
@@ -46,9 +46,8 @@ function plugin_switcher_menu() {
     $tVars = array(
         'list' => $list,
         );
-    $tpath = locatePluginTemplates(array('switcher'), 'switcher', pluginGetVariable('switcher', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['switcher'] . 'switcher.tpl');
-    $template['vars']['plugin_switcher'] = $xt->render($tVars);
+    $tpath = plugin_locateTemplates('switcher', array('switcher'));
+    $template['vars']['plugin_switcher'] = $twig->render($tpath['switcher'] . 'switcher.tpl', $tVars);
 }
 
 function switcher_redirector() {

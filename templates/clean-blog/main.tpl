@@ -112,7 +112,7 @@
                             </a>
                         </li>
                     </ul>
-                    <p class="copyright text-muted">Copyright &copy;  <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>. Powered by <a title="Fork of Next Generation CMS" target="_blank" href="https://github.com/russsiq/fngcms">FNG CMS</a> 2007 — {{ now|date("Y") }}. <br />{{ lang.sql_queries }}: <b>{{ queries }}</b> | {{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }} | <b>{{ memPeakUsage }}</b> Mb&nbsp;</p>
+                    <p class="copyright text-muted">Copyright &copy;  <a title="{{ home_title }}" href="{{ home }}">{{ home_title }}</a>. Powered by <a title="BixBite CMS" target="_blank" href="http://bixbite.site/">BixBite CMS</a> 2006-{{ now|date("Y") }}. <br />{{ lang.sql_queries }}: <b>{{ queries }}</b> | {{ lang.page_generation }}: <b>{{ exectime }}</b> {{ lang.sec }} | <b>{{ memPeakUsage }}</b> Mb&nbsp;</p>
                 </div>
             </div>
         </div>

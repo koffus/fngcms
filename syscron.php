@@ -1,10 +1,10 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: syscron.php
 // Description: Entry point for maintanance (cron) external calls
-// Author: NGCMS project team
+// Author: BBCMS project team
 //
 
 // Load CORE

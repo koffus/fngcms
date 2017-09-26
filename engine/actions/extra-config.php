@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: extra-config.php
 // Description: Plugin managment
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 @include_once root . 'includes/inc/extraconf.inc.php';
 
@@ -48,8 +48,8 @@ if (!is_array($extras[$plugin])) {
         'plugin' => $plugin,
         'php_self' => $PHP_SELF
     );
-    $xt = $twig->loadTemplate('skins/default/tpl/extra-config/nomodule.tpl');
-    echo $xt->render($tVars);
+
+    echo $twig->render(tpl_actions . 'extra-config/nomodule.tpl', $tVars);
 
 } else {
 
@@ -78,7 +78,6 @@ if (!is_array($extras[$plugin])) {
             'plugin' => $plugin,
             'php_self' => $PHP_SELF
         );
-        $xt = $twig->loadTemplate('skins/default/tpl/extra-config/nomodule.tpl');
-        echo $xt->render($tVars);
+        echo $twig->render(tpl_actions . 'extra-config/nomodule.tpl', $tVars);
     }
 }

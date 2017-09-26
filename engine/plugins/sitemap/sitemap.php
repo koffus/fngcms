@@ -1,7 +1,7 @@
 <?php
 
 /*
- * sitemap for Next Generation CMS (http://ngcms.ru/)
+ * sitemap for BixBite CMS (http://bixbite.site/)
  * Copyright (C) 2010 Alexey N. Zhukov (http://digitalplace.ru), kt2k (http://kt2k.ru/)
  * http://digitalplace.ru
  *
@@ -20,26 +20,23 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  *
  */
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 register_plugin_page('sitemap','','generateSitemap', 0);
 
 function generateSitemap() {
 	global $template, $twig, $mysql, $config, $parse, $catz, $SYSTEM_FLAGS, $TemplateCache;
 
-	Lang::loadPlugin('sitemap', 'main', '', ':');
-
-	$tpath = locatePluginTemplates(array('sitemap', 'sitemap'), 'sitemap', intval(pluginGetVariable('sitemap', 'localSource')));
-	$xt = $twig->loadTemplate($tpath['sitemap'].'sitemap.tpl');
+	Lang::loadPlugin('sitemap', 'site', '', ':');
 
 	$page = 1;
 	if(isset($_GET['page'])) $page = intval($_GET['page']);
 
 	if (pluginGetVariable('sitemap', 'cache')){
-		$cacheData = cacheRetrieveFile('sitemap_'.$page.'.txt', pluginGetVariable('sitemap', 'cacheExpire'), 'sitemap');
+		$cacheData = cacheRetrieveFile('sitemap_'.$page.'.txt', pluginGetVariable('sitemap', 'cache_expire'), 'sitemap');
 		if ($cacheData != false){
 			# we got data from cache. Return it and stop
-			$template['vars']['mainblock'] = $cacheData;
+			$template['vars']['mainblock'] .= $cacheData;
 			return 0;
 		}
 	}
@@ -52,7 +49,6 @@ function generateSitemap() {
 	$countNews = $mysql->result('SELECT COUNT(*) FROM '.prefix.'_news');
 
 	$news = $mysql->select('SELECT n.title, n.postdate, n.views,'.(pluginIsActive('comments') ? " n.com, " : "").' n.catid, n.id, n.alt_name, c.name, c.alt, c.parent, c.posorder, c.poslevel FROM '.prefix.'_news AS n LEFT JOIN '.prefix.'_category c on n.catid = c.id WHERE `approve` = 1 ORDER BY posorder, catid, pinned DESC, postdate DESC, editdate DESC '.$limit);
-	$tpath = locatePluginTemplates(array('sitemap_news', 'sitemap'), 'sitemap', intval(pluginGetVariable('sitemap', 'localSource')));
 
 	foreach ($news as $row) {
 		if ($cu_c <> $row['name']) {
@@ -149,5 +145,7 @@ function generateSitemap() {
 	if (pluginGetVariable('sitemap', 'cache'))
 		cacheStoreFile('sitemap_'.$page.'.txt', $result, 'sitemap');
 
-	$template['vars']['mainblock'] = $xt->render($tVars);
+
+	$tpath = plugin_locateTemplates('sitemap', array('sitemap'));
+	$template['vars']['mainblock'] .= $twig->render($tpath['sitemap'].'sitemap.tpl', $tVars);
 }

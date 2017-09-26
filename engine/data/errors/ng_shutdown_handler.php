@@ -17,7 +17,7 @@
 		return true;
 
 	print "<div id=\"ngErrorInformer\">";
-	print "<h1>NGCMS Runtime error: ".$lastError['message']."</h1>\n";
+	print "<h1>BixBite CMS Runtime error: ".$lastError['message']."</h1>\n";
 	print "<div class='dmsg'>[".$lastError['type']."]: ".$lastError['message']."</div><br/>";
 	print "<h2>Stack trace</h2>";
 	print "<table class='dtrace'><thead><td>Line #</td><td>File name</td></tr></thead><tbody>";

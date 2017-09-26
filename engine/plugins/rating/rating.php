@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function rating_show($newsID, $rating, $votes)
 {
@@ -11,11 +11,8 @@ function rating_show($newsID, $rating, $votes)
     $cPlugin = CPlugin::instance();
 
     Lang::loadPlugin('rating', 'site');
-    $localSkin = pluginGetVariable('rating', 'localSkin');
-    if (!$localSkin)
-        $localSkin='basic';
 
-    $tpath = locatePluginTemplates(array('rating', 'rating.form', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
+    $tpath = plugin_locateTemplates('rating', array('rating', 'rating.form', ':rating.css'));
     $cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 
     
     $tVars = array(
@@ -30,13 +27,11 @@ function rating_show($newsID, $rating, $votes)
     if (isset($_COOKIE['rating'.$newsID]) or (pluginGetVariable('rating','regonly') and !is_array($userROW))) {
         // Show
         $templateName = 'rating';
-        $xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
-        return $xt->render($tVars);
+        return $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars);
     } else {
         // Edit
         $templateName = 'rating.form';
-        $xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
-        return $xt->render($tVars);
+        return $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars);
     }
     return;
 }

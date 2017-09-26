@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2017 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: news.rpc.php
 // Description: RPC library for NEWS manipulation
 // Author: RusiQ
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load library
 Lang::load('news.rpc', 'admin');

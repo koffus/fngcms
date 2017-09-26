@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>NGCMS Runtime exception: <?php echo get_class($exception); ?></title>
+	<title>BixBite CMS Runtime exception: <?php echo get_class($exception); ?></title>
 	<meta charset="UTF-8"/>
 	<style>
 		body {
@@ -25,7 +25,7 @@
 </head>
 <body>
 <?php
-	print "<h1>NGCMS Runtime exception: ".get_class($exception)."</h1>\n";
+	print "<h1>BixBite CMS Runtime exception: ".get_class($exception)."</h1>\n";
 	print "<div class='dmsg'>".$exception->getMessage()."</div><br/>";
 	print "<h2>Stack trace</h2>";
 	print "<table class='dtrace'><thead><tr><td>#</td><td>Line #</td><td><i>Class</i>/Function</td><td>File name</td></tr></thead><tbody>";

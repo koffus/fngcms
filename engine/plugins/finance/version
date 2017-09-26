@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: finance
@@ -12,7 +12,7 @@ Install: install.php
 Type: plugin
 Description: Управление финансами
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 URI: http://no_url.com/
 Title: Управление финансами
 Preinstall: no

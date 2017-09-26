@@ -1,5 +1,5 @@
 -- -------------------------------------------------------- --
--- DEFAULT mySQL tables structure for NGCMS
+-- DEFAULT mySQL tables structure for BixBite CMS
 -- -------------------------------------------------------- --
 
 -- 

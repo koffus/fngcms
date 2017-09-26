@@ -1,9 +1,9 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExpire) {
+function plugin_other_user_news($number, $mode, $overrideTemplateName, $cache_expire) {
 	global $config, $mysql, $tpl, $template, $twig, $twigLoader, $TemplateCache, $CurrentHandler, $SYSTEM_FLAGS, $parse;
 
 	// Prepare keys for cacheing
@@ -44,7 +44,7 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
  }
 	
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'other_user_news', pluginGetVariable('other_user_news', 'localSource'));
+	$tpath = plugin_locateTemplates('other_user_news', array($templateName));
 
 	$cacheKeys []= '|current_news_id='.$current_news_id;
  $cacheKeys []= '|current_author_id='.$current_author_id;
@@ -55,8 +55,8 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
 	$cacheFileName = md5('other_user_news'.$config['theme'].$templateName.$config['default_lang'].join('', $cacheKeys)).'.txt';
 
-	if (!$cacheDisabled and ($cacheExpire > 0)) {
-		$cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'other_user_news');
+	if (!$cacheDisabled and ($cache_expire > 0)) {
+		$cacheData = cacheRetrieveFile($cacheFileName, $cache_expire, 'other_user_news');
 		if ($cacheData != false) {
 			// We got data from cache. Return it and stop
 			return $cacheData;
@@ -94,10 +94,9 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
  $tVars['author_link'] = $author_link;
  $tVars['ublog_link'] = $ublog_link;
 
-	$xt = $twig->loadTemplate($tpath[$templateName].$templateName.'.tpl');
-	$output = $xt->render($tVars);
+	$output = $twig->render($tpath[$templateName].$templateName.'.tpl', $tVars);
 	
-	if (!$cacheDisabled and ($cacheExpire > 0)) {
+	if (!$cacheDisabled and ($cache_expire > 0)) {
 		cacheStoreFile($cacheFileName, $output, 'other_user_news');
 	}
 	
@@ -110,11 +109,11 @@ function plugin_other_user_news($number, $mode, $overrideTemplateName, $cacheExp
 // * number			- Max num entries for top_active_users
 // * mode			- Mode for show
 // * template		- Personal template for plugin
-// * cacheExpire	- age of cache [in seconds]
+// * cache_expire	- age of cache [in seconds]
 function plugin_other_user_news_showTwig($params) {
 	global $CurrentHandler, $config;
 
-	return plugin_other_user_news($params['number'], $params['mode'], $params['template'], isset($params['cacheExpire'])?$params['cacheExpire']:0);
+	return plugin_other_user_news($params['number'], $params['mode'], $params['template'], isset($params['cache_expire'])?$params['cache_expire']:0);
 }
 
 twigRegisterFunction('other_user_news', 'show', plugin_other_user_news_showTwig);

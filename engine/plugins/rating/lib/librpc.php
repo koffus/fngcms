@@ -46,10 +46,8 @@ function rating_rpc_manage($params) {
     $data = $mysql->record("select rating, votes from ".prefix."_news where id = ".db_squote($post_id));
 
     $templateName = 'rating';
-    $localSkin = pluginGetVariable('rating', 'localSkin');
-    if (!$localSkin)
-        $localSkin='basic';
-    $tpath = locatePluginTemplates(array('rating', ':rating.css'), 'rating', pluginGetVariable('rating', 'localSource'), $localSkin);
+
+    $tpath = plugin_locateTemplates('rating', array('rating', ':rating.css'));
     $cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 
 
     $tVars = array(
@@ -59,8 +57,12 @@ function rating_rpc_manage($params) {
         'votes' => $data['votes'],
         );
 
-    $xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
-    return array('status' => 1, 'errorCode' => 0, 'content' => $xt->render($tVars), 'msg' => __('rating_thanks'));
+    return array(
+        'status' => 1,
+        'errorCode' => 0,
+        'content' => $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars),
+        'msg' => __('rating_thanks')
+        );
 }
 
 rpcRegisterFunction('plugin.rating.update', 'rating_rpc_manage');

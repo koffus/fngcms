@@ -1,5 +1,5 @@
 <?php
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 function plugin_faq_install($action) {
 
 	global $mysql;

@@ -5,7 +5,7 @@
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Always delete LoadCategories.dat !!!
 //clearCacheFiles();
@@ -14,7 +14,9 @@ if (!defined('NGCMS')) die ('HAL');
 $cPlugin = CPlugin::instance();
 
 // Prepare configuration parameters
-$skList = $cPlugin->getFoldersSkin($plugin);
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+}
 
 // Fill configuration parameters
 $navigation[] = array(

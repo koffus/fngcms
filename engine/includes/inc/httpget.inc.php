@@ -51,7 +51,7 @@ class http_get {
 				"GET /$path".(!empty($ext)?('?'.$ext):'')." HTTP/1.1\r\n".
 				"Host: $host\r\nConnection: close\r\n".
 				($referer?('Referer: http://'.$_SERVER['HTTP_HOST']."/\r\n"):'').
-				"User-Agent: PHPfetcher class ".$this->getVersion()."(designed for: http://ngcms.ru/)\r\n".
+				"User-Agent: PHPfetcher class ".$this->getVersion()."(designed for: http://bixbite.site/)\r\n".
 				"\r\n"
 			);
 		} else if (strtolower($proto) == 'post') {
@@ -61,7 +61,7 @@ class http_get {
 				"Content-length: " . mb_strlen($ext, 'UTF-8') . "\r\n".
 				"Content-Type: application/x-www-form-urlencoded\r\n".
 				($referer?('Referer: http://'.$_SERVER['HTTP_HOST']."/\r\n"):'').
-				"User-Agent: PHPfetcher class ".$this->getVersion()." (designed for: http://ngcms.ru/)\r\n".
+				"User-Agent: PHPfetcher class ".$this->getVersion()." (designed for: http://bixbite.site/)\r\n".
 				"\r\n".
 				$ext
 			);

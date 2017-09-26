@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: auth_punbb
@@ -12,7 +12,7 @@ Config: config.php
 Type: auth
 Description: авторизация с использованием БД форума punBB
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Авторизация через форум punBB
 Preinstall: no
 Information: Авторизация через БД форума punBB [адаптирована для версии 1.2.15]

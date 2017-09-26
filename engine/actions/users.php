@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: users.php
 // Description: manage users
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('users', 'admin');
 
@@ -82,8 +82,7 @@ function userEditForm(){
 
     ngSYSLOG(array('plugin' => '#admin', 'item' => 'users', 'ds_id' => $id), array('action' => 'editForm'), null, array(1));
 
-    $xt = $twig->loadTemplate('skins/default/tpl/users/edit.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'users/edit.tpl', $tVars);
 }
 
 //
@@ -493,8 +492,7 @@ function userList(){
             ),
         );
 
-    $xt = $twig->loadTemplate('skins/default/tpl/users/table.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'users/table.tpl', $tVars);
 
 }
 

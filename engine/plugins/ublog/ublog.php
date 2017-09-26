@@ -1,10 +1,10 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 
-Lang::loadPlugin('ublog', 'main', '', ':');
+Lang::loadPlugin('ublog', 'site', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -140,9 +140,8 @@ function plugin_ublog() {
 	);
 	$tVars['pages']	= $newsResults['pages'];
 
-	$tpath = locatePluginTemplates(array('ublog'), 'ublog', pluginGetVariable('calendar', 'localSource'));
-	$xt = $twig->loadTemplate($tpath['ublog'].'ublog.tpl');
-	$output = $xt->render($tVars);
+	$tpath = plugin_locateTemplates('ublog');
+	$output = $twig->render($tpath['ublog'].'ublog.tpl', $tVars);
 
 	$template['vars']['mainblock'] .= $output;
 }

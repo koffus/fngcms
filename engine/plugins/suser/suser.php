@@ -1,11 +1,11 @@
 <?php
 
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 register_plugin_page('suser','','suser_show',0);
 register_plugin_page('suser','search','suser_search',0);
 
-Lang::loadPlugin('suser', 'main', '', '#');
+Lang::loadPlugin('suser', 'site', '', '#');
 registerActionHandler('index_post', 'suser_header_show');
 
 // need for xfields sort & search
@@ -105,9 +105,6 @@ function xfields_fill($row, $tEntry) {
 function suser_search($params){ 
  global $catz, $twig, $catmap, $mysql, $config, $userROW, $tpl, $parse, $template, $PFILTERS, $SYSTEM_FLAGS, $CurrentHandler;
  
- $tpath = locatePluginTemplates(array('suser','usersearch'), 'suser', pluginGetVariable('suser', 'localSource'));
- $xt = $twig->loadTemplate($tpath['usersearch'].'usersearch.tpl');
- 
  // search by xfields
  if (xmode()) {
  include_once root.'conf/extras/xfields/config.php';
@@ -177,14 +174,13 @@ function suser_search($params){
  
  $tVars['entries'] = isset($tEntry) ? $tEntry : ''; 
  $tVars['xflist'] = get_xflist(); 
- $template['vars']['mainblock'] = $xt->render($tVars); 
+ 
+ $tpath = plugin_locateTemplates('suser', array('suser','usersearch'));
+ $template['vars']['mainblock'] .= $twig->render($tpath['usersearch'].'usersearch.tpl', $tVars); 
 }
 
 function suser_show($params) {
  global $catz, $twig, $catmap, $mysql, $config, $userROW, $tpl, $parse, $template, $PFILTERS, $SYSTEM_FLAGS, $CurrentHandler, $xmod;
-
- $tpath = locatePluginTemplates(array('suser','userlist'), 'suser', pluginGetVariable('suser', 'localSource'));
- $xt = $twig->loadTemplate($tpath['userlist'].'userlist.tpl');
  
  $pageNo = isset($_REQUEST['page'])?intval($_REQUEST['page']):0;
  
@@ -305,7 +301,9 @@ function suser_show($params) {
  ),
  );
  
- $template['vars']['mainblock'] .= $xt->render($tVars);
+
+ $tpath = plugin_locateTemplates('suser', array('suser','userlist'));
+ $template['vars']['mainblock'] .= $twig->render($tpath['userlist'].'userlist.tpl', $tVars);
 }
 
 function secureinput_suser($text){
@@ -332,7 +330,7 @@ function securenum_suser($value) {
 }
 
 function LoadVariables_suser(){
- $tpath = locatePluginTemplates(array(':'), 'suser', pluginGetVariable('suser', 'localSource'));
+ $tpath = plugin_locateTemplates('suser', array(':'));
  return parse_ini_file($tpath[':'].'/variables.ini', true);
 }
 
@@ -356,14 +354,13 @@ function information_suser($info, $title = 'Информация', $error_404 = 
  
  if($error_404)
  header($_SERVER['SERVER_PROTOCOL']. ' 404 Not Found');
-
- $tpath = locatePluginTemplates(array('suser','information'), 'suser', pluginGetVariable('suser', 'localSource'));
- $xt = $twig->loadTemplate($tpath['information'].'information.tpl');
  
  $tVars = array(
  'title' => $title,
  'info' => $info,
  );
  
- $template['vars']['mainblock'] = $xt->render($tVars);
+
+ $tpath = plugin_locateTemplates('suser', array('suser','information'));
+ $template['vars']['mainblock'] .= $twig->render($tpath['information'].'information.tpl', $tVars);
 }

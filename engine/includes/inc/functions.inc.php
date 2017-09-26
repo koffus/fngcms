@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: functions.php
 // Description: Common system functions
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //Проверяем переменную
 function getIsSet(&$result)
@@ -355,7 +355,7 @@ function sendEmailMessage($to, $subject, $message, $filename = false, $mail_from
     $mail->CharSet = 'UTF-8';
 
     // Fill `sender` field
-    $mail->FromName = 'NGCMS sender';
+    $mail->FromName = 'BixBite CMS sender';
     if ($config['mailfrom_name']) {
         $mail->FromName = $config['mailfrom_name'];
     }
@@ -461,10 +461,10 @@ function msg($params, $mode = 0, $disp = -1)
             'link' => !empty($referer) ? trim(db_squote($referer), "'") : home,
         );
         $SUPRESS_TEMPLATE_SHOW = 1;
-        $template['vars']['mainblock'] = $twig->loadTemplate('redirect.tpl')->render($tVars);
+        $template['vars']['mainblock'] .= $twig->render('redirect.tpl', $tVars);
         return 1;
     } else {
-        $msg = $twig->loadTemplate((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl')->render(array(
+        $msg = $twig->render((defined('ADMIN') ? tpl_actions : tpl_site) . 'alert.tpl', array(
             'id' => rand(8, 88),
             'type' => $type,
             'title' => trim(db_squote('<b>'.$title.'</b><br />'), "'"),
@@ -474,7 +474,7 @@ function msg($params, $mode = 0, $disp = -1)
 
     switch($disp) {
         case 0:
-            $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
+            $template['vars']['mainblock'] .= $msg . $template['vars']['mainblock'];
             break;
         case 1:
             print $msg;
@@ -486,7 +486,7 @@ function msg($params, $mode = 0, $disp = -1)
             if ($mode) {
                 print $msg;
             } else {
-                $template['vars']['mainblock'] = $msg . $template['vars']['mainblock'];
+                $template['vars']['mainblock'] .= $msg . $template['vars']['mainblock'];
             }
             break;
     }
@@ -530,6 +530,31 @@ function mkParamLine($param)
         $tvars['input'] = '<input type="text" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="' . $value . '" class="form-control" />';
         $tvars['type'] = 'input';
 
+    // select
+    } elseif ('select' == $param['type']) {
+        $tvars['input'] = MakeDropDown($param['values'], $name, $value, ($id ? 'id="'.$id.'" ': '' ));
+        $tvars['type'] = 'select';
+
+    // type="hidden"
+    } elseif ('hidden' == $param['type']) {
+        $tvars['input'] = '<input type="hidden" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
+        $tvars['type'] = 'hidden';
+
+    // type="checkbox"
+    } elseif ('checkbox' == $param['type']) {
+        $tvars['input'] = '<input type="checkbox" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="1"' . ($value ? ' checked' : '') . ' />';
+        $tvars['type'] = 'checkbox';
+
+    // type="button"
+    } elseif ('button' == $param['type']) {
+        $tvars['input'] = '<input type="button" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="' . $value . '" class="btn btn-default" />';
+        $tvars['type'] = 'button';
+
+    // textarea
+    } elseif ('text' == $param['type']) {
+        $tvars['input'] = '<textarea name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' class="form-control">' . (isset($param['value']) ? $param['value'] : '') . '</textarea>';
+        $tvars['type'] = 'text';
+
     // type="email"
     } elseif ('email' == $param['type']) {
         $tvars['input'] = '<input type="email" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
@@ -545,10 +570,12 @@ function mkParamLine($param)
         $tvars['input'] = '<input type="number" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
         $tvars['type'] = 'number';
 
-    // type="hidden"
-    } elseif ('hidden' == $param['type']) {
-        $tvars['input'] = '<input type="hidden" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" value="' . $value . '" class="form-control" />';
-        $tvars['type'] = 'hidden';
+    // type="file"
+    } elseif ('file' == $param['type']) {
+        $tvars['input'] =   '<div class="btn btn-default btn-secondary btn-fileinput form-control"><span><i class="fa fa-plus"></i> Select file ...</span>
+                                <input type="file" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . '" onchange="validateFile(this);" />
+                            </div>';
+        $tvars['type'] = 'file';
 
     // type="captcha"
     } elseif ('captcha' == $param['type']) {
@@ -559,26 +586,6 @@ function mkParamLine($param)
                                 </span>
                             </div>';
         $tvars['type'] = 'captcha';
-
-    // type="button"
-    } elseif ('button' == $param['type']) {
-        $tvars['input'] = '<input type="button" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="' . $value . '" class="btn btn-default" />';
-        $tvars['type'] = 'button';
-
-    // type="checkbox"
-    } elseif ('checkbox' == $param['type']) {
-        $tvars['input'] = '<input type="checkbox" name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' value="1"' . ($value ? ' checked' : '') . ' />';
-        $tvars['type'] = 'checkbox';
-
-    // textarea
-    } elseif ('text' == $param['type']) {
-        $tvars['input'] = '<textarea name="' . $name . '" '. ($id ? 'id="'.$id.'" ': '' ). ' ' . $html_flags . ' class="form-control">' . (isset($param['value']) ? $param['value'] : '') . '</textarea>';
-        $tvars['type'] = 'text';
-
-    // select
-    } elseif ('select' == $param['type']) {
-        $tvars['input'] = MakeDropDown($param['values'], $name, $value, ($id ? 'id="'.$id.'" ': '' ));
-        $tvars['type'] = 'select';
 
     // manual
     } elseif ('manual' == $param['type']) {
@@ -960,7 +967,7 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array())
             }
         }
 
-        $tEntry = array(
+        $tEntries [] = array(
             'id' => $v['id'],
             'cat' => $v['name'],
             'link' => ($v['alt_url'] == '') ? generateLink('news', 'by.category', array('category' => $v['alt'], 'catid' => $v['id'])) : $v['alt_url'],
@@ -975,7 +982,6 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array())
                 'counter' => ($config['category_counters'] and $v['posts']) ? true : false,
             )
         );
-        $tEntries [] = $tEntry;
         $tIDs [] = $v['id'];
     }
 
@@ -1005,8 +1011,8 @@ function generateCategoryMenu($treeMasterCategory = null, $flags = array())
     }
 
     $tVars['entries'] = $tEntries;
-    $xt = $twig->loadTemplate('news.categories.tpl');
-    return $xt->render($tVars);
+
+    return $twig->render('news.categories.tpl', $tVars);
 }
 
 // make an array for filtering from text line like 'abc-def,dfg'
@@ -1084,20 +1090,6 @@ function GetMetatags()
     return $result;
 }
 
-// Generate pagination block
-function generatePaginationBlock($current, $start, $end, $paginationParams, $navigations, $intlink = false)
-{
-    $result = '';
-    for ($j = $start; $j <= $end; $j++) {
-        if ($j == $current) {
-            $result .= str_replace('%page%', $j, $navigations['current_page']);
-        } else {
-            $result .= str_replace('%page%', $j, str_replace('%link%', generatePageLink($paginationParams, $j, $intlink), $navigations['link_page']));
-        }
-    }
-    return $result;
-}
-
 //
 // Generate navigations panel ( like: 1.2.[3].4. ... 25 )
 // $current				- current page
@@ -1140,6 +1132,20 @@ function generatePagination($current, $start, $end, $maxnav, $paginationParams, 
         $pages .= generatePaginationBlock($current, 1, $pages_count, $paginationParams, $navigations, $intlink);
     }
     return $pages;
+}
+
+// Generate pagination block
+function generatePaginationBlock($current, $start, $end, $paginationParams, $navigations, $intlink = false)
+{
+    $result = '';
+    for ($j = $start; $j <= $end; $j++) {
+        if ($j == $current) {
+            $result .= str_replace('%page%', $j, $navigations['current_page']);
+        } else {
+            $result .= str_replace('%page%', $j, str_replace('%link%', generatePageLink($paginationParams, $j, $intlink), $navigations['link_page']));
+        }
+    }
+    return $result;
 }
 
 //
@@ -1389,7 +1395,7 @@ function saveUserPermissions()
 {
     global $confPermUser;
 
-    $line = '<?php' . "\n// NGCMS User defined permissions ()\n";
+    $line = '<?php' . "\n// BixBite CMS User defined permissions ()\n";
     $line .= '$confPermUser = ' . var_export($confPermUser, true) . "\n;\n?>";
 
     $fcHandler = @fopen(confroot . 'perm.php', 'w');
@@ -1454,15 +1460,13 @@ function error404()
 
         // External error template
         case 1:
-            $xt = $twig->loadTemplate('404.external.tpl');
-            echo $xt->render(array());
+            echo $twig->render('404.external.tpl', array());
             exit;
 
         // Internal error template
         case 0:
         default:
-            $xt = $twig->loadTemplate('404.internal.tpl');
-            $template['vars']['mainblock'] = $xt->render(array());
+            $template['vars']['mainblock'] .= $twig->render('404.internal.tpl', array());
 
             $SYSTEM_FLAGS['info']['title']['group'] = __('404.title');
     }
@@ -1657,8 +1661,7 @@ function coreUserMenu()
             $v->showUserMenu($tVars);
         }
 
-    $xt = $twig->loadTemplate('usermenu.tpl');
-    $template['vars']['personal_menu'] = $xt->render($tVars);
+    $template['vars']['personal_menu'] = $twig->render('usermenu.tpl', $tVars);
 
     // Add special variables `personal_menu:logged` and `personal_menu:not.logged`
     $template['vars']['personal_menu:logged'] = is_array($userROW) ? $template['vars']['personal_menu'] : '';
@@ -1671,8 +1674,7 @@ function coreSearchForm()
 
     Lang::load('search', 'site');
 
-    $xt = $twig->loadTemplate(tpl_site . 'search.form.tpl');
-    $template['vars']['search_form'] = $xt->render(array('form_url' => generateLink('search', '', array())));
+    $template['vars']['search_form'] = $twig->render(tpl_site . 'search.form.tpl', array('form_url' => generateLink('search', '', array())));
 }
 
 // Return current news category

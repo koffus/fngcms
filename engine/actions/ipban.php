@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2011 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: ipban.php
 // Description: IP BAN configuration procedures
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('ipban', 'admin', 'ipban');
 
@@ -173,8 +173,7 @@ function ipban_list() {
         ),
     );
 
-    $xt = $twig->loadTemplate('skins/default/tpl/ipban.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'ipban.tpl', $tVars);
 }
 
 //

@@ -1,15 +1,15 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Configuration file for plugin
+ */
 
-//
-// Configuration file for plugin
-//
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
 Lang::load('users', 'admin');
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Prepare configuration parameters
 // Default user group for new users

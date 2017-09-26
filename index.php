@@ -1,10 +1,10 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: index.php
 // Description: core index file
-// Author: NGCMS project team
+// Author: BBCMS project team
 
 // Call debug from PhpConsole\Handler
 require_once('PhpConsole/__autoload.php');
@@ -30,7 +30,7 @@ date_default_timezone_set('UTC');
 // Configure error display mode
 error_reporting(E_ALL);
 ini_set('display_errors', 0);
-ini_set('error_log', 'logs/errorPHP.log');
+ini_set('error_log', 'engine/errorPHP.log');
 ini_set('log_errors', 1);
 
 // Чтобы было, хоть и не работает
@@ -79,26 +79,28 @@ $template = array(
 // ===================================================================
 // Check if site access is locked [ for everyone except admins ]
 // ===================================================================
-if ($config['lock'] and (!is_array($userROW) or (!checkPermission(array('plugin' => '#admin', 'item' => 'system'), null, 'lockedsite.view')))) {
-    $tvars = $template;
-    $tvars['vars']['lock_reason'] = $config['lock_reason'];
+if ($config['lock'] and (!isset($userROW) or !is_array($userROW) or (!checkPermission(array('plugin' => '#admin', 'item' => 'system'), null, 'lockedsite.view')))) {
+    // Disable cache
+    @header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
+    @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
+    @header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
+    @header('Cache-Control: post-check=0, pre-check=0', false);
+    @header('Pragma: no-cache'); // HTTP/1.0
+    if (function_exists('opcache_get_status')) ini_set('opcache.enable', 0);
+    if (function_exists('opcache_get_status')) ini_set('opcache.enable_cli', 0);
+    if (function_exists('xcache_get')) ini_set('xcache.cacher', 0);
+
+    @header('HTTP/1.1 503 Service Temporarily Unavailable', true, 503);
+    @header('Status: 503 Service Temporarily Unavailable', true, 503);
+    @header('Retry-After: ' . ($config['lock_retry'] ? $config['lock_retry'] : 3600));
+
+    $template['vars']['lock_reason'] = $config['lock_reason'];
 
     // If template 'sitelock.tpl' exists - show only this template
-    // ELSE: show template 'lock.tpl' within template 'main.tpl'
     if (file_exists(tpl_site . 'sitelock.tpl')) {
-        $tpl->template('sitelock', tpl_site);
-        $tpl->vars('sitelock', $tvars);
-        echo $tpl->show('sitelock');
+        echo $twig->render(tpl_site . 'sitelock.tpl', $template['vars']);
     } else {
-        $tpl->template('lock', tpl_site);
-        $tpl->vars('lock', $tvars);
-        $template['regx']["'\[sitelock\].*?\[/sitelock\]'si"] = $tpl->show('lock');
-        $template['regx']["'\[debug\].*?\[/debug\]'si"] = '';
-        $template['vars']['htmlvars'] = '';
-
-        $tpl->template('main', tpl_site);
-        $tpl->vars('main', $template);
-        echo $tpl->show('main');
+        echo $config['lock_reason'];
     }
 
     // STOP SCRIPT EXECUTION
@@ -111,10 +113,6 @@ if ($config['lock'] and (!is_array($userROW) or (!checkPermission(array('plugin'
 
 // External call: before executing URL handler
 executeActionHandler('index_pre');
-
-// Deactivate block [sitelock] ... [/sitelock]
-$template['vars']["[sitelock]"] = '';
-$template['vars']["[/sitelock]"] = '';
 
 // /////////////////////////////////////////////////////////// //
 // You may modify variable $systemAccessURL here (for hacks) //

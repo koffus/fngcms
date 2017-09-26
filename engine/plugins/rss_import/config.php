@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Set default values if values are not set [for new variables]
 foreach ([
@@ -16,9 +16,10 @@ foreach ([
     'title_length' => 120,
     'description_length' => 120,
     'description_enable' => 1,
-    'images_enable' => 1,
+    'extract_images' => 1,
+    'skin' => 'basic',
     'cache' => 1,
-    'cacheExpire' => 60,
+    'cache_expire' => 60,
     ] as $k => $v ) {
     if (pluginGetVariable($plugin, $k) == null) {
         pluginSetVariable($plugin, $k, $v);
@@ -52,14 +53,13 @@ function pluginConfigAction($plugin, $action)
     $cPlugin = CPlugin::instance();
 
     // Prepare configuration parameters
-    if (!$skList = $cPlugin->getFoldersSkin($plugin)) {
-        $skList = [];
+    if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
         msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
     }
 
     // Fill configuration parameters
     $cfg = array(
-        'description' => 'Плагин позволяет создавать на сайте виджеты (информеры) с отображением RSS-каналов (лент новостей) с других сайтов.',
+        'description' => __($plugin.':description'),
         'navigation' => array(
             array('class' => 'active','href' => 'admin.php?mod=extra-config&plugin=rss_import','title' => __('config')),
             array('href' => 'admin.php?mod=extra-config&plugin=rss_import&action=widget_list','title' => __('widgetList')),
@@ -102,12 +102,12 @@ function pluginConfigAction($plugin, $action)
             'value' => intval(pluginGetVariable($plugin, 'description_length')),
             ));
         array_push($cfgX, array(
-            'name' => 'images_enable',
-            'title' => 'Извлекать изображения, если они есть',
-            'descr' => '<code>Да</code> - все изображения из описания новости будут доступны в массиве переменных <code>{{&nbsp;item.images&nbsp;}}</code><br/><code>Нет</code> - изображения будут удаляться',
+            'name' => 'extract_images',
+            'title' => 'Извлекать изображения из новости',
+            'descr' => '<code>Да</code> - все изображения из текста новости, если они есть, будут доступны в массиве переменных <code>{{ item.embed.images }}</code>',
             'type' => 'select',
             'values' => array('0' => __('noa'), '1' => __('yesa')),
-            'value' => intval(pluginGetVariable($plugin, 'images_enable')),
+            'value' => intval(pluginGetVariable($plugin, 'extract_images')),
             ));
     array_push($cfg, array(
         'mode' => 'group',
@@ -116,23 +116,22 @@ function pluginConfigAction($plugin, $action)
         ));
 
 
-    // localSource
+    // Skin
     $cfgX = array();
     array_push($cfgX, array(
-        'name' => 'localSource',
-        'title' => __('localSource'),
-        'descr' => __('localSource#desc'),
-        'type' => 'select',
-        'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-        'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
-    ));
-    array_push($cfgX, array(
-        'name' => 'localSkin',
-        'title' => __('localSkin'),
-        'descr' => __('localSkin#desc'),
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
         'type' => 'select',
         'values' => $skList,
-        'value' => pluginGetVariable($plugin,'localSkin') ? pluginGetVariable($plugin,'localSkin') : 'basic',
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
+    array_push($cfgX, array(
+        'name' => 'skinLoad',
+        'title' => __('skinLoad'),
+        'descr' => __('skinLoad#desc'),
+        'type' => 'file',
+        'nosave' => true,
     ));
     array_push($cfg, array(
         'mode' => 'group',
@@ -140,7 +139,7 @@ function pluginConfigAction($plugin, $action)
         'entries' => $cfgX,
     ));
 
-    // cache and cacheExpire
+    // cache and cache_expire
     $cfgX = array();
     array_push($cfgX, array(
         'name' => 'cache',
@@ -151,11 +150,11 @@ function pluginConfigAction($plugin, $action)
         'value' => intval(pluginGetVariable($plugin, 'cache')),
     ));
     array_push($cfgX, array(
-        'name' => 'cacheExpire',
-        'title' => __('cacheExpire'),
-        'descr' => __('cacheExpire#desc'),
+        'name' => 'cache_expire',
+        'title' => __('cache_expire'),
+        'descr' => __('cache_expire#desc'),
         'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'cacheExpire')),
+        'value' => intval(pluginGetVariable($plugin, 'cache_expire')),
     ));
     array_push($cfg, array(
         'mode' => 'group',
@@ -172,6 +171,7 @@ function pluginConfigAction($plugin, $action)
     generate_config_page($plugin, $cfg);
 }
 
+// 
 function pluginWidgetListAction($plugin, $action)
 {
     global $twig, $mysql, $parse;
@@ -198,19 +198,28 @@ function pluginWidgetListAction($plugin, $action)
             // Get all widgets array
             $widgets = pluginGetVariable('rss_import', 'widgets');
 
-            $id = isset($_POST['id']) ? intval($_POST['id']) : end(array_keys($widgets)) + 1;
-            $widgets[$id]['name'] = $parse->translit($_POST['name']);
-            $widgets[$id]['title'] = secure_html($_POST['title']);
-            $widgets[$id]['url'] = secure_html($_POST['url']);
-            $widgets[$id]['items_count'] = intval($_POST['items_count']);
-            $widgets[$id]['title_length'] = intval($_POST['title_length']);
-            $widgets[$id]['description_enable'] = intval($_POST['description_enable']);
-            $widgets[$id]['description_length'] = intval($_POST['description_length']);
-            $widgets[$id]['images_enable'] = intval($_POST['images_enable']);
-            $widgets[$id]['localSource'] = intval($_POST['localSource']);
-            $widgets[$id]['localSkin'] = secure_html($_POST['localSkin']);
-            $widgets[$id]['cache'] = intval($_POST['cache']);
-            $widgets[$id]['cacheExpire'] = intval($_POST['cacheExpire']);
+            if (isset($_POST['id'])) {
+                $id = intval($_POST['id']);
+            } elseif (is_array($widgets)) {
+                $id = end(array_keys($widgets)) + 1;
+            } else {
+                $id = 1;
+            }
+
+            $widgets[$id] = [
+                'name' => $parse->translit($_POST['name']),
+                'title' => secure_html($_POST['title']),
+                'url' => secure_html($_POST['url']),
+                'active' => intval($_POST['active']),
+                'items_count' => intval($_POST['items_count']),
+                'title_length' => intval($_POST['title_length']),
+                'description_enable' => intval($_POST['description_enable']),
+                'description_length' => intval($_POST['description_length']),
+                'extract_images' => intval($_POST['extract_images']),
+                'skin' => secure_html($_POST['skin']),
+                'cache' => intval($_POST['cache']),
+                'cache_expire' => intval($_POST['cache_expire']),
+                ];
 
             pluginSetVariable($plugin, 'widgets', $widgets);
             // Load CORE Plugin
@@ -256,26 +265,27 @@ function pluginWidgetListAction($plugin, $action)
                 'title' => $widgets[$id]['title'],
                 'url' => $widgets[$id]['url'],
                 'items_count' => $widgets[$id]['items_count'],
+                'active' => $widgets[$id]['active'],
                 'title_length' => $widgets[$id]['title_length'],
                 'description_enable' => $widgets[$id]['description_enable'],
                 'description_length' => $widgets[$id]['description_length'],
-                'images_enable' => $widgets[$id]['images_enable'],
-                'localSource' => $widgets[$id]['localSource'],
-                'localSkin' => $widgets[$id]['localSkin'],
+                'extract_images' => $widgets[$id]['extract_images'],
+                'skin' => $widgets[$id]['skin'],
                 'cache' => $widgets[$id]['cache'],
-                'cacheExpire' => $widgets[$id]['cacheExpire'],
+                'cache_expire' => $widgets[$id]['cache_expire'],
             ];
         }
     }
     $tVars['items'] = $items;
-    $tpath = locatePluginTemplates(array('widget.list'), $plugin, 1, '', 'admin');
+    $tpath = plugin_locateTemplates($plugin, array('widget.list'));
     array_push($cfg, array(
             'type' => 'flat',
-            'input' => $twig->loadTemplate($tpath['widget.list'] . 'widget.list.tpl')->render($tVars)
+            'input' => $twig->render($tpath['widget.list'] . 'widget.list.tpl', $tVars)
             ));
     generate_config_page($plugin, $cfg);
 }
 
+// 
 function pluginWidgetEditAction($plugin, $action)
 {
 
@@ -283,8 +293,7 @@ function pluginWidgetEditAction($plugin, $action)
     $cPlugin = CPlugin::instance();
 
     // Prepare configuration parameters
-    if (!$skList = $cPlugin->getFoldersSkin($plugin)) {
-        $skList = [];
+    if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
         msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
     }
 
@@ -294,33 +303,37 @@ function pluginWidgetEditAction($plugin, $action)
     // Get all widgets array
     $widgets = pluginGetVariable('rss_import', 'widgets');
 
-    $id = end(array_keys($widgets)) + 1;
+    if (is_array($widgets)) {
+        $id = end(array_keys($widgets)) + 1;
+    } else {
+        $id = 1;
+    }
     $name = '';
     $title = '';
     $url = '';
+    $active = 1;
     $items_count = pluginGetVariable('rss_import', 'items_count');
     $title_length = pluginGetVariable('rss_import', 'title_length');
     $description_enable = pluginGetVariable('rss_import', 'description_enable');
     $description_length = pluginGetVariable('rss_import', 'description_length');
-    $images_enable = pluginGetVariable('rss_import', 'images_enable');
-    $localSource = pluginGetVariable('rss_import', 'localSource');
-    $localSkin = pluginGetVariable('rss_import', 'localSkin');
+    $extract_images = pluginGetVariable('rss_import', 'extract_images');
+    $skin = pluginGetVariable('rss_import', 'skin');
     $cache = pluginGetVariable('rss_import', 'cache');
-    $cacheExpire = pluginGetVariable('rss_import', 'cacheExpire');
+    $cache_expire = pluginGetVariable('rss_import', 'cache_expire');
     if (isset($_REQUEST['id']) and !empty($widgets[$_REQUEST['id']])) {
         $id = intval($_REQUEST['id']);
         $name = $widgets[$id]['name'];
         $title = $widgets[$id]['title'];
         $url = $widgets[$id]['url'];
+        $active = $widgets[$id]['active'];
         $items_count = $widgets[$id]['items_count'];
         $title_length = $widgets[$id]['title_length'];
         $description_enable = $widgets[$id]['description_enable'];
         $description_length = $widgets[$id]['description_length'];
-        $images_enable = $widgets[$id]['images_enable'];
-        $localSource = $widgets[$id]['localSource'];
-        $localSkin = $widgets[$id]['localSkin'];
+        $extract_images = $widgets[$id]['extract_images'];
+        $skin = $widgets[$id]['skin'];
         $cache = $widgets[$id]['cache'];
-        $cacheExpire = $widgets[$id]['cacheExpire'];
+        $cache_expire = $widgets[$id]['cache_expire'];
     }
 
     // Fill configuration parameters
@@ -338,9 +351,17 @@ function pluginWidgetEditAction($plugin, $action)
             )
     );
 
-    // Default configuration
+    // Main configuration
     $cfgX = array();
-               array_push($cfgX, array(
+        array_push($cfgX, array(
+            'name' => 'active',
+            'title' => __('rss_import:widget_active'),
+            'descr' => __('rss_import:widget_active#desc'),
+            'type' => 'select',
+            'values' => array('0' => __('noa'), '1' => __('yesa')),
+            'value' => $active,
+            ));
+        array_push($cfgX, array(
             'name' => 'name',
             'title' => __('rss_import:widget_name'),
             'descr' => __('rss_import:widget_name#desc') . ' <code>{{ plugin_rss_import_ID }}</code>',
@@ -391,12 +412,12 @@ function pluginWidgetEditAction($plugin, $action)
             'value' => $description_length,
             ));
         array_push($cfgX, array(
-            'name' => 'images_enable',
-            'title' => 'Извлекать изображения, если они есть',
-            'descr' => '<code>Да</code> - все изображения из описания новости будут доступны в массиве переменных <code>{{&nbsp;item.images&nbsp;}}</code><br/><code>Нет</code> - изображения будут удаляться',
+            'name' => 'extract_images',
+            'title' => 'Извлекать изображения из новости',
+            'descr' => '<code>Да</code> - все изображения из текста новости, если они есть, будут доступны в массиве переменных <code>{{ item.embed.images }}</code>',
             'type' => 'select',
             'values' => array('0' => __('noa'), '1' => __('yesa')),
-            'value' => $images_enable,
+            'value' => $extract_images,
             ));
     array_push($cfg, array(
         'mode' => 'group',
@@ -405,23 +426,15 @@ function pluginWidgetEditAction($plugin, $action)
         ));
 
 
-    // localSource
+    // Skin
     $cfgX = array();
     array_push($cfgX, array(
-        'name' => 'localSource',
-        'title' => __('localSource'),
-        'descr' => __('localSource#desc'),
-        'type' => 'select',
-        'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-        'value' => $localSource,
-    ));
-    array_push($cfgX, array(
-        'name' => 'localSkin',
-        'title' => __('localSkin'),
-        'descr' => __('localSkin#desc'),
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
         'type' => 'select',
         'values' => $skList,
-        'value' => $localSkin,
+        'value' => pluginGetVariable($plugin, 'skin'),
     ));
     array_push($cfg, array(
         'mode' => 'group',
@@ -429,7 +442,8 @@ function pluginWidgetEditAction($plugin, $action)
         'entries' => $cfgX,
     ));
 
-    // cache and cacheExpire
+    // cache and cache_expire
+    $cfgX = array();
     $cfgX = array();
     array_push($cfgX, array(
         'name' => 'cache',
@@ -440,11 +454,11 @@ function pluginWidgetEditAction($plugin, $action)
         'value' => $cache,
     ));
     array_push($cfgX, array(
-        'name' => 'cacheExpire',
-        'title' => __('cacheExpire'),
-        'descr' => __('cacheExpire#desc'),
+        'name' => 'cache_expire',
+        'title' => __('cache_expire'),
+        'descr' => __('cache_expire#desc'),
         'type' => 'input',
-        'value' => $cacheExpire,
+        'value' => $cache_expire,
     ));
     array_push($cfg, array(
         'mode' => 'group',
@@ -453,55 +467,4 @@ function pluginWidgetEditAction($plugin, $action)
     ));
 
     generate_config_page($plugin, $cfg);
-}
-
-for ($i = 1; $i <= $count; $i++) {
-    $cfgX = array();
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_name',
-        'title' => 'Заголовок новостей для отображения',
-        'descr' => 'Например: <code>BixBite CMS</code>',
-        'type' => 'input',
-        'value' => pluginGetVariable($plugin, 'rss' . $i . '_name'),
-    ));
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_url',
-        'title' => 'Адрес новостей для отображения',
-        'descr' => 'Например: <code>http://bixbite.site</code>',
-        'type' => 'input',
-        'value' => pluginGetVariable($plugin, 'rss' . $i . '_url'),
-    ));
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_number',
-        'title' => 'Количество новостей для отображения',
-        'descr' => 'Значение по умолчанию: <code>10</code>',
-        'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'rss' . $i . '_number')) ? intval(pluginGetVariable($plugin, 'rss' . $i . '_number')) : 10,
-    ));
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_maxlength',
-        'title' => 'Ограничение длины названия новости',
-        'descr' => 'Если название превышает указанные пределы, то оно будет урезано<br />Значение по умолчанию: <code>100</code>',
-        'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'rss' . $i . '_maxlength')) ? intval(pluginGetVariable($plugin, 'rss' . $i . '_maxlength')) : 100,
-    ));
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_newslength',
-        'title' => 'Ограничение длины короткой новости',
-        'descr' => 'Если название превышает указанные пределы, то оно будет урезано<br />Значение по умолчанию: <code>100</code>',
-        'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'rss' . $i . '_newslength')) ? intval(pluginGetVariable($plugin, 'rss' . $i . '_newslength')) : 100,
-    ));
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_description',
-        'title' => 'Генерировать переменную {description}',
-        'type' => 'checkbox',
-        'value' => pluginGetVariable($plugin, 'rss' . $i . '_description'),
-    ));
-    array_push($cfgX, array(
-        'name' => 'rss' . $i . '_img',
-        'title' => 'Удалить все картинки из {description}',
-        'type' => 'checkbox',
-        'value' => pluginGetVariable($plugin, 'rss' . $i . '_img'),
-    ));
 }

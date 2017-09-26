@@ -1,10 +1,10 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: core.php
 // Description: core
-// Author: NGCMS project team
+// Author: BBCMS project team
 //
 
 // Define global constants "root", "site_root"
@@ -13,19 +13,23 @@
 
 // Check configuration file
 if ((!file_exists(root . 'conf/config.php')) or (filesize(root . 'conf/config.php') < 10)) {
-    // Для установки отключаем кеширование
-    // т.к. возникают проблемы с сохранением конфигурационного файла в PHP > 5.5
-    header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
-    header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
-    header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
-    header('Cache-Control: post-check=0, pre-check=0', false);
-    header('Pragma: no-cache'); // HTTP/1.0
+    // Disable cache
+    @header('Expires: Sat, 08 Jun 1985 09:10:00 GMT'); // дата в прошлом
+    @header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // всегда модифицируется
+    @header('Cache-Control: no-store, no-cache, must-revalidate'); // HTTP/1.1
+    @header('Cache-Control: post-check=0, pre-check=0', false);
+    @header('Pragma: no-cache'); // HTTP/1.0
+    if (function_exists('opcache_get_status')) ini_set('opcache.enable', 0);
+    if (function_exists('opcache_get_status')) ini_set('opcache.enable_cli', 0);
+    if (function_exists('xcache_get')) ini_set('xcache.cacher', 0);
+
+    // Redirect to install system
     if (preg_match("#^(.*?)(\/index\.php|\/engine\/admin\.php)$#", $_SERVER['PHP_SELF'], $ms)) {
         @header("Location: " . $ms[1] . "/engine/install.php");
     } else {
         @header("Location: " . adminDirName . "/install.php");
     }
-    echo "NGCMS: Engine is not installed yet. Please run installer from /engine/install.php";
+    echo "BixBite CMS: Engine is not installed yet. Please run installer from /engine/install.php";
     exit;
 }
 
@@ -232,7 +236,7 @@ set_error_handler('ngErrorHandler');
 register_shutdown_function('ngShutdownHandler');
 
 // *** Initialize TWIG engine
-$twigLoader = new Twig_Loader_NGCMS(root);
+$twigLoader = new Twig_Loader_BBCMS(root);
 $twigStringLoader = new Twig_Loader_String();
 
 // - Configure environment and general parameters
@@ -241,7 +245,7 @@ $twig = new Twig_Environment($twigLoader, array(
     'auto_reload' => true,
     'autoescape' => false,
     'charset' => 'utf8', // 'charset' => 'cp1251',
-    'base_template_class' => 'Twig_Template_NGCMS',
+    'base_template_class' => 'Twig_Template_BBCMS',
 ));
 
 $twig->addExtension(new Twig_Extension_StringLoader());

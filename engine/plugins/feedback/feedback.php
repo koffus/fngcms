@@ -1,12 +1,12 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 register_plugin_page('feedback','','plugin_feedback_screen',0);
 register_plugin_page('feedback','post','plugin_feedback_post',0);
 
-Lang::loadPlugin('feedback', 'main', '', ':');
+Lang::loadPlugin('feedback', 'site', '', ':');
 
 // Load library
 include_once(root."/plugins/feedback/lib/common.php");
@@ -30,9 +30,9 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 	$ptpl_url = admin_url.'/plugins/feedback/tpl';
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('site.form', 'site.notify'), 'feedback', pluginGetVariable('feedback', 'localSource'));
+	$tpath = plugin_locateTemplates('feedback', array('site.form', 'site.notify'));
 
-	$SYSTEM_FLAGS['info']['title']['group']		= __('feedback:header.title');
+	$SYSTEM_FLAGS['info']['title']['group'] = __('feedback:header.title');
 
 	$form_id = intval($_REQUEST['id']);
 	$xt = $twig->loadTemplate($tpath['site.notify'].'site.notify.tpl', $conversionConfig);
@@ -45,7 +45,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 			'entries' => __('feedback:form.no.description'),
 		);
 
-		$template['vars']['mainblock'] = $xt->render($tVars);
+		$template['vars']['mainblock'] .= $xt->render($tVars);
 		return 1;
 	}
 
@@ -74,7 +74,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 					'entries' => __('feedback:form.nolink.description'),
 				);
 
-				$template['vars']['mainblock'] = $xt->render($tVars);
+				$template['vars']['mainblock'] .= $xt->render($tVars);
 				return 1;
 			}
 		} else {
@@ -261,7 +261,7 @@ function plugin_feedback_showScreen($mode = 0, $errorText = '') {
 	if (is_array($PFILTERS['feedback']))
 		foreach ($PFILTERS['feedback'] as $k => $v) { $v->onShow($form_id, $frow, $fData, $tVars); }
 
-	$template['vars']['mainblock'] = $xt->render($tVars);
+	$template['vars']['mainblock'] .= $xt->render($tVars);
 
 }
 
@@ -271,11 +271,11 @@ function plugin_feedback_post() {
 	global $template, $mysql, $userROW, $SYSTEM_FLAGS, $PFILTERS, $twig, $SUPRESS_TEMPLATE_SHOW, $SUPRESS_MAINBLOCK_SHOW;
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('site.form', 'site.notify', 'mail.html', 'mail.text'), 'feedback', pluginGetVariable('feedback', 'localSource'));
+	$tpath = plugin_locateTemplates('feedback', array('site.form', 'site.notify', 'mail.html', 'mail.text'));
 	$ptpl_url = admin_url.'/plugins/feedback/tpl';
 
 	$form_id = intval($_REQUEST['id']);
-	$SYSTEM_FLAGS['info']['title']['group']		= __('feedback:header.title');
+	$SYSTEM_FLAGS['info']['title']['group'] = __('feedback:header.title');
 
 	$xt = $twig->loadTemplate($tpath['site.notify'].'site.notify.tpl');
 
@@ -287,7 +287,7 @@ function plugin_feedback_post() {
 			'entries' => __('feedback:form.no.description'),
 		);
 
-		$template['vars']['mainblock'] = $xt->render($tVars);
+		$template['vars']['mainblock'] .= $xt->render($tVars);
 		return 1;
 	}
 
@@ -313,7 +313,7 @@ function plugin_feedback_post() {
 					'entries' => __('feedback:form.nolink.description'),
 				);
 
-				$template['vars']['mainblock'] = $xt->render($tVars);
+				$template['vars']['mainblock'] .= $xt->render($tVars);
 				return 1;
 			}
 		} else {
@@ -541,7 +541,7 @@ function plugin_feedback_post() {
 		),
 	);
 
-	$template['vars']['mainblock'] = $xt->render($tVars);
+	$template['vars']['mainblock'] .= $xt->render($tVars);
 
 
 

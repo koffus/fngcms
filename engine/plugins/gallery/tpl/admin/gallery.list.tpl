@@ -2,10 +2,10 @@
     <thead>
         <tr>
             <th>#</th>
+            <th></th>
             <th>{{ lang['gallery:label_name'] }}</th>
             <th>{{ lang['gallery:label_title'] }}</th>
             <th>{{ lang['gallery:label_skin'] }}</th>
-            <th>{{ lang['state'] }}</th>
             <th class="text-right">{{ lang['gallery:label_action'] }}</th>
         </tr>
     </thead>
@@ -13,10 +13,10 @@
     {% for item in items %}
         <tr>
             <td>{{ item.id }}</td>
+            <td>{% if item.isActive %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
             <td>{{ item.name }}</td>
             <td>{{ item.title }}</td>
             <td>{{ item.skin }}</td>
-            <td>{% if item.isActive %}<i class="fa fa-check text-success"></i>{% else %}<i class="fa fa-times text-danger"></i>{% endif %}</td>
             <td class="text-right">
                 <div class="btn-group">
                     <a href="admin.php?mod=extra-config&plugin=gallery&action=edit&id={{ item.id }}" class="btn btn-default"><i class="fa fa-pencil"></i></a>

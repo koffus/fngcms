@@ -2,7 +2,7 @@
 
 // #====================================================================================#
 // # Наименование плагина: nsched [ News SCHEDuller ] #
-// # Разрешено к использованию с: Next Generation CMS #
+// # Разрешено к использованию с: BixBite CMS #
 // # Автор: Vitaly A Ponomarev, vp7@mail.ru #
 // #====================================================================================#
 
@@ -10,7 +10,7 @@
 // # Ядро плагина #
 // #====================================================================================#
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class NSchedNewsFilter extends NewsFilter
 {
@@ -24,7 +24,7 @@ class NSchedNewsFilter extends NewsFilter
     {
         global $twig;
 
-        Lang::loadPlugin('nsched', 'config', '', ':');
+        Lang::loadPlugin('nsched', 'admin', '', ':');
 
         $perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
 
@@ -38,11 +38,10 @@ class NSchedNewsFilter extends NewsFilter
             );
 
         $extends = pluginGetVariable('nsched','extends') ? pluginGetVariable('nsched','extends') : 'owner';
-        $tpath = locatePluginTemplates(array('news'), 'nsched', 1, 0, 'admin');
-        $xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+        $tpath = plugin_locateTemplates('nsched', array('news'));
         $tvars['extends'][$extends][] = array(
             'header_title' => __('nsched:header_title'),
-            'body' => ($perm['personal.publish'] or $perm['personal.unpublish']) ? $xt->render($ttvars) : '',
+            'body' => ($perm['personal.publish'] or $perm['personal.unpublish']) ? $twig->render($tpath['news'] . 'news.tpl', $ttvars) : '',
             );
 
         return 1;
@@ -65,7 +64,7 @@ class NSchedNewsFilter extends NewsFilter
     {
         global $userROW, $twig;
 
-        Lang::loadPlugin('nsched', 'config', '', ':');
+        Lang::loadPlugin('nsched', 'admin', '', ':');
 
         $perm = checkPermission(array('plugin' => '#admin', 'item' => 'news'), null, array('personal.publish', 'personal.unpublish', 'other.publish', 'other.unpublish'));
         $isOwn = ($SQLold['author_id'] == $userROW['id']) ? 1 : 0;
@@ -85,11 +84,10 @@ class NSchedNewsFilter extends NewsFilter
             );
 
         $extends = pluginGetVariable('nsched','extends') ? pluginGetVariable('nsched','extends') : 'owner';
-        $tpath = locatePluginTemplates(array('news'), 'nsched', 1, 0, 'admin');
-        $xt = $twig->loadTemplate($tpath['news'] . 'news.tpl');
+        $tpath = plugin_locateTemplates('nsched', array('news'));
         $tvars['extends'][$extends][] = array(
             'header_title' => __('nsched:header_title'),
-            'body' => ($perm[$permGroupMode.'.publish'] or $perm[$permGroupMode.'.unpublish']) ? $xt->render($ttvars) : '',
+            'body' => ($perm[$permGroupMode.'.publish'] or $perm[$permGroupMode.'.unpublish']) ? $twig->render($tpath['news'] . 'news.tpl', $ttvars) : '',
             );
 
         return 1;

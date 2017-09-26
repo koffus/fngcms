@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: tags
@@ -14,7 +14,7 @@ Deinstall: deinstall.php
 Type: plugin
 Description: Использование тегов и облака тегов
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 URI: http://no_url.com/
 Title: Облако тегов
 Information: Показывает массив ключевых слов, созданных в новости. Чем чаще ключевое слово встречается в новостях, тем сильнее выделяется данное слово в &quot;облаке&quot;.

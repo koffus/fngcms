@@ -1,14 +1,22 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
+
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
+// Prepare configuration parameters
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+}
 
 // Prepare configuration parameters
 $lang_list[] =  __($plugin.':bydefault');
@@ -105,13 +113,13 @@ for ($i = 1; $i <= $profile_count; $i++) {
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localSource',
-		'title' => __('localSource'),
-		'descr' => __('localSource#desc'),
-		'type' => 'select',
-		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
-		));
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
+        'type' => 'select',
+        'values' => $skList,
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
 array_push($cfg, array(
 	'mode' => 'group',
 	'title' => __('group.source'),

@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load library
 @include_once(root."/plugins/autokeys/lib/Autokeys.class.php");
@@ -10,18 +10,18 @@ if (!defined('NGCMS')) die ('HAL');
 class autoKeysNewsFilter extends NewsFilter {
 
 	function __construct() {
-		Lang::loadPlugin('autokeys', 'config', '', ':');
+		Lang::loadPlugin('autokeys', 'admin', '', ':');
 	}
 
 	function addNews(&$tvars, &$SQL) {
-		if ($_POST['autokeys_generate'] == 1) {
+		if (isset($_POST['autokeys_generate']) and $_POST['autokeys_generate'] == 1) {
 			$SQL['keywords'] = akeysGetKeys(array('content' => $SQL['content'], 'title' => $SQL['title']));
 		}
 		return 1;
 	}
 
 	function editNews($newsID, $SQLold, &$SQLnew, &$tvars) {
-		if ($_POST['autokeys_generate'] == 1)	{
+		if (isset($_POST['autokeys_generate']) and $_POST['autokeys_generate'] == 1) {
 			$SQLnew['keywords'] = akeysGetKeys(array('content' => $SQLnew['content'], 'title' => $SQLnew['title']));
 		}
 		return 1;
@@ -32,11 +32,10 @@ class autoKeysNewsFilter extends NewsFilter {
 
 		$extends = 'js'; //$extends = pluginGetVariable($plugin,'extends') ? pluginGetVariable($plugin,'extends') : 'js';
 
-		$tpath = locatePluginTemplates(array('news'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
-		$xt = $twig->loadTemplate($tpath['news'].'/news.tpl');
+		$tpath = plugin_locateTemplates('autokeys', array('news'));
         $tvars['extends'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
-			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_edit')))),
+			'body' => $twig->render($tpath['news'].'/news.tpl', array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_edit')))),
 			);
 
 		return 1;
@@ -47,11 +46,10 @@ class autoKeysNewsFilter extends NewsFilter {
 
 		$extends = 'js'; //$extends = pluginGetVariable($plugin,'extends') ? pluginGetVariable($plugin,'extends') : 'js';
 
-		$tpath = locatePluginTemplates(array('news'), 'autokeys', pluginGetVariable('autokeys', 'localSource'));
-		$xt = $twig->loadTemplate($tpath['news'].'/news.tpl');
+		$tpath = plugin_locateTemplates('autokeys', array('news'));
 		$tvars['extends'][$extends][] = array(
 			'header_title' => __('autokeys:header_title'),
-			'body' => $xt->render(array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_add')))),
+			'body' => $twig->render($tpath['news'].'/news.tpl', array('flags' => array('checked' => pluginGetVariable('autokeys', 'activate_add')))),
 			);
 
 		return 1;

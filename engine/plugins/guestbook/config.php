@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin('guestbook', 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Prepare configuration parameters
 switch ($action) {
@@ -31,22 +31,22 @@ switch ($action) {
 /*
  * Add field page
  */
-function add_field() {
+function add_field()
+{
 	global $twig;
 
-	$xt = $twig->loadTemplate('plugins/guestbook/tpl/config/manage_fields.add.tpl');
-	$xg = $twig->loadTemplate('plugins/guestbook/tpl/config/main.tpl');
     $tVars = array();
 	$tVars = array(
-        'entries' => $xt->render($tVars),
+        'entries' => $twig->render('plugins/guestbook/tpl/admin/manage_fields.add.tpl', $tVars),
         );
-	print $xg->render($tVars);
+	print $twig->render('plugins/guestbook/tpl/admin/main.tpl', $tVars);
 }
 
 /*
  * Insert field callback
  */
-function insert_field() {
+function insert_field()
+{
 	global $mysql;
 
 	$id = intval($_REQUEST['id']);
@@ -106,7 +106,8 @@ function insert_field() {
 /*
  * Edit field page
  */
-function edit_field($id) {
+function edit_field($id)
+{
 	global $mysql, $twig;
 
 	$field = array();
@@ -129,18 +130,17 @@ function edit_field($id) {
 	}
 
 	$tVars['field'] = $field;
-	$xt = $twig->loadTemplate('plugins/guestbook/tpl/config/manage_fields.edit.tpl');
-	$xg = $twig->loadTemplate('plugins/guestbook/tpl/config/main.tpl');
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render('plugins/guestbook/tpl/admin/manage_fields.edit.tpl', $tVars),
 		);
-	print $xg->render($tVars);
+	print $twig->render('plugins/guestbook/tpl/admin/main.tpl', $tVars);
 }
 
 /*
  * Update field callback
  */
-function update_field() {
+function update_field()
+{
 	global $mysql;
 
 	$id = $_REQUEST['id'];
@@ -173,7 +173,8 @@ function update_field() {
 /*
  * Drop field callback
  */
-function drop_field() {
+function drop_field()
+{
 	global $mysql;
 
 	$id = $_REQUEST['id'];
@@ -208,18 +209,16 @@ function manage_fields() {
 	}
 
 	$tVars['entries'] = $tEntries;
-	$xt = $twig->loadTemplate('plugins/guestbook/tpl/config/manage_fields.tpl');
-	$xg = $twig->loadTemplate('plugins/guestbook/tpl/config/main.tpl');
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render('plugins/guestbook/tpl/admin/manage_fields.tpl', $tVars),
 		);
-	print $xg->render($tVars);
+	print $twig->render('plugins/guestbook/tpl/admin/main.tpl', $tVars);
 }
 
 function show_options() {
 	global $tpl, $mysql, $twig;
 
-	$tpath = locatePluginTemplates(array('config/main', 'config/settings'), 'guestbook', 1);
+	$tpath = plugin_locateTemplates('guestbook', array('main', 'settings'));
 
 	if (isset($_REQUEST['submit'])) {
 		pluginSetVariable('guestbook', 'usmilies', secure_html($_REQUEST['usmilies']));
@@ -307,7 +306,6 @@ function show_options() {
 	$admin_count = pluginGetVariable('guestbook', 'admin_count');
 	$url = pluginGetVariable('guestbook', 'url');
 
-	$xt = $twig->loadTemplate($tpath['config/settings'] . 'config/settings.tpl');
 	$tVars = array(
 		'skins_url' => skins_url,
 		'home' => home,
@@ -329,17 +327,16 @@ function show_options() {
 		'admin_count' => $admin_count,
 		);
 
-	$xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['config/settings'] . 'config/settings.tpl', $tVars),
 		);
-	print $xg->render($tVars);
+	print $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars);
 }
 
 function show_messages() {
 	global $tpl, $mysql, $twig, $config, $PHP_SELF;
 
-	$tpath = locatePluginTemplates(array('config/main', 'config/messages_list'), 'guestbook', 1);
+	$tpath = plugin_locateTemplates('guestbook', array('main', 'messages_list'));
 	$tVars = array();
 	$news_per_page = pluginGetVariable('guestbook', 'admin_count');
 
@@ -367,7 +364,6 @@ function show_messages() {
 			);
 	}
 
-	$xt = $twig->loadTemplate($tpath['config/messages_list'] . 'config/messages_list.tpl');
 	$paginator = new Paginator;
 	$pagesss = $paginator->get(array('current' => $pageNo, 'count' => $countPages, 'url' => admin_url . '/admin.php?mod=extra-config&plugin=guestbook&action=show_messages&page=%page%'));
 	$tVars = array(
@@ -377,11 +373,11 @@ function show_messages() {
 		'skins_url' => skins_url,
 		'home' => home,
 		);
-	$xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
+
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['config/messages_list'] . 'config/messages_list.tpl', $tVars),
 		);
-	print $xg->render($tVars);
+	print $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars);
 }
 
 function delete_social() {
@@ -429,7 +425,7 @@ function delete_message() {
 function edit_message($mid) {
 	global $tpl, $mysql, $twig, $config;
 
-	$tpath = locatePluginTemplates(array('config/main', 'config/messages_edit'), 'guestbook', 1);
+	$tpath = plugin_locateTemplates('guestbook', array('main', 'messages_edit'));
 	if (!empty($mid) or isset($_REQUEST['id'])) {
 		$id = (isset($mid)) ? intval($mid) : intval($_REQUEST['id']);
 	}
@@ -521,7 +517,6 @@ function edit_message($mid) {
 		msg(array('type' => 'danger', 'message' => 'Не передан id'));
 	}
 
-	$xt = $twig->loadTemplate($tpath['config/messages_edit'] . 'config/messages_edit.tpl');
 	$tVars = array(
 		'skins_url' => skins_url,
 		'home' => home,
@@ -537,12 +532,11 @@ function edit_message($mid) {
 		'social' => $profiles
 		);
 
-	$xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['config/messages_edit'] . 'config/messages_edit.tpl', $tVars),
 		);
 
-	print $xg->render($tVars);
+	print $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars);
 }
 
 /*
@@ -590,7 +584,7 @@ function modify() {
 function social_config() {
 	global $tpl, $mysql, $twig;
 
-	$tpath = locatePluginTemplates(array('config/main', 'config/social'), 'guestbook', 1);
+	$tpath = plugin_locateTemplates('guestbook', array('main', 'social'));
 
 	if (isset($_REQUEST['submit'])) {
 		pluginSetVariable('guestbook', 'vk_client_id', secure_html($_REQUEST['vk_client_id']));
@@ -627,7 +621,6 @@ function social_config() {
 	$instagram_client_id = pluginGetVariable('guestbook', 'instagram_client_id');
 	$instagram_client_secret = pluginGetVariable('guestbook', 'instagram_client_secret');
 
-	$xt = $twig->loadTemplate($tpath['config/social'] . 'config/social.tpl');
 	$tVars = array(
 		'skins_url' => skins_url,
 		'home' => home,
@@ -642,10 +635,9 @@ function social_config() {
 		'instagram_client_secret' => $instagram_client_secret
 		);
 
-	$xg = $twig->loadTemplate($tpath['config/main'] . 'config/main.tpl');
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars),
 		);
 
-	print $xg->render($tVars);
+	print $twig->render($tpath['config/social'] . 'config/social.tpl', $tVars);
 }

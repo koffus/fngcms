@@ -2,14 +2,13 @@
 
 /*
  * Configuration file for plugin
-*/
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-global $config;
-
-Lang::loadPlugin($plugin, 'config', '', ':');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();

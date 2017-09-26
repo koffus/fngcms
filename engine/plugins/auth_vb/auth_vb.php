@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Configuring our module

@@ -1,31 +1,31 @@
 <?php
 
+/*
+ * Configuration file for plugin
+ */
+
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-//
-
-
-Lang::loadPlugin('xmenu', 'config');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
- array(
- 'table' => 'category',
- 'action' => 'modify',
- 'fields' => array(
- array('action' => 'drop', 'name' => 'xmenu')
- ) 
- )
+    array(
+        'table' => 'category',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'xmenu')
+        ) 
+    )
 );
 
 // RUN
 if ('commit' == $action) {
-	// If submit requested, do config save
-	if (fixdb_plugin_install('xmenu', $db_update, 'deinstall')) {
-		plugin_mark_deinstalled('xmenu');
-	}	
+    // If submit requested, do config save
+    if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
+        plugin_mark_deinstalled($plugin);
+    }
 } else {
-	generate_install_page('xmenu', 'Удалить плагин', 'deinstall');
+    generate_install_page($plugin, 'Удалить плагин', 'deinstall');
 }

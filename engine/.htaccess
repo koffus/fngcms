@@ -1,8 +1,8 @@
 #
-# Copyright (C) 2006-2010 Next Generation CMS (http://ngcms.ru)
+# Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 # Name: .htaccess
 # Description: admin directory // mod_rewrite htaccess file 
-# Author: NGCMS project team
+# Author: BBCMS project team
 #
 
 Options -Indexes

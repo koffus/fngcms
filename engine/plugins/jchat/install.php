@@ -5,7 +5,7 @@
 */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Install script for plugin.
 // $action: possible action modes
@@ -15,7 +15,7 @@ if (!defined('NGCMS')) die ('HAL');
 function plugin_jchat_install($action) {
 
     if ('autoapply' != $action)
-        Lang::loadPlugin('jchat', 'config', '', ':');
+        Lang::loadPlugin('jchat', 'admin', '', ':');
 
     // Fill DB_UPDATE configuration scheme
     $db_update = array(
@@ -78,7 +78,7 @@ function plugin_jchat_install($action) {
                 'win.order' => 0,
                 'enable.panel' => 1,
                 'enable.win' => 0,
-                'localSource' => 0,
+                'skin' => 'basic',
             );
 
             foreach ($params as $k => $v) {

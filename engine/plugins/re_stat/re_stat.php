@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 $re_stat_values = pluginGetVariable('re_stat', 'values');
 foreach ($re_stat_values as $key => $row) register_plugin_page('re_stat', $row['code'], 'plugin_re_stat');

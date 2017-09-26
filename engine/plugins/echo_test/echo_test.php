@@ -1,6 +1,6 @@
 <?php
 
-if (!defined('NGCMS'))
+if (!defined('BBCMS'))
  die ('HAL');
 
 registerActionHandler('index', 'plugin_echo_test');

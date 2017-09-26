@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: news.php
 // Description: News managment
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('news', 'admin', 'news');
 // !!! NB Дублируем язык, после вернуться и переделать
@@ -96,8 +96,7 @@ function addNewsForm($retry = '')
     if (is_array($PFILTERS['news']))
         foreach ($PFILTERS['news'] as $k => $v) { $v->addNewsForm($tVars); }
 
-    $xt = $twig->loadTemplate('skins/default/tpl/news/add.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'news/add.tpl', $tVars);
 }
 
 // ======================================================================================================
@@ -281,8 +280,7 @@ function editNewsForm()
     $tVars['attachEntries'] = $attachEntries;
     $tVars['attachCount'] = $attachNumber;
 
-    if(getIsSet($row['xfields']))
-        executeActionHandler('editnews_entry');
+    executeActionHandler('editnews_entry');
     executeActionHandler('editnews_form');
 
     if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
@@ -291,8 +289,7 @@ function editNewsForm()
         }
     }
 
-    $xt = $twig->loadTemplate('skins/default/tpl/news/edit.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'news/edit.tpl', $tVars);
 }
 
 //
@@ -427,13 +424,10 @@ function listNewsForm()
         return;
     }
 
-    // Load admin page based cookies
-    $admCookie = admcookie_get();
-
     // Search filters
     $fSearchLine = getIsSet($_REQUEST['sl']);
     $fSearchType = intval(getIsSet($_REQUEST['st']));
-    
+
     // Author filter (by name)
     $fAuthorName = getIsSet($_REQUEST['an']);
 
@@ -472,41 +466,9 @@ function listNewsForm()
     }
     $fSort = ' order by '.($fSort ? $fSort : 'id desc');
 
-    // Check if user selected personal filter
-    $fAuthorId = 0;
-    if (getIsSet($_REQUEST['aid'])) {
-        // Try to fetch userName
-        if ($urow = $mysql->record("select id, name from ".uprefix."_users where id = ".db_squote(getIsSet($_REQUEST['aid'])))) {
-            $fAuthorId = $urow['id'];
-            $fAuthorName = $urow['name'];
-        }
-    }
-
-    // Records Per Page
-    // - Load
-    $fRPP = isset($_REQUEST['rpp'])?intval($_REQUEST['rpp']):intval($admCookie['news']['pp']);
-    // - Set default value for `Records Per Page` parameter
-    if (($fRPP < 2) or ($fRPP > 2000))
-        $fRPP = 8;
-
-    // - Save into cookies current value
-    $admCookie['news']['pp'] = $fRPP;
-    admcookie_set($admCookie);
-
-    // Determine requested page number
-    $pageNo = getIsSet($_REQUEST['page'])?intval($_REQUEST['page']):0;
-    if ($pageNo < 1)
-        $pageNo = 1;
-
-    if (empty($start_from))
-        $start_from = $pageNo - 1;
-
-    $i = $start_from;
-
     $conditions = array();
     if (!is_null($fCategoryId)) {
         array_push($conditions, "catid ".($fCategoryId?("regexp '[[:<:]](".intval($fCategoryId).")[[:>:]]'"):(' = ""')));
-
     }
 
     if ($fDateStart) {
@@ -517,9 +479,7 @@ function listNewsForm()
         array_push($conditions, "postdate <= ".intval($fDateStop));
     }
 
-    if ($fAuthorId) {
-        array_push($conditions, "author_id = ".$fAuthorId);
-    } else if ($fAuthorName) {
+    if ($fAuthorName) {
         array_push($conditions, "author = ".db_squote($fAuthorName));
     }
 
@@ -537,27 +497,42 @@ function listNewsForm()
         array_push($conditions, ($fSearchType?'content':'title')." like ".db_squote('%'.$fSearchLine.'%'));
     }
 
-    $sqlQPart = "from ".prefix."_news ".(count($conditions)?"where ".implode(" AND ", $conditions):'').' '.$fSort;
-    $sqlQCount = "select count(id) as cid ".$sqlQPart;
+    $sqlQPart = "from ".prefix."_news " . (count($conditions) ? "where " . implode(" AND ", $conditions) : '') . ' ' . $fSort;
+    $sqlQCount = "select count(id) as cid " . $sqlQPart;
     $sqlQ = "select * ".$sqlQPart;
 
-    // print "SQL: $sqlQ";
+    // Determine requested page number
+    $pageNo = !empty($_REQUEST['page']) ? abs(intval($_REQUEST['page'])) : 1;
+    if ($pageNo < 1)
+        $pageNo = 1;
 
-    $cnt = $mysql->record($sqlQCount);
-    $countNews = $cnt['cid'];
+    // Load admin page based cookies
+    $admCookie = admcookie_get();
+
+    // Records Per Page
+    // - Load
+    $fRPP = isset($_REQUEST['rpp']) ? intval($_REQUEST['rpp']) : intval($admCookie['news']['pp']);
+    // - Set default value for `Records Per Page` parameter
+    if (($fRPP < 2) or ($fRPP > 2000))
+        $fRPP = 8;
+
+    // - Save into cookies current value
+    $admCookie['news']['pp'] = $fRPP;
+    admcookie_set($admCookie);
+
+    $countNews = $mysql->record($sqlQCount)['cid'];
     $countPages = ceil($countNews / $fRPP);
 
     // If Count of pages is less that pageNo we want to show - show last page
-    if (($pageNo > $countPages)&&($pageNo > 1))
+    if (($pageNo > $countPages) and ($pageNo > 1))
         $pageNo = $countPages;
 
+    $rows = $mysql->select($sqlQ . " LIMIT " . (($pageNo - 1)* $fRPP) . "," . $fRPP);
     $newsEntries = array();
-
-    $sqlResult = $sqlQ." LIMIT ".(($pageNo - 1)* $fRPP).",".$fRPP;
-    foreach ($mysql->select($sqlResult) as $row) {
+    foreach ($rows as $row) {
         $cats = explode(',', $row['catid']);
 
-        $newsEntry = array(
+        $newsEntries[] = [
             'php_self' => $PHP_SELF,
             'home' => home,
             'newsid' => $row['id'],
@@ -580,14 +555,15 @@ function listNewsForm()
                 'editable' => ($row['author_id'] == $userROW['id'])&&($perm['personal.view']) or ($row['author_id'] != $userROW['id'])&&($perm['other.view']),
                 'isActive' => ($row['approve'] == 1)?true:false,
             )
-        );
+        ];
 
-        if (getIsSet($PFILTERS['news']) and is_array($PFILTERS['news']))
+        if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
             foreach ($PFILTERS['news'] as $k => $v) {
                 $v->listNewsForm($id, $row, $tVars);
             }
-        $newsEntries []= $newsEntry;
+        }
     }
+
     $tVars = array(
         'php_self' => $PHP_SELF,
         'rpp' => $fRPP,
@@ -604,7 +580,7 @@ function listNewsForm()
 
     $tVars['category_select'] = makeCategoryList(array('doall' => 1, 'dowithout' => 1, 'selected' => $fCategoryId,));
 
-    $maxNavigations = !(empty($config['newsNavigationsAdminCount']) or $config['newsNavigationsAdminCount'] < 1)?$config['newsNavigationsAdminCount']:8;
+    $maxNavigations = !(empty($config['newsNavigationsAdminCount']) or $config['newsNavigationsAdminCount'] < 1) ? $config['newsNavigationsAdminCount']:8;
 
     if (count($newsEntries) > 0) {
         $pagesss = new Paginator;
@@ -672,9 +648,8 @@ function listNewsForm()
     $tVars['catmenu'] = $tcRecs;
     $tVars['cat_active'] = ((isset($_REQUEST['category']) and (isset($catmap[intval($_REQUEST['category'])]))))?intval($_REQUEST['category']):0;
 
-    //$xt = $twig->loadTemplate('skins/default/tpl/news/table_catalog.tpl');
-    $xt = $twig->loadTemplate('skins/default/tpl/news/table.tpl');
-    echo $xt->render($tVars);
+    //$xt = $twig->loadTemplate(tpl_actions . 'news/table_catalog.tpl');
+    echo $twig->render(tpl_actions . 'news/table.tpl', $tVars);
 }
 
 // #==============================================================================#

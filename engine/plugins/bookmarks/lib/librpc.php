@@ -4,7 +4,7 @@ function bookmarks_rpc_manage($params)
 {
     global $mysql, $config, $userROW, $bookmarksList, $bookmarksLoaded, $twig;
 
-    Lang::loadPlugin('bookmarks', 'main', '', ':');
+    Lang::loadPlugin('bookmarks', 'site', '', ':');
     $newsID = intval($params['news']);
 
     // Check for permissions
@@ -65,9 +65,13 @@ function bookmarks_rpc_manage($params)
         $tVars['counter'] = '';
     }
 
-    $tpath = locatePluginTemplates(array('ajax.add.remove.links.style'), 'bookmarks', pluginGetVariable('bookmarks', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['ajax.add.remove.links.style'].'ajax.add.remove.links.style.tpl');
-    return array('status' => 1, 'errorCode' => 0, 'content' => $xt->render($tVars), 'action' => $action);
+    $tpath = plugin_locateTemplates('bookmarks', array('ajax.add.remove.links.style'));
+    return [
+        'status' => 1,
+        'errorCode' => 0,
+        'content' => $twig->render($tpath['ajax.add.remove.links.style'].'ajax.add.remove.links.style.tpl', $tVars),
+        'action' => $action
+        ];
 }
 
 rpcRegisterFunction('plugin.bookmarks.update', 'bookmarks_rpc_manage');

@@ -1,12 +1,12 @@
 <?php
 
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function plugin_auth_basic_install($action)
 {
 
     if ($action != 'autoapply') {
-        Lang::loadPlugin('auth_basic', 'config', '', ':');
+        Lang::loadPlugin('auth_basic', 'admin', '', ':');
     }
 
     $db_update = array(

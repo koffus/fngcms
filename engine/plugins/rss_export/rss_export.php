@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 include_once root."/includes/news.php";
 
@@ -40,7 +40,7 @@ function plugin_rss_export_generate($catname = ''){
 	$cacheFileName = md5('rss_export'.$config['theme'].$config['home_url'].$config['default_lang'].(is_array($xcat)?$xcat['id']:'').pluginGetVariable('rss_export','use_hide').is_array($userROW)).'.txt';
 
 	if (pluginGetVariable('rss_export','cache')) {
-		$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('rss_export','cacheExpire'), 'rss_export');
+		$cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('rss_export','cache_expire'), 'rss_export');
 		if ($cacheData != false) {
 			// We got data from cache. Return it and stop
 			print $cacheData;
@@ -65,7 +65,7 @@ function plugin_rss_export_generate($catname = ''){
 
 	// Prepare hide template
 	if ($config['blocks_for_reg'] and pluginGetVariable('rss_export','use_hide')) {
-		Lang::loadPlugin('rss_export', 'main', 'rexport');
+		Lang::loadPlugin('rss_export', 'site', 'rexport');
 		$hide_template = @file_get_contents(root.'plugins/rss_export/templates/hide.tpl');
 		$hide_template = str_replace('{text}',__('rexport_hide'),$hide_template);
 	}
@@ -179,6 +179,6 @@ function plugin_rss_export_mk_header($xcat) {
  $line.= " <link><![CDATA[".$config['home_url']."]]></link>\n";
  $line.= " <language>ru</language>\n";
  $line.= " <description><![CDATA[".$config['description']."]]></description>\n";
- $line.= " <generator><![CDATA[Plugin RSS_EXPORT (0.07) // Next Generation CMS (".engineVersion.")]]></generator>\n";
+ $line.= " <generator><![CDATA[Plugin RSS_EXPORT (0.07) // BixBite CMS (".engineVersion.")]]></generator>\n";
  return $line;
 }

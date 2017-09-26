@@ -1,10 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
-
-// Load lang file
-Lang::loadPlugin('archive', 'main', '', ':');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Show data block for archive plugin
@@ -13,79 +10,70 @@ Lang::loadPlugin('archive', 'main', '', ':');
 //  * counter - Show counter in the entries
 //  * tcounter - Show text counter in the entries
 //  * template - Personal template for plugin
-//  * cacheExpire - age of cache [in seconds]
-function plugin_archive($params) {
-	global $config, $mysql, $twig;
+//  * cache_expire - age of cache [in seconds]
+function plugin_archive()
+{
+    global $config, $mysql, $twig, $template;
 
-	$maxnum = isset($params['maxnum']) ? $params['maxnum'] : pluginGetVariable('archive', 'maxnum');
-	$counter = isset($params['counter']) ? $params['counter'] : pluginGetVariable('archive', 'counter');
-	$tcounter = isset($params['tcounter']) ? $params['tcounter'] : pluginGetVariable('archive', 'tcounter');
-	$overrideTemplateName = isset($params['template']) ? $params['template'] : false;
-	$localSource = pluginGetVariable('archive', 'localSource');
-	$cache = isset($params['cache']) ? $params['cache'] : pluginGetVariable('archive', 'cache');
-	$cacheExpire = isset($params['cacheExpire']) ? $params['cacheExpire'] : pluginGetVariable('archive', 'cacheExpire');
+    // Load lang file
+    Lang::loadPlugin('archive', 'site', '', ':');
 
-	if ( ($maxnum < 1) or ($maxnum > 50) )
-		$maxnum = 12;
+    // Prepare configuration parameters
+    $maxnum = pluginGetVariable('archive', 'maxnum');
+    $counter = pluginGetVariable('archive', 'counter');
+    $tcounter = pluginGetVariable('archive', 'tcounter');
+    $cache = pluginGetVariable('archive', 'cache');
+    $cache_expire = pluginGetVariable('archive', 'cache_expire');
 
-	if ($overrideTemplateName) {
-		$templateName = $overrideTemplateName;
-	} else {
-		$templateName = 'archive';
-	}
+    if (($maxnum < 1) or ($maxnum > 50))
+        $maxnum = 12;
 
-	// Generate cache file name [ we should take into account SWITCHER plugin ]
-	$cacheFileName = md5('archive' . $config['theme'] . $templateName . $config['default_lang']) . $maxnum . '.txt';
-	if ($cache and $cacheExpire > 0) {
-		$cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'archive');
-		if ($cacheData != false) {
-			// We got data from cache. Return it and stop
-			return $cacheData;
-		}
-	}
+    // Generate cache file name [ we should take into account SWITCHER plugin ]
+    if ($cache and $cache_expire > 0) {
+        $cacheFileName = md5('archive' . $config['theme'] . $config['default_lang']) . $maxnum . '.txt';
+        $cacheData = cacheRetrieveFile($cacheFileName, $cache_expire, 'archive');
+        if ($cacheData != false) {
+            // We got data from cache. Return it and stop
+            return $template['vars']['plugin_archive'] = $cacheData;
+        }
+    }
 
-	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'archive', $localSource);
+    // Load list
+    $items = [];
+    $rows = $mysql->select("
+        SELECT month(from_unixtime(postdate)) as month, year(from_unixtime(postdate)) as year, COUNT(id) AS cnt 
+        FROM " . prefix . "_news 
+        WHERE approve = '1' 
+        GROUP BY year, month 
+        ORDER BY year DESC, month DESC 
+        limit " . $maxnum);
+    foreach ($rows as $row) {
 
-	// Load list
-	foreach ($mysql->select("
-		SELECT month(from_unixtime(postdate)) as month, year(from_unixtime(postdate)) as year, COUNT(id) AS cnt 
-		FROM " . prefix . "_news 
-		WHERE approve = '1' 
-		GROUP BY year, month 
-		ORDER BY year DESC, month DESC 
-		limit " . $maxnum) as $row) {
+        $items[] = [
+            'link' => generateLink('news', 'by.month', array('year' => $row['year'], 'month' => sprintf('%02u', $row['month']))),
+            'title' => Lang::$months[$row['month'] - 1] . ' ' . $row['year'],
+            'cnt' => $row['cnt'],
+            'counter' => $counter,
+            'ctext' => $tcounter ? ' ' . Padeg($row['cnt'], __('news.counter_case')) : '',
+            ];
+    }
 
-		if ( checkLinkAvailable('news', 'by.month') ) {
-			$month_link = generateLink('news', 'by.month', array('year' => $row['year'], 'month' => sprintf('%02u', $row['month'])));
-		} else {
-			$month_link = generateLink('core', 'plugin', array('plugin' => 'news', 'handler' => 'by.month'), array('year' => $row['year'], 'month' => sprintf('%02u', $row['month'])));
-		}
+    // Determine paths for all template files
+    $tpath = plugin_locateTemplates('archive');
 
-		if ( $tcounter ) {
-			$ctext = ' ' . Padeg($row['cnt'], __('news.counter_case'));
-		} else {
-			$ctext = '';
-		}
+    // Collection of variables
+    $tVars = [
+        'widget_title' => __('archive:plugin_title'),
+        'items' => $items,
+    ];
 
-		$tVars['entries'][] = array(
-			'link' => $month_link,
-			'title' => Lang::$months[$row['month'] - 1] . ' ' . $row['year'],
-			'cnt' => $row['cnt'],
-			'counter' => $counter,
-			'ctext' => $ctext,
-			);
-	}
+    $template['vars']['plugin_archive'] = $twig->render($tpath['archive'] . 'archive.tpl', $tVars);
 
-	$xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
-	$output = $xt->render($tVars);
-
-	if ($cache and $cacheExpire > 0) {
-		cacheStoreFile($cacheFileName, $output, 'archive');
-	}
-
-	return $output;
+    // Store to cache file
+    if ($cache and $cache_expire > 0) {
+        cacheStoreFile($cacheFileName, $template['vars']['plugin_archive'], 'archive');
+    }
 
 }
 
-twigRegisterFunction('archive', 'show', 'plugin_archive');
+registerActionHandler('index', 'plugin_archive');

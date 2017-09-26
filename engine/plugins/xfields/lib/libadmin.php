@@ -8,7 +8,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 
 	function addCategoryForm(&$tvars) {
 		
-		Lang::loadPlugin('comments', 'config', '', ':');
+		Lang::loadPlugin('comments', 'admin', '', ':');
 
 		$allowCom = pluginGetVariable('comments', 'default_categories');
 
@@ -24,7 +24,7 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories{
 
 	function editCategoryForm($categoryID, $SQL, &$tvars) {
 		
-		Lang::loadPlugin('comments', 'config', '', ':');
+		Lang::loadPlugin('comments', 'admin', '', ':');
 
 		if (!isset($SQL['allow_com'])) {
 			$SQL['allow_com'] = pluginGetVariable('comments', 'default_categories');

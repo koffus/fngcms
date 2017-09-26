@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class ShareNewsFilter extends NewsFilter {
 
@@ -12,14 +12,11 @@ class ShareNewsFilter extends NewsFilter {
         $cPlugin = CPlugin::instance();
 
         Lang::loadPlugin('share', 'site');
-        $localSkin = pluginGetVariable('share', 'localSkin');
-        if (!$localSkin)
-            $localSkin='basic';
 
-        $tpath = locatePluginTemplates(array('share', ':share.css', ':share.js'), 'share', pluginGetVariable('share', 'localSource'), $localSkin);
+        $tpath = plugin_locateTemplates('share', array('share', ':share.css', ':share.js'));
         $cPlugin->regHtmlVar('css', $tpath['url::share.css'].'/share.css'); 
         //$cPlugin->regHtmlVar('js', $tpath['url::share.js'].'/share.js'); 
-        
+
         $tVars = array(
             'home' => home,
             'news' => array(
@@ -29,9 +26,8 @@ class ShareNewsFilter extends NewsFilter {
             );
             
         $templateName = 'share';
-        $xt = $twig->loadTemplate($tpath[$templateName] . $templateName . '.tpl');
 
-        $tvars['vars']['plugin_share'] = $xt->render($tVars);
+        $tvars['vars']['plugin_share'] = $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars);
         
         return 1;
     }

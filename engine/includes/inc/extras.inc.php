@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: extras.inc.php
-// Description: NGCMS extras managment functions
+// Description: BixBite CMS extras managment functions
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Report if plugin is active // TWIG Enabled this
@@ -19,6 +19,18 @@ function pluginIsActive($pluginID)
     $plugins = $cPlugin->getList();
 
     return isset($plugins['active'][$pluginID]);
+}
+
+//
+// Add plugin's page
+function register_plugin_page($pname, $mode, $func_name, $show_template = 1)
+{
+    global $PPAGES;
+
+    if (!isset($PPAGES[$pname]) or !is_array($PPAGES[$pname])) {
+        $PPAGES[$pname] = array();
+    }
+    $PPAGES[$pname][$mode] = array('func' => $func_name, 'mode' => $mode);
 }
 
 //
@@ -64,7 +76,7 @@ function loadActionHandlers($action, $plugin = '')
     return $loadedCount;
 }
 
-function registerActionHandler($action, $function, $arguments = 0, $priority = 5)
+function registerActionHandler($action, $function, $arguments = array(), $priority = 5)
 {
     global $acts;
 
@@ -77,7 +89,11 @@ function registerActionHandler($action, $function, $arguments = 0, $priority = 5
     }
 
     // Register new item
-    $acts[$action][$priority][] = $function;
+    if (is_array($function)) {
+        $acts[$action][$priority][] = array($function, $arguments);
+    } else {
+        $acts[$action][$priority][] = $function;
+    }
 
     return true;
 
@@ -113,8 +129,14 @@ function executeActionHandler($action)
 
         foreach ($functions as $func) {
             $tX = $timer->stop(4);
-            $output .= call_user_func($func);
-            $timer->registerEvent('executeActionHandler (' . $action . '): call function "' . $func . '" for ' . round($timer->stop(4) - $tX, 4) . " sec");
+            if (is_array($func)) {
+                // func[0] = [$class, $method]; func[1] = [$args]
+                $output .= call_user_func_array($func[0], $func[1]);
+                $timer->registerEvent('executeActionHandler (' . $action . '): call function "' . get_class($func[0][0]) .'->' . $func[0][1] . '" for ' . round($timer->stop(4) - $tX, 4) . " sec");
+            } else {
+                $output .= call_user_func($func);
+                $timer->registerEvent('executeActionHandler (' . $action . '): call function "' . $func . '" for ' . round($timer->stop(4) - $tX, 4) . " sec");
+            }
         }
     }
     return $output;
@@ -133,7 +155,7 @@ function actionDisable($action)
 // =========================================================
 
 // Get plugin variable
-function pluginGetVariable($pluginID, $var)
+function pluginGetVariable($pluginID, $var = null)
 {
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
@@ -146,18 +168,6 @@ function pluginSetVariable($pluginID, $var, $value)
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
     $cPlugin->setVar($pluginID, $var, $value);
-}
-
-//
-// Add plugin's page
-function register_plugin_page($pname, $mode, $func_name, $show_template = 1)
-{
-    global $PPAGES;
-
-    if (!isset($PPAGES[$pname]) or !is_array($PPAGES[$pname])) {
-        $PPAGES[$pname] = array();
-    }
-    $PPAGES[$pname][$mode] = array('func' => $func_name, 'mode' => $mode);
 }
 
 //
@@ -337,45 +347,59 @@ function create_access_htaccess()
 // Routine that helps plugin to locate template files. It checks if required file
 // exists in "global template" dir
 //
-// $tname		- template names (in string array or single name)
 // $plugin		- plugin name
-// $localSource		- flag if function should work in "local only" mode, i.e.
-//				 that all files are in own plugin dir
-// $skin		- skin name in plugin dir ( plugins/PLUGIN/tpl/skin/ )
-// $block		- name of subdir within current template/block
-function locatePluginTemplates($tname, $plugin, $localSource = 0, $skin = '', $block = '')
+// $tplNames	- template names (in string array or single name)
+// $skin		- skin name in Theme site or all files are in own plugin dir
+//function plugin_locateTemplates($tplNames, $plugin, $localSource = 0, $skin = '', $block = '')
+function plugin_locateTemplates($plugin, $tplNames = null, $skin = null)
 {
-    global $config;
 
-    // Check if $tname is correct
-    if (!is_array($tname)) {
-        if (empty($tname)) {
-            return array();
-        }
-        $tname = array($tname);
+    // Check $plugin isset
+    if (empty($plugin)) {
+        return array();
     }
 
-    // Text SKIN+BLOCK
-    $tsb = (((trim($skin)) or (trim($block))) ? '/' : '') .
-        ($skin ? 'skins/' . $skin : '') .
-        (((trim($skin)) and (trim($block))) ? '/' : '') .
-        ($block ? $block : '');
+    // Check $tplNames isset
+    if (empty($tplNames)) {
+        $tplNames = array($plugin);
+    }
 
-    $tpath = array();
-    foreach ($tname as $fn) {
-        $fnc = (substr($fn, 0, 1) == ':') ? substr($fn, 1) : ($fn . '.tpl');
-        if (!$localSource and is_readable(tpl_site . 'plugins/' . $plugin . $tsb . '/' . $fnc)) {
-            $tpath[$fn] = tpl_site . 'plugins/' . $plugin . $tsb . '/';
-            $tpath['url:' . $fn] = tpl_url . '/plugins/' . $plugin . $tsb;
-        } else if (!$localSource and is_readable(tpl_site . 'plugins/' . $plugin . ($block ? ('/' . $block) : '') . '/' . $fnc)) {
-            $tpath[$fn] = tpl_site . 'plugins/' . $plugin . ($block ? ('/' . $block) : '') . '/';
-            $tpath['url:' . $fn] = tpl_url . '/plugins/' . $plugin . ($block ? ('/' . $block) : '');
-        } else if (is_readable(extras_dir . '/' . $plugin . '/tpl' . $tsb . '/' . $fnc)) {
-            $tpath[$fn] = extras_dir . '/' . $plugin . '/tpl' . $tsb . '/';
-            $tpath['url:' . $fn] = admin_url . '/plugins/' . $plugin . '/tpl' . $tsb;
+    // Check $tplNames for correct
+    if (!is_array($tplNames)) {
+        $tplNames = array($tplNames);
+    }
+
+    // Check $skin isset
+    if (!defined('ADMIN') and empty($skin)) {
+        if (empty($skin = pluginGetVariable($plugin, 'skin'))) {
+            $skin = 'basic';
         }
     }
-    return $tpath;
+
+    $tplPath = array();
+    foreach ($tplNames as $tplName) {
+        $fileName = (substr($tplName, 0, 1) == ':') ? substr($tplName, 1) : ($tplName . '.tpl');
+        // Check site or admin templates
+        if ($skin) {
+            // site skin tempaltes
+            if (is_readable(tpl_site . "plugins/$plugin/$skin/$fileName")) {
+                // If isset skin in Theme templates
+                $tplPath[$tplName] = tpl_site . "plugins/$plugin/$skin/";
+                $tplPath['url:' . $tplName] = tpl_url . "plugins/$plugin/$skin/";
+            } elseif (is_readable(extras_dir . "/$plugin/tpl/site/basic/$fileName")) {
+                $tplPath[$tplName] = extras_dir . "/$plugin/tpl/site/basic/";
+                $tplPath['url:' . $tplName] = admin_url . "/plugins/$plugin/tpl/site/basic/";
+            }
+        } else {
+            // admin tempaltes
+            if (is_readable(extras_dir . "/$plugin/tpl/admin/$fileName")) {
+                $tplPath[$tplName] = extras_dir . "/$plugin/tpl/admin/";
+                $tplPath['url:' . $tplName] = admin_url . "/plugins/$plugin/tpl/admin/";
+            }
+        }
+    }
+
+    return $tplPath;
 }
 
 // Register system filter
@@ -483,7 +507,7 @@ function _MASTER_defaultRUN($pluginName, $handlerName, $params, &$skip, $handler
 
     $pcall = $PPAGES[$pluginName][$handlerName];
 
-    if (is_array($pcall) and function_exists($pcall['func'])) {
+    if (is_array($pcall) and ((is_array($pcall) and method_exists($pcall['func'][0], $pcall['func'][1])) or function_exists($pcall['func']))) {
         // Make page title
         $SYSTEM_FLAGS['info']['title']['group'] = __('loc_plugin');
 
@@ -494,13 +518,19 @@ function _MASTER_defaultRUN($pluginName, $handlerName, $params, &$skip, $handler
             'params' => $params,
             'handlerParams' => $handlerParams,
         );
-        $req = call_user_func($pcall['func'], $params);
+        if (is_array($pcall['func'])) {
+            // func[0] = $class; func[1] = $method
+            $req = call_user_func_array($pcall['func'], array($params));
+        } else {
+            $req = call_user_func($pcall['func'], $params);
+        }
         if (!is_null($req) and $skip['FFC'] and !$req)
             $skip['fail'] = 1;
     } else {
         msg(array('type' => 'danger', 'message' => str_replace(array('{handler}', '{plugin}'), array(secure_html($handlerName), secure_html($pluginName)), __('plugins.nohadler'))));
         return false;
     }
+
     return true;
 }
 

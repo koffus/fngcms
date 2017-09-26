@@ -45,7 +45,7 @@
                                 <button type="submit" class="btn btn-md btn-login pull-right" data-loading-text="Login …">{l_login}</button>
                             </div>
                         </div>
-                        <p class="copyright">2008-{year} © <a href="http://ngcms.ru" target="_blank">Next Generation CMS</a></p>
+                        <p class="copyright">2006-{year} © <a href="http://bixbite.site" target="_blank">BixBite CMS</a></p>
                     </fieldset>
                 </form>
             </div>

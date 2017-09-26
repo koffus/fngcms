@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: lib_admin.php
 // Description: General function for site administration calls
 // Author: Vitaly Ponomarev
@@ -317,7 +317,7 @@ function dbBackup($fname, $gzmode, $tlist = '')
     }
 
     // Now make a header
-    $out = "# " . str_repeat('=', 60) . "\n# Backup file for `Next Generation CMS`\n# " . str_repeat('=', 60) . "\n# DATE: " . gmdate("d-m-Y H:i:s", time()) . " GMT\n# VERSION: " . engineVersion . "\n#\n";
+    $out = "# " . str_repeat('=', 60) . "\n# Backup file for `BixBite CMS`\n# " . str_repeat('=', 60) . "\n# DATE: " . gmdate("d-m-Y H:i:s", time()) . " GMT\n# VERSION: " . engineVersion . "\n#\n";
     $out .= "# List of tables for backup: " . join(", ", $tlist) . "\n#\n";
 
     // Write a header

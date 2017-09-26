@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Configuration file for plugin
@@ -18,7 +18,7 @@ function plugin_fin_smscoin_install($action) {
 	
 
 	if ($action != 'autoapply')
-			Lang::loadPlugin('fin_smscoin', 'config', '', ':');
+			Lang::loadPlugin('fin_smscoin', 'admin', '', ':');
 
 	// Fill DB_UPDATE configuration scheme
 	$db_update = array(

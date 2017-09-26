@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: libnews.php
 // Description: News engine shared functions
 // Author: Vitaly A Ponomarev, vp7@mail.ru
@@ -31,7 +31,7 @@
 //		'addCanonicalLink' => if specified, rel="canonical" will be added into {htmlvars}
 //		'validateCategoryID' => if specified, check if content represents correct category ID(s) for this news
 //		'validateCategoryAlt' => if specified, check if content represents correct category altname(s) for this news
-//		'extractEmbeddedItems'	- Extract embedded images/files from news body
+//		'extractImages'	- Extract embedded images/files from news body
 //		Returns:
 //			false - when news is not found
 //			data - when news is found and export is used
@@ -153,7 +153,7 @@ function news_showone($newsID, $alt_name, $callingParams = array())
         }
 
     $tX2 = $timer->stop(4);
-    $tvars = News::fillVariables($row, 1, isset($_REQUEST['page']) ? $_REQUEST['page'] : 0, (substr($callingParams['style'], 0, 6) == 'export') ? 1 : 0);
+    $tvars = News::fillVariables($row, 1, isset($_REQUEST['page']) ? intval($_REQUEST['page']) : 0, (substr($callingParams['style'], 0, 6) == 'export') ? 1 : 0);
     $tX3 = $timer->stop(4);
     $timer->registerEvent('call News::fillVariables() for [ ' . ($tX3 - $tX2) . ' ] sec');
 
@@ -245,20 +245,8 @@ function news_showone($newsID, $alt_name, $callingParams = array())
     // news.embed.images	- list of URL's
     // news.embed.imgCount	- count of extracted URL's
     $tvars['vars']['news']['embed'] = array('images' => array());
-    if (isset($callingParams['extractEmbeddedItems'])) {
-        // Join short/full news into single line
-        $tempLine = $tvars['vars']['news']['short'] . $tvars['vars']['news']['full'];
-        // Scan for <img> tag
-        if (preg_match_all("#\<img (.+?)(?: *\/?)\>#", $tempLine, $m)) {
-            // Analyze all found <img> tags for parameters
-            foreach ($m[1] as $kl) {
-                $klp = $parse->parseBBCodeParams($kl);
-                // Add record if src="" parameter is set
-                if (isset($klp['src'])) {
-                    $tvars['vars']['news']['embed']['images'] [] = $klp['src'];
-                }
-            }
-        }
+    if (!empty($callingParams['extractImages'])) {
+        $tvars['vars']['news']['embed']['images'] = $parse->extractImages($tvars['vars']['news']['short'] . $tvars['vars']['news']['full']);
     }
     $tvars['vars']['news']['embed']['imgCount'] = count($tvars['vars']['news']['embed']['images']);
 
@@ -487,7 +475,7 @@ function newsProcessFilter($conditions)
 //			1	-	`catpinned`	(for Categories page)
 //			2	-	without taking PIN into account
 //		'disablePagination'	- Disable generation of page information
-//		'extractEmbeddedItems'	- Extract embedded images/files from news body
+//		'extractImages'	- Extract embedded images/files from news body
 //		'paginationCategoryID'	- IF function is called in 'by.category' we can specify categoryID here, this will optimize 'page count' query
 //
 function news_showlist($filterConditions = array(), $paginationParams = array(), $callingParams = array())
@@ -667,7 +655,26 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
             $v->onBeforeShowlist($callingParams);
     }
 
+    //->desired template path - override path if needed
+    if (isset($callingParams['overrideTemplatePath'])) {
+        $templatePath = $callingParams['overrideTemplatePath'];
+    } elseif (isset($callingParams['customCategoryTemplate']) and isset($callingParams['currentCategoryId'])) {
+        // Check if isset custom template for category in news
+        $templatePath = getCatTemplate($callingParams['currentCategoryId'], $templateName);
+    } else {
+        // Set default template path
+        $templatePath = tpl_site;
+    }
+
+    // Hack for 'automatic search mode'
+    $currentTemplateName = $templateName;
+    // switch to `search` template if no templateName was overrided AND style is search AND searchFlag is set AND search template file exists
+    if (isset($callingParams['searchFlag']) and ($callingParams['searchFlag']) and (!isset($callingParams['overrideTemplatePath'])) and ($callingParams['style'] == 'short') and (@file_exists($templatePath . '/news.search.tpl'))) {
+        $currentTemplateName = 'news.search';
+    }
+
     // Main processing cycle
+    $outputArray = [];
     foreach ($selectResult as $row) {
         $i++;
         $nCount++;
@@ -743,20 +750,8 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
         // news.embed.imgCount	- count of extracted URL's
 
         $tvars['vars']['news']['embed'] = array('images' => array());
-        if ($callingParams['extractEmbeddedItems']) {
-            // Join short/full news into single line
-            $tempLine = $tvars['vars']['news']['short'] . $tvars['vars']['news']['full'];
-            // Scan for <img> tag
-            if (preg_match_all("#\<img (.+?)(?: *\/?)\>#", $tempLine, $m)) {
-                // Analyze all found <img> tags for parameters
-                foreach ($m[1] as $kl) {
-                    $klp = $parse->parseBBCodeParams($kl);
-                    // Add record if src="" parameter is set
-                    if (isset($klp['src'])) {
-                        $tvars['vars']['news']['embed']['images'] [] = $klp['src'];
-                    }
-                }
-            }
+        if (!empty($callingParams['extractImages'])) {
+            $tvars['vars']['news']['embed']['images'] = $parse->extractImages($tvars['vars']['news']['short'] . $tvars['vars']['news']['full']);
         }
         $tvars['vars']['news']['embed']['imgCount'] = count($tvars['vars']['news']['embed']['images']);
 
@@ -796,56 +791,47 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
 
         // Execute filters
         if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {
-            foreach ($PFILTERS['news'] as $k => $v)
+            foreach ($PFILTERS['news'] as $k => $v) {
                 $v->showNews($row['id'], $row, $tvars, $callingParams);
+            }
         }
 
-
-        //->desired template path - override path if needed
-        if (isset($callingParams['overrideTemplatePath'])) {
-            $templatePath = $callingParams['overrideTemplatePath'];
-        } elseif (isset($callingParams['customCategoryTemplate']) and isset($callingParams['currentCategoryId'])) {
-            // Check if isset custom template for category in news
-            $templatePath = getCatTemplate($callingParams['currentCategoryId'], $templateName);
-        } else {
-            // Set default template path
-            $templatePath = tpl_site;
+        // If only collection array entries
+        // Example for xnews plugin
+        if (!empty($callingParams['extendedReturnArray'])) {
+            $tempVars = $tvars['vars']['news'];
+            unset($tvars['vars']['news']);
+            $outputArray [] = array_merge($tvars['vars'], $tempVars);
+            continue;
         }
 
-        // Hack for 'automatic search mode'
-        $currentTemplateName = $templateName;
-        // switch to `search` template if no templateName was overrided AND style is search AND searchFlag is set AND search template file exists
-        if (isset($callingParams['searchFlag']) and ($callingParams['searchFlag']) and (!isset($callingParams['overrideTemplatePath'])) and ($callingParams['style'] == 'short') and (@file_exists($templatePath . '/news.search.tpl'))) {
-            $currentTemplateName = 'news.search';
-        }
+        // Populate variables
+        $tVars = $tvars['vars'];
 
-        $res = '';
-        if (isset($callingParams['twig'])) {
-            // Populate variables
-            $tVars = $tvars['vars'];
+        // Provide information about used template
+        $tVars['templateName'] = $currentTemplateName;
+        $tVars['templatePath'] = $templatePath;
 
-            // Provide information about used template
-            $tVars['templateName'] = $currentTemplateName;
-            $tVars['templatePath'] = $templatePath;
-
-            // Rende template
-            $xt = $twig->loadTemplate($templatePath . '/' . $currentTemplateName . '.tpl');
-            $res = $xt->render($tVars);
-
-        } else {
-            $tpl->template($currentTemplateName, $templatePath);
-            $tpl->vars($currentTemplateName, $tvars);
-            $res = $tpl->show($currentTemplateName);
-        }
+        // Render template
+        $res = $twig->render($templatePath . '/' . $currentTemplateName . '.tpl', $tVars);
 
         $outputList [] = $res;
     }
-    $output = join('', $outputList);
+
     unset($tvars, $tVars);
 
+    // Return output if need only array entries
+    // Example for xnews plugin
+    if (!empty($callingParams['extendedReturnArray'])) {
+        return $outputArray;
+    }
+
+    $output = join('', $outputList);
+
     // Return output if we're in export mode
-    if ($callingParams['style'] == 'export')
+    if ($callingParams['style'] == 'export') {
         return $output;
+    }
 
     // Print "no news" if we didn't find any news [ DON'T PRINT IN EXTENDED MODE ]
     if (!$nCount) {
@@ -891,7 +877,7 @@ function news_showlist($filterConditions = array(), $paginationParams = array(),
             $paginationOutput = $tpl->show('pages');
         }
 
-        if (!isset($callingParams['entendedReturnPagination']) and !$callingParams['extendedReturnPagination'])
+        if (empty($callingParams['entendedReturnPagination']) and empty($callingParams['extendedReturnPagination']))
             $output .= $paginationOutput;
     }
 

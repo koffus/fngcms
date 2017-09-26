@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class TagsNewsfilter extends NewsFilter
 {
@@ -15,7 +15,7 @@ class TagsNewsfilter extends NewsFilter
     {
         global $twig;
 
-        Lang::loadPlugin('tags', 'config', '', ':');
+        Lang::loadPlugin('tags', 'admin', '', ':');
 
         $ttvars = array(
             'localPrefix' => localPrefix,
@@ -23,10 +23,10 @@ class TagsNewsfilter extends NewsFilter
         );
 
         $extends = pluginGetVariable('tags', 'extends') ? pluginGetVariable('tags', 'extends') : 'owner';
-        $tpath = locatePluginTemplates(array('news'), 'tags', 1, 0, 'admin');
+        $tpath = plugin_locateTemplates('tags', array('news'));
         $tvars['extends'][$extends][] = array(
             'header_title' => __('tags:header_title'),
-            'body' => $twig->loadTemplate($tpath['news'] . 'news.tpl')->render($ttvars),
+            'body' => $twig->render($tpath['news'] . 'news.tpl', $ttvars),
         );
 
         return 1;
@@ -88,7 +88,7 @@ class TagsNewsfilter extends NewsFilter
     {
         global $twig;
 
-        Lang::loadPlugin('tags', 'config', '', ':');
+        Lang::loadPlugin('tags', 'admin', '', ':');
 
         $ttvars = array(
             'localPrefix' => localPrefix,
@@ -96,10 +96,10 @@ class TagsNewsfilter extends NewsFilter
         );
 
         $extends = pluginGetVariable('tags', 'extends') ? pluginGetVariable('tags', 'extends') : 'owner';
-        $tpath = locatePluginTemplates(array('news'), 'tags', 1, 0, 'admin');
+        $tpath = plugin_locateTemplates('tags', array('news'));
         $tvars['extends'][$extends][] = array(
             'header_title' => __('tags:header_title'),
-            'body' => $twig->loadTemplate($tpath['news'] . 'news.tpl')->render($ttvars),
+            'body' => $twig->render($tpath['news'] . 'news.tpl', $ttvars),
         );
 
         return 1;
@@ -209,7 +209,7 @@ class TagsNewsfilter extends NewsFilter
 
         // Load params for display (if needed)
         if (!isset($this->displayParams) or !is_array($this->displayParams)) {
-            $tpath = locatePluginTemplates(array(':params.ini'), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin') ? pluginGetVariable('tags', 'localSkin') : 'default');
+            $tpath = plugin_locateTemplates('tags', array(':params.ini'));
             $this->displayParams = parse_ini_file($tpath[':params.ini'] . 'params.ini');
         }
 
@@ -359,7 +359,7 @@ function plugin_tags_tag($params = [])
 {
     global $tpl, $template, $mysql, $SYSTEM_FLAGS, $CurrentHandler, $TemplateCache;
 
-    Lang::loadPlugin('tags', 'main', '', ':');
+    Lang::loadPlugin('tags', 'site', '', ':');
 
     // Determine TAG that will be used for output
     if (isset($params['tag'])) {
@@ -391,7 +391,7 @@ function plugin_tags_tag($params = [])
         array('link' => '', 'text' => __('tags:page') . ' ' . $page),
     );
 
-    $tpath = locatePluginTemplates(array('cloud', 'cloud.tag', 'pages', 'cloud.tag.entry'), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin') ? pluginGetVariable('tags', 'localSkin') : 'default');
+    $tpath = plugin_locateTemplates('tags', array('cloud', 'cloud.tag', 'pages', 'cloud.tag.entry'));
 
     include_once root . 'includes/news.php';
 
@@ -420,7 +420,7 @@ function plugin_tags_tag($params = [])
             $navigations = $TemplateCache['site']['#variables']['navigation'];
             $paginationParams = array('pluginName' => 'tags', 'pluginHandler' => 'tag', 'params' => array('tag' => urlencode($tag)), 'xparams' => array(), 'paginator' => array('page', 0, false));
 
-            $tvars['vars']['pagesss'] = ($page > 1) ? str_replace('%page%', __('previous_page'), str_replace('%link%', generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])) : '';
+            $tvars['vars']['pagesss'] = ($page > 1) ? str_replace('%page%', __('prev_page'), str_replace('%link%', generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])) : '';
             $tvars['vars']['pagesss'] .= generatePagination($page, 1, $pagesCount, 10, $paginationParams, $navigations);
             $tvars['vars']['pagesss'] .= ($page < $pagesCount) ? str_replace('%page%', __('next_page'), str_replace('%link%', generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])) : '';
 
@@ -453,7 +453,7 @@ function plugin_tags_tag($params = [])
     $tplName = isset($tpath['cloud.tag']) ? 'cloud.tag' : 'cloud';
     $tpl->template($tplName, $tpath[$tplName]);
     $tpl->vars($tplName, $tvars);
-    $template['vars']['mainblock'] = $tpl->show($tplName);
+    $template['vars']['mainblock'] .= $tpl->show($tplName);
 
 }
 
@@ -466,7 +466,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0, $params 
 {
     global $tpl, $template, $mysql, $config, $SYSTEM_FLAGS, $TemplateCache;
 
-    Lang::loadPlugin('tags', 'main', '', ':');
+    Lang::loadPlugin('tags', 'site', '', ':');
 
     $page = isset($params['page']) ? $params['page'] : 1;
     if ($page < 1) $page = 1;
@@ -493,7 +493,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0, $params 
     // Generate cache file name [ we should take into account SWITCHER plugin ]
     $cacheFileName = md5('tags' . $config['home_url'] . $config['theme'] . $config['default_lang'] . $masterTPL . 'page' . $page . 'age' . $age . 'cat' . (is_array($cl) ? join(",", $cl) : $cl)) . '.txt';
     if (pluginGetVariable('tags', 'cache')) {
-        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('tags', 'cacheExpire'), 'tags');
+        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('tags', 'cache_expire'), 'tags');
         if ($cacheData != false) {
             // We got data from cache. Return it and stop
             $template['vars'][$ppage ? 'mainblock' : 'plugin_tags'] = $cacheData;
@@ -502,7 +502,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0, $params 
     }
 
     // Load params for display (if needed)
-    $tpath = locatePluginTemplates(array(':params.ini', 'pages', $masterTPL), 'tags', pluginGetVariable('tags', 'localSource'), pluginGetVariable('tags', 'localSkin') ? pluginGetVariable('tags', 'localSkin') : 'default');
+    $tpath = plugin_locateTemplates('tags', array(':params.ini', 'pages', $masterTPL));
     $displayParams = parse_ini_file($tpath[':params.ini'] . 'params.ini');
 
     $tags = array();
@@ -626,7 +626,7 @@ function plugin_tags_generatecloud($ppage = 0, $catlist = '', $age = 0, $params 
         $navigations = $TemplateCache['site']['#variables']['navigation'];
         $paginationParams = array('pluginName' => 'tags', 'pluginHandler' => '', 'params' => array(), 'xparams' => array(), 'paginator' => array('page', 0, false));
 
-        $tvars['vars']['pagesss'] = ($page > 1) ? str_replace('%page%', __('previous_page'), str_replace('%link%', generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])) : '';
+        $tvars['vars']['pagesss'] = ($page > 1) ? str_replace('%page%', __('prev_page'), str_replace('%link%', generatePageLink($paginationParams, $page - 1), $navigations['prevlink'])) : '';
         $tvars['vars']['pagesss'] .= generatePagination($page, 1, $pagesCount, 10, $paginationParams, $navigations);
         $tvars['vars']['pagesss'] .= ($page < $pagesCount) ? str_replace('%page%', __('next_page'), str_replace('%link%', generatePageLink($paginationParams, $page + 1), $navigations['nextlink'])) : '';
 

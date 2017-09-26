@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: jchat
@@ -15,5 +15,5 @@ Type: plugin
 Title: AJAX chat
 Description: AJAX based чат для сайта
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Information: Благодаря этому плагину вы сможете добавить на ваш сайт ЧАТ (на базе технологии AJAX)

@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2009-2012 BixBite CMS (http://bixbite.site/)
 // Name: CFilter.class.php
 // Description: Class template definition: core actions filter
 // Author: Vitaly Ponomarev

@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2008 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2008 BixBite CMS (http://bixbite.site/)
 // Name: showinfo.php
 // Description: Show different informational blocks
 // Author: Vitaly Ponomarev
@@ -13,7 +13,7 @@ if ('plugin' == $_REQUEST['mode']) {
     include_once "../core.php";
 
     // Protect against hack attempts
-    if (!defined('NGCMS')) die ('HAL');
+    if (!defined('BBCMS')) die ('HAL');
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();

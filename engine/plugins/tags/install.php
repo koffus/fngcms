@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Configuration file for plugin
@@ -19,7 +19,7 @@ function plugin_tags_install($action)
     global $mysql, $config;
 
     if ($action != 'autoapply') {
-        Lang::loadPlugin('tags', 'config', '', ':');
+        Lang::loadPlugin('tags', 'admin', '', ':');
     }
 
     // Fill DB_UPDATE configuration scheme
@@ -222,10 +222,9 @@ function plugin_tags_install($action)
                     'orderby' => 4,
                     'ppage_limit' => 0,
                     'ppage_orderby' => 1,
-                    'localSource' => 1,
-                    'localSkin' => 'basic',
+                    'skin' => 'basic',
                     'cache' => 1,
-                    'cacheExpire' => 120,
+                    'cache_expire' => 120,
                 );
 
                 foreach ($params as $k => $v) {

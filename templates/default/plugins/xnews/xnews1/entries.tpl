@@ -1,1 +1,0 @@
-<a href="{{ news.url.full }}">{{ news.title|truncateHTML(70,'...') }}</a> {{ news.author.name }}, {{ news.categories.masterText }}</span> <small class="float-right"><i class="fa fa-eye"></i> {{ news.views }}</small>

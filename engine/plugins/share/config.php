@@ -2,19 +2,21 @@
 
 /*
  * Configuration file for plugin
-*/
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
 
 // Prepare configuration parameters
-$skList = $cPlugin->getFoldersSkin($plugin);
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+}
 
 // Fill configuration parameters
 $cfg = array(
@@ -45,18 +47,11 @@ array_push($cfg, array(
 
 $cfgX = array();
     array_push($cfgX, array(
-        'name' => 'localSource',
-        'title' => __('localSource'),
-        'descr' => __('localSource#desc'),
-        'type' => 'checkbox',
-        'value' => intval(pluginGetVariable($plugin, 'maxnum'))
-        ));
-    array_push($cfgX, array(
-        'name' => 'localSource',
-        'title' => __('localSource'),
-        'descr' => __('localSource#desc'),
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
         'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'maxnum'))
+        'value' => pluginGetVariable($plugin, 'skin')
         ));
 array_push($cfg, array(
     'mode' => 'group',
@@ -68,21 +63,13 @@ array_push($cfg, array(
 
 $cfgX = array();
     array_push($cfgX, array(
-        'name' => 'localSource',
-        'title' => __('localSource'),
-        'descr' => __('localSource#desc'),
-        'type' => 'select',
-        'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-        'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : 0,
-        ));
-    array_push($cfgX, array(
-        'name' => 'localSkin',
-        'title' => __('localSkin'),
-        'descr' => __('localSkin#desc'),
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
         'type' => 'select',
         'values' => $skList,
-        'value' => pluginGetVariable($plugin,'localSkin') ? pluginGetVariable($plugin,'localSkin') : 'basic',
-        ));
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
 array_push($cfg, array(
     'mode' => 'group',
     'title' => __('group.source'),

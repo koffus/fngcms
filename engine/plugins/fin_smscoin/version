@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: fin_smscoin
@@ -12,7 +12,7 @@ Config: config.php
 Type: plugin
 Description: Пополнение счёта :: SMS (smscoin.com)
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Пополнение счёта :: SMS (smscoin.com)
 Preinstall: no
 Information: Дополнение к плагину <b>finance</b> - позволяет принимать платежи при помощи SMS через сервис smscoin.com

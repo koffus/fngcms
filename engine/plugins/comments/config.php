@@ -1,14 +1,32 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
+
+// Set default values if values are not set [for new variables]
+foreach ([
+    'moderate' => 1,
+    'global_default' => 1,
+    'default_news' => 2,
+    'default_categories' => 2,
+    'multipage' => 1,
+    'inform_admin' => 1,
+    'inform_author' => 1,
+    'minlen' => 4,
+    'maxlen' => 500,
+    'cache' => 1,
+    'cache_expire' => 60,
+    ] as $k => $v ) {
+    if (pluginGetVariable($plugin, $k) == null)
+        pluginSetVariable($plugin, $k, $v);
+}
 
 // Micro sRouter =)
 switch ($action)
@@ -20,28 +38,28 @@ switch ($action)
             } else {
                 switch($subaction) {
                     case 'mass_approve':
-                        commentsUpdateAction($plugin, $action, $subaction);
+                        pluginListUpdateAction($plugin, $action, $subaction);
                         break;
                     case 'mass_forbidden':
-                        commentsUpdateAction($plugin, $action, $subaction);
+                        pluginListUpdateAction($plugin, $action, $subaction);
                         break;
                     case 'mass_delete':
-                        commentsDeleteAction($plugin, $action);
+                        pluginListDeleteAction($plugin, $action);
                         break;
                 }
             }
         }
-        commentsListAction($plugin, $action);
+        pluginListAction($plugin, $action);
         break;
 
     case 'dell':
-        commentsDeleteAction($plugin, $action);
-        commentsListAction($plugin, $action);
+        pluginListDeleteAction($plugin, $action);
+        pluginListAction($plugin, $action);
         break;
 
     case 'edit':
     case 'edit_submit':
-        commentsEditAction($plugin, $action);
+        pluginListEditAction($plugin, $action);
         break;
 
     case 'widget_list':
@@ -55,31 +73,23 @@ switch ($action)
         break;
 
     default:
-        commentsConfigAction($plugin, $action);
+        pluginConfigAction($plugin, $action);
         break;
 }
 
-// Set default values if values are not set [for new variables]
-$commentsDefaultConfig = [
-    'moderate' => 1,
-    'global_default' => 1,
-    'default_news' => 2,
-    'default_categories' => 2,
-    'multipage' => 1,
-    'inform_admin' => 1,
-    'inform_author' => 1,
-    'minlen' => 4,
-    'maxlen' => 500,
-    ];
-foreach ($commentsDefaultConfig as $k => $v ) {
-    if (pluginGetVariable($plugin, $k) == null)
-        pluginSetVariable($plugin, $k, $v);
-}
-
-// Configuration page for plugin Comments
-function commentsConfigAction($plugin, $action)
+// Configuration page for plugin
+function pluginConfigAction($plugin, $action)
 {
-// Fill configuration parameters
+
+    // Load CORE Plugin
+    $cPlugin = CPlugin::instance();
+
+    // Prepare configuration parameters
+    if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+        msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+    }
+
+    // Fill configuration parameters
     $cfg = array(
         'description' => __($plugin.':description'),
         'navigation' => array(
@@ -180,13 +190,13 @@ function commentsConfigAction($plugin, $action)
 
     $cfgX = array();
         array_push($cfgX, array(
-            'name' => 'localSource',
-            'title' => __('localSource'),
-            'descr' => __('localSource#desc'),
+            'name' => 'skin',
+            'title' => __('skin'),
+            'descr' => __('skin#desc'),
             'type' => 'select',
-            'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-            'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
-            ));
+            'values' => $skList,
+            'value' => pluginGetVariable($plugin, 'skin'),
+        ));
     array_push($cfg, array(
         'mode' => 'group',
         'title' => __('group.source'),
@@ -313,7 +323,7 @@ function commentsConfigAction($plugin, $action)
     generate_config_page($plugin, $cfg);
 }
 
-function commentsListAction($plugin, $action)
+function pluginListAction($plugin, $action)
 {
     global $config, $mysql, $twig, $parse;
 
@@ -439,23 +449,23 @@ function commentsListAction($plugin, $action)
             ));
     }
 
-    $tpath = locatePluginTemplates(array('comments.list'), 'comments', 1, '', 'admin');
+    $tpath = plugin_locateTemplates('comments', array('comments.list'));
     array_push($cfg, array(
             'type' => 'flat',
-            'input' => $twig->loadTemplate($tpath['comments.list'] . 'comments.list.tpl')->render($tVars)
+            'input' => $twig->render($tpath['comments.list'] . 'comments.list.tpl', $tVars)
             ));
     generate_config_page($plugin, $cfg);
 }
 
 // Edit comments
-function commentsEditAction($plugin, $action)
+function pluginListEditAction($plugin, $action)
 {
     global $mysql, $twig, $config, $userROW, $PHP_SELF;
 
     // comment ID not isset
     if (empty($_REQUEST['comid'])) {
         msg(array('type' => 'danger', 'message' => __('comments:comid_not_found')));
-        commentsListAction($plugin, $action);
+        pluginListAction($plugin, $action);
         return;
     }
 
@@ -464,7 +474,7 @@ function commentsEditAction($plugin, $action)
     // Find comment in DB
     if (!is_array($comment = $mysql->record("select * from `".prefix."_comments` where id = ".db_squote($comid)))) {
         msg(array('type' => 'danger', 'message' => __('comments:msg.not_found')));
-        commentsListAction($plugin, $action);
+        pluginListAction($plugin, $action);
         return;
     }
 
@@ -569,16 +579,16 @@ function commentsEditAction($plugin, $action)
         )
     );
 
-    $tpath = locatePluginTemplates(array('comments.edit'), 'comments', 1, '', 'admin');
+    $tpath = plugin_locateTemplates('comments', array('comments.edit'));
     array_push($cfg, array(
             'type' => 'flat',
-            'input' => $twig->loadTemplate($tpath['comments.edit'] . 'comments.edit.tpl')->render($tVars)
+            'input' => $twig->render($tpath['comments.edit'] . 'comments.edit.tpl', $tVars)
             ));
     generate_config_page($plugin, $cfg);
 }
 
 // delete comment
-function commentsDeleteAction($plugin, $action)
+function pluginListDeleteAction($plugin, $action)
 {
     global $mysql, $config;
 
@@ -623,7 +633,7 @@ function commentsDeleteAction($plugin, $action)
 
 // ПЕРЕПИСАТЬ
 // Mass function to approve or forbidden comment
-function commentsUpdateAction($plugin, $action, $subaction)
+function pluginListUpdateAction($plugin, $action, $subaction)
 {
     global $mysql, $config;
 

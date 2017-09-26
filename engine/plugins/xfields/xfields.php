@@ -3,11 +3,11 @@
 // #==========================================================#
 // # Plugin name: xfields [ Additional fields managment ] #
 // # Author: Vitaly A Ponomarev, vp7@mail.ru #
-// # Allowed to use only with: Next Generation CMS #
+// # Allowed to use only with: BixBite CMS #
 // #==========================================================#
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -15,11 +15,12 @@ $cPlugin = CPlugin::instance();
 $cPlugin->loadLibrary('xfields', 'common');
 
 // Load lang files
-Lang::loadPlugin('xfields', 'config', '', ':');
+Lang::loadPlugin('xfields', 'admin', '', ':');
 
 //
 // XFields: Add/Modify attached files
-function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
+function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList)
+{
     global $mysql, $config, $DSlist;
 
     // Init file/image processing libraries
@@ -193,13 +194,16 @@ function xf_modifyAttachedImages($dsID, $newsID, $xf, $attachList) {
 }
 
 // Perform replacements while showing news
-class XFieldsNewsFilter extends NewsFilter {
+class XFieldsNewsFilter extends NewsFilter
+{
 
-    function __construct() {
-        Lang::loadPlugin('xfields', 'config', '', ':');
+    function __construct()
+    {
+        Lang::loadPlugin('xfields', 'admin', '', ':');
     }
 
-    function addNewsForm(&$tvars) {
+    function addNewsForm(&$tvars)
+    {
         global $catz, $mysql, $config, $twig, $twigLoader;
 
         // Load config
@@ -275,8 +279,7 @@ class XFieldsNewsFilter extends NewsFilter {
                         }
 
                         // Make template
-                        $xt = $twig->loadTemplate('plugins/xfields/tpl/ed_entry.image.tpl');
-                        $val = $xt->render($tVars);
+                        $val = $twig->render('plugins/xfields/tpl/ed_entry.image.tpl', $tVars);
                         $xfEntry['input'] = $val;
                         break;
                     default: continue;
@@ -328,12 +331,10 @@ class XFieldsNewsFilter extends NewsFilter {
             );
             if($flagTData) {
                 $extends = 'owner';
-                $templateName = 'plugins/xfields/tpl/news.tdata.tpl';
-                $xt = $twig->loadTemplate($templateName);
                 $tvars['extends'][$extends][] = array(
                     'table' => true,
                     'header_title' => __('xfields:tdata_title'),
-                    'body' => $xt->render($txVars),
+                    'body' => $twig->render('plugins/xfields/tpl/news.tdata.tpl', $txVars),
                     );
             }
         } else {
@@ -347,29 +348,27 @@ class XFieldsNewsFilter extends NewsFilter {
         $txVars['xfCat'] = json_encode($xfCategories);
         $txVars['xfList'] = json_encode(array_keys($xf['news']));
         foreach ($xfEntries as $k => $v) {
-            $templateName = 'plugins/xfields/tpl/news.edit.tpl';
-            $xt = $twig->loadTemplate($templateName);
             $txVars['entries'] = $v;
             $txVars['entryCount'] = count($v);
             $txVars['extends'] = $k;
             // Render block
             $tvars['extends'][$k][] = array(
                 'header_title' => __('xfields:header_title'),
-                'body' => $xt->render($txVars),
+                'body' => $twig->render('plugins/xfields/tpl/news.edit.tpl', $txVars),
                 );
         }
         unset($txVars['entries']);
         unset($txVars['extends']);
         // Render general part [with JavaScript]
-        $xt = $twig->loadTemplate('plugins/xfields/tpl/news.general.tpl');
         $tvars['extends']['js'][] = array(
-                'body' => $xt->render($txVars),
+                'body' => $twig->render('plugins/xfields/tpl/news.general.tpl', $txVars),
                 );
 
         return 1;
     }
 
-    function addNews(&$tvars, &$SQL) {
+    function addNews(&$tvars, &$SQL)
+    {
         global $twig, $twigLoader;
 
         // Load config
@@ -404,7 +403,8 @@ class XFieldsNewsFilter extends NewsFilter {
         return 1;
     }
 
-    function addNewsNotify(&$tvars, $SQL, $newsID) {
+    function addNewsNotify(&$tvars, $SQL, $newsID)
+    {
         global $mysql;
 
         // Load config
@@ -484,7 +484,8 @@ class XFieldsNewsFilter extends NewsFilter {
         return 1;
     }
 
-    function editNewsForm($newsID, $SQLold, &$tvars) {
+    function editNewsForm($newsID, $SQLold, &$tvars)
+    {
         global $catz, $mysql, $config, $twig, $twigLoader;
 
         // Load config
@@ -598,8 +599,7 @@ class XFieldsNewsFilter extends NewsFilter {
                         }
 
                         // Make template
-                        $xt = $twig->loadTemplate('plugins/xfields/tpl/ed_entry.image.tpl');
-                        $val = $xt->render($tVars);
+                        $val = $twig->render('plugins/xfields/tpl/ed_entry.image.tpl', $tVars);
                         $xfEntry['input'] = $val;
                         break;
                     default: continue;
@@ -667,12 +667,10 @@ class XFieldsNewsFilter extends NewsFilter {
             );
             if($flagTData) {
                 $extends = 'owner';
-                $templateName = 'plugins/xfields/tpl/news.tdata.tpl';
-                $xt = $twig->loadTemplate($templateName);
                 $tvars['extends'][$extends][] = array(
                     'table' => true,
                     'header_title' => __('xfields:tdata_title'),
-                    'body' => $xt->render($txVars),
+                    'body' => $twig->render('plugins/xfields/tpl/news.tdata.tpl', $txVars),
                     );
             }
         } else {
@@ -686,29 +684,27 @@ class XFieldsNewsFilter extends NewsFilter {
         $txVars['xfCat'] = json_encode($xfCategories);
         $txVars['xfList'] = json_encode(array_keys($xf['news']));
         foreach ($xfEntries as $k => $v) {
-            $templateName = 'plugins/xfields/tpl/news.edit.tpl';
-            $xt = $twig->loadTemplate($templateName);
             $txVars['entries'] = $v;
             $txVars['entryCount'] = count($v);
             $txVars['extends'] = $k;
             // Render block
             $tvars['extends'][$k][] = array(
                 'header_title' => __('xfields:header_title'),
-                'body' => $xt->render($txVars),
+                'body' => $twig->render('plugins/xfields/tpl/news.edit.tpl', $txVars),
                 );
         }
         unset($txVars['entries']);
         unset($txVars['extends']);
         // Render general part [with JavaScript]
-        $xt = $twig->loadTemplate('plugins/xfields/tpl/news.general.tpl');
         $tvars['extends']['js'][] = array(
-                'body' => $xt->render($txVars),
+                'body' => $twig->render('plugins/xfields/tpl/news.general.tpl', $txVars),
                 );
 
         return 1;
     }
 
-    function editNews($newsID, $SQLold, &$SQLnew, &$tvars) {
+    function editNews($newsID, $SQLold, &$SQLnew, &$tvars)
+    {
         global $config, $mysql;
 
         //	print "<pre>POST VARS: ".var_export($_POST, true)."</pre>";
@@ -718,8 +714,7 @@ class XFieldsNewsFilter extends NewsFilter {
         if (!is_array($xf))
             return 1;
 
-        $rcall = $_POST['xfields'];
-        if (!is_array($rcall)) $rcall = array();
+        $rcall = (!empty($_POST['xfields']) and !is_array($_POST['xfields'])) ? $_POST['xfields']: array();
 
         // Decode previusly stored data
         $oldFields = xf_decode($SQLold['xfields']);
@@ -749,7 +744,7 @@ class XFieldsNewsFilter extends NewsFilter {
 
             // Scan for fields that should be configured to have attached images
             foreach ($xf['news'] as $fid => $fval) {
-                if (($fval['type'] == 'images')&&(is_array($idlist[$fid]))) {
+                if (($fval['type'] == 'images') && (is_array($idlist[$fid]))) {
                     $xdata[$fid] = join(",", $idlist[$fid]);
                 }
             }
@@ -858,7 +853,8 @@ class XFieldsNewsFilter extends NewsFilter {
     }
 
     // Delete news notifier [ after news is deleted ]
-    function deleteNewsNotify($newsID, $SQLnews) {
+    function deleteNewsNotify($newsID, $SQLnews)
+    {
         global $mysql;
 
         $query = "delete from ".prefix."_xfields where (linked_ds = 1) and (linked_id = ".intval($newsID).")";
@@ -868,7 +864,8 @@ class XFieldsNewsFilter extends NewsFilter {
     }
 
     // Called before showing list of news
-    function onBeforeShowlist($callingParams) {
+    function onBeforeShowlist($callingParams)
+    {
         if (isset($linkedFiles['data']) and is_array($linkedFiles['data'])) {
             // Check for news that have attached TABLE data and load this table into memory
             // ...
@@ -876,7 +873,8 @@ class XFieldsNewsFilter extends NewsFilter {
     }
 
     // Show news call :: processor (call after all processing is finished and before show)
-    function showNews($newsID, $SQLnews, &$tvars, $mode = array()) {
+    function showNews($newsID, $SQLnews, &$tvars, $mode = array())
+    {
         global $mysql, $config, $twigLoader, $twig, $PFILTERS, $parse;
 
         // Try to load config. Stop processing if config was not loaded
@@ -886,7 +884,7 @@ class XFieldsNewsFilter extends NewsFilter {
         $content = $SQLnews['content'];
 
         // Check if we have at least one `image` field and load TWIG template if any
-        if (is_array($xf['news']))
+        if (isset($xf['news']) and is_array($xf['news']))
             foreach ($xf['news'] as $k => $v) {
                 if ($v['type'] == 'images') {
 
@@ -901,7 +899,7 @@ class XFieldsNewsFilter extends NewsFilter {
             }
 
         // Show extra fields if we have it
-        if (is_array($xf['news']))
+        if (isset($xf['news']) and is_array($xf['news']))
             foreach ($xf['news'] as $k => $v) {
                 $kp = preg_quote($k, "#");
                 $xfk = isset($fields[$k])?$fields[$k]:'';
@@ -948,7 +946,7 @@ class XFieldsNewsFilter extends NewsFilter {
                             'entriesCount' => count($imglist),
                             'entries' => array(),
                             'execStyle' => $mode['style'],
-                            'execPlugin' => $mode['plugin'],
+                            'execPlugin' => isset($mode['plugin']) ? $mode['plugin'] : null,
                         );
                         foreach ($imglist as $imgInfo) {
                             $tiEntry = array(
@@ -1056,7 +1054,7 @@ class XFieldsNewsFilter extends NewsFilter {
             }
 
             // Search for news.tdata.tpl template file
-            $tpath = locatePluginTemplates(array('news.tdata'), 'xfields');
+            $tpath = plugin_locateTemplates('xfields', array('news.tdata'));
 
             // Show table
             $templateName = $tpath['news.tdata'].'news.tdata.tpl';
@@ -1065,8 +1063,8 @@ class XFieldsNewsFilter extends NewsFilter {
             $xt = $twig->loadTemplate($templateName);
             $tvars['vars']['plugin_xfields_table'] = $xt->render(array('entries' => $xrecs));
 
-            $tvars['vars']['p']['xfields']['_table']['countRec']	= count($xrecs);
-            $tvars['vars']['p']['xfields']['_table']['data']		= $xrecs;
+            $tvars['vars']['p']['xfields']['_table']['countRec'] = count($xrecs);
+            $tvars['vars']['p']['xfields']['_table']['data'] = $xrecs;
 
         } else {
             $tvars['vars']['plugin_xfields_table'] = '';
@@ -1085,13 +1083,16 @@ if (pluginIsActive('uprofile')) {
     // preload required libraries
     $cPlugin->loadLibrary('uprofile', 'lib');
 
-    class XFieldsUPrifileFilter extends p_uprofileFilter {
+    class XFieldsUPrifileFilter extends p_uprofileFilter
+    {
 
-        function __construct() {
-            Lang::loadPlugin('xfields', 'config', '', ':');
+        function __construct()
+        {
+            Lang::loadPlugin('xfields', 'admin', '', ':');
         }
 
-        function editProfileForm($userID, $SQLrow, &$tvars) {
+        function editProfileForm($userID, $SQLrow, &$tvars)
+        {
             global $catz, $mysql, $config, $twig, $twigLoader, $DSlist, $userROW;
             
             // Load config
@@ -1242,7 +1243,8 @@ if (pluginIsActive('uprofile')) {
 
         }
 
-        function editProfile($userID, $SQLrow, &$SQLnew) {
+        function editProfile($userID, $SQLrow, &$SQLnew)
+        {
             global $config, $mysql, $DSlist;
 
             //print "<pre>editProfile() POST VARS: ".var_export($_POST, true)."</pre>";
@@ -1317,7 +1319,8 @@ if (pluginIsActive('uprofile')) {
             return 1;
         }
 
-        function showProfile($userID, $SQLrow, &$tvars) {
+        function showProfile($userID, $SQLrow, &$tvars)
+        {
             global $mysql, $config, $twig, $twigLoader;
 
             // Try to load config. Stop processing if config was not loaded
@@ -1375,7 +1378,7 @@ if (pluginIsActive('uprofile')) {
                                 'entriesCount' => count($imglist),
                                 'entries' => array(),
                                 'execStyle' => $mode['style'],
-                                'execPlugin' => $mode['plugin'],
+                                'execPlugin' => isset($mode['plugin']) ? $mode['plugin'] : null,
                             );
                             foreach ($imglist as $imgInfo) {
                                 $tiEntry = array(
@@ -1448,18 +1451,22 @@ if (pluginIsActive('uprofile')) {
     pluginRegisterFilter('plugin.uprofile','xfields', new XFieldsUPrifileFilter);
 }
 
-class XFieldsFilterAdminCategories extends FilterAdminCategories {
+class XFieldsFilterAdminCategories extends FilterAdminCategories
+{
 
-    function __construct() {
-        Lang::loadPlugin('xfields', 'config', '', ':');
+    function __construct()
+    {
+        Lang::loadPlugin('xfields', 'admin', '', ':');
     }
 
-    function addCategory(&$tvars, &$SQL) {
+    function addCategory(&$tvars, &$SQL)
+    {
         $SQL['xf_group'] = $_REQUEST['xf_group'];
         return 1;
     }
 
-    function addCategoryForm(&$tvars) {
+    function addCategoryForm(&$tvars)
+    {
 
         // Get config
         $xf = xf_configLoad();
@@ -1477,7 +1484,8 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories {
         return 1;
     }
 
-    function editCategoryForm($categoryID, $SQL, &$tvars) {
+    function editCategoryForm($categoryID, $SQL, &$tvars)
+    {
 
         // Get config
         $xf = xf_configLoad();
@@ -1494,19 +1502,23 @@ class XFieldsFilterAdminCategories extends FilterAdminCategories {
         return 1;
     }
 
-    function editCategory($categoryID, $SQL, &$SQLnew, &$tvars) {
+    function editCategory($categoryID, $SQL, &$SQLnew, &$tvars)
+    {
         $SQLnew['xf_group'] = $_REQUEST['xf_group'];
         return 1;
     }
 }
 
-class XFieldsCoreFilter extends CFilter {
+class XFieldsCoreFilter extends CFilter
+{
 
-    function __construct() {
-        Lang::loadPlugin('xfields', 'config', '', ':');
+    function __construct()
+    {
+        Lang::loadPlugin('xfields', 'admin', '', ':');
     }
 
-    function registerUserForm(&$tvars) {
+    function registerUserForm(&$tvars)
+    {
         // Load config
         $xf = xf_configLoad();
         if (!is_array($xf) or !isset($xf['users']) or !is_array($xf['users']))
@@ -1540,13 +1552,14 @@ class XFieldsCoreFilter extends CFilter {
                         break;
 
                 }
-                $tvars['entries'] []= $tEntry;
+                $tvars['entries'] []= mkParamLine($tEntry);
             }
         }
         return 1;
     }
 
-    function registerUserNotify($userID, $userRec) {
+    function registerUserNotify($userID, $userRec)
+    {
         global $mysql;
 
         // Load config

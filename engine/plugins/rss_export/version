@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: rss_export
@@ -13,7 +13,7 @@ Type: plugin
 Description: Экспорт новостей в формате RSS
 Description_EN: News export in RSS format
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Preinstall_vars: feed_title_format="site_title"; news_title="1"; news_count="30"; use_hide="1"
 Title: RSS экспорт новостей
 Preinstall: default_no

@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: templates.php
 // Description: Manage/Edit templates
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('templates', 'admin', 'templates');
 
@@ -64,5 +64,4 @@ foreach ($tlist as $tver) {
 	$tVars['siteTemplates'][]= $tver;
 }
 
-$xt = $twig->loadTemplate('skins/default/tpl/templates.tpl');
-print $xt->render($tVars);
+print $twig->render(tpl_actions . 'templates.tpl', $tVars);

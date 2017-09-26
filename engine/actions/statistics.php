@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2016 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: statistics.php
 // Description: Generate system statistics
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('statistics', 'admin');
 
@@ -189,5 +189,4 @@ foreach (array('register_globals', 'magic_quotes_gpc', 'magic_quotes_runtime', '
 }
 $tVars['flags']['confError'] = ($phpErrors)?1:0;
 
-$xt = $twig->loadTemplate('skins/default/tpl/statistics.tpl');
-echo $xt->render($tVars);
+echo $twig->render(tpl_actions . 'statistics.tpl', $tVars);

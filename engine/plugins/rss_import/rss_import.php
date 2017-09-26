@@ -1,94 +1,69 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Main file for plugin
+ */
 
-function rss_import($params = [])
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
+
+function plugin_rss_import($params = [])
 {
+    if (!is_array($widgets = pluginGetVariable('rss_import', 'widgets'))) return;
+
     global $config, $twig, $template, $parse;
 
-    if (is_array($widgets = pluginGetVariable('rss_import', 'widgets'))){
-        foreach($widgets as $id => $widget) {
+    // Load lang files
+    Lang::loadPlugin('rss_import', 'admin', '', ':');
 
-            $widgetName = 'plugin_rss_import_'.$widget['name'];
+    foreach($widgets as $id => $widget) {
+        if (!$widget['active']) continue;
 
-            // Generate cache file name [ we should take into account SWITCHER plugin ]
-            if ($widget['cache']) {
-                $cacheFileName = md5($config['theme'] . $config['default_lang'] . $widgetName) . '.txt';
-                $cacheData = cacheRetrieveFile($cacheFileName, $widget['cacheExpire'], 'rss_import');
-                if ($cacheData != false) {
-                    // We got data from cache. Return it and stop
-                    $template['vars'][$widgetName] = $cacheData;
-                    continue;
-                }
-            }
+        $widgetName = 'plugin_rss_import_'.$widget['name'];
 
-            // Desired template path and template name
-            $tPath = locatePluginTemplates('rss', 'rss_import', $widget['localSource'], $widget['localSkin']);
-            $tName = $tPath['rss'] . 'rss.tpl';
-
-            // Get content RSS-chanel
-            $rss = simplexml_load_file($widget['url']);
-            if (empty($rss)) {
-                $template['vars'][$widgetName] = 'RSS не доступен';
+        // Generate cache file name [ we should take into account SWITCHER plugin ]
+        if ($widget['cache']) {
+            $cacheFileName = md5($config['theme'] . $config['default_lang'] . 'rss_import' . $widget['skin'] . $widgetName) . '.txt';
+            $cacheData = cacheRetrieveFile($cacheFileName, $widget['cache_expire'], 'rss_import');
+            if ($cacheData != false) {
+                // We got data from cache. Return it and stop
+                $template['vars'][$widgetName] = $cacheData;
                 continue;
             }
+        }
 
-            // Get info for each item
-            $j = 1;
-            $items = [];
-            foreach ($rss->channel->item as $item) {
+        // Get content RSS-chanel
+        if (!$rss = @simplexml_load_file($widget['url'])) {
+            $template['vars'][$widgetName] = __('rss_import:rss_n_a');
+            continue;
+        }
 
-                $images = [];
+        // Get info for each item
+        $j = 1;
+        $tVars['widget_title'] = $widget['title'];
+        foreach ($rss->channel->item as $item) {
+            $tVars['items'][] = [
+                'link' => $item->link,
+                'title' => $parse->truncateHTML($item->title, $widget['title_length']),
+                'dateStamp' => strtotime($item->pubDate),
+                'embed' => ['images' => $widget['extract_images'] ? $parse->extractImages($item->description) : NULL],
+                'description' => $widget['description_enable'] ? $parse->truncateHTML($item->description, $widget['description_length']) : NULL,
+            ];
+            if ($j == $widget['items_count']) break;
+            $j++;
+        }
 
-                if ($widget['images_enable']) {
-                    $tempLine = $item->description;
-                    // Scan for <img> tag
-                    if (preg_match_all('/\<img (.+?)(?: *\/?)\>/i', $tempLine, $m)) {
-                        // Analyze all found <img> tags for parameters
-                        foreach ($m[1] as $kl) {
-                            $klp = $parse->parseBBCodeParams($kl);
-                            // Add record if src="" parameter is set
-                            if (isset($klp['src'])) {
-                                $images[]['src'] = $klp['src'];
-                            }
-                        }
-                    }
-                } else {
-                    $description = preg_replace('/\<img (.+?)(?: *\/?)\>/i', '', $item->description);
-                }
+        // Desired template path
+        $tPath = plugin_locateTemplates('rss_import', 'rss', $widget['skin']);
 
-                if ($widget['description_enable']) {
-                    $description = $parse->truncateHTML($item->description, $widget['description_length']);
-                } else {
-                    $description = NULL;
-                }
+        // Return widget content
+        $template['vars'][$widgetName] = $twig->render($tPath['rss'] . 'rss.tpl', $tVars);
 
-                $items[] = [
-                    'link' => $item->link,
-                    'title' => $parse->truncateHTML($item->title, $widget['title_length']),
-                    'dateStamp' => strtotime($item->pubDate),
-                    'images' => $images,
-                    'description' => $description,
-                ];
-
-                if ($j == $widget['items_count']) {
-                    break;
-                }
-                $j++;
-            }
-
-            $tVars = [
-                'widget_title' => $widget['title'],
-                'items' => $items,
-                ];
-            $template['vars'][$widgetName] = $twig->render($tName, $tVars);
-
-            if ($widget['cache']) {
-                cacheStoreFile($cacheFileName, $template['vars'][$widgetName], 'rss_import');
-            }
+        // Store to cache, if enabled
+        if ($widget['cache']) {
+            cacheStoreFile($cacheFileName, $template['vars'][$widgetName], 'rss_import');
         }
     }
 }
 
-registerActionHandler('index', 'rss_import');
+registerActionHandler('index', 'plugin_rss_import');

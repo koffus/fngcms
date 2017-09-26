@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: dbo.php
 // Description: Database managment
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load language
 Lang::load('dbo', 'admin', 'dbo');
@@ -387,7 +387,7 @@ function systemDboForm()
         'token' => genUToken('admin.dbo'),
     );
 
-    echo $twig->loadTemplate('skins/default/tpl/dbo.tpl')->render($tVars);
+    echo $twig->render(tpl_actions . 'dbo.tpl', $tVars);
 }
 
 //

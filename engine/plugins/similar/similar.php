@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Preload plugin tags
 loadActionHandlers('core', 'tags');
@@ -44,7 +44,7 @@ class SimilarNewsfilter extends NewsFilter {
 		$langShortMonths = Lang::$short_months;
 		$langMonths = Lang::$months;
 
-		$tpath = locatePluginTemplates(array('similar', 'similar_entry'), 'similar', pluginGetVariable('similar', 'localSource'));
+		$tpath = plugin_locateTemplates('similar', array('similar', 'similar_entry'));
 
 		// Show similar news only in full mode
 		if ($mode['style'] == 'full') {

@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Configuring our module
@@ -70,7 +70,7 @@ class auth_punbb {
 
 		// NO LOGIN FOUND
 		if (!$pun_row) {
-		 // Check existance of user in NG CMS DB in case when autocreate NG => punBB is allowed
+		 // Check existance of user in BixBite CMS DB in case when autocreate NG => punBB is allowed
 		 if (pluginGetVariable('auth_punbb', 'autocreate_punbb')) {
 		 	$sql = "select * from ".uprefix."_users where name = ".db_squote($username)." and pass = ".db_squote(md5(md5($password)));
 				if ($row = $mysql->record($sql)) {

@@ -1,5 +1,5 @@
 <?php
-if (!defined('NGCMS'))die ('HAL');
+if (!defined('BBCMS'))die ('HAL');
 
 function plugin_cat_description_install($action) {
 	$db_create = array(

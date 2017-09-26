@@ -12,17 +12,17 @@
      <h2 class="section-title">{{ lang.news }}</h2>
 {% endif %}
 
-{% if data %}
-    <div class="row">
-    {% for entry in data %}
-        <div class="{% if isHandler('news:main') and (pages.current == 1) %}col-lg-4 col-md-4{% endif %} col-sm-12 col-xs-12">{{ entry }}</div>
-    {% endfor %}
-    </div>
+<div class="row">
+{% for entry in data %}
+    <div class="{% if isHandler('news:main') and (pages.current == 1) %}col-lg-4 col-md-4{% endif %} col-sm-12 col-xs-12">{{ entry }}</div>
 {% else %}
-    <div class="alert alert-info">
-        <strong>{{ lang.notifyWindowInfo }}</strong>
-        {{ lang.msgi_no_news }}
+    <div class="col-md-12">
+        <div class="alert alert-info">
+            <strong>{{ lang.notifyWindowInfo }}</strong>
+            {{ lang.msgi_no_news }}
+        </div>
     </div>
-{% endif %}
+{% endfor %}
+</div>
 
 {{ pagination }}

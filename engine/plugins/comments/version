@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: comments
@@ -14,9 +14,9 @@ Deinstall: deinstall.php
 Type: plugin
 Description: Комментарии пользователей
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Комментарии пользователей
 Information: Реализует функционал работы с комментариями
 Preinstall: default_no
-Preinstall_vars: cache="1"; cacheExpire="3600";
+Preinstall_vars: cache="1"; cache_expire="3600";
 Library: lib; inc/comments.lib.php

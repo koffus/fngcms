@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Prepare configuration parameters
 switch ($action) {
@@ -22,7 +22,7 @@ switch ($action) {
 function show_add_faq() {
 	global $mysql, $twig;
 
-	$tpath = locatePluginTemplates(array('main', 'add_faq'), 'faq', 1);
+	$tpath = plugin_locateTemplates('faq', array('main', 'add_faq'));
 	if (isset($_REQUEST['submit'])) {
 		$question = $_REQUEST['question'];
 		$answer = $_REQUEST['answer'];
@@ -49,7 +49,7 @@ function show_add_faq() {
 	} else {
 		$error_input = '';
 	}
-	$xt = $twig->loadTemplate($tpath['add_faq'] . 'add_faq.tpl');
+
 	$tVars = array(
 		'skins_url' => skins_url,
 		'home'      => home,
@@ -59,21 +59,21 @@ function show_add_faq() {
 		'active'    => $active,
 		'error'     => $error_input,
 	);
-	$xg = $twig->loadTemplate($tpath['main'] . 'main.tpl');
+
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['add_faq'] . 'add_faq.tpl', $tVars),
 		'action'     => 'Добавить вопрос',
 		'class'     => array(
 			'add_faq' => 'active',
 			),
 	);
-	print $xg->render($tVars);
+	print $twig->render($tpath['main'] . 'main.tpl', $tVars);
 }
 
 function show_edit_faq() {
 	global $mysql, $twig;
 
-	$tpath = locatePluginTemplates(array('main', 'edit_faq'), 'faq', 1);
+	$tpath = plugin_locateTemplates('faq', array('main', 'edit_faq'));
 	$id = intval($_REQUEST['id']);
 	if (!empty($id)) {
 		$row = $mysql->record('SELECT * FROM ' . prefix . '_faq WHERE id = ' . db_squote($id) . ' LIMIT 1');
@@ -99,7 +99,7 @@ function show_edit_faq() {
 		} else {
 			$error_input = '';
 		}
-		$xt = $twig->loadTemplate($tpath['edit_faq'] . 'edit_faq.tpl');
+
 		$tVars = array(
 			'skins_url' => skins_url,
 			'home'      => home,
@@ -121,15 +121,15 @@ function show_edit_faq() {
 		'active'    => $row['active'],
 		'error'     => $error_input,
 	);
-	$xg = $twig->loadTemplate($tpath['main'] . 'main.tpl');
+
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['edit_faq'] . 'edit_faq.tpl', $tVars),
 		'action'     => 'Редактировать вопрос',
 		'class'     => array(
 			'edit_faq' => 'active',
 			),
 	);
-	print $xg->render($tVars);
+	print $twig->render($tpath['main'] . 'main.tpl', $tVars);
 }
 
 function modify() {
@@ -170,7 +170,7 @@ function modify() {
 function show_faq() {
 	global $mysql, $twig;
 
-	$tpath = locatePluginTemplates(array('main', 'list_faq'), 'faq', 1);
+	$tpath = plugin_locateTemplates('faq', array('main', 'list_faq'));
 	$tVars = array();
 	// Records Per Page
 	// - Load
@@ -222,14 +222,12 @@ function show_faq() {
 			));
 	}
 
-	$xt = $twig->loadTemplate($tpath['list_faq'] . 'list_faq.tpl');
-	$xg = $twig->loadTemplate($tpath['main'] . 'main.tpl');
 	$tVars = array(
-		'entries' => $xt->render($tVars),
+		'entries' => $twig->render($tpath['list_faq'] . 'list_faq.tpl', $tVars),
 		'action'     => 'Список вопросов',
 		'class'     => array(
 			'list_faq' => 'active',
 			),
 	);
-	print $xg->render($tVars);
+	print $twig->render($tpath['main'] . 'main.tpl', $tVars);
 }

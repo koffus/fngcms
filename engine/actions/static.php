@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: static.php
 // Description: Manage static pages
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('static', 'admin');
 
@@ -92,7 +92,7 @@ function listStatic()
 
     executeActionHandler('static_list');
 
-    echo $twig->loadTemplate('skins/default/tpl/static/table.tpl')->render($tVars);
+    echo $twig->render(tpl_actions . 'static/table.tpl', $tVars);
 }
 
 //
@@ -285,8 +285,7 @@ function addEditStaticForm($operationMode = 1, $sID = 0)
         }
     }
 
-    $xt = $twig->loadTemplate('skins/default/tpl/static/edit.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'static/edit.tpl', $tVars);
     return 1;
 }
 

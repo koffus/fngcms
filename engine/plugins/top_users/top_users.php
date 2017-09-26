@@ -1,13 +1,13 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
+function plugin_top_users($number, $mode, $overrideTemplateName, $cache_expire) {
 	global $config, $mysql, $template, $twig, $twigLoader, $TemplateCache;
 
 	// Load lang files
-	Lang::loadPlugin('top_users', 'main', '', ':');
+	Lang::loadPlugin('top_users', 'site', '', ':');
 	
 	// Prepare keys for cacheing
 	$cacheKeys = array();
@@ -32,7 +32,7 @@ function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
 	}
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array($templateName), 'top_users', pluginGetVariable('top_users', 'localSource'));
+	$tpath = plugin_locateTemplates('top_users', array($templateName));
 
 	// Preload template configuration variables
 	@templateLoadVariables();
@@ -49,8 +49,8 @@ function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
 	// Generate cache file name [ we should take into account SWITCHER plugin ]
 	$cacheFileName = md5('top_users'.$config['theme'].$templateName.$config['default_lang'].join('', $cacheKeys)).'.txt';
 
-	if (!$cacheDisabled and ($cacheExpire > 0)) {
-		$cacheData = cacheRetrieveFile($cacheFileName, $cacheExpire, 'top_users');
+	if (!$cacheDisabled and ($cache_expire > 0)) {
+		$cacheData = cacheRetrieveFile($cacheFileName, $cache_expire, 'top_users');
 		if ($cacheData != false) {
 			// We got data from cache. Return it and stop
 			return $cacheData;
@@ -81,7 +81,7 @@ function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
 			$avatars = '';
 		}
 
-		$tEntries [] = array(
+		$tVars['entries'] [] = array(
 			'name' => $row['name'],
 			'link' => $alink,
 			'ulink' => $ublog_link,
@@ -95,13 +95,11 @@ function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
 			);
 	}
 
-	$tVars['entries'] = $tEntries;
 	$tVars['tpl_url'] = tpl_url;
 
-	$xt = $twig->loadTemplate($tpath[$templateName].$templateName.'.tpl');
-	$output = $xt->render($tVars);
+	$output = $twig->render($tpath[$templateName].$templateName.'.tpl', $tVars);
 
-	if (!$cacheDisabled and ($cacheExpire > 0)) {
+	if (!$cacheDisabled and ($cache_expire > 0)) {
 		cacheStoreFile($cacheFileName, $output, 'top_users');
 	}
 
@@ -114,11 +112,11 @@ function plugin_top_users($number, $mode, $overrideTemplateName, $cacheExpire) {
 // * number			- Max num entries for top_users
 // * mode			- Mode for show
 // * template		- Personal template for plugin
-// * cacheExpire	- age of cache [in seconds]
+// * cache_expire	- age of cache [in seconds]
 function plugin_top_users_showTwig($params) {
 	global $CurrentHandler, $config;
 
-	return plugin_top_users($params['number'], $params['mode'], $params['template'], isset($params['cacheExpire'])?$params['cacheExpire']:0);
+	return plugin_top_users($params['number'], $params['mode'], $params['template'], isset($params['cache_expire'])?$params['cache_expire']:0);
 }
 
 twigRegisterFunction('top_users', 'show', 'plugin_top_users_showTwig');

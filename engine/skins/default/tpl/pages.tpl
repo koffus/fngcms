@@ -1,7 +1,5 @@
-<div role="navigation">
-	<ul class="pagination">
-		[prev-link]{l_prevpage}[/prev-link]
-		{pages}
-		[next-link]{l_nextpage}[/next-link]
-	</ul>
-</div>
+<nav class="section">
+    <ul class="pagination justify-content-center">
+        [prev-link]{l_prev_page}[/prev-link] {pages} [next-link]{l_next_page}[/next-link]
+    </ul>
+</nav>

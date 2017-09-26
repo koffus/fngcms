@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: auth_vb
@@ -12,4 +12,4 @@ Config: config.php
 Type: auth
 Description: авторизация с использованием БД форума vBulletin
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/

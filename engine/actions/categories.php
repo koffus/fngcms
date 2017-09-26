@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: categories.php
 // Description: Category management
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load library
 @include_once(root . 'actions/categories.rpc.php');
@@ -70,8 +70,7 @@ function admCategoryAddForm(){
         }
     }
 
-    $xt = $twig->loadTemplate('skins/default/tpl/categories/add.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'categories/add.tpl', $tVars);
 }
 
 // ////////////////////////////////////////////////////////////////////////////
@@ -268,11 +267,13 @@ function admCategoryEditForm()
         $tVars['attach_url'] = $config['attach_url'].'/'.$row['icon_folder'].'/'.($row['icon_preview']?'thumb/':'').$row['icon_name'];
     }
 
-    if (is_array($AFILTERS['categories']))
-        foreach ($AFILTERS['categories'] as $k => $v) { $v->editCategoryForm($catid, $row, $tVars); }
+    if (is_array($AFILTERS['categories'])) {
+        foreach ($AFILTERS['categories'] as $k => $v) {
+            $v->editCategoryForm($catid, $row, $tVars);
+        }
+    }
 
-    $xt = $twig->loadTemplate('skins/default/tpl/categories/edit.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render(tpl_actions . 'categories/edit.tpl', $tVars);
 
 }
 

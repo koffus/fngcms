@@ -1,11 +1,11 @@
 <?php
 
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 include root.'includes/news.php';
 registerActionHandler('index', 'xfilter');
 
-Lang::loadPlugin('xfilter', 'main', 'xfl', ':');
+Lang::loadPlugin('xfilter', 'site', 'xfl', ':');
 
 function xfilter($params) {
 	global $twig, $template, $mysql, $CurrentHandler;
@@ -77,13 +77,12 @@ function xfilter($params) {
 
 		$xpaginparams = array("catid" => $_REQUEST["catid"], "xfields_$id" => $_REQUEST["xfields_$id"]);
 
-		$tpath = LocatePluginTemplates(array('xfilter', 'xfilter_form'), 'xfilter', pluginGetVariable('xfilter', 'localSource'));
+		$tpath = plugin_locateTemplates('xfilter', array('xfilter', 'xfilter_form'));
 
-		$xf = $twig->loadTemplate($tpath['xfilter_form'].'xfilter_form.tpl');
-		$template['vars']['xfilter'] = $xf->render($tVars);	
+		$template['vars']['xfilter'] = $twig->render($tpath['xfilter_form'].'xfilter_form.tpl', $tVars);
 
 		if ($_REQUEST["xfields_$id"]) {
-			array_push($filter, array('DATA',"xfields_$id", '=', secure_html($_REQUEST["xfields_$id"])));	 
+			array_push($filter, array('DATA',"xfields_$id", '=', secure_html($_REQUEST["xfields_$id"])));
 		} 
 
 	}
@@ -113,11 +112,11 @@ function xfilter($params) {
 		 $filtered = news_showlist($filter, $paginationParams, $callingParams);
 	
 		if ($filtered) {
-			$template['vars']['mainblock'] = $filtered;
+			$template['vars']['mainblock'] .= $filtered;
 		}
 
 		else {
-			$template['vars']['mainblock'] = '';
+			$template['vars']['mainblock'] .= '';
 			msg(array('type' => 'info', 'message' => __('xfl:no_news')));
 		}
 	}

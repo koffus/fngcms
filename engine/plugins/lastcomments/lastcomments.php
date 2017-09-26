@@ -1,12 +1,12 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 define('lastcomments_version', '0.10');
 
 // Load lang files
-Lang::loadPlugin('lastcomments', 'main', '', ':');
+Lang::loadPlugin('lastcomments', 'site', '', ':');
 
 // ==============================================
 // Side bar widget
@@ -34,7 +34,7 @@ function lastcomments_page() {
     // Action if ppage is enabled
     if (pluginGetVariable('lastcomments','ppage') and ($CurrentHandler['handlerParams']['value']['pluginName'] == 'core')) {
         $SYSTEM_FLAGS['info']['title']['group'] = "lastcomments";
-        $template['vars']['mainblock'] = lastcomments(1);
+        $template['vars']['mainblock'] .= lastcomments(1);
     } else {
         error404();
     }
@@ -86,7 +86,7 @@ function lastcomments($mode = 0) {
     // Generate cache file name [ we should take into account SWITCHER plugin & calling parameters ]
     $cacheFileName = md5('lastcomments'.$config['theme'].$config['default_lang'].$tpl_prefix).'.txt';
     if (pluginGetVariable('lastcomments','cache')) {
-        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('lastcomments','cacheExpire'), 'lastcomments');
+        $cacheData = cacheRetrieveFile($cacheFileName, pluginGetVariable('lastcomments','cache_expire'), 'lastcomments');
         if ($cacheData != false) {
             // We got data from cache. Return it and stop
             return $cacheData;
@@ -188,19 +188,17 @@ function lastcomments($mode = 0) {
             );
     }
 
-    $tpath = locatePluginTemplates(array($tpl_prefix.'lastcomments'), 'lastcomments', pluginGetVariable('lastcomments', 'localSource'));
-
-    $xt = $twig->loadTemplate($tpath[$tpl_prefix.'lastcomments'].$tpl_prefix."lastcomments".'.tpl');
     $tVars = array(
         'comnum' 		=> $comm_num,
         'entries' 		=> $data,
         'home_title' => $config['home_title'],
         'home_url' => $config['home_url'],
         'description' => $config['description'],
-        'generator' => 'Plugin Lastcomments ('.lastcomments_version.') // Next Generation CMS ('.engineName.' '.engineVersion.')',
+        'generator' => 'Plugin Lastcomments ('.lastcomments_version.') // BixBite CMS ('.engineVersion.')',
     );
 
-    $output = $xt->render($tVars);
+    $tpath = plugin_locateTemplates('lastcomments', array($tpl_prefix.'lastcomments'));
+    $output = $twig->render($tpath[$tpl_prefix.'lastcomments'].$tpl_prefix."lastcomments".'.tpl', $tVars);
 
     if ($mode == 2) setlocale(LC_TIME,$old_locale);
 

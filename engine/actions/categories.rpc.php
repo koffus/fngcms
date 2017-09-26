@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2013 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: categories.rpc.php
 // Description: RPC library for CATEGORIES manipulation
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load library
 Lang::load('categories', 'admin');
@@ -90,14 +90,11 @@ function admCategoryList($retMode = 0) {
 
     switch ($retMode) {
         case 1:
-            $xt = $twig->loadTemplate('skins/default/tpl/categories/table.tpl');
-            return $xt->render($tVars);
+            return $twig->render(tpl_actions . 'categories/table.tpl', $tVars);
         case 2:
-            $xt = $twig->loadTemplate('skins/default/tpl/categories/entries.tpl');
-            return $xt->render($tVars);
+            return $twig->render(tpl_actions . 'categories/entries.tpl', $tVars);
         default:
-            $xt = $twig->loadTemplate('skins/default/tpl/categories/table.tpl');
-            echo $xt->render($tVars);
+            echo $twig->render(tpl_actions . 'categories/table.tpl', $tVars);
     }
 }
 
@@ -195,6 +192,7 @@ function admCategoryReorder($params = array()) {
     }
     return $moveResult;
 }
+
 function admCategoriesRPCmodify($params) {
     global $userROW, $mysql, $catmap, $catz;
 

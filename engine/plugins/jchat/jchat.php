@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Index screen for side panel
 function plugin_jchat_index()
@@ -10,7 +10,7 @@ function plugin_jchat_index()
 
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
-    Lang::loadPlugin('jchat', 'main', '', ':');
+    Lang::loadPlugin('jchat', 'site', '', ':');
 
     // We shouldn't show side jchat panel if user currently visited separate jchat window
     if (isset($CurrentHandler['pluginName']) and ('jchat' == $CurrentHandler['pluginName'])) {
@@ -25,7 +25,7 @@ function plugin_jchat_index()
     }
 
     // Determine paths for all template files
-    $tpath = locatePluginTemplates(array(':jchat.css', 'jchat'), 'jchat', pluginGetVariable('jchat', 'localSource'));
+    $tpath = plugin_locateTemplates('jchat', array(':jchat.css', 'jchat'));
     $cPlugin->regHtmlVar('css', $tpath['url::jchat.css'].'/jchat.css');
 
     $tvars = array();
@@ -75,7 +75,7 @@ function plugin_jchat_win()
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
 
-    Lang::loadPlugin('jchat', 'main', '', ':');
+    Lang::loadPlugin('jchat', 'site', '', ':');
 
     if (pluginGetVariable('jchat', 'win_mode'))
         $SUPRESS_TEMPLATE_SHOW = 1;
@@ -83,7 +83,7 @@ function plugin_jchat_win()
     // Check permissions [ guests receive an error ]
     if (!pluginGetVariable('jchat', 'access') and !is_array($userROW)) {
         if (pluginGetVariable('jchat', 'win_mode')) {
-            $template['vars']['mainblock'] = __('jchat:win.regonly');
+            $template['vars']['mainblock'] .= __('jchat:win.regonly');
         } else {
             msg(array('type' => 'danger', 'message' => __('jchat:regonly')));
         }
@@ -93,7 +93,7 @@ function plugin_jchat_win()
     $tvars = array();
 
     // Determine paths for all template files
-    $tpath = locatePluginTemplates(array(':jchat.css', 'jchat.main', 'jchat.self'), 'jchat', pluginGetVariable('jchat', 'localSource'));
+    $tpath = plugin_locateTemplates('jchat', array(':jchat.css', 'jchat.main', 'jchat.self'));
     $cPlugin->regHtmlVar('css', $tpath['url::jchat.css'].'/jchat.css');
 
     if ( intval(pluginGetVariable('jchat', 'win_mode')) ) {
@@ -133,7 +133,7 @@ function plugin_jchat_win()
 
     $tpl->template($templateName, $tpath[$templateName], '', array('includeAllowed' => true));
     $tpl->vars($templateName, $tvars);
-    $template['vars']['mainblock'] = $tpl->show($templateName);
+    $template['vars']['mainblock'] .= $tpl->show($templateName);
 }
 
 // Show current chat state

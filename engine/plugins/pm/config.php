@@ -1,35 +1,22 @@
 <?php
 
 /*
- * Plugin's "Private message" configuration file for NextGeneration CMS (http://ngcms.ru/)
- * Copyright (C) 2011 Alexey N. Zhukov (http://digitalplace.ru)
- * http://digitalplace.ru
- * 
- * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation; either version 2 of the License, or (at
- * your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
- *
+ * Configuration file for plugin
  */
 
-//
-// Configuration file for plugin
-//
-
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
+
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
+// Prepare configuration parameters
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+}
 
 // Fill configuration parameters
 $cfg = array(
@@ -66,13 +53,13 @@ array_push($cfg, array(
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localSource',
-		'title' => __('localSource'),
-		'descr' => __('localSource#desc'),
-		'type' => 'select',
-		'values' => array('0' => __('localSource_0'), '1' => __('localSource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localSource')) ? intval(pluginGetVariable($plugin, 'localSource')) : '0',
-		));
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
+        'type' => 'select',
+        'values' => $skList,
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
 array_push($cfg, array(
 	'mode' => 'group',
 	'title' => __('group.source'),

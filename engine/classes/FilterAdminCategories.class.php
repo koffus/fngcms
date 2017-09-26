@@ -1,7 +1,7 @@
 <?php
 
 //
-// Copyright (C) 2009-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2009-2012 BixBite CMS (http://bixbite.site/)
 // Name: FilterAdminCategories.class.php
 // Description: Categories edit interceptors
 // Author: Vitaly Ponomarev

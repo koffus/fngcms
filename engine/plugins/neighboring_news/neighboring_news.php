@@ -22,7 +22,7 @@
  */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 class NeighboringNewsFilter extends NewsFilter
 {
@@ -31,7 +31,7 @@ class NeighboringNewsFilter extends NewsFilter
         global $mysql, $config, $tpl, $catz, $catmap, $CurrentHandler;
 
         // Determine paths for all template files
-        $tpath = locatePluginTemplates(array('neighboring_news', 'next_news', 'previous_news'), 'neighboring_news', pluginGetVariable('neighboring_news', 'localSource'));
+        $tpath = plugin_locateTemplates('neighboring_news', array('neighboring_news', 'next_news', 'previous_news'));
 
         // full_mode
         if (pluginGetVariable('neighboring_news', 'full_mode') and $mode['style'] == 'full') {

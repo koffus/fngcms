@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: tracker
@@ -13,7 +13,7 @@ Deinstall: deinstall.php
 Type: plugin
 Description: BitTorrent треккер
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 URI: http://no_url.com/
 Title: BitTorrent трекер
 Information: Позволяет превратить ваш сайт в BitTorrent трекер

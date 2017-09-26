@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: archive
@@ -13,6 +13,6 @@ Title: Архив новостей
 Description: Показать архив новостей сайта
 Information: Отображает список месяцев, в которые были размещены новости. При клике на конкретный месяц будут отображаться новости за этот месяц.
 Preinstall: default_no
-Preinstall_vars: maxnum="12"; counter="1"; cache="1"; cacheExpire="3600";
+Preinstall_vars: maxnum="12"; counter="1"; cache="1"; cache_expire="3600";
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/

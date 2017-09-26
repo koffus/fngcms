@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2012 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: news.php
 // Description: News display sub-engine
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 Lang::load('news', 'site');
 
@@ -40,13 +40,8 @@ function showNews($handlerName, $params)
     templateLoadVariables();
 
     // Check if template requires extracting embedded images
-    $tplVars = $TemplateCache['site']['#variables'];
-    if (isset($tplVars['configuration'])
-        and is_array($tplVars['configuration'])
-        and isset($tplVars['configuration']['extractEmbeddedItems'])
-        and $tplVars['configuration']['extractEmbeddedItems']
-    ) {
-        $callingParams['extractEmbeddedItems'] = true;
+    if (!empty($config['extract_images'])) {
+        $callingParams['extractImages'] = true;
     }
 
     // Set default template path
@@ -388,8 +383,7 @@ function showNews($handlerName, $params)
         // Prepare news table
         //print "[TABLE VARS]<pre>".var_export($tableVars, true)."</pre>";
         $twigLoader->setDefaultContent($ntTemplateName, '{% for entry in data %}{{ entry }}{% else %}' . __('msgi_no_news') . '{% endfor %} {{ pagination }}');
-        $xt = $twig->loadTemplate($ntTemplateName);
-        $template['vars']['mainblock'] .= $xt->render($tableVars);
+        $template['vars']['mainblock'] .= $twig->render($ntTemplateName, $tableVars);
 
         // Execute filters [ onAfterShow ]
         if (isset($PFILTERS['news']) and is_array($PFILTERS['news'])) {

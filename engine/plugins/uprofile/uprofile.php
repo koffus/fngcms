@@ -1,10 +1,10 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-//Lang::loadPlugin('uprofile', 'main', '', ':');
-Lang::loadPlugin('uprofile', 'main', 'uprofile', '#');
+//Lang::loadPlugin('uprofile', 'site', '', ':');
+Lang::loadPlugin('uprofile', 'site', 'uprofile', '#');
 register_plugin_page('uprofile','edit','uprofile_editProfile',0);
 register_plugin_page('uprofile','apply','uprofile_applyProfile',0);
 register_plugin_page('uprofile','show','uprofile_showProfile',0);
@@ -43,7 +43,7 @@ function uprofile_showProfile($params) {
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->showProfilePre($urow['id'], $urow); }
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('users'), 'uprofile', pluginGetVariable('uprofile', 'localSource'));
+	$tpath = plugin_locateTemplates('uprofile', array('users'));
 
 	// Make page title
 	$SYSTEM_FLAGS['info']['title']['group']	= __('uprofile')['header.view'];
@@ -79,14 +79,13 @@ function uprofile_showProfile($params) {
 				'isOwnProfile' => (isset($userROW) and is_array($userROW) and ($userROW['id'] == $urow['id']))?1:0,
 			),
 		),
-		'token'				=> genUToken('uprofile.editForm'),
+		'token' => genUToken('uprofile.editForm'),
 	);
 
 	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->showProfile($urow['id'], $urow, $tVars); }
 
-	$xt = $twig->loadTemplate($tpath['users'].'users.tpl');
-	$template['vars']['mainblock'] .= $xt->render($tVars);
+	$template['vars']['mainblock'] .= $twig->render($tpath['users'].'users.tpl', $tVars);
 }
 
 function uprofile_editProfile(){
@@ -155,7 +154,7 @@ function uprofile_editForm($ajaxMode = false){
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileFormPre($urow['id'], $urow); }
 
 	// Determine paths for all template files
-	$tpath = locatePluginTemplates(array('profile'), 'uprofile', pluginGetVariable('uprofile', 'localSource'));
+	$tpath = plugin_locateTemplates('uprofile', array('profile'));
 
 	$status = ((($urow['status'] >= 1)&&($urow['status'] <= 4))?__('uprofile')['st_'.$urow['status']]:__('uprofile')['st_unknown']);
 
@@ -193,7 +192,7 @@ function uprofile_editForm($ajaxMode = false){
 			'avatarAllowed' => $config['use_avatars']?1:0,
 		),
 		'form_action' => generateLink('core', 'plugin', array('plugin' => 'uprofile', 'handler' => 'apply')),
-		'token'				=> genUToken('uprofile.update'),
+		'token' => genUToken('uprofile.update'),
 		'info_sizelimit_text' => str_replace('{limit}', intval($config['user_aboutsize']), __('uprofile')['about_sizelimit']),
 		'info_sizelimit' => intval($config['user_aboutsize']),
 	);
@@ -201,9 +200,7 @@ function uprofile_editForm($ajaxMode = false){
 	if (isset($PFILTERS['plugin.uprofile']) and is_array($PFILTERS['plugin.uprofile']))
 		foreach ($PFILTERS['plugin.uprofile'] as $k => $v) { $v->editProfileForm($urow['id'], $urow, $tVars); }
 
-	$xt = $twig->loadTemplate($tpath['profile'].'profile.tpl');
-
-	$render = $xt->render($tVars);
+	$render = $twig->render($tpath['profile'].'profile.tpl', $tVars);
 
 	if ($ajaxMode)
 		return $render;

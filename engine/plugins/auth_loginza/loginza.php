@@ -1,7 +1,7 @@
 <?php
 
 /*
- * auth_loginza for NextGeneration CMS (http://ngcms.ru/)
+ * auth_loginza for NextGeneration CMS (http://bixbite.site/)
  * Copyright (C) 2011 Alexey N. Zhukov (http://digitalplace.ru)
  * http://digitalplace.ru
  * 
@@ -22,7 +22,7 @@
  */
  
 # protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -35,91 +35,93 @@ register_plugin_page('auth_loginza', 'register' , 'loginzaRegister', 0);
 register_plugin_page('auth_loginza', 'delete' , 'loginzaDelete', 0);
 
 # get token from POST loginza responce and request JSON auth result
-function loginzaAuth(){
+function loginzaAuth()
+{
 	global $config, $template, $tpl, $mysql, $userROW, $AUTH_METHOD;
 	
-		if (empty($_POST['token'])) header('Location: '.$config['home_url']);
-		
-		$url = 'http://loginza.ru/api/authinfo?token='.$_POST['token'];
-		
-		# determine paths for all template files
-		$tpath = LocatePluginTemplates(array('register', 'append.account.success', 'append.account.error'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
-		
-		if ( function_exists('curl_init') ) {
-			$curl = curl_init($url);
-			$user_agent = 'NextGeneration CMS. Plugin auth_loginza/ PHP '.phpversion();
-			
-			curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-			curl_setopt($curl, CURLOPT_HEADER, false);
-			curl_setopt($curl, CURLOPT_USERAGENT, $user_agent);
-			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-			$raw_data = curl_exec($curl);
-			curl_close($curl);
-			$responce = $raw_data;
-		} else {
-			$responce = file_get_contents($url);
-		}
-		
-		$responce_array = json_decode($responce, true);
+    if (empty($_POST['token'])) header('Location: '.$config['home_url']);
 
-		# if loginza returned some error
-		if($responce_array['error_type']){
-				msg(array('type' => 'danger', 'message' => $responce_array['error_type'].' '.$responce_array['error_message']));
-				return 1;
-		}
-				
-		$user = $mysql->record("SELECT * FROM ".uprefix."_users WHERE loginza_id = ".db_squote($responce_array['identity']));
-		
-		# if user is authorized then append loginza account on his profile
-		if(is_array($userROW)){
-			if(!is_array($user)){
+    $url = 'http://loginza.ru/api/authinfo?token='.$_POST['token'];
 
-				$mysql->query("UPDATE `".uprefix."_users` SET `loginza_id` = ".db_squote($responce_array['identity'])." WHERE id = ".db_squote($userROW['id']));
-		
-				$tpl->template('append.account.success', $tpath['append.account.success']);
-				$tpl->vars('append.account.success', array('vars' => array('account' => $responce_array['identity'])));
-				$template['vars']['mainblock'] = $tpl->show('append.account.success');
-				return;
-			}
-			else {
-				$tpl->template('append.account.error', $tpath['append.account.error']);
-				$tpl->vars('append.account.error', array('vars' => array('account' => $responce_array['identity'])));
-				$template['vars']['mainblock'] = $tpl->show('append.account.error');
-				return;
-			}
-		}
-		
-		# if user is registered yet then authorize his
-		if(is_array($user)){
-			$auth = $AUTH_METHOD[$config['auth_module']];
-			$auth->save_auth($user);
-			header('Location: '.$config['home_url']);
-			return;
-		}
-		
-		# use this variable later in loginzaRegister()
-		Session::init();
-		$_SESSION['loginza_id'] = $responce_array['identity'];
-		
-		$tvars['vars'] = array(
-			'login' => genNickname($responce_array),
-			'password' => MakeRandomPassword(),
-			'email' => $responce_array['email']
-		);
-		
-		# show register form
-		$tpl->template('register', $tpath['register']);
-		$tpl->vars('register', $tvars);
-		$template['vars']['mainblock'] = $tpl->show('register');
+    # determine paths for all template files
+    $tpath = plugin_locateTemplates('auth_loginza', array('register', 'append.account.success', 'append.account.error'));
+
+    if ( function_exists('curl_init') ) {
+        $curl = curl_init($url);
+        $user_agent = 'NextGeneration CMS. Plugin auth_loginza/ PHP '.phpversion();
+        
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        curl_setopt($curl, CURLOPT_USERAGENT, $user_agent);
+        curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+        $raw_data = curl_exec($curl);
+        curl_close($curl);
+        $responce = $raw_data;
+    } else {
+        $responce = file_get_contents($url);
+    }
+    
+    $responce_array = json_decode($responce, true);
+
+    # if loginza returned some error
+    if($responce_array['error_type']){
+            msg(array('type' => 'danger', 'message' => $responce_array['error_type'].' '.$responce_array['error_message']));
+            return 1;
+    }
+            
+    $user = $mysql->record("SELECT * FROM ".uprefix."_users WHERE loginza_id = ".db_squote($responce_array['identity']));
+    
+    # if user is authorized then append loginza account on his profile
+    if(is_array($userROW)){
+        if(!is_array($user)){
+
+            $mysql->query("UPDATE `".uprefix."_users` SET `loginza_id` = ".db_squote($responce_array['identity'])." WHERE id = ".db_squote($userROW['id']));
+    
+            $tpl->template('append.account.success', $tpath['append.account.success']);
+            $tpl->vars('append.account.success', array('vars' => array('account' => $responce_array['identity'])));
+            $template['vars']['mainblock'] .= $tpl->show('append.account.success');
+            return;
+        }
+        else {
+            $tpl->template('append.account.error', $tpath['append.account.error']);
+            $tpl->vars('append.account.error', array('vars' => array('account' => $responce_array['identity'])));
+            $template['vars']['mainblock'] .= $tpl->show('append.account.error');
+            return;
+        }
+    }
+    
+    # if user is registered yet then authorize his
+    if(is_array($user)){
+        $auth = $AUTH_METHOD[$config['auth_module']];
+        $auth->save_auth($user);
+        header('Location: '.$config['home_url']);
+        return;
+    }
+    
+    # use this variable later in loginzaRegister()
+    Session::init();
+    $_SESSION['loginza_id'] = $responce_array['identity'];
+    
+    $tvars['vars'] = array(
+        'login' => genNickname($responce_array),
+        'password' => MakeRandomPassword(),
+        'email' => $responce_array['email']
+    );
+    
+    # show register form
+    $tpl->template('register', $tpath['register']);
+    $tpl->vars('register', $tvars);
+    $template['vars']['mainblock'] .= $tpl->show('register');
 }
 
 # after confirm user data we register his
-function loginzaRegister(){
+function loginzaRegister()
+{
 	global $config, $template, $tpl, $mysql, $AUTH_METHOD;
-	
+
 	Session::init();
 	if (empty($_SESSION['loginza_id'])) header('Location: '.$config['home_url'].'');
-	
+
 	$auth = $AUTH_METHOD[$config['auth_module']];
 
 	$params = array();
@@ -137,9 +139,9 @@ function loginzaRegister(){
 		$values['password2'] = $_POST['password'];
 	}
 	$values['email'] = $_POST['email'] ? $_POST['email'] : 'noreply@digitalplace.ru';
-	
-	$tpath = LocatePluginTemplates(array('register.error', 'register.success'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
-	
+
+	$tpath = plugin_locateTemplates('auth_loginza', array('register.error', 'register.success'));
+
 	# register, activate and authorize user
 	if($auth->register($params, $values, $msg)){
 		$mysql->query("UPDATE `".uprefix."_users` SET `activation` = '', `mail` = '', `loginza_id` = ".db_squote($_SESSION['loginza_id'])." WHERE name = ".db_squote($values['login']));
@@ -148,12 +150,12 @@ function loginzaRegister(){
 		
 		$tpl->template('register.success', $tpath['register.success']);
 		$tpl->vars('register.success', array('vars' => (array('username' => $values['login'], 'password' => $values['password']))));
-		$template['vars']['mainblock'] = $tpl->show('register.success');
+		$template['vars']['mainblock'] .= $tpl->show('register.success');
 	} 
 	else{
 		$tpl->template('register.error', $tpath['register.error']);
 		$tpl->vars('register.error', array('vars' => array('error.msg' => $msg)));
-		$template['vars']['mainblock'] = $tpl->show('register.error');
+		$template['vars']['mainblock'] .= $tpl->show('register.error');
 	}
 	
 	unset($_SESSION['loginza_id']);
@@ -161,16 +163,16 @@ function loginzaRegister(){
 
 function loginzaDelete() {
 	global $userROW, $mysql, $config, $tpl, $template;
-	
+
 	if (!is_array($userROW) or !$userROW['loginza_id']) header('Location: '.$config['home_url'].'');
-	
+
 	$mysql->query("UPDATE `".uprefix."_users` SET `loginza_id` = '' WHERE id = ".db_squote($userROW['id']));
-	
-	$tpath = LocatePluginTemplates(array('account.delete'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
-	
+
+	$tpath = plugin_locateTemplates('auth_loginza', array('account.delete'));
+
 	$tpl->template('account.delete', $tpath['account.delete']);
 	$tpl->vars('account.delete', array('vars' => array()));
-	$template['vars']['mainblock'] = $tpl->show('account.delete');
+	$template['vars']['mainblock'] .= $tpl->show('account.delete');
 }
 
 # parse identity and show provider icon in comments
@@ -191,7 +193,7 @@ class loginzaFilterComments extends FilterComments {
 		}		
 
 		# format: facebook.com	= facebook.png
-		$tpath = LocatePluginTemplates(array(':providers.ini'), 'auth_loginza', pluginGetVariable('auth_loginza', 'localSource'));
+		$tpath = plugin_locateTemplates('auth_loginza', array(':providers.ini'));
 		
 		if(!isset($TemplateCache['plugin']['auth_loginza']['#providers']))
 			$TemplateCache['plugin']['auth_loginza'] = parse_ini_file($tpath[':providers.ini'].'providers.ini', true);

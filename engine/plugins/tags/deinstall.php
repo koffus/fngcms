@@ -1,9 +1,14 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Configuration file for plugin
+ */
 
-Lang::loadPlugin('tags', 'config', '', ':');
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
+
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
     array(

@@ -1,12 +1,13 @@
 <?php
+
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 register_plugin_page('guestbook', '', 'guestbook_list');
 register_plugin_page('guestbook', 'edit', 'guestbook_edit');
 register_plugin_page('guestbook', 'social', 'guestbook_social');
 
-Lang::loadPlugin('guestbook', 'main');
+Lang::loadPlugin('guestbook', 'site');
 
 switch ($action) {
     case 'add' :
@@ -143,8 +144,7 @@ function msg_add_submit()
         $success[] = ($status == 1) ? __('guestbook:success_add_wo_approve') : $success_msg = __('guestbook:success_add');
 
         // send email
-        $tpath = locatePluginTemplates(array('mail_success'), 'guestbook', 1);
-        $xt = $twig->loadTemplate($tpath['mail_success'] . 'mail_success.tpl');
+        $tpath = plugin_locateTemplates('guestbook', array('mail_success'));
 
         $send_email = pluginGetVariable('guestbook', 'send_email');
 
@@ -156,7 +156,7 @@ function msg_add_submit()
             'fields' => $fmail
             );
 
-        $mailBody = $xt->render($tVars);
+        $mailBody = $twig->render($tpath['mail_success'] . 'mail_success.tpl', $tVars);
         $mailSubject = __('guestbook:mailSubject');
 
         $send_email_array = explode(',', $send_email);
@@ -245,7 +245,7 @@ function msg_delete_submit()
 
     if (is_array($userROW) and ($userROW['status'] == "1")) {
         if (!is_array($mysql->record("SELECT id FROM " . prefix . "_guestbook WHERE id=" . db_squote(intval($_REQUEST['id']))))) {
-            $template['vars']['mainblock'] = __('guestbook:error_entry_notfound');
+            $template['vars']['mainblock'] .= __('guestbook:error_entry_notfound');
             return;
         }
         $mysql->query("DELETE FROM " . prefix . "_guestbook WHERE id = " . intval($_REQUEST['id']));
@@ -309,7 +309,7 @@ function guestbook_list($params = array())
         array('pluginName' => 'guestbook', 'pluginHandler' => '', 'params' => array(), 'xparams' => array(), 'paginator' => array('page', 0, false)) :
         array('pluginName' => 'core', 'pluginHandler' => 'plugin', 'params' => array('plugin' => 'guestbook'), 'xparams' => array(), 'paginator' => array('page', 1, false));
 
-    $tpath = locatePluginTemplates(array(':'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
+    $tpath = plugin_locateTemplates('guestbook', array(':'));
     $navigations = parse_ini_file($tpath[':'] . '/variables.ini', true);
 
     $order = pluginGetVariable('guestbook', 'order');
@@ -345,9 +345,8 @@ function guestbook_list($params = array())
         'fields' => $tEntries
         );
 
-    $tpath = locatePluginTemplates(array('guestbook.list'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['guestbook.list'] . 'guestbook.list.tpl');
-    $template['vars']['mainblock'] = $xt->render($tVars);
+    $tpath = plugin_locateTemplates('guestbook', array('guestbook.list'), pluginGetVariable('guestbook', 'skin'));
+    $template['vars']['mainblock'] .= $twig->render($tpath['guestbook.list'] . 'guestbook.list.tpl', $tVars);
 
     _guestbook_clear_session();
 }
@@ -438,8 +437,7 @@ function guestbook_edit()
 
     $id = intval(isset($CurrentHandler['params']['id']) ? $CurrentHandler['params']['id'] : (isset($_REQUEST['id']) ? secure_html($_REQUEST['id']) : ''));
 
-    $tpath = locatePluginTemplates(array('guestbook.edit'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['guestbook.edit'] . 'guestbook.edit.tpl');
+    $tpath = plugin_locateTemplates('guestbook', array('guestbook.edit'));
 
     // admin permission is required to edit messages
     if (is_array($userROW) and $userROW['status'] == "1") {
@@ -452,7 +450,7 @@ function guestbook_edit()
                 'error' => __('guestbook:error_no_entry')
                 );
 
-            $template['vars']['mainblock'] = $xt->render($tVars);
+            $template['vars']['mainblock'] .= $twig->render($tpath['guestbook.edit'] . 'guestbook.edit.tpl', $tVars);
             return;
         }
 
@@ -485,7 +483,7 @@ function guestbook_edit()
             'error' => $error
             );
 
-        $template['vars']['mainblock'] = $xt->render($tVars);
+        $template['vars']['mainblock'] .= $twig->render($tpath['guestbook.edit'] . 'guestbook.edit.tpl', $tVars);
 
     } else {
 
@@ -493,7 +491,7 @@ function guestbook_edit()
         'error' => __('guestbook:error_no_permission')
         );
 
-    $template['vars']['mainblock'] = $xt->render($tVars);
+    $template['vars']['mainblock'] .= $twig->render($tpath['guestbook.edit'] . 'guestbook.edit.tpl', $tVars);
     }
 }
 
@@ -510,10 +508,8 @@ function guestbook_block($params)
         'entries' => _guestbook_records('DESC', 0, $count),
         );
 
-    $tpath = locatePluginTemplates(array('guestbook.block'), 'guestbook', pluginGetVariable('guestbook', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['guestbook.block'] . 'guestbook.block.tpl');
-
-    return $xt->render($tVars);
+    $tpath = plugin_locateTemplates('guestbook', array('guestbook.block'));
+    return $twig->render($tpath['guestbook.block'] . 'guestbook.block.tpl', $tVars);
 }
 
 function guestbook_social()

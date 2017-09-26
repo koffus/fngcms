@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2011 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: comments.show.php
 // Description: Routines for showing comments
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 //
 // Show comments for a news
@@ -43,11 +43,9 @@ function comments_show($postid, $commID = 0, $commDisplayNum = 0, $callingParams
         $tName = $callingParams['overrideTemplatePath'] . DS . 'comments.show.tpl';
     }
     if(empty($tName) or !file_exists($tName)) {
-        $tPath = locatePluginTemplates('comments.show', 'comments', pluginGetVariable('comments', 'localSource') );
+        $tPath = plugin_locateTemplates('comments', 'comments.show', pluginGetVariable('comments', 'skin') );
         $tName = $tPath['comments.show'] . 'comments.show.tpl';
     }
-
-    $xt = $twig->loadTemplate($tName);
 
     $joinFilter = array();
     if ($config['use_avatars']) {
@@ -196,7 +194,7 @@ function comments_show($postid, $commID = 0, $commDisplayNum = 0, $callingParams
         executeActionHandler('comments');
 
         // Show template
-        $output .= $xt->render($tVars);//die(dd($PFILTERS));
+        $output .= $twig->render($tName, $tVars);//die(dd($PFILTERS));
     }
 
     unset($rows);
@@ -224,11 +222,9 @@ function comments_showform($postid, $callingParams = array())
         $tName = $callingParams['overrideTemplatePath'] . DS . 'comments.form.tpl';
     }
     if(empty($tName) or !file_exists($tName)) {
-        $tPath = locatePluginTemplates('comments.form', 'comments', pluginGetVariable('comments', 'localSource') );
+        $tPath = plugin_locateTemplates('comments', 'comments.form', pluginGetVariable('comments', 'skin') );
         $tName = $tPath['comments.form'] . 'comments.form.tpl';
     }
-
-    $xt = $twig->loadTemplate($tName);
 
     $tVars = array(
         'useBB' => $config['use_bbcodes'] ? true : false,
@@ -266,7 +262,7 @@ function comments_showform($postid, $callingParams = array())
     // RUN interceptors ( OLD-style )
     executeActionHandler('comments_form');
 
-    $output = $xt->render($tVars);
+    $output = $twig->render($tName, $tVars);
     if ($callingParams['outprint']) {
         return $output;
     }

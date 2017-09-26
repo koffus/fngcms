@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -28,7 +28,7 @@ class clFilterComments extends FilterComments {
 		// Manage blocking
 		foreach (explode("\n",pluginGetVariable('filter','block')) as $line) {
 			if ($line and stripos(' '.$c,trim($line))) {
-				Lang::loadPlugin('filter', 'main', '', ':');
+				Lang::loadPlugin('filter', 'site', '', ':');
 				return array('result' => 0, 'errorText' => str_replace('%lock%', trim($line), __('filter:block')));
 			}
 		}

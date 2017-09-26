@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2010 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: static.php
 // Description: Static pages display sub-engine
 // Author: Vitaly Ponomarev, Alexey Zinchenko
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Params - Static page characteristics
 // * id			- page ID
@@ -104,7 +104,7 @@ function showStaticPage($params = [])
         $SYSTEM_FLAGS['template.main.path'] = tpl_site . '/static';
     }
 
-    $template['vars']['mainblock'] .= $twig->loadTemplate($row['template'] . '.tpl')->render($tVars);
+    $template['vars']['mainblock'] .= $twig->render($row['template'] . '.tpl', $tVars);
 
     // Set meta tags for static page
     if ($config['meta']) {

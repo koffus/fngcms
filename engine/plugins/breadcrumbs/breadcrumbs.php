@@ -1,19 +1,19 @@
 <?php
 
 /*
- * Breadcrumbs for Next Generation CMS 0.9.3
+ * Breadcrumbs for BixBite CMS 0.9.3
  * Copyright (C) 2010-2011 Alexey N. Zhukov (http://digitalplace.ru)
  * web: http://digitalplace.ru
  * e-mail: zhukov.alexei@gmail.com
  */
 
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function breadcrumbs()
 {
     global $catz, $catmap, $CurrentHandler, $config, $SYSTEM_FLAGS, $systemAccessURL, $twig;
 
-    Lang::loadPlugin('breadcrumbs', 'main', 'bc', ':');
+    Lang::loadPlugin('breadcrumbs', 'site', 'bc', ':');
 
     $location = array();
     $location_last = '';
@@ -260,9 +260,8 @@ function breadcrumbs()
         'home_title' => home_title,
         );
 
-    $tpath = locatePluginTemplates( array('breadcrumbs'), 'breadcrumbs', pluginGetVariable('breadcrumbs', 'localSource') );
-    $xt = $twig->loadTemplate($tpath['breadcrumbs'].'breadcrumbs.tpl');
-    return $xt->render($tVars);
+    $tpath = plugin_locateTemplates('breadcrumbs', array('breadcrumbs'));
+    return $twig->render($tpath['breadcrumbs'].'breadcrumbs.tpl', $tVars);
 }
 
 twigRegisterFunction('breadcrumbs', 'show', 'breadcrumbs');

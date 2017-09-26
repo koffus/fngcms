@@ -9,7 +9,7 @@
 	<!-- Filter form: BEGIN -->
 	<div class="well">
 		<div class="has-feedback">
-			<input type="text" id="searchInput" class="search form-control" placeholder="{{ lang['extras.search'] }}">
+			<input type="text" id="searchInput" class="search form-control" placeholder="{{ lang['extras.search'] }}" autofocus />
 			<i class="fa fa-search form-control-feedback"></i>
 		</div>
 	</div>

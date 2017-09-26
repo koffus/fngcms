@@ -1,13 +1,13 @@
 <?php
 
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function plugin_gallery_install($action)
 {
     global $mysql, $config;
 
     if ($action != 'autoapply') {
-        Lang::loadPlugin('gallery', 'config', '', ':');
+        Lang::loadPlugin('gallery', 'admin', '', ':');
     }
 
     // Fill DB_UPDATE configuration scheme
@@ -24,7 +24,7 @@ function plugin_gallery_install($action)
                 array('action' => 'cmodify', 'name' => 'description', 'type' => 'text', 'params' => "default ''"),
                 array('action' => 'cmodify', 'name' => 'keywords', 'type' => 'text', 'params' => "default ''"),
                 array('action' => 'cmodify', 'name' => 'position', 'type' => 'int(11)', 'params' => "default 0"),
-                array('action' => 'cmodify', 'name' => 'image_count', 'type' => 'smallint(3)', 'params' => "default 12"),
+                array('action' => 'cmodify', 'name' => 'images_count', 'type' => 'smallint(3)', 'params' => "default 12"),
                 array('action' => 'cmodify', 'name' => 'if_active', 'type' => 'tinyint(1)', 'params' => "default 0"),
                 array('action' => 'cmodify', 'name' => 'skin', 'type' => 'varchar(25)', 'params' => "default 'basic'"),
             )
@@ -344,11 +344,10 @@ function plugin_gallery_install($action)
                 $params = array(
                     'if_description'=> 1,
                     'if_keywords' => 1,
-                    'image_count' => 12,
-                    'localSource' => 1,
-                    'localSkin' => 'basic',
+                    'images_count' => 12,
+                    'skin' => 'basic',
                     'cache' => 1,
-                    'cacheExpire' => 60,
+                    'cache_expire' => 60,
                 );
 
                 foreach ($params as $k => $v) {

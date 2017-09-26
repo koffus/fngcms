@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin('ads_pro', 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 switch ($action) {
     case 'list':
@@ -46,7 +46,7 @@ function main()
 {
     global $twig;
 
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.general'), 'ads_pro', 1);
+    $tpath = plugin_locateTemplates('ads_pro', array('conf.main', 'conf.general'));
     $s_news = pluginGetVariable('ads_pro', 'support_news');
     $s_news_sort = pluginGetVariable('ads_pro', 'news_cfg_sort');
     $s_multidisplay = pluginGetVariable('ads_pro', 'multidisplay_mode');
@@ -62,9 +62,7 @@ function main()
         'multidisplay_mode_2' => (($s_multidisplay == 2) ? ' selected' : ''),
     );
 
-    $xt = $twig->loadTemplate($tpath['conf.general'] . 'conf.general.tpl');
-
-    $tVars['entries'] = $xt->render($ttvars);
+    $tVars['entries'] = $twig->render($tpath['conf.general'] . 'conf.general.tpl', $ttvars);
     $tVars['action'] = __('ads_pro:btn.general');
     $tVars['class'] = array(
         'general' => 'active',
@@ -72,8 +70,7 @@ function main()
         'add_edit' => '',
     );
 
-    $xt = $twig->loadTemplate($tpath['conf.main'] . 'conf.main.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render($tpath['conf.main'] . 'conf.main.tpl', $tVars);
 }
 
 function main_submit()
@@ -116,7 +113,7 @@ function showlist()
 {
     global $twig;
 
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.list', 'conf.list.row'), 'ads_pro', 1);
+    $tpath = plugin_locateTemplates('ads_pro', array('conf.main', 'conf.list', 'conf.list.row'));
 
     $ttvars = array();
     $t_time = time();
@@ -143,8 +140,7 @@ function showlist()
         }
     }
 
-    $xt = $twig->loadTemplate($tpath['conf.list'] . 'conf.list.tpl');
-    $tvars['entries'] = $xt->render($ttvars);
+    $tvars['entries'] = $twig->render($tpath['conf.list'] . 'conf.list.tpl', $ttvars);
     $tvars['action'] = __('ads_pro:btn.list');
     $tvars['class'] = array(
         'general' => '',
@@ -152,8 +148,7 @@ function showlist()
         'add_edit' => '',
     );
 
-    $xt = $twig->loadTemplate($tpath['conf.main'] . 'conf.main.tpl');
-    echo $xt->render($tvars);
+    echo $twig->render($tpath['conf.main'] . 'conf.main.tpl', $tvars);
 }
 
 function add()
@@ -182,7 +177,7 @@ function add()
         }
     }
 
-    $tpath = locatePluginTemplates(array('conf.main', 'conf.add_edit.form'), 'ads_pro', 1);
+    $tpath = plugin_locateTemplates('ads_pro', array('conf.main', 'conf.add_edit.form'));
 
     $ttvars['plugins_list'] = "\n";
     $ttvars['plugins_list'] .= "\n\t\t\t" . 'subsubel = document.createElement("option");' . "\n";
@@ -279,10 +274,9 @@ function add()
     $ttvars['flags']['add'] = empty($id) ? true : false;
     $ttvars['flags']['edit'] = empty($id) ? false : true;
 
-    $xt = $twig->loadTemplate($tpath['conf.add_edit.form'] . 'conf.add_edit.form.tpl');
     $tvars = array(
         'id' => $id,
-        'entries' => $xt->render($ttvars),
+        'entries' => $twig->render($tpath['conf.add_edit.form'] . 'conf.add_edit.form.tpl', $ttvars),
         'action' => $id ? __('ads_pro:btn.edit') : __('ads_pro:btn.add'),
         'class' => array(
             'general' => '',
@@ -294,8 +288,7 @@ function add()
         ),
     );
 
-    $xt = $twig->loadTemplate($tpath['conf.main'] . 'conf.main.tpl');
-    echo $xt->render($tvars);
+    echo $twig->render($tpath['conf.main'] . 'conf.main.tpl', $tvars);
 }
 
 function add_submit()

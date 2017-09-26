@@ -1,39 +1,39 @@
 <?php
 
+/*
+ * Configuration file for plugin
+ */
+
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-//
-// Configuration file for plugin
-//
-
-
-Lang::loadPlugin($plugin, 'main');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
-	array(
-		'table' => 'tracker_magnets',
-		'action' => 'drop',
-	),
-	array(
-		'table' => 'news',
-		'action' => 'modify',
-		'fields' => array(
-			array('action' => 'drop', 'name' => 'tracker_fileid'),
-			array('action' => 'drop', 'name' => 'tracker_magnetid'),
-			array('action' => 'drop', 'name' => 'tracker_infohash'),
-			array('action' => 'drop', 'name' => 'tracker_lastupdate'),
-			array('action' => 'drop', 'name' => 'tracker_seed'),
-			array('action' => 'drop', 'name' => 'tracker_leech'),
-		)
-	)
+    array(
+        'table' => 'tracker_magnets',
+        'action' => 'drop',
+    ),
+    array(
+        'table' => 'news',
+        'action' => 'modify',
+        'fields' => array(
+            array('action' => 'drop', 'name' => 'tracker_fileid'),
+            array('action' => 'drop', 'name' => 'tracker_magnetid'),
+            array('action' => 'drop', 'name' => 'tracker_infohash'),
+            array('action' => 'drop', 'name' => 'tracker_lastupdate'),
+            array('action' => 'drop', 'name' => 'tracker_seed'),
+            array('action' => 'drop', 'name' => 'tracker_leech'),
+        )
+    )
 );
 
 // RUN
 if ('commit' == $action) {
-	if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
-		plugin_mark_deinstalled($plugin);
-	}
+    if (fixdb_plugin_install($plugin, $db_update, 'deinstall')) {
+        plugin_mark_deinstalled($plugin);
+    }
 } else {
-	generate_install_page($plugin, '', 'deinstall');
+    generate_install_page($plugin, __($plugin.':desc_deinstall'), 'deinstall');
 }

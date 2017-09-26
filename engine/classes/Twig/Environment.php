@@ -980,7 +980,7 @@ class Twig_Environment
  $this->globals = null;
  }
 
- /* **** PATCH FOR NGCMS **** */
+ /* **** PATCH FOR BixBite CMS **** */
  public function addGlobalRef($name, &$value)
  {
  $this->staging['globals'][$name] = &$value;

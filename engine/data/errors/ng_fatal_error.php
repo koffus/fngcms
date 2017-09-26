@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>NGCMS Runtime error: <?php echo $title; ?></title>
+	<title>BixBite CMS Runtime error: <?php echo $title; ?></title>
 	<meta charset="UTF-8"/>
 	<style>
 		body {
@@ -43,7 +43,7 @@
 	</script>
 
 	<?php
-		print "<h1>NGCMS Software generated fatal error: ".$title."</h1>\n";
+		print "<h1>BixBite CMS Software generated fatal error: ".$title."</h1>\n";
 		print "<div class='dmsg'>[ Software error ]: ".$title."</div><br/>";
 		if ($description) {
 			print "<p><i>".$description."</i></p>";

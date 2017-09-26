@@ -2,13 +2,13 @@
 
 /*
  * Configuration file for plugin
-*/
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-// Load LANG file for plugin
-Lang::loadPlugin($plugin, 'config', '', ':');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
     array(

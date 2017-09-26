@@ -132,8 +132,7 @@ class tpl
                 if ($cacheFile === false) {
                     cacheStoreFile($cacheFileName, $scode, '_templates');
                 }
-                $tx = $twig->loadTemplate(get_plugcache_dir('_templates') . $cacheFileName);
-                $result = $tx->render($vars['vars']);
+                $result = $twig->render(get_plugcache_dir('_templates') . $cacheFileName, $vars['vars']);
                 $data = str_replace($v, $result, $data);
             }
         }

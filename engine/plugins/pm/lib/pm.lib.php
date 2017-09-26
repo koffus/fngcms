@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Plugin's "Private message" API for NextGeneration CMS (http://ngcms.ru/)
+ * Plugin's "Private message" API for NextGeneration CMS (http://bixbite.site/)
  * Copyright (C) 2011 Alexey N. Zhukov (http://digitalplace.ru)
  * http://digitalplace.ru
  * 
@@ -24,7 +24,7 @@
 class pm{
 	
 	function __construct(){
-		Lang::loadPlugin('pm', 'main', '', ':');
+		Lang::loadPlugin('pm', 'site', '', ':');
 	}
 	/* params:
 	 *

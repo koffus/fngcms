@@ -56,9 +56,8 @@ function basket_add_item($linked_ds, $linked_id, $title, $price, $count, $xfld =
     );
 
     // Выводим шаблон с общим итогом
-    $tpath = locatePluginTemplates(array('total'), 'basket', pluginGetVariable('basket', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['total'].'/total.tpl');
-    return array('status' => 1, 'errorCode' => 0, 'data' => 'Item added into basket', 'update' => $xt->render($tVars));
+    $tpath = plugin_locateTemplates('basket', array('total'));
+    return array('status' => 1, 'errorCode' => 0, 'data' => 'Item added into basket', 'update' => $twig->render($tpath['total'].'/total.tpl', $tVars));
 }
 
 function basket_rpc_manage($params){

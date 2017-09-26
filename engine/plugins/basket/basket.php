@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -41,10 +41,8 @@ function plugin_basket_total() {
     );
 
     // Выводим шаблон
-    $tpath = locatePluginTemplates(array('total'), 'basket', pluginGetVariable('basket', 'localSource'));
-
-    $xt = $twig->loadTemplate($tpath['total'].'/total.tpl');
-    $template['vars']['plugin_basket'] = $xt->render($tVars);
+    $tpath = plugin_locateTemplates('basket', array('total'));
+    $template['vars']['plugin_basket'] = $twig->render($tpath['total'].'/total.tpl', $tVars);
 }
 
 //
@@ -83,9 +81,8 @@ function plugin_basket_list(){
     );
 
     // Выводим шаблон
-    $tpath = locatePluginTemplates(array('list'), 'basket', pluginGetVariable('basket', 'localSource'));
-    $xt = $twig->loadTemplate($tpath['list'].'/list.tpl');
-    $template['vars']['mainblock'] = $xt->render($tVars);
+    $tpath = plugin_locateTemplates('basket', array('list'));
+    $template['vars']['mainblock'] .= $twig->render($tpath['list'].'/list.tpl', $tVars);
 }
 
 // Update basket content/counters
@@ -174,8 +171,7 @@ if (class_exists('XFieldsFilter') and class_exists('FeedbackFilter')) {
                 'total' => sprintf('%9.2f', $total),
             );
             // Выводим шаблон
-            $xt = $twig->loadTemplate('plugins/basket/lfeedback.tpl');
-            $tvars['plugin_basket'] .= $xt->render($tVars);
+            $tvars['plugin_basket'] .= $twig->render('plugins/basket/lfeedback.tpl', $tVars);
         }
 
         function onProcess($formID, $formStruct, $formData, $flagHTML, &$tvars) {
@@ -210,8 +206,7 @@ if (class_exists('XFieldsFilter') and class_exists('FeedbackFilter')) {
                 'total' => sprintf('%9.2f', $total),
             );
             // Выводим шаблон
-            $xt = $twig->loadTemplate('plugins/basket/lfeedback.tpl');
-            $tvars['plugin_basket'] = $xt->render($bVars);
+            $tvars['plugin_basket'] = $twig->render('plugins/basket/lfeedback.tpl', $bVars);
         }
         // Action executed when post request is completed
         function onProcessNotify($formID){

@@ -1,18 +1,14 @@
 <?php
 
-// #====================================================================================#
-// # Наименование плагина: nsched [ News SCHEDuller ] #
-// # Разрешено к использованию с: Next Generation CMS #
-// # Автор: Vitaly A Ponomarev, vp7@mail.ru #
-// #====================================================================================#
+/*
+ * Configuration file for plugin
+ */
 
-// #====================================================================================#
-// # Инсталл скрипт плагина #
-// #====================================================================================#
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
-Lang::loadPlugin('nsched', 'install');
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
  array(

@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: auth_basic
@@ -12,7 +12,7 @@ Install: install.php
 Type: auth
 Description: базовая авторизация
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 URI: http://no_url.com/
 Permanent: yes
 Preinstall_vars: restorepw="email"; 

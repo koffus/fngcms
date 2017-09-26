@@ -5,10 +5,10 @@
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // need for xfields sort & search
-if (xmode() and function_exists('xf_configLoad')) {
+if (xmode() and function_exists('xf_configLoad')){
     include_once root . 'plugins/xfields/xfields.php';
     $xf = xf_configLoad();
 } else {
@@ -80,6 +80,9 @@ function showSectionList()
 
     // Prepare data
     $grpNews = array();
+    if (empty($xf['grp.news'])) {
+        $xf['grp.news'] = [];
+    }
     foreach ($xf['grp.news'] as $k => $v) {
         $grpNews[$k] = array(
             'title' => $v['title'],
@@ -93,8 +96,7 @@ function showSectionList()
     $tVars['json']['groups.config'] = json_encode($grpNews);
     $tVars['json']['fields.config'] = json_encode($xf['news']);
 
-    $xt = $twig->loadTemplate('plugins/xfields/tpl/groups.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render('plugins/xfields/tpl/admin/groups.tpl', $tVars);
 
 }
 
@@ -149,8 +151,7 @@ function showFieldList()
     foreach (array('news', 'grp.news', 'users', 'grp.users', 'tdata') as $cID)
         $tVars['class'][$cID] = ($cID == $sectionID) ? 'active' : '';
 
-    $xt = $twig->loadTemplate('plugins/xfields/tpl/config.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render('plugins/xfields/tpl/admin/config.tpl', $tVars);
 }
 
 //
@@ -345,8 +346,7 @@ function showAddEditForm($xdata = '', $eMode = NULL, $efield = NULL)
         }
     }
     $tVars['sectionID'] = $sectionID;
-    $xt = $twig->loadTemplate('plugins/xfields/tpl/config_edit.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render('plugins/xfields/tpl/admin/config_edit.tpl', $tVars);
 }
 
 //
@@ -663,8 +663,8 @@ function doAddEdit()
     );
 
     $tVars['sectionID'] = $sectionID;
-    $xt = $twig->loadTemplate('plugins/xfields/tpl/config_done.tpl');
-    echo $xt->render($tVars);
+
+    echo $twig->render('plugins/xfields/tpl/admin/config_done.tpl', $tVars);
 
 }
 

@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 include_once(root."/plugins/finance/inc/finance.php");
 
@@ -268,11 +268,11 @@ function plugin_finsmscoin() {
 
 		$tpl->template('redirect',extras_dir.'/fin_smscoin/tpl');
 		$tpl->vars('redirect', $tvars);
-		$template['vars']['mainblock'] = $tpl->show('redirect');
+		$template['vars']['mainblock'] .= $tpl->show('redirect');
 
 		$SUPRESS_TEMPLATE_SHOW = 1;
 	} else {
-		 $template['vars']['mainblock'] = 'Неверный тип запроса';
+		 $template['vars']['mainblock'] .= 'Неверный тип запроса';
 	}
 }
 

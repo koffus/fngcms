@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Classes for traffic handling
 // - static pages
@@ -48,7 +48,8 @@ $adsPRO_cache = array(
 );
 
 // Main function of plugin
-function plugin_ads_pro($params = null) {
+function plugin_ads_pro($params = null)
+{
 	global $template, $config, $CurrentHandler, $catmap, $mysql, $adsPRO_cache;
 
 	$dataConfig = pluginGetVariable('ads_pro', 'data');

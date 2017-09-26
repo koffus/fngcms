@@ -175,7 +175,7 @@
                         <div class="col-md-7"><input class="form-control" type="text" name="save_con[admin_url]" value="{{ config['admin_url'] }}" readonly/></div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-5">{{ lang['home_title'] }} <span class="help-block">{{ lang['example'] }} NGcms</span></div>
+                        <div class="col-md-5">{{ lang['home_title'] }} <span class="help-block">{{ lang['example'] }} BixBite CMS</span></div>
                         <div class="col-md-7"><input type="text" class="form-control" name="save_con[home_title]" value="{{ config['home_title']|escape }}" /></div>
                     </div>
                     <div class="form-group">
@@ -340,6 +340,10 @@
                     <div class="form-group">
                         <div class="col-md-5">{{ lang['timestamp_active'] }} <span class="help-block">{{ lang['date_help'] }}</span></div>
                         <div class="col-md-7"><input type="text" class="form-control" name="save_con[timestamp_active]" value="{{ config['timestamp_active'] }}" /> <span class="help-block">{{ lang['date_now'] }} {{ timestamp_active_now }}</span></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-5">{{ lang['extract_images'] }} <span class="help-block">{{ lang['extract_images_desc'] }}</span></div>
+                        <div class="col-md-7">{{ mkSelectYN({'name' : 'save_con[extract_images]', 'value' : config['extract_images'] }) }}</div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-5">{{ lang['smilies'] }} <span class="help-block">{{ lang['smilies_desc'] }} (<b>,</b>)</span></div>

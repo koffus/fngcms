@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Plugin "Private message" for NextGeneration CMS (http://ngcms.ru/)
+ * Plugin "Private message" for NextGeneration CMS (http://bixbite.site/)
  * Copyright (C) 2010-2011 Alexey N. Zhukov (http://digitalplace.ru), Alexey Zinchenko
  * http://digitalplace.ru
  * 
@@ -22,11 +22,11 @@
  */
  
 # protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 register_plugin_page('pm', '', 'pm', 0);
 
-Lang::loadPlugin('pm', 'main', '', ':');
+Lang::loadPlugin('pm', 'site', '', ':');
 
 registerActionHandler('usermenu', 'new_pm');
 
@@ -89,8 +89,6 @@ class PMCoreFilter extends CFilter {
 function pm_inbox (){
 	global $mysql, $config, $userROW, $tpl, $template, $TemplateCache, $twig;
 
-	$tpath = locatePluginTemplates(array('inbox'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
-
 	# messages per page
 	$msg_per_page = intval(pluginGetVariable('pm', 'msg_per_page')) <= 0 ? 10 : intval(pluginGetVariable('pm', 'msg_per_page'));
 	
@@ -144,15 +142,14 @@ function pm_inbox (){
 		$tVars['pagination'] = generatePagination($page, 1, $pages_count, 9, $paginationParams, $navigations);
 	} else $tVars['pagination'] = '';
 	
-	$xt = $twig->loadTemplate($tpath['inbox'].'inbox.tpl');
-	$template['vars']['mainblock'] = $xt->render($tVars);
+
+	$tpath = plugin_locateTemplates('pm', array('inbox'));
+	$template['vars']['mainblock'] .= $twig->render($tpath['inbox'].'inbox.tpl', $tVars);
 }
 
 # show outbox messages list
 function pm_outbox (){
 	global $mysql, $userROW, $tpl, $template, $TemplateCache, $twig;
-
-	$tpath = locatePluginTemplates(array('outbox'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	# messages per page
 	$msg_per_page = intval(pluginGetVariable('pm', 'msg_per_page')) <= 0 ? 10 : intval(pluginGetVariable('pm', 'msg_per_page'));
@@ -205,16 +202,14 @@ function pm_outbox (){
 		$navigations = $TemplateCache['site']['#variables']['navigation']; 
 		$tVars['pagination'] = generatePagination($page, 1, $pages_count, 9, $paginationParams, $navigations);
 	} else $tVars['pagination'] = '';
-	
-	$xt = $twig->loadTemplate($tpath['outbox'].'outbox.tpl');
-	$template['vars']['mainblock'] = $xt->render($tVars);
+
+	$tpath = plugin_locateTemplates('pm', array('outbox'));
+	$template['vars']['mainblock'] .= $twig->render($tpath['outbox'].'outbox.tpl', $tVars);
 }
 
 # show read message form
 function pm_read(){
 	global $mysql, $config, $userROW, $tpl, $mod, $parse, $template, $twig;
-
-	$tpath = locatePluginTemplates(array('read'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	$pmid = intval($_REQUEST['pmid']);
 
@@ -246,11 +241,10 @@ function pm_read(){
 		
 		$tVars['author'] = $author;
 		$tVars['ifinbox'] = ($row['folder'] == 'inbox')?1:0;
-		
-			
-		$xt = $twig->loadTemplate($tpath['read'].'read.tpl');
-		$template['vars']['mainblock'] = $xt->render($tVars);
-		
+
+        $tpath = plugin_locateTemplates('pm', array('read'));
+		$template['vars']['mainblock'] .= $twig->render($tpath['read'].'read.tpl', $tVars);
+
 		# update pm counters
 		if ((!$row['viewed']) and ($row['to_id'] == $userROW['id']) and ($row['folder']=='inbox')) {
 			$mysql->query("UPDATE ".prefix."_pm SET `viewed` = '1' WHERE `id` = ".db_squote($row['id']));
@@ -306,8 +300,6 @@ function pm_delete(){
 # show write message form
 function pm_write(){
 	global $config, $tpl, $template, $twig;
-	
-	$tpath = locatePluginTemplates(array('write'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 
 	$tVars = array(
 		'php_self' => $PHP_SELF,
@@ -316,9 +308,9 @@ function pm_write(){
 	);
 	
 	$tVars['smilies'] = ($config['use_smilies'] == "1") ? Smilies('', 10, "'pm_content'") : '';
-	
-	$xt = $twig->loadTemplate($tpath['write'].'write.tpl');
-	$template['vars']['mainblock'] = $xt->render($tVars);
+
+	$tpath = plugin_locateTemplates('pm', array('write'));
+	$template['vars']['mainblock'] .= $twig->render($tpath['write'].'write.tpl', $tVars);
 }
 
 # send message
@@ -383,11 +375,9 @@ function pm_send() {
 function pm_reply(){
 	global $mysql, $config, $userROW, $tpl, $parse, $template, $twig;
 
-	$tpath = locatePluginTemplates(array('reply'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
-	
 	$pmid = $_REQUEST['pmid'];
 	$save = $_REQUEST['saveoutbox'];
-	
+
 	if ($row = $mysql->record("SELECT * FROM ".prefix."_pm WHERE id = ".db_squote($pmid)." AND (to_id = ".db_squote($userROW['id'])." OR from_id=".db_squote($userROW['id']).")")) {
 		
 		if($row['folder'] == 'outbox'){
@@ -409,9 +399,9 @@ function pm_reply(){
 		);
 
 		$tVars['smilies'] = ($config['use_smilies'] == "1") ? Smilies('', 10, "'pm_content'") : '';
-	
-		$xt = $twig->loadTemplate($tpath['reply'].'reply.tpl');
-		$template['vars']['mainblock'] = $xt->render($tVars);
+
+        $tpath = plugin_locateTemplates('pm', array('reply'));
+		$template['vars']['mainblock'] .= $twig->render($tpath['reply'].'reply.tpl', $tVars);
 
 	} else {
 		msg(array('type' => 'danger', 'message' => __('pm:msge_bad').__('pm:html_back')));
@@ -435,16 +425,14 @@ function pm_set(){
 		}
 	}
 	
-	$tpath = locatePluginTemplates(array('set'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
 	
 	$tVars = array(
 		'php_self' => $PHP_SELF,
 		'checked' => $checked ? 'checked="checked"' : ''
 	);
 
-		
-	$xt = $twig->loadTemplate($tpath['set'].'set.tpl');
-	$template['vars']['mainblock'] = $xt->render($tVars);
+	$tpath = plugin_locateTemplates('pm', array('set'));
+	$template['vars']['mainblock'] .= $twig->render($tpath['set'].'set.tpl', $tVars);
 }
 
 function pm(){
@@ -460,7 +448,7 @@ function pm(){
 		return 1;
 	}
 
-    $tpath = locatePluginTemplates(array(':pm.css'), 'pm', intval(pluginGetVariable('pm', 'localSource')));
+    $tpath = plugin_locateTemplates('pm', array(':pm.css'));
 	$cPlugin->regHtmlVar('css', $tpath['url::pm.css'].'/pm.css'); 
 	
 	switch($_REQUEST['action']){

@@ -1,9 +1,14 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Configuration file for plugin
+ */
 
-Lang::loadPlugin('auth_social', 'config', '', '#');
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
+
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', '#');
 
 switch ($action) {
     case 'options':
@@ -20,7 +25,7 @@ global $tpl, $mysql, $twig;
     // Load CORE Plugin
     $cPlugin = CPlugin::instance();
 
-    $tpath = locatePluginTemplates(array('config/main', 'config/general.from'), 'auth_social', 1);
+    $tpath = plugin_locateTemplates('auth_social', array('main', 'general.from'));
     
     if (isset($_REQUEST['submit']))
     {
@@ -91,8 +96,6 @@ global $tpl, $mysql, $twig;
     $twitch_client_id = pluginGetVariable('auth_social', 'twitch_client_id');
     $twitch_client_secret = pluginGetVariable('auth_social', 'twitch_client_secret');
     
-    $xt = $twig->loadTemplate($tpath['config/general.from'].'config/general.from.tpl');
-    
     $tVars = array(
             'skins_url' => skins_url,
             'home' => home,
@@ -132,14 +135,12 @@ global $tpl, $mysql, $twig;
             'twitch_client_secret' => $twitch_client_secret,
 
         );
-    
-    $xg = $twig->loadTemplate($tpath['config/main'].'config/main.tpl');
 
     $tVars = array(
-        'entries' => $xt->render($tVars),
+        'entries' => $twig->render($tpath['config/general.from'].'config/general.from.tpl', $tVars),
 
-    );	
-        
-    print $xg->render($tVars);
+    );
+
+    print $twig->render($tpath['config/main'].'config/main.tpl', $tVars);
 
 }

@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2015 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: cmodules.php
 // Description: Common CORE modules
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function coreActivateUser()
 {
@@ -157,8 +157,8 @@ function generate_reg_page($params, $values = array(), $msg = '')
     $tVars['form_action'] = checkLinkAvailable('core', 'registration')?
                                 generateLink('core', 'registration', array()):
                                 generateLink('core', 'plugin', array('plugin' => 'core', 'handler' => 'registration'));
-    $xt = $twig->loadTemplate('registration.tpl');
-    $template['vars']['mainblock'] .= $xt->render($tVars);
+
+    $template['vars']['mainblock'] .= $twig->render('registration.tpl', $tVars);
 }
 
 function coreRestorePassword()
@@ -269,8 +269,8 @@ function generate_restorepw_page($params, $values = array(), $msg = '')
     $tVars['form_action'] = checkLinkAvailable('core', 'lostpassword')?
                                         generateLink('core', 'lostpassword', array()):
                                         generateLink('core', 'plugin', array('plugin' => 'core', 'handler' => 'lostpassword'));
-    $xt = $twig->loadTemplate('lostpassword.tpl');
-    $template['vars']['mainblock'] .= $xt->render($tVars);
+
+    $template['vars']['mainblock'] .= $twig->render('lostpassword.tpl', $tVars);
 }
 
 //
@@ -334,8 +334,7 @@ function coreLoginAction($row = null, $redirect = null)
             $tVars['entries'][] = mkParamLine($param);
         }
 
-        $xt = $twig->loadTemplate('login.tpl');
-        $template['vars']['mainblock'] .= $xt->render($tVars);
+        $template['vars']['mainblock'] .= $twig->render('login.tpl', $tVars);
     }
 }
 

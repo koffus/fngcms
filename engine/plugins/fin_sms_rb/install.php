@@ -1,12 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
 
-Lang::loadPlugin('fin_sms_rb', 'config');
-
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 $db_update = array(
  array(

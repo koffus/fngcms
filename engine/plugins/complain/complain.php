@@ -1,7 +1,7 @@
 <?php
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Author - Author of object under report
 // Publisher - Person, who made a reported. Can be anonymous
@@ -11,118 +11,119 @@ if (!defined('NGCMS')) die ('HAL');
 // N - inform reporter about status changes of incident
 
 function plugin_complain_resolve_error($id) {
- foreach (explode("\n",pluginGetVariable('complain', 'errlist')) as $erow) {
- if (preg_match('#^(\d+)\|(.+?)$#', trim($erow), $m) and ($m[1] == $id)) {
- return $m[2];
- }
- }
- return NULL;
+    foreach (explode("\n",pluginGetVariable('complain', 'errlist')) as $erow) {
+        if (preg_match('#^(\d+)\|(.+?)$#', trim($erow), $m) and ($m[1] == $id)) {
+            return $m[2];
+        }
+    }
+    return NULL;
 }
 
-function plugin_complain_screen() {
-	global $template, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
+function plugin_complain_screen()
+{
+    global $template, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', ':');
+    Lang::loadPlugin('complain', 'site', '', ':');
 
- $SUPRESS_TEMPLATE_SHOW = 1;
+    $SUPRESS_TEMPLATE_SHOW = 1;
 
- // Determine paths for all template files
- $tpath = locatePluginTemplates(array('list.entry', 'list.header', 'infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
+    // Determine paths for all template files
+    $tpath = plugin_locateTemplates('complain', array('list.entry', 'list.header', 'infoblock'));
 
- // No access for unregistered users
- if (!is_array($userROW)) {
- $tpl->template('infoblock', $tpath['infoblock']);
- $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
- return 1;
- }
+    // No access for unregistered users
+    if (!is_array($userROW)) {
+    $tpl->template('infoblock', $tpath['infoblock']);
+    $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly'))));
+    $template['vars']['mainblock'] .= $tpl->show('infoblock');
+    return 1;
+    }
 
- // Fetch error list
- $elist = array();
- foreach (explode("\n",pluginGetVariable('complain', 'errlist')) as $erow) {
- if (preg_match('#^(\d+)\|(.+?)$#', trim($erow), $m)) {
- $elist[$m[1]] = $m[2];
- }
- }
+    // Fetch error list
+    $elist = array();
+    foreach (explode("\n",pluginGetVariable('complain', 'errlist')) as $erow) {
+    if (preg_match('#^(\d+)\|(.+?)$#', trim($erow), $m)) {
+    $elist[$m[1]] = $m[2];
+    }
+    }
 
- // Show list of complains
- $tpl->template('list.entry', $tpath['list.entry']);
+    // Show list of complains
+    $tpl->template('list.entry', $tpath['list.entry']);
 
- // Prepare filters
- $where = array ('(c.complete = 0)');
+    // Prepare filters
+    $where = array ('(c.complete = 0)');
 
- // Populate admins array
- $admins = preg_split("/\r\n|\n/", pluginGetVariable('complain', 'admins'));
+    // Populate admins array
+    $admins = preg_split("/\r\n|\n/", pluginGetVariable('complain', 'admins'));
 
- // Non admins will see only complains in which they are involved
- if (($userROW['status'] > 1)&&(!in_array($userROW['name'], $admins))) {
- 	$where [] = '((c.publisher_id = '.intval($userROW['id']).') or (c.owner_id = '.intval($userROW['id']).') or (c.author_id = '.intval($userROW['id']).'))';
- }
+    // Non admins will see only complains in which they are involved
+    if (($userROW['status'] > 1)&&(!in_array($userROW['name'], $admins))) {
+    $where [] = '((c.publisher_id = '.intval($userROW['id']).') or (c.owner_id = '.intval($userROW['id']).') or (c.author_id = '.intval($userROW['id']).'))';
+    }
 
- $entries = '';
- $etext = array();
-// foreach ($mysql->select("select count(c.id) as ccount, c.id, c.status, c.complete, c.owner_id, (select name from ".uprefix."_users where id = c.owner_id) as owner_name, c.author_id, (select name from ".uprefix."_users where id = c.author_id) as author_name, c.publisher_id, (select name from ".uprefix."_users where id = c.publisher_id) as publisher_name, c.publisher_ip, date(c.date) as date, c.ds_id, c.entry_id, c.error_code, n.alt_name as n_alt_name, n.id as n_id, n.title as n_title, n.catid as n_catid, n.postdate as n_postdate from ".prefix."_complain c left join ".prefix."_news n on c.entry_id = n.id where ".join(" AND ", $where)." group by c.ds_id, c.entry_id, c.error_code") as $crow) {
- foreach ($mysql->select("select c.id, c.status, c.complete, c.owner_id, (select name from ".uprefix."_users where id = c.owner_id) as owner_name, c.author_id, (select name from ".uprefix."_users where id = c.author_id) as author_name, c.publisher_id, (select name from ".uprefix."_users where id = c.publisher_id) as publisher_name, c.publisher_ip, date(c.date) as date, time(c.date) as time, c.ds_id, c.entry_id, c.error_code, c.error_text, n.alt_name as n_alt_name, n.id as n_id, n.title as n_title, n.catid as n_catid, n.postdate as n_postdate from ".prefix."_complain c left join ".prefix."_news n on c.entry_id = n.id where ".join(" AND ", $where)) as $crow) {
- $tvars = array();
- $tvars['vars'] = array(
- 'id' => $crow['id'],
- 'date' => $crow['date'],
- 'time' => $crow['time'],
- 'error' => $elist[$crow['error_code']].($crow['error_text']?' (<span style="cursor: pointer;" onclick="alert(ETEXT['.$crow['id'].']);">*</span>)':''),
- 'ccount' => ($crow['ccount']>1)?('(<b>'.$crow['ccount'].'</b>)'):'',
- 'title' => $crow['n_title'],
- 'link' => News::generateLink(array('catid' => $crow['n_catid'], 'alt_name' => $crow['n_alt_name'], 'id' => $crow['n_id'], 'postdate' => $crow['n_postdate']), false, 0, true),
- 'publisher_name' => $crow['publisher_id']?$crow['publisher_name']:'',
- 'publisher_ip' => $crow['publisher_ip'],
- 'author_name' => $crow['author_name'],
- 'owner_name' => $crow['owner_id']?'<b>'.$crow['owner_name'].'</b>':__('complain:noowner'),
- 'status' => $lang['complain:status.'.$crow['status']],
- );
- if ($crow['error_text'])
- 	$etext[$crow['id']] = $crow['error_text'];
+    $entries = '';
+    $etext = array();
+    // foreach ($mysql->select("select count(c.id) as ccount, c.id, c.status, c.complete, c.owner_id, (select name from ".uprefix."_users where id = c.owner_id) as owner_name, c.author_id, (select name from ".uprefix."_users where id = c.author_id) as author_name, c.publisher_id, (select name from ".uprefix."_users where id = c.publisher_id) as publisher_name, c.publisher_ip, date(c.date) as date, c.ds_id, c.entry_id, c.error_code, n.alt_name as n_alt_name, n.id as n_id, n.title as n_title, n.catid as n_catid, n.postdate as n_postdate from ".prefix."_complain c left join ".prefix."_news n on c.entry_id = n.id where ".join(" AND ", $where)." group by c.ds_id, c.entry_id, c.error_code") as $crow) {
+    foreach ($mysql->select("select c.id, c.status, c.complete, c.owner_id, (select name from ".uprefix."_users where id = c.owner_id) as owner_name, c.author_id, (select name from ".uprefix."_users where id = c.author_id) as author_name, c.publisher_id, (select name from ".uprefix."_users where id = c.publisher_id) as publisher_name, c.publisher_ip, date(c.date) as date, time(c.date) as time, c.ds_id, c.entry_id, c.error_code, c.error_text, n.alt_name as n_alt_name, n.id as n_id, n.title as n_title, n.catid as n_catid, n.postdate as n_postdate from ".prefix."_complain c left join ".prefix."_news n on c.entry_id = n.id where ".join(" AND ", $where)) as $crow) {
+    $tvars = array();
+    $tvars['vars'] = array(
+    'id' => $crow['id'],
+    'date' => $crow['date'],
+    'time' => $crow['time'],
+    'error' => $elist[$crow['error_code']].($crow['error_text']?' (<span style="cursor: pointer;" onclick="alert(ETEXT['.$crow['id'].']);">*</span>)':''),
+    'ccount' => ($crow['ccount']>1)?('(<b>'.$crow['ccount'].'</b>)'):'',
+    'title' => $crow['n_title'],
+    'link' => News::generateLink(array('catid' => $crow['n_catid'], 'alt_name' => $crow['n_alt_name'], 'id' => $crow['n_id'], 'postdate' => $crow['n_postdate']), false, 0, true),
+    'publisher_name' => $crow['publisher_id']?$crow['publisher_name']:'',
+    'publisher_ip' => $crow['publisher_ip'],
+    'author_name' => $crow['author_name'],
+    'owner_name' => $crow['owner_id']?'<b>'.$crow['owner_name'].'</b>':__('complain:noowner'),
+    'status' => $lang['complain:status.'.$crow['status']],
+    );
+    if ($crow['error_text'])
+    $etext[$crow['id']] = $crow['error_text'];
 
- // Check if user have enough permissions to make any changes in this report
- if (($userROW['status'] == 1) ||
- (in_array($userROW['name'], $admins)) ||
- ($userROW['id'] == $crow['owner_id']) ||
- (($crow['author_id'] == $userROW['id']) &&
-	 (($crow['owner_id'] == $userROW['id'])||(!$crow['owner_id']))
-	 )
-	 ) {
-	 $tvars['regx']['#\[perm\](.+?)\[\/perm\]#is'] = '$1';
- } else {
-	 $tvars['regx']['#\[perm\](.+?)\[\/perm\]#is'] = '';
- }
+    // Check if user have enough permissions to make any changes in this report
+    if (($userROW['status'] == 1) ||
+    (in_array($userROW['name'], $admins)) ||
+    ($userROW['id'] == $crow['owner_id']) ||
+    (($crow['author_id'] == $userROW['id']) &&
+     (($crow['owner_id'] == $userROW['id'])||(!$crow['owner_id']))
+     )
+     ) {
+     $tvars['regx']['#\[perm\](.+?)\[\/perm\]#is'] = '$1';
+    } else {
+     $tvars['regx']['#\[perm\](.+?)\[\/perm\]#is'] = '';
+    }
 
- $tpl->vars('list.entry', $tvars);
- $entries .= $tpl->show('list.entry');
- }
+    $tpl->vars('list.entry', $tvars);
+    $entries .= $tpl->show('list.entry');
+    }
 
- $sselect = '';
- for ($i = 2; $i < 5; $i++) $sselect .= '<option value="'.$i.'">'.__('complain:status.'.$i).'</option>';
+    $sselect = '';
+    for ($i = 2; $i < 5; $i++) $sselect .= '<option value="'.$i.'">'.__('complain:status.'.$i).'</option>';
 
- $tpl->template('list.header', $tpath['list.header']);
- $tvars = array();
- $tvars['vars'] = array( 'entries' => $entries, 'status_options' => $sselect, 'form_url' => generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'update')), 'ETEXT' => json_encode($etext));
- $tpl->vars('list.header', $tvars);
- $template['vars']['mainblock'] = $tpl->show('list.header');
+    $tpl->template('list.header', $tpath['list.header']);
+    $tvars = array();
+    $tvars['vars'] = array( 'entries' => $entries, 'status_options' => $sselect, 'form_url' => generateLink('core', 'plugin', array('plugin' => 'complain', 'handler' => 'update')), 'ETEXT' => json_encode($etext));
+    $tpl->vars('list.header', $tvars);
+    $template['vars']['mainblock'] .= $tpl->show('list.header');
 }
 
 function plugin_complain_add() {
 	global $template, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', ':');
+ Lang::loadPlugin('complain', 'site', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('ext.form', 'infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
+ $tpath = plugin_locateTemplates('complain', array('ext.form', 'infoblock'));
 
  // Check if we shouldn't show block for unregs
  if ((!is_array($userROW)) and (!pluginGetVariable('complain', 'allow_unreg'))) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly').__('complain:link.close'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
  return 1;
  }
 
@@ -144,24 +145,24 @@ function plugin_complain_add() {
 
  $tpl->template('ext.form', $tpath['ext.form']);
  $tpl->vars('ext.form', $txvars);
- $template['vars']['mainblock'] = $tpl->show('ext.form');
+ $template['vars']['mainblock'] .= $tpl->show('ext.form');
 }
 
 function plugin_complain_post() {
 	global $template, $tpl, $mysql, $userROW, $ip, $config, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', ':');
+ Lang::loadPlugin('complain', 'site', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('ext.form', 'infoblock', 'error.noentry', 'form.confirm'), 'complain', pluginGetVariable('complain', 'localSource'));
+ $tpath = plugin_locateTemplates('complain', array('ext.form', 'infoblock', 'error.noentry', 'form.confirm'));
 
  // Check if we shouldn't show block for unregs
  if ((!is_array($userROW)) and (!pluginGetVariable('complain', 'allow_unreg'))) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly').__('complain:link.close'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
  return 1;
  }
 
@@ -186,7 +187,7 @@ function plugin_complain_post() {
  if (!isset($cdata['id'])) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.noentry').__('complain:link.close'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
  return;
  }
 
@@ -197,7 +198,7 @@ function plugin_complain_post() {
  if ($errtext === NULL) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.unresolvable').__('complain:link.close'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
  return;
  }
 
@@ -267,18 +268,18 @@ function plugin_complain_post() {
 
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:info.accepted').__('complain:link.close'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
 }
 
 function plugin_complain_update() {
 	global $template, $config, $tpl, $mysql, $userROW, $SUPRESS_TEMPLATE_SHOW;
 
- Lang::loadPlugin('complain', 'main', '', ':');
+ Lang::loadPlugin('complain', 'site', '', ':');
 
  $SUPRESS_TEMPLATE_SHOW = 1;
 
  // Determine paths for all template files
- $tpath = locatePluginTemplates(array('infoblock'), 'complain', pluginGetVariable('complain', 'localSource'));
+ $tpath = plugin_locateTemplates('complain', array('infoblock'));
 
  $link_admin = str_replace('{link}', generateLink('core', 'plugin', array('plugin' => 'complain')), __('complain:link.admin'));
 
@@ -286,7 +287,7 @@ function plugin_complain_update() {
  if (!is_array($userROW)) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:error.regonly'))));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
  return 1;
  }
 
@@ -302,7 +303,7 @@ function plugin_complain_update() {
  if (!count($ilist)) {
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:info.nothing').$link_admin)));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
  return 1;
  }
 
@@ -359,7 +360,7 @@ function plugin_complain_update() {
 
  $tpl->template('infoblock', $tpath['infoblock']);
  $tpl->vars('infoblock', array( 'vars' => array( 'infoblock' => __('complain:info.executed').$link_admin)));
- $template['vars']['mainblock'] = $tpl->show('infoblock');
+ $template['vars']['mainblock'] .= $tpl->show('infoblock');
 
 }
 
@@ -383,7 +384,7 @@ class ComplainNewsFilter extends NewsFilter {
 		}
 
 		// Determine paths for all template files
-		$tpath = locatePluginTemplates(array('int.form', 'int.link'), 'complain', pluginGetVariable('complain', 'localSource'));
+		$tpath = plugin_locateTemplates('complain', array('int.form', 'int.link'));
 
 		// Check displayed information type - FORM or simple LINK
 		if (pluginGetVariable('complain', 'extform')) {

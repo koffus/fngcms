@@ -5,7 +5,7 @@
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 switch ($action) {
     case 'edit': case 'add': editform(); break;
@@ -19,7 +19,7 @@ function showlist()
 {
     global $tpl, $mysql;
     $static_page = $mysql->select('select `id`, `title` from '.prefix.'_static order by `title`, `id`');
-    $tpath = locatePluginTemplates(array('conf.list', 'conf.list.row'), 're_stat');
+    $tpath = plugin_locateTemplates('re_stat', array('conf.list', 'conf.list.row'));
     $output = ''; $no = 1; $t_values = array();
     if(is_array($values = pluginGetVariable('re_stat', 'values'))) {
         foreach($values as $key => $row) {
@@ -96,7 +96,7 @@ function editform()
         }
     }
     $static_page = $mysql->select('select `id`, `title` from '.prefix.'_static order by `title`, `id`');
-    $tpath = locatePluginTemplates(array('conf.edit'), 're_stat');
+    $tpath = plugin_locateTemplates('re_stat', array('conf.edit'));
     $statlist = array();
     foreach ($static_page as $row)
         $statlist[$row['id']] = $row['title'];

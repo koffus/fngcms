@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: rewrite.php
 // Description: Managing rewrite rules
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Check for permissions
 if ( !checkPermission(array('plugin' => '#admin', 'item' => 'rewrite'), null, 'details') ) {
@@ -61,25 +61,21 @@ foreach ( $UH->hList as $hId ) {
 
 	// Fetch associated command
 	if ($cmd = $ULIB->fetchCommand($hId['pluginName'], $hId['handlerName'])) {
-		$jrow['description']	= $ULIB->extractLangRec($cmd['descr']);
+		$jrow['description'] = $ULIB->extractLangRec($cmd['descr']);
 	}
 	$jdata[] = $jrow;
 	$recno++;
 }
 
-$xe = $twig->loadTemplate('skins/default/tpl/rewrite/entry.tpl');
-
 $tVars = array(
-		'json' => array(
-			'config' => json_encode($jconfig),
-			'data' => json_encode($jdata),
-			'template' => json_encode($xe->render(array())),
-		),
-		'token' => genUToken('admin.rewrite'),
+    'json' => array(
+        'config' => json_encode($jconfig),
+        'data' => json_encode($jdata),
+        'template' => json_encode($twig->render(tpl_actions . 'rewrite/entry.tpl', array())),
+    ),
+    'token' => genUToken('admin.rewrite'),
 );
 
-$xt = $twig->loadTemplate('skins/default/tpl/rewrite.tpl');
-echo $xt->render($tVars);
-
+echo $twig->render(tpl_actions . 'rewrite/table.tpl', $tVars);
 
 //$UH->populateHandler($ULIB, array('pluginName' => 'news', 'handlerName' => 'by.day', 'regex' => '/{year}-{month}-{day}[-page{page}].html'));

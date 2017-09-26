@@ -1,14 +1,22 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
+
+// Load CORE Plugin
+$cPlugin = CPlugin::instance();
+
+// Prepare configuration parameters
+if (empty($skList = $cPlugin->getThemeSkin($plugin))) {
+    msg(array( 'type' => 'danger', 'message' => __('msg.no_skin')));
+}
 
 // Fill configuration parameters
 $cfg = array(
@@ -72,13 +80,13 @@ for ($i = 1; $i < 5; $i++) {
 
 $cfgX = array();
 	array_push($cfgX, array(
-		'name' => 'localSource',
-		'title' => __($plugin.':localSource'),
-		'descr' => __($plugin.':localSource#desc'),
-		'type' => 'select',
-		'values' => array('0' => __($plugin.':localSource_0'), '1' => __($plugin.':localSource_1'),),
-		'value' => intval(pluginGetVariable($plugin, 'localSource'))
-		));
+        'name' => 'skin',
+        'title' => __('skin'),
+        'descr' => __('skin#desc'),
+        'type' => 'select',
+        'values' => $skList,
+        'value' => pluginGetVariable($plugin, 'skin'),
+    ));
 	array_push($cfgX, array(
 		'name' => 'extends',
 		'title' => 'Расположение блока',

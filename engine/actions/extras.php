@@ -1,14 +1,14 @@
 <?php
 
 //
-// Copyright (C) 2006-2014 Next Generation CMS (http://ngcms.ru/)
+// Copyright (C) 2006-2017 BixBite CMS (http://bixbite.site/)
 // Name: extras.php
 // Description: List plugins
 // Author: Vitaly Ponomarev
 //
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // ==============================================================
 // Module functions
@@ -57,7 +57,7 @@ function admGeneratePluginList()
         );
 
         if (isset($repoPluginInfo[$extra['id']]) and ($repoPluginInfo[$extra['id']][1] > $extra['version'])) {
-            $tEntry['new'] = '<a href="http://ngcms.ru/sync/plugins.php?action=jump&amp;id=' . $extra['id'] . '.html" title="' . $repoPluginInfo[$extra['id']][1] . '"target="_blank"><sup class="label label-success">NEW</sup></a>';
+            $tEntry['new'] = '<a href="http://bixbite.site/sync/plugins.php?action=jump&amp;id=' . $extra['id'] . '.html" title="' . $repoPluginInfo[$extra['id']][1] . '"target="_blank"><sup class="label label-success">NEW</sup></a>';
         } else {
             $tEntry['new'] = '';
         }
@@ -113,8 +113,8 @@ function admGeneratePluginList()
         'cntInactive' => $pCount[2],
         'cntUninstalled' => $pCount[3]
     );
-    $xt = $twig->loadTemplate(tpl_actions . 'extras/table.tpl');
-    echo $xt->render($tVars);
+
+    echo $twig->render(tpl_actions . 'extras/table.tpl', $tVars);
 }
 
 function repoSync()
@@ -127,7 +127,7 @@ function repoSync()
             $paramList [] = urlencode($extra['id']) . "=" . urlencode($extra['version']);
 
         $req = new http_get();
-        $vms = $req->get('http://ngcms.ru/components/update/?action=info&' . join('&', $paramList), 3, 1);
+        $vms = $req->get('http://bixbite.site/components/update/?action=info&' . join('&', $paramList), 3, 1);
 
         // Save into cache
         cacheStoreFile('plugversion.dat', $vms);
@@ -187,9 +187,8 @@ if ($manage) {
         'config' => $confLine,
         'token' => genUToken('admin.extras'),
     );
-    $xt = $twig->loadTemplate('skins/default/tpl/extras/manage_config.tpl');
-    echo $xt->render($tVars);
 
+    echo $twig->render(tpl_actions . 'extras/manage_config.tpl', $tVars);
     //exit;
 }
 

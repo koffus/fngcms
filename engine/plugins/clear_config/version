@@ -1,5 +1,9 @@
+;
+; Version description file for plugin @@ BixBite CMS
+;
+
 ID: clear_config
-Name: Отчистка файлов конфигурации
+Name: Clear config
 Version: 0.02
 Config: config.php
 Type: plugin
@@ -7,4 +11,5 @@ Title: Отчистка файла конфигурации
 Description: Удаляет настройки плагинов из файлов конфигураций
 Author: Ivan Litvinenko (Amarelius)
 Author_URI: http://arnit.com.ua/
+URI: http://bixbite.site
 preinstall: no

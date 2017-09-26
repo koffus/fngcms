@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin($plugin, 'config', '', ':');
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Load CORE Plugin
 $cPlugin = CPlugin::instance();
@@ -149,11 +149,11 @@ $cfgX = array();
         'value' => intval(pluginGetVariable($plugin, 'cache')) ? intval(pluginGetVariable($plugin, 'cache')) : 1,
         ));
     array_push($cfgX, array(
-        'name' => 'cacheExpire',
-        'title' => __('cacheExpire'),
-        'descr' => __($plugin.':cacheExpire#desc'),
+        'name' => 'cache_expire',
+        'title' => __('cache_expire'),
+        'descr' => __($plugin.':cache_expire#desc'),
         'type' => 'input',
-        'value' => intval(pluginGetVariable($plugin, 'cacheExpire')) ? intval(pluginGetVariable($plugin, 'cacheExpire')) : 10800,
+        'value' => intval(pluginGetVariable($plugin, 'cache_expire')) ? intval(pluginGetVariable($plugin, 'cache_expire')) : 10800,
         ));
 array_push($cfg, array(
     'mode' => 'group',

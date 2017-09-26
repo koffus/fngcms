@@ -1,10 +1,14 @@
 <?php
 
-// Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+/*
+ * Configuration file for plugin
+ */
 
-// Load langs
-Lang::loadPlugin('feedback', 'config', '', ':');
+// Protect against hack attempts
+if (!defined('BBCMS')) die ('HAL');
+
+// Load lang files
+Lang::loadPlugin($plugin, 'admin', '', ':');
 
 // Load library
 include_once(root . "/plugins/feedback/lib/common.php");
@@ -147,9 +151,7 @@ function showList()
 
     $tVars['entries'] = $tForms;
 
-    $templateName = 'plugins/feedback/tpl/conf.forms.tpl';
-    $xt = $twig->loadTemplate($templateName);
-    echo $xt->render($tVars);
+    echo $twig->render('plugins/feedback/tpl/conf.forms.tpl', $tVars);
 }
 
 function showForm($edMode)
@@ -165,8 +167,7 @@ function showForm($edMode)
     if (!is_array($frow = $mysql->record("select * from " . prefix . "_feedback where id = " . $id))) {
         $tVars['content'] = "Указанная форма [" . $id . "] не существует!";
 
-        $xt = $twig->loadTemplate('plugins/feedback/tpl/conf.notify.tpl');
-        echo $xt->render($tVars);
+        echo $twig->render('plugins/feedback/tpl/conf.notify.tpl'$tVars);
         return false;
     }
 
@@ -250,8 +251,7 @@ function showForm($edMode)
     // Show template files
     $tVars['tfiles'] = feedback_locateTemplateFiles($frow['template'], substr($frow['flags'], 2, 1) ? true : false);
 
-    $xt = $twig->loadTemplate('plugins/feedback/tpl/conf.form.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render('plugins/feedback/tpl/conf.form.tpl', $tVars);
 
 }
 
@@ -345,8 +345,7 @@ function showFormRow()
 
     $templateName = 'plugins/feedback/tpl/' . ($recordFound ? 'conf.form.editrow' : 'conf.notify') . '.tpl';
 
-    $xt = $twig->loadTemplate($templateName);
-    echo $xt->render($tVars);
+    echo $twig->render($templateName, $tVars);
 }
 
 function editFormRow()
@@ -471,8 +470,7 @@ function editFormRow()
     } while (0);
 
     // Show template
-    $xt = $twig->loadTemplate('plugins/feedback/tpl/conf.notify.tpl');
-    echo $xt->render($tVars);
+    echo $twig->render('plugins/feedback/tpl/conf.notify.tpl', $tVars);
 }
 
 //
@@ -512,8 +510,7 @@ function doUpdate()
 
     if (!$enabled) {
         // Show template
-        $xt = $twig->loadTemplate('plugins/feedback/tpl/conf.notify.tpl');
-        echo $xt->render($tVars);
+        echo $twig->render('plugins/feedback/tpl/conf.notify.tpl', $tVars);
 
         return false;
     }

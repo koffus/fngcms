@@ -5,12 +5,12 @@
 */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 function plugin_bookmarks_install($action) {
 
     if ('autoapply' != $action) {
-        Lang::loadPlugin('bookmarks', 'config', '', ':');
+        Lang::loadPlugin('bookmarks', 'admin', '', ':');
     }
 
     // Fill DB_UPDATE configuration scheme

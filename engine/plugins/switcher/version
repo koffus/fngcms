@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: switcher
@@ -11,7 +11,7 @@ Config: config.php
 Type: plugin
 Description: Переключение шаблонов/языков пользователем
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Поддержка мульти/(языков/шаблонов)
 Information: Позволяет на одном сайте одновременно использовать разные шаблоны (к примеру, на разных языках), позволяет создать сайт на разных доменах с разным оформлением и использовать другие интересные комбинации.
 Preinstall: no

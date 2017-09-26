@@ -1,5 +1,5 @@
 ;
-; Version description file for plugin @@ Next Generation CMS
+; Version description file for plugin @@ BixBite CMS
 ;
 
 ID: varmgr
@@ -11,6 +11,6 @@ Config: config.php
 Type: plugin
 Description: Управление доп. переменными в новостях
 Author: Vitaly A. Ponomarev
-Author_URI: http://ngcms.ru/
+Author_URI: http://bixbite.site/
 Title: Менеджер переменных в новостях
 Information: Добавляет новые переменные управления датой новости, а также позволяет заменить формат отображения даты. Идеален для графического отображения даты.

@@ -1,14 +1,14 @@
 <?php
 
-//
-// Configuration file for plugin
-//
+/*
+ * Configuration file for plugin
+ */
 
 // Protect against hack attempts
-if (!defined('NGCMS')) die ('HAL');
+if (!defined('BBCMS')) die ('HAL');
 
 // Load lang files
-Lang::loadPlugin('subscribe_comments', 'config', '', '#');
+Lang::loadPlugin($plugin, 'admin', '', '#');
 
 $get_params = parse_url($_SERVER['HTTP_REFERER']);
 $get_params = $get_params['query'];
@@ -24,7 +24,7 @@ switch ($action) {
 
 function show_list_subscribe()
 {global $tpl, $mysql, $config;
-	$tpath = locatePluginTemplates(array('config/main', 'config/list_subscribe', 'config/list_entries'), 'subscribe_comments', 1);
+	$tpath = plugin_locateTemplates('subscribe_comments', array('main', 'list_subscribe', 'list_entries'));
 	
 	$news_per_page = pluginGetVariable('subscribe_comments', 'admin_count');
 	
@@ -49,7 +49,7 @@ function show_list_subscribe()
 			'email' => $row['user_email'],
 		);
 		
-		$tpl->template('list_entries', $tpath['config/list_entries'].'config');
+		$tpl->template('list_entries', $tpath['list_entries'].'config');
 		$tpl->vars('list_entries', $gvars);
 		$entries .= $tpl->show('list_entries');
 	}
@@ -72,7 +72,7 @@ $tvars['regx']["'\[hide_delayed\](.*?)\[/hide_delayed\]'si"] = '';
 	
 	$pvars['vars']['pagesss'] = $pagesss;
 	$pvars['vars']['entries'] = $entries;
-	$tpl->template('list_subscribe', $tpath['config/list_subscribe'].'config');
+	$tpl->template('list_subscribe', $tpath['list_subscribe'].'config');
 	$tpl->vars('list_subscribe', $pvars);
 	$tvars['vars']= array (
 		'entries_cron' => '',
@@ -80,14 +80,14 @@ $tvars['regx']["'\[hide_delayed\](.*?)\[/hide_delayed\]'si"] = '';
 		'global' => 'Список подписок'
 	);
 	
-	$tpl->template('main', $tpath['config/main'].'config');
+	$tpl->template('main', $tpath['main'].'config');
 	$tpl->vars('main', $tvars);
 	print $tpl->show('main');
 }
 
 function show_list_subscribe_post()
 {global $tpl, $mysql, $config;
-	$tpath = locatePluginTemplates(array('config/main', 'config/list_subscribe_post', 'config/list_entries_post'), 'subscribe_comments', 1);
+	$tpath = plugin_locateTemplates('subscribe_comments', array('main', 'list_subscribe_post', 'list_entries_post'));
 	
 	$news_per_page = pluginGetVariable('subscribe_comments', 'admin_count');
 	
@@ -113,7 +113,7 @@ function show_list_subscribe_post()
 			'email' => $row['user_email'],
 		);
 		
-		$tpl->template('list_entries_post', $tpath['config/list_entries_post'].'config');
+		$tpl->template('list_entries_post', $tpath['list_entries_post'].'config');
 		$tpl->vars('list_entries_post', $gvars);
 		$entries .= $tpl->show('list_entries_post');
 	}
@@ -135,7 +135,7 @@ $tvars['regx']["'\[hide_delayed\](.*?)\[/hide_delayed\]'si"] = '';
 	
 	$pvars['vars']['pagesss'] = $pagesss;
 	$pvars['vars']['entries'] = $entries;
-	$tpl->template('list_subscribe_post', $tpath['config/list_subscribe_post'].'config');
+	$tpl->template('list_subscribe_post', $tpath['list_subscribe_post'].'config');
 	$tpl->vars('list_subscribe_post', $pvars);
 	$tvars['vars']= array (
 		'entries_cron' => '',
@@ -143,7 +143,7 @@ $tvars['regx']["'\[hide_delayed\](.*?)\[/hide_delayed\]'si"] = '';
 		'global' => 'Сформированные письма'
 	);
 	
-	$tpl->template('main', $tpath['config/main'].'config');
+	$tpl->template('main', $tpath['main'].'config');
 	$tpl->vars('main', $tvars);
 	print $tpl->show('main');
 }
@@ -183,7 +183,7 @@ global $mysql;
 function main()
 {global $tpl, $mysql, $config, $template, $cron;
 
-$tpath = locatePluginTemplates(array('config/main', 'config/general.from', 'config/list_entries_cron', 'config/list_subscribe_cron'), 'subscribe_comments', 1);
+$tpath = plugin_locateTemplates('subscribe_comments', array('main', 'general.from', 'list_entries_cron', 'list_subscribe_cron'));
 
 $delayed_send = pluginGetVariable('subscribe_comments', 'delayed_send');
 
@@ -198,13 +198,13 @@ if( $config['syslog'] == '1' ) {
 			'stext' => $row['stext'],
 		);
 		
-		$tpl->template('list_entries_cron', $tpath['config/list_entries_cron'].'config');
+		$tpl->template('list_entries_cron', $tpath['list_entries_cron'].'config');
 		$tpl->vars('list_entries_cron', $gvars);
 		$entries_cron .= $tpl->show('list_entries_cron');
 	}
 	
 	$pvars['vars']['entries_cron'] = $entries_cron;
-	$tpl->template('list_subscribe_cron', $tpath['config/list_subscribe_cron'].'config');
+	$tpl->template('list_subscribe_cron', $tpath['list_subscribe_cron'].'config');
 	$tpl->vars('list_subscribe_cron', $pvars);
 }
 
@@ -253,7 +253,7 @@ else{
 		'delayed_send' => isset($delayed_send)?$delayed_send:'10',
 	);
 	
-	$tpl->template('general.from', $tpath['config/general.from'].'config');
+	$tpl->template('general.from', $tpath['general.from'].'config');
 	$tpl->vars('general.from', $pvars);
 	$tvars['vars']= array (
 		'entries_cron' => $tpl->show('list_subscribe_cron'),
@@ -261,7 +261,7 @@ else{
 		'global' => 'Общие настройки'
 	);
 	
-	$tpl->template('main', $tpath['config/main'].'config');
+	$tpl->template('main', $tpath['main'].'config');
 	$tpl->vars('main', $tvars);
 	print $tpl->show('main');
 }

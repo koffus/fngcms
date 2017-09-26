@@ -1,7 +1,7 @@
 	</main>
 	
 	<footer class="footer">
-		&copy; 2008-{{ year }} <a href="http://bixbite.site/" target="_blank">BixBite CMS</a>
+		&copy; 2006-{{ year }} <a href="http://bixbite.site/" target="_blank">BixBite CMS</a>
 	</footer>
 	
 	<div id="modal-dialog" class="modal fade" tabindex="-1" role="dialog">
