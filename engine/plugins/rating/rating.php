@@ -13,7 +13,7 @@ function rating_show($newsID, $rating, $votes)
     Lang::loadPlugin('rating', 'site');
 
     $tpath = plugin_locateTemplates('rating', array('rating', 'rating.form', ':rating.css'));
-    $cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'/rating.css'); 
+    $cPlugin->regHtmlVar('css', $tpath['url::rating.css'].'rating.css'); 
     
     $tVars = array(
         'tpl_url' => $tpath['url::rating.css'],
@@ -27,13 +27,11 @@ function rating_show($newsID, $rating, $votes)
     if (isset($_COOKIE['rating'.$newsID]) or (pluginGetVariable('rating','regonly') and !is_array($userROW))) {
         // Show
         $templateName = 'rating';
-        return $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars);
     } else {
         // Edit
         $templateName = 'rating.form';
-        return $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars);
     }
-    return;
+    return $twig->render($tpath[$templateName] . $templateName . '.tpl', $tVars);
 }
 
 class RatingNewsFilter extends NewsFilter {

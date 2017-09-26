@@ -385,7 +385,7 @@ function plugin_locateTemplates($plugin, $tplNames = null, $skin = null)
             if (is_readable(tpl_site . "plugins/$plugin/$skin/$fileName")) {
                 // If isset skin in Theme templates
                 $tplPath[$tplName] = tpl_site . "plugins/$plugin/$skin/";
-                $tplPath['url:' . $tplName] = tpl_url . "plugins/$plugin/$skin/";
+                $tplPath['url:' . $tplName] = tpl_url . "/plugins/$plugin/$skin/";
             } elseif (is_readable(extras_dir . "/$plugin/tpl/site/basic/$fileName")) {
                 $tplPath[$tplName] = extras_dir . "/$plugin/tpl/site/basic/";
                 $tplPath['url:' . $tplName] = admin_url . "/plugins/$plugin/tpl/site/basic/";
