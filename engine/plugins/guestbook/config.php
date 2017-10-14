@@ -328,9 +328,9 @@ function show_options() {
 		);
 
 	$tVars = array(
-		'entries' => $twig->render($tpath['config/settings'] . 'config/settings.tpl', $tVars),
+		'entries' => $twig->render($tpath['settings'] . 'settings.tpl', $tVars),
 		);
-	print $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars);
+	print $twig->render($tpath['main'] . 'main.tpl', $tVars);
 }
 
 function show_messages() {
@@ -375,9 +375,9 @@ function show_messages() {
 		);
 
 	$tVars = array(
-		'entries' => $twig->render($tpath['config/messages_list'] . 'config/messages_list.tpl', $tVars),
+		'entries' => $twig->render($tpath['messages_list'] . 'messages_list.tpl', $tVars),
 		);
-	print $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars);
+	print $twig->render($tpath['main'] . 'main.tpl', $tVars);
 }
 
 function delete_social() {
@@ -533,10 +533,10 @@ function edit_message($mid) {
 		);
 
 	$tVars = array(
-		'entries' => $twig->render($tpath['config/messages_edit'] . 'config/messages_edit.tpl', $tVars),
+		'entries' => $twig->render($tpath['messages_edit'] . 'messages_edit.tpl', $tVars),
 		);
 
-	print $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars);
+	print $twig->render($tpath['main'] . 'main.tpl', $tVars);
 }
 
 /*
@@ -636,8 +636,8 @@ function social_config() {
 		);
 
 	$tVars = array(
-		'entries' => $twig->render($tpath['config/main'] . 'config/main.tpl', $tVars),
+		'entries' => $twig->render($tpath['main'] . 'main.tpl', $tVars),
 		);
 
-	print $twig->render($tpath['config/social'] . 'config/social.tpl', $tVars);
+	print $twig->render($tpath['social'] . 'social.tpl', $tVars);
 }
