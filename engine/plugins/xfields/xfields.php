@@ -714,7 +714,7 @@ class XFieldsNewsFilter extends NewsFilter
         if (!is_array($xf))
             return 1;
 
-        $rcall = (!empty($_POST['xfields']) and !is_array($_POST['xfields'])) ? $_POST['xfields']: array();
+        $rcall = (!empty($_POST['xfields']) and is_array($_POST['xfields'])) ? $_POST['xfields']: array();
 
         // Decode previusly stored data
         $oldFields = xf_decode($SQLold['xfields']);
@@ -762,15 +762,16 @@ class XFieldsNewsFilter extends NewsFilter
                 continue;
             }
 
-            if ($rcall[$id] != '') {
+            if (isset($rcall[$id]) and $rcall[$id] != '') {
                 $xdata[$id] = $rcall[$id];
-            } else if ($data['required']) {
+            } elseif ($data['required']) {
                 msg(array('type' => 'danger', 'message' => str_replace('{field}', $id, __('xfields:msge_emptyrequired'))));
                 return 0;
             }
             // Check if we should save data into separate SQL field
-            if ($data['storage'])
+            if (1 == $data['storage']) {
                 $SQLnew['xfields_'.$id] = $rcall[$id];
+            }
         }
 
         // Prepare table data [if needed]
@@ -848,7 +849,7 @@ class XFieldsNewsFilter extends NewsFilter
         if ($haveTable)
             $xdata['#table'] = 1;
 
-     $SQLnew['xfields'] = xf_encode($xdata);
+        $SQLnew['xfields'] = xf_encode($xdata);
         return 1;
     }
 
